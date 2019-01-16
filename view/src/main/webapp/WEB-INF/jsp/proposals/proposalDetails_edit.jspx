@@ -13,7 +13,7 @@
     <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
     <!--@elvariable id="isMove" type="java.lang.Boolean"-->
     <!--@elvariable id="hasUnmappedSections" type="java.lang.Boolean"-->
-    <!--@elvariable id="userTeams" type="java.util.List<org.xcolab.client.members.pojo.PlatformTeam>"-->
+    <!--@elvariable id="userTeams" type="java.util.List<org.xcolab.client.user.pojo.PlatformTeam>"-->
     <!--@elvariable id="contestTosAccepted" type="java.lang.Boolean"-->
 
     <jsp:directive.include file="./init_proposal.jspx"/>

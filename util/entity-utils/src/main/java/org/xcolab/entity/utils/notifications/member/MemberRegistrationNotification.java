@@ -1,6 +1,6 @@
 package org.xcolab.entity.utils.notifications.member;
 
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.entity.utils.notifications.basic.MemberNotification;
 
 public class MemberRegistrationNotification extends MemberNotification {

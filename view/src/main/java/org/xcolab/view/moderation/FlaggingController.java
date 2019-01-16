@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.client.flagging.FlaggingClient;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.util.enums.flagging.TargetType;
 
 import java.io.UnsupportedEncodingException;

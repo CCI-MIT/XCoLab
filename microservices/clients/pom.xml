@@ -21,7 +21,7 @@
         <module>comment-client</module>
         <module>emails-client</module>
         <module>flagging-client</module>
-        <module>members-client</module>
+        <module>user-client</module>
         <module>modeling-client</module>
         <module>search-client</module>
         <module>tracking-client</module>

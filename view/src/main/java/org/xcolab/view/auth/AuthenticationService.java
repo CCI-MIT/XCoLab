@@ -9,7 +9,7 @@ import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
 
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.view.auth.handlers.AuthenticationSuccessHandler;
 import org.xcolab.view.auth.login.spring.MemberDetails;

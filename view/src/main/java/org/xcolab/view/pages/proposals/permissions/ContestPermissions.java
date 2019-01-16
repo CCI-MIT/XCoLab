@@ -2,8 +2,8 @@ package org.xcolab.view.pages.proposals.permissions;
 
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.PermissionsClient;
+import org.xcolab.client.user.pojo.Member;
 
 public class ContestPermissions {
 

@@ -4,8 +4,8 @@ import org.joda.time.DateTime;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.MembersClient;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
 import org.xcolab.entity.utils.notifications.proposal.ProposalVoteValidityConfirmation;

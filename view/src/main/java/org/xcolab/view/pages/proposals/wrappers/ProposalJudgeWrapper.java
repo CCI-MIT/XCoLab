@@ -2,7 +2,7 @@ package org.xcolab.view.pages.proposals.wrappers;
 
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;

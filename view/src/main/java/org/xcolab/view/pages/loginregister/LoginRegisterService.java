@@ -9,10 +9,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.pojo.LoginToken;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.MembersClient;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.pojo.LoginToken;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.tracking.IBalloonClient;
 import org.xcolab.client.tracking.exceptions.BalloonUserTrackingNotFoundException;
 import org.xcolab.client.tracking.pojo.IBalloonUserTracking;

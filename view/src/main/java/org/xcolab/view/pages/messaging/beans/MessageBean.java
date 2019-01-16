@@ -1,12 +1,12 @@
 package org.xcolab.view.pages.messaging.beans;
 
 
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.MessagingClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.exceptions.MessageNotFoundException;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.Message;
+import org.xcolab.client.user.MembersClient;
+import org.xcolab.client.user.MessagingClient;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.exceptions.MessageNotFoundException;
+import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.Message;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.commons.time.DurationFormatter;

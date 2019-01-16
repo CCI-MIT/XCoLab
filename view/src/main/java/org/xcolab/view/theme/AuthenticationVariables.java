@@ -1,8 +1,8 @@
 package org.xcolab.view.theme;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.PermissionsClient;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.view.auth.AuthenticationService;
 import org.xcolab.view.auth.login.AuthenticationError;
 import org.xcolab.view.config.spring.beans.SsoClientConfig.SsoServices;

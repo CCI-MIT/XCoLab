@@ -3,7 +3,7 @@ package org.xcolab.view.pages.contestmanagement.wrappers;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.AbstractContest;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.commons.html.LabelValue;
 import org.xcolab.view.pages.contestmanagement.beans.ContestFlagTextToolTipBean;
 import org.xcolab.view.pages.contestmanagement.beans.ContestModelSettingsBean;

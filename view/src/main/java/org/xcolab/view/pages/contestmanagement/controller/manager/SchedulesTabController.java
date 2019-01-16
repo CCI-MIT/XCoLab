@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.ContestSchedule;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.commons.html.LabelStringValue;
 import org.xcolab.commons.html.LabelValue;
 import org.xcolab.commons.servlet.flash.AlertMessage;

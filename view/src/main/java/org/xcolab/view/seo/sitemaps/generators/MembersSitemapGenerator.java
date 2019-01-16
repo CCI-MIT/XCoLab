@@ -3,9 +3,9 @@ package org.xcolab.view.seo.sitemaps.generators;
 import org.springframework.stereotype.Service;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.MemberCategory;
+import org.xcolab.client.user.MembersClient;
+import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.MemberCategory;
 import org.xcolab.commons.time.DateUtil;
 import org.xcolab.view.seo.sitemaps.xml.XmlUrl;
 import org.xcolab.view.seo.sitemaps.xml.XmlUrl.ChangeFrequency;

@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.HttpClientErrorException;
 
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.MembersClient;
+import org.xcolab.client.user.PermissionsClient;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.view.config.spring.resolvers.RealMember;
 import org.xcolab.view.pages.profile.utils.JSONHelper;
 

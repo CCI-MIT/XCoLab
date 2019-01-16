@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import org.xcolab.client.members.MessagingClient;
-import org.xcolab.client.members.pojo.MessagingUserPreference;
+import org.xcolab.client.user.MessagingClient;
+import org.xcolab.client.user.pojo.MessagingUserPreference;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.pages.profile.utils.JSONHelper;
 

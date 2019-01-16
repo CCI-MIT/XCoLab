@@ -15,7 +15,7 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.impact.ImpactIteration;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.proposals.ProposalAttributeClient;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.enums.ImpactSeriesType;

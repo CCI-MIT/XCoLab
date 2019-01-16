@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.MembersClient;
+import org.xcolab.client.user.pojo.Member;
 
 import java.util.List;
 import java.util.Map;

@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.pojo.LoginToken;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.TokenValidity;
+import org.xcolab.client.user.MembersClient;
+import org.xcolab.client.user.pojo.LoginToken;
+import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.TokenValidity;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.commons.servlet.flash.ErrorPage;
 import org.xcolab.entity.utils.notifications.member.MemberBatchRegistrationNotification;

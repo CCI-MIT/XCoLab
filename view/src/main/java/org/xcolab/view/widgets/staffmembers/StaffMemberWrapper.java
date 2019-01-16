@@ -4,10 +4,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.StaffMember;
+import org.xcolab.client.user.MembersClient;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.StaffMember;
 
 import java.io.Serializable;
 

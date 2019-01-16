@@ -10,7 +10,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.emails.EmailClient;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.tracking.IBalloonClient;
 import org.xcolab.client.tracking.ITrackingClient;
 import org.xcolab.client.tracking.exceptions.BalloonTextNotFoundException;

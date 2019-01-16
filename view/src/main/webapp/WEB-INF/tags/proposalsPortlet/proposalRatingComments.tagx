@@ -16,7 +16,7 @@
     <div class="c-Comment__list">
         <c:forEach var="wrapper" items="${proposalRatingsWrappers}" varStatus="status">
             <discussions:getRoleCategory userId="${wrapper.author.id}" proposalId="${proposalId}">
-                <!--@elvariable id="roleCategory" type="org.xcolab.client.members.pojo.MemberCategory"-->
+                <!--@elvariable id="roleCategory" type="org.xcolab.client.user.pojo.MemberCategory"-->
                 <div class="comment">
                     <div class="c-Comment__commentor">
                         <xcolab:userPortrait portraitId="${wrapper.author.portraitId}"

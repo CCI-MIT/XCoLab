@@ -7,8 +7,8 @@ import org.jsoup.nodes.TextNode;
 import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.pojo.EmailTemplate;
-import org.xcolab.client.members.pojo.LoginToken;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.LoginToken;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.entity.utils.notifications.basic.MemberNotification;
 
 import java.time.format.DateTimeFormatter;

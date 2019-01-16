@@ -18,7 +18,7 @@ import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseRibbonType;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
 import org.xcolab.client.contest.resources.ContestResource;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.commons.IdListUtil;

@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.MembersClient;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;

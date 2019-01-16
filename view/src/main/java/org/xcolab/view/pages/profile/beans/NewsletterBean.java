@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.profile.beans;
 
-import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.user.MembersClient;
 
 import java.io.Serializable;
 

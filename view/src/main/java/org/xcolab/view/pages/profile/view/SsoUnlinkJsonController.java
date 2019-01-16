@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.MembersClient;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.pages.profile.utils.JSONHelper;
 

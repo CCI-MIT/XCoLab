@@ -1,8 +1,8 @@
 package org.xcolab.view.pages.proposals.requests;
 
 
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.MembersClient;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.proposals.PointsClientUtil;
 import org.xcolab.client.proposals.enums.points.DistributionStrategy;
 import org.xcolab.client.proposals.enums.points.ReceiverLimitationStrategy;

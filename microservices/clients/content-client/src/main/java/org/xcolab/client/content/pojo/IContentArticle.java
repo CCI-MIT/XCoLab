@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import org.xcolab.client.content.pojo.tables.pojos.ContentArticle;
-import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.PermissionsClient;
+import org.xcolab.client.user.pojo.Member;
 
 import java.sql.Timestamp;
 

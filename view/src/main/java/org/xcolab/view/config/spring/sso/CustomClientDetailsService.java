@@ -7,8 +7,8 @@ import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.ClientRegistrationException;
 
-import org.xcolab.client.members.SsoClientDetailsClient;
-import org.xcolab.client.members.pojo.SsoClientDetails;
+import org.xcolab.client.user.SsoClientDetailsClient;
+import org.xcolab.client.user.pojo.SsoClientDetails;
 import org.xcolab.view.config.spring.sso.openid.OpenIdHelper;
 
 import java.util.Arrays;

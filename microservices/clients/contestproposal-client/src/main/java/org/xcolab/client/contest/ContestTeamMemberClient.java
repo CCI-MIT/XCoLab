@@ -3,7 +3,7 @@ package org.xcolab.client.contest;
 import org.xcolab.client.contest.pojo.team.ContestTeamMember;
 import org.xcolab.client.contest.pojo.team.ContestTeamMemberRole;
 import org.xcolab.client.contest.resources.ContestResource;
-import org.xcolab.client.members.permissions.SystemRole;
+import org.xcolab.client.user.permissions.SystemRole;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;

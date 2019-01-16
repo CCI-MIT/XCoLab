@@ -2,8 +2,8 @@ package org.xcolab.view.theme;
 
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.PermissionsClient;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.util.enums.theme.ColabTheme;
 import org.xcolab.view.auth.AuthenticationContext;
 

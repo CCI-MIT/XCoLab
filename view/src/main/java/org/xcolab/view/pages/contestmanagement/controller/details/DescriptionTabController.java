@@ -13,7 +13,7 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ProposalTemplateClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.templates.ProposalTemplate;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.commons.html.LabelValue;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.view.errors.AccessDeniedPage;

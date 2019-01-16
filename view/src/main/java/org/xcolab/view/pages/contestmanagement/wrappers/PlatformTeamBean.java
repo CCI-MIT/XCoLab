@@ -2,8 +2,8 @@ package org.xcolab.view.pages.contestmanagement.wrappers;
 
 import org.hibernate.validator.constraints.Length;
 
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.PlatformTeam;
+import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.PlatformTeam;
 
 import java.util.List;
 

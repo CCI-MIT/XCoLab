@@ -8,8 +8,8 @@ import org.xcolab.client.content.IFileClient;
 import org.xcolab.client.content.pojo.FileEntryWrapper;
 import org.xcolab.client.content.pojo.tables.pojos.FileEntry;
 import org.xcolab.client.content.pojo.IFileEntry;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.MembersClient;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.view.util.entity.upload.FileUploadUtil;
 
 import java.awt.image.BufferedImage;

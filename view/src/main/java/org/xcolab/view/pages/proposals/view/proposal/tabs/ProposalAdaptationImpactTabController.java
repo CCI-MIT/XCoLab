@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.proposals.ProposalAttributeClient;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.view.errors.AccessDeniedPage;

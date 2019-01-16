@@ -1,8 +1,8 @@
 package org.xcolab.view.pages.messaging.utils;
 
-import org.xcolab.client.members.MessagingClient;
-import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.MessagingClient;
+import org.xcolab.client.user.PermissionsClient;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.view.pages.messaging.beans.MessageBean;
 
 import java.util.List;

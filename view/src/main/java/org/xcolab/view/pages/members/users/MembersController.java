@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.MemberCategory;
+import org.xcolab.client.user.MembersClient;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.MemberCategory;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.pages.members.users.utils.MemberItem;

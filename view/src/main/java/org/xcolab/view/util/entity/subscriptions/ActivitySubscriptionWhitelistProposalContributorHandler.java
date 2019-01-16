@@ -1,6 +1,6 @@
 package org.xcolab.view.util.entity.subscriptions;
 
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.proposals.ProposalClientUtil;
 
 import java.util.ArrayList;

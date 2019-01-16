@@ -11,9 +11,9 @@ import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
 import org.xcolab.client.comment.exceptions.KeyReferenceException;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.MembersClient;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.commons.time.DurationFormatter;
 import org.xcolab.util.http.client.types.TypeProvider;
 

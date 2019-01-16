@@ -16,8 +16,8 @@ import org.xcolab.client.content.pojo.IContentArticleVersion;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.PermissionsClient;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.errors.ErrorText;
 

@@ -6,10 +6,10 @@ import org.springframework.ui.Model;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivityEntry;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.permissions.SystemRole;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.MemberCategory;
+import org.xcolab.client.user.MembersClient;
+import org.xcolab.client.user.permissions.SystemRole;
+import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.MemberCategory;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
 import org.xcolab.view.util.entity.ActivityUtil;
 import org.xcolab.view.util.pagination.SortFilterPage;

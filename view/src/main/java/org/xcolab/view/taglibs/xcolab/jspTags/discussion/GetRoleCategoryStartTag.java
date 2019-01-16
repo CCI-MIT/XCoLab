@@ -1,9 +1,9 @@
 package org.xcolab.view.taglibs.xcolab.jspTags.discussion;
 
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.MemberCategory;
+import org.xcolab.client.user.MembersClient;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.MemberCategory;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;

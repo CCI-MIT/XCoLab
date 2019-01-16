@@ -2,7 +2,7 @@ package org.xcolab.view.pages.profile.wrappers;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.view.pages.profile.SubscriptionType;
 
 import java.io.Serializable;

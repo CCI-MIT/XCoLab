@@ -2,17 +2,16 @@ package org.xcolab.view.pages.profile.beans;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.MessagingClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.Message;
+import org.xcolab.client.user.MembersClient;
+import org.xcolab.client.user.MessagingClient;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.Message;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 public class MessageBean implements Serializable {
 

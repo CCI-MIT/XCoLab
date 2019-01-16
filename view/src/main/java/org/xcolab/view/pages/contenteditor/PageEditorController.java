@@ -15,8 +15,8 @@ import org.xcolab.client.content.pojo.IContentArticleVersion;
 import org.xcolab.client.content.pojo.IContentFolder;
 import org.xcolab.client.content.pojo.IContentPage;
 import org.xcolab.client.content.pojo.tables.pojos.ContentPage;
-import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.PermissionsClient;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.view.errors.AccessDeniedPage;
 
 import java.io.IOException;

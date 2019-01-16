@@ -1,6 +1,6 @@
 package org.xcolab.view.util.entity.flash;
 
-import org.xcolab.client.members.pojo.AnalyticsUserEvent;
+import org.xcolab.client.user.pojo.AnalyticsUserEvent;
 import org.xcolab.commons.servlet.flash.impl.FlashMessageStore;
 
 import java.util.ArrayList;

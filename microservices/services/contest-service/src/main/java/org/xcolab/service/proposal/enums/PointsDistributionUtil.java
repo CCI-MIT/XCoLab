@@ -1,6 +1,6 @@
 package org.xcolab.service.proposal.enums;
 
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.model.tables.pojos.PointType;
 import org.xcolab.model.tables.pojos.PointsDistributionConfiguration;

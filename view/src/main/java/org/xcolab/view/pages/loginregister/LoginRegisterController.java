@@ -19,7 +19,7 @@ import org.springframework.web.client.HttpClientErrorException;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.user.MembersClient;
 import org.xcolab.client.tracking.ITrackingClient;
 import org.xcolab.client.tracking.pojo.ILocation;
 import org.xcolab.commons.CountryUtil;

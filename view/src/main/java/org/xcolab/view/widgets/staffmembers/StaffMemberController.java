@@ -12,12 +12,12 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ContestTeamMemberClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.team.ContestTeamMember;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.StaffMemberClient;
-import org.xcolab.client.members.legacy.enums.StaffMemberCategoryRole;
-import org.xcolab.client.members.legacy.enums.StaffMemberCategoryRole.NoSuchCategoryRoleException;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.StaffMember;
+import org.xcolab.client.user.MembersClient;
+import org.xcolab.client.user.StaffMemberClient;
+import org.xcolab.client.user.legacy.enums.StaffMemberCategoryRole;
+import org.xcolab.client.user.legacy.enums.StaffMemberCategoryRole.NoSuchCategoryRoleException;
+import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.StaffMember;
 import org.xcolab.view.widgets.AbstractWidgetController;
 
 import java.util.ArrayList;

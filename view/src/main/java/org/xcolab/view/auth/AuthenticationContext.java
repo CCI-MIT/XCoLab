@@ -5,11 +5,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.util.WebUtils;
 
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.exceptions.UncheckedMemberNotFoundException;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.MembersClient;
+import org.xcolab.client.user.PermissionsClient;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.exceptions.UncheckedMemberNotFoundException;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.view.auth.login.spring.MemberDetails;
 
 import java.util.Objects;

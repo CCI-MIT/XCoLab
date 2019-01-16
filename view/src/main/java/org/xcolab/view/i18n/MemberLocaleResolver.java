@@ -6,8 +6,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.LocaleContextResolver;
 import org.springframework.web.servlet.i18n.AbstractLocaleContextResolver;
 
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.MembersClient;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.view.auth.AuthenticationService;
 
 import java.util.Locale;

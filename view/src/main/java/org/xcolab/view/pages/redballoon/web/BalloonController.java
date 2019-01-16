@@ -14,7 +14,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.tracking.IBalloonClient;
 import org.xcolab.client.tracking.exceptions.BalloonLinkNotFoundException;
 import org.xcolab.client.tracking.exceptions.BalloonTextNotFoundException;

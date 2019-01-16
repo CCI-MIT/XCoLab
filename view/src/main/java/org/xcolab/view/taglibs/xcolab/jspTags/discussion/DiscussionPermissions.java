@@ -3,7 +3,7 @@ package org.xcolab.view.taglibs.xcolab.jspTags.discussion;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.flagging.FlaggingClient;
-import org.xcolab.client.members.PermissionsClient;
+import org.xcolab.client.user.PermissionsClient;
 import org.xcolab.util.enums.flagging.TargetType;
 import org.xcolab.view.auth.MemberAuthUtil;
 

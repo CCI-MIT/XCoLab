@@ -15,7 +15,7 @@ import org.xcolab.client.admin.pojo.EmailTemplate;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.Member;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

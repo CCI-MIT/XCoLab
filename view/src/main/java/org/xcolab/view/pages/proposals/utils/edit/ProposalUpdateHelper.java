@@ -4,9 +4,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
-import org.xcolab.client.members.PlatformTeamsClient;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.PlatformTeam;
+import org.xcolab.client.user.PlatformTeamsClient;
+import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.PlatformTeam;
 import org.xcolab.client.proposals.MembershipClient;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;

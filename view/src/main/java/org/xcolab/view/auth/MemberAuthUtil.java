@@ -1,9 +1,9 @@
 package org.xcolab.view.auth;
 
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.exceptions.UncheckedMemberNotFoundException;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.MembersClient;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.exceptions.UncheckedMemberNotFoundException;
+import org.xcolab.client.user.pojo.Member;
 
 import javax.servlet.http.HttpServletRequest;
 

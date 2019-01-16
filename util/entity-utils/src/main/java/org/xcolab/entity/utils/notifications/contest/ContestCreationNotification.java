@@ -1,8 +1,8 @@
 package org.xcolab.entity.utils.notifications.contest;
 
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.MembersClient;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
 import org.xcolab.entity.utils.notifications.basic.ContestNotification;
 
 public class ContestCreationNotification extends ContestNotification {

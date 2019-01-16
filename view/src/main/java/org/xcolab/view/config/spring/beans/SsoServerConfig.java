@@ -22,7 +22,7 @@ import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.view.config.spring.sso.CustomClientDetailsService;
 import org.xcolab.view.config.spring.sso.openid.IdTokenEnhancer;
 import org.xcolab.view.config.spring.sso.openid.OpenIdHelper;

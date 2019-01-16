@@ -4,7 +4,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.Member;
 
 import java.util.HashMap;
 import java.util.Map;

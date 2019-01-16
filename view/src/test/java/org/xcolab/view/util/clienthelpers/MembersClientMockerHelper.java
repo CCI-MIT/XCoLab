@@ -3,9 +3,9 @@ package org.xcolab.view.util.clienthelpers;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.MembersClient;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.view.util.TestUtil;
 
 import static org.mockito.ArgumentMatchers.any;

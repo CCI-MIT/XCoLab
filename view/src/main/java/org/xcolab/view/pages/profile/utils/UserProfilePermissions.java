@@ -1,7 +1,7 @@
 package org.xcolab.view.pages.profile.utils;
 
-import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.PermissionsClient;
+import org.xcolab.client.user.pojo.Member;
 
 public class UserProfilePermissions {
 

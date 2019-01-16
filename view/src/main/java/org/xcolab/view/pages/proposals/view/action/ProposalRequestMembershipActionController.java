@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.MessagingClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.MembersClient;
+import org.xcolab.client.user.MessagingClient;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.proposals.MembershipClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.team.ProposalTeamMembershipRequest;

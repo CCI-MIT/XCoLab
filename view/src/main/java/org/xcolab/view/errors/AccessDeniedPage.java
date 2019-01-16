@@ -2,7 +2,7 @@ package org.xcolab.view.errors;
 
 import org.springframework.http.HttpStatus;
 
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.Member;
 
 public class AccessDeniedPage extends AbstractErrorPage {
 

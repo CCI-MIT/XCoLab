@@ -1,8 +1,8 @@
 package org.xcolab.view.pages.messaging.beans;
 
-import org.xcolab.client.members.MessagingClient;
-import org.xcolab.client.members.messaging.MessageLimitExceededException;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.MessagingClient;
+import org.xcolab.client.user.messaging.MessageLimitExceededException;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.commons.IdListUtil;
 import org.xcolab.commons.html.HtmlUtil;
 

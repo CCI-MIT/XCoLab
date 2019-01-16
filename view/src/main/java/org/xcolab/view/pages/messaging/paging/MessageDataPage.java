@@ -1,9 +1,9 @@
 package org.xcolab.view.pages.messaging.paging;
 
-import org.xcolab.client.members.MessagingClient;
-import org.xcolab.client.members.legacy.enums.MessageType;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.Message;
+import org.xcolab.client.user.MessagingClient;
+import org.xcolab.client.user.legacy.enums.MessageType;
+import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.Message;
 import org.xcolab.view.pages.messaging.beans.MessageBean;
 
 import java.util.ArrayList;

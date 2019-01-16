@@ -9,7 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.WebUtils;
 
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.tracking.pojo.ITrackedVisit;
 import org.xcolab.commons.http.servlet.RequestUtil;
 import org.xcolab.view.auth.AuthenticationContext;

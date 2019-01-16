@@ -5,7 +5,7 @@ import org.xcolab.client.flagging.exceptions.ReportTargetNotFoundException;
 import org.xcolab.client.flagging.pojo.AggregatedReport;
 import org.xcolab.client.flagging.pojo.Report;
 import org.xcolab.client.flagging.pojo.ReportTarget;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.util.enums.flagging.ManagerAction;
 import org.xcolab.util.enums.flagging.TargetType;
 import org.xcolab.util.http.caching.CacheKeys;

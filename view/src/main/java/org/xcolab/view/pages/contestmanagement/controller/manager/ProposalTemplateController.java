@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contest.ProposalTemplateClientUtil;
 import org.xcolab.client.contest.pojo.templates.ProposalTemplate;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.controller.AbstractProposalTemplateTabController;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;

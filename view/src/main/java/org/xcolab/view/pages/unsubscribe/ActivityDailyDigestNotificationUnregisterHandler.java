@@ -1,8 +1,8 @@
 package org.xcolab.view.pages.unsubscribe;
 
-import org.xcolab.client.members.MessagingClient;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.MessagingUserPreference;
+import org.xcolab.client.user.MessagingClient;
+import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.MessagingUserPreference;
 
 class ActivityDailyDigestNotificationUnregisterHandler implements NotificationUnregisterHandler {
 

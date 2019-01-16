@@ -3,7 +3,7 @@ package org.xcolab.view.util.validation;
 import org.jooq.tools.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.user.MembersClient;
 import org.xcolab.view.i18n.ResourceMessageResolver;
 
 import javax.validation.ConstraintValidatorContext;

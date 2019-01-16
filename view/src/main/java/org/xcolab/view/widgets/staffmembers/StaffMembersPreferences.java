@@ -3,7 +3,7 @@ package org.xcolab.view.widgets.staffmembers;
 import org.json.JSONObject;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.members.legacy.enums.StaffMemberCategoryRole;
+import org.xcolab.client.user.legacy.enums.StaffMemberCategoryRole;
 import org.xcolab.commons.attributes.AttributeGetter;
 import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.widgets.WidgetPreference;

@@ -2,11 +2,8 @@ package org.xcolab.service.contest.domain.tosagreement;
 
 import org.jooq.DSLContext;
 import org.jooq.Record1;
-import org.jooq.SelectConditionStep;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import org.xcolab.client.members.pojo.Member;
 
 import static org.xcolab.model.tables.TosAgreementTable.TOS_AGREEMENT;
 

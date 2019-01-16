@@ -1,7 +1,7 @@
 package org.xcolab.view.util.entity.analytics;
 
-import org.xcolab.client.members.AnalyticsClient;
-import org.xcolab.client.members.pojo.AnalyticsUserEvent;
+import org.xcolab.client.user.AnalyticsClient;
+import org.xcolab.client.user.pojo.AnalyticsUserEvent;
 import org.xcolab.view.util.entity.flash.AnalyticsAttribute;
 
 import javax.servlet.http.HttpServletRequest;

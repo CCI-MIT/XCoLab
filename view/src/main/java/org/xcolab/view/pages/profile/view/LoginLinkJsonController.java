@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.client.members.pojo.LoginToken;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.MembersClient;
+import org.xcolab.client.user.PermissionsClient;
+import org.xcolab.client.user.pojo.LoginToken;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.entity.utils.notifications.member.MemberBatchRegistrationNotification;
 
 @RestController

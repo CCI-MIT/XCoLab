@@ -7,9 +7,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.MembersClient;
+import org.xcolab.client.user.PermissionsClient;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.entity.utils.LinkUtils;
 import org.xcolab.view.auth.AuthenticationService;

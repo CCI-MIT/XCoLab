@@ -4,7 +4,7 @@ import io.sentry.Sentry;
 import io.sentry.event.UserBuilder;
 import org.springframework.web.filter.GenericFilterBean;
 
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.view.auth.AuthenticationContext;
 
 import java.io.IOException;

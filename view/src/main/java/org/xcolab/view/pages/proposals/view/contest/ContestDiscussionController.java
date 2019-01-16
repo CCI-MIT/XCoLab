@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.proposals.permissions.ContestPermissions;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;

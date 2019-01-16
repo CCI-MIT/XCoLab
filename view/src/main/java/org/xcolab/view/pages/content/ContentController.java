@@ -14,7 +14,7 @@ import org.xcolab.client.content.IContentClient;
 import org.xcolab.client.content.exceptions.ContentNotFoundException;
 import org.xcolab.client.content.pojo.IContentArticle;
 import org.xcolab.client.content.pojo.IContentPage;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.errors.ErrorText;
 

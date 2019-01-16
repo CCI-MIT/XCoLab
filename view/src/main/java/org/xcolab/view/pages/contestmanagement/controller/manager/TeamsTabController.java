@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.PlatformTeamsClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.PlatformTeam;
+import org.xcolab.client.user.MembersClient;
+import org.xcolab.client.user.PlatformTeamsClient;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.PlatformTeam;
 import org.xcolab.commons.html.LabelValue;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 import org.xcolab.view.errors.AccessDeniedPage;
@@ -46,7 +46,7 @@ public class TeamsTabController extends AbstractTabController {
         return tabWrapper;
     }
 
-    private List<org.xcolab.client.members.pojo.PlatformTeam> getTeams() {
+    private List<org.xcolab.client.user.pojo.PlatformTeam> getTeams() {
         return PlatformTeamsClient.listAllPlatformTeams();
     }
 

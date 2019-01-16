@@ -8,8 +8,8 @@ import org.springframework.boot.autoconfigure.security.oauth2.resource.Principal
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.MembersClient;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.commons.http.servlet.RequestUtil;
 import org.xcolab.commons.servlet.flash.AlertMessage;

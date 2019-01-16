@@ -3,8 +3,8 @@ package org.xcolab.view.widgets;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.ui.Model;
 
-import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.PermissionsClient;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.view.widgets.WidgetPreference.Supplier;
