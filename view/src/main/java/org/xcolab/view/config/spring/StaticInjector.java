@@ -35,7 +35,7 @@ public class StaticInjector {
         ImageUploadUtils.setFileClient(fileClient);
         LoadContentArticleTag.setContentClient(contentClient);
         UpdateModelInputWidgetsBean.setModelingClient(modelingClient);
-        ActivitySubscriptionNameGenerator.setClients(categoryClient, threadClient);
+        ActivitySubscriptionNameGenerator.setThreadClient(threadClient);
         DiscussionBaseActivityEntry.setThreadClient(threadClient);
         LoadThreadStartTag.setThreadClient(threadClient);
         FlaggingReportWrapper.setClients(commentClient, threadClient);

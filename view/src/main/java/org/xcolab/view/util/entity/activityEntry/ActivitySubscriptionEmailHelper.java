@@ -51,12 +51,6 @@ public class ActivitySubscriptionEmailHelper {
     private static final Logger _log =
             LoggerFactory.getLogger(ActivitySubscriptionEmailHelper.class);
 
-    private static ICommentClient commentClient;
-
-    public static void setCommentClient(ICommentClient commentClient) {
-        ActivitySubscriptionEmailHelper.commentClient = commentClient;
-    }
-
     private static final Object mutex = new Object();
 
     private static Instant lastEmailNotification = Instant.now();
@@ -106,6 +100,12 @@ public class ActivitySubscriptionEmailHelper {
                     + "<a href='UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER'>here</a>.";
 
     private final ActivityEntryHelper activityEntryHelper;
+
+    private static ICommentClient commentClient;
+
+    public static void setCommentClient(ICommentClient commentClient) {
+        ActivitySubscriptionEmailHelper.commentClient = commentClient;
+    }
 
     @Autowired
     public ActivitySubscriptionEmailHelper(ActivityEntryHelper activityEntryHelper) {

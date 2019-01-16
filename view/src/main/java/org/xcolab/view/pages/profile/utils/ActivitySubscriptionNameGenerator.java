@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.activities.pojo.ActivitySubscription;
-import org.xcolab.client.comment.ICategoryClient;
 import org.xcolab.client.comment.IThreadClient;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.ICategory;
@@ -25,10 +24,8 @@ public class ActivitySubscriptionNameGenerator {
     private static final String HYPERLINK = "<a href=\"%s\">%s</a>";
 
     private static IThreadClient threadClient;
-    private static ICategoryClient categoryClient;
 
-    public static void setClients(ICategoryClient categoryClient, IThreadClient threadClient) {
-        ActivitySubscriptionNameGenerator.categoryClient = categoryClient;
+    public static void setThreadClient(IThreadClient threadClient) {
         ActivitySubscriptionNameGenerator.threadClient = threadClient;
     }
 

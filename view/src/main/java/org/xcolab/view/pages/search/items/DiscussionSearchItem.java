@@ -23,6 +23,11 @@ public class DiscussionSearchItem extends AbstractSearchItem {
 
     private static final Logger _log = LoggerFactory.getLogger(DiscussionSearchItem.class);
 
+    private IThread thread;
+    private IComment comment;
+
+    private String searchQuery;
+
     private static ICommentClient commentClient;
     private static IThreadClient threadClient;
 
@@ -30,11 +35,6 @@ public class DiscussionSearchItem extends AbstractSearchItem {
         DiscussionSearchItem.commentClient = commentClient;
         DiscussionSearchItem.threadClient = threadClient;
     }
-
-    private IThread thread;
-    private IComment comment;
-
-    private String searchQuery;
 
     @Override
     public void init(ISearchPojo pojo, String searchQuery) {

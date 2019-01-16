@@ -24,6 +24,9 @@ public class FlaggingReportWrapper {
 
     private static final Logger _log = LoggerFactory.getLogger(FlaggingReportWrapper.class);
 
+    private final AggregatedReport report;
+    private ManagerAction managerAction = ManagerAction.PENDING;
+
     private static ICommentClient commentClient;
     private static IThreadClient threadClient;
 
@@ -31,9 +34,6 @@ public class FlaggingReportWrapper {
         FlaggingReportWrapper.commentClient = commentClient;
         FlaggingReportWrapper.threadClient = threadClient;
     }
-
-    private final AggregatedReport report;
-    private ManagerAction managerAction = ManagerAction.PENDING;
 
     public FlaggingReportWrapper() {
         report = new AggregatedReport();

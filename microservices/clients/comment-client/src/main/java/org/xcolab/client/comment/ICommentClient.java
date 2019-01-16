@@ -16,8 +16,6 @@ import org.xcolab.client.comment.pojo.IComment;
 import java.util.Collections;
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
-
 @FeignClient("xcolab-comment-service")
 public interface ICommentClient {
 

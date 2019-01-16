@@ -2,8 +2,6 @@ package org.xcolab.client.comment;
 
 import org.springframework.util.Assert;
 
-import java.util.Objects;
-
 public final class StaticCommentContext {
 
     private static ICommentClient commentClient;

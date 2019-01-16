@@ -9,15 +9,15 @@ import org.xcolab.view.i18n.ResourceMessageResolver;
 
 public abstract class DiscussionBaseActivityEntry extends AbstractActivityEntryContentProvider {
 
+    protected final ResourceMessageResolver resourceMessageResolver;
+
+    private IThread thread;
+
     private static IThreadClient threadClient;
 
     public static void setThreadClient(IThreadClient threadClient) {
         DiscussionBaseActivityEntry.threadClient = threadClient;
     }
-
-    private IThread thread;
-
-    protected final ResourceMessageResolver resourceMessageResolver;
 
     public DiscussionBaseActivityEntry(ResourceMessageResolver resourceMessageResolver) {
         this.resourceMessageResolver = resourceMessageResolver;
@@ -25,7 +25,6 @@ public abstract class DiscussionBaseActivityEntry extends AbstractActivityEntryC
 
     @Override
     public void initializeInternal() throws ActivityInitializationException {
-
         try {
             thread = threadClient.getThread(getActivityEntry().getCategoryId());
         } catch (ThreadNotFoundException e) {
