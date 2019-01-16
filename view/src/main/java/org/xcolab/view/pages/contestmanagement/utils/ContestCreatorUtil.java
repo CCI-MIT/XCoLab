@@ -4,9 +4,10 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.admin.AdminClient;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.admin.pojo.ConfigurationAttribute;
+import org.xcolab.client.admin.pojo.tables.pojos.ConfigurationAttribute;
+import org.xcolab.client.admin.pojo.IConfigurationAttribute;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ProposalTemplateClientUtil;
 import org.xcolab.client.contest.exceptions.ContestScheduleNotFoundException;
@@ -57,11 +58,11 @@ public final class ContestCreatorUtil {
             final ProposalTemplate newDefaultTemplate = ProposalTemplateLifecycleUtil
                     .create(DEFAULT_TEMPLATE_NAME);
 
-            ConfigurationAttribute defaultTemplateAttribute = new ConfigurationAttribute();
+            IConfigurationAttribute defaultTemplateAttribute = new ConfigurationAttribute();
             defaultTemplateAttribute
                     .setName(ConfigurationAttributeKey.DEFAULT_CONTEST_TEMPLATE_ID.name());
             defaultTemplateAttribute.setNumericValue(newDefaultTemplate.getId());
-            AdminClient.createConfigurationAttribute(defaultTemplateAttribute);
+            StaticAdminContext.getAdminClient().createConfigurationAttribute(defaultTemplateAttribute);
 
             log.warn("No DEFAULT_TEMPLATE_SCHEDULE_ID found; created new Schedule with id {} "
                     + "and corresponding ConfigurationAttribute.", newDefaultTemplate.getId());
@@ -85,11 +86,11 @@ public final class ContestCreatorUtil {
             final ContestSchedule newDefaultSchedule = ContestScheduleLifecycleUtil
                     .createProposalCreationOnlySchedule(DEFAULT_SCHEDULE_NAME);
 
-            ConfigurationAttribute defaultScheduleAttribute = new ConfigurationAttribute();
+            IConfigurationAttribute defaultScheduleAttribute = new ConfigurationAttribute();
             defaultScheduleAttribute
                     .setName(ConfigurationAttributeKey.DEFAULT_CONTEST_SCHEDULE_ID.name());
             defaultScheduleAttribute.setNumericValue(newDefaultSchedule.getId());
-            AdminClient.createConfigurationAttribute(defaultScheduleAttribute);
+            StaticAdminContext.getAdminClient().createConfigurationAttribute(defaultScheduleAttribute);
 
             log.warn("No DEFAULT_CONTEST_SCHEDULE_ID found; created new Schedule with id {} "
                     + "and corresponding ConfigurationAttribute.", newDefaultSchedule.getId());

@@ -1,6 +1,6 @@
 package org.xcolab.view.taglibs.xcolab.jspTags.discussion.actions;
 
-import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 public abstract class BaseDiscussionsActionController {
 
     protected DiscussionPermissions getDiscussionPermissions(HttpServletRequest request,
-            CommentThread commentThread) {
+            IThread commentThread) {
         final ProposalClient proposalClient = ProposalClientUtil.getClient();
 
         if (commentThread.getCategory() == null) {
@@ -25,7 +25,7 @@ public abstract class BaseDiscussionsActionController {
         return new DiscussionPermissions(request);
     }
 
-    protected Proposal getProposal(ProposalClient proposalClient, CommentThread commentThread) {
+    protected Proposal getProposal(ProposalClient proposalClient, IThread commentThread) {
         try {
             return proposalClient.getProposalByThreadId(commentThread.getId());
         } catch (ProposalNotFoundException e) {

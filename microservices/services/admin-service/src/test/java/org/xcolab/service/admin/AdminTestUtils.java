@@ -1,11 +1,14 @@
 package org.xcolab.service.admin;
 
-import org.xcolab.model.tables.pojos.ConfigurationAttribute;
-import org.xcolab.model.tables.pojos.EmailTemplate;
+import org.xcolab.client.admin.pojo.IConfigurationAttribute;
+import org.xcolab.client.admin.pojo.IEmailTemplate;
+import org.xcolab.client.admin.pojo.tables.pojos.ConfigurationAttribute;
+import org.xcolab.client.admin.pojo.tables.pojos.EmailTemplate;
 
 public class AdminTestUtils {
-    public static ConfigurationAttribute getConfigurationAttribute(String nameComplement){
-        ConfigurationAttribute ca = new ConfigurationAttribute();
+
+    public static IConfigurationAttribute getConfigurationAttribute(String nameComplement) {
+        IConfigurationAttribute ca = new ConfigurationAttribute();
         ca.setName("SUPER" + nameComplement);
         ca.setLocale("");
         ca.setNumericValue(0L);
@@ -15,8 +18,8 @@ public class AdminTestUtils {
         return ca;
     }
 
-    public static EmailTemplate getContestEmailTemplate(){
-        EmailTemplate contestEmailTemplate  = new EmailTemplate();
+    public static IEmailTemplate getContestEmailTemplate() {
+        IEmailTemplate contestEmailTemplate = new EmailTemplate();
         contestEmailTemplate.setName("TYPE");
         contestEmailTemplate.setFooter(" ");
         contestEmailTemplate.setHeader(" ");

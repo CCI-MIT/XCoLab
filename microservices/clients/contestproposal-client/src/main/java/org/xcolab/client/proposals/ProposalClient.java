@@ -2,7 +2,7 @@ package org.xcolab.client.proposals;
 
 import org.xcolab.client.activity.IActivityClient;
 import org.xcolab.client.activity.StaticActivityContext;
-import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -394,7 +394,8 @@ public final class ProposalClient {
     public ContestType getContestTypeFromProposalId(Long proposalId) {
         try {
             Contest contest = getCurrentContestForProposal(proposalId);
-            return ContestTypeClient.getContestType(contest.getContestTypeId());
+            return StaticAdminContext.getContestTypeClient()
+                    .getContestType(contest.getContestTypeId());
         } catch (ContestNotFoundException e) {
             throw ReferenceResolutionException.toObject(Contest.class, "")
                     .fromObject(Proposal.class, proposalId);

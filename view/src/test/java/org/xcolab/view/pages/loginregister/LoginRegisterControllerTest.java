@@ -19,23 +19,20 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import org.xcolab.client.activity.IActivityClient;
 import org.xcolab.client.activity.StaticActivityContext;
-import org.xcolab.client.admin.AdminClient;
-import org.xcolab.client.admin.ContestTypeClient;
-import org.xcolab.client.admin.EmailTemplateClientUtil;
-import org.xcolab.client.admin.pojo.MockContestType;
+import org.xcolab.client.admin.IAdminClient;
+import org.xcolab.client.admin.IContestTypeClient;
+import org.xcolab.client.admin.IEmailTemplateClient;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.view.util.clienthelpers.AdminClientMockerHelper;
+import org.xcolab.view.util.clienthelpers.ContestTypeClientMockerHelper;
 import org.xcolab.view.util.clienthelpers.EmailTemplateClientMockerHelper;
 import org.xcolab.view.util.clienthelpers.MembersClientMockerHelper;
 
-import java.util.ArrayList;
-
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.anyString;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -66,14 +63,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 )
 
 @PrepareForTest({
-        AdminClient.class,
         IActivityClient.class,
-        ContestTypeClient.class,
         ContestClientUtil.class,
         MembersClient.class,
-        EmailTemplateClientUtil.class,
         EmailClient.class,
-        MessagingClient.class
+        MessagingClient.class,
 })
 
 @ActiveProfiles("test")
@@ -88,22 +82,19 @@ public class LoginRegisterControllerTest {
 
         PowerMockito.mockStatic(IActivityClient.class);
         PowerMockito.mockStatic(ContestClientUtil.class);
-        PowerMockito.mockStatic(ContestTypeClient.class);
         PowerMockito.mockStatic(EmailClient.class);
         PowerMockito.mockStatic(MessagingClient.class);
 
         StaticActivityContext.setActivityClient(Mockito.mock(IActivityClient.class));
 
         MembersClientMockerHelper.mockMembersClient();
-        AdminClientMockerHelper.mockAdminClient();
-        EmailTemplateClientMockerHelper.mockEmailTemplateClient();
 
-        Mockito.when(ContestTypeClient.getAllContestTypes())
-                .thenReturn(new ArrayList<>());
-        Mockito.when(ContestTypeClient.getContestType(anyLong()))
-                .thenReturn(new MockContestType(0));
-        Mockito.when(ContestTypeClient.getContestType(anyLong(), anyString()))
-                .thenReturn(new MockContestType(0, "en"));
+        IAdminClient adminClient = AdminClientMockerHelper.mockAdminClient();
+        IEmailTemplateClient emailTemplateClient =
+                EmailTemplateClientMockerHelper.mockEmailTemplateClient();
+        IContestTypeClient contestTypeClient = ContestTypeClientMockerHelper.mockContestTypeClient();
+
+        StaticAdminContext.setClients(adminClient, contestTypeClient, emailTemplateClient);
     }
 
     @Test

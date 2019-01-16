@@ -21,7 +21,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import org.xcolab.model.tables.pojos.EmailTemplate;
+import org.xcolab.client.admin.pojo.IEmailTemplate;
 import org.xcolab.service.admin.AdminTestUtils;
 import org.xcolab.service.admin.domain.emailtemplate.EmailTemplateDao;
 
@@ -52,8 +52,8 @@ public class EmailTemplateControllerTest {
     private MockMvc mockMvc;
 
     private final MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
-        MediaType.APPLICATION_JSON.getSubtype(),
-        Charset.forName("utf8"));
+            MediaType.APPLICATION_JSON.getSubtype(),
+            Charset.forName("utf8"));
 
     @Mock
     private EmailTemplateDao emailTemplateDao;
@@ -68,58 +68,55 @@ public class EmailTemplateControllerTest {
 
     @Before
     public void before() {
-
         this.mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
 
         Mockito.when(emailTemplateDao.getEmailTemplate(anyString()))
-            .thenAnswer(invocation -> AdminTestUtils.getContestEmailTemplate());
+                .thenAnswer(invocation -> AdminTestUtils.getContestEmailTemplate());
     }
+
     @Autowired
     void setConverters(HttpMessageConverter<?>[] converters) {
-
         this.mappingJackson2HttpMessageConverter = Arrays.stream(converters)
-            .filter(hmc -> hmc instanceof MappingJackson2HttpMessageConverter)
-            .findAny()
-            .orElse(null);
+                .filter(hmc -> hmc instanceof MappingJackson2HttpMessageConverter)
+                .findAny()
+                .orElse(null);
 
         assertNotNull("the JSON message converter must not be null",
-            this.mappingJackson2HttpMessageConverter);
+                this.mappingJackson2HttpMessageConverter);
     }
 
 
     @Test
     public void shouldCreateNewEmailTemplatesInPost() throws Exception {
-
-        EmailTemplate contestEmailTemplate = AdminTestUtils.getContestEmailTemplate();
+        IEmailTemplate contestEmailTemplate = AdminTestUtils.getContestEmailTemplate();
         this.mockMvc.perform(
-            post("/emailTemplates")
-                .contentType(contentType).accept(contentType)
-                .content(objectMapper.writeValueAsString(contestEmailTemplate)))
-            .andExpect(status().isOk());
-        Mockito.verify(emailTemplateDao,atLeast(1)).createEmailTemplate(anyObject());
+                post("/emailTemplates")
+                        .contentType(contentType).accept(contentType)
+                        .content(objectMapper.writeValueAsString(contestEmailTemplate)))
+                .andExpect(status().isOk());
+        Mockito.verify(emailTemplateDao, atLeast(1)).createEmailTemplate(anyObject());
     }
 
     @Test
     public void shouldUpdateEmailTemplatesInPost() throws Exception {
-
-        EmailTemplate contestEmailTemplate = AdminTestUtils.getContestEmailTemplate();
+        IEmailTemplate contestEmailTemplate = AdminTestUtils.getContestEmailTemplate();
         this.mockMvc.perform(
-            put("/emailTemplates/"+contestEmailTemplate.getName())
-                .contentType(contentType).accept(contentType)
-                .content(objectMapper.writeValueAsString(contestEmailTemplate)))
-            .andExpect(status().isOk());
+                put("/emailTemplates")
+                        .contentType(contentType).accept(contentType)
+                        .content(objectMapper.writeValueAsString(contestEmailTemplate)))
+                .andExpect(status().isOk());
 
-        Mockito.verify(emailTemplateDao,atLeast(1)).updateEmailTemplate(anyObject());
+        Mockito.verify(emailTemplateDao, atLeast(1)).updateEmailTemplate(anyObject());
     }
 
     @Test
     public void listEmailTemplates() throws Exception {
         this.mockMvc.perform(
-            get("/emailTemplates")
-                .contentType(contentType).accept(contentType))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$").isArray())
-            .andExpect(content().contentType(contentType));
-        Mockito.verify(emailTemplateDao,atLeast(1)).listAllEmailTemplates();
+                get("/emailTemplates")
+                        .contentType(contentType).accept(contentType))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(content().contentType(contentType));
+        Mockito.verify(emailTemplateDao, atLeast(1)).listAllEmailTemplates();
     }
 }

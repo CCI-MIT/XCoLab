@@ -12,7 +12,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
 import org.xcolab.client.activity.StaticActivityContext;
-import org.xcolab.client.comment.ThreadClient;
+import org.xcolab.client.comment.IThreadClient;
 import org.xcolab.commons.SortColumn;
 import org.xcolab.model.tables.pojos.Contest;
 import org.xcolab.model.tables.records.ContestRecord;
@@ -50,11 +50,14 @@ import static org.xcolab.model.Tables.PROPOSAL_VOTE;
 public class ContestDaoImpl implements ContestDao {
 
     private final DSLContext dslContext;
+    private final IThreadClient threadClient;
 
     @Autowired
-    public ContestDaoImpl(DSLContext dslContext) {
+    public ContestDaoImpl(DSLContext dslContext, IThreadClient threadClient) {
         Assert.notNull(dslContext, "DSLContext bean is required");
+        Assert.notNull(threadClient, "IThreadClient bean is required");
         this.dslContext = dslContext;
+        this.threadClient = threadClient;
     }
 
     @Override
@@ -346,13 +349,13 @@ public class ContestDaoImpl implements ContestDao {
         return result.get();
     }
 
-    private static boolean deleteContest(DSLContext ctx, long contestId) {
+    private boolean deleteContest(DSLContext ctx, long contestId) {
         return ctx.deleteFrom(CONTEST)
                 .where(CONTEST.ID.eq(contestId))
                 .execute() > 0;
     }
 
-    private static void deleteContestData(DSLContext ctx, long contestId) {
+    private void deleteContestData(DSLContext ctx, long contestId) {
         // Delete team members
         ctx.deleteFrom(CONTEST_TEAM_MEMBER)
                 .where(CONTEST_TEAM_MEMBER.CONTEST_ID.eq(contestId))
@@ -372,13 +375,13 @@ public class ContestDaoImpl implements ContestDao {
                 .fetchOne()
                 .into(Long.class);
         // Delete contest thread and comments.
-        ThreadClient.instance().deleteThread(threadId);
+        threadClient.deleteThread(threadId);
         // Delete contest subscriptions and activity entries.
         StaticActivityContext.getActivityClient()
                 .batchDelete(ActivityCategory.CONTEST, Collections.singletonList(contestId));
     }
 
-    private static void deleteContestPhases(DSLContext ctx, long contestId) {
+    private void deleteContestPhases(DSLContext ctx, long contestId) {
         // Select query for contest's phases
         Select<Record1<Long>> contestPhases = ctx.select(CONTEST_PHASE.ID)
                 .from(CONTEST_PHASE)
@@ -394,7 +397,7 @@ public class ContestDaoImpl implements ContestDao {
     }
 
     // TODO COLAB-2466: move this to ProposalDao after cross-DAO transactions are possible
-    public static void deleteOrphanProposals(DSLContext ctx) {
+    public void deleteOrphanProposals(DSLContext ctx) {
         // Retrieve orphaned proposals
         List<Long> orphanProposals = ctx.select(PROPOSAL.ID)
                 .from(PROPOSAL)
@@ -406,7 +409,7 @@ public class ContestDaoImpl implements ContestDao {
         deleteProposals(ctx, orphanProposals);
     }
 
-    public static void deleteProposals(DSLContext ctx, List<Long> proposalIds) {
+    public void deleteProposals(DSLContext ctx, List<Long> proposalIds) {
         // Delete proposal attributes of proposals
         ctx.deleteFrom(PROPOSAL_ATTRIBUTE)
                 .where(PROPOSAL_ATTRIBUTE.PROPOSAL_ID.in(proposalIds))
@@ -472,7 +475,7 @@ public class ContestDaoImpl implements ContestDao {
                 .where(PROPOSAL.ID.in(proposalIds)).fetch().into(Long.class));
 
         for (long threadId : threadIdsToDelete) {
-            ThreadClient.instance().deleteThread(threadId);
+            threadClient.deleteThread(threadId);
         }
     }
 }

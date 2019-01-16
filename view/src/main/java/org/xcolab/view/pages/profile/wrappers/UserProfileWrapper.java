@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.activity.StaticActivityContext;
 import org.xcolab.client.activity.pojo.IActivityEntry;
-import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
@@ -118,7 +118,8 @@ public class UserProfileWrapper implements Serializable {
         List<Proposal> proposals = ProposalClientUtil.getMemberProposals(member.getId());
         Map<ContestType, Set<Proposal>> proposalsByContestType = EntityGroupingUtil
                 .groupByContestType(proposals);
-        for (ContestType contestType : ContestTypeClient.getActiveContestTypes()) {
+        for (ContestType contestType : StaticAdminContext.getContestTypeClient()
+                .getActiveContestTypes()) {
             contestTypeProposalWrappersByContestTypeId
                     .put(contestType.getId(), new ContestTypeProposal(contestType));
             final Set<Proposal> proposalsInContestType = proposalsByContestType
@@ -327,7 +328,7 @@ public class UserProfileWrapper implements Serializable {
 
     private String getProposalWithPlurality(String plurality) {
         if (proposalsString == null) {
-            proposalsString = ContestTypeClient.getProposalNames(
+            proposalsString = StaticAdminContext.getContestTypeClient().getProposalNames(
                             new ArrayList<>(contestTypeProposalWrappersByContestTypeId.keySet()),
                                             plurality,"or");
         }

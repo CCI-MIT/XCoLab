@@ -8,11 +8,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.activity.IActivityClient;
-import org.xcolab.client.comment.CategoryClient;
+import org.xcolab.client.comment.ICategoryClient;
+import org.xcolab.client.comment.IThreadClient;
 import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
-import org.xcolab.client.comment.pojo.Category;
-import org.xcolab.client.comment.pojo.CategoryGroup;
-import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.comment.pojo.ICategory;
+import org.xcolab.client.comment.pojo.ICategoryGroup;
+import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.comment.util.ThreadSortColumn;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.activities.enums.ActivityCategory;
@@ -34,6 +35,12 @@ public class CategoryController extends BaseDiscussionController {
     @Autowired
     private IActivityClient activityClient;
 
+    @Autowired
+    private ICategoryClient categoryClient;
+
+    @Autowired
+    private IThreadClient threadClient;
+
     @GetMapping("/discussion")
     public String showCategories(HttpServletRequest request, HttpServletResponse response,
             Model model, @RequestParam(required = false) String sortColumn,
@@ -48,9 +55,9 @@ public class CategoryController extends BaseDiscussionController {
             threadSortColumn = ThreadSortColumn.DATE;
         }
 
-        CategoryGroup categoryGroup = getCategoryGroup(request);
-        List<Category> categories = categoryGroup.getCategories();
-        List<CommentThread> threads = categoryGroup.getThreads(threadSortColumn, sortAscending);
+        ICategoryGroup categoryGroup = getCategoryGroup(request);
+        List<ICategory> categories = categoryGroup.getCategories();
+        List<IThread> threads = categoryGroup.getThreads(threadSortColumn, sortAscending);
 
         model.addAttribute("categoryGroup", categoryGroup);
         model.addAttribute("categories", categories);
@@ -84,15 +91,16 @@ public class CategoryController extends BaseDiscussionController {
             threadSortColumn = ThreadSortColumn.DATE;
         }
 
-        CategoryGroup categoryGroup = getCategoryGroup(request);
+        ICategoryGroup categoryGroup = getCategoryGroup(request);
 
-        List<Category> categories = categoryGroup.getCategories();
-        Category currentCategory = CategoryClient.instance().getCategory(categoryId);
+        List<ICategory> categories = categoryGroup.getCategories();
+        ICategory currentCategory = categoryClient.getCategory(categoryId);
 
         model.addAttribute("categoryGroup", categoryGroup);
         model.addAttribute("currentCategory", currentCategory);
         model.addAttribute("categories", categories);
-        model.addAttribute("threads", currentCategory.getThreads(threadSortColumn, sortAscending));
+        model.addAttribute("threads", threadClient.listThreads(0, Integer.MAX_VALUE,
+                currentCategory.getId(), null, threadSortColumn, sortAscending));
         model.addAttribute("sortColumn", threadSortColumn.name());
         model.addAttribute("sortAscending", sortAscending);
 
@@ -114,9 +122,9 @@ public class CategoryController extends BaseDiscussionController {
                              @RequestParam String currentSortColumn, @RequestParam boolean currentSortAscending)
             throws IOException, CategoryNotFoundException {
 
-        final String baseUrl;
+        String baseUrl = "";
         if (categoryId != null && categoryId > 0) {
-            Category category = CategoryClient.instance().getCategory(categoryId);
+            ICategory category = categoryClient.getCategory(categoryId);
             baseUrl = category.getLinkUrl();
         } else {
             baseUrl = "/discussion/categories";
@@ -133,7 +141,7 @@ public class CategoryController extends BaseDiscussionController {
             Model model, Member member, @RequestParam long categoryId)
             throws DiscussionAuthorizationException {
 
-        CategoryGroup categoryGroup = getCategoryGroup(request);
+        ICategoryGroup categoryGroup = getCategoryGroup(request);
 
         DiscussionPermissions discussionPermissions = new DiscussionPermissions(request);
         if (!getCanEdit(discussionPermissions, categoryGroup, 0L)) {
@@ -149,7 +157,7 @@ public class CategoryController extends BaseDiscussionController {
             Member member, @RequestParam String title, @RequestParam String description)
             throws IOException, DiscussionAuthorizationException, OperationNotSupportedException {
 
-        CategoryGroup categoryGroup = getCategoryGroup(request);
+        ICategoryGroup categoryGroup = getCategoryGroup(request);
 
         DiscussionPermissions discussionPermissions = new DiscussionPermissions(request);
         if (!getCanEdit(discussionPermissions, categoryGroup, 0L)) {
@@ -166,7 +174,7 @@ public class CategoryController extends BaseDiscussionController {
             throws DiscussionAuthorizationException, IOException {
 
         long userId = MemberAuthUtil.getuserId(request);
-        CategoryGroup categoryGroup = getCategoryGroup(request);
+        ICategoryGroup categoryGroup = getCategoryGroup(request);
 
         DiscussionPermissions discussionPermissions = new DiscussionPermissions(request);
         if (!getCanView(discussionPermissions, categoryGroup, 0L)) {
@@ -194,7 +202,7 @@ public class CategoryController extends BaseDiscussionController {
             throws DiscussionAuthorizationException, IOException {
 
         long userId = MemberAuthUtil.getuserId(request);
-        CategoryGroup categoryGroup = getCategoryGroup(request);
+        ICategoryGroup categoryGroup = getCategoryGroup(request);
 
         DiscussionPermissions discussionPermissions = new DiscussionPermissions(request);
         if (!getCanView(discussionPermissions, categoryGroup, 0L)) {
@@ -217,12 +225,12 @@ public class CategoryController extends BaseDiscussionController {
     }
 
     @Override
-    public boolean getCanView(DiscussionPermissions permissions, CategoryGroup categoryGroup, long additionalId) {
+    public boolean getCanView(DiscussionPermissions permissions, ICategoryGroup categoryGroup, long additionalId) {
         return true; //not used
     }
 
     @Override
-    public boolean getCanEdit(DiscussionPermissions permissions, CategoryGroup categoryGroup, long additionalId) {
+    public boolean getCanEdit(DiscussionPermissions permissions, ICategoryGroup categoryGroup, long additionalId) {
         return permissions.getCanCreateCategory();
     }
 }

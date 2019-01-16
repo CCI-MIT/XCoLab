@@ -6,7 +6,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.util.Assert;
 import org.springframework.web.servlet.LocaleResolver;
 
-import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.pojo.Contest;
@@ -65,7 +65,7 @@ public class ProposalContextImpl implements ProposalContext {
             clientHelper = contextHelper.getClientHelper();
 
             if (contest != null) {
-                contestType = ContestTypeClient.getContestType(contest.getContestTypeId(), language);
+                contestType = StaticAdminContext.getContestTypeClient().getContestType(contest.getContestTypeId(), language);
                 contestPhase = contextHelper.getContestPhase(contest, proposal);
                 if (proposal != null) {
                     proposal2Phase = contextHelper.getProposal2Phase(contestPhase);
