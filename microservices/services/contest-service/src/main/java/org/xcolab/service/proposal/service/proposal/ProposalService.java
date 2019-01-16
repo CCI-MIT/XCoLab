@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.comment.ThreadClient;
-import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.comment.IThreadClient;
+import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ProposalTemplateClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
@@ -53,17 +53,20 @@ public class ProposalService {
 
     private final ProposalTeamMemberDao proposalTeamMemberDao;
 
+    private final IThreadClient threadClient;
 
     @Autowired
     public ProposalService(ProposalDao proposalDao, ProposalReferenceDao proposalReferenceDao,
             ProposalAttributeDao proposalAttributeDao, Proposal2PhaseDao proposal2PhaseDao,
-            ProposalVersionDao proposalVersionDao, ProposalTeamMemberDao proposalTeamMemberDao) {
+            ProposalVersionDao proposalVersionDao, ProposalTeamMemberDao proposalTeamMemberDao,
+            IThreadClient threadClient) {
         this.proposalDao = proposalDao;
         this.proposalReferenceDao = proposalReferenceDao;
         this.proposalAttributeDao = proposalAttributeDao;
         this.proposal2PhaseDao = proposal2PhaseDao;
         this.proposalVersionDao = proposalVersionDao;
         this.proposalTeamMemberDao = proposalTeamMemberDao;
+        this.threadClient = threadClient;
     }
 
     public Proposal create(long authorUserId, long contestPhaseId, boolean publishActivity) {
@@ -82,13 +85,13 @@ public class ProposalService {
             final String proposalEntityName = contestType.getProposalName() + " ";
 
 
-            final CommentThread mainCommentThread = createCommentThreadForProposal(proposalEntityName + proposalId + " main discussion",
+            final IThread mainCommentThread = createCommentThreadForProposal(proposalEntityName + proposalId + " main discussion",
                     authorUserId, false);
 
             proposal.setDiscussionId(mainCommentThread.getId());
 
 
-            final CommentThread resultsCommentThread = createCommentThreadForProposal(proposalEntityName + proposalId + " results discussion",
+            final IThread resultsCommentThread = createCommentThreadForProposal(proposalEntityName + proposalId + " results discussion",
                     authorUserId, true);
 
             proposal.setResultsDiscussionId(resultsCommentThread.getId());
@@ -124,13 +127,13 @@ public class ProposalService {
         ActivitiesClientUtil.addSubscription(userId, ActivityCategory.PROPOSAL, proposalId, null);
     }
 
-    private CommentThread createCommentThreadForProposal(String title, Long authorUserId, boolean isQuiet) {
-        CommentThread commentThread = new CommentThread();
+    private IThread createCommentThreadForProposal(String title, Long authorUserId, boolean isQuiet) {
+        IThread commentThread = new org.xcolab.client.comment.pojo.tables.pojos.Thread();
         commentThread.setAuthorUserId(authorUserId);
         commentThread.setCategoryId(null);
         commentThread.setTitle(title);
         commentThread.setIsQuiet(isQuiet);
-        commentThread = ThreadClient.instance().createThread(commentThread);
+        commentThread = threadClient.createThread(commentThread);
         return commentThread;
     }
 
