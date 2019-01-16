@@ -21,7 +21,7 @@ import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.IEmailTemplateClient;
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.emails.EmailClient;
+
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.commons.servlet.flash.AlertMessage;
@@ -60,8 +60,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         ContestClientUtil.class,
         MembersClient.class,
         AlertMessage.class,
-        MessagingClient.class,
-        EmailClient.class
+        MessagingClient.class
 })
 
 @ActiveProfiles("test")
@@ -75,7 +74,6 @@ public class ForgotPasswordControllerTest {
         ServiceRequestUtils.setInitialized(true);
 
         PowerMockito.mockStatic(ContestClientUtil.class);
-        PowerMockito.mockStatic(EmailClient.class);
         PowerMockito.mockStatic(MessagingClient.class);
 
         MembersClientMockerHelper.mockMembersClient();

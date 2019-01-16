@@ -1,7 +1,7 @@
 package org.xcolab.view.util.entity.email;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.emails.EmailClient;
+import org.xcolab.client.email.StaticEmailContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,8 @@ public class EmailToAdminDispatcher {
     public void sendMessage() {
         final String fromEmail = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.get();
         final String fromName = ConfigurationAttributeKey.COLAB_NAME.get();
-        EmailClient.sendEmail(fromEmail, fromName, getRecipientAddresses(), subject, body, true,
+        StaticEmailContext
+                .getEmailClient().sendEmail(fromEmail, fromName, getRecipientAddresses(), subject, body, true,
                 fromEmail, fromName, null);
     }
 
