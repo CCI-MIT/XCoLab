@@ -13,7 +13,7 @@ import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.admin.pojo.IEmailTemplate;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.email.EmailUtils;
+import org.xcolab.client.email.StaticEmailContext;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
@@ -240,7 +240,8 @@ public abstract class EmailNotification {
             InternetAddress toEmail = new InternetAddress(recipient.getEmailAddress(), recipient.getFullName());
 
 
-              EmailUtils.getEmailClient().sendEmail(fromEmail.getAddress(),ConfigurationAttributeKey.COLAB_NAME.get(),
+              StaticEmailContext
+                      .getEmailClient().sendEmail(fromEmail.getAddress(),ConfigurationAttributeKey.COLAB_NAME.get(),
                     toEmail.getAddress(), subject,body, true, fromEmail.getAddress(),
                     ConfigurationAttributeKey.COLAB_NAME.get(),getReferenceId());
 

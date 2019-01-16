@@ -1,14 +1,14 @@
 package org.xcolab.client.email;
 
-public class EmailUtils {
+public class StaticEmailContext {
 
     private static IEmailClient emailClient;
 
     public static void setEmailClient(IEmailClient emailClient) {
-        EmailUtils.emailClient = emailClient;
-    }
-    public static IEmailClient getEmailClient(){
-        return emailClient;
+        StaticEmailContext.emailClient = emailClient;
     }
 
+    public static IEmailClient getEmailClient() {
+        return emailClient;
+    }
 }

@@ -1,4 +1,4 @@
-package org.xcolab.service.emails.util;
+package org.xcolab.service.email.util;
 
 import org.codemonkey.simplejavamail.MailException;
 import org.codemonkey.simplejavamail.Mailer;
@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
+
+import org.xcolab.client.email.pojo.IEmail;
 
 import javax.mail.Message;
 
@@ -26,7 +28,7 @@ public class EmailService {
         this.env = env;
     }
 
-    public void sendEmailToRecipient(org.xcolab.client.email.pojo.Email emailPojo) {
+    public void sendEmailToRecipient(IEmail emailPojo) {
         final Email email = new Email();
 
         try {
@@ -41,7 +43,7 @@ public class EmailService {
                 email.addRecipient(null, emailTo, Message.RecipientType.TO);
             }
 
-            if (emailPojo.isHtml()) {
+            if (emailPojo.getHtml()) {
                 email.setTextHTML(emailPojo.getEmailBody());
             } else {
                 email.setText(emailPojo.getEmailBody());

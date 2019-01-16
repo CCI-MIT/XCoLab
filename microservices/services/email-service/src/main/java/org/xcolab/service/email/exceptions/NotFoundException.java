@@ -1,4 +1,4 @@
-package org.xcolab.service.emails.exceptions;
+package org.xcolab.service.email.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

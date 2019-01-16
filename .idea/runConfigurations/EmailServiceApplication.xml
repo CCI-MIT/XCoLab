@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="EmailServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" folderName="Services">
     <module name="email-service" />
-    <option name="SPRING_BOOT_MAIN_CLASS" value="org.xcolab.service.emails.EmailServiceApplication" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="org.xcolab.service.email.EmailServiceApplication" />
     <option name="VM_PARAMETERS" value="-Xms128M -Xmx256M" />
     <option name="ALTERNATIVE_JRE_PATH" />
     <additionalParameters>
