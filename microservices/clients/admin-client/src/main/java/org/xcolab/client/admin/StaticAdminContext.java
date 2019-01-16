@@ -4,14 +4,14 @@ import org.springframework.util.Assert;
 
 public class StaticAdminContext {
 
-    private static AdminClient adminClient;
-    private static ContestTypeClient contestTypeClient;
-    private static EmailTemplateClient emailTemplateClient;
+    private static IAdminClient adminClient;
+    private static IContestTypeClient contestTypeClient;
+    private static IEmailTemplateClient emailTemplateClient;
 
     private StaticAdminContext() {}
 
-    public static void setClients(AdminClient adminClient, ContestTypeClient contestTypeClient,
-            EmailTemplateClient emailTemplateClient) {
+    public static void setClients(IAdminClient adminClient, IContestTypeClient contestTypeClient,
+            IEmailTemplateClient emailTemplateClient) {
         Assert.notNull(adminClient, "commentClient must not be null!");
         Assert.notNull(contestTypeClient, "categoryClient must not be null!");
         Assert.notNull(emailTemplateClient, "threadClient must not be null!");
@@ -20,15 +20,15 @@ public class StaticAdminContext {
         StaticAdminContext.emailTemplateClient = emailTemplateClient;
     }
 
-    public static AdminClient getAdminClient() {
+    public static IAdminClient getAdminClient() {
         return adminClient;
     }
 
-    public static ContestTypeClient getContestTypeClient() {
+    public static IContestTypeClient getContestTypeClient() {
         return contestTypeClient;
     }
 
-    public static EmailTemplateClient getEmailTemplateClient() {
+    public static IEmailTemplateClient getEmailTemplateClient() {
         return emailTemplateClient;
     }
 }

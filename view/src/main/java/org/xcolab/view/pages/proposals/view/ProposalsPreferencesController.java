@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
@@ -50,7 +50,7 @@ public class ProposalsPreferencesController extends AbstractWidgetController<Pro
     public static final String BASE_URL = "/proposals";
 
     @Autowired
-    private ContestTypeClient contestTypeClient;
+    private IContestTypeClient contestTypeClient;
 
     protected ProposalsPreferencesController() {
         super(BASE_URL, ProposalsPreferencesWrapper::new);

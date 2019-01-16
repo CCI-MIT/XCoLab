@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Component
 @Profile("test")
-public class AdminClientMockImpl implements AdminClient {
+public class AdminClientMockImpl implements IAdminClient {
 
     @Override
     public List<INotification> getNotifications() {

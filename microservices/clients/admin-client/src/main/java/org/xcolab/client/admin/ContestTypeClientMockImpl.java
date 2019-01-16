@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Component
 @Profile("test")
-public class ContestTypeClientMockImpl implements ContestTypeClient {
+public class ContestTypeClientMockImpl implements IContestTypeClient {
 
     @Override
     public List<IContestTypeAttribute> listContestTypeAttributes() {

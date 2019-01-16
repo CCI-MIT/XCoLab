@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.client.admin.AdminClient;
-import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.IAdminClient;
+import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.pojo.IConfigurationAttribute;
 import org.xcolab.client.admin.pojo.IContestTypeAttribute;
 import org.xcolab.client.admin.pojo.INotification;
@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-public class AdminController implements ContestTypeClient, AdminClient {
+public class AdminController implements IContestTypeClient, IAdminClient {
 
     private final ConfigurationAttributeDao configurationAttributeDao;
     private final ContestTypeAttributeDao contestTypeAttributeDao;

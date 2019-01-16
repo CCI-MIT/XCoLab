@@ -18,7 +18,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @FeignClient("xcolab-admin-service")
-public interface ContestTypeClient {
+public interface IContestTypeClient {
 
     @GetMapping("/contestTypeAttributes")
     List<IContestTypeAttribute> listContestTypeAttributes();

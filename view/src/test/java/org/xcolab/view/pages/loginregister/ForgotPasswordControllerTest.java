@@ -16,9 +16,9 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import org.xcolab.client.admin.AdminClient;
-import org.xcolab.client.admin.ContestTypeClient;
-import org.xcolab.client.admin.EmailTemplateClient;
+import org.xcolab.client.admin.IAdminClient;
+import org.xcolab.client.admin.IContestTypeClient;
+import org.xcolab.client.admin.IEmailTemplateClient;
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.emails.EmailClient;
@@ -79,10 +79,10 @@ public class ForgotPasswordControllerTest {
         PowerMockito.mockStatic(MessagingClient.class);
 
         MembersClientMockerHelper.mockMembersClient();
-        AdminClient adminClient = AdminClientMockerHelper.mockAdminClient();
-        EmailTemplateClient emailTemplateClient =
+        IAdminClient adminClient = AdminClientMockerHelper.mockAdminClient();
+        IEmailTemplateClient emailTemplateClient =
                 EmailTemplateClientMockerHelper.mockEmailTemplateClient();
-        ContestTypeClient contestTypeClient = ContestTypeClientMockerHelper.mockContestTypeClient();
+        IContestTypeClient contestTypeClient = ContestTypeClientMockerHelper.mockContestTypeClient();
 
         StaticAdminContext.setClients(adminClient, contestTypeClient, emailTemplateClient);
     }

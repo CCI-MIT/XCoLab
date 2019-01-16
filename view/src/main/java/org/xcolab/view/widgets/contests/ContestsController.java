@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.admin.AdminClient;
-import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
@@ -39,7 +38,7 @@ public class ContestsController extends AbstractWidgetController<ContestPreferen
     public static final String BASE_URL = "/widgets/contests";
 
     @Autowired
-    private ContestTypeClient contestTypeClient;
+    private IContestTypeClient contestTypeClient;
 
     protected ContestsController() {
         super(BASE_URL, ContestPreferences::new);

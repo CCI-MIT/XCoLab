@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.members.pojo.Member;
@@ -36,7 +36,7 @@ public class ContestAdminTabController extends AbstractTabController {
     static final private String TAB_VIEW = "contestmanagement/details/adminTab";
 
     @Autowired
-    private ContestTypeClient contestTypeClient;
+    private IContestTypeClient contestTypeClient;
 
     @ModelAttribute("contestLevelSelectionItems")
     public List<LabelValue> populateContestLevelSelectionItems() {

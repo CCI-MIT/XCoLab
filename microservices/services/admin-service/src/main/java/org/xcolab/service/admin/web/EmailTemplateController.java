@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.client.admin.EmailTemplateClient;
+import org.xcolab.client.admin.IEmailTemplateClient;
 import org.xcolab.client.admin.exceptions.EmailTemplateNotFoundException;
 import org.xcolab.client.admin.pojo.IEmailTemplate;
 import org.xcolab.service.admin.domain.emailtemplate.EmailTemplateDao;
@@ -16,7 +16,7 @@ import org.xcolab.service.admin.domain.emailtemplate.EmailTemplateDao;
 import java.util.List;
 
 @RestController
-public class EmailTemplateController implements EmailTemplateClient {
+public class EmailTemplateController implements IEmailTemplateClient {
 
     @Autowired
     private EmailTemplateDao emailTemplateDao;

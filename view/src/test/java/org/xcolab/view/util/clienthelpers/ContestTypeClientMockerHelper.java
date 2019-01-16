@@ -2,7 +2,7 @@ package org.xcolab.view.util.clienthelpers;
 
 import org.mockito.Mockito;
 
-import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.pojo.MockContestType;
 
 import java.util.ArrayList;
@@ -12,8 +12,8 @@ import static org.mockito.Matchers.anyString;
 
 public class ContestTypeClientMockerHelper {
 
-    public static ContestTypeClient mockContestTypeClient() {
-        ContestTypeClient contestTypeClient = Mockito.mock(ContestTypeClient.class);
+    public static IContestTypeClient mockContestTypeClient() {
+        IContestTypeClient contestTypeClient = Mockito.mock(IContestTypeClient.class);
         Mockito.when(contestTypeClient.getAllContestTypes())
                 .thenReturn(new ArrayList<>());
         Mockito.when(contestTypeClient.getContestType(anyLong()))

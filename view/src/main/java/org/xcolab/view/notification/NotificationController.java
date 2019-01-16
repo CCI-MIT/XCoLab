@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.client.admin.AdminClient;
+import org.xcolab.client.admin.IAdminClient;
 import org.xcolab.client.admin.pojo.INotification;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 public class NotificationController {
 
     @Autowired
-    private AdminClient adminClient;
+    private IAdminClient adminClient;
 
     @GetMapping("/notificationMessage")
     public NotificationResponse showNotification(HttpServletRequest request,

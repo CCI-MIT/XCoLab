@@ -2,7 +2,7 @@ package org.xcolab.view.util.clienthelpers;
 
 import org.mockito.Mockito;
 
-import org.xcolab.client.admin.EmailTemplateClient;
+import org.xcolab.client.admin.IEmailTemplateClient;
 import org.xcolab.client.admin.pojo.IEmailTemplate;
 import org.xcolab.client.admin.pojo.tables.pojos.EmailTemplate;
 import org.xcolab.view.util.TestUtil;
@@ -11,8 +11,8 @@ import static org.mockito.Matchers.anyString;
 
 public class EmailTemplateClientMockerHelper {
 
-    public static EmailTemplateClient mockEmailTemplateClient() {
-        EmailTemplateClient emailTemplateClient = Mockito.mock(EmailTemplateClient.class);
+    public static IEmailTemplateClient mockEmailTemplateClient() {
+        IEmailTemplateClient emailTemplateClient = Mockito.mock(IEmailTemplateClient.class);
         Mockito.when(emailTemplateClient.getEmailTemplate(anyString()))
                 .thenAnswer(invocation -> {
                     IEmailTemplate contestEmailTemplate = new EmailTemplate();

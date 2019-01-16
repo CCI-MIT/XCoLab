@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @FeignClient("xcolab-admin-service")
-public interface AdminClient {
+public interface IAdminClient {
 
     @GetMapping("/notifications")
     List<INotification> getNotifications();

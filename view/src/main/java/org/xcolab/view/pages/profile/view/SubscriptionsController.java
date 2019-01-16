@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
@@ -36,10 +36,10 @@ import javax.servlet.http.HttpServletResponse;
 public class SubscriptionsController {
 
     private final ActivityEntryHelper activityEntryHelper;
-    private final ContestTypeClient contestTypeClient;
+    private final IContestTypeClient contestTypeClient;
 
     @Autowired
-    public SubscriptionsController(ActivityEntryHelper activityEntryHelper, ContestTypeClient contestTypeClient) {
+    public SubscriptionsController(ActivityEntryHelper activityEntryHelper, IContestTypeClient contestTypeClient) {
         this.activityEntryHelper = activityEntryHelper;
         this.contestTypeClient = contestTypeClient;
     }

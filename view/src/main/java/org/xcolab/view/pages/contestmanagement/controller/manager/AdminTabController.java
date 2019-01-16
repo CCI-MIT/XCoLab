@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.admin.AdminClient;
+import org.xcolab.client.admin.IAdminClient;
 import org.xcolab.client.admin.pojo.INotification;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
@@ -72,7 +72,7 @@ public class AdminTabController extends AbstractTabController {
     private ITrackingClient trackingClient;
 
     @Autowired
-    private AdminClient adminClient;
+    private IAdminClient adminClient;
 
     private static final Logger log = LoggerFactory.getLogger(AdminTabController.class);
 

@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.comment.IThreadClient;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
@@ -34,7 +34,7 @@ public class ContestDescriptionBean implements Serializable {
     private IThreadClient threadClient;
 
     @Autowired
-    private ContestTypeClient contestTypeClient;
+    private IContestTypeClient contestTypeClient;
 
     private Long contestId;
     private Long contestLogoId;

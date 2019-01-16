@@ -12,7 +12,7 @@ import org.xcolab.client.admin.pojo.IEmailTemplate;
 import java.util.List;
 
 @FeignClient("xcolab-admin-service")
-public interface EmailTemplateClient {
+public interface IEmailTemplateClient {
 
     @GetMapping("/emailTemplates")
     List<IEmailTemplate> listEmailTemplates();

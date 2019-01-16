@@ -10,7 +10,7 @@ import java.util.List;
 
 @Component
 @Profile("test")
-public class EmailTemplateClientMockImpl implements EmailTemplateClient {
+public class EmailTemplateClientMockImpl implements IEmailTemplateClient {
 
     @Override
     public List<IEmailTemplate> listEmailTemplates() {

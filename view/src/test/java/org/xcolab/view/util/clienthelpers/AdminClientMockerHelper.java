@@ -3,7 +3,7 @@ package org.xcolab.view.util.clienthelpers;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
 
-import org.xcolab.client.admin.AdminClient;
+import org.xcolab.client.admin.IAdminClient;
 
 import java.util.Optional;
 
@@ -11,8 +11,8 @@ import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Matchers.anyString;
 
 public class AdminClientMockerHelper {
-    public static AdminClient mockAdminClient() {
-        AdminClient adminClient = Mockito.mock(AdminClient.class);
+    public static IAdminClient mockAdminClient() {
+        IAdminClient adminClient = Mockito.mock(IAdminClient.class);
         //generic mock for ConfigAttribute
         final Answer<Object> answer = invocation -> {
             Object[] arguments = invocation.getArguments();

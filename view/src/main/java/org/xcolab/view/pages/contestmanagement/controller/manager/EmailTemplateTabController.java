@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.admin.EmailTemplateClient;
+import org.xcolab.client.admin.IEmailTemplateClient;
 import org.xcolab.client.admin.pojo.IEmailTemplate;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.html.LabelStringValue;
@@ -35,7 +35,7 @@ public class EmailTemplateTabController extends AbstractTabController {
     static final private String TAB_VIEW = "contestmanagement/manager/emailTab";
 
     @Autowired
-    private EmailTemplateClient emailTemplateClient;
+    private IEmailTemplateClient emailTemplateClient;
 
     @ModelAttribute("currentTabWrapped")
     @Override
