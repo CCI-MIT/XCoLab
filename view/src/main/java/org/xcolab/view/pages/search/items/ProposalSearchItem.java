@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.search.items;
 
-import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
@@ -40,17 +40,15 @@ public class ProposalSearchItem extends AbstractSearchItem {
                     proposalAttributeHelper.getAttributeValueString(ProposalAttributeKeys.NAME, "");
 
         } catch (ProposalAttributeNotFoundException | ProposalNotFoundException ignored) {
-
         }
     }
 
     @Override
     public String getPrintName() {
-
         final long contestTypeId = ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get();
-        final ContestType contestType = ContestTypeClient.getContestType(contestTypeId);
+        final ContestType contestType =
+                StaticAdminContext.getContestTypeClient().getContestType(contestTypeId);
         return contestType.getProposalNamePlural();
-
     }
 
     @Override
@@ -65,20 +63,15 @@ public class ProposalSearchItem extends AbstractSearchItem {
         } else {
             return "";
         }
-
     }
-
 
     @Override
     public String getContent() {
-
         return getContent(proposalAttribute.getStringValue(), searchQuery);
-
     }
 
     @Override
     public boolean isVisible() {
         return proposal.getVisible();
     }
-
 }

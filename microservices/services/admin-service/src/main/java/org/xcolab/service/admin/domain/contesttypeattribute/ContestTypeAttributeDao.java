@@ -1,18 +1,18 @@
 package org.xcolab.service.admin.domain.contesttypeattribute;
 
-import org.xcolab.model.tables.pojos.ContestTypeAttribute;
+import org.xcolab.client.admin.pojo.IContestTypeAttribute;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface ContestTypeAttributeDao {
 
-    ContestTypeAttribute create(ContestTypeAttribute pojo);
+    IContestTypeAttribute create(IContestTypeAttribute pojo);
 
-    Optional<ContestTypeAttribute> get(String attributeName, long additionalId, String locale);
+    Optional<IContestTypeAttribute> get(String attributeName, long additionalId, String locale);
 
-    boolean update(ContestTypeAttribute pojo);
+    boolean update(IContestTypeAttribute pojo);
 
-    List<ContestTypeAttribute> list();
+    List<IContestTypeAttribute> list();
 
 }

@@ -1,10 +1,17 @@
 package org.xcolab.view.config.spring;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+import org.xcolab.client.StaticContestProposalContext;
+import org.xcolab.client.admin.IAdminClient;
+import org.xcolab.client.admin.IContestTypeClient;
+import org.xcolab.client.admin.IEmailTemplateClient;
+import org.xcolab.client.admin.StaticAdminContext;
+import org.xcolab.client.comment.ICategoryClient;
+import org.xcolab.client.comment.ICommentClient;
+import org.xcolab.client.comment.IThreadClient;
+import org.xcolab.client.comment.StaticCommentContext;
 import org.xcolab.client.content.IContentClient;
 import org.xcolab.client.content.IFileClient;
 import org.xcolab.client.moderation.IModerationClient;
@@ -18,30 +25,30 @@ import org.xcolab.view.pages.proposals.view.proposal.tabs.ProposalDescriptionTab
 import org.xcolab.view.pages.search.paging.SearchDataPage;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.LoadThreadStartTag;
+import org.xcolab.client.email.StaticEmailContext;
+import org.xcolab.client.email.IEmailClient;
+import org.xcolab.view.activityentry.discussion.DiscussionBaseActivityEntry;
+import org.xcolab.view.pages.loginregister.ImageUploadUtils;
 import org.xcolab.view.pages.modeling.admin.form.UpdateModelInputWidgetsBean;
+import org.xcolab.view.pages.profile.utils.ActivitySubscriptionNameGenerator;
+import org.xcolab.view.pages.search.items.DiscussionSearchItem;
+import org.xcolab.view.pages.search.paging.SearchDataPage;
+import org.xcolab.view.taglibs.xcolab.jspTags.discussion.LoadThreadStartTag;
 import org.xcolab.view.tags.LoadContentArticleTag;
+import org.xcolab.view.util.entity.activityEntry.ActivitySubscriptionEmailHelper;
+import org.xcolab.client.email.StaticEmailContext;
 
 @Component
-public class StaticInjector implements ApplicationRunner {
+public class StaticInjector {
 
     @Autowired
-    private ISearchClient searchClient;
-
-    @Autowired
-    private IFileClient fileClient;
-
-    @Autowired
-    private IContentClient contentClient;
-
-    @Autowired
-    private IModerationClient moderationClient;
-
-    @Autowired
-    private IModelingClient modelingClient;
-
-    @Override
-    public void run(ApplicationArguments applicationArguments) throws Exception {
-        SearchDataPage.setSearchClient(searchClient);
+    public StaticInjector(IFileClient fileClient, IContentClient contentClient,
+            IThreadClient threadClient, ICommentClient commentClient,
+            ICategoryClient categoryClient, ISearchClient searchClient,
+            IModelingClient modelingClient, IAdminClient adminClient,
+            IContestTypeClient contestTypeClient, IEmailTemplateClient emailTemplateClient,
+            IEmailClient emailClient, IModerationClient moderationClient) {
+        // Module Internal
         ImageUploadUtils.setFileClient(fileClient);
         LoadContentArticleTag.setContentClient(contentClient);
         FlaggingTabController.setmoderationClient(moderationClient);
@@ -51,5 +58,19 @@ public class StaticInjector implements ApplicationRunner {
         ProposalDescriptionTabController.setmoderationClient(moderationClient);
         DiscussionPermissions.setmoderationClient(moderationClient);
         UpdateModelInputWidgetsBean.setModelingClient(modelingClient);
+        ActivitySubscriptionNameGenerator.setThreadClient(threadClient);
+        DiscussionBaseActivityEntry.setThreadClient(threadClient);
+        LoadThreadStartTag.setThreadClient(threadClient);
+        ModerationReportWrapper.setClients(commentClient, threadClient);
+        ActivitySubscriptionEmailHelper.setCommentClient(commentClient);
+        DiscussionSearchItem.setClients(commentClient, threadClient);
+        LoadThreadStartTag.setCategoryClient(categoryClient);
+        SearchDataPage.setSearchClient(searchClient);
+
+        // Module External
+        StaticCommentContext.setClients(commentClient, categoryClient, threadClient);
+        StaticContestProposalContext.setClients(commentClient, categoryClient, threadClient);
+        StaticAdminContext.setClients(adminClient, contestTypeClient, emailTemplateClient);
+        StaticEmailContext.setEmailClient(emailClient);
     }
 }

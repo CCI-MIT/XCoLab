@@ -1,6 +1,7 @@
 package org.xcolab.view.pages.proposals.view.proposal.tabs;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -68,6 +69,10 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
     public static void setmoderationClient(IModerationClient moderationClient) {
         ProposalDescriptionTabController.moderationClient = moderationClient;
     }
+
+    @Autowired
+    private IContestTypeClient contestTypeClient;
+
     @GetMapping("c/{proposalUrlString}/{proposalId}")
     public String showProposalDetails(HttpServletRequest request, HttpServletResponse response,
             Model model, ProposalContext proposalContext, Member currentMember,
@@ -230,8 +235,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
                 EntityGroupingUtil.groupByContestType(linkedProposals);
         Map<Long, ContestTypeProposal> contestTypeProposalWrappersByContestTypeId = new HashMap<>();
 
-        for (ContestType contestType : ContestTypeClient
-                .getActiveContestTypes()) {
+        for (ContestType contestType : contestTypeClient.getActiveContestTypes()) {
             contestTypeProposalWrappersByContestTypeId.put(contestType.getId(),
                     new ContestTypeProposal(contestType));
             final Set<Proposal> proposalsInContestType = proposalsByContestType.get(contestType);

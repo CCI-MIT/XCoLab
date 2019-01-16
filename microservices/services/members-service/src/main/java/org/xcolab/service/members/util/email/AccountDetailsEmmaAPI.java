@@ -10,7 +10,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.admin.exceptions.ConfigurationAttributeNotFoundException;
+import org.xcolab.commons.attributes.exceptions.AttributeNotFoundException;
 
 @Component
 @PropertySource({"file:${user.home}/.xcolab.application.properties"})
@@ -43,7 +43,7 @@ public class AccountDetailsEmmaAPI {
                             .get();
                     privateApiKey = ConfigurationAttributeKey.MY_EMMA_PRIVATE_API_KEY
                             .get();
-                } catch (ConfigurationAttributeNotFoundException e) {
+                } catch (AttributeNotFoundException e) {
                     accountId = "";
                     groupId = "";
                     publicApiKey = "";

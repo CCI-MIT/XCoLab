@@ -4,8 +4,12 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import org.xcolab.pojo.generator.tables.pojos.Location;
 
+import java.io.File;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 @JsonDeserialize(as = Location.class)
 public interface ILocation extends Serializable {
@@ -18,11 +22,11 @@ public interface ILocation extends Serializable {
 
     void setCreatedAt(Timestamp createdAt);
 
-    default String getTestDefaultMethod() {
-        return "value";
+    default Set<Date> testDefaultGetter() {
+        return new Date();
     }
 
-    default void setTestDefaultMethod(String s) {
+    default void testDefaultSetter(List<File> strings) {
         // do something here
     }
 }

@@ -3,10 +3,9 @@ package org.xcolab.service.moderation.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.ICommentClient;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
-import org.xcolab.client.comment.pojo.Comment;
-import org.xcolab.client.moderation.pojo.IReport;
+import org.xcolab.client.comment.pojo.IComment;import org.xcolab.client.moderation.pojo.IReport;
 import org.xcolab.client.moderation.pojo.IReportTarget;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
@@ -26,11 +25,14 @@ public class ModerationService {
 
     private final ReportDao reportDao;
     private final ReportTargetDao reportTargetDao;
+    private final ICommentClient commentClient;
 
     @Autowired
-    public ModerationService(ReportDao reportDao, ReportTargetDao reportTargetDao) {
+    public ModerationService(ReportDao reportDao, ReportTargetDao reportTargetDao,
+            ICommentClient commentClient) {
         this.reportDao = reportDao;
         this.reportTargetDao = reportTargetDao;
+        this.commentClient = commentClient;
     }
 
     public IReport createReport(IReport report) {
@@ -120,14 +122,14 @@ public class ModerationService {
     }
 
     private void approveComment(long commentId) throws CommentNotFoundException {
-        final Comment comment = CommentClient.instance().getComment(commentId, true);
+        final IComment comment = commentClient.getComment(commentId, true);
         if (comment.getDeletedAt() != null) {
             comment.setDeletedAt(null);
-            CommentClient.instance().updateComment(comment);
+            commentClient.updateComment(comment);
         }
     }
 
     private void removeComment(long commentId) {
-        CommentClient.instance().deleteComment(commentId);
+        commentClient.deleteComment(commentId);
     }
 }
