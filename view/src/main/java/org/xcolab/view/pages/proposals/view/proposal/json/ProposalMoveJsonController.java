@@ -37,7 +37,7 @@ public class ProposalMoveJsonController {
             throws IOException {
 
         boolean admin = false;
-        Member member = MemberAuthUtil.getMemberOrNull(request);
+        Member member = MemberAuthUtil.getMemberOrNull();
         if (member != null) {
             List<Role> roles = member.getRoles();
 

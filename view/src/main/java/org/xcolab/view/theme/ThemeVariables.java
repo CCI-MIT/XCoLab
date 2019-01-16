@@ -41,7 +41,7 @@ public class ThemeVariables {
 
         this.isHomePage = request.getRequestURI().equals("/");
 
-        final Member loggedInMember = new AuthenticationContext().getMemberOrNull(request);
+        final Member loggedInMember = new AuthenticationContext().getMemberOrNull();
         this.contestPages = ContestTypeClient.getActiveContestTypes().stream()
                 .filter(contestType -> {
                     if (!contestType.isRestrictedAccess()) {
