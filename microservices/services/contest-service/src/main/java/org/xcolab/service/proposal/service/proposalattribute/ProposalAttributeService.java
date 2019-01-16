@@ -3,9 +3,9 @@ package org.xcolab.service.proposal.service.proposalattribute;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import org.xcolab.client.comment.ThreadClient;
+import org.xcolab.client.comment.IThreadClient;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
-import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.pojos.ProposalAttribute;
 import org.xcolab.model.tables.pojos.ProposalUnversionedAttribute;
@@ -31,14 +31,18 @@ public class ProposalAttributeService {
 
     private final ProposalVersionDao proposalVersionDao;
 
+    private final IThreadClient threadClient;
+
     @Autowired
     public ProposalAttributeService(ProposalDao proposalDao,
             ProposalAttributeDao proposalAttributeDao,
-            ProposalUnversionedAttributeDao proposalUnversionedAttributeDao, ProposalVersionDao proposalVersionDao) {
+            ProposalUnversionedAttributeDao proposalUnversionedAttributeDao,
+            ProposalVersionDao proposalVersionDao, IThreadClient threadClient) {
         this.proposalAttributeDao = proposalAttributeDao;
         this.proposalDao = proposalDao;
         this.proposalUnversionedAttributeDao = proposalUnversionedAttributeDao;
         this.proposalVersionDao = proposalVersionDao;
+        this.threadClient = threadClient;
     }
 
     public ProposalAttributeHelper getProposalAttributeHelper(long proposalId, int version) {
@@ -112,12 +116,12 @@ public class ProposalAttributeService {
             // Update the proposal name in the discussion category
             if (proposalAttribute.getName().equals(ProposalAttributeKeys.NAME)) {
                 try {
-                    CommentThread thread = ThreadClient.instance().getThread(proposal.getDiscussionId());
+                    IThread thread = threadClient.getThread(proposal.getDiscussionId());
 
                     thread.setTitle(
                             String.format("%s %s", getProposalNameFromOldTitle(thread.getTitle()),
                                     proposalAttribute.getStringValue()));
-                    ThreadClient.instance().updateThread(thread);
+                    threadClient.updateThread(thread);
                 } catch (ThreadNotFoundException  ignored) {
                 }
             }

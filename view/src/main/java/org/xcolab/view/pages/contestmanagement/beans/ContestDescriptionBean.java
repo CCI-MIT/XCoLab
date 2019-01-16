@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.comment.ThreadClient;
+import org.xcolab.client.comment.IThreadClient;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
-import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.content.IContentClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
@@ -29,6 +29,9 @@ public class ContestDescriptionBean implements Serializable {
 
     @Autowired
     private IContentClient contentClient;
+
+    @Autowired
+    private IThreadClient threadClient;
 
     @Autowired
     private ContestTypeClient contestTypeClient;
@@ -88,12 +91,12 @@ public class ContestDescriptionBean implements Serializable {
         updateContestDescription(contest);
 
         try {
-            final CommentThread thread = ThreadClient.instance().getThread(contest.getDiscussionGroupId());
+            final IThread thread = threadClient.getThread(contest.getDiscussionGroupId());
             ContestType contestType =
                     contestTypeClient.getContestType(contest.getContestTypeId());
             thread.setTitle(String.format("%s %s",
                     contestType.getContestName(), contest.getTitle()));
-            ThreadClient.instance().updateThread(thread);
+            threadClient.updateThread(thread);
         } catch (ThreadNotFoundException e) {
             _log.warn("No thread (id = {}) exists for contest {}", contest.getDiscussionGroupId(),
                     contest.getId());

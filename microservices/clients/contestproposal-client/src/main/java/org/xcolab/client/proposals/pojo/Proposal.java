@@ -8,13 +8,13 @@ import edu.mit.cci.roma.client.Scenario;
 import edu.mit.cci.roma.client.Simulation;
 import org.apache.commons.lang3.StringUtils;
 
+import org.xcolab.client.StaticContestProposalContext;
+import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.comment.CommentClient;
-import org.xcolab.client.comment.ThreadClient;
-import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ContestTeamMemberClient;
@@ -320,7 +320,8 @@ public class Proposal extends AbstractProposal implements Serializable {
     @JsonIgnore
     public long getCommentsCount() {
         if (this.getId() > 0) {
-            return CommentClient.instance().countComments(this.getDiscussionId());
+            return StaticContestProposalContext.getCommentClient()
+                    .countComments(this.getDiscussionId());
         }
         return 0;
     }
@@ -333,11 +334,11 @@ public class Proposal extends AbstractProposal implements Serializable {
     @JsonIgnore
     private long createDiscussionThread(String threadTitleSuffix, boolean isQuiet) {
         final ContestType contestType = getContest().getContestType();
-        CommentThread thread = new CommentThread();
+        IThread thread = new org.xcolab.client.comment.pojo.tables.pojos.Thread();
         thread.setAuthorUserId(getAuthorUserId());
         thread.setTitle(contestType.getProposalName() + getName() + threadTitleSuffix);
         thread.setIsQuiet(isQuiet);
-        return ThreadClient.instance().createThread(thread).getId();
+        return StaticContestProposalContext.getThreadClient().createThread(thread).getId();
     }
 
     @JsonIgnore
