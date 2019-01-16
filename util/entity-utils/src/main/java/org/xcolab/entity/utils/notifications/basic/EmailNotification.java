@@ -13,7 +13,7 @@ import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.admin.pojo.IEmailTemplate;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.emails.EmailClient;
+import org.xcolab.client.email.StaticEmailContext;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
@@ -70,6 +70,7 @@ public abstract class EmailNotification {
     protected String baseUrl;
 
     protected Logger _log;
+
 
     public EmailNotification() {
         this.baseUrl = PlatformAttributeKey.COLAB_URL.get();
@@ -238,9 +239,12 @@ public abstract class EmailNotification {
             InternetAddress fromEmail = TemplateReplacementUtil.getAdminFromEmailAddress();
             InternetAddress toEmail = new InternetAddress(recipient.getEmailAddress(), recipient.getFullName());
 
-            EmailClient.sendEmail(fromEmail.getAddress(),ConfigurationAttributeKey.COLAB_NAME.get(),
+
+              StaticEmailContext
+                      .getEmailClient().sendEmail(fromEmail.getAddress(),ConfigurationAttributeKey.COLAB_NAME.get(),
                     toEmail.getAddress(), subject,body, true, fromEmail.getAddress(),
                     ConfigurationAttributeKey.COLAB_NAME.get(),getReferenceId());
+
 
         } catch (UnsupportedEncodingException e) {
             throw new InternalException(e);

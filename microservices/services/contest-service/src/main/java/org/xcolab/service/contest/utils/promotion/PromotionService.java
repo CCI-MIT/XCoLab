@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.email.IEmailClient;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
@@ -52,19 +53,21 @@ public class PromotionService {
 
     private final ContestPhaseService contestPhaseService;
     private final ContestService contestService;
+    private final IEmailClient emailClient;
 
     private Date now;
 
     @Autowired
     public PromotionService(ContestPhaseDao contestPhaseDao, ContestDao contestDao,
             ContestPhaseService contestPhaseService, ContestPhaseTypeDao contestPhaseTypeDao,
-            ContestService contestService) {
+            ContestService contestService, IEmailClient emailClient) {
 
         this.contestPhaseDao = contestPhaseDao;
         this.contestDao = contestDao;
         this.contestPhaseTypeDao = contestPhaseTypeDao;
         this.contestPhaseService = contestPhaseService;
         this.contestService = contestService;
+        this.emailClient = emailClient;
     }
 
     public synchronized int doPromotion(Date now) {
@@ -404,7 +407,7 @@ public class PromotionService {
                         completedPhasePK);
                 new EmailToAdminDispatcher("Duplicate primary key for P2p in auto promotion",
                         String.format("Unexpectedly found p2p. Setting versionFrom = %d and versionTo = %d: %s",
-                                currentProposalVersion, currentProposalVersion, p2p), 2)
+                                currentProposalVersion, currentProposalVersion, p2p), 2,emailClient)
                         .sendMessage();
             } catch (Proposal2PhaseNotFoundException e) {
                 p2p = new Proposal2Phase();

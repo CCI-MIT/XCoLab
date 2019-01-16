@@ -45,7 +45,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(ContestController.class)
 @ComponentScan("org.xcolab.service.contest")
-@ComponentScan("org.xcolab.client.comment")
+@ComponentScan("org.xcolab.client")
 @ComponentScan("com.netflix.discovery")
 @PrepareForTest({org.xcolab.client.contest.pojo.Contest.class,
         org.xcolab.client.contest.ContestClient.class,

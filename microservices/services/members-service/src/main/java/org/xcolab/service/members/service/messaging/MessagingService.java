@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.util.TemplateReplacementUtilPlaceholder;
-import org.xcolab.client.emails.EmailClient;
+import org.xcolab.client.email.IEmailClient;
 import org.xcolab.model.tables.pojos.User;
 import org.xcolab.model.tables.pojos.Message;
 import org.xcolab.service.members.domain.member.UserDao;
@@ -32,15 +32,18 @@ public class MessagingService {
     private final UserDao memberDao;
     private final MessageLimitManager messageLimitManager;
     private final MessagingUserPreferenceService messagingUserPreferencesService;
+    private final IEmailClient emailClient;
+
 
     @Autowired
     public MessagingService(MessageDao messageDao, UserDao memberDao,
             MessageLimitManager messageLimitManager,
-            MessagingUserPreferenceService messagingUserPreferencesService) {
+            MessagingUserPreferenceService messagingUserPreferencesService, IEmailClient emailClient) {
         this.messageDao = messageDao;
         this.memberDao = memberDao;
         this.messageLimitManager = messageLimitManager;
         this.messagingUserPreferencesService = messagingUserPreferencesService;
+        this.emailClient = emailClient;
     }
 
     public Message sendMessage(Message message, Collection<Long> recipientIds, boolean checkLimit, String threadId)
@@ -68,7 +71,7 @@ public class MessagingService {
                                     messageLimitManager.getMessageLimit(fromId));
 
                             final String fromEmail = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.get();
-                            EmailClient.sendEmail(fromEmail,ConfigurationAttributeKey.COLAB_NAME.get(), reportRecipients,
+                            emailClient.sendEmail(fromEmail,ConfigurationAttributeKey.COLAB_NAME.get(), reportRecipients,
                                     subject, content, false, fromEmail,ConfigurationAttributeKey.COLAB_NAME.get(),message.getFromId());
                         }
                     }
@@ -143,7 +146,7 @@ public class MessagingService {
                                 m.getContent()));
 
         String fromEmail = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.get();
-        EmailClient.sendEmail(fromEmail,ConfigurationAttributeKey.COLAB_NAME.get(), recipient.getEmailAddress(), subject, message, true,
+        emailClient.sendEmail(fromEmail,ConfigurationAttributeKey.COLAB_NAME.get(), recipient.getEmailAddress(), subject, message, true,
                 fromEmail, ConfigurationAttributeKey.COLAB_NAME.get(), m.getId());
     }
 

@@ -16,6 +16,8 @@ import org.xcolab.client.content.IContentClient;
 import org.xcolab.client.content.IFileClient;
 import org.xcolab.client.modeling.IModelingClient;
 import org.xcolab.client.search.ISearchClient;
+import org.xcolab.client.email.StaticEmailContext;
+import org.xcolab.client.email.IEmailClient;
 import org.xcolab.view.activityentry.discussion.DiscussionBaseActivityEntry;
 import org.xcolab.view.pages.contestmanagement.wrappers.FlaggingReportWrapper;
 import org.xcolab.view.pages.loginregister.ImageUploadUtils;
@@ -26,6 +28,7 @@ import org.xcolab.view.pages.search.paging.SearchDataPage;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.LoadThreadStartTag;
 import org.xcolab.view.tags.LoadContentArticleTag;
 import org.xcolab.view.util.entity.activityEntry.ActivitySubscriptionEmailHelper;
+import org.xcolab.client.email.StaticEmailContext;
 
 @Component
 public class StaticInjector {
@@ -35,7 +38,7 @@ public class StaticInjector {
             IThreadClient threadClient, ICommentClient commentClient,
             ICategoryClient categoryClient, ISearchClient searchClient,
             IModelingClient modelingClient, IAdminClient adminClient,
-            IContestTypeClient contestTypeClient, IEmailTemplateClient emailTemplateClient) {
+            IContestTypeClient contestTypeClient, IEmailTemplateClient emailTemplateClient, IEmailClient emailClient) {
         // Module Internal
         ImageUploadUtils.setFileClient(fileClient);
         LoadContentArticleTag.setContentClient(contentClient);
@@ -53,5 +56,6 @@ public class StaticInjector {
         StaticCommentContext.setClients(commentClient, categoryClient, threadClient);
         StaticContestProposalContext.setClients(commentClient, categoryClient, threadClient);
         StaticAdminContext.setClients(adminClient, contestTypeClient, emailTemplateClient);
+        StaticEmailContext.setEmailClient(emailClient);
     }
 }
