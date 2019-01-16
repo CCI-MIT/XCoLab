@@ -14,7 +14,7 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.comment.ICommentClient;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
-import org.xcolab.client.comment.pojo.Comment;
+import org.xcolab.client.comment.pojo.IComment;
 import org.xcolab.client.email.StaticEmailContext;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
