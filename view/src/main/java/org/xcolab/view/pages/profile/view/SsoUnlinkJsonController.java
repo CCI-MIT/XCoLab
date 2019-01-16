@@ -24,7 +24,7 @@ public class SsoUnlinkJsonController extends JSONHelper {
             HttpServletRequest request, HttpServletResponse response) {
 
         boolean successStatus = false;
-        Member member = MemberAuthUtil.getMemberOrNull(request);
+        Member member = MemberAuthUtil.getMemberOrNull();
         if (member != null) {
             unlinkFacebookSso(member);
             successStatus = true;
@@ -43,7 +43,7 @@ public class SsoUnlinkJsonController extends JSONHelper {
             HttpServletRequest request, HttpServletResponse response) {
 
         boolean successStatus = false;
-        Member member = MemberAuthUtil.getMemberOrNull(request);
+        Member member = MemberAuthUtil.getMemberOrNull();
         if (member != null) {
             unlinkGoogleSSO(member);
             successStatus = true;
