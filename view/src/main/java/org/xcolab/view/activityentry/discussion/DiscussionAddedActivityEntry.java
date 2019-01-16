@@ -3,9 +3,9 @@ package org.xcolab.view.activityentry.discussion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import org.xcolab.client.comment.pojo.ICategory;
 import org.xcolab.util.activities.enums.ActivityType;
 import org.xcolab.util.activities.enums.DiscussionThreadActivityType;
-import org.xcolab.client.comment.pojo.Category;
 import org.xcolab.view.activityentry.ActivityInitializationException;
 import org.xcolab.view.i18n.ResourceMessageResolver;
 
@@ -14,7 +14,7 @@ public class DiscussionAddedActivityEntry extends DiscussionBaseActivityEntry {
 
     private static final String MESSAGE_CODE = "activities.discussion.discussionadded.message";
 
-    private Category category;
+    private ICategory category;
 
     @Autowired
     public DiscussionAddedActivityEntry(ResourceMessageResolver resourceMessageResolver) {

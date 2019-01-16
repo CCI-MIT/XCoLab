@@ -22,14 +22,15 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.content.IFileClient;
 import org.xcolab.client.content.pojo.IFileEntry;
-import org.xcolab.client.emails.EmailClient;
-import org.xcolab.client.user.MembersClient;
-import org.xcolab.client.user.MessagingClient;
-import org.xcolab.client.user.PermissionsClient;
-import org.xcolab.client.user.exceptions.MemberNotFoundException;
-import org.xcolab.client.user.permissions.SystemRole;
-import org.xcolab.client.user.pojo.Member;
-import org.xcolab.client.user.pojo.MessagingUserPreference;
+
+import org.xcolab.client.email.IEmailClient;
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.MessagingClient;
+import org.xcolab.client.members.PermissionsClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.members.permissions.SystemRole;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.members.pojo.MessagingUserPreference;
 import org.xcolab.client.tracking.IBalloonClient;
 import org.xcolab.client.tracking.pojo.IBalloonUserTracking;
 import org.xcolab.commons.CountryUtil;
@@ -77,17 +78,19 @@ public class UserProfileController {
     private final SmartValidator validator;
     private final IFileClient fileClient;
     private final IBalloonClient balloonClient;
+    private final IEmailClient emailClient;
 
     @Autowired
     public UserProfileController(ActivityEntryHelper activityEntryHelper,
             AuthenticationService authenticationService, BalloonService balloonService,
-            SmartValidator validator, IFileClient fileClient, IBalloonClient balloonClient) {
+            SmartValidator validator, IFileClient fileClient, IBalloonClient balloonClient, IEmailClient emailClient) {
         this.activityEntryHelper = activityEntryHelper;
         this.authenticationService = authenticationService;
         this.balloonService = balloonService;
         this.validator = validator;
         this.fileClient = fileClient;
         this.balloonClient = balloonClient;
+        this.emailClient = emailClient;
     }
 
     @InitBinder("userBean")
@@ -443,7 +446,7 @@ public class UserProfileController {
 
         InternetAddress addressFrom = TemplateReplacementUtil.getAdminFromEmailAddress();
 
-        EmailClient.sendEmail(addressFrom.getAddress(),ConfigurationAttributeKey.COLAB_NAME.get(), user.getEmailAddress(), messageSubject,
+        emailClient.sendEmail(addressFrom.getAddress(),ConfigurationAttributeKey.COLAB_NAME.get(), user.getEmailAddress(), messageSubject,
                 messageBody, false, addressFrom.getAddress(),ConfigurationAttributeKey.COLAB_NAME.get(),user.getId());
     }
 

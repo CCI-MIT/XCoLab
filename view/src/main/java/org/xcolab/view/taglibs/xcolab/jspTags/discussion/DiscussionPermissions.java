@@ -1,7 +1,7 @@
 package org.xcolab.view.taglibs.xcolab.jspTags.discussion;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.comment.pojo.Comment;
+import org.xcolab.client.comment.pojo.IComment;
 import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.user.PermissionsClient;
 import org.xcolab.util.enums.flagging.TargetType;
@@ -37,7 +37,7 @@ public class DiscussionPermissions {
         return getCanAdminMessages();
     }
 
-    public boolean getCanReportMessage(Comment comment) {
+    public boolean getCanReportMessage(IComment comment) {
         return getCanReport() && comment.getAuthorUserId() != userId && FlaggingClient
                 .countReports(userId, TargetType.COMMENT, comment.getId(), null, null)
                 == 0;
@@ -59,23 +59,23 @@ public class DiscussionPermissions {
         return getCanAdminAll();
     }
 
-    public boolean getCanAdminMessage(Comment comment) {
+    public boolean getCanAdminMessage(IComment comment) {
         final boolean canAdminMessage =
                 isAuthor(comment) && isRecent(comment, EDIT_GRACE_PERIOD_IN_MINUTES + 5);
         return canAdminMessage || getCanAdminAll();
     }
 
-    public boolean getCanViewAdminMessage(Comment comment) {
+    public boolean getCanViewAdminMessage(IComment comment) {
         final boolean canViewAdminMessage =
                 isAuthor(comment) && isRecent(comment, EDIT_GRACE_PERIOD_IN_MINUTES);
         return canViewAdminMessage || getCanAdminAll();
     }
 
-    private boolean isAuthor(Comment comment) {
+    private boolean isAuthor(IComment comment) {
         return comment.getAuthorUserId() == userId;
     }
 
-    private boolean isRecent(Comment comment, int recencyInMinutes) {
+    private boolean isRecent(IComment comment, int recencyInMinutes) {
         Instant now = Instant.now();
         return comment.getCreatedAt().toInstant().plus(recencyInMinutes, ChronoUnit.MINUTES)
                 .isAfter(now);

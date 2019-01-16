@@ -31,6 +31,7 @@ public enum ThreadSortColumn {
     }
 
     public static class NoSuchThreadSortColumnException extends RuntimeException {
+
         public NoSuchThreadSortColumnException(String message) {
             super(message);
         }

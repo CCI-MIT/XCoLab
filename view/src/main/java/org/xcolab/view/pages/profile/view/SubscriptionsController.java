@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.user.exceptions.MemberNotFoundException;
@@ -36,10 +36,12 @@ import javax.servlet.http.HttpServletResponse;
 public class SubscriptionsController {
 
     private final ActivityEntryHelper activityEntryHelper;
+    private final IContestTypeClient contestTypeClient;
 
     @Autowired
-    public SubscriptionsController(ActivityEntryHelper activityEntryHelper) {
+    public SubscriptionsController(ActivityEntryHelper activityEntryHelper, IContestTypeClient contestTypeClient) {
         this.activityEntryHelper = activityEntryHelper;
+        this.contestTypeClient = contestTypeClient;
     }
 
     @GetMapping
@@ -80,8 +82,7 @@ public class SubscriptionsController {
 
             final long contestTypeId = ConfigurationAttributeKey
                     .DEFAULT_CONTEST_TYPE_ID.get();
-            final ContestType contestType = ContestTypeClient
-                    .getContestType(contestTypeId);
+            final ContestType contestType = contestTypeClient.getContestType(contestTypeId);
             model.addAttribute("contestType", contestType);
 
             if (!currentUserProfile.isViewingOwnProfile()) {

@@ -1,8 +1,7 @@
 package org.xcolab.entity.utils.notifications.basic;
 
-import org.xcolab.client.admin.EmailTemplateClient;
-import org.xcolab.client.admin.EmailTemplateClientUtil;
-import org.xcolab.client.admin.pojo.EmailTemplate;
+import org.xcolab.client.admin.StaticAdminContext;
+import org.xcolab.client.admin.pojo.IEmailTemplate;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
@@ -34,10 +33,8 @@ public class ProposalNotification extends ContestNotification {
         final String proposalName =
                 getProposalAttributeHelper().getAttributeValueString(ProposalAttributeKeys.NAME, "");
 
-        final EmailTemplateClient emailTemplateClient = EmailTemplateClientUtil.getClient();
-
-        final EmailTemplate emailTemplate =
-                emailTemplateClient.getContestEmailTemplateByType(templateName);
+        final IEmailTemplate emailTemplate =
+                StaticAdminContext.getEmailTemplateClient().getEmailTemplate(templateName);
 
         templateWrapper = new ProposalNotificationTemplate(emailTemplate, proposalName, contest.getTitle());
 
@@ -51,7 +48,7 @@ public class ProposalNotification extends ContestNotification {
 
     protected class ProposalNotificationTemplate extends ContestNotificationTemplate {
 
-        public ProposalNotificationTemplate(EmailTemplate template, String proposalName, String contestName) {
+        public ProposalNotificationTemplate(IEmailTemplate template, String proposalName, String contestName) {
             super(template, proposalName, contestName);
         }
     }

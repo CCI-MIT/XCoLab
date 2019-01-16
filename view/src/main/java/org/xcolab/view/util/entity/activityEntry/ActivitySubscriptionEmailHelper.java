@@ -12,15 +12,15 @@ import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.ICommentClient;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
-import org.xcolab.client.comment.pojo.Comment;
-import org.xcolab.client.emails.EmailClient;
-import org.xcolab.client.user.MembersClient;
-import org.xcolab.client.user.MessagingClient;
-import org.xcolab.client.user.exceptions.MemberNotFoundException;
-import org.xcolab.client.user.pojo.Member;
-import org.xcolab.client.user.pojo.MessagingUserPreference;
+import org.xcolab.client.comment.pojo.IComment;
+import org.xcolab.client.email.StaticEmailContext;
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.MessagingClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.members.pojo.MessagingUserPreference;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.util.activities.enums.ActivityCategory;
@@ -100,6 +100,12 @@ public class ActivitySubscriptionEmailHelper {
                     + "<a href='UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER'>here</a>.";
 
     private final ActivityEntryHelper activityEntryHelper;
+
+    private static ICommentClient commentClient;
+
+    public static void setCommentClient(ICommentClient commentClient) {
+        ActivitySubscriptionEmailHelper.commentClient = commentClient;
+    }
 
     @Autowired
     public ActivitySubscriptionEmailHelper(ActivityEntryHelper activityEntryHelper) {
@@ -220,7 +226,7 @@ public class ActivitySubscriptionEmailHelper {
                         bodyWithComment.append("<br><br><div style='margin-left:20px;>");
                         bodyWithComment.append("<div style='margin-top:14pt;margin-bottom:14pt;'>");
                         Long commentId = activityEntry.getAdditionalId();
-                        Comment comment = CommentClient.instance().getComment(commentId, true);
+                        IComment comment = commentClient.getComment(commentId, true);
                         if (comment.getDeletedAt() != null) {
                             bodyWithComment.append("<b>COMMENT ALREADY DELETED</b>");
                         }
@@ -358,7 +364,7 @@ public class ActivitySubscriptionEmailHelper {
             message += "<br /><br />" + unregisterFooter;
 
 
-            EmailClient
+            StaticEmailContext.getEmailClient()
                     .sendEmail(fromEmail.getAddress(), ConfigurationAttributeKey.COLAB_NAME.get(),
                             toEmail.getAddress(),
                             TemplateReplacementUtil.replacePlatformConstants(subject),

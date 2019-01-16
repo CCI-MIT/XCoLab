@@ -3,7 +3,6 @@ package org.xcolab.view.pages.loginregister;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -19,23 +18,19 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.admin.AdminClient;
-import org.xcolab.client.admin.ContestTypeClient;
-import org.xcolab.client.admin.EmailTemplateClientUtil;
-import org.xcolab.client.admin.pojo.MockContestType;
+import org.xcolab.client.admin.IAdminClient;
+import org.xcolab.client.admin.IContestTypeClient;
+import org.xcolab.client.admin.IEmailTemplateClient;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.emails.EmailClient;
-import org.xcolab.client.user.MembersClient;
-import org.xcolab.client.user.MessagingClient;
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.MessagingClient;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.view.util.clienthelpers.AdminClientMockerHelper;
+import org.xcolab.view.util.clienthelpers.ContestTypeClientMockerHelper;
 import org.xcolab.view.util.clienthelpers.EmailTemplateClientMockerHelper;
 import org.xcolab.view.util.clienthelpers.MembersClientMockerHelper;
 
-import java.util.ArrayList;
-
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.anyString;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -59,6 +54,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ComponentScan("org.xcolab.view.i18n")
 @ComponentScan("org.xcolab.client")
 
+
 @TestPropertySource(
         properties = {
                 "cache.enabled=false"
@@ -66,15 +62,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 )
 
 @PrepareForTest({
-        AdminClient.class,
         ActivitiesClient.class,
         ActivitiesClientUtil.class,
-        ContestTypeClient.class,
         ContestClientUtil.class,
         MembersClient.class,
-        EmailTemplateClientUtil.class,
-        EmailClient.class,
-        MessagingClient.class
+        MessagingClient.class,
 })
 
 @ActiveProfiles("test")
@@ -90,23 +82,15 @@ public class LoginRegisterControllerTest {
         PowerMockito.mockStatic(ActivitiesClient.class);
         PowerMockito.mockStatic(ActivitiesClientUtil.class);
         PowerMockito.mockStatic(ContestClientUtil.class);
-        PowerMockito.mockStatic(ContestTypeClient.class);
-
-        PowerMockito.mockStatic(EmailClient.class);
-
         PowerMockito.mockStatic(MessagingClient.class);
 
         MembersClientMockerHelper.mockMembersClient();
-        AdminClientMockerHelper.mockAdminClient();
-        EmailTemplateClientMockerHelper.mockEmailTemplateClient();
+        IAdminClient adminClient = AdminClientMockerHelper.mockAdminClient();
+        IEmailTemplateClient emailTemplateClient =
+                EmailTemplateClientMockerHelper.mockEmailTemplateClient();
+        IContestTypeClient contestTypeClient = ContestTypeClientMockerHelper.mockContestTypeClient();
 
-        Mockito.when(ContestTypeClient.getAllContestTypes())
-                .thenReturn(new ArrayList<>());
-
-        Mockito.when(ContestTypeClient.getContestType(anyLong()))
-                .thenReturn(new MockContestType(0));
-        Mockito.when(ContestTypeClient.getContestType(anyLong(), anyString()))
-                .thenReturn(new MockContestType(0, "en"));
+        StaticAdminContext.setClients(adminClient, contestTypeClient, emailTemplateClient);
     }
 
     @Test
@@ -117,7 +101,6 @@ public class LoginRegisterControllerTest {
 
     @Test
     public void registrationFailsWhenInvalidDataPostedAndSendsUserBackToForm() throws Exception {
-
         this.mockMvc.perform(post("/register")
                 .with(csrf())
                 .param("screenName", "")
@@ -136,7 +119,6 @@ public class LoginRegisterControllerTest {
 
     @Test
     public void registrationWorksAndDoLoginAndUserRedirectedToHome() throws Exception {
-
         this.mockMvc.perform(post("/register")
                 .with(csrf())
                 .param("screenName", "username")

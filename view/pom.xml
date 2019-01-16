@@ -171,7 +171,7 @@
 
         <dependency>
             <groupId>org.xcolab</groupId>
-            <artifactId>emails-client</artifactId>
+            <artifactId>email-client</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

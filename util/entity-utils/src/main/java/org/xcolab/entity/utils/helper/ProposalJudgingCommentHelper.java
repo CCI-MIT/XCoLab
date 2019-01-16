@@ -1,6 +1,6 @@
 package org.xcolab.entity.utils.helper;
 
-import org.xcolab.client.admin.EmailTemplateClientUtil;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
@@ -161,14 +161,11 @@ public class ProposalJudgingCommentHelper {
                     }
 
                     EmailTemplateWrapper wrapper = new EmailTemplateWrapper(
-                                EmailTemplateClientUtil.getContestEmailTemplateByType(templateToLoad),
-                                proposalName,
-                                contestName
-                        );
-                        subject = wrapper.getSubject();
-                        return isWrapWithTemplate ? wrapper.getCompleteMessage(reviewText)
-                                : reviewText;
-                    }
+                            StaticAdminContext.getEmailTemplateClient().
+                                    getEmailTemplate(templateToLoad), proposalName, contestName);
+                    subject = wrapper.getSubject();
+                    return isWrapWithTemplate ? wrapper.getCompleteMessage(reviewText) : reviewText;
+                }
 
                 //FELLOW DECISION: Incomplete/Off-Topic
             } else if (fellowAction != FellowAction.NO_DECISION) {
@@ -189,10 +186,8 @@ public class ProposalJudgingCommentHelper {
                 }
 
                 EmailTemplateWrapper wrapper = new EmailTemplateWrapper(
-                        EmailTemplateClientUtil.getContestEmailTemplateByType(templateToLoad),
-                        proposalName,
-                        contestName
-                );
+                        StaticAdminContext.getEmailTemplateClient()
+                                .getEmailTemplate(templateToLoad), proposalName, contestName);
                 subject = wrapper.getSubject();
                 return isWrapWithTemplate ? wrapper.getCompleteMessage(fellowReviewText)
                         : fellowReviewText;

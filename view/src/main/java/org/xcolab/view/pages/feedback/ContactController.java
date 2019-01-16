@@ -16,7 +16,7 @@ import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.content.IContentClient;
 import org.xcolab.client.content.exceptions.ContentNotFoundException;
 import org.xcolab.client.content.pojo.IContentPage;
-import org.xcolab.client.emails.EmailClient;
+import org.xcolab.client.email.IEmailClient;
 import org.xcolab.commons.recaptcha.RecaptchaValidator;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.view.errors.ErrorText;
@@ -38,10 +38,12 @@ public class ContactController {
 
     private final RecaptchaValidator recaptchaValidator;
     private final IContentClient contentClient;
+    private final IEmailClient emailClient;
 
     @Autowired
-    public ContactController(IContentClient contentClient) {
+    public ContactController(IContentClient contentClient, IEmailClient emailClient) {
         this.contentClient = contentClient;
+        this.emailClient = emailClient;
         final String recaptchaSecret = PlatformAttributeKey.GOOGLE_RECAPTCHA_SITE_SECRET_KEY.get();
         recaptchaValidator = new RecaptchaValidator(recaptchaSecret);
     }
@@ -97,7 +99,7 @@ public class ContactController {
 
         final String fromAddress = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.get();
         final String fromName = ConfigurationAttributeKey.COLAB_NAME.get();
-        EmailClient.sendEmail(fromAddress, fromName, addressTo, messageSubject, messageBody, false,
+        emailClient.sendEmail(fromAddress, fromName, addressTo, messageSubject, messageBody, false,
                 contactBean.getEmail(), null, null);
 
         AlertMessage.success("Message sent!").flash(request);

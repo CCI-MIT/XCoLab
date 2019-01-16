@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.search.items;
 
-import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -24,7 +24,8 @@ public class ContestSearchItem extends AbstractSearchItem {
     @Override
     public String getPrintName() {
         final long contestTypeId = ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get();
-        final ContestType contestType = ContestTypeClient.getContestType(contestTypeId);
+        final ContestType contestType =
+                StaticAdminContext.getContestTypeClient().getContestType(contestTypeId);
         return contestType.getContestNamePlural();
     }
 

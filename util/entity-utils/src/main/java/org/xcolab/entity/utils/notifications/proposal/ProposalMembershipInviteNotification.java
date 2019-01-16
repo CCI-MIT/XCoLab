@@ -4,9 +4,9 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 
-import org.xcolab.client.admin.EmailTemplateClientUtil;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.admin.pojo.EmailTemplate;
+import org.xcolab.client.admin.pojo.IEmailTemplate;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
@@ -36,8 +36,8 @@ public class ProposalMembershipInviteNotification extends ProposalUserActionNoti
         final String proposalName = getProposalAttributeHelper()
                 .getAttributeValueString(ProposalAttributeKeys.NAME, "");
 
-        final EmailTemplate emailTemplate =
-                EmailTemplateClientUtil.getContestEmailTemplateByType(DEFAULT_TEMPLATE_NAME);
+        final IEmailTemplate emailTemplate =
+                StaticAdminContext.getEmailTemplateClient().getEmailTemplate(DEFAULT_TEMPLATE_NAME);
 
         templateWrapper = new ProposalMembershipRequestTemplate(emailTemplate,
                 proposalName, contest.getTitle());
@@ -47,7 +47,7 @@ public class ProposalMembershipInviteNotification extends ProposalUserActionNoti
 
     private class ProposalMembershipRequestTemplate extends ProposalUserActionNotificationTemplate {
 
-        public ProposalMembershipRequestTemplate(EmailTemplate template,
+        public ProposalMembershipRequestTemplate(IEmailTemplate template,
                 String proposalName, String contestName) {
             super(template, proposalName, contestName);
         }

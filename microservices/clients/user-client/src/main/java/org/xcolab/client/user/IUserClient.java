@@ -90,4 +90,8 @@ public interface IUserClient {
 
     @GetMapping("{userId}/isSubscribed")
     boolean isSubscribed(@PathVariable long userId) throws IOException, MemberNotFoundException;
+
+    default boolean updateUser(IUser member) throws MemberNotFoundException {
+        return updateUser(member,0l);
+    }
 }

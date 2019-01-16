@@ -19,7 +19,7 @@
         <module>content-client</module>
         <module>contestproposal-client</module>
         <module>comment-client</module>
-        <module>emails-client</module>
+        <module>email-client</module>
         <module>flagging-client</module>
         <module>user-client</module>
         <module>modeling-client</module>

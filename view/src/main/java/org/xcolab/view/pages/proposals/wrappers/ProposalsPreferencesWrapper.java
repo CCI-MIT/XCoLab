@@ -1,12 +1,11 @@
 package org.xcolab.view.pages.proposals.wrappers;
 
-import org.xcolab.client.admin.ContestTypeClient;
-import org.xcolab.client.admin.EmailTemplateClientUtil;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.admin.pojo.EmailTemplate;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.entity.utils.notifications.EmailTemplateWrapper;
+import org.xcolab.client.admin.pojo.IEmailTemplate;
 import org.xcolab.commons.attributes.AttributeGetter;
+import org.xcolab.entity.utils.notifications.EmailTemplateWrapper;
 import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.widgets.WidgetPreference;
 
@@ -51,7 +50,7 @@ public class ProposalsPreferencesWrapper extends WidgetPreference {
         callToAction = (jsonPreferences.has(CALL_TO_ACTION))?(jsonPreferences.getString(CALL_TO_ACTION)):(CALL_TO_ACTION_DEFAULT);
         contestTypeId = (jsonPreferences.has(CONTEST_TYPE_ID))?(jsonPreferences.getString(CONTEST_TYPE_ID)):("0");
 
-        contestType = ContestTypeClient.getContestType(Long.parseLong(contestTypeId));
+        contestType = StaticAdminContext.getContestTypeClient().getContestType(Long.parseLong(contestTypeId));
 
         proposalIdsToBeMoved = "";
         moveFromContestId = -1;
@@ -63,18 +62,17 @@ public class ProposalsPreferencesWrapper extends WidgetPreference {
             return termsOfServiceTemplateWrapper;
         }
         termsOfServiceTemplateWrapper = new EmailTemplateWrapper(
-                EmailTemplateClientUtil.getContestEmailTemplateByType(TERMS_OF_SERVICE_PREF), "", "");
+                StaticAdminContext.getEmailTemplateClient().getEmailTemplate(TERMS_OF_SERVICE_PREF), "", "");
 
         return termsOfServiceTemplateWrapper;
     }
 
     @Override
     public void savePreferences() {
-
-        EmailTemplate template = EmailTemplateClientUtil
-                .getContestEmailTemplateByType(TERMS_OF_SERVICE_PREF);
+        IEmailTemplate template = StaticAdminContext.getEmailTemplateClient()
+                .getEmailTemplate(TERMS_OF_SERVICE_PREF);
         template.setHeader(termsOfService);
-        EmailTemplateClientUtil.updateContestEmailTemplate(template);
+        StaticAdminContext.getEmailTemplateClient().updateEmailTemplate(template);
 
         jsonPreferences.put(CALL_TO_ACTION, callToAction);
         jsonPreferences.put(CONTEST_TYPE_ID, contestTypeId);

@@ -8,10 +8,9 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 
-import org.xcolab.client.admin.EmailTemplateClient;
-import org.xcolab.client.admin.EmailTemplateClientUtil;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.admin.pojo.EmailTemplate;
+import org.xcolab.client.admin.pojo.IEmailTemplate;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
@@ -57,9 +56,8 @@ public class ContestNotification extends EmailNotification {
             return templateWrapper;
         }
 
-        final EmailTemplateClient emailTemplateClient = EmailTemplateClientUtil.getClient();
-        final EmailTemplate emailTemplate =
-                emailTemplateClient.getContestEmailTemplateByType(templateName);
+        final IEmailTemplate emailTemplate =
+                StaticAdminContext.getEmailTemplateClient().getEmailTemplate(templateName);
 
         templateWrapper = new ContestNotificationTemplate(emailTemplate, "", contest.getTitle());
 
@@ -82,7 +80,7 @@ public class ContestNotification extends EmailNotification {
 
     protected class ContestNotificationTemplate extends EmailNotificationTemplate {
 
-        public ContestNotificationTemplate(EmailTemplate template, String proposalName, String contestName) {
+        public ContestNotificationTemplate(IEmailTemplate template, String proposalName, String contestName) {
             super(template, proposalName, contestName);
         }
 

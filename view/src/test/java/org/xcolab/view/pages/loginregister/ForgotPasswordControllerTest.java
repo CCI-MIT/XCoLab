@@ -16,16 +16,18 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import org.xcolab.client.admin.AdminClient;
-import org.xcolab.client.admin.ContestTypeClient;
-import org.xcolab.client.admin.EmailTemplateClientUtil;
+import org.xcolab.client.admin.IAdminClient;
+import org.xcolab.client.admin.IContestTypeClient;
+import org.xcolab.client.admin.IEmailTemplateClient;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.emails.EmailClient;
-import org.xcolab.client.user.MembersClient;
-import org.xcolab.client.user.MessagingClient;
+
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.MessagingClient;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.view.util.clienthelpers.AdminClientMockerHelper;
+import org.xcolab.view.util.clienthelpers.ContestTypeClientMockerHelper;
 import org.xcolab.view.util.clienthelpers.EmailTemplateClientMockerHelper;
 import org.xcolab.view.util.clienthelpers.MembersClientMockerHelper;
 
@@ -55,12 +57,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 )
 
 @PrepareForTest({
-        AdminClient.class,
-        ContestTypeClient.class,
         ContestClientUtil.class,
         MembersClient.class,
-        EmailTemplateClientUtil.class,
-        EmailClient.class,
         AlertMessage.class,
         MessagingClient.class
 })
@@ -76,14 +74,15 @@ public class ForgotPasswordControllerTest {
         ServiceRequestUtils.setInitialized(true);
 
         PowerMockito.mockStatic(ContestClientUtil.class);
-        PowerMockito.mockStatic(ContestTypeClient.class);
-        PowerMockito.mockStatic(EmailTemplateClientUtil.class);
-        PowerMockito.mockStatic(EmailClient.class);
         PowerMockito.mockStatic(MessagingClient.class);
 
         MembersClientMockerHelper.mockMembersClient();
-        AdminClientMockerHelper.mockAdminClient();
-        EmailTemplateClientMockerHelper.mockEmailTemplateClient();
+        IAdminClient adminClient = AdminClientMockerHelper.mockAdminClient();
+        IEmailTemplateClient emailTemplateClient =
+                EmailTemplateClientMockerHelper.mockEmailTemplateClient();
+        IContestTypeClient contestTypeClient = ContestTypeClientMockerHelper.mockContestTypeClient();
+
+        StaticAdminContext.setClients(adminClient, contestTypeClient, emailTemplateClient);
     }
 
     @Test

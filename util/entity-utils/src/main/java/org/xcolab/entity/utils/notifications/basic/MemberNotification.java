@@ -4,9 +4,9 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 
-import org.xcolab.client.admin.EmailTemplateClientUtil;
-import org.xcolab.client.admin.pojo.EmailTemplate;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.admin.StaticAdminContext;
+import org.xcolab.client.admin.pojo.IEmailTemplate;
+import org.xcolab.client.members.pojo.Member;
 
 public class MemberNotification extends EmailNotification {
 
@@ -34,8 +34,8 @@ public class MemberNotification extends EmailNotification {
             return templateWrapper;
         }
 
-        final EmailTemplate emailTemplate =
-                EmailTemplateClientUtil.getContestEmailTemplateByType(templateName);
+        final IEmailTemplate emailTemplate =
+                StaticAdminContext.getEmailTemplateClient().getEmailTemplate(templateName);
         templateWrapper = new MemberNotificationTemplate(emailTemplate, "", "");
 
         return templateWrapper;
@@ -48,7 +48,7 @@ public class MemberNotification extends EmailNotification {
 
     protected class MemberNotificationTemplate extends EmailNotificationTemplate {
 
-        public MemberNotificationTemplate(EmailTemplate template, String proposalName, String contestName) {
+        public MemberNotificationTemplate(IEmailTemplate template, String proposalName, String contestName) {
             super(template, proposalName, contestName);
         }
 

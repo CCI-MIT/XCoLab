@@ -1,12 +1,13 @@
 package org.xcolab.view.pages.proposals.view.contest;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -57,6 +58,9 @@ public class ContestsIndexController extends BaseProposalsController {
     private static final int BY_TOPIC_COLLECTION_CARD_ID = 2;
     private static final int BY_LOCATION_COLLECTION_CARD_ID = 3;
 
+    @Autowired
+    private IContestTypeClient contestTypeClient;
+
     @GetMapping("/contests")
     public String showContestsIndex(HttpServletRequest request, HttpServletResponse response,
             Model model, Member currentMember, ProposalContext proposalContext,
@@ -75,8 +79,7 @@ public class ContestsIndexController extends BaseProposalsController {
             final ContestType defaultContestType = new ContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
             final String originalUri = RequestUtil.getOriginalUri(request);
             if (!originalUri.startsWith(defaultContestType.getContestBaseUrl())) {
-                contestType =
-                        ContestTypeClient.getActiveContestTypes().stream()
+                contestType = contestTypeClient.getActiveContestTypes().stream()
                                 .filter(item -> originalUri
                                         .startsWith(item.getContestBaseUrl()))
                                 //TODO: better exception --> 404

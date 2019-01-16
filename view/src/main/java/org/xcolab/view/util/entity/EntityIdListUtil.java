@@ -1,6 +1,6 @@
 package org.xcolab.view.util.entity;
 
-import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
@@ -40,7 +40,7 @@ public final class EntityIdListUtil {
      * strings
      */
     public final static IdListObjectConverter<ContestType> CONTEST_TYPES =
-            new IdListObjectConverter<>(ContestTypeClient::getContestType, ContestType::getId);
+            new IdListObjectConverter<>(StaticAdminContext.getContestTypeClient()::getContestType, ContestType::getId);
 
     public final static IdListObjectConverter<Member> MEMBERS =
             new IdListObjectConverter<>(MembersClient::getMemberUnchecked, Member::getId);

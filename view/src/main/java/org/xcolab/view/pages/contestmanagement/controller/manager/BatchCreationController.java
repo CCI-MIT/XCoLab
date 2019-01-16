@@ -3,6 +3,7 @@ package org.xcolab.view.pages.contestmanagement.controller.manager;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
@@ -49,6 +50,9 @@ import javax.validation.Valid;
 public class BatchCreationController {
 
     private final Map<Long, Map<Long, Integer>> reusableFocusArea = new HashMap<>();
+
+    @Autowired
+    private IContestTypeClient contestTypeClient;
 
     @ModelAttribute("proposalTemplateSelectionItems")
     public List<LabelValue> populateProposalTemplateSelectionItems() {
@@ -100,8 +104,7 @@ public class BatchCreationController {
 
     private List<LabelValue> getContestTypeSelectionItems() {
         List<LabelValue> selectItems = new ArrayList<>();
-        for (ContestType contestType : ContestTypeClient
-                .getAllContestTypes()) {
+        for (ContestType contestType : contestTypeClient.getAllContestTypes()) {
             selectItems.add(new LabelValue(contestType.getId(),
                     String.format("%d - %s with %s", contestType.getId(),
                             contestType.getContestName(), contestType.getProposalNamePlural())));

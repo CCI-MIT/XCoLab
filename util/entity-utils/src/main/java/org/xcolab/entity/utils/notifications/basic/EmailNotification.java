@@ -7,22 +7,22 @@ import org.jsoup.nodes.TextNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.admin.pojo.EmailTemplate;
-import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.emails.EmailClient;
-import org.xcolab.client.user.MessagingClient;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.admin.pojo.IEmailTemplate;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.email.StaticEmailContext;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.helpers.ProposalAttributeHelper;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.user.MessagingClient;
+import org.xcolab.client.user.pojo.IUser;
+import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.entity.utils.notifications.EmailTemplateWrapper;
-import org.xcolab.commons.exceptions.InternalException;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -70,6 +70,7 @@ public abstract class EmailNotification {
     protected String baseUrl;
 
     protected Logger _log;
+
 
     public EmailNotification() {
         this.baseUrl = PlatformAttributeKey.COLAB_URL.get();
@@ -203,7 +204,7 @@ public abstract class EmailNotification {
 
     protected abstract Long getReferenceId();
 
-    protected abstract Member getRecipient();
+    protected abstract IUser getRecipient();
 
     protected abstract EmailTemplateWrapper getTemplateWrapper();
 
@@ -233,14 +234,17 @@ public abstract class EmailNotification {
         }
     }
 
-    private void sendEmail(String subject, String body, Member recipient) {
+    private void sendEmail(String subject, String body, IUser recipient) {
         try {
             InternetAddress fromEmail = TemplateReplacementUtil.getAdminFromEmailAddress();
             InternetAddress toEmail = new InternetAddress(recipient.getEmailAddress(), recipient.getFullName());
 
-            EmailClient.sendEmail(fromEmail.getAddress(),ConfigurationAttributeKey.COLAB_NAME.get(),
+
+              StaticEmailContext
+                      .getEmailClient().sendEmail(fromEmail.getAddress(),ConfigurationAttributeKey.COLAB_NAME.get(),
                     toEmail.getAddress(), subject,body, true, fromEmail.getAddress(),
                     ConfigurationAttributeKey.COLAB_NAME.get(),getReferenceId());
+
 
         } catch (UnsupportedEncodingException e) {
             throw new InternalException(e);
@@ -262,7 +266,7 @@ public abstract class EmailNotification {
     }
 
     protected class EmailNotificationTemplate extends EmailTemplateWrapper {
-        public EmailNotificationTemplate(EmailTemplate template, String proposalName, String contestName) {
+        public EmailNotificationTemplate(IEmailTemplate template, String proposalName, String contestName) {
             super(template, proposalName, contestName);
         }
 
@@ -277,8 +281,8 @@ public abstract class EmailNotification {
             final boolean hasProposal = contest != null && proposal != null;
 
             final ContestType contestType =
-                    contest != null ? ContestTypeClient.getContestType(contest.getContestTypeId())
-                            : null;
+                    contest != null ? StaticAdminContext.getContestTypeClient()
+                            .getContestType(contest.getContestTypeId()) : null;
 
 
             switch (tag.nodeName()) {

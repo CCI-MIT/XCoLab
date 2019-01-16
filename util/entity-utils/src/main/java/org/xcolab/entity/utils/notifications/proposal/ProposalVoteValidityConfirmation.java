@@ -3,9 +3,8 @@ package org.xcolab.entity.utils.notifications.proposal;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 
-import org.xcolab.client.admin.EmailTemplateClient;
-import org.xcolab.client.admin.EmailTemplateClientUtil;
-import org.xcolab.client.admin.pojo.EmailTemplate;
+import org.xcolab.client.admin.StaticAdminContext;
+import org.xcolab.client.admin.pojo.IEmailTemplate;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
@@ -48,10 +47,9 @@ public class ProposalVoteValidityConfirmation extends ProposalNotification {
         if (proposalVoteConfirmationTemplateString.isEmpty()) {
             proposalVoteConfirmationTemplateString = DEFAULT_TEMPLATE_STRING;
         }
-        final EmailTemplateClient emailTemplateClient = EmailTemplateClientUtil.getClient();
 
-        final EmailTemplate emailTemplate =
-                emailTemplateClient.getContestEmailTemplateByType(proposalVoteConfirmationTemplateString);
+        final IEmailTemplate emailTemplate =
+                StaticAdminContext.getEmailTemplateClient().getEmailTemplate(proposalVoteConfirmationTemplateString);
         templateWrapper =
                 new ProposalVoteConfirmationTemplate(emailTemplate, proposalName, contest.getTitle());
 
@@ -66,7 +64,7 @@ public class ProposalVoteValidityConfirmation extends ProposalNotification {
 
     private class ProposalVoteConfirmationTemplate extends ProposalNotificationTemplate {
 
-        public ProposalVoteConfirmationTemplate(EmailTemplate template, String proposalName,
+        public ProposalVoteConfirmationTemplate(IEmailTemplate template, String proposalName,
                 String contestName) {
             super(template, proposalName, contestName);
         }
