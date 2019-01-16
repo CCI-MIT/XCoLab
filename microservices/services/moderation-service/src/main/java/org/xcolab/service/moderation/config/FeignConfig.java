@@ -1,4 +1,4 @@
-package org.xcolab.service.flagging.config;
+package org.xcolab.service.moderation.config;
 
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Profile;
