@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="ActivitiesServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" folderName="Services">
+  <configuration default="false" name="ActivityServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" folderName="Services">
     <module name="activity-service" />
-    <option name="SPRING_BOOT_MAIN_CLASS" value="org.xcolab.service.activity.ActivitiesServiceApplication" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="org.xcolab.service.activity.ActivityServiceApplication" />
     <option name="VM_PARAMETERS" value="-Xms256M -Xmx512M" />
     <option name="ALTERNATIVE_JRE_PATH" />
     <additionalParameters>
