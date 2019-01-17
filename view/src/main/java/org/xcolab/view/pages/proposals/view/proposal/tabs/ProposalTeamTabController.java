@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.MembershipClient;
-import org.xcolab.client.proposals.MembershipClientUtil;
-import org.xcolab.client.proposals.ProposalClient;
-import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.team.ProposalTeamMembershipRequest;
+import org.xcolab.client.contest.proposals.MembershipClient;
+import org.xcolab.client.contest.proposals.MembershipClientUtil;
+import org.xcolab.client.contest.proposals.ProposalClient;
+import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.contest.pojo.ProposalTeamMembershipRequest;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.util.enums.membershiprequest.MembershipRequestStatus;
 import org.xcolab.view.errors.AccessDeniedPage;

@@ -3,8 +3,8 @@ package org.xcolab.view.pages.proposals.wrappers;
 import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.contest.enums.ContestStatus;
-import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.Proposal;
 import org.xcolab.client.contest.enums.ProposalSortColumn;
 import org.xcolab.view.util.pagination.SortFilterPage;
 

@@ -2,8 +2,8 @@ package org.xcolab.view.pages.proposals.judging;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
-import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
+import org.xcolab.client.contest.proposals.ProposalJudgeRatingClientUtil;
+import org.xcolab.client.contest.pojo.ProposalRating;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.view.pages.proposals.requests.RatingBean;
 

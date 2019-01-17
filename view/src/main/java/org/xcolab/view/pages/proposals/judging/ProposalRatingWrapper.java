@@ -3,10 +3,10 @@ package org.xcolab.view.pages.proposals.judging;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
-import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
-import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingType;
-import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingValue;
+import org.xcolab.client.contest.proposals.ProposalJudgeRatingClientUtil;
+import org.xcolab.client.contest.pojo.ProposalRating;
+import org.xcolab.client.contest.pojo.ProposalRatingType;
+import org.xcolab.client.contest.pojo.ProposalRatingValue;
 
 public class ProposalRatingWrapper {
     private ProposalRating proposalRating;

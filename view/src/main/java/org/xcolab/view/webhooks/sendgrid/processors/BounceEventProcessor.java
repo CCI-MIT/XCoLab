@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
+import org.xcolab.client.contest.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.view.pages.proposals.utils.voting.VoteValidator.ValidationResult;
 import org.xcolab.view.webhooks.sendgrid.model.EventType;
 import org.xcolab.view.webhooks.sendgrid.model.SendGridEvent;

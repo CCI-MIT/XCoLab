@@ -2,9 +2,9 @@ package org.xcolab.view.pages.proposals.requests;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
-import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingType;
+import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.contest.pojo.ProposalRating;
+import org.xcolab.client.contest.pojo.ProposalRatingType;
 import org.xcolab.view.pages.proposals.wrappers.ProposalRatingTypeWrapper;
 import org.xcolab.view.util.validation.NoBlankValues;
 

@@ -1,11 +1,11 @@
 package org.xcolab.client.contest;
 
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.impact.ImpactIteration;
-import org.xcolab.client.contest.pojo.impact.ImpactTemplateFocusAreaList;
-import org.xcolab.client.contest.pojo.impact.ImpactTemplateMaxFocusArea;
-import org.xcolab.client.contest.pojo.impact.ImpactTemplateSeries;
-import org.xcolab.client.contest.pojo.templates.ProposalTemplate;
+import org.xcolab.client.contest.pojo.ImpactIteration;
+import org.xcolab.client.contest.pojo.ImpactTemplateFocusAreaList;
+import org.xcolab.client.contest.pojo.ImpactTemplateMaxFocusArea;
+import org.xcolab.client.contest.pojo.ImpactTemplateSeries;
+import org.xcolab.client.contest.pojo.ProposalTemplate;
 import org.xcolab.client.contest.resources.ImpactResource;
 import org.xcolab.util.http.client.RestResource1;
 

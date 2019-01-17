@@ -7,10 +7,10 @@ import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ontology.FocusArea;
-import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
-import org.xcolab.client.proposals.enums.ImpactSeriesType;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.pojo.FocusArea;
+import org.xcolab.client.contest.pojo.OntologyTerm;
+import org.xcolab.client.contest.proposals.enums.ImpactSeriesType;
+import org.xcolab.client.contest.pojo.Proposal;
 import org.xcolab.view.pages.proposals.exceptions.ProposalImpactDataParserException;
 
 import java.util.ArrayList;

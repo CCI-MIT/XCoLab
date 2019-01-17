@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.proposals.view.contest;
 
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.pojo.Proposal;
 import org.xcolab.commons.CsvResponseWriter;
 
 import java.io.IOException;

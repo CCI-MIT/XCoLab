@@ -2,9 +2,9 @@ package org.xcolab.view.pages.proposals.impact;
 
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
-import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.pojo.OntologyTerm;
+import org.xcolab.client.contest.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.pojo.Proposal;
 import org.xcolab.util.enums.contest.ContestTier;
 import org.xcolab.view.pages.proposals.utils.SectorTypes;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;

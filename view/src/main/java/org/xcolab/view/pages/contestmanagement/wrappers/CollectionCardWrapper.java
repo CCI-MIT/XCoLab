@@ -5,7 +5,7 @@ import org.apache.commons.text.StringEscapeUtils;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.ContestCollectionCard;
-import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
+import org.xcolab.client.contest.pojo.OntologyTerm;
 
 import java.util.ArrayList;
 import java.util.HashMap;

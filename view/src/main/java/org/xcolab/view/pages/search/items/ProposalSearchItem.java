@@ -3,14 +3,14 @@ package org.xcolab.view.pages.search.items;
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.proposals.ProposalAttributeClientUtil;
-import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
-import org.xcolab.client.proposals.exceptions.ProposalAttributeNotFoundException;
-import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.proposals.helpers.ProposalAttributeHelper;
-import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
+import org.xcolab.client.contest.proposals.ProposalAttributeClientUtil;
+import org.xcolab.client.contest.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
+import org.xcolab.client.contest.proposals.exceptions.ProposalAttributeNotFoundException;
+import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.contest.proposals.helpers.ProposalAttributeHelper;
+import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.contest.pojo.ProposalAttribute;
 import org.xcolab.client.search.pojo.ISearchPojo;
 
 public class ProposalSearchItem extends AbstractSearchItem {

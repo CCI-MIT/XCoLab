@@ -2,8 +2,8 @@ package org.xcolab.view.pages.proposals.impact.adaptation;
 
 import org.springframework.stereotype.Service;
 
-import org.xcolab.client.proposals.ProposalAttributeClient;
-import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttribute;
+import org.xcolab.client.contest.proposals.ProposalAttributeClient;
+import org.xcolab.client.contest.pojo.ProposalUnversionedAttribute;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.HashMap;

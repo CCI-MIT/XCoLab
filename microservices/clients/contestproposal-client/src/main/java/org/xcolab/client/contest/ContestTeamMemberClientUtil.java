@@ -1,7 +1,7 @@
 package org.xcolab.client.contest;
 
-import org.xcolab.client.contest.pojo.team.ContestTeamMember;
-import org.xcolab.client.contest.pojo.team.ContestTeamMemberRole;
+import org.xcolab.client.contest.pojo.ContestTeamMember;
+import org.xcolab.client.contest.pojo.ContestTeamMemberRole;
 
 import java.util.List;
 import java.util.Map;

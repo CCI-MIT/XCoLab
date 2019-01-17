@@ -7,7 +7,7 @@
 <xcolab:layout>
 
 	<!--@elvariable id="contestWrapper" type="org.xcolab.client.contest.pojo.Contest"-->
-    <!--@elvariable id="ontologySpaces" type="java.util.List<org.xcolab.client.contest.pojo.ontology.OntologySpace>"-->
+    <!--@elvariable id="ontologySpaces" type="java.util.List<org.xcolab.client.contest.pojo.OntologySpace>"-->
 
 	<jsp:directive.include file="../init.jspx" />
 	<jsp:directive.include file="./header.jspx"/>

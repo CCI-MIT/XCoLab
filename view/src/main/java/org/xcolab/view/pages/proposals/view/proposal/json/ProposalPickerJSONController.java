@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.pojo.Proposal;
 import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.pages.proposals.utils.picker.ProposalPickerFilterUtil;

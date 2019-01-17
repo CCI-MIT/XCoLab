@@ -1,8 +1,8 @@
 package org.xcolab.service.proposal.helper;
 
-import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.proposals.ProposalPhaseClientUtil;
-import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
+import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
+import org.xcolab.client.contest.pojo.ProposalContestPhaseAttribute;
 import org.xcolab.model.tables.pojos.Proposal;
 
 import java.util.List;

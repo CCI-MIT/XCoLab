@@ -1,7 +1,7 @@
 package org.xcolab.view.widgets.proposals;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.pojo.Proposal;
 
 import java.util.List;
 

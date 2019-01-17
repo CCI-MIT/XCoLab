@@ -17,9 +17,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.client.proposals.ProposalPhaseClientUtil;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
+import org.xcolab.client.contest.pojo.Proposal;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.util.http.ServiceRequestUtils;
 
@@ -31,9 +31,9 @@ import static org.mockito.Matchers.anyString;
 @OverrideAutoConfiguration(enabled = false)
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @PrepareForTest({
-        org.xcolab.client.proposals.ProposalClientUtil.class,
-        org.xcolab.client.proposals.ProposalPhaseClientUtil.class,
-        org.xcolab.client.proposals.pojo.Proposal.class,
+        ProposalClientUtil.class,
+        ProposalPhaseClientUtil.class,
+        Proposal.class,
         org.xcolab.client.contest.pojo.Contest.class
 })
 @ComponentScan("org.xcolab.service.contest")

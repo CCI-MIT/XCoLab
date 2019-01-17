@@ -3,7 +3,7 @@ package org.xcolab.service.proposal.service.proposal2phase;
 import org.springframework.stereotype.Service;
 
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.model.tables.pojos.Proposal2Phase;
 import org.xcolab.model.tables.pojos.ProposalContestPhaseAttribute;
 import org.xcolab.service.proposal.domain.proposal2phase.Proposal2PhaseDao;

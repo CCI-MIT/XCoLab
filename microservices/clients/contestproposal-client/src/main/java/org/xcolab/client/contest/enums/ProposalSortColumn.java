@@ -1,7 +1,7 @@
 package org.xcolab.client.contest.enums;
 
-import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.proposals.ProposalRibbon;
+import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.contest.pojo.ProposalRibbon;
 
 import java.util.Comparator;
 

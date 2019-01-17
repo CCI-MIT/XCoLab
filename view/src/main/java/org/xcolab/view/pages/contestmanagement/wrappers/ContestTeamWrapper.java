@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.contest.ContestTeamMemberClientUtil;
-import org.xcolab.client.contest.pojo.team.ContestTeamMember;
+import org.xcolab.client.contest.pojo.ContestTeamMember;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.permissions.SystemRole;
 import org.xcolab.util.activities.enums.ActivityCategory;

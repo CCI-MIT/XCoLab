@@ -1,7 +1,7 @@
 package org.xcolab.view.util.entity.subscriptions;
 
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.proposals.ProposalClientUtil;
 
 import java.util.ArrayList;
 import java.util.List;

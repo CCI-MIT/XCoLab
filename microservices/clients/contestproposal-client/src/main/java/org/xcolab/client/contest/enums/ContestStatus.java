@@ -7,7 +7,7 @@
 package org.xcolab.client.contest.enums;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.pojo.Proposal;
 import org.xcolab.commons.SortColumn;
 
 import java.util.Comparator;

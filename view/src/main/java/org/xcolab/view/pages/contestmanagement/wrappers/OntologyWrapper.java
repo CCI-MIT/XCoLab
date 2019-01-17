@@ -2,9 +2,9 @@ package org.xcolab.view.pages.contestmanagement.wrappers;
 
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ontology.FocusAreaOntologyTerm;
-import org.xcolab.client.contest.pojo.ontology.OntologySpace;
-import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
+import org.xcolab.client.contest.pojo.FocusAreaOntologyTerm;
+import org.xcolab.client.contest.pojo.OntologySpace;
+import org.xcolab.client.contest.pojo.OntologyTerm;
 import org.xcolab.view.taglibs.xcolab.wrapper.OntologySpaceWrapper;
 import org.xcolab.view.taglibs.xcolab.wrapper.OntologyTermWrapper;
 

@@ -1,9 +1,9 @@
 package org.xcolab.view.pages.contestmanagement.utils;
 
 import org.xcolab.client.contest.ProposalTemplateClientUtil;
-import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
-import org.xcolab.client.contest.pojo.templates.ProposalTemplate;
-import org.xcolab.client.contest.pojo.templates.ProposalTemplateSection;
+import org.xcolab.client.contest.pojo.ProposalTemplateSectionDefinition;
+import org.xcolab.client.contest.pojo.ProposalTemplate;
+import org.xcolab.client.contest.pojo.ProposalTemplateSection;
 
 import java.util.List;
 

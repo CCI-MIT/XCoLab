@@ -1,6 +1,6 @@
 package org.xcolab.view.taglibs.xcolab.wrapper;
 
-import org.xcolab.client.contest.pojo.ontology.OntologySpace;
+import org.xcolab.client.contest.pojo.OntologySpace;
 
 import java.util.ArrayList;
 import java.util.List;

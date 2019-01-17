@@ -2,11 +2,11 @@ package org.xcolab.entity.utils.email;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestPhase;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.pojo.Proposal;
 import org.xcolab.entity.utils.helper.ProposalJudgingCommentHelper;
 
 import java.util.ArrayList;

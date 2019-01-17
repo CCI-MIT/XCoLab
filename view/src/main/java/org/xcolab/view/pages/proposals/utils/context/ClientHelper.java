@@ -12,22 +12,22 @@ import org.xcolab.client.contest.OntologyClient;
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.ProposalTemplateClient;
 import org.xcolab.client.contest.ProposalTemplateClientUtil;
-import org.xcolab.client.proposals.MembershipClient;
-import org.xcolab.client.proposals.MembershipClientUtil;
-import org.xcolab.client.proposals.PointsClient;
-import org.xcolab.client.proposals.PointsClientUtil;
-import org.xcolab.client.proposals.ProposalAttributeClient;
-import org.xcolab.client.proposals.ProposalAttributeClientUtil;
-import org.xcolab.client.proposals.ProposalClient;
-import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.client.proposals.ProposalJudgeRatingClient;
-import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
-import org.xcolab.client.proposals.ProposalMemberRatingClient;
-import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
-import org.xcolab.client.proposals.ProposalMoveClient;
-import org.xcolab.client.proposals.ProposalMoveClientUtil;
-import org.xcolab.client.proposals.ProposalPhaseClient;
-import org.xcolab.client.proposals.ProposalPhaseClientUtil;
+import org.xcolab.client.contest.proposals.MembershipClient;
+import org.xcolab.client.contest.proposals.MembershipClientUtil;
+import org.xcolab.client.contest.proposals.PointsClient;
+import org.xcolab.client.contest.proposals.PointsClientUtil;
+import org.xcolab.client.contest.proposals.ProposalAttributeClient;
+import org.xcolab.client.contest.proposals.ProposalAttributeClientUtil;
+import org.xcolab.client.contest.proposals.ProposalClient;
+import org.xcolab.client.contest.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.proposals.ProposalJudgeRatingClient;
+import org.xcolab.client.contest.proposals.ProposalJudgeRatingClientUtil;
+import org.xcolab.client.contest.proposals.ProposalMemberRatingClient;
+import org.xcolab.client.contest.proposals.ProposalMemberRatingClientUtil;
+import org.xcolab.client.contest.proposals.ProposalMoveClient;
+import org.xcolab.client.contest.proposals.ProposalMoveClientUtil;
+import org.xcolab.client.contest.proposals.ProposalPhaseClient;
+import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
 
 public class ClientHelper {
 

@@ -1,11 +1,11 @@
 package org.xcolab.client.contest;
 
-import org.xcolab.client.contest.pojo.impact.ImpactDefaultSeries;
-import org.xcolab.client.contest.pojo.impact.ImpactDefaultSeriesData;
-import org.xcolab.client.contest.pojo.ontology.FocusArea;
-import org.xcolab.client.contest.pojo.ontology.FocusAreaOntologyTerm;
-import org.xcolab.client.contest.pojo.ontology.OntologySpace;
-import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
+import org.xcolab.client.contest.pojo.ImpactDefaultSeries;
+import org.xcolab.client.contest.pojo.ImpactDefaultSeriesData;
+import org.xcolab.client.contest.pojo.FocusArea;
+import org.xcolab.client.contest.pojo.FocusAreaOntologyTerm;
+import org.xcolab.client.contest.pojo.OntologySpace;
+import org.xcolab.client.contest.pojo.OntologyTerm;
 
 import java.util.List;
 

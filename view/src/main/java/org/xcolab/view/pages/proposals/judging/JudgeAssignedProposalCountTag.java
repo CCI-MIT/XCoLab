@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.proposals.judging;
 
-import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.proposals.ProposalClientUtil;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyTagSupport;

@@ -3,8 +3,8 @@ package org.xcolab.view.pages.proposals.view.proposal.json.picker;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 
-import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.proposals.ProposalRibbon;
+import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.contest.pojo.ProposalRibbon;
 
 import java.util.Date;
 import java.util.List;

@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
-import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
+import org.xcolab.client.contest.proposals.ProposalMemberRatingClientUtil;
+import org.xcolab.client.contest.pojo.ProposalVote;
 import org.xcolab.util.activities.enums.ActivityType;
 import org.xcolab.util.activities.enums.ProposalActivityType;
 import org.xcolab.view.activityentry.ActivityInitializationException;

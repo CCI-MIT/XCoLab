@@ -3,8 +3,8 @@ package org.xcolab.view.pages.proposals.requests;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
-import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.pojo.ProposalTemplateSectionDefinition;
+import org.xcolab.client.contest.pojo.Proposal;
 import org.xcolab.util.enums.proposal.MoveType;
 
 import java.util.HashMap;

@@ -2,7 +2,7 @@ package org.xcolab.view.pages.proposals.view.proposal.helpers;
 
 import org.ocpsoft.common.util.Assert;
 
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.pojo.Proposal;
 
 public class JudgeFilterHelper {
 

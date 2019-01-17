@@ -1,6 +1,6 @@
 package org.xcolab.client.contest.util;
 
-import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestPhase;
 
 import java.util.ArrayList;
 import java.util.Collections;

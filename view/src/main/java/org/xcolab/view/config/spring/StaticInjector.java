@@ -3,7 +3,7 @@ package org.xcolab.view.config.spring;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import org.xcolab.client.StaticContestProposalContext;
+import org.xcolab.client.contest.StaticContestProposalContext;
 import org.xcolab.client.admin.IAdminClient;
 import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.IEmailTemplateClient;
@@ -28,7 +28,6 @@ import org.xcolab.view.pages.search.paging.SearchDataPage;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.LoadThreadStartTag;
 import org.xcolab.view.tags.LoadContentArticleTag;
 import org.xcolab.view.util.entity.activityEntry.ActivitySubscriptionEmailHelper;
-import org.xcolab.client.email.StaticEmailContext;
 
 @Component
 public class StaticInjector {

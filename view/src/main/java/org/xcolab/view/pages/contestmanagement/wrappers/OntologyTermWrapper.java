@@ -1,7 +1,7 @@
 package org.xcolab.view.pages.contestmanagement.wrappers;
 
 import org.xcolab.client.contest.OntologyClientUtil;
-import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
+import org.xcolab.client.contest.pojo.OntologyTerm;
 
 import java.util.ArrayList;
 import java.util.List;

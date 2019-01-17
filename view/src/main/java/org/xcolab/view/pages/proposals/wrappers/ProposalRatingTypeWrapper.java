@@ -1,8 +1,8 @@
 package org.xcolab.view.pages.proposals.wrappers;
 
-import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
-import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingType;
-import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingValue;
+import org.xcolab.client.contest.proposals.ProposalJudgeRatingClientUtil;
+import org.xcolab.client.contest.pojo.ProposalRatingType;
+import org.xcolab.client.contest.pojo.ProposalRatingValue;
 
 import java.io.Serializable;
 import java.util.List;

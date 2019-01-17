@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestPhase;
 
 @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Invalid Proposal URL")
 public class InvalidProposalUrlException extends InvalidAccessException {
