@@ -17,7 +17,7 @@
         <module>activities-client</module>
         <module>admin-client</module>
         <module>content-client</module>
-        <module>contestproposal-client</module>
+        <module>contest-client</module>
         <module>comment-client</module>
         <module>email-client</module>
         <module>flagging-client</module>
