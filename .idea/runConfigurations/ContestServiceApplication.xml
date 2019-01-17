@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="ContestServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" folderName="Services">
-    <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-    <option name="SPRING_BOOT_MAIN_CLASS" value="org.xcolab.service.ContestServiceApplication" />
+    <module name="contest-service" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="org.xcolab.service.contest.ContestServiceApplication" />
     <option name="VM_PARAMETERS" value="-Xms128M -Xmx512M" />
     <option name="ALTERNATIVE_JRE_PATH" />
     <additionalParameters>
@@ -16,8 +16,8 @@
         <option name="value" value="18088" />
       </param>
     </additionalParameters>
-    <module name="contest-service" />
-    <envs />
-    <method />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
   </configuration>
 </component>

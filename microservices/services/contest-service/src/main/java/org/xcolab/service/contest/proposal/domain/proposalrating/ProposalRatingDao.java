@@ -1,0 +1,21 @@
+package org.xcolab.service.contest.proposal.domain.proposalrating;
+
+import org.xcolab.model.tables.pojos.ProposalRating;
+import org.xcolab.service.contest.exceptions.NotFoundException;
+
+import java.util.List;
+
+public interface ProposalRatingDao {
+
+    int delete(Long id) ;
+
+    List<ProposalRating> findByGiven(Long proposalId, Long contestPhaseId, Long userId);
+
+    ProposalRating get(Long id) throws NotFoundException;
+
+    ProposalRating create(ProposalRating proposalRating);
+
+    boolean update(ProposalRating proposalRating);
+
+    List<ProposalRating> findByProposalIdJudgeTypeJudgeIdContestPhaseId(Long proposalId, Integer judgeType, Long contestPhaseId, Long userId);
+}
