@@ -55,7 +55,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ComponentScan("org.xcolab.view.i18n")
 @ComponentScan("org.xcolab.client")
 
-
 @TestPropertySource(
         properties = {
                 "cache.enabled=false"
@@ -63,7 +62,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 )
 
 @PrepareForTest({
-        IActivityClient.class,
         ContestClientUtil.class,
         MembersClient.class,
         MessagingClient.class,
@@ -79,7 +77,6 @@ public class LoginRegisterControllerTest {
     public void setup() throws Exception {
         ServiceRequestUtils.setInitialized(true);
 
-        PowerMockito.mockStatic(IActivityClient.class);
         PowerMockito.mockStatic(ContestClientUtil.class);
         PowerMockito.mockStatic(MessagingClient.class);
 
