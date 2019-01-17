@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalClient;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
@@ -55,9 +55,9 @@ public class ProposalAdminTabController extends BaseProposalTabController {
             throws ProposalsAuthorizationException, IOException {
 
         if (proposalContext.getPermissions().getCanDelete()) {
-            ContestPhase contestPhase = proposalContext.getContestPhase();
+            ContestPhaseWrapper contestPhase = proposalContext.getContestPhase();
             Proposal proposal = proposalContext.getProposal();
-            Contest contest = proposalContext.getContest();
+            ContestWrapper contest = proposalContext.getContest();
 
 
             proposal.setVisible(!delete);
@@ -82,19 +82,19 @@ public class ProposalAdminTabController extends BaseProposalTabController {
         ProposalsPermissions proposalsPermissions = proposalContext.getPermissions();
         final ClientHelper clients = proposalContext.getClients();
         final ContestClient contestClient = clients.getContestClient();
-        ContestPhase contestPhase = contestClient.getContestPhase(contestPhaseId);
+        ContestPhaseWrapper contestPhase = contestClient.getContestPhase(contestPhaseId);
         final Proposal proposal = proposalContext.getProposal();
-        final Contest contest = proposalContext.getContest();
+        final ContestWrapper contest = proposalContext.getContest();
         if (proposalsPermissions.getCanPromoteProposalToNextPhase(contestPhase)) {
             try {
                 final ProposalClient proposalClient = clients.getProposalClient();
                 final ProposalPhaseClient proposalPhaseClient = clients.getProposalPhaseClient();
 
-                Contest latestProposalContest =
+                ContestWrapper latestProposalContest =
                         proposalClient.getLatestContestInProposal(proposalId);
-                ContestPhase currentProposalContestPhase =
+                ContestPhaseWrapper currentProposalContestPhase =
                         contestClient.getContestPhase(contestPhaseId);
-                ContestPhase activePhaseForContest =
+                ContestPhaseWrapper activePhaseForContest =
                         contestClient.getActivePhase(latestProposalContest.getId());
 
                 proposalPhaseClient.promoteProposal(proposalId,

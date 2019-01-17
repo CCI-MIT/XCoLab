@@ -22,7 +22,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import org.xcolab.client.contest.pojo.AbstractContest;
-import org.xcolab.client.contest.pojo.ContestDiscussion;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.IContestDiscussion;
 import org.xcolab.service.contest.domain.contest.ContestDao;
 import org.xcolab.service.contest.domain.contestcollectioncard.ContestCollectionCardDao;
 import org.xcolab.service.contest.domain.contestdiscussion.ContestDiscussionDao;
@@ -47,7 +48,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ComponentScan("org.xcolab.service.contest")
 @ComponentScan("org.xcolab.client")
 @ComponentScan("com.netflix.discovery")
-@PrepareForTest({org.xcolab.client.contest.pojo.Contest.class,
+@PrepareForTest({ContestWrapper.class,
         org.xcolab.client.contest.ContestClient.class,
         org.xcolab.client.contest.ContestTeamMemberClient.class,
         org.xcolab.client.contest.OntologyClient.class
@@ -184,7 +185,7 @@ public class ContestControllerTest {
     @Test
     public void shouldUpdateContestDiscussion() throws Exception {
 
-        ContestDiscussion contestDisc = new ContestDiscussion();
+        IContestDiscussion contestDisc = new IContestDiscussion();
         contestDisc.setDiscussionId(10L);
 
 
@@ -196,7 +197,7 @@ public class ContestControllerTest {
     @Test
     public void shouldCreateNewContestDiscussion() throws Exception {
 
-        ContestDiscussion contest = new ContestDiscussion();
+        IContestDiscussion contest = new IContestDiscussion();
 
 
         this.mockMvc.perform(post("/contestDiscussions").contentType(contentType).accept(contentType)

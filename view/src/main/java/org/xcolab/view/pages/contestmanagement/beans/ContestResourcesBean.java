@@ -10,8 +10,8 @@ import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.view.pages.contestmanagement.utils.ContestResourcesHtmlParserUtil;
 import org.xcolab.view.pages.contestmanagement.wrappers.SectionDefinitionWrapper;
@@ -282,11 +282,11 @@ public class ContestResourcesBean implements Serializable {
         }
     }
 
-    public void fillOverviewSectionContent(Contest contest) {
-        List<ContestPhase> contestPhaseList =
+    public void fillOverviewSectionContent(ContestWrapper contest) {
+        List<ContestPhaseWrapper> contestPhaseList =
                 ContestClientUtil.getAllContestPhases(contest.getId());
         String proposalSubmissionEndDate = "";
-        for (ContestPhase contestPhase : contestPhaseList) {
+        for (ContestPhaseWrapper contestPhase : contestPhaseList) {
             Long contestPhaseType = contestPhase.getContestPhaseTypeId();
             if (contestPhaseType == 1L) {
                 final DateTimeFormatter dateTimeFormatterWithTimeZone = DATE_TIME_FORMAT

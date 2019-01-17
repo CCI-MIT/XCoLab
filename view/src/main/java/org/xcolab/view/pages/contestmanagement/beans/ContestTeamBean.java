@@ -1,7 +1,7 @@
 package org.xcolab.view.pages.contestmanagement.beans;
 
 import org.xcolab.client.contest.ContestTeamMemberClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestWrapper;
 import org.xcolab.commons.IdListUtil;
 
 import java.io.Serializable;
@@ -19,11 +19,11 @@ public class ContestTeamBean implements Serializable {
     private List<Long> userIdsFellows = new ArrayList<>();
     private List<Long> userIdsContestManagers = new ArrayList<>();
     private List<Long> userIdsIAFellows = new ArrayList<>();
-    private Contest contest;
+    private ContestWrapper contest;
     private HttpServletRequest request;
 
 
-    public ContestTeamBean(HttpServletRequest request, Contest contest)
+    public ContestTeamBean(HttpServletRequest request, ContestWrapper contest)
             throws NumberFormatException {
         this.request = request;
         this.contest = contest;
@@ -39,7 +39,7 @@ public class ContestTeamBean implements Serializable {
         // ("userIdsManagers"));
     }
 
-    public ContestTeamBean(Contest contest) {
+    public ContestTeamBean(ContestWrapper contest) {
         if (contest != null) {
             this.contest = contest;
             populateJudges();

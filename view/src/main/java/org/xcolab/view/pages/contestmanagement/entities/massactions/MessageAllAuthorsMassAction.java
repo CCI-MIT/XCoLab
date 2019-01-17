@@ -2,9 +2,9 @@ package org.xcolab.view.pages.contestmanagement.entities.massactions;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.enums.ContestStatus;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
-import org.xcolab.client.contest.pojo.ContestPhaseType;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.IContestPhaseType;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.pojo.Proposal;
 
@@ -20,12 +20,12 @@ public class MessageAllAuthorsMassAction extends MessageMassAction {
     }
 
     @Override
-    protected List<Proposal> getProposalsToBeMessaged(Contest contest) {
+    protected List<Proposal> getProposalsToBeMessaged(ContestWrapper contest) {
         Long contestId = contest.getId();
-        List<ContestPhase> allPhases = ContestClientUtil.getAllContestPhases(contestId);
+        List<ContestPhaseWrapper> allPhases = ContestClientUtil.getAllContestPhases(contestId);
         Map<Long, Proposal> proposalsMap = new HashMap<>();
-        for (ContestPhase cp : allPhases) {
-            ContestPhaseType cpt = ContestClientUtil.getContestPhaseType(cp.getContestPhaseTypeId());
+        for (ContestPhaseWrapper cp : allPhases) {
+            IContestPhaseType cpt = ContestClientUtil.getContestPhaseType(cp.getContestPhaseTypeId());
             if (cpt.getStatus().equals(ContestStatus.OPEN_FOR_SUBMISSION.name())) {
                 List<Proposal> proposals =
                         ProposalClientUtil.getActiveProposalsInContestPhase(cp.getId());

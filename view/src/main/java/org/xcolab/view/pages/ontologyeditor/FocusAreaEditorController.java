@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contest.OntologyClientUtil;
-import org.xcolab.client.contest.pojo.FocusArea;
-import org.xcolab.client.contest.pojo.OntologySpace;
-import org.xcolab.client.contest.pojo.OntologyTerm;
+import org.xcolab.client.contest.pojo.FocusAreaWrapper;
+import org.xcolab.client.contest.pojo.OntologySpaceWrapper;
+import org.xcolab.client.contest.pojo.OntologyTermWrapper;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.errors.AccessDeniedPage;
@@ -27,12 +27,12 @@ import javax.servlet.http.HttpServletResponse;
 public class FocusAreaEditorController {
 
     @ModelAttribute("allFocusAreas")
-    public List<FocusArea> getAllFocusAreas() {
+    public List<FocusAreaWrapper> getAllFocusAreas() {
         return OntologyClientUtil.getAllFocusAreas();
     }
 
     @ModelAttribute("ontologySpaces")
-    public List<OntologySpace> getOntologySpaces() {
+    public List<OntologySpaceWrapper> getOntologySpaces() {
         return OntologyClientUtil.getAllOntologySpaces();
     }
 
@@ -62,14 +62,14 @@ public class FocusAreaEditorController {
             @RequestParam(required = false) String name,
             @RequestParam(value = "ontologySpaces[]") String[] ontologySpaces) throws IOException {
 
-        FocusArea focusArea;
+        FocusAreaWrapper focusArea;
         if (id != null && id != 0L) {
             focusArea = OntologyClientUtil.getFocusArea(id);
             focusArea.setName(name);
             focusArea.setSortOrder(order);
             OntologyClientUtil.updateFocusArea(focusArea);
         } else {
-            focusArea = new FocusArea();
+            focusArea = new FocusAreaWrapper();
             focusArea.setSortOrder(order);
             focusArea.setName(name);
             focusArea = OntologyClientUtil.createFocusArea(focusArea);
@@ -79,7 +79,7 @@ public class FocusAreaEditorController {
         defaultOperationReturnMessage(true, "Ontology term updated successfully", response);
     }
 
-    private void updateFocusAreaOntologyTerms(FocusArea focusArea, String[] ontologyTerms) {
+    private void updateFocusAreaOntologyTerms(FocusAreaWrapper focusArea, String[] ontologyTerms) {
 
         OntologyClientUtil.deleteFocusAreaOntologyTerm(focusArea.getId(), null);
 
@@ -108,16 +108,16 @@ public class FocusAreaEditorController {
             @RequestParam(required = false) Long focusAreaId) throws IOException {
         JSONObject articleVersion = new JSONObject();
 
-        FocusArea focusArea = OntologyClientUtil.getFocusArea(focusAreaId);
+        FocusAreaWrapper focusArea = OntologyClientUtil.getFocusArea(focusAreaId);
         if (focusArea != null) {
             articleVersion.put("id", focusArea.getId());
             articleVersion.put("order", focusArea.getSortOrder());
             articleVersion.put("name", focusArea.getName());
-            List<OntologyTerm> allTerms =
+            List<OntologyTermWrapper> allTerms =
                     OntologyClientUtil.getOntologyTermsForFocusArea(focusArea);
             JSONArray array = new JSONArray();
             if (allTerms != null) {
-                for (OntologyTerm ot : allTerms) {
+                for (OntologyTermWrapper ot : allTerms) {
                     array.put(ot.getOntologySpaceId() + "_" + ot.getId());
                 }
             }

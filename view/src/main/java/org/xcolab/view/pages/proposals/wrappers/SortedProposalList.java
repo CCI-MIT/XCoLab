@@ -3,7 +3,7 @@ package org.xcolab.view.pages.proposals.wrappers;
 import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.contest.enums.ContestStatus;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.Proposal;
 import org.xcolab.client.contest.enums.ProposalSortColumn;
 import org.xcolab.view.util.pagination.SortFilterPage;
@@ -19,7 +19,7 @@ public class SortedProposalList {
     private final List<Proposal> proposalsWithoutRibbons = new ArrayList<>();
 
     public SortedProposalList(List<Proposal> proposals, final SortFilterPage sortFilterPage,
-            ContestPhase contestPhase) {
+            ContestPhaseWrapper contestPhase) {
         if (sortFilterPage == null) {
             throw new IllegalArgumentException("SortFilterPage can't be null");
         }
@@ -28,7 +28,7 @@ public class SortedProposalList {
         sortProposalLists(sortFilterPage, contestPhase.getStatus());
     }
 
-    private void initProposalLists(List<Proposal> proposals, ContestPhase contestPhase) {
+    private void initProposalLists(List<Proposal> proposals, ContestPhaseWrapper contestPhase) {
         final boolean proposalsCanHaveRibbons = contestPhase.isCompleted();
         if (!proposalsCanHaveRibbons) {
             // skip expensive ribbon check if proposals can't have ribbons

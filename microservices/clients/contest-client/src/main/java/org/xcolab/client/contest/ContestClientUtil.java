@@ -1,14 +1,14 @@
 package org.xcolab.client.contest;
 
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestCollectionCard;
-import org.xcolab.client.contest.pojo.ContestDiscussion;
-import org.xcolab.client.contest.pojo.ContestSchedule;
-import org.xcolab.client.contest.pojo.ContestTranslation;
-import org.xcolab.client.contest.pojo.ContestPhase;
-import org.xcolab.client.contest.pojo.ContestPhaseRibbonType;
-import org.xcolab.client.contest.pojo.ContestPhaseType;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.IContestCollectionCard;
+import org.xcolab.client.contest.pojo.IContestDiscussion;
+import org.xcolab.client.contest.pojo.IContestSchedule;
+import org.xcolab.client.contest.pojo.IContestTranslation;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.IContestPhaseRibbonType;
+import org.xcolab.client.contest.pojo.IContestPhaseType;
 
 import java.util.List;
 import java.util.Map;
@@ -24,29 +24,29 @@ public final class ContestClientUtil {
         return contestClient;
     }
 
-    public static Contest getContest(long contestId) {
+    public static ContestWrapper getContest(long contestId) {
         return contestClient.getContest(contestId);
     }
 
-    public static Contest getContest(long contestId, String lang) {
+    public static ContestWrapper getContest(long contestId, String lang) {
         return contestClient.getContest(contestId, lang);
     }
 
-    public static Contest createContest(Long userId, String name) {
+    public static ContestWrapper createContest(Long userId, String name) {
         return contestClient.createContest(userId, name);
     }
 
-    public static Contest createContest(
-            Contest contest) {
+    public static ContestWrapper createContest(
+            ContestWrapper contest) {
         return contestClient.createContest(contest);
     }
 
-    public static List<Contest> getContestsMatchingTier(
+    public static List<ContestWrapper> getContestsMatchingTier(
             Long contestTier) {
         return contestClient.getContestsMatchingTier(contestTier);
     }
 
-    public static boolean updateContest(Contest contest) {
+    public static boolean updateContest(ContestWrapper contest) {
         return contestClient.updateContest(contest);
     }
 
@@ -54,62 +54,62 @@ public final class ContestClientUtil {
         return contestClient.getProposalCount(contestId);
     }
 
-    public static Contest getContest(String contestUrlName, long contestYear)
+    public static ContestWrapper getContest(String contestUrlName, long contestYear)
             throws ContestNotFoundException {
         return contestClient.getContest(contestUrlName, contestYear);
     }
 
-    public static Contest getContest(String contestUrlName, long contestYear, String lang)
+    public static ContestWrapper getContest(String contestUrlName, long contestYear, String lang)
             throws ContestNotFoundException {
         return contestClient.getContest(contestUrlName, contestYear, lang);
     }
 
-    public static List<ContestTranslation> getTranslationsForContestId(long contestId) {
+    public static List<IContestTranslation> getTranslationsForContestId(long contestId) {
         return contestClient.getTranslationsForContestId(contestId);
     }
 
-    public static boolean saveTranslation(ContestTranslation contestTranslation) {
+    public static boolean saveTranslation(IContestTranslation contestTranslation) {
         return contestClient.saveTranslation(contestTranslation);
     }
 
-    public static ContestDiscussion createContestDiscussion(long threadId, long contestId,
+    public static IContestDiscussion createContestDiscussion(long threadId, long contestId,
             String tab) {
         return contestClient.createContestDiscussion(threadId, contestId, tab);
     }
 
-    public static ContestDiscussion getContestDiscussion(long contestId,
+    public static IContestDiscussion getContestDiscussion(long contestId,
             String tab) {
         return contestClient.getContestDiscussion(contestId, tab);
     }
 
-    public static Contest getContestByResourceArticleId(Long resourceArticleId) {
+    public static ContestWrapper getContestByResourceArticleId(Long resourceArticleId) {
         return contestClient.getContestByResourceArticleId(resourceArticleId);
     }
-    public static Contest getContestByThreadId(Long threadId){
+    public static ContestWrapper getContestByThreadId(Long threadId){
         return contestClient.getContestByThreadId(threadId);
     }
 
-    public static List<Contest> findContestsByActiveFeatured(
+    public static List<ContestWrapper> findContestsByActiveFeatured(
             Boolean active, Boolean featured) {
         return contestClient.findContestsByActiveFeatured(active, featured);
     }
 
-    public static List<Contest> findContestsByActive(boolean active) {
+    public static List<ContestWrapper> findContestsByActive(boolean active) {
         return contestClient.findContestsByActive(active);
     }
 
-    public static List<Contest> findContestsByTierAndOntologyTermIds(
+    public static List<ContestWrapper> findContestsByTierAndOntologyTermIds(
             Long contestTier, List<Long> focusAreaOntologyTerms) {
         return contestClient
                 .findContestsByTierAndOntologyTermIds(contestTier, focusAreaOntologyTerms);
     }
 
-    public static List<Contest> getContestMatchingOntologyTerms(
+    public static List<ContestWrapper> getContestMatchingOntologyTerms(
             List<Long> ontologyTermIds) {
         return contestClient.getContestMatchingOntologyTerms(ontologyTermIds);
     }
 
-    public static List<Contest> getContestByOntologyTerm(
+    public static List<ContestWrapper> getContestByOntologyTerm(
             Long ontologyTermId, Boolean getActive) {
         return contestClient.getContestByOntologyTerm(ontologyTermId, getActive);
     }
@@ -131,15 +131,16 @@ public final class ContestClientUtil {
         return contestClient.getNumberOfActiveContestsInCollectionCard(collectionCardId, viewType, onlyFeatured);
     }
 
-    public static boolean updateContestCollectionCard(ContestCollectionCard contestCollectionCard) {
+    public static boolean updateContestCollectionCard(IContestCollectionCard contestCollectionCard) {
         return contestClient.updateContestCollectionCard(contestCollectionCard);
     }
 
-    public static ContestCollectionCard createContestCollectionCard(ContestCollectionCard contestCollectionCard) {
+    public static IContestCollectionCard createContestCollectionCard(
+            IContestCollectionCard contestCollectionCard) {
         return contestClient.createContestCollectionCard(contestCollectionCard);
     }
 
-    public static List<Contest> getSubContestsByOntologySpaceId(
+    public static List<ContestWrapper> getSubContestsByOntologySpaceId(
             Long contestId, Long ontologySpaceId) {
         return contestClient.getSubContestsByOntologySpaceId(contestId, ontologySpaceId);
     }
@@ -148,28 +149,28 @@ public final class ContestClientUtil {
         contestClient.forcePromotionOfProposalInPhase(proposalId, contestPhaseId);
     }
 
-    public static List<Contest> getAllContests() {
+    public static List<ContestWrapper> getAllContests() {
         return contestClient.getAllContests();
     }
-    public static List<Contest> getAllContestsInYear(Integer contestYear) {
+    public static List<ContestWrapper> getAllContestsInYear(Integer contestYear) {
         return contestClient.getAllContestsInYear(contestYear);
     }
-    public static List<Contest> getContestsByProposalTemplateId(
+    public static List<ContestWrapper> getContestsByProposalTemplateId(
             Long proposalTemplateId) {
         return contestClient.getContestsByProposalTemplateId(proposalTemplateId);
     }
 
-    public static List<Contest> getContestsByContestScheduleId(
+    public static List<ContestWrapper> getContestsByContestScheduleId(
             Long contestScheduleId) {
         return contestClient.getContestsByContestScheduleId(contestScheduleId);
     }
 
-    public static List<Contest> getContestsByActivePrivate(
+    public static List<ContestWrapper> getContestsByActivePrivate(
             boolean contestActive, boolean contestPrivate) {
         return contestClient.getContestsByActivePrivate(contestActive, contestPrivate);
     }
 
-    public static List<Contest> getContests(Boolean contestActive,
+    public static List<ContestWrapper> getContests(Boolean contestActive,
             Boolean contestPrivate, Long contestTypeId) {
         return contestClient
                 .getContests(contestActive, contestPrivate, contestTypeId);
@@ -180,21 +181,21 @@ public final class ContestClientUtil {
         return contestClient.countContests(contestActive, contestPrivate, contestTypeId);
     }
 
-    public static List<Contest> getContestsByContestTypeId(
+    public static List<ContestWrapper> getContestsByContestTypeId(
             Long contestTypeId) {
         return contestClient.getContestsByContestTypeId(contestTypeId);
     }
 
-    public static ContestSchedule createContestSchedule(
-            ContestSchedule contestSchedule) {
+    public static IContestSchedule createContestSchedule(
+            IContestSchedule contestSchedule) {
         return contestClient.createContestSchedule(contestSchedule);
     }
 
-    public static boolean updateContestSchedule(ContestSchedule contestSchedule) {
+    public static boolean updateContestSchedule(IContestSchedule contestSchedule) {
         return contestClient.updateContestSchedule(contestSchedule);
     }
 
-    public static ContestSchedule getContestSchedule(long id) {
+    public static IContestSchedule getContestSchedule(long id) {
         return contestClient.getContestSchedule(id);
     }
 
@@ -202,7 +203,7 @@ public final class ContestClientUtil {
         return contestClient.isContestScheduleUsed(contestScheduleId);
     }
 
-    public static List<ContestSchedule> getAllContestSchedules() {
+    public static List<IContestSchedule> getAllContestSchedules() {
         return contestClient.getAllContestSchedules();
     }
 
@@ -214,21 +215,21 @@ public final class ContestClientUtil {
         return contestClient.getModelIds(contestId);
     }
 
-    public static List<ContestPhase> getVisibleContestPhases(
+    public static List<ContestPhaseWrapper> getVisibleContestPhases(
             Long contestId) {
         return contestClient.getVisibleContestPhases(contestId);
     }
 
     public static Integer getPointsAccessibleForActivePhaseOfContest(
-            Contest contest) {
+            ContestWrapper contest) {
         return contestClient.getPointsAccessibleForActivePhaseOfContest(contest);
     }
 
-    public static ContestPhase getActivePhase(Long contestId) {
+    public static ContestPhaseWrapper getActivePhase(Long contestId) {
         return contestClient.getActivePhase(contestId);
     }
 
-    public static ContestPhaseType getContestPhaseType(
+    public static IContestPhaseType getContestPhaseType(
             Long contestPhaseTypeId) {
         return contestClient.getContestPhaseType(contestPhaseTypeId);
     }
@@ -237,42 +238,42 @@ public final class ContestClientUtil {
         contestClient.deleteContestPhase(contestPhaseId);
     }
 
-    public static boolean updateContestPhase(ContestPhase contestPhase) {
+    public static boolean updateContestPhase(ContestPhaseWrapper contestPhase) {
         return contestClient.updateContestPhase(contestPhase);
     }
     public static List<Long> getContestYears() {
         return contestClient.getContestYears();
     }
 
-    public static ContestPhase createContestPhase(
-            ContestPhase contestPhase) {
+    public static ContestPhaseWrapper createContestPhase(
+            ContestPhaseWrapper contestPhase) {
         return contestClient.createContestPhase(contestPhase);
     }
 
-    public static List<ContestPhase> getAllContestPhases(
+    public static List<ContestPhaseWrapper> getAllContestPhases(
             Long contestId) {
         return contestClient.getAllContestPhases(contestId);
     }
 
-    public static List<ContestPhase> getPhasesForContestScheduleIdAndContest(
+    public static List<ContestPhaseWrapper> getPhasesForContestScheduleIdAndContest(
             Long contestScheduleId, Long contestId) {
         return contestClient.getPhasesForContestScheduleIdAndContest(contestScheduleId, contestId);
     }
 
-    public static List<ContestPhase> getTemplatePhasesForContestScheduleId(
+    public static List<ContestPhaseWrapper> getTemplatePhasesForContestScheduleId(
             Long contestScheduleId) {
         return contestClient.getTemplatePhasesForContestScheduleId(contestScheduleId);
     }
 
-    public static List<ContestPhase> getContestPhasesByType(long contestPhaseTypeId) {
+    public static List<ContestPhaseWrapper> getContestPhasesByType(long contestPhaseTypeId) {
         return contestClient.getContestPhasesByType(contestPhaseTypeId);
     }
 
-    public static ContestPhase getContestPhase(Long contestPhaseId) {
+    public static ContestPhaseWrapper getContestPhase(Long contestPhaseId) {
         return contestClient.getContestPhase(contestPhaseId);
     }
 
-    public static List<ContestPhaseType> getAllContestPhaseTypes() {
+    public static List<IContestPhaseType> getAllContestPhaseTypes() {
         return contestClient.getAllContestPhaseTypes();
     }
 
@@ -280,7 +281,7 @@ public final class ContestClientUtil {
         return contestClient.countContestsByContestType(contestTypeId);
     }
 
-    public static List<Contest> getContestsByContestType(
+    public static List<ContestWrapper> getContestsByContestType(
             Long contestTypeId) {
         return contestClient.getContestsByContestType(contestTypeId);
     }
@@ -288,15 +289,15 @@ public final class ContestClientUtil {
         return contestClient.getModelIdsAndNames(contestId);
     }
 
-    public static String getContestPhaseName(ContestPhase ck) {
+    public static String getContestPhaseName(ContestPhaseWrapper ck) {
         return contestClient.getContestPhaseName(ck);
     }
 
-    public static ContestPhaseRibbonType getContestPhaseRibbonType(long id) {
+    public static IContestPhaseRibbonType getContestPhaseRibbonType(long id) {
         return contestClient.getContestPhaseRibbonType(id);
     }
 
-    public static List<ContestPhaseRibbonType> getAllContestPhaseRibbonType() {
+    public static List<IContestPhaseRibbonType> getAllContestPhaseRibbonType() {
         return contestClient.getAllContestPhaseRibbonType();
     }
 
@@ -316,16 +317,16 @@ public final class ContestClientUtil {
         return contestClient.isContestTitleYearUnique(contestShortName, year, currentContestId);
     }
 
-    public static List<ContestCollectionCard> getSubContestCollectionCards(
+    public static List<IContestCollectionCard> getSubContestCollectionCards(
             long parentCollectionCardId) {
         return contestClient.getSubContestCollectionCards(parentCollectionCardId);
     }
 
-    public static List<ContestCollectionCard> getAllContestCollectionCards() {
+    public static List<IContestCollectionCard> getAllContestCollectionCards() {
         return contestClient.getAllContestCollectionCards();
     }
 
-    public static ContestCollectionCard getContestCollectionCard(long id) {
+    public static IContestCollectionCard getContestCollectionCard(long id) {
         return contestClient.getContestCollectionCard(id);
     }
 
@@ -337,7 +338,7 @@ public final class ContestClientUtil {
         return contestClient.autoPromoteProposals();
     }
 
-    public static List<Contest> findPublicContests(String contestName, List<Long> ontologyTermIds,
+    public static List<ContestWrapper> findPublicContests(String contestName, List<Long> ontologyTermIds,
             List<Long> contestTypeIds, List<Long> contestTiers){
         return contestClient.findPublicContests(contestName, ontologyTermIds,
                 contestTypeIds, contestTiers);

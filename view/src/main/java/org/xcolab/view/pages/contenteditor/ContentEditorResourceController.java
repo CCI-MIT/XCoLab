@@ -12,7 +12,7 @@ import org.xcolab.client.content.IContentClient;
 import org.xcolab.client.content.exceptions.ContentNotFoundException;
 import org.xcolab.client.content.pojo.IContentArticleVersion;
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestWrapper;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.errors.AccessDeniedPage;
@@ -54,7 +54,7 @@ public class ContentEditorResourceController extends BaseContentEditor {
             contentArticleVersion = null;
         }
 
-        Contest contest = ContestClientUtil.getContestByResourceArticleId(articleId);
+        ContestWrapper contest = ContestClientUtil.getContestByResourceArticleId(articleId);
 
 
         JSONObject articleVersion =
@@ -100,9 +100,9 @@ public class ContentEditorResourceController extends BaseContentEditor {
         JSONArray responseArray = new JSONArray();
 
         if (node == null || node.isEmpty()) {//root
-            List<Contest> allContests = ContestClientUtil.getAllContests();
+            List<ContestWrapper> allContests = ContestClientUtil.getAllContests();
             Map<String, String> yearFolders = new LinkedHashMap<>();
-            for (Contest c : allContests) {
+            for (ContestWrapper c : allContests) {
                 yearFolders.put(c.getContestYear().toString(), "");
 
             }
@@ -116,8 +116,8 @@ public class ContentEditorResourceController extends BaseContentEditor {
             }
         } else {//year
             Integer year = Integer.parseInt(node);//should be the year
-            List<Contest> contestsInYear = ContestClientUtil.getAllContestsInYear(year);
-            for (Contest c : contestsInYear) {
+            List<ContestWrapper> contestsInYear = ContestClientUtil.getAllContestsInYear(year);
+            for (ContestWrapper c : contestsInYear) {
                 if (c.getResourceArticleId() != null && c.getResourceArticleId() != 0L) {
                     responseArray
                             .put(articleNode(c.getTitle(), c.getResourceArticleId()));

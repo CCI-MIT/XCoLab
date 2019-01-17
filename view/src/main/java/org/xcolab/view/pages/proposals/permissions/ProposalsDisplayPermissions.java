@@ -1,7 +1,7 @@
 package org.xcolab.view.pages.proposals.permissions;
 
 
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.contest.pojo.Proposal;
 import org.xcolab.client.contest.pojo.ProposalTeamMembershipRequest;
@@ -16,13 +16,13 @@ public class ProposalsDisplayPermissions {
     private final ProposalsPermissions proposalsPermissions;
     private final ClientHelper clientHelper;
     private final Proposal proposal;
-    private final ContestPhase contestPhase;
+    private final ContestPhaseWrapper contestPhase;
     private final long userId;
     private final boolean isGuest;
     private final boolean isLoggedIn;
 
     public ProposalsDisplayPermissions(ProposalsPermissions proposalsPermissions, Proposal proposal,
-            ContestPhase contestPhase, ClientHelper clientHelper, long userId) {
+            ContestPhaseWrapper contestPhase, ClientHelper clientHelper, long userId) {
         this.proposalsPermissions = proposalsPermissions;
         this.proposal = proposal;
         this.contestPhase = contestPhase;

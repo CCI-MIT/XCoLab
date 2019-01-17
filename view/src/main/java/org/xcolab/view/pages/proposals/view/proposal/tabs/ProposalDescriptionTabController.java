@@ -15,8 +15,8 @@ import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.ProposalTemplateSectionDefinition;
 import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.members.PlatformTeamsClient;
@@ -112,7 +112,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
 
         final ClientHelper clients = proposalContext.getClients();
         final ProposalClient proposalClient = clients.getProposalClient();
-        final Contest baseContest = proposalClient
+        final ContestWrapper baseContest = proposalClient
                 .getCurrentContestForProposal(proposal.getId());
 
         if (voted) {
@@ -122,7 +122,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
         final boolean isMove = moveFromContestPhaseId != null && moveType != null;
         if (isMove) {
             // get base proposal from base contest
-            ContestPhase baseContestPhase =
+            ContestPhaseWrapper baseContestPhase =
                     ContestClientUtil.getActivePhase(baseContest.getId());
 
             Proposal baseProposalWrapped = new Proposal(proposal, proposal.getCurrentVersion(),
@@ -180,13 +180,13 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
         request.setAttribute(DiscussionPermissions.REQUEST_ATTRIBUTE_NAME, pdp);
 
         setLinkedProposals(model, proposalContext, proposal);
-        final Contest contest = proposalContext.getContest();
+        final ContestWrapper contest = proposalContext.getContest();
         populateMoveHistory(model, proposalContext, proposal, contest);
 
         return "proposals/proposalDetails";
     }
 
-    private boolean hasUnmappedSections(Contest moveToContest, Proposal baseProposalWrapped) {
+    private boolean hasUnmappedSections(ContestWrapper moveToContest, Proposal baseProposalWrapped) {
         Set<Long> newContestSections = moveToContest.getSections().stream()
                 .map(ProposalTemplateSectionDefinition::getSectionDefinitionId)
                 .collect(Collectors.toSet());
@@ -203,7 +203,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
     }
 
     private void populateMoveHistory(Model model, ProposalContext proposalContext,
-            Proposal proposal, Contest contest) {
+            Proposal proposal, ContestWrapper contest) {
 
         final ClientHelper clients = proposalContext.getClients();
         final ProposalMoveClient proposalMoveClient = clients.getProposalMoveClient();
@@ -251,7 +251,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
                 || judgeProposalFeedbackBean.getContestPhaseId() == null) {
 
             final Proposal proposal = proposalContext.getProposal();
-            final ContestPhase contestPhase = proposalContext.getContestPhase();
+            final ContestPhaseWrapper contestPhase = proposalContext.getContestPhase();
 
             ProposalJudgeWrapper proposalJudgeWrapper = new ProposalJudgeWrapper(proposal, member);
             JudgeProposalFeedbackBean judgeProposalBean =
@@ -262,7 +262,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
         }
     }
 
-    private void setVotingDeadline(Model model, ProposalContext proposalContext, Contest baseContest) {
+    private void setVotingDeadline(Model model, ProposalContext proposalContext, ContestWrapper baseContest) {
         Date votingDeadline = getVotingDeadline(proposalContext, baseContest);
         if (votingDeadline != null) {
             final DateFormat customDateFormat = new SimpleDateFormat("MMMM dd, yyyy", Locale.US);
@@ -272,18 +272,18 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
         }
     }
 
-    private Date getVotingDeadline(ProposalContext proposalContext, Contest contest) {
-        List<ContestPhase> contestPhases = proposalContext.getClients().getContestClient()
+    private Date getVotingDeadline(ProposalContext proposalContext, ContestWrapper contest) {
+        List<ContestPhaseWrapper> contestPhases = proposalContext.getClients().getContestClient()
                 .getAllContestPhases(contest.getId());
-        final ContestPhase activeVotingPhase = getActiveVotingPhase(contestPhases);
+        final ContestPhaseWrapper activeVotingPhase = getActiveVotingPhase(contestPhases);
         if (activeVotingPhase != null) {
             return activeVotingPhase.getPhaseEndDate();
         }
         return null;
     }
 
-    private ContestPhase getActiveVotingPhase(List<ContestPhase> contestPhases) {
-        for (ContestPhase phase : contestPhases) {
+    private ContestPhaseWrapper getActiveVotingPhase(List<ContestPhaseWrapper> contestPhases) {
+        for (ContestPhaseWrapper phase : contestPhases) {
             if (phase.getContestPhaseTypeId() == ContestPhaseTypeValue.SELECTION_OF_WINNERS.getTypeId() ||
                     phase.getContestPhaseTypeId() == ContestPhaseTypeValue.SELECTION_OF_WINNERS_NEW.getTypeId() ||
                     phase.getContestPhaseTypeId() == ContestPhaseTypeValue.WINNERS_SELECTION.getTypeId() ||

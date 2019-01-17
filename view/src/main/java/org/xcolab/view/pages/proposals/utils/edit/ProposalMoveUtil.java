@@ -4,8 +4,8 @@ import org.apache.commons.lang3.NotImplementedException;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
 import org.xcolab.client.contest.proposals.ProposalClient;
 import org.xcolab.client.contest.proposals.ProposalMoveClient;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
@@ -28,15 +28,15 @@ public final class ProposalMoveUtil {
 
     public static void moveProposal(ProposalContext proposalContext,
             UpdateProposalDetailsBean updateProposalSectionsBean, Proposal proposal,
-            ContestPhase contestPhase, Contest targetContest, long userId) {
+            ContestPhaseWrapper contestPhase, ContestWrapper targetContest, long userId) {
         try {
             final ClientHelper clients = proposalContext.getClients();
             final ProposalClient proposalClient = clients.getProposalClient();
             final ProposalPhaseClient proposalPhaseClient = clients.getProposalPhaseClient();
             final ProposalMoveClient proposalMoveClient = clients.getProposalMoveClient();
 
-            final Contest fromContest = proposalClient.getCurrentContestForProposal(proposal.getId());
-            ContestPhase targetPhase = ContestClientUtil.getActivePhase(targetContest.getId());
+            final ContestWrapper fromContest = proposalClient.getCurrentContestForProposal(proposal.getId());
+            ContestPhaseWrapper targetPhase = ContestClientUtil.getActivePhase(targetContest.getId());
 
             try {
                 if (proposalPhaseClient.getProposal2PhaseByProposalIdContestPhaseId(proposal.getId(),

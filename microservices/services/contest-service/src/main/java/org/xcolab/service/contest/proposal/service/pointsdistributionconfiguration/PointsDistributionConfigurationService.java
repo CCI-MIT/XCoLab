@@ -3,6 +3,7 @@ package org.xcolab.service.contest.proposal.service.pointsdistributionconfigurat
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.xcolab.client.contest.pojo.IPointsDistributionConfiguration;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.model.tables.pojos.PointType;
@@ -38,29 +39,29 @@ public class PointsDistributionConfigurationService {
         this.proposalService = proposalService;
     }
 
-    public PointsDistributionConfiguration getPointsDistributionConfiguration(long proposalTemplateSectionDefinitionId){
-        PointsDistributionConfiguration config = null;
+    public IPointsDistributionConfiguration getPointsDistributionConfiguration(long proposalTemplateSectionDefinitionId){
+        IPointsDistributionConfiguration config = null;
         try{
             config = pointsDistributionConfigurationDao.getByProposalTemplateSectionDefinitionId(proposalTemplateSectionDefinitionId);
         } catch(NotFoundException ignored) {}
         return config;
     }
 
-    public List<PointsDistributionConfiguration> getPointsDistributionConfiguration(long proposalId, long pointTypeId) {
+    public List<IPointsDistributionConfiguration> getPointsDistributionConfiguration(long proposalId, long pointTypeId) {
             return pointsDistributionConfigurationDao.findByGiven(proposalId, pointTypeId);
     }
 
     public void verifyDistributionConfigurationsForProposalId(long proposalId) {
-        Map<Long, List<PointsDistributionConfiguration>> pdcsByPointTypeId = new HashMap<>();
-        for (PointsDistributionConfiguration pdc : pointsDistributionConfigurationDao.findByGiven(proposalId, null)) {
-            List<PointsDistributionConfiguration> pdcs = pdcsByPointTypeId
+        Map<Long, List<IPointsDistributionConfiguration>> pdcsByPointTypeId = new HashMap<>();
+        for (IPointsDistributionConfiguration pdc : pointsDistributionConfigurationDao.findByGiven(proposalId, null)) {
+            List<IPointsDistributionConfiguration> pdcs = pdcsByPointTypeId
                     .computeIfAbsent(pdc.getPointTypeId(), k -> new ArrayList<>());
             pdcs.add(pdc);
         }
 
-        for (Map.Entry<Long, List<PointsDistributionConfiguration>> entry : pdcsByPointTypeId.entrySet()) {
+        for (Map.Entry<Long, List<IPointsDistributionConfiguration>> entry : pdcsByPointTypeId.entrySet()) {
             final long pointTypeId = entry.getKey();
-            final List<PointsDistributionConfiguration> pdcs = entry.getValue();
+            final List<IPointsDistributionConfiguration> pdcs = entry.getValue();
 
 
             try {
@@ -71,7 +72,7 @@ public class PointsDistributionConfigurationService {
                 }
 
                 double sum = 0;
-                for (PointsDistributionConfiguration pdc : pdcs) {
+                for (IPointsDistributionConfiguration pdc : pdcs) {
                     sum += pdc.getPercentage();
                 }
 
@@ -79,7 +80,7 @@ public class PointsDistributionConfigurationService {
                     //_log.warn(String.format("Fixing PointsDistributionConfiguration for proposal %d pointType %d: sum is %f (should be 1)",
                     //       proposalId, pointTypeId, sum));
                     double scaleFactor = 1.0 / sum;
-                    for (PointsDistributionConfiguration pdc : pdcs) {
+                    for (IPointsDistributionConfiguration pdc : pdcs) {
                         pdc.setPercentage(pdc.getPercentage() * scaleFactor);
                         pointsDistributionConfigurationDao.update(pdc);
                     }
@@ -90,7 +91,7 @@ public class PointsDistributionConfigurationService {
         }
     }
 
-    private void verifyTeamMemberships(long proposalId, long pointTypeId, List<PointsDistributionConfiguration> pdcs) {
+    private void verifyTeamMemberships(long proposalId, long pointTypeId, List<IPointsDistributionConfiguration> pdcs) {
 
         try {
             Set<Long> userIds = new HashSet<>();
@@ -100,7 +101,7 @@ public class PointsDistributionConfigurationService {
                 missinguserIds.add(user.getId());
             }
 
-            for (PointsDistributionConfiguration pdc : pdcs) {
+            for (IPointsDistributionConfiguration pdc : pdcs) {
                 if (userIds.contains(pdc.getTargetUserId())) {
                     missinguserIds.remove(pdc.getTargetUserId());
                 } else {
@@ -120,12 +121,12 @@ public class PointsDistributionConfigurationService {
         }
     }
 
-    public PointsDistributionConfiguration addDistributionConfiguration(long proposalId, long pointTypeId,
+    public IPointsDistributionConfiguration addDistributionConfiguration(long proposalId, long pointTypeId,
                                                                         Long targetUserId, Long targetSubProposalId,
                                                                         double percentage, long creator) {
 
 
-        PointsDistributionConfiguration model = new PointsDistributionConfiguration();
+        IPointsDistributionConfiguration model = new PointsDistributionConfiguration();
 
         model.setProposalId(proposalId);
         model.setPointTypeId(pointTypeId);

@@ -2,7 +2,7 @@
           xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<jsp:directive.attribute name="proposal" type="org.xcolab.client.contest.pojo.Proposal" required="true" rtexprvalue="true" description="Proposal" />
-	<jsp:directive.attribute name="phase" type="org.xcolab.client.contest.pojo.ContestPhase" required="false" rtexprvalue="true" description="Phase" />
+	<jsp:directive.attribute name="phase" type="org.xcolab.client.contest.pojo.ContestPhaseWrapper" required="false" rtexprvalue="true" description="Phase" />
 	<jsp:directive.attribute name="edit" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Edit proposal link" />
 	<jsp:directive.attribute name="text" type="java.lang.String" required="false" rtexprvalue="true" description="Link text" />
 	<jsp:directive.attribute name="hashString" type="java.lang.String" required="false" rtexprvalue="true" description="Hash string" />

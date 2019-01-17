@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestWrapper;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalClient;
 import org.xcolab.client.contest.pojo.Proposal;
@@ -52,7 +52,7 @@ public class SubscribeProposalActionController {
         AlertMessage.warning(
                 "Could not subscribe to proposal, please make sure to click the button only once.")
                 .flash(request);
-        final Contest contest = proposalContext.getContest();
+        final ContestWrapper contest = proposalContext.getContest();
         final Proposal proposal = proposalContext.getProposal();
         return "redirect:" + proposal.getProposalLinkUrl(contest);
     }

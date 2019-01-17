@@ -1,7 +1,7 @@
 package org.xcolab.client.contest.util;
 
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
 import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
 
 import java.sql.Timestamp;
@@ -21,7 +21,7 @@ public class ContestScheduleChangeHelper {
         this(contestId, ContestClientUtil.getTemplatePhasesForContestScheduleId(newScheduleId));
     }
 
-    public ContestScheduleChangeHelper(long contestId, List<ContestPhase> newPhases) {
+    public ContestScheduleChangeHelper(long contestId, List<ContestPhaseWrapper> newPhases) {
         this.contestId = contestId;
         this.existingPhases = SchedulePhase.wrapList(ContestClientUtil.getAllContestPhases(contestId));
         this.newPhases = SchedulePhase.wrapList(newPhases);
@@ -32,8 +32,8 @@ public class ContestScheduleChangeHelper {
                 && isActivePhaseValid(existingPhases, newPhases);
     }
 
-    public static boolean isValidChange(List<ContestPhase> existingPhases,
-            List<ContestPhase> newPhases) {
+    public static boolean isValidChange(List<ContestPhaseWrapper> existingPhases,
+            List<ContestPhaseWrapper> newPhases) {
         final List<SchedulePhase> existingSchedulePhases = SchedulePhase.wrapList(existingPhases);
         final List<SchedulePhase> newSchedulePhases = SchedulePhase.wrapList(newPhases);
 
@@ -89,7 +89,7 @@ public class ContestScheduleChangeHelper {
 
     private static Optional<SchedulePhase> getActivePhase(List<SchedulePhase> contestPhases) {
         return contestPhases.stream()
-                .filter(ContestPhase::isActive)
+                .filter(ContestPhaseWrapper::isActive)
                 .findFirst();
     }
 
@@ -103,7 +103,7 @@ public class ContestScheduleChangeHelper {
     }
 
     private void removeFutureContestPhases() {
-        for (ContestPhase contestPhase : existingPhases) {
+        for (ContestPhaseWrapper contestPhase : existingPhases) {
             if (!contestPhase.isAlreadyStarted()) {
                 ContestClientUtil.deleteContestPhase(contestPhase.getId());
             }
@@ -151,13 +151,13 @@ public class ContestScheduleChangeHelper {
         ContestClientUtil.updateContestPhase(contestPhase);
     }
 
-    private static boolean isContestPhaseAlreadyPromoted(ContestPhase contestPhase) {
+    private static boolean isContestPhaseAlreadyPromoted(ContestPhaseWrapper contestPhase) {
         return contestPhase.getContestPhaseAutopromote()
                 .equals(ContestPhasePromoteType.PROMOTE_DONE.getValue());
     }
 
     private void createFutureContestPhases() {
-        for (ContestPhase schedulePhase : newPhases) {
+        for (ContestPhaseWrapper schedulePhase : newPhases) {
             if (!schedulePhase.isAlreadyStarted()) {
                 cloneContestPhaseWithContestId(schedulePhase, contestId);
             }
@@ -165,9 +165,9 @@ public class ContestScheduleChangeHelper {
     }
 
     private static void cloneContestPhaseWithContestId(
-            ContestPhase contestSchedulePhase, Long contestId) {
+            ContestPhaseWrapper contestSchedulePhase, Long contestId) {
 
-        ContestPhase newContestPhase = ContestPhase.clone(contestSchedulePhase);
+        ContestPhaseWrapper newContestPhase = ContestPhaseWrapper.clone(contestSchedulePhase);
         newContestPhase.setContestId(contestId);
         ContestClientUtil.createContestPhase(newContestPhase);
     }
@@ -175,15 +175,15 @@ public class ContestScheduleChangeHelper {
     public void changeScheduleForBlankContest() {
         removeExistingContestPhases();
 
-        for (ContestPhase schedulePhase : newPhases) {
+        for (ContestPhaseWrapper schedulePhase : newPhases) {
             cloneContestPhaseWithContestId(schedulePhase, contestId);
         }
     }
 
     private void removeExistingContestPhases() {
 
-        List<ContestPhase> contestPhases = ContestClientUtil.getAllContestPhases(contestId);
-        for (ContestPhase contestPhase : contestPhases) {
+        List<ContestPhaseWrapper> contestPhases = ContestClientUtil.getAllContestPhases(contestId);
+        for (ContestPhaseWrapper contestPhase : contestPhases) {
             ContestClientUtil.deleteContestPhase(contestPhase.getId());
         }
     }

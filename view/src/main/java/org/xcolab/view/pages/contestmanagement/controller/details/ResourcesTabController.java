@@ -18,7 +18,7 @@ import org.xcolab.client.content.pojo.IContentArticleVersion;
 import org.xcolab.client.content.pojo.IContentFolder;
 import org.xcolab.client.content.pojo.tables.pojos.ContentArticleVersion;
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestWrapper;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.view.auth.MemberAuthUtil;
@@ -27,9 +27,6 @@ import org.xcolab.view.pages.contestmanagement.beans.ContestResourcesBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.view.pages.contestmanagement.wrappers.WikiPageWrapper;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
-
-import java.io.UnsupportedEncodingException;
-import java.text.ParseException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -60,7 +57,7 @@ public class ResourcesTabController extends AbstractTabController {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
-        Contest contest = ContestClientUtil.getContest(contestId);
+        ContestWrapper contest = ContestClientUtil.getContest(contestId);
         boolean enabled = contest.getResourceArticleId() != 0;
 
         if (enabled) {
@@ -82,7 +79,7 @@ public class ResourcesTabController extends AbstractTabController {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
-        Contest contest = ContestClientUtil.getContest(contestId);
+        ContestWrapper contest = ContestClientUtil.getContest(contestId);
         if (enable) {
             IContentArticleVersion contentArticleVersion = new ContentArticleVersion();
             contentArticleVersion.setFolderId(IContentFolder.RESOURCE_FOLDER_ID);

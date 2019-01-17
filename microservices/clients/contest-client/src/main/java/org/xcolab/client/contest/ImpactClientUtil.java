@@ -1,10 +1,10 @@
 package org.xcolab.client.contest;
 
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ImpactIteration;
-import org.xcolab.client.contest.pojo.ImpactTemplateFocusAreaList;
-import org.xcolab.client.contest.pojo.ImpactTemplateMaxFocusArea;
-import org.xcolab.client.contest.pojo.ImpactTemplateSeries;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.IImpactIteration;
+import org.xcolab.client.contest.pojo.IImpactTemplateFocusAreaList;
+import org.xcolab.client.contest.pojo.IImpactTemplateMaxFocusArea;
+import org.xcolab.client.contest.pojo.IImpactTemplateSeries;
 
 import java.util.List;
 
@@ -19,41 +19,41 @@ public final class ImpactClientUtil {
         return client;
     }
 
-    public static List<ImpactTemplateMaxFocusArea> getContestImpactFocusAreas(
-            Contest contest) {
+    public static List<IImpactTemplateMaxFocusArea> getContestImpactFocusAreas(
+            ContestWrapper contest) {
         return client.getContestImpactFocusAreas(contest);
     }
 
-    public static ImpactTemplateFocusAreaList getContestImpactFocusAreaList(
-            Contest contest) {
+    public static IImpactTemplateFocusAreaList getContestImpactFocusAreaList(
+            ContestWrapper contest) {
         return client.getContestImpactFocusAreaList(contest);
     }
 
-    public static ImpactTemplateFocusAreaList getImpactTemplateFocusAreaList(
+    public static IImpactTemplateFocusAreaList getImpactTemplateFocusAreaList(
             long focusAreaListId) {
         return client.getImpactTemplateFocusAreaList(focusAreaListId);
     }
 
-    public static List<ImpactTemplateMaxFocusArea> getImpactTemplateMaxFocusArea(
+    public static List<IImpactTemplateMaxFocusArea> getImpactTemplateMaxFocusArea(
             Long focusAreaListId) {
         return client.getImpactTemplateMaxFocusArea(focusAreaListId);
     }
 
-    public static List<ImpactIteration> getContestImpactIterations(
-            Contest contest) {
+    public static List<IImpactIteration> getContestImpactIterations(
+            ContestWrapper contest) {
         return client.getContestImpactIterations(contest);
     }
 
-    public static ImpactTemplateSeries getContestImpactTemplateSeries(
-            Contest contest) {
+    public static IImpactTemplateSeries getContestImpactTemplateSeries(
+            ContestWrapper contest) {
         return client.getContestImpactTemplateSeries(contest);
     }
 
-    public static ImpactTemplateSeries getImpactTemplateSeries(long seriesId) {
+    public static IImpactTemplateSeries getImpactTemplateSeries(long seriesId) {
         return client.getImpactTemplateSeries(seriesId);
     }
 
-    public static List<ImpactIteration> getContestImpactIterations(
+    public static List<IImpactIteration> getContestImpactIterations(
             Long iterationId) {
         return client.getContestImpactIterations(iterationId);
     }

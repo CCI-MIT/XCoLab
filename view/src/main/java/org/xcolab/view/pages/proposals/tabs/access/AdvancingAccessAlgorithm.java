@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.proposals.tabs.access;
 
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.Proposal;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.tabs.ProposalTabCanAccessAlgorithm;
@@ -19,7 +19,7 @@ public class AdvancingAccessAlgorithm implements ProposalTabCanAccessAlgorithm {
             return false;
         }
 
-        ContestPhase contestPhase = proposalContext.getContestPhase();
+        ContestPhaseWrapper contestPhase = proposalContext.getContestPhase();
 
         final boolean isDirectJudging = contestPhase.getIsJudged()
                 && !contestPhase.getFellowScreeningActive();

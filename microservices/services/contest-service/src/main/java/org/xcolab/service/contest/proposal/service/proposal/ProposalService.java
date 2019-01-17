@@ -12,8 +12,8 @@ import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ProposalTemplateClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.ProposalTemplateSectionDefinition;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
@@ -75,8 +75,8 @@ public class ProposalService {
             proposal.setVisible(true);
             proposal.setAuthorUserId(authorUserId);
 
-            ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
-            final Contest contest = ContestClientUtil.getContest(contestPhase.getContestId());
+            ContestPhaseWrapper contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
+            final ContestWrapper contest = ContestClientUtil.getContest(contestPhase.getContestId());
             ContestType contestType = StaticAdminContext.getContestTypeClient()
                     .getContestType(contest.getContestTypeId());
 
@@ -224,7 +224,7 @@ public class ProposalService {
     public Long getLatestContestIdForProposal(Long proposalId) {
         try {
             Long contestPhaseId = getLatestContestPhaseIdInProposal(proposalId);
-            ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
+            ContestPhaseWrapper contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
             return contestPhase.getContestId();
         } catch (NotFoundException e) {
             return null;
@@ -232,8 +232,8 @@ public class ProposalService {
     }
 
 
-    public Contest getLatestProposalContest(Long proposalId) {
-        Contest contest = null;
+    public ContestWrapper getLatestProposalContest(Long proposalId) {
+        ContestWrapper contest = null;
         try {
             //TODO COLAB-2600: this looks very shady - we're calling the client from the service!
             contest = ProposalClientUtil.getLatestContestInProposal(proposalId);

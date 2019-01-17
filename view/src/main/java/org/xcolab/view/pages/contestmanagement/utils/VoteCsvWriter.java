@@ -7,8 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
@@ -76,14 +76,14 @@ public class VoteCsvWriter extends CsvResponseWriter {
         final String colabUrl = PlatformAttributeKey.COLAB_URL.get();
 
         //local caches, since many votes will likely be in the same contest
-        Map<Long, Contest> contests  = new HashMap<>();
-        Map<Long, ContestPhase> phases  = new HashMap<>();
+        Map<Long, ContestWrapper> contests  = new HashMap<>();
+        Map<Long, ContestPhaseWrapper> phases  = new HashMap<>();
         Map<Long, Proposal> proposals  = new HashMap<>();
 
         for (ProposalVote vote : proposalVotes) {
-            ContestPhase contestPhase = phases.computeIfAbsent(vote.getContestPhaseId(),
+            ContestPhaseWrapper contestPhase = phases.computeIfAbsent(vote.getContestPhaseId(),
                     ContestClientUtil::getContestPhase);
-            Contest contest = contests.computeIfAbsent(contestPhase.getContestId(),
+            ContestWrapper contest = contests.computeIfAbsent(contestPhase.getContestId(),
                     ContestClientUtil::getContest);
 
             Member member = getMemberOrNull(vote);

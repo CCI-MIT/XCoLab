@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ImpactClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ImpactIteration;
-import org.xcolab.client.contest.pojo.OntologyTerm;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.IImpactIteration;
+import org.xcolab.client.contest.pojo.OntologyTermWrapper;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.client.contest.proposals.ProposalAttributeClient;
@@ -70,7 +70,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             return new AccessDeniedPage(currentMember).toViewName(response);
         }
 
-        Contest contest = proposalContext.getContest();
+        ContestWrapper contest = proposalContext.getContest();
         Proposal proposal = proposalContext.getProposal();
         setCommonModelAndPageAttributes(request, model, proposalContext, ProposalTab.IMPACT);
 
@@ -117,7 +117,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             IntegratedProposalImpactSeries integratedProposalImpactSeries =
                     new IntegratedProposalImpactSeries(proposalContext, proposal, contest);
             model.addAttribute("impactSeries", integratedProposalImpactSeries);
-            List<ImpactIteration> impactIterations = ImpactClientUtil.getContestImpactIterations(contest);
+            List<IImpactIteration> impactIterations = ImpactClientUtil.getContestImpactIterations(contest);
             model.addAttribute("impactIterations", impactIterations);
         }
 
@@ -256,16 +256,16 @@ public class ProposalImpactTabController extends BaseProposalTabController {
     }
 
     private String showImpactTabBasic(Model model, ProposalContext proposalContext,
-            Contest contest, Proposal proposal) {
+            ContestWrapper contest, Proposal proposal) {
 
-        List<ImpactIteration> impactIterations = ImpactClientUtil.getContestImpactIterations(contest);
+        List<IImpactIteration> impactIterations = ImpactClientUtil.getContestImpactIterations(contest);
         model.addAttribute("impactIterations", impactIterations);
 
         ProposalImpactSeriesList proposalImpactSeriesList =
                 new ProposalImpactSeriesList(contest, proposal);
         model.addAttribute("impactSerieses", proposalImpactSeriesList.getImpactSerieses());
 
-        Map<OntologyTerm, List<OntologyTerm>> ontologyMap =
+        Map<OntologyTermWrapper, List<OntologyTermWrapper>> ontologyMap =
                 new ProposalImpactUtil(contest).calculateAvailableOntologyMap(proposalImpactSeriesList.getImpactSerieses());
         model.addAttribute("regionTerms", sortByName(ontologyMap.keySet()));
         model.addAttribute("proposalsPermissions", proposalContext.getPermissions());
@@ -274,13 +274,13 @@ public class ProposalImpactTabController extends BaseProposalTabController {
     }
 
     private List<ProposalImpactSeries> getImpactTabBasicProposal(ProposalContext proposalContext,
-            Proposal proposalParent, Contest contest) {
+            Proposal proposalParent, ContestWrapper contest) {
         Set<Proposal> referencedSubProposals =
                 IntegratedProposalImpactSeries.getSubProposalsOnContestTier(proposalContext,
                         proposalParent,
                         ContestTier.BASIC.getTierType());
         try {
-            List<OntologyTerm> ontologyTermList = contest.getWhere();
+            List<OntologyTermWrapper> ontologyTermList = contest.getWhere();
             List<ProposalImpactSeries> proposalImpactSerieses = new ArrayList<>();
             for (Proposal proposal : referencedSubProposals) {
                 ProposalImpactSeriesList proposalImpactSeriesList = new ProposalImpactSeriesList(
@@ -298,21 +298,21 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         return null;
     }
 
-    private List<OntologyTerm> sortByName(Collection<OntologyTerm> collection) {
-        List<OntologyTerm> list = new ArrayList<>(collection);
+    private List<OntologyTermWrapper> sortByName(Collection<OntologyTermWrapper> collection) {
+        List<OntologyTermWrapper> list = new ArrayList<>(collection);
         list.sort(Comparator.comparing(o -> o.getName()));
         return list;
     }
 
-    private boolean isGlobalContest(Contest contest) {
+    private boolean isGlobalContest(ContestWrapper contest) {
         return contest.getContestTier() == ContestTier.GLOBAL.getTierType();
     }
 
-    private boolean isRegionalContest(Contest contest) {
+    private boolean isRegionalContest(ContestWrapper contest) {
         return contest.getContestTier() == ContestTier.REGION_AGGREGATE.getTierType();
     }
 
-    private boolean isRegionalSectorContest(Contest contest) {
+    private boolean isRegionalSectorContest(ContestWrapper contest) {
         return contest.getContestTier() == ContestTier.REGION_SECTOR.getTierType();
     }
 

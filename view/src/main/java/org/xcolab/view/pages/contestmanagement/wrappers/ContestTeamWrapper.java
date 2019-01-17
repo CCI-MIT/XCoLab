@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.contest.ContestTeamMemberClientUtil;
-import org.xcolab.client.contest.pojo.ContestTeamMember;
+import org.xcolab.client.contest.pojo.IContestTeamMember;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.permissions.SystemRole;
 import org.xcolab.util.activities.enums.ActivityCategory;
@@ -52,7 +52,7 @@ public class ContestTeamWrapper {
 
     private void assignMembersToContestWithRole(List<Long> userIds, SystemRole systemRole) {
         for (Long userId : userIds) {
-            ContestTeamMember contestTeamMember = new ContestTeamMember();
+            IContestTeamMember contestTeamMember = new IContestTeamMember();
             contestTeamMember.setContestId(contestId);
             contestTeamMember.setUserId(userId);
             contestTeamMember.setRoleId(systemRole.getRoleId());
@@ -66,7 +66,7 @@ public class ContestTeamWrapper {
         }
     }
 
-    private void removeTeamMember(ContestTeamMember contestTeamMember) {
+    private void removeTeamMember(IContestTeamMember contestTeamMember) {
         try {
             ContestTeamMemberClientUtil.deleteContestTeamMember(contestTeamMember.getId());
         } catch (UncheckedEntityNotFoundException e) {
@@ -81,9 +81,9 @@ public class ContestTeamWrapper {
     }
 
     private void removeAllContestTeamMembersForContest() {
-        List<ContestTeamMember> contestTeamMembers =
+        List<IContestTeamMember> contestTeamMembers =
                 ContestTeamMemberClientUtil.getTeamMembers(null, contestId, null);
-        for (ContestTeamMember contestTeamMember : contestTeamMembers) {
+        for (IContestTeamMember contestTeamMember : contestTeamMembers) {
             removeTeamMember(contestTeamMember);
         }
     }

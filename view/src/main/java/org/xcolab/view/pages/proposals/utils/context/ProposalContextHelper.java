@@ -7,8 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalClient;
@@ -45,7 +45,7 @@ public class ProposalContextHelper {
     private final int givenVersion;
     private final long givenProposalId;
 
-    private final Contest contest;
+    private final ContestWrapper contest;
     private final ClientHelper clientHelper;
 
     public ProposalContextHelper(HttpServletRequest request) {
@@ -61,7 +61,7 @@ public class ProposalContextHelper {
         givenPhaseId = RequestParamUtil.getLong(request, CONTEST_PHASE_ID_PARAM);
         givenVersion = RequestParamUtil.getInteger(request, VERSION_PARAM);
 
-        Contest localContest = fetchContest();
+        ContestWrapper localContest = fetchContest();
         log.trace("Fetched local contest: {}", localContest);
         clientHelper = new ClientHelper();
         if (localContest != null) {
@@ -78,7 +78,7 @@ public class ProposalContextHelper {
         }
     }
 
-    private Contest setupContestFromTheRightClient(long contestId) {
+    private ContestWrapper setupContestFromTheRightClient(long contestId) {
 
         final ContestClient contestClient = clientHelper.getContestClient();
         log.debug("Setting up contest {} from client {}", contestId, contestClient);
@@ -92,8 +92,8 @@ public class ProposalContextHelper {
         }
     }
 
-    private Contest fetchContest() {
-        Contest localContest = null;
+    private ContestWrapper fetchContest() {
+        ContestWrapper localContest = null;
         try {
             if (StringUtils.isNotBlank(givenContestUrlName) && givenContestYear > 0) {
                 localContest = ContestClientUtil
@@ -111,7 +111,7 @@ public class ProposalContextHelper {
         return MemberAuthUtil.getMemberOrNull();
     }
 
-    public Contest getContest() throws InvalidContestUrlException {
+    public ContestWrapper getContest() throws InvalidContestUrlException {
         if (contest == null) {
             final boolean contestUserSupplied = StringUtils.isNotBlank(givenContestUrlName)
                     || givenContestId > 0;
@@ -128,11 +128,11 @@ public class ProposalContextHelper {
         return clientHelper;
     }
 
-    public ContestPhase getContestPhase(Contest contest, Proposal proposal) {
+    public ContestPhaseWrapper getContestPhase(ContestWrapper contest, Proposal proposal) {
         final ContestClient contestClient = clientHelper.getContestClient();
         final ProposalClient proposalClient = clientHelper.getProposalClient();
 
-        ContestPhase contestPhase;
+        ContestPhaseWrapper contestPhase;
         if (givenPhaseId > 0) {
             contestPhase = contestClient.getContestPhase(givenPhaseId);
         } else if (proposal != null && proposal.isContestMatchesLatestContest()) {
@@ -143,13 +143,13 @@ public class ProposalContextHelper {
 
         if (contestPhase == null) {
             throw ReferenceResolutionException
-                    .toObject(ContestPhase.class, "")
-                    .fromObject(Contest.class, contest.getId());
+                    .toObject(ContestPhaseWrapper.class, "")
+                    .fromObject(ContestWrapper.class, contest.getId());
         }
         return contestPhase;
     }
 
-    public Proposal2Phase getProposal2Phase(ContestPhase contestPhase) {
+    public Proposal2Phase getProposal2Phase(ContestPhaseWrapper contestPhase) {
         final ProposalPhaseClient proposalPhaseClient = clientHelper.getProposalPhaseClient();
         try {
             return proposalPhaseClient.getProposal2PhaseByProposalIdContestPhaseId(givenProposalId,
@@ -159,7 +159,7 @@ public class ProposalContextHelper {
         }
     }
 
-    public Proposal getProposal(Contest contest) throws InvalidProposalUrlException {
+    public Proposal getProposal(ContestWrapper contest) throws InvalidProposalUrlException {
         final ProposalClient proposalClient = clientHelper.getProposalClient();
         Proposal proposal = null;
         if (givenProposalId > 0) {
@@ -175,7 +175,7 @@ public class ProposalContextHelper {
     }
 
     public Proposal getProposalWrapper(Proposal proposal, Proposal2Phase proposal2Phase,
-            ContestPhase contestPhase, Contest contest, Member member) {
+            ContestPhaseWrapper contestPhase, ContestWrapper contest, Member member) {
         Proposal proposalWrapper;
         if (givenVersion > 0) {
             if (member != null && PermissionsClient

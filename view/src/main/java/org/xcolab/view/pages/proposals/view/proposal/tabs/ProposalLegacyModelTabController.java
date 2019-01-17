@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestWrapper;
 import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.commons.IdListUtil;
 import org.xcolab.commons.exceptions.InternalException;
@@ -53,7 +53,7 @@ public class ProposalLegacyModelTabController extends BaseProposalTabController 
     }
 
     private List<Long> getModelIds(long contestId) {
-        Contest contest = ContestClientUtil.getContest(contestId);
+        ContestWrapper contest = ContestClientUtil.getContest(contestId);
 
         List<Long> modelIds = new ArrayList<>();
 

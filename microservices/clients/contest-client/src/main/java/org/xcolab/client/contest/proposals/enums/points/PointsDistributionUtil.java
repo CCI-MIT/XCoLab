@@ -7,8 +7,8 @@ import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.exceptions.ProposalAttributeNotFoundException;
 import org.xcolab.client.contest.pojo.Proposal;
 import org.xcolab.client.contest.pojo.ProposalAttribute;
-import org.xcolab.client.contest.pojo.PointType;
-import org.xcolab.client.contest.pojo.PointsDistributionConfiguration;
+import org.xcolab.client.contest.pojo.PointTypeWrapper;
+import org.xcolab.client.contest.pojo.IPointsDistributionConfiguration;
 import org.xcolab.client.contest.pojo.ProposalReference;
 
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public class PointsDistributionUtil {
         return targets;
     }
 
-    public static List<PointsTarget> distributeSectionDefinedAmongProposals(Proposal proposal, PointType pointType, Set<Long> subProposalIds)  {
+    public static List<PointsTarget> distributeSectionDefinedAmongProposals(Proposal proposal, PointTypeWrapper pointType, Set<Long> subProposalIds)  {
         List<PointsTarget> targets = new ArrayList<>();
         for (long subProposalId : subProposalIds) {
             try {
@@ -47,7 +47,7 @@ public class PointsDistributionUtil {
                         .getProposalAttribute(reference.getSectionAttributeId());
                 final long proposalTemplateSectionDefinitionId = referenceSectionProposalAttribute.getAdditionalId();
 
-                PointsDistributionConfiguration pdc = PointsClientUtil.getPointsDistributionConfigurationByTargetProposalTemplateSectionDefinitionId(proposalTemplateSectionDefinitionId);
+                IPointsDistributionConfiguration pdc = PointsClientUtil.getPointsDistributionConfigurationByTargetProposalTemplateSectionDefinitionId(proposalTemplateSectionDefinitionId);
                 //TODO COLAB-2597: do we need to do anything else if it's null?
                 if (pdc != null) {
                     targets.add(PointsTarget.forProposal(subProposalId, pdc.getPercentage()));
@@ -58,9 +58,9 @@ public class PointsDistributionUtil {
         return targets;
     }
 
-    public static List<PointsTarget> distributeUserDefinedAmongProposals(Proposal proposal, PointType pointType, Set<Long> subProposalIds)  {
+    public static List<PointsTarget> distributeUserDefinedAmongProposals(Proposal proposal, PointTypeWrapper pointType, Set<Long> subProposalIds)  {
         List<PointsTarget> targets = new ArrayList<>();
-        for (PointsDistributionConfiguration pdc : PointsClientUtil
+        for (IPointsDistributionConfiguration pdc : PointsClientUtil
                 .getPointsDistributionByProposalIdPointTypeId(proposal.getId(), pointType.getId())) {
             if (pdc.getTargetSubProposalId() > 0 && subProposalIds.contains(pdc.getTargetSubProposalId()) && pdc.getTargetSubProposalId() != proposal.getId()) {
                 PointsTarget target = new PointsTarget();
@@ -72,7 +72,7 @@ public class PointsDistributionUtil {
         return targets;
     }
 
-    public static List<PointsTarget> distributeAmongProposals(DistributionStrategy distributionStrategy, Proposal parentProposals, PointType pointType, Set<Long> proposalIds) {
+    public static List<PointsTarget> distributeAmongProposals(DistributionStrategy distributionStrategy, Proposal parentProposals, PointTypeWrapper pointType, Set<Long> proposalIds) {
         switch (distributionStrategy) {
             case USER_DEFINED:
                 return distributeUserDefinedAmongProposals(parentProposals, pointType, proposalIds);

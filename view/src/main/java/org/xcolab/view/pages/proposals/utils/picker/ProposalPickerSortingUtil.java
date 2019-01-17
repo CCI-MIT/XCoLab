@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.proposals.utils.picker;
 
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestWrapper;
 import org.xcolab.client.contest.pojo.Proposal;
 
 import java.util.Comparator;
@@ -12,31 +12,31 @@ import java.util.List;
 public class ProposalPickerSortingUtil {
 
     public static void sortContestsList(String sortOrder, String sortColumn,
-            List<Contest> contests) {
+            List<ContestWrapper> contests) {
         if (sortColumn != null) {
 
-            Comparator<Contest> comparator;
+            Comparator<ContestWrapper> comparator;
             switch (sortColumn.toLowerCase()) {
                 case "name":
-                    comparator = Comparator.comparing(Contest::getTitleWithEndYear);
+                    comparator = Comparator.comparing(ContestWrapper::getTitleWithEndYear);
                     break;
                 case "comments":
-                    comparator = Comparator.comparing(Contest::getTotalCommentsCount);
+                    comparator = Comparator.comparing(ContestWrapper::getTotalCommentsCount);
                     break;
                 case "what":
-                    comparator = Comparator.comparing(Contest::getWhatName);
+                    comparator = Comparator.comparing(ContestWrapper::getWhatName);
                     break;
                 case "where":
-                    comparator = Comparator.comparing(Contest::getWhereName);
+                    comparator = Comparator.comparing(ContestWrapper::getWhereName);
                     break;
                 case "who":
-                    comparator = Comparator.comparing(Contest::getWhoName);
+                    comparator = Comparator.comparing(ContestWrapper::getWhoName);
                     break;
                 case "how":
-                    comparator = Comparator.comparing(Contest::getHowName);
+                    comparator = Comparator.comparing(ContestWrapper::getHowName);
                     break;
                 default:
-                    comparator = Comparator.comparing(Contest::getProposalsCount);
+                    comparator = Comparator.comparing(ContestWrapper::getProposalsCount);
             }
             if (sortOrder != null && sortOrder.toLowerCase().equals("desc")) {
                 comparator = comparator.reversed();

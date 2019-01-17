@@ -1,9 +1,9 @@
 package org.xcolab.service.contest.domain.impactdefaultseriesdata;
 
-import org.xcolab.model.tables.pojos.ImpactDefaultSeriesData;
+import org.xcolab.client.contest.pojo.IImpactDefaultSeriesData;
 
 import java.util.List;
 
 public interface ImpactDefaultSeriesDataDao {
-    List<ImpactDefaultSeriesData> findByGiven(Long seriesId, Integer year);
+    List<IImpactDefaultSeriesData> findByGiven(Long seriesId, Integer year);
 }

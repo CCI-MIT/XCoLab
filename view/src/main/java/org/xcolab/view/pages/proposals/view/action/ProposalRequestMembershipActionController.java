@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestWrapper;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
@@ -61,7 +61,7 @@ public class ProposalRequestMembershipActionController {
         }
 
         final Proposal proposal = proposalContext.getProposal();
-        final Contest contest = proposalContext.getContest();
+        final ContestWrapper contest = proposalContext.getContest();
 
         final String tabUrl = proposal.getProposalLinkUrl(contest) + "/tab/TEAM";
 
@@ -102,7 +102,7 @@ public class ProposalRequestMembershipActionController {
             throws IOException {
 
         final Proposal proposal = proposalContext.getProposal();
-        final Contest contest = proposalContext.getContest();
+        final ContestWrapper contest = proposalContext.getContest();
         final String tabUrl = proposal.getProposalLinkUrl(contest) + "/tab/TEAM";
 
         String input = requestMembershipInviteBean.getInviteRecipient();
@@ -167,7 +167,7 @@ public class ProposalRequestMembershipActionController {
             @RequestParam String comment, @RequestParam long requestId) throws IOException {
 
         final Proposal proposal = proposalContext.getProposal();
-        final Contest contest = proposalContext.getContest();
+        final ContestWrapper contest = proposalContext.getContest();
         final String tabUrl = proposal.getProposalLinkUrl(contest) + "/tab/ADMIN";
 
         final ProposalsPermissions permissions = proposalContext.getPermissions();

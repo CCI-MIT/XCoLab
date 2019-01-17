@@ -6,7 +6,8 @@ import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.model.tables.pojos.ContestTranslation;
+import org.xcolab.client.contest.pojo.IContestTranslation;
+import org.xcolab.client.contest.pojo.tables.pojos.ContestTranslation;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +25,7 @@ public class ContestTranslationDaoImpl implements ContestTranslationDao {
     }
 
     @Override
-    public ContestTranslation create(ContestTranslation translation) {
+    public IContestTranslation create(IContestTranslation translation) {
         dslContext.insertInto(CONTEST_TRANSLATION)
                 .set(CONTEST_TRANSLATION.CONTEST_ID, translation.getContestId())
                 .set(CONTEST_TRANSLATION.LANG, translation.getLang())
@@ -39,7 +40,7 @@ public class ContestTranslationDaoImpl implements ContestTranslationDao {
     }
 
     @Override
-    public boolean update(ContestTranslation translation) {
+    public boolean update(IContestTranslation translation) {
         return dslContext.update(CONTEST_TRANSLATION)
                 .set(CONTEST_TRANSLATION.TITLE, translation.getTitle())
                 .set(CONTEST_TRANSLATION.QUESTION, translation.getQuestion())
@@ -60,7 +61,7 @@ public class ContestTranslationDaoImpl implements ContestTranslationDao {
     }
 
     @Override
-    public Optional<ContestTranslation> get(long contestId, String lang) {
+    public Optional<IContestTranslation> get(long contestId, String lang) {
         final Record record = dslContext.select().from(CONTEST_TRANSLATION)
                 .where(CONTEST_TRANSLATION.CONTEST_ID.eq(contestId)
                         .and(CONTEST_TRANSLATION.LANG.equalIgnoreCase(lang))).fetchOne();
@@ -71,7 +72,7 @@ public class ContestTranslationDaoImpl implements ContestTranslationDao {
     }
 
     @Override
-    public List<ContestTranslation> listByContestId(long contestId) {
+    public List<IContestTranslation> listByContestId(long contestId) {
         return dslContext.select()
                 .from(CONTEST_TRANSLATION)
                 .where(CONTEST_TRANSLATION.CONTEST_ID.eq(contestId))

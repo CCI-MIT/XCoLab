@@ -2,7 +2,7 @@ package org.xcolab.view.pages.proposals.judging;
 
 
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestWrapper;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
@@ -61,7 +61,7 @@ public class JudgeReviewStatusTag extends BodyTagSupport {
     public int doStartTag() throws JspException {
         try {
             Member judge = MembersClient.getMember(userId);
-            Contest contest = ContestClientUtil.getContest(contestId);
+            ContestWrapper contest = ContestClientUtil.getContest(contestId);
             ProposalClient proposalClient = ProposalClientUtil.getClient();
             Proposal proposal = proposalClient.getProposal(proposalId);
             //ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);

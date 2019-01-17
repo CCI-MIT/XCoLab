@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestWrapper;
 import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.view.taglibs.xcolab.interfaces.TabContext;
 import org.xcolab.view.taglibs.xcolab.interfaces.TabPermissions;
@@ -28,8 +28,8 @@ public class ContestsContextImpl implements TabContext {
     }
 
     @Override
-    public Contest getContest(HttpServletRequest request) {
-        return getAttribute(request, CONTEST_ATTRIBUTE, Contest.class);
+    public ContestWrapper getContest(HttpServletRequest request) {
+        return getAttribute(request, CONTEST_ATTRIBUTE, ContestWrapper.class);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class ContestsContextImpl implements TabContext {
     private void init(HttpServletRequest request) {
         final Long contestId = RequestParamUtil.getLong(request, CONTEST_ID_PARAM);
         if (contestId > 0) {
-            Contest contest;
+            ContestWrapper contest;
             try {
                 contest = ContestClientUtil.getContest(contestId);
             } catch (ContestNotFoundException e) {

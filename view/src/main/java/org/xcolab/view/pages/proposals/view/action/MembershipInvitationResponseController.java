@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestWrapper;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.Member;
@@ -52,7 +52,7 @@ public class MembershipInvitationResponseController {
             @RequestParam long requestId, @RequestParam long proposalId,
             @RequestParam long contestId, @RequestParam String action) throws IOException {
 
-        Contest contest = ContestClientUtil.getContest(contestId);
+        ContestWrapper contest = ContestClientUtil.getContest(contestId);
         MembershipClient membershipClient = MembershipClientUtil.getClient();
         ProposalClient proposalClient = ProposalClientUtil.getClient();
         ProposalAttributeClient proposalAttributeClient = ProposalAttributeClientUtil.getClient();

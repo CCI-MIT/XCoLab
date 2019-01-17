@@ -1,6 +1,5 @@
 package org.xcolab.client.contest.proposals;
 
-import org.xcolab.client.contest.resources.ProposalResource;
 import org.xcolab.client.contest.pojo.ProposalMoveHistory;
 import org.xcolab.util.enums.proposal.MoveType;
 import org.xcolab.util.http.caching.CacheKeys;
@@ -13,12 +12,7 @@ import java.util.List;
 
 public final class ProposalMoveClient {
 
-    private final RestResource1<ProposalMoveHistory, Long> proposalMoveHistoryResource;
-
-    public ProposalMoveClient() {
-        proposalMoveHistoryResource = new RestResource1<>(ProposalResource.PROPOSAL_MOVE_HISTORY,
-                ProposalMoveHistory.TYPES);
-    }
+    private final RestResource1<ProposalMoveHistory, Long> proposalMoveHistoryResource = null; // proposalMoveHistories
 
     public List<ProposalMoveHistory> getBySourceProposalIdContestId(Long sourceProposalId,
             Long sourceContestId) {

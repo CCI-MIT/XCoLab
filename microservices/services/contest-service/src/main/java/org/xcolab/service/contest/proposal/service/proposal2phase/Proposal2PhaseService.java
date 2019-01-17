@@ -3,7 +3,7 @@ package org.xcolab.service.contest.proposal.service.proposal2phase;
 import org.springframework.stereotype.Service;
 
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
 import org.xcolab.model.tables.pojos.Proposal2Phase;
 import org.xcolab.model.tables.pojos.ProposalContestPhaseAttribute;
 import org.xcolab.service.contest.proposal.domain.proposal2phase.Proposal2PhaseDao;
@@ -49,7 +49,7 @@ public class Proposal2PhaseService {
             //throw new SystemException("Proposal not found");
             return;
         }
-        ContestPhase nextPhase = ContestClientUtil.getContestPhase(nextPhaseId);
+        ContestPhaseWrapper nextPhase = ContestClientUtil.getContestPhase(nextPhaseId);
         if (nextPhase == null) {
             //throw new SystemException("phase not found");
             return;
@@ -57,10 +57,10 @@ public class Proposal2PhaseService {
 
         //find phase the proposal is in currently in contest c
         List<Long> phases = getContestPhasesForProposal(proposalId);
-        List<ContestPhase> candidatePhase = new LinkedList<>();
+        List<ContestPhaseWrapper> candidatePhase = new LinkedList<>();
 
         for (Long phId : phases) {
-            ContestPhase ph = ContestClientUtil.getContestPhase(phId);
+            ContestPhaseWrapper ph = ContestClientUtil.getContestPhase(phId);
             if (ph.getContestId() == nextPhase.getContestId().longValue()) { //this contestphase is in our target contest
                 candidatePhase.add(ph);
             }
@@ -71,8 +71,8 @@ public class Proposal2PhaseService {
             //candidate phase now contains all contestphases the proposal has been submitted to of the target contest
             //we now need to find the one that is closest to the next phase in order to provide a smooth promotion
             //set end version of previous phase to now
-            ContestPhase closestPhase = candidatePhase.get(0);
-            for (ContestPhase current : candidatePhase) {
+            ContestPhaseWrapper closestPhase = candidatePhase.get(0);
+            for (ContestPhaseWrapper current : candidatePhase) {
                 if (current.getPhaseStartDate().after(closestPhase.getPhaseStartDate())) {
                     closestPhase = current;
                 }

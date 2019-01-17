@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.proposals.impact;
 
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestWrapper;
 import org.xcolab.client.contest.pojo.Proposal;
 
 public class ProposalSimulationScenarioRegionWrapper {
@@ -14,7 +14,7 @@ public class ProposalSimulationScenarioRegionWrapper {
     public ProposalSimulationScenarioRegionWrapper(Proposal proposal) {
         this.proposal = proposal;
         proposalName = proposal.getName();
-        Contest contestForProposal = proposal.getContest();
+        ContestWrapper contestForProposal = proposal.getContest();
         this.region = contestForProposal.getWhereName();
     }
 
@@ -45,7 +45,7 @@ public class ProposalSimulationScenarioRegionWrapper {
         this.region = region;
     }
 
-    public void setRegion(Contest contest) {
+    public void setRegion(ContestWrapper contest) {
             this.region = contest.getWhereName();
     }
 

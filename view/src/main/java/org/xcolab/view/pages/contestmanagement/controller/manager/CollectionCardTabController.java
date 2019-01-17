@@ -11,12 +11,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
-import org.xcolab.client.contest.pojo.OntologyTerm;
+import org.xcolab.client.contest.pojo.OntologyTermWrapper;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.view.pages.contestmanagement.wrappers.CollectionCardWrapper;
-import org.xcolab.view.pages.contestmanagement.wrappers.OntologyTermWrapper;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 
@@ -59,13 +58,13 @@ public class CollectionCardTabController extends AbstractTabController {
         model.addAttribute("collectionCardWrapperWhere",
                 new CollectionCardWrapper(BY_LOCATION_COLLECTION_CARD_ID));
 
-        List<OntologyTermWrapper> whatTerms = new ArrayList<>();
-        List<OntologyTermWrapper> whereTerms = new ArrayList<>();
-        for (OntologyTerm term : OntologyClientUtil.getChildOntologyTerms(ROOT_ONTOLOGY_TERM_ID)) {
+        List<org.xcolab.view.pages.contestmanagement.wrappers.OntologyTermWrapper> whatTerms = new ArrayList<>();
+        List<org.xcolab.view.pages.contestmanagement.wrappers.OntologyTermWrapper> whereTerms = new ArrayList<>();
+        for (OntologyTermWrapper term : OntologyClientUtil.getChildOntologyTerms(ROOT_ONTOLOGY_TERM_ID)) {
             if (term.getOntologySpaceId() == WHAT_ONTOLOGY_SPACE_ID) {
-                whatTerms.add(new OntologyTermWrapper(term));
+                whatTerms.add(new org.xcolab.view.pages.contestmanagement.wrappers.OntologyTermWrapper(term));
             } else if (term.getOntologySpaceId() == WHERE_ONTOLOGY_SPACE_ID) {
-                whereTerms.add(new OntologyTermWrapper(term));
+                whereTerms.add(new org.xcolab.view.pages.contestmanagement.wrappers.OntologyTermWrapper(term));
             }
         }
         model.addAttribute("ontologyTermsWhat", whatTerms);

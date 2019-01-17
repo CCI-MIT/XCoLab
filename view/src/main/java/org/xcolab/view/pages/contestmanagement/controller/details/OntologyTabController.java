@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.FocusArea;
-import org.xcolab.client.contest.pojo.FocusAreaOntologyTerm;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.FocusAreaWrapper;
+import org.xcolab.client.contest.pojo.IFocusAreaOntologyTerm;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.IdListUtil;
 import org.xcolab.view.errors.AccessDeniedPage;
@@ -78,10 +78,10 @@ public class OntologyTabController extends AbstractTabController {
         List<Long> selectedOntologyTerms =
                 IdListUtil.getIdsFromString(request.getParameter("selectedOntologyTerms"));
 
-        Contest contest = ContestClientUtil.getContest(contestId);
+        ContestWrapper contest = ContestClientUtil.getContest(contestId);
         Long focusAreaId = contest.getFocusAreaId();
         if (focusAreaId == null) {
-            FocusArea focusArea = new FocusArea();
+            FocusAreaWrapper focusArea = new FocusAreaWrapper();
 
             focusArea.setName("Focus area for " + contest.getTitle());
             focusArea.setSortOrder(0);
@@ -91,7 +91,7 @@ public class OntologyTabController extends AbstractTabController {
             ContestClientUtil.updateContest(contest);
         }
 
-        for (FocusAreaOntologyTerm focusAreaOntologyTerm : OntologyClientUtil
+        for (IFocusAreaOntologyTerm focusAreaOntologyTerm : OntologyClientUtil
                 .getFocusAreaOntologyTermsByFocusArea(focusAreaId)) {
             OntologyClientUtil
                     .deleteFocusAreaOntologyTerm(focusAreaOntologyTerm.getFocusAreaId(),

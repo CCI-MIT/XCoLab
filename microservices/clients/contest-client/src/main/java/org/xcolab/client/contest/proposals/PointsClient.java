@@ -1,8 +1,7 @@
 package org.xcolab.client.contest.proposals;
 
-import org.xcolab.client.contest.resources.ContestResource;
-import org.xcolab.client.contest.pojo.PointType;
-import org.xcolab.client.contest.pojo.PointsDistributionConfiguration;
+import org.xcolab.client.contest.pojo.IPointsDistributionConfiguration;
+import org.xcolab.client.contest.pojo.PointTypeWrapper;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource1;
@@ -12,31 +11,24 @@ import java.util.List;
 
 public final class PointsClient {
 
-    private final RestResource1<PointsDistributionConfiguration, Long>
-            pointsDistributionConfigurationResource;
-    private final RestResource1<PointType, Long> pointTypeResource;
+    private final RestResource1<IPointsDistributionConfiguration, Long>
+            pointsDistributionConfigurationResource = null; // pointsDistributionConfigurations
+    private final RestResource1<PointTypeWrapper, Long> pointTypeResource = null; // pointTypes
 
-    public PointsClient() {
-        pointsDistributionConfigurationResource = new RestResource1<>(
-                ContestResource.POINTS_DISTRIBUTION_CONFIGURATION,
-                PointsDistributionConfiguration.TYPES);
-        pointTypeResource = new RestResource1<>(ContestResource.POINT_TYPE, PointType.TYPES);
-    }
-
-    public PointsDistributionConfiguration createPointsDistributionConfiguration(
-            PointsDistributionConfiguration pointsDistributionConfiguration) {
+    public IPointsDistributionConfiguration createPointsDistributionConfiguration(
+            IPointsDistributionConfiguration pointsDistributionConfiguration) {
         return pointsDistributionConfigurationResource
-                .create(new PointsDistributionConfiguration(pointsDistributionConfiguration))
+                .create(pointsDistributionConfiguration)
                 .execute();
     }
 
-    public PointsDistributionConfiguration
+    public IPointsDistributionConfiguration
     getPointsDistributionConfigurationByTargetProposalTemplateSectionDefinitionId(
             long targetSectionDefinitionId) {
         try {
             return pointsDistributionConfigurationResource
                     .collectionService("getByTargetProposalTemplateSectionDefinitionId",
-                            PointsDistributionConfiguration.class)
+                            IPointsDistributionConfiguration.class)
                     .queryParam("targetProposalTemplateSectionDefinitionId",
                             targetSectionDefinitionId)
                     .getChecked();
@@ -47,14 +39,14 @@ public final class PointsClient {
     }
 
     public boolean updatePointsDistributionConfiguration(
-            PointsDistributionConfiguration pointsDistributionConfiguration) {
+            IPointsDistributionConfiguration pointsDistributionConfiguration) {
         return pointsDistributionConfigurationResource
-                .update(new PointsDistributionConfiguration(pointsDistributionConfiguration),
+                .update(pointsDistributionConfiguration,
                         pointsDistributionConfiguration.getId())
                 .execute();
     }
 
-    public List<PointsDistributionConfiguration> getPointsDistributionByProposalIdPointTypeId(
+    public List<IPointsDistributionConfiguration> getPointsDistributionByProposalIdPointTypeId(
             Long proposalId, Long pointTypeId) {
         return pointsDistributionConfigurationResource.list()
                 .optionalQueryParam("proposalId", proposalId)
@@ -77,21 +69,21 @@ public final class PointsClient {
                 .queryParam("proposalId", proposalId).delete();
     }
 
-    public PointType getPointType(long Id) {
+    public PointTypeWrapper getPointType(long Id) {
         return pointTypeResource.get(Id)
-                .withCache(CacheKeys.of(PointType.class, Id), CacheName.MISC_REQUEST)
+                .withCache(CacheKeys.of(PointTypeWrapper.class, Id), CacheName.MISC_REQUEST)
                 .execute();
 
     }
 
-    public List<PointType> getAllPointTypes() {
+    public List<PointTypeWrapper> getAllPointTypes() {
         return pointTypeResource.list()
                 .execute();
     }
 
-    public List<PointType> getChildrenOfPointType(Long parentPointTypeId) {
+    public List<PointTypeWrapper> getChildrenOfPointType(Long parentPointTypeId) {
         return pointTypeResource.list()
-                .withCache(CacheKeys.withClass(PointType.class)
+                .withCache(CacheKeys.withClass(PointTypeWrapper.class)
                                 .withParameter("parentPointTypeId", parentPointTypeId)
                                 .asList(),
                         CacheName.MISC_MEDIUM)

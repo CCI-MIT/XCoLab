@@ -11,9 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import org.xcolab.client.contest.pojo.IContestPhaseRibbonType;
+import org.xcolab.client.contest.pojo.IContestPhaseType;
 import org.xcolab.model.tables.pojos.ContestPhase;
-import org.xcolab.model.tables.pojos.ContestPhaseRibbonType;
-import org.xcolab.model.tables.pojos.ContestPhaseType;
 import org.xcolab.service.contest.domain.contestphase.ContestPhaseDao;
 import org.xcolab.service.contest.domain.contestphaseribbontype.ContestPhaseRibbonTypeDao;
 import org.xcolab.service.contest.domain.contestphasetype.ContestPhaseTypeDao;
@@ -52,14 +53,14 @@ public class ContestPhaseController {
     }
 
     @GetMapping(value = "/contestPhaseRibbonTypes/{contestPhaseRibbonTypeId}")
-    public ContestPhaseRibbonType getContestPhaseRibbonType(@PathVariable long contestPhaseRibbonTypeId)
+    public IContestPhaseRibbonType getContestPhaseRibbonType(@PathVariable long contestPhaseRibbonTypeId)
             throws NotFoundException {
         return contestPhaseRibbonTypeDao.get(contestPhaseRibbonTypeId)
                 .orElseThrow(NotFoundException::new);
     }
 
     @RequestMapping(value = "/contestPhaseRibbonTypes", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<ContestPhaseRibbonType> getContestPhaseRibbonTypes() {
+    public List<IContestPhaseRibbonType> getContestPhaseRibbonTypes() {
         return contestPhaseRibbonTypeDao.findByGiven();
     }
 
@@ -123,14 +124,14 @@ public class ContestPhaseController {
     }
 
     @GetMapping("/contestPhaseTypes/{contestPhaseTypeId}")
-    public ContestPhaseType getContestPhaseType(@PathVariable long contestPhaseTypeId)
+    public IContestPhaseType getContestPhaseType(@PathVariable long contestPhaseTypeId)
             throws NotFoundException {
         return contestPhaseTypeDao.get(contestPhaseTypeId)
                 .orElseThrow(NotFoundException::new);
     }
 
     @RequestMapping(value = "/contestPhaseTypes", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<ContestPhaseType> getContestPhaseTypes() {
+    public List<IContestPhaseType> getContestPhaseTypes() {
         return contestPhaseTypeDao.findByGiven();
     }
 }

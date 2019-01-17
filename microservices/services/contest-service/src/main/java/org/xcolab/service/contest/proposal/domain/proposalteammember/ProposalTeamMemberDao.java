@@ -1,6 +1,6 @@
 package org.xcolab.service.contest.proposal.domain.proposalteammember;
 
-import org.xcolab.model.tables.pojos.ProposalTeamMember;
+import org.xcolab.client.contest.pojo.ProposalTeamMember;
 
 import java.util.List;
 

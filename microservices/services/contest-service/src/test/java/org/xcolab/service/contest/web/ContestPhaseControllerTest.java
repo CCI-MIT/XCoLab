@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import org.xcolab.client.contest.pojo.AbstractContestPhase;
+import org.xcolab.client.contest.pojo.ContestWrapper;
 import org.xcolab.service.contest.domain.contestphase.ContestPhaseDao;
 import org.xcolab.service.contest.domain.contestphaseribbontype.ContestPhaseRibbonTypeDao;
 import org.xcolab.service.contest.domain.contestphasetype.ContestPhaseTypeDao;
@@ -43,7 +44,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ComponentScan("org.xcolab.service.contest")
 @ComponentScan("org.xcolab.client")
 @ComponentScan("com.netflix.discovery")
-@PrepareForTest({org.xcolab.client.contest.pojo.Contest.class,
+@PrepareForTest({ContestWrapper.class,
         org.xcolab.client.contest.ContestClient.class,
         org.xcolab.client.contest.ContestTeamMemberClient.class,
         org.xcolab.client.contest.OntologyClient.class

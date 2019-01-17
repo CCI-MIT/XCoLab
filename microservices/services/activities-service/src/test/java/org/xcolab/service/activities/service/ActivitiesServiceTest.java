@@ -17,7 +17,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestWrapper;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.pojo.Proposal;
 import org.xcolab.model.tables.pojos.ActivitySubscription;
@@ -39,7 +39,7 @@ import static org.mockito.Matchers.anyLong;
     org.xcolab.client.contest.ContestClientUtil.class,
     org.xcolab.client.contest.ContestClient.class,
     Proposal.class,
-    org.xcolab.client.contest.pojo.Contest.class
+    ContestWrapper.class
 })
 @ComponentScan("org.xcolab.service.activities")
 @ComponentScan("org.xcolab.client")
@@ -77,7 +77,7 @@ public class ActivitiesServiceTest {
 
         Mockito.when(ContestClientUtil.getContest(anyLong()))
             .thenAnswer(invocation -> {
-                Contest contest = Mockito.mock(Contest.class);
+                ContestWrapper contest = Mockito.mock(ContestWrapper.class);
                 contest.setDiscussionGroupId(123123L);
                 return contest;
 

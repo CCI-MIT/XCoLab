@@ -3,7 +3,7 @@ package org.xcolab.view.pages.proposals.judging;
 import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestWrapper;
 import org.xcolab.client.contest.pojo.ProposalTemplateSectionDefinition;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalAttributeClientUtil;
@@ -26,7 +26,7 @@ public class ProposalReviewCsvExporter {
 
     private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.##");
 
-    private final Contest contest;
+    private final ContestWrapper contest;
     /*
         * Cluster all proposal reviews (from multiple Contest phases) by proposal since we
         * have multiple reviews for each proposal (multiple judging phases)
@@ -34,7 +34,7 @@ public class ProposalReviewCsvExporter {
     private final Map<Proposal, List<ProposalReview>> proposalToProposalReviewsMap;
     private final List<ProposalRatingType> ratingTypes;
 
-    public ProposalReviewCsvExporter(Contest contest,
+    public ProposalReviewCsvExporter(ContestWrapper contest,
             Map<Proposal, List<ProposalReview>> proposalToProposalReviewsMap,
             List<ProposalRatingType> ratingTypes) {
         this.contest = contest;

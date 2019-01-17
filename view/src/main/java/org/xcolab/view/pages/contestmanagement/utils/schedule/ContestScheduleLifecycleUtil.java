@@ -5,9 +5,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestSchedule;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.IContestSchedule;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
 import org.xcolab.client.contest.util.ContestScheduleChangeHelper;
 import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.contest.pojo.Proposal2Phase;
@@ -45,18 +45,18 @@ public final class ContestScheduleLifecycleUtil {
 
     private static void removeContestSchedulePhases(Long scheduleId) {
 
-        List<ContestPhase> contestSchedulePhases = ContestClientUtil
+        List<ContestPhaseWrapper> contestSchedulePhases = ContestClientUtil
                 .getTemplatePhasesForContestScheduleId(scheduleId);
         removeContestPhases(contestSchedulePhases);
     }
 
-    private static void removeContestPhases(List<ContestPhase> contestPhases) {
-        for (ContestPhase contestPhase : contestPhases) {
+    private static void removeContestPhases(List<ContestPhaseWrapper> contestPhases) {
+        for (ContestPhaseWrapper contestPhase : contestPhases) {
             removeContestPhase(contestPhase);
         }
     }
 
-    private static void removeContestPhase(ContestPhase contestPhase) {
+    private static void removeContestPhase(ContestPhaseWrapper contestPhase) {
         Long contestPhaseId = contestPhase.getId();
         List<Proposal2Phase> proposal2Phases = ProposalPhaseClientUtil
                 .getProposal2PhaseByContestPhaseId(contestPhaseId);
@@ -70,10 +70,10 @@ public final class ContestScheduleLifecycleUtil {
 
     private static void removeContestPhasesOfContestsThatAreUsingSchedule(Long scheduleId) {
 
-        List<Contest> contestsUsingSchedule = ContestClientUtil
+        List<ContestWrapper> contestsUsingSchedule = ContestClientUtil
                 .getContestsByContestScheduleId(scheduleId);
-        for (Contest contestUsingSchedule : contestsUsingSchedule) {
-            List<ContestPhase> contestSchedulePhases =
+        for (ContestWrapper contestUsingSchedule : contestsUsingSchedule) {
+            List<ContestPhaseWrapper> contestSchedulePhases =
                     ContestClientUtil
                             .getPhasesForContestScheduleIdAndContest(scheduleId,
                                     contestUsingSchedule.getId());
@@ -88,10 +88,10 @@ public final class ContestScheduleLifecycleUtil {
             return getAllScheduleTemplateSelectionItems();
         }
 
-        List<ContestPhase> currentSchedulePhases = getCurrentPhasesForSchedule(existingScheduleId);
+        List<ContestPhaseWrapper> currentSchedulePhases = getCurrentPhasesForSchedule(existingScheduleId);
         List<LabelValue> selectItems = new ArrayList<>();
-        for (ContestSchedule candidateSchedule : ContestClientUtil.getAllContestSchedules()) {
-            final List<ContestPhase> newSchedulePhases =
+        for (IContestSchedule candidateSchedule : ContestClientUtil.getAllContestSchedules()) {
+            final List<ContestPhaseWrapper> newSchedulePhases =
                     getCurrentPhasesForSchedule(candidateSchedule.getId());
             if (ContestScheduleChangeHelper
                     .isValidChange(currentSchedulePhases, newSchedulePhases)) {
@@ -111,22 +111,22 @@ public final class ContestScheduleLifecycleUtil {
                 .collect(Collectors.toList());
     }
 
-    private static List<ContestPhase> getCurrentPhasesForSchedule(Long existingContestScheduleId) {
+    private static List<ContestPhaseWrapper> getCurrentPhasesForSchedule(Long existingContestScheduleId) {
         return ContestClientUtil
                 .getTemplatePhasesForContestScheduleId(existingContestScheduleId);
     }
 
-    public static ContestSchedule createNewSchedule() {
+    public static IContestSchedule createNewSchedule() {
         return createProposalCreationOnlySchedule(NEW_CONTEST_SCHEDULE_NAME);
     }
 
-    public static ContestSchedule createProposalCreationOnlySchedule(String name) {
-        ContestSchedule newContestSchedule = new ContestSchedule();
+    public static IContestSchedule createProposalCreationOnlySchedule(String name) {
+        IContestSchedule newContestSchedule = new IContestSchedule();
         newContestSchedule.setName(name);
 
         newContestSchedule = ContestClientUtil.createContestSchedule(newContestSchedule);
 
-        ContestPhase contestPhase = new ContestPhase();
+        ContestPhaseWrapper contestPhase = new ContestPhaseWrapper();
         contestPhase.setContestId(0L);
         contestPhase.setContestScheduleId(newContestSchedule.getId());
         contestPhase.setContestPhaseTypeId(ContestPhaseTypeValue.PROPOSAL_CREATION.getTypeId());
@@ -139,7 +139,7 @@ public final class ContestScheduleLifecycleUtil {
 
     private static class ScheduleLabel extends LabelValue {
 
-        public ScheduleLabel(ContestSchedule schedule) {
+        public ScheduleLabel(IContestSchedule schedule) {
             super(schedule.getId(), schedule.getName());
         }
     }

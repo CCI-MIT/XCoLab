@@ -3,8 +3,8 @@ package org.xcolab.view.pages.proposals.utils.edit;
 
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
 import org.xcolab.client.contest.proposals.ProposalAttributeClient;
 import org.xcolab.client.contest.proposals.ProposalClient;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
@@ -40,7 +40,7 @@ public final class ProposalCreationUtil {
 
     public static Proposal createProposal(long userId,
             @Valid UpdateProposalDetailsBean updateProposalSectionsBean,
-            Contest contest, ContestPhase contestPhase) {
+            ContestWrapper contest, ContestPhaseWrapper contestPhase) {
         final ClientHelper clientHelper = new ClientHelper();
         try {
             Proposal newProposal = clientHelper.getProposalClient()
@@ -89,16 +89,16 @@ public final class ProposalCreationUtil {
 
     public static void sendAuthorNotification(ProposalContext proposalContext, String baseUrl,
             Proposal proposalWrapper,
-            ContestPhase contestPhase) {
+            ContestPhaseWrapper contestPhase) {
         try {
             ContestClient contestClient = proposalContext.getClients().getContestClient();
-            Contest contest = contestClient
+            ContestWrapper contest = contestClient
                     .getContest(contestClient.getContestPhase(contestPhase.getId()).getContestId());
 
             final ProposalClient proposalClient =
                     proposalContext.getClients().getProposalClient();
             Proposal updatedProposal = proposalClient.getProposal(proposalWrapper.getId());
-            Contest contestMicro = contestClient.getContest(contest.getId());
+            ContestWrapper contestMicro = contestClient.getContest(contest.getId());
             new ProposalCreationNotification(updatedProposal, contestMicro).sendMessage();
         } catch (ContestNotFoundException | ProposalNotFoundException ignored) {
 

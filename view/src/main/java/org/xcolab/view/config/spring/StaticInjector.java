@@ -3,7 +3,7 @@ package org.xcolab.view.config.spring;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import org.xcolab.client.contest.StaticContestProposalContext;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.admin.IAdminClient;
 import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.IEmailTemplateClient;
@@ -53,7 +53,7 @@ public class StaticInjector {
 
         // Module External
         StaticCommentContext.setClients(commentClient, categoryClient, threadClient);
-        StaticContestProposalContext.setClients(commentClient, categoryClient, threadClient);
+        StaticContestContext.setClients(commentClient, categoryClient, threadClient);
         StaticAdminContext.setClients(adminClient, contestTypeClient, emailTemplateClient);
         StaticEmailContext.setEmailClient(emailClient);
     }

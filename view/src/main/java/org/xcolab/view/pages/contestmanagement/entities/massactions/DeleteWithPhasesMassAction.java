@@ -1,7 +1,7 @@
 package org.xcolab.view.pages.contestmanagement.entities.massactions;
 
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestWrapper;
 import org.xcolab.view.pages.contestmanagement.entities.MassActionRequiresConfirmationException;
 
 import java.util.List;
@@ -15,14 +15,14 @@ public class DeleteWithPhasesMassAction extends AbstractContestMassAction {
     }
 
     @Override
-    public void execute(List<Contest> contests, boolean actionConfirmed,
+    public void execute(List<ContestWrapper> contests, boolean actionConfirmed,
             MassActionDataWrapper dataWrapper, HttpServletResponse response)
             throws MassActionRequiresConfirmationException {
         if (!actionConfirmed) {
             throw new MassActionRequiresConfirmationException();
         }
 
-        for (Contest contest : contests) {
+        for (ContestWrapper contest : contests) {
             Long contestId = contest.getId();
             ContestClientUtil.deleteContest(contestId);
         }

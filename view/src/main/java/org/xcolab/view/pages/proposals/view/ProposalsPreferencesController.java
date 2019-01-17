@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
-import org.xcolab.client.contest.pojo.ContestPhaseType;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.IContestPhaseType;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.contest.proposals.exceptions.Proposal2PhaseNotFoundException;
@@ -56,8 +56,8 @@ public class ProposalsPreferencesController extends AbstractWidgetController<Pro
         super(BASE_URL, ProposalsPreferencesWrapper::new);
     }
 
-    private static List<ContestPhase> getPhasesByContest(Contest c, final int sortModifier) {
-        List<ContestPhase> contestPhases = ContestClientUtil.getAllContestPhases(c.getId());
+    private static List<ContestPhaseWrapper> getPhasesByContest(ContestWrapper c, final int sortModifier) {
+        List<ContestPhaseWrapper> contestPhases = ContestClientUtil.getAllContestPhases(c.getId());
 
         //sort the phases by startdate
         contestPhases.sort((cp1, cp2) ->
@@ -73,19 +73,19 @@ public class ProposalsPreferencesController extends AbstractWidgetController<Pro
             @RequestParam(required = false) String language) {
 
         //get all contests
-        List<Contest> contests = ContestClientUtil.getContestsByActivePrivate(true,true);
+        List<ContestWrapper> contests = ContestClientUtil.getContestsByActivePrivate(true,true);
 
         //contestId to contestphases
-        Map<Long, ContestPhaseType> contestPhaseTypeMap = new HashMap<>();
-        Map<Long, List<ContestPhase>> contestPhasesMap = new HashMap<>();
+        Map<Long, IContestPhaseType> contestPhaseTypeMap = new HashMap<>();
+        Map<Long, List<ContestPhaseWrapper>> contestPhasesMap = new HashMap<>();
         //contestphaseId to proposal
         Map<Long, List<Proposal>> proposalsMap = new HashMap<>();
-        for (Contest c : contests) {
-            List<ContestPhase> contestPhases = getPhasesByContest(c, 1);
+        for (ContestWrapper c : contests) {
+            List<ContestPhaseWrapper> contestPhases = getPhasesByContest(c, 1);
 
             contestPhasesMap.put(c.getId(), contestPhases);
 
-            for (ContestPhase cp: contestPhases) {
+            for (ContestPhaseWrapper cp: contestPhases) {
                 if (!contestPhaseTypeMap.containsKey(cp.getContestPhaseTypeId())) {
                     contestPhaseTypeMap.put(cp.getContestPhaseTypeId(), ContestClientUtil.getContestPhaseType(cp.getContestPhaseTypeId()));
                 }
@@ -144,11 +144,11 @@ public class ProposalsPreferencesController extends AbstractWidgetController<Pro
     public void checkForMissingTeamMembers(HttpServletRequest request, HttpServletResponse response,
             Model model, ProposalContext proposalContext)
             throws  IOException {
-        List<Contest> activeContests = ContestClientUtil.getContestsByActivePrivate(true, false);
+        List<ContestWrapper> activeContests = ContestClientUtil.getContestsByActivePrivate(true, false);
         StringBuilder message = new StringBuilder();
 
-        for (Contest c : activeContests) {
-            ContestPhase activePhase = ContestClientUtil.getActivePhase(c.getId());
+        for (ContestWrapper c : activeContests) {
+            ContestPhaseWrapper activePhase = ContestClientUtil.getActivePhase(c.getId());
             if (activePhase == null || activePhase.getContestPhaseTypeId() != 17L) {
                 message.append("<br/>\nSkipped contest: ").append(c.getTitle()).append("<br/><br/>\n");
                 continue;
@@ -204,11 +204,11 @@ public class ProposalsPreferencesController extends AbstractWidgetController<Pro
     public void runRibbonDistribution(HttpServletRequest request, HttpServletResponse response,
             Model model, ProposalContext proposalContext)
             throws  IOException {
-        List<Contest> activeContests = ContestClientUtil.getContestsByActivePrivate(true, false);
+        List<ContestWrapper> activeContests = ContestClientUtil.getContestsByActivePrivate(true, false);
         StringBuilder message = new StringBuilder();
 
-        for (Contest c : activeContests) {
-            ContestPhase activePhase = ContestClientUtil.getActivePhase(c.getId());
+        for (ContestWrapper c : activeContests) {
+            ContestPhaseWrapper activePhase = ContestClientUtil.getActivePhase(c.getId());
             if (activePhase == null || activePhase.getContestPhaseTypeId() != 17L) {
                 message.append("<br/>\nSkipped contest: ").append(c.getTitleWithEndYear()).append("<br/><br/>\n");
                 continue;
@@ -217,13 +217,13 @@ public class ProposalsPreferencesController extends AbstractWidgetController<Pro
             message.append("<br/><br/>\nCONTEST: ").append(c.getTitleWithEndYear()).append("<br/><br/>\n");
 
             //identify the winners selection phase (= contains all finalist) and the finalist selection (= contains all semi-finalist) phase
-            List<ContestPhase> contestPhases = ContestClientUtil.getAllContestPhases(c.getId());
-            ContestPhase winnersAwarded = null;
-            ContestPhase winnersSelection = null;
-            ContestPhase finalistSelection = null;
-            ContestPhase proposalCreation = null;
+            List<ContestPhaseWrapper> contestPhases = ContestClientUtil.getAllContestPhases(c.getId());
+            ContestPhaseWrapper winnersAwarded = null;
+            ContestPhaseWrapper winnersSelection = null;
+            ContestPhaseWrapper finalistSelection = null;
+            ContestPhaseWrapper proposalCreation = null;
 
-            for (ContestPhase cp : contestPhases) {
+            for (ContestPhaseWrapper cp : contestPhases) {
                 switch (ContestPhaseTypeValue.fromTypeId(cp.getContestPhaseTypeId())) {
                     case WINNERS_AWARDED:
                         winnersAwarded = cp;
@@ -272,21 +272,21 @@ public class ProposalsPreferencesController extends AbstractWidgetController<Pro
         StringBuilder message = new StringBuilder();
         if (!proposalsToBeMoved.isEmpty() && moveToContestPhaseId > 0 && moveFromContestId > 0) {
             try {
-                Contest moveFromContest = ContestClientUtil.getContest(moveFromContestId);
-                ContestPhase moveToContestPhase = ContestClientUtil.getContestPhase(moveToContestPhaseId);
+                ContestWrapper moveFromContest = ContestClientUtil.getContest(moveFromContestId);
+                ContestPhaseWrapper moveToContestPhase = ContestClientUtil.getContestPhase(moveToContestPhaseId);
 
                 assert moveFromContest != null;
                 assert moveToContestPhase != null;
 
                 //order phases by start phase descending
-                List<ContestPhase> contestPhases = getPhasesByContest(moveFromContest, -1);
+                List<ContestPhaseWrapper> contestPhases = getPhasesByContest(moveFromContest, -1);
 
                 //traverse proposals to be moved
                 for (Proposal proposal : proposalsToBeMoved) {
                     //find out the last phase the proposal was in.
-                    ContestPhase lastPhaseContainingProposal = null;
+                    ContestPhaseWrapper lastPhaseContainingProposal = null;
                     //traverse phases, later phases are first.
-                    for (ContestPhase cp: contestPhases) {
+                    for (ContestPhaseWrapper cp: contestPhases) {
                         List<Proposal> proposalsInThisPhase = proposalContext.getClients().getProposalClient().getProposalsInContestPhase(cp.getId());
                         if (proposalsInThisPhase.contains(proposal)) {
                             //found the last phase

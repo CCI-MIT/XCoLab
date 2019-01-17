@@ -4,8 +4,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.contest.pojo.Proposal;
@@ -187,7 +187,7 @@ public final class ProposalClientUtil {
         return client.getContestTypeFromProposalId(proposalId);
     }
 
-    public static Contest getCurrentContestForProposal(
+    public static ContestWrapper getCurrentContestForProposal(
             Long proposalId) throws ContestNotFoundException {
         return client.getCurrentContestForProposal(proposalId);
     }
@@ -196,12 +196,12 @@ public final class ProposalClientUtil {
         return client.getLatestContestPhaseIdInProposal(proposalId);
     }
 
-    public static Contest getLatestContestInProposal(Long proposalId)
+    public static ContestWrapper getLatestContestInProposal(Long proposalId)
             throws ContestNotFoundException {
         return client.getLatestContestInProposal(proposalId);
     }
 
-    public static ContestPhase getLatestContestPhaseInContest(
+    public static ContestPhaseWrapper getLatestContestPhaseInContest(
             Long proposalId) {
         return client.getLatestContestPhaseInProposal(proposalId);
     }

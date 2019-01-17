@@ -7,17 +7,18 @@ import org.springframework.stereotype.Service;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.Proposal;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.commons.GroupingHelper;
 import org.xcolab.entity.utils.notifications.contest.ContestVoteQuestionNotification;
 import org.xcolab.entity.utils.notifications.proposal.ContestVoteNotification;
-import org.xcolab.model.tables.pojos.Contest;
-import org.xcolab.model.tables.pojos.ContestPhase;
 import org.xcolab.service.contest.domain.contest.ContestDao;
 import org.xcolab.service.contest.domain.contestphase.ContestPhaseDao;
 import org.xcolab.service.contest.domain.contestphasetype.ContestPhaseTypeDao;
@@ -25,7 +26,6 @@ import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.service.contest.ContestService;
 import org.xcolab.service.contest.utils.promotion.PhasePromotionHelper;
 import org.xcolab.service.contest.utils.promotion.enums.ContestStatus;
-import org.xcolab.commons.GroupingHelper;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -55,18 +55,18 @@ public class ContestPhaseService {
     private ContestDao contestDao;
 
 
-    public ContestStatus getContestStatus(ContestPhase contestPhase) {
+    public ContestStatus getContestStatus(ContestPhaseWrapper contestPhase) {
         String status = contestPhaseTypeDao.get(contestPhase.getContestPhaseTypeId()).get().getStatus();
         return status == null ? null : ContestStatus.valueOf(status);
     }
 
-    public ContestPhase getNextContestPhase(ContestPhase contestPhase) throws NotFoundException {
+    public ContestPhaseWrapper getNextContestPhase(ContestPhaseWrapper contestPhase) throws NotFoundException {
         // First sort by contest phase type (the list has to be initialized as modifiable..)
-        List<ContestPhase> contestPhases = new ArrayList<>(contestService.getAllContestPhases(contestPhase.getContestId()));
-        contestPhases.sort(Comparator.comparing(ContestPhase::getPhaseStartDate));
+        List<ContestPhaseWrapper> contestPhases = new ArrayList<>(contestService.getAllContestPhases(contestPhase.getContestId()));
+        contestPhases.sort(Comparator.comparing(ContestPhaseWrapper::getPhaseStartDate));
 
         boolean currentFound = false;
-        for (ContestPhase phase : contestPhases) {
+        for (ContestPhaseWrapper phase : contestPhases) {
             if (currentFound) {
                 return phase;
             }
@@ -77,7 +77,7 @@ public class ContestPhaseService {
         throw new NotFoundException("Can't find next phase for phase with id: " + contestPhase.getId());
     }
 
-    public void transferSupportsToVote(Contest contest, ContestPhase votingPhase) {
+    public void transferSupportsToVote(ContestWrapper contest, ContestPhaseWrapper votingPhase) {
 
 //        TODO: this should not be calling the client!
         final List<Proposal> proposalsInPhase = ProposalClientUtil
@@ -102,7 +102,7 @@ public class ContestPhaseService {
             }
 
             //TODO COLAB-2501: we shouldn't use client pojos in the service
-            org.xcolab.client.contest.pojo.Contest contestPojo = ContestClientUtil
+            ContestWrapper contestPojo = ContestClientUtil
                     .getContest(contest.getId());
             if (supportedProposalsInPhase.size() == 1) {
                 final Proposal proposal = supportedProposalsInPhase.get(0);
@@ -117,7 +117,7 @@ public class ContestPhaseService {
         }
     }
 
-    private Map<Member, Set<Proposal>> getSupportedProposalsByMember(Contest contest) {
+    private Map<Member, Set<Proposal>> getSupportedProposalsByMember(ContestWrapper contest) {
         List<Proposal> proposalsInContest = ProposalClientUtil
                 .getProposalsInContest(contest.getId());
 
@@ -129,10 +129,10 @@ public class ContestPhaseService {
     }
 
     public void forcePromotionOfProposalInPhase(Long proposalId, Long phaseId) throws NotFoundException {
-        ContestPhase phase = contestPhaseDao.get(phaseId).get();
+        ContestPhaseWrapper phase = contestPhaseDao.get(phaseId).get();
         try {
             Proposal p = ProposalClientUtil.getProposal(proposalId);
-            ContestPhase nextPhase = getNextContestPhase(phase);
+            ContestPhaseWrapper nextPhase = getNextContestPhase(phase);
             PhasePromotionHelper phasePromotionHelper = new PhasePromotionHelper(phase);
             //skip already promoted proposal
             if (phasePromotionHelper.isProposalPromoted(p)) {

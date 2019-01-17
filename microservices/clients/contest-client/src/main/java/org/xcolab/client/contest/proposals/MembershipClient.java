@@ -2,12 +2,11 @@ package org.xcolab.client.contest.proposals;
 
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.contest.resources.ProposalResource;
-import org.xcolab.client.contest.proposals.exceptions.MembershipRequestNotFoundException;
-import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.contest.pojo.Proposal;
 import org.xcolab.client.contest.pojo.ProposalDto;
 import org.xcolab.client.contest.pojo.ProposalTeamMembershipRequest;
+import org.xcolab.client.contest.proposals.exceptions.MembershipRequestNotFoundException;
+import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.util.activities.enums.ProposalActivityType;
@@ -16,7 +15,6 @@ import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestResource2;
-import org.xcolab.util.http.client.types.TypeProvider;
 import org.xcolab.util.http.exceptions.Http409ConflictException;
 
 import java.sql.Timestamp;
@@ -26,21 +24,12 @@ import java.util.List;
 
 public class MembershipClient {
 
-    private final RestResource1<ProposalDto, Long> proposalResource;
+    private final RestResource1<ProposalDto, Long> proposalResource = null; // proposals
 
-    private final RestResource1<ProposalTeamMembershipRequest, Long> membershipRequestResource;
-    private final RestResource2<ProposalDto, Long, Long, Long> proposalTeamMemberResource;
+    private final RestResource1<ProposalTeamMembershipRequest, Long> membershipRequestResource = null; // membershipRequests
+    private final RestResource2<ProposalDto, Long, Long, Long> proposalTeamMemberResource = null; // proposals / teamMembers
 
-    private final ProposalClient proposalClient;
-
-    public MembershipClient() {
-        proposalResource = new RestResource1<>(ProposalResource.PROPOSAL, ProposalDto.TYPES);
-        membershipRequestResource = new RestResource1<>(ProposalResource.MEMBERSHIP_REQUEST,
-                ProposalTeamMembershipRequest.TYPES);
-        proposalClient = ProposalClientUtil.getClient();
-        proposalTeamMemberResource = proposalResource
-                .nestedResource("teamMembers", TypeProvider.LONG);
-    }
+    private final ProposalClient proposalClient = null;
 
     public void denyMembershipRequest(Proposal proposal, long userId, long membershipRequestId,
             String reply, long updateauthorUserId) {

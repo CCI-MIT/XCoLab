@@ -2,7 +2,7 @@ package org.xcolab.entity.utils.email;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
@@ -16,7 +16,7 @@ public class ContestPhasePromotionEmail {
 
     private static final long ADMINISTRATOR_USER_ID = 10144L;
 
-    public static void contestPhasePromotionEmailNotifyProposalContributors(Proposal proposal, ContestPhase contestPhase) {
+    public static void contestPhasePromotionEmailNotifyProposalContributors(Proposal proposal, ContestPhaseWrapper contestPhase) {
 
         ProposalJudgingCommentHelper reviewContentHelper = new ProposalJudgingCommentHelper(proposal, contestPhase);
         String messageBody = reviewContentHelper.getPromotionComment(true);

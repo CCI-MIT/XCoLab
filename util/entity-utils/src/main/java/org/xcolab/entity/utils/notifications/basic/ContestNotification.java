@@ -13,7 +13,7 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.admin.pojo.IEmailTemplate;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestWrapper;
 import org.xcolab.client.members.pojo.Member;
 
 import java.text.DateFormat;
@@ -29,12 +29,12 @@ public class ContestNotification extends EmailNotification {
     private static final String OTHER_CONTESTS_PLACEHOLDER = "other-contests-link";
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormat.forPattern("MMMM dd, HH:mm:ss a z");
-    protected final Contest contest;
+    protected final ContestWrapper contest;
     protected final String templateName;
     private final Member recipient;
     private ContestNotificationTemplate templateWrapper;
 
-    public ContestNotification(Contest contest, Member recipient, String templateName) {
+    public ContestNotification(ContestWrapper contest, Member recipient, String templateName) {
         this.contest = contest;
         this.recipient = recipient;
         this.templateName = templateName;
@@ -46,7 +46,7 @@ public class ContestNotification extends EmailNotification {
     }
 
     @Override
-    protected Contest getContest() {
+    protected ContestWrapper getContest() {
         return contest;
     }
 

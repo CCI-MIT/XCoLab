@@ -7,15 +7,14 @@ import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
-import org.xcolab.client.contest.resources.ProposalResource;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.Proposal;
 import org.xcolab.client.contest.pojo.ProposalDto;
-import org.xcolab.client.contest.pojo.ProposalVersion;
 import org.xcolab.client.contest.pojo.ProposalReference;
+import org.xcolab.client.contest.pojo.ProposalVersion;
+import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
 import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.util.activities.enums.ProposalActivityType;
@@ -24,7 +23,6 @@ import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.types.TypeProvider;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.ArrayList;
@@ -32,11 +30,16 @@ import java.util.List;
 
 public final class ProposalClient {
 
-    private final RestResource<ProposalDto, Long> proposalResource;
-    private final RestResource<Long, Long> proposalThreadIdResource;
-    private final RestResource<Long, Long> proposalIdResource;
-    private final RestResource1<ProposalVersion, Long> proposalVersionResource;
-    private final RestResource1<ProposalReference, Long> proposalReferenceResource;
+    private final RestResource<ProposalDto, Long> proposalResource = null; // proposals
+
+    //TODO COLAB-2594: rethink these endpoints
+    private final RestResource<Long, Long> proposalThreadIdResource = null; // proposalThreadIds
+
+    //TODO COLAB-2594: rethink these endpoints
+    private final RestResource<Long, Long> proposalIdResource = null; // proposalIds
+
+    private final RestResource1<ProposalVersion, Long> proposalVersionResource = null; // proposalVersions
+    private final RestResource1<ProposalReference, Long> proposalReferenceResource = null; // proposalReferences
 
     //TODO COLAB-2600: methods that use this should be in the service!
     private final ContestClient contestClient;
@@ -44,16 +47,6 @@ public final class ProposalClient {
     private final ActivitiesClient activitiesClient;
 
     public ProposalClient() {
-
-        proposalResource = new RestResource1<>(ProposalResource.PROPOSAL, ProposalDto.TYPES);
-        proposalIdResource = new RestResource1<>(ProposalResource.PROPOSAL_ID, TypeProvider.LONG);
-        proposalThreadIdResource = new RestResource1<>(ProposalResource.PROPOSAL_THREAD_ID,
-                TypeProvider.LONG);
-        proposalVersionResource = new RestResource1<>(ProposalResource.PROPOSAL_VERSION,
-                ProposalVersion.TYPES);
-        proposalReferenceResource = new RestResource1<>(ProposalResource.PROPOSAL_REFERENCE,
-                ProposalReference.TYPES);
-
         contestClient = ContestClientUtil.getClient();
         activitiesClient = ActivitiesClientUtil.getClient();
     }
@@ -154,7 +147,7 @@ public final class ProposalClient {
     }
 
     public List<Proposal> getProposalsInContest(Long contestId) {
-        ContestPhase cp = contestClient.getActivePhase(contestId);
+        ContestPhaseWrapper cp = contestClient.getActivePhase(contestId);
 
         return listProposals(0, Integer.MAX_VALUE, null, true, cp.getId(), null);
     }
@@ -394,18 +387,18 @@ public final class ProposalClient {
 
     public ContestType getContestTypeFromProposalId(Long proposalId) {
         try {
-            Contest contest = getCurrentContestForProposal(proposalId);
+            ContestWrapper contest = getCurrentContestForProposal(proposalId);
             return StaticAdminContext.getContestTypeClient()
                     .getContestType(contest.getContestTypeId());
         } catch (ContestNotFoundException e) {
-            throw ReferenceResolutionException.toObject(Contest.class, "")
+            throw ReferenceResolutionException.toObject(ContestWrapper.class, "")
                     .fromObject(Proposal.class, proposalId);
         }
     }
 
-    public Contest getCurrentContestForProposal(Long proposalId) throws ContestNotFoundException {
+    public ContestWrapper getCurrentContestForProposal(Long proposalId) throws ContestNotFoundException {
         Long contestPhaseId = getLatestContestPhaseIdInProposal(proposalId);
-        ContestPhase contestPhase = contestClient.getContestPhase(contestPhaseId);
+        ContestPhaseWrapper contestPhase = contestClient.getContestPhase(contestPhaseId);
         return contestClient.getContest(contestPhase.getContestId());
 
     }
@@ -415,13 +408,13 @@ public final class ProposalClient {
                 .get();
     }
 
-    public Contest getLatestContestInProposal(Long proposalId) throws ContestNotFoundException {
+    public ContestWrapper getLatestContestInProposal(Long proposalId) throws ContestNotFoundException {
         return contestClient
                 .getContest(getLatestContestPhaseInProposal(proposalId).getContestId());
     }
 
 
-    public ContestPhase getLatestContestPhaseInProposal(Long proposalId) {
+    public ContestPhaseWrapper getLatestContestPhaseInProposal(Long proposalId) {
         Long contestPhaseId = getLatestContestPhaseIdInProposal(proposalId);
         return contestClient.getContestPhase(contestPhaseId);
     }

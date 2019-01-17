@@ -15,8 +15,8 @@ import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.admin.IAdminClient;
 import org.xcolab.client.admin.pojo.INotification;
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
@@ -102,7 +102,7 @@ public class AdminTabController extends AbstractTabController {
 
     @ModelAttribute("votingPhaseSelectionItems")
     public List<LabelValue> votingPhaseSelectionItems() {
-        final List<ContestPhase> contestPhasesByType = new ArrayList<>(ContestClientUtil
+        final List<ContestPhaseWrapper> contestPhasesByType = new ArrayList<>(ContestClientUtil
                 .getContestPhasesByType(ContestPhaseTypeValue.VOTING_PHASE_SOLVE.getTypeId()));
         //TODO COLAB-2613: don't hard code phase types
         contestPhasesByType.addAll(ContestClientUtil.getContestPhasesByType(20L));
@@ -112,7 +112,7 @@ public class AdminTabController extends AbstractTabController {
                 .stream()
                 .filter(p -> p.getContestId() != 0L)
                 .filter(p -> p.getPhaseStartDateDt().before(now))
-                .sorted(Comparator.comparing(ContestPhase::getPhaseStartDate).reversed())
+                .sorted(Comparator.comparing(ContestPhaseWrapper::getPhaseStartDate).reversed())
                 .map(contestPhase -> {
                     final String contestName = contestPhase.getContest().getTitle();
                     final Long phaseId = contestPhase.getId();
@@ -125,7 +125,7 @@ public class AdminTabController extends AbstractTabController {
     public List<LabelValue> contestSelectionItems() {
         return ContestClientUtil.getAllContests()
                 .stream()
-                .sorted(Comparator.comparing(Contest::getId).reversed())
+                .sorted(Comparator.comparing(ContestWrapper::getId).reversed())
                 .map(contest -> {
                     final String contestName = contest.getTitle();
                     final Long contestId = contest.getId();
@@ -183,7 +183,7 @@ public class AdminTabController extends AbstractTabController {
             return;
         }
 
-        final List<Contest> contests =
+        final List<ContestWrapper> contests =
                 EntityIdListUtil.CONTESTS.fromIdList(proposalReportBean.getContestIds());
 
         switch (proposalReportBean.getProposalExportType()) {

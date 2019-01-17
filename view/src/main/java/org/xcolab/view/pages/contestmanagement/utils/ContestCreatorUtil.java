@@ -11,8 +11,8 @@ import org.xcolab.client.admin.pojo.IConfigurationAttribute;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ProposalTemplateClientUtil;
 import org.xcolab.client.contest.exceptions.ContestScheduleNotFoundException;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestSchedule;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.IContestSchedule;
 import org.xcolab.client.contest.pojo.ProposalTemplate;
 import org.xcolab.client.contest.util.ContestScheduleChangeHelper;
 import org.xcolab.client.contest.proposals.exceptions.ProposalTemplateNotFoundException;
@@ -29,8 +29,8 @@ public final class ContestCreatorUtil {
 
     private ContestCreatorUtil() { }
 
-    public static Contest createNewContest(String title, long authorUserId) {
-        Contest contest = ContestClientUtil.createContest(authorUserId, title);
+    public static ContestWrapper createNewContest(String title, long authorUserId) {
+        ContestWrapper contest = ContestClientUtil.createContest(authorUserId, title);
         contest.setContestYear((long) DateTime.now().getYear());
         contest.setContestPrivate(true);
         contest.setShowInTileView(true);
@@ -76,14 +76,14 @@ public final class ContestCreatorUtil {
         }
     }
 
-    private static ContestSchedule getOrCreateDefaultContestSchedule() {
+    private static IContestSchedule getOrCreateDefaultContestSchedule() {
         final long defaultContestScheduleId = ConfigurationAttributeKey
                 .DEFAULT_CONTEST_SCHEDULE_ID.get();
         try {
             if (defaultContestScheduleId > 0) {
                 return ContestClientUtil.getContestSchedule(defaultContestScheduleId);
             }
-            final ContestSchedule newDefaultSchedule = ContestScheduleLifecycleUtil
+            final IContestSchedule newDefaultSchedule = ContestScheduleLifecycleUtil
                     .createProposalCreationOnlySchedule(DEFAULT_SCHEDULE_NAME);
 
             IConfigurationAttribute defaultScheduleAttribute = new ConfigurationAttribute();
@@ -99,7 +99,7 @@ public final class ContestCreatorUtil {
         } catch (ContestScheduleNotFoundException e) {
             //fail early if it doesn't exist
             throw ReferenceResolutionException
-                    .toObject(ContestSchedule.class, defaultContestScheduleId)
+                    .toObject(IContestSchedule.class, defaultContestScheduleId)
                     .fromObject(ConfigurationAttribute.class, "DEFAULT_CONTEST_SCHEDULE_ID");
         }
     }

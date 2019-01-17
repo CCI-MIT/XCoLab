@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.contestmanagement.utils;
 
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestWrapper;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.permissions.SystemRole;
 import org.xcolab.view.auth.MemberAuthUtil;
@@ -10,12 +10,12 @@ import java.io.Serializable;
 
 public class ContestPermissions implements TabPermissions, Serializable {
 
-    private final Contest contestWrapper;
+    private final ContestWrapper contestWrapper;
 
     private final long userId;
     private final boolean isLoggedIn;
 
-    public ContestPermissions(Contest contest) {
+    public ContestPermissions(ContestWrapper contest) {
         userId = MemberAuthUtil.getUserId();
         isLoggedIn = userId > 0;
         contestWrapper = (contest);

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestWrapper;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalMemberRatingClient;
 import org.xcolab.client.contest.pojo.Proposal;
@@ -80,7 +80,7 @@ public class SupportProposalActionController {
         AlertMessage.warning(
                 "Your support hasn't been recorded, please make sure to click the button only once.")
                 .flash(request);
-        final Contest contest = proposalContext.getContest();
+        final ContestWrapper contest = proposalContext.getContest();
         final Proposal proposal = proposalContext.getProposal();
         return "redirect:" + proposal.getProposalLinkUrl(contest);
     }

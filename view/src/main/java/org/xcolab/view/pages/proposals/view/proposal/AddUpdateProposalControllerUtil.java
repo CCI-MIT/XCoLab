@@ -4,8 +4,8 @@ import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.enums.ContestStatus;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.contest.pojo.Proposal;
 import org.xcolab.client.contest.pojo.Proposal2Phase;
@@ -33,7 +33,7 @@ public final class AddUpdateProposalControllerUtil {
     private AddUpdateProposalControllerUtil() {
     }
 
-    private static boolean isProposalListClosed(ContestPhase contestPhase) {
+    private static boolean isProposalListClosed(ContestPhaseWrapper contestPhase) {
         return contestPhase.getStatus() == ContestStatus.CLOSED
                 || contestPhase.getStatus() == ContestStatus.COMPLETED;
     }
@@ -42,15 +42,15 @@ public final class AddUpdateProposalControllerUtil {
             UpdateProposalDetailsBean updateProposalSectionsBean, Proposal proposal,
             ProposalContext proposalContext) {
         long userId = MemberAuthUtil.getUserId();
-        final Contest contest = proposalContext.getContest();
+        final ContestWrapper contest = proposalContext.getContest();
 
         final ClientHelper clients = proposalContext.getClients();
 
         boolean createNew = false;
-        final ContestPhase contestPhase = proposalContext.getContestPhase();
+        final ContestPhaseWrapper contestPhase = proposalContext.getContestPhase();
         if (proposal != null) {
             if (updateProposalSectionsBean.getIsMove() && updateProposalSectionsBean.getMoveToContestId() > 0) {
-                Contest moveToContest = ContestClientUtil.getContest(updateProposalSectionsBean.getMoveToContestId());
+                ContestWrapper moveToContest = ContestClientUtil.getContest(updateProposalSectionsBean.getMoveToContestId());
                 ProposalMoveUtil.moveProposal(proposalContext, updateProposalSectionsBean,
                         proposal, contestPhase, moveToContest, userId);
             }

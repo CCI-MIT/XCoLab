@@ -12,12 +12,12 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestCollectionCard;
-import org.xcolab.client.contest.pojo.FocusArea;
-import org.xcolab.client.contest.pojo.FocusAreaOntologyTerm;
-import org.xcolab.client.contest.pojo.OntologySpace;
-import org.xcolab.client.contest.pojo.OntologyTerm;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.IContestCollectionCard;
+import org.xcolab.client.contest.pojo.FocusAreaWrapper;
+import org.xcolab.client.contest.pojo.IFocusAreaOntologyTerm;
+import org.xcolab.client.contest.pojo.OntologySpaceWrapper;
+import org.xcolab.client.contest.pojo.OntologyTermWrapper;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.http.servlet.RequestUtil;
@@ -98,7 +98,7 @@ public class ContestsIndexController extends BaseProposalsController {
                 .countContests(null, false, contestType.getId());
 
         if (contestType.isSuggestionsActive()) {
-            Contest c = ContestClientUtil.getContest(contestType.getSuggestionContestId());
+            ContestWrapper c = ContestClientUtil.getContest(contestType.getSuggestionContestId());
             String link = c.getContestLinkUrl();
             model.addAttribute("suggestionContestLink", link);
         }
@@ -149,7 +149,7 @@ public class ContestsIndexController extends BaseProposalsController {
             List<CollectionCardWrapper> collectionCards = new ArrayList<>();
             LinkedList<CollectionCardWrapper> collectionHierarchy = new LinkedList<>();
             if(showCollectionCards) { //don't display collectioncards if search results shown
-                for (ContestCollectionCard card: ContestClientUtil.getSubContestCollectionCards(currentCollectionCardId)) {
+                for (IContestCollectionCard card: ContestClientUtil.getSubContestCollectionCards(currentCollectionCardId)) {
                     collectionCards.add(new CollectionCardWrapper(card, viewType));
                 }
                 collectionCards.sort((o1, o2) ->
@@ -185,20 +185,20 @@ public class ContestsIndexController extends BaseProposalsController {
         //For other views
         /*--------------------------------*/
 
-        List<Contest> contests = new ArrayList<>();
+        List<ContestWrapper> contests = new ArrayList<>();
 
         if (viewType.equals(VIEW_TYPE_OUTLINE)) {
 
-            List<Contest> allContests = ContestClientUtil.getContests(
+            List<ContestWrapper> allContests = ContestClientUtil.getContests(
                     null, false, contestType.getId()).stream()
-                    .filter(Contest::getShowInOutlineView)
+                    .filter(ContestWrapper::getShowInOutlineView)
                     .collect(Collectors.toList());
 
-            final List<Contest> activeContests = allContests.stream()
-                    .filter(Contest::isContestActive)
+            final List<ContestWrapper> activeContests = allContests.stream()
+                    .filter(ContestWrapper::isContestActive)
                     .collect(Collectors.toList());
 
-            List<Contest> otherContests;
+            List<ContestWrapper> otherContests;
             if (showAllContests) {
                 contests = allContests;
                 otherContests = activeContests;
@@ -207,26 +207,26 @@ public class ContestsIndexController extends BaseProposalsController {
                 otherContests = allContests;
             }
 
-        	List<OntologySpace> ontologySpacesRaw = OntologyClientUtil.getAllOntologySpaces();
-        	List<OntologyTerm> ontologyTermsRaw = OntologyClientUtil.getAllOntologyTerms();
-        	List<FocusArea> focusAreasRaw = OntologyClientUtil.getAllFocusAreas();
-        	List<FocusAreaOntologyTerm> focusAreasOntologyTermsRaw = OntologyClientUtil.getAllFocusAreaOntologyTerms();
-        	Map<Long, FocusArea> focusAreas = new TreeMap<>();
+        	List<OntologySpaceWrapper> ontologySpacesRaw = OntologyClientUtil.getAllOntologySpaces();
+        	List<OntologyTermWrapper> ontologyTermsRaw = OntologyClientUtil.getAllOntologyTerms();
+        	List<FocusAreaWrapper> focusAreasRaw = OntologyClientUtil.getAllFocusAreas();
+        	List<IFocusAreaOntologyTerm> focusAreasOntologyTermsRaw = OntologyClientUtil.getAllFocusAreaOntologyTerms();
+        	Map<Long, FocusAreaWrapper> focusAreas = new TreeMap<>();
 
-            for (FocusArea area: focusAreasRaw) {
-        		focusAreas.put(area.getId(), new FocusArea(area));
+            for (FocusAreaWrapper area: focusAreasRaw) {
+        		focusAreas.put(area.getId(), new FocusAreaWrapper(area));
         	}
 
-            Map<Long, OntologySpace> ontologySpaces = new HashMap<>();
-            for (OntologySpace space: ontologySpacesRaw) {
-        		ontologySpaces.put(space.getId(), new OntologySpace(space));
+            Map<Long, OntologySpaceWrapper> ontologySpaces = new HashMap<>();
+            for (OntologySpaceWrapper space: ontologySpacesRaw) {
+        		ontologySpaces.put(space.getId(), new OntologySpaceWrapper(space));
         	}
 
-            Map<Long, OntologyTerm> ontologyTerms = new TreeMap<>();
-            for (OntologyTerm term: ontologyTermsRaw) {
-        		OntologyTerm termWrapped = new OntologyTerm(term);
+            Map<Long, OntologyTermWrapper> ontologyTerms = new TreeMap<>();
+            for (OntologyTermWrapper term: ontologyTermsRaw) {
+        		OntologyTermWrapper termWrapped = new OntologyTermWrapper(term);
                 final long ontologySpaceId = term.getOntologySpaceId();
-                final OntologySpace ontologySpace = ontologySpaces.get(ontologySpaceId);
+                final OntologySpaceWrapper ontologySpace = ontologySpaces.get(ontologySpaceId);
                 if (ontologySpace == null) {
                     throw new IllegalStateException(String.format(
                             "Ontology space %d referenced by ontology term %d doesn't exist.",
@@ -236,18 +236,18 @@ public class ContestsIndexController extends BaseProposalsController {
         		ontologyTerms.put(term.getId(), termWrapped);
         	}
 
-        	for (OntologyTerm term: ontologyTermsRaw) {
+        	for (OntologyTermWrapper term: ontologyTermsRaw) {
         		if (term.getParentId() > 0) {
         			ontologyTerms.get(term.getId()).setParent(ontologyTerms.get(term.getParentId()));
         		}
         	}
         	
-        	for (FocusAreaOntologyTerm faTerm: focusAreasOntologyTermsRaw) {
+        	for (IFocusAreaOntologyTerm faTerm: focusAreasOntologyTermsRaw) {
         		focusAreas.get(faTerm.getFocusAreaId()).addOntologyTerm(ontologyTerms.get(faTerm.getOntologyTermId()));
         	}
 
-        	List<OntologySpace> sortedSpaces = new ArrayList<>(ontologySpaces.values());
-        	sortedSpaces.sort(Comparator.comparingInt(OntologySpace::getOrder));
+        	List<OntologySpaceWrapper> sortedSpaces = new ArrayList<>(ontologySpaces.values());
+        	sortedSpaces.sort(Comparator.comparingInt(OntologySpaceWrapper::getOrder));
         	model.addAttribute("focusAreas", focusAreas.values());
         	model.addAttribute("ontologyTerms", ontologyTerms.values());
         	model.addAttribute("ontologySpaces", sortedSpaces);
@@ -289,7 +289,7 @@ public class ContestsIndexController extends BaseProposalsController {
         return "/proposals/contestsIndex";
     }
 
-    private Comparator<Contest> getComparator(SortFilterPage sortFilterPage) {
+    private Comparator<ContestWrapper> getComparator(SortFilterPage sortFilterPage) {
         ContestsColumn sortColumn;
         if (StringUtils.isNotBlank(sortFilterPage.getSortColumn())) {
             sortColumn = ContestsColumn.valueOf(sortFilterPage.getSortColumn());
@@ -310,7 +310,7 @@ public class ContestsIndexController extends BaseProposalsController {
         };
     }
 
-    private Predicate<Contest> getFilter(SortFilterPage sortFilterPage) {
+    private Predicate<ContestWrapper> getFilter(SortFilterPage sortFilterPage) {
         String filterString = sortFilterPage.getFilter().toLowerCase();
 
         return contest -> {
@@ -322,8 +322,8 @@ public class ContestsIndexController extends BaseProposalsController {
         };
     }
 
-    private List<Contest> wrapContests(List<Contest> contests){
-        List<Contest> contestsToReturn = new ArrayList<>(contests);
+    private List<ContestWrapper> wrapContests(List<ContestWrapper> contests){
+        List<ContestWrapper> contestsToReturn = new ArrayList<>(contests);
         return contestsToReturn;
     }
 }

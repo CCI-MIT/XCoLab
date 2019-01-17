@@ -5,8 +5,8 @@
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
     <!--@elvariable id="proposalsPermissions" type="org.xcolab.view.pages.proposals.permissions.ProposalsPermissions"-->
-    <!--@elvariable id="contest" type="org.xcolab.client.contest.pojo.Contest"-->
-    <!--@elvariable id="contestPhase" type="org.xcolab.client.contest.pojo.ContestPhase"-->
+    <!--@elvariable id="contest" type="org.xcolab.client.contest.pojo.ContestWrapper"-->
+    <!--@elvariable id="contestPhase" type="org.xcolab.client.contest.pojo.ContestPhaseWrapper"-->
     <!--@elvariable id="contestType" type="org.xcolab.client.admin.pojo.ContestType"-->
     <!--@elvariable id="proposalsDisplayPermissions" type="org.xcolab.view.pages.proposals.permissions.ProposalsDisplayPermissions"-->
     <!--@elvariable id="judgeId" type="java.lang.Long"-->

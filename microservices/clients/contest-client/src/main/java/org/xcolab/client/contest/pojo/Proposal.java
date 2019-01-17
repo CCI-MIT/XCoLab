@@ -8,7 +8,7 @@ import edu.mit.cci.roma.client.Scenario;
 import edu.mit.cci.roma.client.Simulation;
 import org.apache.commons.lang3.StringUtils;
 
-import org.xcolab.client.contest.StaticContestProposalContext;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
@@ -72,8 +72,8 @@ public class Proposal extends AbstractProposal implements Serializable {
 
     private final Clients clients;
 
-    protected final Contest contest;
-    protected final ContestPhase contestPhase;
+    protected final ContestWrapper contest;
+    protected final ContestPhaseWrapper contestPhase;
     protected final Proposal2Phase proposal2Phase;
 
     protected final ProposalContestPhaseAttributeHelper proposalContestPhaseAttributeHelper;
@@ -89,7 +89,7 @@ public class Proposal extends AbstractProposal implements Serializable {
     private List<ProposalTeamMembershipRequest> membershipRequests;
     private List<Member> supporters;
 
-    public Proposal(Proposal proposal, ContestPhase contestPhase) {
+    public Proposal(Proposal proposal, ContestPhaseWrapper contestPhase) {
         this(proposal, proposal.getCurrentVersion(), null, contestPhase, null);
     }
 
@@ -115,16 +115,16 @@ public class Proposal extends AbstractProposal implements Serializable {
                 clients.proposalAttribute);
     }
 
-    public Proposal(Proposal proposal, ContestPhase contestPhase, Proposal2Phase proposal2Phase) {
+    public Proposal(Proposal proposal, ContestPhaseWrapper contestPhase, Proposal2Phase proposal2Phase) {
         this(proposal, proposal.getCurrentVersion(), null, contestPhase, proposal2Phase);
     }
 
-    public Proposal(Proposal proposal, Integer version, Contest contest) {
+    public Proposal(Proposal proposal, Integer version, ContestWrapper contest) {
         this(proposal, version, contest, null, null);
     }
 
-    public Proposal(Proposal proposal, Integer version, Contest contest,
-            ContestPhase contestPhase, Proposal2Phase proposal2Phase) {
+    public Proposal(Proposal proposal, Integer version, ContestWrapper contest,
+            ContestPhaseWrapper contestPhase, Proposal2Phase proposal2Phase) {
         super(proposal);
         this.clients = new Clients();
         ContestAssociation contestAssociation =
@@ -179,12 +179,12 @@ public class Proposal extends AbstractProposal implements Serializable {
     }
 
     @JsonIgnore
-    public String getProposalLinkUrl(Contest contest) {
+    public String getProposalLinkUrl(ContestWrapper contest) {
         return getProposalLinkUrl(contest, 0L);
     }
 
     @JsonIgnore
-    public String getProposalLinkUrl(Contest contest, long contestPhaseId) {
+    public String getProposalLinkUrl(ContestWrapper contest, long contestPhaseId) {
         Long proposalId = this.getId();
         ContestType contestType = StaticAdminContext.getContestTypeClient()
                 .getContestType(contest.getContestTypeId());
@@ -216,7 +216,7 @@ public class Proposal extends AbstractProposal implements Serializable {
         if (this.getId() == 0) {
             return false;
         }
-        final ContestPhase contestPhase = clients.contest.getContestPhase(
+        final ContestPhaseWrapper contestPhase = clients.contest.getContestPhase(
                 clients.proposal.getLatestContestPhaseIdInProposal(this.getId()));
         long visibleAttributeValue = 1;
         if (contestPhase != null) {
@@ -306,7 +306,7 @@ public class Proposal extends AbstractProposal implements Serializable {
     @JsonIgnore
     public long getCommentsCount() {
         if (this.getId() > 0) {
-            return StaticContestProposalContext.getCommentClient()
+            return StaticContestContext.getCommentClient()
                     .countComments(this.getDiscussionId());
         }
         return 0;
@@ -324,7 +324,7 @@ public class Proposal extends AbstractProposal implements Serializable {
         thread.setAuthorUserId(getAuthorUserId());
         thread.setTitle(contestType.getProposalName() + getName() + threadTitleSuffix);
         thread.setIsQuiet(isQuiet);
-        return StaticContestProposalContext.getThreadClient().createThread(thread).getId();
+        return StaticContestContext.getThreadClient().createThread(thread).getId();
     }
 
     @JsonIgnore
@@ -409,7 +409,7 @@ public class Proposal extends AbstractProposal implements Serializable {
     }
 
     @JsonIgnore
-    public String getProposalUrl(ContestPhase inPhase) {
+    public String getProposalUrl(ContestPhaseWrapper inPhase) {
         return this.getProposalLinkUrl(contest, inPhase.getId());
     }
 
@@ -434,14 +434,14 @@ public class Proposal extends AbstractProposal implements Serializable {
     }
 
     @JsonIgnore
-    public Contest getContest() {
+    public ContestWrapper getContest() {
         return contest;
     }
 
     @JsonIgnore
     public boolean isContestMatchesLatestContest() {
         final long contestId = getContest().getId();
-        final Contest currentContestForProposal =
+        final ContestWrapper currentContestForProposal =
                 clients.proposal.getCurrentContestForProposal(getId());
         return contestId == currentContestForProposal.getId();
     }
@@ -452,9 +452,9 @@ public class Proposal extends AbstractProposal implements Serializable {
     }
 
     @JsonIgnore
-    public Contest getWasMovedToContest() {
+    public ContestWrapper getWasMovedToContest() {
         try {
-            Contest c = clients.proposal.getCurrentContestForProposal(this.getId());
+            ContestWrapper c = clients.proposal.getCurrentContestForProposal(this.getId());
             if (c.getId() != contest.getId().longValue()) {
                 try {
                     return clients.contest.getContest(c.getId());
@@ -509,7 +509,7 @@ public class Proposal extends AbstractProposal implements Serializable {
             if (this.getId() == 0) {
                 return true;
             }
-            final Contest currentContest =
+            final ContestWrapper currentContest =
                     clients.proposal.getCurrentContestForProposal(this.getId());
             return !isDeleted() && currentContest.getId() == contestId;
         } catch (ContestNotFoundException ignored) {
@@ -518,7 +518,7 @@ public class Proposal extends AbstractProposal implements Serializable {
     }
 
     @JsonIgnore
-    public ContestPhase getContestPhase() {
+    public ContestPhaseWrapper getContestPhase() {
         return contestPhase;
     }
 
@@ -1029,15 +1029,15 @@ public class Proposal extends AbstractProposal implements Serializable {
     }
 
     private class ContestAssociation {
-        private final Contest contest;
-        private final ContestPhase contestPhase;
+        private final ContestWrapper contest;
+        private final ContestPhaseWrapper contestPhase;
         private final Proposal2Phase proposal2Phase;
 
         ContestAssociation() {
             this(null, null, null);
         }
 
-        ContestAssociation(Contest contest, ContestPhase contestPhase,
+        ContestAssociation(ContestWrapper contest, ContestPhaseWrapper contestPhase,
                 Proposal2Phase proposal2Phase) {
             boolean proposalExists = getId() != null && getId() != 0L;
             if (contest == null && proposalExists) {
@@ -1060,15 +1060,15 @@ public class Proposal extends AbstractProposal implements Serializable {
             this.proposal2Phase = proposal2Phase;
         }
 
-        private ContestPhase fetchPhaseFromProposal2Phase(Proposal2Phase proposal2Phase) {
+        private ContestPhaseWrapper fetchPhaseFromProposal2Phase(Proposal2Phase proposal2Phase) {
             return clients.contest.getContestPhase(proposal2Phase.getContestPhaseId());
         }
 
-        private Contest fetchContestFromPhase(ContestPhase contestPhase) {
+        private ContestWrapper fetchContestFromPhase(ContestPhaseWrapper contestPhase) {
             return clients.contest.getContest(contestPhase.getContestId());
         }
 
-        private Proposal2Phase fetchProposal2Phase(ContestPhase contestPhase) {
+        private Proposal2Phase fetchProposal2Phase(ContestPhaseWrapper contestPhase) {
             try {
                 return clients.proposalPhase.getProposal2PhaseByProposalIdContestPhaseId(
                         getId(), contestPhase.getId());
@@ -1077,19 +1077,19 @@ public class Proposal extends AbstractProposal implements Serializable {
             }
         }
 
-        private ContestPhase fetchPhaseFromContest(Contest contest) {
+        private ContestPhaseWrapper fetchPhaseFromContest(ContestWrapper contest) {
             return clients.contest.getActivePhase(contest.getId());
         }
 
-        private Contest fetchContestFromProposal() {
+        private ContestWrapper fetchContestFromProposal() {
             return clients.proposal.getCurrentContestForProposal(getId());
         }
 
-        public Contest getContest() {
+        public ContestWrapper getContest() {
             return contest;
         }
 
-        public ContestPhase getContestPhase() {
+        public ContestPhaseWrapper getContestPhase() {
             return contestPhase;
         }
 

@@ -2,8 +2,8 @@ package org.xcolab.view.pages.proposals.wrappers;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalJudgeRatingClientUtil;
@@ -21,8 +21,8 @@ public class ProposalFellowWrapper extends Proposal {
         super(proposal,proposal.getContestPhase());
         try {
             //find out contestPhase
-            Contest baseContest = proposalContext.getClients().getProposalClient().getCurrentContestForProposal(proposal.getId());
-            ContestPhase contestPhase = ContestClientUtil.getActivePhase(baseContest.getId());
+            ContestWrapper baseContest = proposalContext.getClients().getProposalClient().getCurrentContestForProposal(proposal.getId());
+            ContestPhaseWrapper contestPhase = ContestClientUtil.getActivePhase(baseContest.getId());
 
             List<ProposalRating> list = ProposalJudgeRatingClientUtil.getFellowRatingForProposalAndUser(
                     currentMember.getId(),

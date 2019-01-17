@@ -2,9 +2,9 @@ package org.xcolab.service.contest.proposal.enums;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.IPointsDistributionConfiguration;
 import org.xcolab.model.tables.pojos.PointType;
-import org.xcolab.model.tables.pojos.PointsDistributionConfiguration;
 import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.service.contest.proposal.service.pointsdistributionconfiguration.PointsDistributionConfigurationService;
 import org.xcolab.service.contest.proposal.service.proposal.ProposalService;
@@ -28,7 +28,7 @@ public enum ReceiverLimitationStrategy {
 			List<PointsTarget> targets = new ArrayList<>();
 			if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
 
-				for (PointsDistributionConfiguration pdc: pointsDistributionConfigurationService.getPointsDistributionConfiguration(proposal.getId(), pointType.getId())) {
+				for (IPointsDistributionConfiguration pdc: pointsDistributionConfigurationService.getPointsDistributionConfiguration(proposal.getId(), pointType.getId())) {
 					if (pdc.getTargetUserId() > 0) {
 						PointsTarget target = new PointsTarget();
 						target.setUserId(pdc.getTargetUserId());
@@ -55,7 +55,7 @@ public enum ReceiverLimitationStrategy {
 			List<PointsTarget> targets = new ArrayList<>();
 			
 			if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
-				for (PointsDistributionConfiguration pdc: pointsDistributionConfigurationService.getPointsDistributionConfiguration(proposal.getId(), pointType.getId())) {
+				for (IPointsDistributionConfiguration pdc: pointsDistributionConfigurationService.getPointsDistributionConfiguration(proposal.getId(), pointType.getId())) {
 					if (pdc.getTargetUserId() > 0 && !proposalService.isUserAMember(proposal.getId(), pdc.getTargetUserId())) {
 						PointsTarget target = new PointsTarget();
 						target.setUserId(pdc.getTargetUserId());
@@ -81,7 +81,7 @@ public enum ReceiverLimitationStrategy {
 			List<PointsTarget> targets = new ArrayList<>();
 
 			if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
-				for (PointsDistributionConfiguration pdc: pointsDistributionConfigurationService.getPointsDistributionConfiguration(proposal.getId(), pointType.getId())) {
+				for (IPointsDistributionConfiguration pdc: pointsDistributionConfigurationService.getPointsDistributionConfiguration(proposal.getId(), pointType.getId())) {
 					if (pdc.getTargetUserId() > 0 && proposalService.isUserAMember(proposal.getId(), pdc.getTargetUserId())) {
 						PointsTarget target = new PointsTarget();
 						target.setUserId(pdc.getTargetUserId());
@@ -127,7 +127,7 @@ public enum ReceiverLimitationStrategy {
             List<Proposal> subProposals = proposalService.getSubproposals(proposal.getId(), false);
             Set<Long> subProposalIds = new HashSet<>();
             for (Proposal subProposal : subProposals) {
-                final Contest latestProposalContest = proposalService.getLatestProposalContest(subProposal.getId());
+                final ContestWrapper latestProposalContest = proposalService.getLatestProposalContest(subProposal.getId());
                 final ContestTier contestTier = ContestTier.getContestTierByTierType(latestProposalContest.getContestTier());
                 if (contestTier == ContestTier.REGION_AGGREGATE) {
                     subProposalIds.add(subProposal.getId());
@@ -149,7 +149,7 @@ public enum ReceiverLimitationStrategy {
             List<Proposal> subProposals = proposalService.getSubproposals(proposal.getId(), false);
             Set<Long> subProposalIds = new HashSet<>();
             for (Proposal subProposal : subProposals) {
-                final Contest latestProposalContest = proposalService.getLatestProposalContest(subProposal.getId());
+                final ContestWrapper latestProposalContest = proposalService.getLatestProposalContest(subProposal.getId());
                 final ContestTier contestTier = ContestTier.getContestTierByTierType(latestProposalContest.getContestTier());
                 if (contestTier == ContestTier.BASIC || contestTier == ContestTier.NONE) {
                     subProposalIds.add(subProposal.getId());

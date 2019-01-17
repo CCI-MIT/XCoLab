@@ -3,7 +3,6 @@ package org.xcolab.client.contest;
 import org.xcolab.client.contest.pojo.ProposalTemplate;
 import org.xcolab.client.contest.pojo.ProposalTemplateSection;
 import org.xcolab.client.contest.pojo.ProposalTemplateSectionDefinition;
-import org.xcolab.client.contest.resources.ContestResource;
 import org.xcolab.client.contest.proposals.exceptions.ProposalTemplateNotFoundException;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource1;
@@ -13,18 +12,9 @@ import java.util.List;
 
 public class ProposalTemplateClient {
 
-    private final RestResource1<ProposalTemplate, Long> proposalTemplateResource;
-    private final RestResource1<ProposalTemplateSectionDefinition, Long> proposalTemplateSectionDefinitionResource;
-    private final RestResource1<ProposalTemplateSection, Long> proposalTemplateSectionResource;
-
-    public ProposalTemplateClient() {
-        proposalTemplateResource =
-                new RestResource1<>(ContestResource.PLAN_TEMPLATE, ProposalTemplate.TYPES);
-        proposalTemplateSectionDefinitionResource = new RestResource1<>(
-                ContestResource.PLAN_SECTION_DEFINITION, ProposalTemplateSectionDefinition.TYPES);
-        proposalTemplateSectionResource = new RestResource1<>(
-                ContestResource.PLAN_TEMPLATE_SECTION, ProposalTemplateSection.TYPES);
-    }
+    private final RestResource1<ProposalTemplate, Long> proposalTemplateResource = null; // proposalTemplates
+    private final RestResource1<ProposalTemplateSectionDefinition, Long> proposalTemplateSectionDefinitionResource = null; // proposalTemplateSectionDefinitions
+    private final RestResource1<ProposalTemplateSection, Long> proposalTemplateSectionResource = null; // proposalTemplateSections
 
     public ProposalTemplate getProposalTemplate(long id) {
         try {

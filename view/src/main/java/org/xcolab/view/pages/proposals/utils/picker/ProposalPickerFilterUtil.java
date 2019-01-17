@@ -6,8 +6,8 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.ProposalTemplateClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.OntologyTerm;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.OntologyTermWrapper;
 import org.xcolab.client.contest.pojo.ProposalTemplateSectionDefinition;
 import org.xcolab.client.contest.proposals.ProposalClient;
 import org.xcolab.client.contest.proposals.ProposalMemberRatingClientUtil;
@@ -30,7 +30,7 @@ public class ProposalPickerFilterUtil {
     private static final SectionFocusAreaFilter sectionFocusAreaFilter =
             new SectionFocusAreaFilter();
 
-    public static List<Contest> getTextFilteredContests(long sectionId, String contestName) {
+    public static List<ContestWrapper> getTextFilteredContests(long sectionId, String contestName) {
 
         ProposalTemplateSectionDefinition proposalTemplateSectionDefinition =
                 ProposalTemplateClientUtil.getProposalTemplateSectionDefinition(sectionId);
@@ -40,7 +40,7 @@ public class ProposalPickerFilterUtil {
         if (focusAreaId != null) {
             ontologyTermIds = OntologyClientUtil
                     .getOntologyTermsForFocusArea(OntologyClientUtil.getFocusArea(focusAreaId))
-                    .stream().map(OntologyTerm::getId).collect(Collectors.toList());
+                    .stream().map(OntologyTermWrapper::getId).collect(Collectors.toList());
         }
 
         List<Long> allowedTiers = getAllowedTiers(proposalTemplateSectionDefinition.getTier());
@@ -184,7 +184,7 @@ public class ProposalPickerFilterUtil {
         List<Long> filterExceptionContestIds = proposalTemplateSectionDefinition.getAdditionalIdsAsList();
 
         final Long sectionFocusAreaId = proposalTemplateSectionDefinition.getFocusAreaId();
-        Contest contest = proposalContext.getContest();
+        ContestWrapper contest = proposalContext.getContest();
         final Long contestFocusAreaId = contest.getFocusAreaId();
 
         sectionFocusAreaFilter.filterProposals(proposals, sectionFocusAreaId, contestFocusAreaId,

@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalClient;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
@@ -69,7 +69,7 @@ public class ProposalVersionsJsonController {
             @PathVariable("version") Integer version, @PathVariable("proposalId") Long proposalId) throws IOException {
 
 
-        Contest c = ProposalClientUtil.getCurrentContestForProposal(proposalId);
+        ContestWrapper c = ProposalClientUtil.getCurrentContestForProposal(proposalId);
 
         ClientHelper clientHelper = new ClientHelper();
         int index = clientHelper.getProposalClient()
@@ -88,7 +88,7 @@ public class ProposalVersionsJsonController {
             throws IOException {
 
         Proposal2Phase p2p = null;
-        Contest contest = ContestClientUtil.getContest(contestId);
+        ContestWrapper contest = ContestClientUtil.getContest(contestId);
         ClientHelper clientHelper = new ClientHelper();
         ProposalPhaseClient proposalPhaseClient = clientHelper.getProposalPhaseClient();
         ProposalClient proposalClient = clientHelper.getProposalClient();
@@ -101,7 +101,7 @@ public class ProposalVersionsJsonController {
         for(ProposalVersion proposalVersion: clientHelper.getProposalClient().getProposalVersionsGroupedVersionsByContest(proposalId,contest.getId(),start, end)){
 
                 long cphId = proposalVersion.getContestPhaseId();
-                final ContestPhase contestPhase = contestClient.getContestPhase(cphId);
+                final ContestPhaseWrapper contestPhase = contestClient.getContestPhase(cphId);
                 Member author = Member.fromId(proposalVersion.getAuthorUserId());
                 proposalVersionsArray.add(Json.createObjectBuilder()
                         .add("version", proposalVersion.getVersion())

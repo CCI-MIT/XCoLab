@@ -1,7 +1,7 @@
 package org.xcolab.view.pages.contestmanagement.utils;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestWrapper;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.pojo.Proposal;
@@ -44,7 +44,7 @@ public class ContributorCsvWriter extends CsvResponseWriter {
         this.filterPredicate = this.filterPredicate.and(filterPredicate);
     }
 
-    public void writeProposalsInContest(Contest contest) {
+    public void writeProposalsInContest(ContestWrapper contest) {
         final String colabUrl = PlatformAttributeKey.COLAB_URL.get();
 
         List<Proposal> proposals = ProposalClientUtil.listProposals(contest.getId());

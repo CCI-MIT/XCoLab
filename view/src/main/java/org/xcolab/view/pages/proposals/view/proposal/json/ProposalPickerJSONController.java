@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestWrapper;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.pojo.Proposal;
 import org.xcolab.commons.exceptions.InternalException;
@@ -91,7 +91,7 @@ public class ProposalPickerJSONController {
             @RequestParam(required = false, value = "contestSortColumn") String sortColumn,
             @RequestParam(required = false) Long sectionId) throws IOException {
 
-        List<Contest> contests =
+        List<ContestWrapper> contests =
                 ProposalPickerFilterUtil.getTextFilteredContests(sectionId, filterText);
 
         int totalCount = contests.size();

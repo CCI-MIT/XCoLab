@@ -17,14 +17,14 @@ import java.io.Serializable;
 @JsonInclude(Include.NON_NULL)
 public class ProposalRibbon implements Serializable {
 
-    private final ContestPhaseRibbonType contestPhaseRibbonType;
+    private final IContestPhaseRibbonType contestPhaseRibbonType;
 
     public ProposalRibbon(Proposal proposal) {
         Assert.notNull(proposal, "Proposal is required");
         this.contestPhaseRibbonType = fetchRibbonType(proposal);
     }
 
-    private ContestPhaseRibbonType fetchRibbonType(Proposal proposal) {
+    private IContestPhaseRibbonType fetchRibbonType(Proposal proposal) {
         final Long proposalId = proposal.getId();
         if (proposalId == null || proposalId == 0) {
             return null;
@@ -34,7 +34,7 @@ public class ProposalRibbon implements Serializable {
         final ProposalPhaseClient proposalPhaseClient =
                 ProposalPhaseClientUtil.getClient();
 
-        ContestPhase contestPhase = proposal.getContestPhase();
+        ContestPhaseWrapper contestPhase = proposal.getContestPhase();
 
         ProposalContestPhaseAttribute ribbonAttribute =
                 proposalPhaseClient.getProposalContestPhaseAttribute(

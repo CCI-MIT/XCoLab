@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
 import org.xcolab.client.contest.pojo.Proposal;
@@ -67,7 +67,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
 
         if (showEvaluationRatings) {
             Proposal proposal = proposalContext.getProposal();
-            Contest contest = proposalContext.getContest();
+            ContestWrapper contest = proposalContext.getContest();
 
             long discussionId = proposal.getResultsDiscussionIdOrCreate();
 
@@ -107,12 +107,12 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
     private boolean hasContestPassedAnyScreeningPhaseAlready(ProposalContext proposalContext) {
         boolean hasContestPassedScreeningPhaseAlready = false;
 
-        Contest contest = proposalContext.getContest();
+        ContestWrapper contest = proposalContext.getContest();
         final ContestClient contestClient = ContestClientUtil.getClient();
-        ContestPhase activeContestPhase = contestClient.getActivePhase(contest.getId());
-        List<ContestPhase> allContestPhasesForCurrentContest = contestClient.getAllContestPhases(contest.getId());
+        ContestPhaseWrapper activeContestPhase = contestClient.getActivePhase(contest.getId());
+        List<ContestPhaseWrapper> allContestPhasesForCurrentContest = contestClient.getAllContestPhases(contest.getId());
 
-        for (ContestPhase contestPhase : allContestPhasesForCurrentContest) {
+        for (ContestPhaseWrapper contestPhase : allContestPhasesForCurrentContest) {
             boolean isLastContestPhase = activeContestPhase.getPhaseEndDate() == null;
             boolean isPastContestPhase = !isLastContestPhase && contestPhase.getPhaseEndDate() != null &&
                     contestPhase.getPhaseEndDate().before(activeContestPhase.getPhaseEndDate());
@@ -126,18 +126,18 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
         return hasContestPassedScreeningPhaseAlready;
     }
 
-    private boolean isActiveContestPhaseOpenForEdit(ProposalContext proposalContext, Contest contest) {
-        ContestPhase activeContestPhase = proposalContext.getClients().getContestClient().getActivePhase(contest.getId());
+    private boolean isActiveContestPhaseOpenForEdit(ProposalContext proposalContext, ContestWrapper contest) {
+        ContestPhaseWrapper activeContestPhase = proposalContext.getClients().getContestClient().getActivePhase(contest.getId());
         Long contestPhaseTypeId = activeContestPhase.getContestPhaseTypeId();
         return proposalContext.getClients().getContestClient().getContestPhaseType(contestPhaseTypeId).getStatus().equalsIgnoreCase("OPEN_FOR_EDIT");
     }
 
     private List<ProposalRatings> getAverageRatingsForPastPhases(ProposalContext proposalContext,
-            Contest contest, Proposal proposal) {
+            ContestWrapper contest, Proposal proposal) {
         List<ProposalRatings> proposalRatings = new ArrayList<>();
-        List<ContestPhase> contestPhases = proposalContext.getClients().getContestClient().getAllContestPhases(contest.getId());
+        List<ContestPhaseWrapper> contestPhases = proposalContext.getClients().getContestClient().getAllContestPhases(contest.getId());
 
-        for (ContestPhase contestPhase : contestPhases) {
+        for (ContestPhaseWrapper contestPhase : contestPhases) {
             boolean isPhasePastScreeningPhase =
                     contestPhase.getFellowScreeningActive() && contestPhase.isEnded();
             if (isPhasePastScreeningPhase) {
@@ -171,7 +171,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
         return proposalRatings;
     }
 
-    private Boolean wasProposalPromotedInContestPhase(ProposalContext proposalContext, Proposal proposal, ContestPhase contestPhase) {
+    private Boolean wasProposalPromotedInContestPhase(ProposalContext proposalContext, Proposal proposal, ContestPhaseWrapper contestPhase) {
         final ProposalPhaseClient proposalPhaseClient =
                 proposalContext.getClients().getProposalPhaseClient();
         ProposalContestPhaseAttribute judgingDecisionAttr =
@@ -186,7 +186,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
         }
     }
 
-    private ProposalRatings getProposalPromotionCommentRating(Proposal proposal, ContestPhase contestPhase, String contestPhaseName) {
+    private ProposalRatings getProposalPromotionCommentRating(Proposal proposal, ContestPhaseWrapper contestPhase, String contestPhaseName) {
         ProposalRatings proposalRating = new AverageProposalRating();
         ProposalJudgingCommentHelper reviewContentHelper = new ProposalJudgingCommentHelper(
                 proposal, contestPhase);

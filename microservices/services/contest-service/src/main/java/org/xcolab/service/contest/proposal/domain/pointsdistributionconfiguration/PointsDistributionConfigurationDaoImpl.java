@@ -5,7 +5,9 @@ import org.jooq.Record;
 import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.xcolab.model.tables.pojos.PointsDistributionConfiguration;
+
+import org.xcolab.client.contest.pojo.IPointsDistributionConfiguration;
+import org.xcolab.client.contest.pojo.tables.pojos.PointsDistributionConfiguration;
 import org.xcolab.model.tables.records.PointsDistributionConfigurationRecord;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
@@ -20,7 +22,8 @@ public class PointsDistributionConfigurationDaoImpl implements PointsDistributio
     private DSLContext dslContext;
 
     @Override
-    public PointsDistributionConfiguration create(PointsDistributionConfiguration pointsDistributionConfiguration) {
+    public IPointsDistributionConfiguration create(
+            IPointsDistributionConfiguration pointsDistributionConfiguration) {
 
         PointsDistributionConfigurationRecord ret = this.dslContext.insertInto(POINTS_DISTRIBUTION_CONFIGURATION)
                 .set(POINTS_DISTRIBUTION_CONFIGURATION.ID, pointsDistributionConfiguration.getId())
@@ -45,7 +48,7 @@ public class PointsDistributionConfigurationDaoImpl implements PointsDistributio
     }
 
     @Override
-    public boolean update(PointsDistributionConfiguration pointsDistributionConfiguration) {
+    public boolean update(IPointsDistributionConfiguration pointsDistributionConfiguration) {
         return dslContext.update(POINTS_DISTRIBUTION_CONFIGURATION)
                 .set(POINTS_DISTRIBUTION_CONFIGURATION.ID, pointsDistributionConfiguration.getId())
                 .set(POINTS_DISTRIBUTION_CONFIGURATION.PROPOSAL_ID, pointsDistributionConfiguration.getProposalId())
@@ -62,7 +65,7 @@ public class PointsDistributionConfigurationDaoImpl implements PointsDistributio
     }
 
     @Override
-    public List<PointsDistributionConfiguration> findByGiven(Long proposalId, Long pointTypeId) {
+    public List<IPointsDistributionConfiguration> findByGiven(Long proposalId, Long pointTypeId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(POINTS_DISTRIBUTION_CONFIGURATION).getQuery();
 
@@ -89,7 +92,7 @@ public class PointsDistributionConfigurationDaoImpl implements PointsDistributio
     }
 
     @Override
-    public PointsDistributionConfiguration get(Long id) throws NotFoundException {
+    public IPointsDistributionConfiguration get(Long id) throws NotFoundException {
 
         final Record record = this.dslContext.selectFrom(POINTS_DISTRIBUTION_CONFIGURATION)
                 .where(POINTS_DISTRIBUTION_CONFIGURATION.ID.eq(id))
@@ -103,7 +106,7 @@ public class PointsDistributionConfigurationDaoImpl implements PointsDistributio
     }
 
     @Override
-    public PointsDistributionConfiguration getByProposalTemplateSectionDefinitionId(Long targetProposalTemplateSectionDefinitionId) throws NotFoundException {
+    public IPointsDistributionConfiguration getByProposalTemplateSectionDefinitionId(Long targetProposalTemplateSectionDefinitionId) throws NotFoundException {
 
         final Record record = this.dslContext.selectFrom(POINTS_DISTRIBUTION_CONFIGURATION)
                 .where(POINTS_DISTRIBUTION_CONFIGURATION.TARGET_PROPOSAL_TEMPLATE_SECTION_DEFINITION_ID

@@ -17,6 +17,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import org.xcolab.client.contest.pojo.ContestWrapper;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.contest.pojo.Proposal;
@@ -34,7 +35,7 @@ import static org.mockito.Matchers.anyString;
         ProposalClientUtil.class,
         ProposalPhaseClientUtil.class,
         Proposal.class,
-        org.xcolab.client.contest.pojo.Contest.class
+        ContestWrapper.class
 })
 @ComponentScan("org.xcolab.service.contest")
 @ComponentScan("org.xcolab.client")

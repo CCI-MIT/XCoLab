@@ -1,8 +1,8 @@
 package org.xcolab.view.pages.profile.beans;
 
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.ContestPhase;
-import org.xcolab.client.contest.pojo.ContestPhaseRibbonType;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.IContestPhaseRibbonType;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.contest.pojo.Proposal;
@@ -34,11 +34,11 @@ public class BadgeBean implements Serializable {
                     getLatestRibbonAttribute(proposal);
             if (ribbonAttributeOpt.isPresent()) {
                 final ProposalContestPhaseAttribute ribbonAttribute = ribbonAttributeOpt.get();
-                final ContestPhaseRibbonType ribbonType = ContestClientUtil
+                final IContestPhaseRibbonType ribbonType = ContestClientUtil
                         .getContestPhaseRibbonType(ribbonAttribute.getNumericValue());
 
                 if (ribbonType.getRibbon() > 0) {
-                    final ContestPhase phase = ContestClientUtil.getContestPhase(
+                    final ContestPhaseWrapper phase = ContestClientUtil.getContestPhase(
                             ribbonAttribute.getContestPhaseId());
                     badges.add(new Badge(ribbonType, proposal, proposal.getName(),
                             phase.getContest()));

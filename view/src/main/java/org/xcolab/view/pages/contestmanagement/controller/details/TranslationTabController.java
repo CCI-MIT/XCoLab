@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestWrapper;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.errors.AccessDeniedPage;
@@ -45,7 +45,7 @@ public class TranslationTabController extends AbstractTabController {
             return new AccessDeniedPage(member).toViewName(response);
         }
         if (!model.containsAttribute("contestTranslationBean")) {
-            Contest contest = ContestClientUtil.getContest(contestId);
+            ContestWrapper contest = ContestClientUtil.getContest(contestId);
             model.addAttribute("contestTranslationBean", new ContestTranslationBean(contest));
         }
         model.addAttribute("i18nOptions", I18nUtils.getSelectList());
@@ -66,7 +66,7 @@ public class TranslationTabController extends AbstractTabController {
             return showTranslationTab(request, response, model, member, contestId);
         }
 
-        final Contest contest = ContestClientUtil.getContest(contestId);
+        final ContestWrapper contest = ContestClientUtil.getContest(contestId);
 
         contestTranslationBean.persist(contest);
         return showTranslationTab(request, response, model, member, contestId);

@@ -1,9 +1,9 @@
 package org.xcolab.view.pages.contestmanagement.wrappers;
 
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestSchedule;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.IContestSchedule;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.view.pages.contestmanagement.beans.ContestPhaseBean;
@@ -19,8 +19,8 @@ import static org.xcolab.view.pages.contestmanagement.beans.ContestPhaseBean.CRE
 public class ContestScheduleBean {
 
     private List<ContestPhaseBean> schedulePhases;
-    private ContestSchedule contestSchedule;
-    private List<Contest> contestsUsingSelectedSchedule;
+    private IContestSchedule contestSchedule;
+    private List<ContestWrapper> contestsUsingSelectedSchedule;
     private Boolean createNew = false;
 
     public ContestScheduleBean() {
@@ -34,21 +34,21 @@ public class ContestScheduleBean {
         contestsUsingSelectedSchedule = loadContestsUsingSchedule(scheduleId);
     }
 
-    private ContestSchedule loadContestSchedule(Long scheduleId) {
+    private IContestSchedule loadContestSchedule(Long scheduleId) {
 
         if (scheduleId != null) {
             return ContestClientUtil.getContestSchedule(scheduleId);
         } else {
-            List<ContestSchedule> contestScheduleList = ContestClientUtil.getAllContestSchedules();
+            List<IContestSchedule> contestScheduleList = ContestClientUtil.getAllContestSchedules();
             return contestScheduleList.get(0);
         }
     }
 
     private List<ContestPhaseBean> loadContestPhases(Long scheduleId) {
         List<ContestPhaseBean> schedulePhaseBeans = new ArrayList<>();
-        List<ContestPhase> contestPhases =
+        List<ContestPhaseWrapper> contestPhases =
                 ContestClientUtil.getTemplatePhasesForContestScheduleId(scheduleId);
-        for (ContestPhase contestPhase : contestPhases) {
+        for (ContestPhaseWrapper contestPhase : contestPhases) {
             schedulePhaseBeans.add(new ContestPhaseBean(contestPhase));
         }
         schedulePhaseBeans.add(createDummyContestPhaseBean());
@@ -57,9 +57,9 @@ public class ContestScheduleBean {
 
     private ContestPhaseBean createDummyContestPhaseBean() {
 
-        ContestPhase dummyContestPhase = new ContestPhase();
+        ContestPhaseWrapper dummyContestPhase = new ContestPhaseWrapper();
         ContestPhaseBean dummyContestPhaseBean = new ContestPhaseBean(dummyContestPhase);
-        dummyContestPhaseBean.setContestId(ContestPhase.SCHEDULE_TEMPLATE_PHASE_CONTEST_ID);
+        dummyContestPhaseBean.setContestId(ContestPhaseWrapper.SCHEDULE_TEMPLATE_PHASE_CONTEST_ID);
         dummyContestPhaseBean.setContestScheduleId(getScheduleId());
         dummyContestPhaseBean.setId(CREATE_CONTEST_PHASE_PK);
         return dummyContestPhaseBean;
@@ -74,15 +74,15 @@ public class ContestScheduleBean {
         contestsUsingSelectedSchedule = loadContestsUsingSchedule(contestScheduleId);
     }
 
-    private List<Contest> loadContestsUsingSchedule(long scheduleId) {
-        List<Contest> wrappedContestsUsingSchedule = new ArrayList<>();
-        List<Contest> contestsUsingSchedule =
+    private List<ContestWrapper> loadContestsUsingSchedule(long scheduleId) {
+        List<ContestWrapper> wrappedContestsUsingSchedule = new ArrayList<>();
+        List<ContestWrapper> contestsUsingSchedule =
                 ContestClientUtil.getContestsByContestScheduleId(scheduleId);
         wrappedContestsUsingSchedule.addAll(contestsUsingSchedule);
         return wrappedContestsUsingSchedule;
     }
 
-    public List<Contest> getContestsUsingSelectedSchedule() {
+    public List<ContestWrapper> getContestsUsingSelectedSchedule() {
         return contestsUsingSelectedSchedule;
     }
 
@@ -152,7 +152,7 @@ public class ContestScheduleBean {
     }
 
     public boolean areContestsCompatibleWithSchedule() {
-        List<ContestPhase> schedulePhases = getSchedulePhases().stream()
+        List<ContestPhaseWrapper> schedulePhases = getSchedulePhases().stream()
                 .map(ContestPhaseBean::getContestPhase)
                 .collect(Collectors.toList());
 
@@ -181,7 +181,7 @@ public class ContestScheduleBean {
     }
 
     private void createNewScheduleFromExistingSchedule() {
-        ContestSchedule newContestSchedule = new ContestSchedule();
+        IContestSchedule newContestSchedule = new IContestSchedule();
         newContestSchedule.setBaseScheduleId(contestSchedule.getBaseScheduleId());
         newContestSchedule.setDescription(contestSchedule.getDescription());
         newContestSchedule.setName(contestSchedule.getName());
@@ -210,10 +210,10 @@ public class ContestScheduleBean {
 
     private void updateContestsUsingSchedule(long contestScheduleId) {
 
-        List<Contest> contestsUsingScheduleId = ContestClientUtil
+        List<ContestWrapper> contestsUsingScheduleId = ContestClientUtil
                 .getContestsByContestScheduleId(contestScheduleId);
 
-        for (Contest contest : contestsUsingScheduleId) {
+        for (ContestWrapper contest : contestsUsingScheduleId) {
             contest.changeScheduleTo(contestScheduleId);
         }
 

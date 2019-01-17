@@ -6,13 +6,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.PointsClientUtil;
 import org.xcolab.client.contest.pojo.Proposal;
-import org.xcolab.client.contest.pojo.PointType;
-import org.xcolab.client.contest.pojo.PointsDistributionConfiguration;
+import org.xcolab.client.contest.pojo.PointTypeWrapper;
+import org.xcolab.client.contest.pojo.IPointsDistributionConfiguration;
 import org.xcolab.view.pages.proposals.requests.AssignPointsBean;
 import org.xcolab.view.pages.proposals.tabs.ProposalTab;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
@@ -31,9 +31,9 @@ public class AssignPointsActionController {
 
     private final Map<Long, Double> pointTypePercentageModifiers = new HashMap<>();
 
-    private void initializePercentageModifiers(PointType pointType) {
+    private void initializePercentageModifiers(PointTypeWrapper pointType) {
         this.pointTypePercentageModifiers.put(pointType.getId(), pointType.getPercentageOfTotal());
-        for (PointType p : pointType.getChildren()) {
+        for (PointTypeWrapper p : pointType.getChildren()) {
             this.initializePercentageModifiers(p);
         }
     }
@@ -46,8 +46,8 @@ public class AssignPointsActionController {
             throws IOException {
 
         final Proposal proposal = proposalContext.getProposal();
-        final Contest contest = proposalContext.getContest();
-        final ContestPhase contestPhase = proposalContext.getContestPhase();
+        final ContestWrapper contest = proposalContext.getContest();
+        final ContestPhaseWrapper contestPhase = proposalContext.getContestPhase();
 
         final String redirectUrl =
                 proposal.getProposalLinkUrl(contest, contestPhase.getId())
@@ -68,12 +68,12 @@ public class AssignPointsActionController {
                 .deletePointsDistributionConfigurationByProposalId(proposal.getId());
 
         try {
-            PointType contestRootPointType = PointsClientUtil
+            PointTypeWrapper contestRootPointType = PointsClientUtil
 
                     .getPointType(contest.getDefaultParentPointType());
 
             //calculate the percentage multiplicator for each pointtype
-            this.initializePercentageModifiers(new PointType(contestRootPointType));
+            this.initializePercentageModifiers(new PointTypeWrapper(contestRootPointType));
 
             //custom user assignments
             for (Long pointTypeId : assignPointsBean.getAssignmentsByUserIdByPointTypeId()
@@ -93,8 +93,8 @@ public class AssignPointsActionController {
                     sum += percentage;
                     //round to four decimals
                     percentage = (double) Math.round(percentage * 10000) / 10000;
-                    PointsDistributionConfiguration pointsDistributionConfiguration =
-                            new PointsDistributionConfiguration();
+                    IPointsDistributionConfiguration pointsDistributionConfiguration =
+                            new IPointsDistributionConfiguration();
                     pointsDistributionConfiguration.setProposalId(proposal.getId());
                     pointsDistributionConfiguration.setPointTypeId(pointTypeId);
                     pointsDistributionConfiguration.setTargetUserId(entry.getKey());

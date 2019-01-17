@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.enums.ContestStatus;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.ProposalTemplateSectionDefinition;
 import org.xcolab.client.contest.pojo.ProposalTemplate;
 import org.xcolab.client.members.pojo.Member;
@@ -50,8 +50,8 @@ public class ProposalMoveJsonController {
         }
 
         List<ImmutableContest> returnList = new ArrayList<>();
-        for (Contest contest: ContestClientUtil.findContestsByActive(true)) {
-            ContestPhase cp = ContestClientUtil.getActivePhase(contest.getId());
+        for (ContestWrapper contest: ContestClientUtil.findContestsByActive(true)) {
+            ContestPhaseWrapper cp = ContestClientUtil.getActivePhase(contest.getId());
             if (cp.getPhaseActive()) {
                 String statusStr = cp.getContestStatusStr();
                 ContestStatus status = null;
@@ -66,8 +66,8 @@ public class ProposalMoveJsonController {
 
         // Add non active contests
         if (admin) {
-            final List<Contest> inactiveContests = ContestClientUtil.findContestsByActive(false);
-            for (Contest inactiveContest : inactiveContests) {
+            final List<ContestWrapper> inactiveContests = ContestClientUtil.findContestsByActive(false);
+            for (ContestWrapper inactiveContest : inactiveContests) {
                 returnList.add(new ImmutableContest(inactiveContest));
             }
         }
@@ -83,7 +83,7 @@ public class ProposalMoveJsonController {
         private final long contestYear;
         private final String contestUrlName;
 
-        private ImmutableContest(Contest contest) {
+        private ImmutableContest(ContestWrapper contest) {
             this.contestShortName = contest.getTitleWithEndYear();
             this.contestName = contest.getQuestion();
             this.contestYear = contest.getContestYear();
@@ -114,7 +114,7 @@ public class ProposalMoveJsonController {
             throws IOException {
         List<ImmutableSection> returnList = new ArrayList<>();
 
-        Contest contest = ContestClientUtil.getContest(contestId);
+        ContestWrapper contest = ContestClientUtil.getContest(contestId);
         ClientHelper clientHelper = new ClientHelper();
 
         ProposalTemplate proposalTemplate = clientHelper.getProposalTemplateClient()

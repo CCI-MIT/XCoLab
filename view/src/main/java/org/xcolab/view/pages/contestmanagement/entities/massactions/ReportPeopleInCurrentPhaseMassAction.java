@@ -1,8 +1,8 @@
 package org.xcolab.view.pages.contestmanagement.entities.massactions;
 
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.pojo.Proposal;
 import org.xcolab.view.pages.contestmanagement.utils.CsvExportHelper;
@@ -24,14 +24,14 @@ public class ReportPeopleInCurrentPhaseMassAction extends AbstractContestMassAct
     }
 
     @Override
-    public void execute(List<Contest> contests, boolean actionConfirmed,
+    public void execute(List<ContestWrapper> contests, boolean actionConfirmed,
             MassActionDataWrapper dataWrapper, HttpServletResponse response) throws IOException {
         CsvExportHelper csvExportHelper = new CsvExportHelper();
         csvExportHelper.addRowToExportData(CSV_EXPORT_HEADER);
 
-        for (Contest contest : contests) {
+        for (ContestWrapper contest : contests) {
             Long contestId = contest.getId();
-            ContestPhase activeContestPhase = ContestClientUtil.getActivePhase(contestId);
+            ContestPhaseWrapper activeContestPhase = ContestClientUtil.getActivePhase(contestId);
             List<Proposal> proposalsInActiveContestPhase = ProposalClientUtil
                     .getActiveProposalsInContestPhase(activeContestPhase.getId());
             csvExportHelper

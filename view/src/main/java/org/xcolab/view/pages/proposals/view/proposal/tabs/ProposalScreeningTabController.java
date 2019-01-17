@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
@@ -44,7 +44,7 @@ public class ProposalScreeningTabController extends BaseProposalTabController {
         setCommonModelAndPageAttributes(request, model, proposalContext, ProposalTab.SCREENING);
 
         Proposal proposal = proposalContext.getProposal();
-        ContestPhase contestPhase = proposalContext.getContestPhase();
+        ContestPhaseWrapper contestPhase = proposalContext.getContestPhase();
         Proposal proposalWrapper = new Proposal(proposal, contestPhase);
         ProposalFellowWrapper proposalFellowWrapper = new ProposalFellowWrapper(proposalContext,
                 proposalWrapper, currentMember);
@@ -72,7 +72,7 @@ public class ProposalScreeningTabController extends BaseProposalTabController {
             ProposalContext proposalContext, Member currentMember,
             @ModelAttribute FellowProposalScreeningBean fellowProposalScreeningBean) {
 
-        final Contest contest = proposalContext.getContest();
+        final ContestWrapper contest = proposalContext.getContest();
         final Proposal proposal = proposalContext.getProposal();
         long proposalId = proposal.getId();
         long contestPhaseId = fellowProposalScreeningBean.getContestPhaseId();

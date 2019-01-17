@@ -1,14 +1,13 @@
 package org.xcolab.client.contest.proposals;
 
-import org.xcolab.client.contest.resources.ProposalResource;
-import org.xcolab.client.contest.proposals.exceptions.ProposalAttributeNotFoundException;
 import org.xcolab.client.contest.pojo.Proposal;
-import org.xcolab.client.contest.pojo.ProposalDto;
-import org.xcolab.client.contest.pojo.ProposalVersion;
 import org.xcolab.client.contest.pojo.ProposalAttribute;
 import org.xcolab.client.contest.pojo.ProposalAttributeHelperDataDto;
+import org.xcolab.client.contest.pojo.ProposalDto;
 import org.xcolab.client.contest.pojo.ProposalUnversionedAttribute;
 import org.xcolab.client.contest.pojo.ProposalUnversionedAttributeHelperDataDto;
+import org.xcolab.client.contest.pojo.ProposalVersion;
+import org.xcolab.client.contest.proposals.exceptions.ProposalAttributeNotFoundException;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
@@ -21,24 +20,12 @@ import java.util.List;
 
 public final class ProposalAttributeClient {
 
-    private final RestResource1<ProposalAttribute, Long> proposalAttributeResource;
+    private final RestResource1<ProposalAttribute, Long> proposalAttributeResource = null; // proposalAttributes
     private final RestResource1<ProposalUnversionedAttribute, Long>
-            proposalUnversionedAttributeResource;
+            proposalUnversionedAttributeResource = null; // proposalUnversionedAttributes
 
-    private final RestResource1<ProposalDto, Long> proposalResource;
-    private final RestResource2L<ProposalDto, ProposalVersion> proposalVersionResource;
-
-    public ProposalAttributeClient() {
-        proposalAttributeResource = new RestResource1<>(ProposalResource.PROPOSAL_ATTRIBUTE,
-                ProposalAttribute.TYPES);
-        proposalUnversionedAttributeResource = new RestResource1<>(
-                ProposalResource.PROPOSAL_UNVERSIONED_ATTRIBUTE,
-                ProposalUnversionedAttribute.TYPES);
-
-        proposalResource = new RestResource1<>(ProposalResource.PROPOSAL, ProposalDto.TYPES);
-        this.proposalVersionResource = new RestResource2L<>(proposalResource,
-                "versions", ProposalVersion.TYPES);
-    }
+    private final RestResource1<ProposalDto, Long> proposalResource = null; // proposals
+    private final RestResource2L<ProposalDto, ProposalVersion> proposalVersionResource = null; // proposals / versions
 
     public ProposalAttribute createProposalAttribute(ProposalAttribute proposalAttribute) {
         return proposalAttributeResource.create(new ProposalAttribute(proposalAttribute))

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestWrapper;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalMemberRatingClient;
@@ -69,7 +69,7 @@ public class VoteOnProposalActionController {
                 clients.getProposalMemberRatingClient();
 
         final Proposal proposal = proposalContext.getProposal();
-        final Contest contest = proposalContext.getContest();
+        final ContestWrapper contest = proposalContext.getContest();
         final ContestType contestType = proposalContext.getContestType();
         final String proposalLinkUrl = proposal.getProposalLinkUrl(contest);
 
@@ -173,7 +173,7 @@ public class VoteOnProposalActionController {
         AlertMessage.warning(
                 "Your vote hasn't been recorded, please make sure to click the button only once.")
                 .flash(request);
-        final Contest contest = proposalContext.getContest();
+        final ContestWrapper contest = proposalContext.getContest();
         final Proposal proposal = proposalContext.getProposal();
         return "redirect:" + proposal.getProposalLinkUrl(contest);
     }

@@ -6,7 +6,7 @@ import org.jsoup.nodes.TextNode;
 
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.pojo.IEmailTemplate;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestWrapper;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.contest.pojo.Proposal;
@@ -19,7 +19,7 @@ public class ProposalUserActionNotification extends ProposalNotification {
     private final String templateName;
     private ProposalUserActionNotificationTemplate templateWrapper;
 
-    public ProposalUserActionNotification(Proposal proposal, Contest contest, Member sender,
+    public ProposalUserActionNotification(Proposal proposal, ContestWrapper contest, Member sender,
             Member recipient, String templateName, String baseUrl) {
         super(proposal, contest, recipient, null);
         this.sender = sender;

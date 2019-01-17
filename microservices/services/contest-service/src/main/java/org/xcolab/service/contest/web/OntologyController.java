@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.xcolab.client.contest.pojo.IFocusAreaOntologyTerm;
+import org.xcolab.client.contest.pojo.IImpactDefaultSeries;
+import org.xcolab.client.contest.pojo.IImpactDefaultSeriesData;
+import org.xcolab.client.contest.pojo.IImpactTemplateFocusAreaList;
+import org.xcolab.client.contest.pojo.IImpactTemplateMaxFocusArea;
 import org.xcolab.commons.spring.web.annotation.ListMapping;
 import org.xcolab.model.tables.pojos.FocusArea;
-import org.xcolab.model.tables.pojos.FocusAreaOntologyTerm;
-import org.xcolab.model.tables.pojos.ImpactDefaultSeries;
-import org.xcolab.model.tables.pojos.ImpactDefaultSeriesData;
-import org.xcolab.model.tables.pojos.ImpactTemplateFocusAreaList;
-import org.xcolab.model.tables.pojos.ImpactTemplateMaxFocusArea;
 import org.xcolab.model.tables.pojos.OntologySpace;
 import org.xcolab.model.tables.pojos.OntologyTerm;
 import org.xcolab.service.contest.domain.focusarea.FocusAreaDao;
@@ -142,7 +142,7 @@ public class OntologyController {
     public List<FocusArea> getFocusAreas(
         @RequestParam(required = false) Long ontologyTermId) throws NotFoundException{
         List<FocusArea> focusAreas = new ArrayList<>();
-        for (FocusAreaOntologyTerm term: focusAreaOntologyTermDao.findByGiven(null, ontologyTermId)) {
+        for (IFocusAreaOntologyTerm term: focusAreaOntologyTermDao.findByGiven(null, ontologyTermId)) {
             focusAreas.add(focusAreaDao.get(term.getFocusAreaId()));
         }
         return focusAreas;
@@ -201,27 +201,28 @@ public class OntologyController {
     }
 
     @ListMapping("/focusAreaOntologyTerms")
-    public List<FocusAreaOntologyTerm> getFocusAreaOntologyTerms(@RequestParam(required = false) Long focusAreaId,
+    public List<IFocusAreaOntologyTerm> getFocusAreaOntologyTerms(@RequestParam(required = false) Long focusAreaId,
                                                                  @RequestParam(required = false) Long ontologTermId
     ) {
         return focusAreaOntologyTermDao.findByGiven(focusAreaId,ontologTermId);
     }
 
     @PostMapping("/focusAreaOntologyTerms")
-    public FocusAreaOntologyTerm createFocusAreaOntologyTerm(@RequestBody FocusAreaOntologyTerm focusAreaOntologyTerm) {
+    public IFocusAreaOntologyTerm createFocusAreaOntologyTerm(@RequestBody
+            IFocusAreaOntologyTerm focusAreaOntologyTerm) {
         return this.focusAreaOntologyTermDao.create(focusAreaOntologyTerm);
     }
 
 
     @ListMapping("/impactTemplateMaxFocusAreas")
-    public List<ImpactTemplateMaxFocusArea> getImpactTemplateMaxFocusAreas(
+    public List<IImpactTemplateMaxFocusArea> getImpactTemplateMaxFocusAreas(
             @RequestParam(required = false) Long focusAreaListId
     ) {
         return impactTemplateMaxFocusAreaDao.findByGiven(focusAreaListId);
     }
 
     @GetMapping("/impactTemplateFocusAreaLists/{impactTemplateFocusAreaListId}")
-    public ImpactTemplateFocusAreaList getImpactTemplateFocusAreaList(@PathVariable("impactTemplateFocusAreaListId") Long impactTemplateFocusAreaListId) throws NotFoundException {
+    public IImpactTemplateFocusAreaList getImpactTemplateFocusAreaList(@PathVariable("impactTemplateFocusAreaListId") Long impactTemplateFocusAreaListId) throws NotFoundException {
         if (impactTemplateFocusAreaListId == null || impactTemplateFocusAreaListId == 0) {
             throw new NotFoundException("No impactTemplateFocusAreaListId given");
         } else {
@@ -239,7 +240,7 @@ public class OntologyController {
     }
 
     @ListMapping("/impactDefaultSeries")
-    public List<ImpactDefaultSeries> getImpactDefaultSeries(
+    public List<IImpactDefaultSeries> getImpactDefaultSeries(
             @RequestParam(required = false) Long focusAreaId,
             @RequestParam(required = false) String name
     ) {
@@ -247,7 +248,7 @@ public class OntologyController {
     }
 
     @ListMapping("/impactDefaultSeriesDatas")
-    public List<ImpactDefaultSeriesData> getImpactDefaultSeriesDatas(
+    public List<IImpactDefaultSeriesData> getImpactDefaultSeriesDatas(
             @RequestParam(required = false) Long seriesId,
             @RequestParam(required = false) Integer year
     ) {

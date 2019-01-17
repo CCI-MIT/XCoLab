@@ -3,7 +3,7 @@ package org.xcolab.entity.utils.helper;
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
 import org.xcolab.client.contest.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
 import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
@@ -23,11 +23,11 @@ import org.xcolab.util.enums.promotion.JudgingSystemActions.FellowAction;
 public class ProposalJudgingCommentHelper {
 
     private final Proposal proposal;
-    private final ContestPhase contestPhase;
+    private final ContestPhaseWrapper contestPhase;
     private final ProposalPhaseClient proposalPhaseClient;
     private String subject;
 
-    public ProposalJudgingCommentHelper(Proposal proposal, ContestPhase contestPhase) {
+    public ProposalJudgingCommentHelper(Proposal proposal, ContestPhaseWrapper contestPhase) {
         this.proposal = proposal;
         proposalPhaseClient = ProposalPhaseClientUtil.getClient();
         this.contestPhase = contestPhase;

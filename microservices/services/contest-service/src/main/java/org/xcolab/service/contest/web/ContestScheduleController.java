@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.xcolab.model.tables.pojos.ContestSchedule;
+
+import org.xcolab.client.contest.pojo.IContestSchedule;
 import org.xcolab.service.contest.domain.contest.ContestDao;
 import org.xcolab.service.contest.domain.contestschedule.ContestScheduleDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
@@ -27,12 +28,12 @@ public class ContestScheduleController {
     private ContestDao contestDao;
 
     @PostMapping(value = "/contestSchedules")
-    public ContestSchedule createContestSchedule(@RequestBody ContestSchedule contestSchedule) {
+    public IContestSchedule createContestSchedule(@RequestBody IContestSchedule contestSchedule) {
         return this.contestScheduleDao.create(contestSchedule);
     }
 
     @GetMapping(value = "/contestSchedules/{contestScheduleId}")
-    public ContestSchedule getContestSchedule(@PathVariable long contestScheduleId)
+    public IContestSchedule getContestSchedule(@PathVariable long contestScheduleId)
             throws NotFoundException {
         return contestScheduleDao.get(contestScheduleId).orElseThrow(NotFoundException::new);
     }
@@ -43,7 +44,7 @@ public class ContestScheduleController {
     }
 
     @PutMapping(value = "/contestSchedules/{id}")
-    public boolean updateContestSchedule(@RequestBody ContestSchedule contestSchedule,
+    public boolean updateContestSchedule(@RequestBody IContestSchedule contestSchedule,
                                          @PathVariable long id) throws NotFoundException {
 
         if (contestScheduleDao.exists(id)) {
@@ -54,7 +55,7 @@ public class ContestScheduleController {
     }
 
     @RequestMapping(value = "/contestSchedules", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<ContestSchedule> getContestSchedules() {
+    public List<IContestSchedule> getContestSchedules() {
         return contestScheduleDao.findByGiven();
     }
 

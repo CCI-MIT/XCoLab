@@ -1,9 +1,9 @@
 package org.xcolab.service.contest.domain.impactiteration;
 
-import org.xcolab.model.tables.pojos.ImpactIteration;
+import org.xcolab.client.contest.pojo.IImpactIteration;
 
 import java.util.List;
 
 public interface ImpactIterationDao {
-    List<ImpactIteration> findByGiven(Long iterationId);
+    List<IImpactIteration> findByGiven(Long iterationId);
 }

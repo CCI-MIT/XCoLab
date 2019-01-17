@@ -1,13 +1,12 @@
 package org.xcolab.client.contest;
 
-import org.xcolab.client.contest.pojo.ImpactDefaultSeries;
-import org.xcolab.client.contest.pojo.ImpactDefaultSeriesData;
-import org.xcolab.client.contest.pojo.FocusArea;
-import org.xcolab.client.contest.pojo.FocusAreaOntologyTerm;
-import org.xcolab.client.contest.pojo.OntologySpace;
-import org.xcolab.client.contest.pojo.OntologyTerm;
-import org.xcolab.client.contest.resources.ImpactResource;
-import org.xcolab.client.contest.resources.OntologyResource;
+import org.xcolab.client.contest.pojo.FocusAreaWrapper;
+import org.xcolab.client.contest.pojo.IFocusAreaOntologyTerm;
+import org.xcolab.client.contest.pojo.IImpactDefaultSeries;
+import org.xcolab.client.contest.pojo.IImpactDefaultSeriesData;
+import org.xcolab.client.contest.pojo.OntologySpaceWrapper;
+import org.xcolab.client.contest.pojo.OntologyTermWrapper;
+import org.xcolab.client.contest.pojo.tables.pojos.FocusAreaOntologyTerm;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource1;
@@ -22,44 +21,30 @@ import java.util.Set;
 
 public class OntologyClient {
 
-    private final RestResource1<OntologySpace, Long> ontologySpaceResource;
+    private final RestResource1<OntologySpaceWrapper, Long> ontologySpaceResource = null; // ontologySpaces
 
-    private final RestResource1<OntologyTerm, Long> ontologyTermResource;
+    private final RestResource1<OntologyTermWrapper, Long> ontologyTermResource = null; // ontologyTerms
 
-    private final RestResource1<FocusArea, Long> focusAreaResource;
+    private final RestResource1<FocusAreaWrapper, Long> focusAreaResource = null; // focusAreas
 
-    private final RestResource1<FocusAreaOntologyTerm, Long> focusAreaOntologyTermResource;
+    private final RestResource1<IFocusAreaOntologyTerm, Long> focusAreaOntologyTermResource = null; // focusAreaOntologyTerms
 
-    private final RestResource1<ImpactDefaultSeries, Long> impactDefaultSeriesResource;
+    private final RestResource1<IImpactDefaultSeries, Long> impactDefaultSeriesResource = null; // impactDefaultSeries
 
-    private final RestResource1<ImpactDefaultSeriesData, Long> impactDefaultSeriesDataResource;
+    private final RestResource1<IImpactDefaultSeriesData, Long> impactDefaultSeriesDataResource = null; // impactDefaultSeriesDatas
 
-    public OntologyClient() {
-        ontologySpaceResource = new RestResource1<>(OntologyResource.ONTOLOGY_SPACE,
-                OntologySpace.TYPES);
-        ontologyTermResource = new RestResource1<>(OntologyResource.ONTOLOGY_TERM,
-                OntologyTerm.TYPES);
-        focusAreaResource = new RestResource1<>(OntologyResource.FOCUS_AREA, FocusArea.TYPES);
-        focusAreaOntologyTermResource = new RestResource1<>(
-                OntologyResource.FOCUS_AREA_ONTOLOGY_TERM, FocusAreaOntologyTerm.TYPES);
-        impactDefaultSeriesResource = new RestResource1<>(ImpactResource.IMPACT_DEFAULT_SERIES,
-                ImpactDefaultSeries.TYPES);
-        impactDefaultSeriesDataResource = new RestResource1<>(
-                ImpactResource.IMPACT_DEFAULT_SERIES_DATA, ImpactDefaultSeriesData.TYPES);
-    }
-
-    public List<OntologySpace> getAllOntologySpaces() {
+    public List<OntologySpaceWrapper> getAllOntologySpaces() {
         return ontologySpaceResource.list()
                 .withCache(CacheName.CONTEST_ONTOLOGY)
                 .execute();
     }
 
-    public List<OntologyTerm> getAllOntologyTerms() {
+    public List<OntologyTermWrapper> getAllOntologyTerms() {
         return ontologyTermResource.list()
                 .withCache(CacheName.CONTEST_ONTOLOGY)
                 .execute();
     }
-    public List<OntologyTerm> getOntologyTerms(Long parentId, Long ontologySpaceId) {
+    public List<OntologyTermWrapper> getOntologyTerms(Long parentId, Long ontologySpaceId) {
         return ontologyTermResource.list()
                 .queryParam("parentId", parentId)
                 .queryParam("ontologySpaceId",ontologySpaceId)
@@ -67,14 +52,14 @@ public class OntologyClient {
                 .execute();
     }
 
-    public List<FocusArea> getAllFocusAreas() {
+    public List<FocusAreaWrapper> getAllFocusAreas() {
         return focusAreaResource.list()
                 .withCache(CacheName.CONTEST_ONTOLOGY)
                 .execute();
     }
 
-    public FocusArea createFocusArea(FocusArea focusArea) {
-        final FocusArea result = focusAreaResource.create(new FocusArea(focusArea))
+    public FocusAreaWrapper createFocusArea(FocusAreaWrapper focusArea) {
+        final FocusAreaWrapper result = focusAreaResource.create(new FocusAreaWrapper(focusArea))
                 .execute();
         //TODO COLAB-2589: fine-grained cache removal
         ServiceRequestUtils.clearCache(CacheName.CONTEST_ONTOLOGY);
@@ -82,7 +67,7 @@ public class OntologyClient {
     }
 
     public void addOntologyTermsToFocusAreaByOntologyTermId(Long focusAreaId, Long ontologyTermId) {
-        FocusAreaOntologyTerm faot = new FocusAreaOntologyTerm();
+        IFocusAreaOntologyTerm faot = new FocusAreaOntologyTerm();
         faot.setFocusAreaId(focusAreaId);
         faot.setOntologyTermId(ontologyTermId);
         faot.setSortOrder((int) new Date().getTime());
@@ -90,20 +75,20 @@ public class OntologyClient {
 
     }
 
-    public List<FocusAreaOntologyTerm> getAllFocusAreaOntologyTerms() {
+    public List<IFocusAreaOntologyTerm> getAllFocusAreaOntologyTerms() {
         return focusAreaOntologyTermResource.list()
                 .withCache(CacheName.CONTEST_ONTOLOGY)
                 .execute();
     }
 
-    public OntologyTerm getOntologyTermParent(OntologyTerm ontologyTerm) {
+    public OntologyTermWrapper getOntologyTermParent(OntologyTermWrapper ontologyTerm) {
         if (ontologyTerm.getParentId() > 0) {
             return getOntologyTerm(ontologyTerm.getParentId());
         }
         return null;
     }
 
-    public OntologyTerm getOntologyTerm(long Id) {
+    public OntologyTermWrapper getOntologyTerm(long Id) {
          try {
              return ontologyTermResource.get(Id)
                      .withCache(CacheName.CONTEST_ONTOLOGY)
@@ -113,18 +98,18 @@ public class OntologyClient {
          }
     }
 
-    public OntologyTerm createOntologyTerm(OntologyTerm ontologyTerm) {
-        final OntologyTerm result =
-                ontologyTermResource.create(new OntologyTerm(ontologyTerm))
+    public OntologyTermWrapper createOntologyTerm(OntologyTermWrapper ontologyTerm) {
+        final OntologyTermWrapper result =
+                ontologyTermResource.create(new OntologyTermWrapper(ontologyTerm))
                         .execute();
         //TODO COLAB-2589: fine-grained cache removal
         ServiceRequestUtils.clearCache(CacheName.CONTEST_ONTOLOGY);
         return result;
     }
 
-    public boolean updateOntologyTerm(OntologyTerm ontologyTerm) {
+    public boolean updateOntologyTerm(OntologyTermWrapper ontologyTerm) {
         final Boolean result = ontologyTermResource
-                .update(new OntologyTerm(ontologyTerm), ontologyTerm.getId())
+                .update(new OntologyTermWrapper(ontologyTerm), ontologyTerm.getId())
                 .cacheName(CacheName.CONTEST_ONTOLOGY)
                 .execute();
         //TODO COLAB-2589: fine-grained cache removal
@@ -147,20 +132,20 @@ public class OntologyClient {
     public Boolean isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(
             Long focusAreaId, Long ontologyTermId) {
 
-        OntologyTerm ontologyParentTerm = getOntologyTerm(ontologyTermId);
-        List<OntologyTerm> ontologyTermList =
+        OntologyTermWrapper ontologyParentTerm = getOntologyTerm(ontologyTermId);
+        List<OntologyTermWrapper> ontologyTermList =
                 getAllOntologyTermDescendant(ontologyParentTerm.getId());
         ontologyTermList.add(ontologyParentTerm);
-        List<FocusAreaOntologyTerm> focusAreaOntologyTerms =
+        List<IFocusAreaOntologyTerm> focusAreaOntologyTerms =
                 getFocusAreaOntologyTermsByFocusArea(focusAreaId);
 
         Set<Long> ontologyTermIds = new HashSet<>();
 
-        for (OntologyTerm ontologyTerm : ontologyTermList) {
+        for (OntologyTermWrapper ontologyTerm : ontologyTermList) {
             ontologyTermIds.add(ontologyTerm.getId());
         }
 
-        for (FocusAreaOntologyTerm focusAreaOntologyTerm : focusAreaOntologyTerms) {
+        for (IFocusAreaOntologyTerm focusAreaOntologyTerm : focusAreaOntologyTerms) {
             if (ontologyTermIds.contains(focusAreaOntologyTerm.getOntologyTermId())) {
                 return true;
             }
@@ -168,7 +153,7 @@ public class OntologyClient {
         return false;
     }
 
-    public List<FocusAreaOntologyTerm> getFocusAreaOntologyTermsByFocusArea(Long focusAreaId) {
+    public List<IFocusAreaOntologyTerm> getFocusAreaOntologyTermsByFocusArea(Long focusAreaId) {
         if (focusAreaId == null) {
             return Collections.emptyList();
         }
@@ -177,35 +162,35 @@ public class OntologyClient {
                 .execute();
     }
 
-    public List<OntologyTerm> getAllOntologyTermDescendant(Long ontologyTermId) {
+    public List<OntologyTermWrapper> getAllOntologyTermDescendant(Long ontologyTermId) {
         return ontologyTermResource
-                .collectionService("getAllOntologyTermDescendant", OntologyTerm.TYPES.getTypeReference())
+                .collectionService("getAllOntologyTermDescendant", OntologyTermWrapper.TYPES.getTypeReference())
                 .queryParam("ontologyTermId", ontologyTermId)
                 .getList();
     }
 
-    public List<OntologyTerm> getOntologyTermsByFocusAreaOntologySpaceName(Long focusAreaId, String ontologySpaceName) {
+    public List<OntologyTermWrapper> getOntologyTermsByFocusAreaOntologySpaceName(Long focusAreaId, String ontologySpaceName) {
         return ontologyTermResource
-                .collectionService("getOntologyTermsByFocusAreaOntologySpaceName", OntologyTerm.TYPES.getTypeReference())
+                .collectionService("getOntologyTermsByFocusAreaOntologySpaceName", OntologyTermWrapper.TYPES.getTypeReference())
                 .queryParam("focusAreaId", focusAreaId)
                 .queryParam("ontologySpaceName", ontologySpaceName)
                 .getList();
     }
 
-    public List<OntologyTerm> getOntologyTermsByName(String name) {
+    public List<OntologyTermWrapper> getOntologyTermsByName(String name) {
         return ontologyTermResource.list()
                 .optionalQueryParam("name", name)
                 .execute();
     }
 
-    public List<OntologyTerm> getChildOntologyTerms(Long ontologyTermId) {
+    public List<OntologyTermWrapper> getChildOntologyTerms(Long ontologyTermId) {
         return ontologyTermResource.list()
                 .optionalQueryParam("parentId", ontologyTermId)
                 .execute();
     }
 
-    public boolean updateFocusArea(FocusArea focusArea) {
-        return focusAreaResource.update(new FocusArea(focusArea), focusArea.getId())
+    public boolean updateFocusArea(FocusAreaWrapper focusArea) {
+        return focusAreaResource.update(new FocusAreaWrapper(focusArea), focusArea.getId())
                 .execute();
     }
 
@@ -219,20 +204,20 @@ public class OntologyClient {
                 .queryParam("ontologyTermId", ontologyTermId).delete();
     }
 
-    public FocusArea getFocusArea(long Id) {
+    public FocusAreaWrapper getFocusArea(long Id) {
         return focusAreaResource.get(Id)
                 .execute();
     }
 
-    public OntologySpace getOntologySpace(long id) {
+    public OntologySpaceWrapper getOntologySpace(long id) {
         return ontologySpaceResource.get(id)
                 .execute();
     }
 
-    public List<OntologyTerm> getAllOntologyTermsFromFocusAreaWithOntologySpace(
-            FocusArea focusArea, OntologySpace ontologySpace) {
-        List<OntologyTerm> list = new ArrayList<>();
-        for (OntologyTerm term : getOntologyTermsForFocusArea(focusArea)) {
+    public List<OntologyTermWrapper> getAllOntologyTermsFromFocusAreaWithOntologySpace(
+            FocusAreaWrapper focusArea, OntologySpaceWrapper ontologySpace) {
+        List<OntologyTermWrapper> list = new ArrayList<>();
+        for (OntologyTermWrapper term : getOntologyTermsForFocusArea(focusArea)) {
             if (term.getOntologySpaceId() == ontologySpace.getId().longValue()) {
                 list.add(term);
             }
@@ -241,18 +226,18 @@ public class OntologyClient {
         return list;
     }
 
-    public List<OntologyTerm> getOntologyTermsForFocusArea(FocusArea focusArea) {
-        List<OntologyTerm> ret = new ArrayList<>();
-        for (FocusAreaOntologyTerm faot : getFocusAreaOntologyTermsByFocusArea(
+    public List<OntologyTermWrapper> getOntologyTermsForFocusArea(FocusAreaWrapper focusArea) {
+        List<OntologyTermWrapper> ret = new ArrayList<>();
+        for (IFocusAreaOntologyTerm faot : getFocusAreaOntologyTermsByFocusArea(
                 focusArea.getId())) {
             ret.add(getOntologyTerm(faot.getOntologyTermId()));
         }
         return ret;
     }
 
-    public OntologyTerm getOntologyTermFromFocusAreaWithOntologySpace(FocusArea focusArea,
-            OntologySpace ontologySpace) {
-        for (OntologyTerm term : getOntologyTermsForFocusArea(focusArea)) {
+    public OntologyTermWrapper getOntologyTermFromFocusAreaWithOntologySpace(FocusAreaWrapper focusArea,
+            OntologySpaceWrapper ontologySpace) {
+        for (OntologyTermWrapper term : getOntologyTermsForFocusArea(focusArea)) {
             if (term.getOntologySpaceId() == ontologySpace.getId().longValue()) {
                 return term;
             }
@@ -261,9 +246,9 @@ public class OntologyClient {
         return null;
     }
 
-    public ImpactDefaultSeries getImpactDefaultSeriesByFocusAreaName(Long focusAreaId,
+    public IImpactDefaultSeries getImpactDefaultSeriesByFocusAreaName(Long focusAreaId,
             String seriesName) {
-        List<ImpactDefaultSeries> allImpactDefaultSeriesWithFocusAreaName = 
+        List<IImpactDefaultSeries> allImpactDefaultSeriesWithFocusAreaName =
                 impactDefaultSeriesResource.list()
                         .optionalQueryParam("focusAreaId", focusAreaId)
                         .optionalQueryParam("name", seriesName)
@@ -277,21 +262,21 @@ public class OntologyClient {
         }
     }
 
-    public List<ImpactDefaultSeries> getAllmpactDefaultSeriesByFocusArea(Long focusAreaId) {
+    public List<IImpactDefaultSeries> getAllmpactDefaultSeriesByFocusArea(Long focusAreaId) {
         return impactDefaultSeriesResource.list()
                 .optionalQueryParam("focusAreaId", focusAreaId)
                 .execute();
     }
 
-    public List<ImpactDefaultSeriesData> getImpactDefaultSeriesDataBySeries(Long seriesId) {
+    public List<IImpactDefaultSeriesData> getImpactDefaultSeriesDataBySeries(Long seriesId) {
         return impactDefaultSeriesDataResource.list()
                 .optionalQueryParam("seriesId", seriesId)
                 .execute();
     }
 
-    public ImpactDefaultSeriesData getImpactDefaultSeriesDataBySeriesIdAndYear(Long seriesId,
+    public IImpactDefaultSeriesData getImpactDefaultSeriesDataBySeriesIdAndYear(Long seriesId,
             Integer year) {
-        List<ImpactDefaultSeriesData> ret = 
+        List<IImpactDefaultSeriesData> ret =
                 impactDefaultSeriesDataResource.list()
                         .optionalQueryParam("seriesId", seriesId)
                         .optionalQueryParam("year", year)

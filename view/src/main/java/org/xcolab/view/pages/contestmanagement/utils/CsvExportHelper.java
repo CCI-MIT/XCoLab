@@ -7,9 +7,9 @@ import org.springframework.util.CollectionUtils;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
-import org.xcolab.client.contest.pojo.ContestPhaseType;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.IContestPhaseType;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
@@ -46,7 +46,7 @@ public class CsvExportHelper {
     }
 
     public void addProposalAndAuthorDetailsToExportData(
-            List<Proposal> proposals, ContestPhase contestPhase) {
+            List<Proposal> proposals, ContestPhaseWrapper contestPhase) {
         for (Proposal proposal : proposals) {
             List<String[]> proposalAndAuthorDetailsRows =
                     generateProposalAndAuthorDetailsRows(proposal, contestPhase);
@@ -57,7 +57,7 @@ public class CsvExportHelper {
     }
 
     private List<String[]> generateProposalAndAuthorDetailsRows(Proposal proposal,
-            ContestPhase contestPhase) {
+            ContestPhaseWrapper contestPhase) {
 
         try {
             Proposal2Phase proposal2Phase = ProposalPhaseClientUtil
@@ -67,7 +67,7 @@ public class CsvExportHelper {
                     getProposalWithLatestVersionInContestPhase(proposal2Phase, proposal);
             Long contestId = contestPhase.getContestId();
 
-            Contest contest = ContestClientUtil.getContest(contestId);
+            ContestWrapper contest = ContestClientUtil.getContest(contestId);
 
             String contestTitle = normalizeApostrophes(contest.getTitle());
             String proposalTitle = normalizeApostrophes(proposalWrapper.getName());
@@ -102,9 +102,9 @@ public class CsvExportHelper {
         return stringToBeCleaned.replace("`", "'").replace("’", "'");
     }
 
-    private static String getContestPhaseTitle(ContestPhase contestPhase) {
+    private static String getContestPhaseTitle(ContestPhaseWrapper contestPhase) {
         Long contestPhaseTypeId = contestPhase.getContestPhaseTypeId();
-        ContestPhaseType contestPhaseType =
+        IContestPhaseType contestPhaseType =
                 ContestClientUtil.getContestPhaseType(contestPhaseTypeId);
         return contestPhaseType.getName();
     }

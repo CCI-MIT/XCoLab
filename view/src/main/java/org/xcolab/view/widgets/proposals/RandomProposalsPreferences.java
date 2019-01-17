@@ -5,8 +5,8 @@ import org.json.JSONObject;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
 import org.xcolab.commons.attributes.AttributeGetter;
 import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.widgets.WidgetPreference;
@@ -120,13 +120,13 @@ public class RandomProposalsPreferences extends WidgetPreference {
 
     public Map<Long, String> getContestPhases() {
 
-        List<Contest> contests = ContestClientUtil.getAllContests();
+        List<ContestWrapper> contests = ContestClientUtil.getAllContests();
 
         contests.sort((o1, o2) -> (int) (o1.getId() - o2.getId()));
 
         Map<Long, String> phases = new LinkedHashMap<>();
-        for (Contest c : contests) {
-            for (ContestPhase cp : ContestClientUtil.getVisibleContestPhases(c.getId())) {
+        for (ContestWrapper c : contests) {
+            for (ContestPhaseWrapper cp : ContestClientUtil.getVisibleContestPhases(c.getId())) {
                 String prefix = "";
                 if (cp.getPhaseActive()) {
                     prefix = "* ACTIVE *";

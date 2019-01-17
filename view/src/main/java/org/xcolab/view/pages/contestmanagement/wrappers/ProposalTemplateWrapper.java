@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ProposalTemplateClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestWrapper;
 import org.xcolab.client.contest.pojo.ProposalTemplateSectionDefinition;
 import org.xcolab.client.contest.pojo.ProposalTemplate;
 import org.xcolab.client.contest.pojo.ProposalTemplateSection;
@@ -254,13 +254,13 @@ public class ProposalTemplateWrapper {
         }
     }
 
-    public List<Contest> getContestsUsingTemplate() {
+    public List<ContestWrapper> getContestsUsingTemplate() {
 
         Long proposalTemplateId = proposalTemplate.getId();
-        List<Contest> contestsUsingSelectedTemplateList =
+        List<ContestWrapper> contestsUsingSelectedTemplateList =
                 ContestClientUtil.getContestsByProposalTemplateId(proposalTemplateId);
 
-        List<Contest> contestsUsingSelectedTemplate = new ArrayList<>();
+        List<ContestWrapper> contestsUsingSelectedTemplate = new ArrayList<>();
         contestsUsingSelectedTemplate.addAll(contestsUsingSelectedTemplateList);
 
         return contestsUsingSelectedTemplate;

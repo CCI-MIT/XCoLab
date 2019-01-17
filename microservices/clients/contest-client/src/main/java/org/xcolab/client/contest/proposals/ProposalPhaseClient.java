@@ -1,10 +1,9 @@
 package org.xcolab.client.contest.proposals;
 
-import org.xcolab.client.contest.resources.ProposalResource;
-import org.xcolab.client.contest.proposals.exceptions.Proposal2PhaseNotFoundException;
-import org.xcolab.client.contest.pojo.ProposalDto;
 import org.xcolab.client.contest.pojo.Proposal2Phase;
 import org.xcolab.client.contest.pojo.ProposalContestPhaseAttribute;
+import org.xcolab.client.contest.pojo.ProposalDto;
+import org.xcolab.client.contest.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheKeys;
@@ -12,30 +11,17 @@ import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestResource2L;
-import org.xcolab.util.http.client.types.TypeProvider;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.List;
 
 public final class ProposalPhaseClient {
 
-    private final RestResource<Proposal2Phase, Long> proposal2PhaseResource;
+    private final RestResource<Proposal2Phase, Long> proposal2PhaseResource = null; // proposal2Phases
     private final RestResource<ProposalContestPhaseAttribute, Long>
-            proposalContestPhaseAttributeResource;
-    private final RestResource1<ProposalDto, Long> proposalResource;
-    private final RestResource2L<ProposalDto, Long> proposalPhaseIdResource;
-
-    public ProposalPhaseClient() {
-        proposal2PhaseResource = new RestResource1<>(ProposalResource.PROPOSAL_2_PHASE,
-                Proposal2Phase.TYPES);
-        proposalContestPhaseAttributeResource = new RestResource1<>(
-                ProposalResource.PROPOSAL_CONTEST_PHASE_ATTRIBUTE,
-                ProposalContestPhaseAttribute.TYPES);
-        proposalResource = new RestResource1<>(ProposalResource.PROPOSAL, ProposalDto.TYPES);
-
-        proposalPhaseIdResource = new RestResource2L<>(proposalResource, "phaseIds",
-                TypeProvider.LONG);
-    }
+            proposalContestPhaseAttributeResource = null; // proposalContestPhaseAttributes
+    private final RestResource1<ProposalDto, Long> proposalResource = null; // proposal
+    private final RestResource2L<ProposalDto, Long> proposalPhaseIdResource = null; // proposal / phaseIds
 
     public void invalidateProposal2PhaseCache(long proposalId, long contestPhaseId) {
         ServiceRequestUtils.invalidateCache(CacheKeys.withClass(Proposal2Phase.class)

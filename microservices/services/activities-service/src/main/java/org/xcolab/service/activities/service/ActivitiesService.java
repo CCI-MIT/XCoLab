@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestWrapper;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.contest.pojo.Proposal;
@@ -71,7 +71,7 @@ public class ActivitiesService {
         final ActivitySubscription contestSubscription = createSubscription(userId,
                 ActivityCategory.CONTEST, contestId, 0);
 
-        Contest contest = ContestClientUtil.getContest(contestId);
+        ContestWrapper contest = ContestClientUtil.getContest(contestId);
 
         subscribeDiscussion(userId,contest.getDiscussionGroupId(), true);
 
@@ -174,7 +174,7 @@ public class ActivitiesService {
                 processedProposals.add(proposal.getId());
             }
         }
-        Contest contest = ContestClientUtil.getContest(contestId);
+        ContestWrapper contest = ContestClientUtil.getContest(contestId);
         queries.addAll(getDiscussionDeleteQueries(userId,
                 contest.getDiscussionGroupId(), true));
 

@@ -1,9 +1,9 @@
 package org.xcolab.view.pages.profile.entity;
 
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
-import org.xcolab.client.contest.pojo.ContestPhaseRibbonType;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.IContestPhaseRibbonType;
 import org.xcolab.client.contest.pojo.Proposal;
 import org.xcolab.commons.time.DateUtil;
 
@@ -14,16 +14,16 @@ public class Badge implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final ContestPhaseRibbonType ribbonType;
-    private final Contest contest;
+    private final IContestPhaseRibbonType ribbonType;
+    private final ContestWrapper contest;
     private final Proposal proposal;
     private final String planTitle;
     private final boolean hideRibbon;
     private int year = 2013;
 
 
-    public Badge(ContestPhaseRibbonType ribbonType, Proposal proposal, String planTitle,
-            Contest contest) {
+    public Badge(IContestPhaseRibbonType ribbonType, Proposal proposal, String planTitle,
+            ContestWrapper contest) {
         this.ribbonType = ribbonType;
         this.planTitle = planTitle;
         this.proposal = proposal;
@@ -32,7 +32,7 @@ public class Badge implements Serializable {
         // Associate the year and get hideRibbon property from contest
         hideRibbon = contest.getHideRibbons();
 
-        ContestPhase lastPhase = ContestClientUtil.getActivePhase(contest.getId());
+        ContestPhaseWrapper lastPhase = ContestClientUtil.getActivePhase(contest.getId());
         Date referenceDate =
                 lastPhase.getPhaseEndDate() == null ? lastPhase.getPhaseStartDate()
                         : lastPhase.getPhaseEndDate();

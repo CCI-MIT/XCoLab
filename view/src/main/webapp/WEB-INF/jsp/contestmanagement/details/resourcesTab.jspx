@@ -8,7 +8,7 @@
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout>
 
-	<!--@elvariable id="contestWrapper" type="org.xcolab.client.contest.pojo.Contest"-->
+    <!--@elvariable id="contestWrapper" type="org.xcolab.client.contest.pojo.ContestWrapper"-->
     <!--@elvariable id="contestResourcesBean" type="org.xcolab.view.pages.contestmanagement.beans.ContestResourcesBean"-->
 
 	<jsp:directive.include file="../init.jspx" />

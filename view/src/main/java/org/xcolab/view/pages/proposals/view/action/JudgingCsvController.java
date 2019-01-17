@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.ContestTeamMemberClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
@@ -86,7 +86,7 @@ public class JudgingCsvController {
         }
     }
 
-    private String getProposalJudgeReviewCsv(Contest contest, ContestPhase currentPhase,
+    private String getProposalJudgeReviewCsv(ContestWrapper contest, ContestPhaseWrapper currentPhase,
             ProposalContext proposalContext) {
 
         Map<Proposal, List<ProposalReview>> proposalToProposalReviewsMap = new HashMap<>();
@@ -95,7 +95,7 @@ public class JudgingCsvController {
                 .getActiveProposalsInContestPhase(currentPhase.getId());
         Set<ProposalRatingType> occurringRatingTypes = new HashSet<>();
 
-        for (ContestPhase judgingPhase : contest.getPhases()) {
+        for (ContestPhaseWrapper judgingPhase : contest.getPhases()) {
             if (!judgingPhase.getFellowScreeningActive()) {
                 continue;
             }
@@ -175,7 +175,7 @@ public class JudgingCsvController {
         return csvExporter.getCsvString();
     }
 
-    private List<Member> getProposalReviewingJudges(Proposal proposal, ContestPhase judgingPhase,
+    private List<Member> getProposalReviewingJudges(Proposal proposal, ContestPhaseWrapper judgingPhase,
             ProposalContext proposalContext) {
 
         final ClientHelper clients = proposalContext.getClients();

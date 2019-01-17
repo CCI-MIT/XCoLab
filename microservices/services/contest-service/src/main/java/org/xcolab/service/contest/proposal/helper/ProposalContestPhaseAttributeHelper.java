@@ -1,9 +1,9 @@
 package org.xcolab.service.contest.proposal.helper;
 
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.Proposal;
 import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.contest.pojo.ProposalContestPhaseAttribute;
-import org.xcolab.model.tables.pojos.Proposal;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ public class ProposalContestPhaseAttributeHelper {
     private Long contestPhaseId;
     private List<ProposalContestPhaseAttribute> proposalContestPhaseAttributes;
 
-    public ProposalContestPhaseAttributeHelper(Proposal proposal, ContestPhase contestPhase) {
+    public ProposalContestPhaseAttributeHelper(Proposal proposal, ContestPhaseWrapper contestPhase) {
         this.proposalId = proposal.getId();
         if (contestPhase != null) {
             this.contestPhaseId = contestPhase.getId();

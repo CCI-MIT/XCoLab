@@ -5,7 +5,7 @@ import org.jsoup.nodes.Node;
 
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.pojo.IEmailTemplate;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestWrapper;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
@@ -23,7 +23,7 @@ public class ContestVoteQuestionNotification extends ContestNotification {
     private final List<Proposal> supportedProposals;
     private ContestVoteQuestionTemplate templateWrapper;
 
-    public ContestVoteQuestionNotification(Member recipient, Contest contest,
+    public ContestVoteQuestionNotification(Member recipient, ContestWrapper contest,
             List<Proposal> supportedProposals, String baseUrl) {
         super(contest, recipient, null);
         this.supportedProposals = supportedProposals;

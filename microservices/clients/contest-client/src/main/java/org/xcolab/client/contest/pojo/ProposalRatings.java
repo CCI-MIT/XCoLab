@@ -19,7 +19,7 @@ public abstract class ProposalRatings {
 
     private String comment;
     private Boolean shouldAdvance;
-    private ContestPhase contestPhase;
+    private ContestPhaseWrapper contestPhase;
     private String contestPhaseTitle;
 
     public ProposalRatings(List<ProposalRating> ratings, Long roundFactor) {
@@ -78,7 +78,7 @@ public abstract class ProposalRatings {
         return comment;
     }
 
-    public void setContestPhase(ContestPhase contestPhase) {
+    public void setContestPhase(ContestPhaseWrapper contestPhase) {
         this.contestPhase = contestPhase;
     }
 
@@ -96,7 +96,7 @@ public abstract class ProposalRatings {
             if (!ratings
                     .isEmpty()) {//this should never happen on cross lab otherwise oh snap
                 long contestPhaseId = ratings.get(0).getContestPhaseId();
-                ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
+                ContestPhaseWrapper contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
                 contestPhaseTitleAux = ContestClientUtil.getContestPhaseName(contestPhase);
             }
         }

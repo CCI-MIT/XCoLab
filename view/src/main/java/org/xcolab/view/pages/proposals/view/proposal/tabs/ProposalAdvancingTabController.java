@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalJudgeRatingClientUtil;
@@ -62,7 +62,7 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
         }
 
         Proposal proposal = proposalContext.getProposal();
-        ContestPhase contestPhase = proposalContext.getContestPhase();
+        ContestPhaseWrapper contestPhase = proposalContext.getContestPhase();
         Proposal proposalWrapper = new Proposal(proposal, contestPhase);
         ProposalAdvancingBean advancingBean = new ProposalAdvancingBean(proposalWrapper);
 
@@ -140,9 +140,9 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
             @Valid ProposalAdvancingBean proposalAdvancingBean, BindingResult result) {
 
         Proposal proposal = proposalContext.getProposal();
-        final Contest contest = proposalContext.getContest();
+        final ContestWrapper contest = proposalContext.getContest();
         long proposalId = proposal.getId();
-        ContestPhase contestPhase = proposalContext.getContestPhase();
+        ContestPhaseWrapper contestPhase = proposalContext.getContestPhase();
         ProposalsPermissions permissions = proposalContext.getPermissions();
 
         final ClientHelper clients = proposalContext.getClients();
@@ -197,7 +197,7 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
         }
     }
 
-    private ProposalContestPhaseAttribute setIsFrozen(long proposalId, ContestPhase contestPhase,
+    private ProposalContestPhaseAttribute setIsFrozen(long proposalId, ContestPhaseWrapper contestPhase,
             boolean isFrozen) {
         return ProposalPhaseClientUtil.setProposalContestPhaseAttribute(proposalId,
                 contestPhase.getId(),
@@ -208,7 +208,7 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
     @GetMapping("c/{proposalUrlString}/{proposalId}/tab/ADVANCING/saveJudgingFeedback")
     public String saveJudgingFeedback(HttpServletRequest request, HttpServletResponse response,
             ProposalContext proposalContext) {
-        final Contest contest = proposalContext.getContest();
+        final ContestWrapper contest = proposalContext.getContest();
         final Proposal proposal = proposalContext.getProposal();
         final String redirectUrl = proposal.getProposalLinkUrl(contest,
                 proposalContext.getContestPhase().getId());
@@ -225,9 +225,9 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
             BindingResult result, RedirectAttributes redirectAttributes)
             throws IOException {
 
-        final Contest contest = proposalContext.getContest();
+        final ContestWrapper contest = proposalContext.getContest();
         Proposal proposal = proposalContext.getProposal();
-        ContestPhase contestPhase =
+        ContestPhaseWrapper contestPhase =
                 ContestClientUtil.getContestPhase(judgeProposalFeedbackBean.getContestPhaseId());
         ProposalsPermissions permissions = proposalContext.getPermissions();
         boolean isPublicRating = permissions.getCanPublicRating();

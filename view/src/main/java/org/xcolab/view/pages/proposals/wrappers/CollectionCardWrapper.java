@@ -2,14 +2,14 @@ package org.xcolab.view.pages.proposals.wrappers;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
-import org.xcolab.client.contest.pojo.ContestCollectionCard;
-import org.xcolab.client.contest.pojo.OntologyTerm;
+import org.xcolab.client.contest.pojo.IContestCollectionCard;
+import org.xcolab.client.contest.pojo.OntologyTermWrapper;
 
 public class CollectionCardWrapper{
 
 //TODO COLAB-2627: NotFoundexception
 
-    protected final ContestCollectionCard contestCollectionCard;
+    protected final IContestCollectionCard contestCollectionCard;
     protected String viewType;
 
     public CollectionCardWrapper(long contestCollectionCardId, String viewType) {
@@ -17,7 +17,7 @@ public class CollectionCardWrapper{
         this.viewType=viewType;
     }
 
-    public CollectionCardWrapper(ContestCollectionCard contestCollectionCard, String viewType) {
+    public CollectionCardWrapper(IContestCollectionCard contestCollectionCard, String viewType) {
        this.contestCollectionCard = contestCollectionCard;
         this.viewType=viewType;
     }
@@ -54,15 +54,15 @@ public class CollectionCardWrapper{
        return this.contestCollectionCard.getId();
     }
 
-    public OntologyTerm getBigOntologyTerm() {
+    public OntologyTermWrapper getBigOntologyTerm() {
         return OntologyClientUtil.getOntologyTerm(this.contestCollectionCard.getBig_ontology_term());
     }
 
-    public OntologyTerm getSmallOntologyTerm() {
+    public OntologyTermWrapper getSmallOntologyTerm() {
         return OntologyClientUtil.getOntologyTerm(this.contestCollectionCard.getSmall_ontology_term());
     }
 
-    public OntologyTerm getOntologyTermToLoad() {
+    public OntologyTermWrapper getOntologyTermToLoad() {
         return OntologyClientUtil.getOntologyTerm(this.contestCollectionCard.getOntology_term_to_load());
     }
 

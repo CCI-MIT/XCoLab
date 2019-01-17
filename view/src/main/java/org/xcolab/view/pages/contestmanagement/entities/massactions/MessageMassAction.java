@@ -1,7 +1,7 @@
 package org.xcolab.view.pages.contestmanagement.entities.massactions;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestWrapper;
 import org.xcolab.client.email.StaticEmailContext;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.Member;
@@ -25,11 +25,11 @@ public abstract class MessageMassAction extends AbstractContestMassAction {
         super(displayName);
     }
 
-    protected abstract List<Proposal> getProposalsToBeMessaged(Contest contest);
+    protected abstract List<Proposal> getProposalsToBeMessaged(ContestWrapper contest);
 
 
     @Override
-    public void execute(List<Contest> contests, boolean actionConfirmed,
+    public void execute(List<ContestWrapper> contests, boolean actionConfirmed,
             MassActionDataWrapper dataWrapper, HttpServletResponse response)
             throws IllegalArgumentException {
         MassMessageBean massMessageBean = dataWrapper.getMassMessageBean();
@@ -40,7 +40,7 @@ public abstract class MessageMassAction extends AbstractContestMassAction {
         Set<Long> recipientIds = new HashSet<>();
         final StringBuilder contestNames = new StringBuilder();
 
-        for (Contest contest : contests) {
+        for (ContestWrapper contest : contests) {
             contestNames.append(contest.getTitle()).append("; ");
             List<Proposal> proposals = getProposalsToBeMessaged(contest);
 
@@ -57,7 +57,7 @@ public abstract class MessageMassAction extends AbstractContestMassAction {
     }
 
     private static void sendEmail(MassMessageBean massMessageBean, Set<Long> recipientIds,
-            List<Contest> contestList, StringBuilder contestNames) {
+            List<ContestWrapper> contestList, StringBuilder contestNames) {
         final String messageSubject = massMessageBean.getSubject();
         final String messageBody = massMessageBean.getBody();
         MessagingClient.sendMessage(messageSubject, messageBody, ADMINISTRATOR_USER_ID,

@@ -21,7 +21,7 @@ import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.comment.pojo.tables.pojos.Comment;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestWrapper;
 import org.xcolab.client.contest.proposals.ProposalClient;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.pojo.Proposal;
@@ -113,7 +113,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
                                 .createActivityEntry(ProposalActivityType.COMMENT_ADDED, userId,
                                         proposal.getId(), comment.getId());
                     } else {
-                        final Contest contest = getContest(commentThread);
+                        final ContestWrapper contest = getContest(commentThread);
                         if (contest != null) {
                             //contest
                             activityClient.createActivityEntry(ContestActivityType.COMMENT_ADDED,
@@ -156,7 +156,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
         return "redirect:/discussions";
     }
 
-    private Contest getContest(IThread commentThread) {
+    private ContestWrapper getContest(IThread commentThread) {
         try {
             return ContestClientUtil.getContestByThreadId(commentThread.getId());
         } catch (ContestNotFoundException e) {

@@ -6,8 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.xcolab.model.tables.pojos.ImpactIteration;
-import org.xcolab.model.tables.pojos.ImpactTemplateSeries;
+
+import org.xcolab.client.contest.pojo.IImpactIteration;
+import org.xcolab.client.contest.pojo.IImpactTemplateSeries;
 import org.xcolab.service.contest.domain.impactiteration.ImpactIterationDao;
 import org.xcolab.service.contest.domain.impacttemplateseries.ImpactTemplateSeriesDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
@@ -25,7 +26,7 @@ public class ImpactTemplateController {
     private ImpactIterationDao impactIterationDao;
 
     @RequestMapping(value = "/impactTemplateSeries/{impactTemplateSeriesId}", method = RequestMethod.GET)
-    public ImpactTemplateSeries getImpactTemplateSeries(@PathVariable("impactTemplateSeriesId") Long impactTemplateSeriesId) throws NotFoundException {
+    public IImpactTemplateSeries getImpactTemplateSeries(@PathVariable("impactTemplateSeriesId") Long impactTemplateSeriesId) throws NotFoundException {
         if (impactTemplateSeriesId == null || impactTemplateSeriesId == 0) {
             throw new NotFoundException("No impactTemplateSeriesId given");
         } else {
@@ -34,7 +35,7 @@ public class ImpactTemplateController {
     }
 
     @RequestMapping(value = "/impactIterations", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<ImpactIteration> getImpactIterations(
+    public List<IImpactIteration> getImpactIterations(
             @RequestParam(required = false) Long iterationId
     ) {
         return impactIterationDao.findByGiven(iterationId);

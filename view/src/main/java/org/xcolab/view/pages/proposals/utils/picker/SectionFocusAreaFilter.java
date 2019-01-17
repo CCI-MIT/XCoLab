@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.FocusArea;
-import org.xcolab.client.contest.pojo.OntologyTerm;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.FocusAreaWrapper;
+import org.xcolab.client.contest.pojo.OntologyTermWrapper;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.pojo.Proposal;
 
@@ -35,20 +35,20 @@ public class SectionFocusAreaFilter {
     public void filterProposals(List<Proposal> proposals, Long sectionFocusAreaId,
             Long contestFocusAreaId, List<Long> filterExceptionContestIds) {
 
-        List<OntologyTerm> terms =
+        List<OntologyTermWrapper> terms =
                 getOntologyTermsFromSectionAndContest(sectionFocusAreaId, contestFocusAreaId);
 
 
         if (!terms.isEmpty()) {
             List<Long> otIds = new ArrayList<>();
-            for (OntologyTerm ot : terms) {
+            for (OntologyTermWrapper ot : terms) {
                 otIds.add(ot.getId());
             }
-            Set<Contest> contests =
+            Set<ContestWrapper> contests =
                     new HashSet<>(ContestClientUtil.getContestMatchingOntologyTerms(otIds));
             for (long filterExceptionContestId : filterExceptionContestIds) {
                 try {
-                    final Contest filterExceptionContest =
+                    final ContestWrapper filterExceptionContest =
                             ContestClientUtil.getContest(filterExceptionContestId);
                     contests.add(filterExceptionContest);
                 } catch (ContestNotFoundException ignored) {
@@ -60,7 +60,7 @@ public class SectionFocusAreaFilter {
         }
     }
 
-    private List<OntologyTerm> getOntologyTermsFromSectionAndContest(Long focusAreaId,
+    private List<OntologyTermWrapper> getOntologyTermsFromSectionAndContest(Long focusAreaId,
             Long contestFocusAreaId) {
         Long localContestFocusAreaId;
         if (focusAreaId != null && focusAreaId < 0) {
@@ -69,15 +69,15 @@ public class SectionFocusAreaFilter {
         } else {
             localContestFocusAreaId = null;
         }
-        List<OntologyTerm> terms = new ArrayList<>();
+        List<OntologyTermWrapper> terms = new ArrayList<>();
 
         if (focusAreaId != null) {
-            FocusArea focusArea = OntologyClientUtil.getFocusArea(focusAreaId);
+            FocusAreaWrapper focusArea = OntologyClientUtil.getFocusArea(focusAreaId);
             addTermsInFocusArea(terms, focusArea);
         }
 
         if (localContestFocusAreaId != null) {
-            FocusArea contestFocusArea = OntologyClientUtil.getFocusArea(localContestFocusAreaId);
+            FocusAreaWrapper contestFocusArea = OntologyClientUtil.getFocusArea(localContestFocusAreaId);
             addTermsInFocusArea(terms, contestFocusArea);
         }
 
@@ -90,23 +90,23 @@ public class SectionFocusAreaFilter {
      * @param contests the list of contests to be filtered. Will be modified and contains the
      * result!
      */
-    public void filterContests(List<Contest> contests, Long sectionFocusAreaId,
+    public void filterContests(List<ContestWrapper> contests, Long sectionFocusAreaId,
             Long contestFocusAreaId, List<Long> filterExceptionContestIds) {
 
-        List<OntologyTerm> requiredTerms =
+        List<OntologyTermWrapper> requiredTerms =
                 getOntologyTermsFromSectionAndContest(sectionFocusAreaId, contestFocusAreaId);
 
-        for (Iterator<Contest> i = contests.iterator(); i.hasNext(); ) {
-            Contest contest = i.next();
+        for (Iterator<ContestWrapper> i = contests.iterator(); i.hasNext(); ) {
+            ContestWrapper contest = i.next();
             if (filterExceptionContestIds.contains(contest.getId())) {
                 continue;
             }
             if (contest.getHasFocusArea()) {
-                FocusArea focusArea = OntologyClientUtil.getFocusArea(contest.getFocusAreaId());
-                List<OntologyTerm> contestTerms =
+                FocusAreaWrapper focusArea = OntologyClientUtil.getFocusArea(contest.getFocusAreaId());
+                List<OntologyTermWrapper> contestTerms =
                         OntologyClientUtil.getOntologyTermsForFocusArea(focusArea);
-                for (OntologyTerm requiredTerm : requiredTerms) {
-                    List<OntologyTerm> requiredDescendantTerms =
+                for (OntologyTermWrapper requiredTerm : requiredTerms) {
+                    List<OntologyTermWrapper> requiredDescendantTerms =
                             OntologyClientUtil.getAllOntologyTermDescendant(requiredTerm.getId());
                     requiredDescendantTerms.add(requiredTerm);
                     if (!CollectionUtils.containsAny(requiredDescendantTerms, contestTerms)) {
@@ -120,9 +120,9 @@ public class SectionFocusAreaFilter {
 
     }
 
-    private void addTermsInFocusArea(List<OntologyTerm> terms, FocusArea focusArea) {
+    private void addTermsInFocusArea(List<OntologyTermWrapper> terms, FocusAreaWrapper focusArea) {
         if (focusArea != null) {
-            final List<OntologyTerm> focusAreaTerms =
+            final List<OntologyTermWrapper> focusAreaTerms =
                     OntologyClientUtil.getOntologyTermsForFocusArea(focusArea);
             removeRootTerms(focusAreaTerms);
             _log.debug(String.format("Added %d non-root contest terms", focusAreaTerms.size()));
@@ -130,7 +130,7 @@ public class SectionFocusAreaFilter {
         }
     }
 
-    private void removeRootTerms(List<OntologyTerm> terms) {
+    private void removeRootTerms(List<OntologyTermWrapper> terms) {
         terms.removeIf(o -> o.getParentId() == 0 && ANY_TERM_IDS.contains(o.getId()));
     }
 }

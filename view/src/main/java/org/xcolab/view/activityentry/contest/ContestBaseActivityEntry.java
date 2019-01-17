@@ -6,14 +6,14 @@ import org.xcolab.util.activities.enums.ContestActivityType;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestWrapper;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.view.activityentry.ActivityInitializationException;
 import org.xcolab.view.activityentry.provider.AbstractActivityEntryContentProvider;
 
 public abstract class ContestBaseActivityEntry extends AbstractActivityEntryContentProvider {
 
-    private Contest contest;
+    private ContestWrapper contest;
     private ContestType contestType;
 
     @Override
@@ -34,7 +34,7 @@ public abstract class ContestBaseActivityEntry extends AbstractActivityEntryCont
                 .withLocale(LocaleContextHolder.getLocale().getLanguage());
     }
 
-    protected Contest getContest() {
+    protected ContestWrapper getContest() {
         return contest;
     }
 

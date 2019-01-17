@@ -2,7 +2,7 @@ package org.xcolab.view.pages.proposals.judging;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
@@ -19,7 +19,7 @@ import java.util.Set;
 
 public class ProposalReview {
     private Proposal proposal;
-    private ContestPhase contestPhase;
+    private ContestPhaseWrapper contestPhase;
     private String proposalUrl;
 
     private Map<ProposalRatingType, Double> ratingAverages;
@@ -28,7 +28,7 @@ public class ProposalReview {
     private Set<Member> reviewers;
     private final Map<Member, Map<ProposalRatingType, Double> > userRatings;
 
-    public ProposalReview(Proposal proposal, ContestPhase contestPhase, String proposalUrl) {
+    public ProposalReview(Proposal proposal, ContestPhaseWrapper contestPhase, String proposalUrl) {
         this.proposal = proposal;
         this.contestPhase = contestPhase;
         this.proposalUrl = proposalUrl;
@@ -158,11 +158,11 @@ public class ProposalReview {
         this.proposal = proposal;
     }
 
-    public ContestPhase getContestPhase() {
+    public ContestPhaseWrapper getContestPhase() {
         return contestPhase;
     }
 
-    public void setContestPhase(ContestPhase contestPhase) {
+    public void setContestPhase(ContestPhaseWrapper contestPhase) {
         this.contestPhase = contestPhase;
     }
 

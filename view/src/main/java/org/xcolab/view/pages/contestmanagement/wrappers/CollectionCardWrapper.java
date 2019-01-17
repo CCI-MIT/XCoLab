@@ -4,8 +4,8 @@ import org.apache.commons.text.StringEscapeUtils;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
-import org.xcolab.client.contest.pojo.ContestCollectionCard;
-import org.xcolab.client.contest.pojo.OntologyTerm;
+import org.xcolab.client.contest.pojo.IContestCollectionCard;
+import org.xcolab.client.contest.pojo.OntologyTermWrapper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,13 +15,13 @@ import java.util.Map;
 public class CollectionCardWrapper {
 
     private static final String REFERENCE_NULL_IDENTIFIER = "none";
-    private ContestCollectionCard contestCollectionCard;
+    private IContestCollectionCard contestCollectionCard;
     private Boolean createNew = false;
 
     public CollectionCardWrapper(long collectionCardId, long bigOntologyTerm,
             long ontologyTermToLoad, long smallOntologyTerm, boolean onlyFeatured, boolean visible,
             long parentId) {
-        contestCollectionCard = new ContestCollectionCard();
+        contestCollectionCard = new IContestCollectionCard();
         contestCollectionCard.setOntology_term_to_load(ontologyTermToLoad);
         contestCollectionCard.setId(collectionCardId);
         contestCollectionCard.setBig_ontology_term(bigOntologyTerm);
@@ -32,14 +32,14 @@ public class CollectionCardWrapper {
     }
 
     public CollectionCardWrapper() {
-        contestCollectionCard = new ContestCollectionCard();
+        contestCollectionCard = new IContestCollectionCard();
     }
 
     public CollectionCardWrapper(long collectionCardId) {
         this.contestCollectionCard = ContestClientUtil.getContestCollectionCard(collectionCardId);
     }
 
-    public CollectionCardWrapper(ContestCollectionCard contestCollectionCard) {
+    public CollectionCardWrapper(IContestCollectionCard contestCollectionCard) {
         this.contestCollectionCard = contestCollectionCard;
     }
 
@@ -59,7 +59,7 @@ public class CollectionCardWrapper {
 
     public List<CollectionCardWrapper> getAllCollectionCards() {
         List<CollectionCardWrapper> cardList = new ArrayList<>();
-        for (ContestCollectionCard contestCollectionCard : ContestClientUtil
+        for (IContestCollectionCard contestCollectionCard : ContestClientUtil
                 .getAllContestCollectionCards()) {
             cardList.add(new CollectionCardWrapper(contestCollectionCard));
         }
@@ -79,7 +79,7 @@ public class CollectionCardWrapper {
         Map<Long, String> ontologyTerms = new HashMap<>();
 
         ontologyTerms.put(1L - 1, REFERENCE_NULL_IDENTIFIER);
-        for (OntologyTerm term : OntologyClientUtil.getAllOntologyTerms()) {
+        for (OntologyTermWrapper term : OntologyClientUtil.getAllOntologyTerms()) {
             ontologyTerms.put(term.getId(), StringEscapeUtils.escapeEcmaScript(term.getName()));
         }
         return ontologyTerms;
@@ -88,7 +88,7 @@ public class CollectionCardWrapper {
     public Map<Long, String> getCollectionCards() {
         Map<Long, String> cards = new HashMap<>();
         cards.put(1L - 1, REFERENCE_NULL_IDENTIFIER);
-        for (ContestCollectionCard card : ContestClientUtil.getAllContestCollectionCards()) {
+        for (IContestCollectionCard card : ContestClientUtil.getAllContestCollectionCards()) {
             cards.put(card.getId(), StringEscapeUtils.escapeEcmaScript(card.getShort_name()));
         }
         return cards;
@@ -96,7 +96,7 @@ public class CollectionCardWrapper {
 
     public List<CollectionCardWrapper> getChildren() {
         List<CollectionCardWrapper> childList = new ArrayList<>();
-        for (ContestCollectionCard contestCollectionCard : ContestClientUtil
+        for (IContestCollectionCard contestCollectionCard : ContestClientUtil
                 .getSubContestCollectionCards(this.contestCollectionCard.getId())) {
             childList.add(new CollectionCardWrapper(contestCollectionCard));
         }

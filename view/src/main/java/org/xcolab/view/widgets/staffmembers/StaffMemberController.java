@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ContestTeamMemberClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestTeamMember;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.IContestTeamMember;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.StaffMemberClient;
 import org.xcolab.client.members.legacy.enums.StaffMemberCategoryRole;
@@ -106,9 +106,9 @@ public class StaffMemberController extends AbstractWidgetController<StaffMembers
                 for (Long year : years) {
                     Set<Long> usersInYear = new HashSet<>();
                     List<StaffMemberWrapper> membersWithRolesInYear = new ArrayList<>();
-                    List<ContestTeamMember> contestTeamMembers = ContestTeamMemberClientUtil
+                    List<IContestTeamMember> contestTeamMembers = ContestTeamMemberClientUtil
                             .getTeamMembers(categoryRole.getRole().getRoleId(), year);
-                    for (ContestTeamMember ctm : contestTeamMembers) {
+                    for (IContestTeamMember ctm : contestTeamMembers) {
                         boolean alreadyInStaffMembers = false;
                         for (StaffMemberWrapper smw : staffMembersOverrides) {
                             if (smw.getMember() != null) {
@@ -123,7 +123,7 @@ public class StaffMemberController extends AbstractWidgetController<StaffMembers
                             }
                         }
                         if (!alreadyInStaffMembers) {
-                            final Contest contest =
+                            final ContestWrapper contest =
                                     ContestClientUtil.getContest(ctm.getContestId());
                             if (!contest.getContestPrivate() &&
                                     !usersInYear.contains(ctm.getUserId())) {

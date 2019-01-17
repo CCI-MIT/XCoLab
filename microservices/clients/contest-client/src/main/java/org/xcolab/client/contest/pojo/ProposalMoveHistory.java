@@ -59,7 +59,7 @@ public class ProposalMoveHistory extends AbstractProposalMoveHistory implements 
         }
     }
 
-    public Contest getSourceContest() {
+    public ContestWrapper getSourceContest() {
         try {
             return ContestClientUtil.getContest(this.getSourceContestId());
         }catch (ContestNotFoundException ignored){
@@ -67,7 +67,7 @@ public class ProposalMoveHistory extends AbstractProposalMoveHistory implements 
         }
     }
 
-    public ContestPhase getSourceContestPhase() {
+    public ContestPhaseWrapper getSourceContestPhase() {
         return (ContestClientUtil.getContestPhase(this.getSourcePhaseId()));
     }
 
@@ -79,7 +79,7 @@ public class ProposalMoveHistory extends AbstractProposalMoveHistory implements 
         }
     }
 
-    public Contest getTargetContest() {
+    public ContestWrapper getTargetContest() {
         try{
             return (ContestClientUtil.getContest(this.getTargetContestId()));
         }catch (ContestNotFoundException ignored){
@@ -88,7 +88,7 @@ public class ProposalMoveHistory extends AbstractProposalMoveHistory implements 
     }
 
 
-    public ContestPhase getTargetContestPhase() {
+    public ContestPhaseWrapper getTargetContestPhase() {
         return (ContestClientUtil.getContestPhase(this.getTargetPhaseId()));
     }
 

@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contest.OntologyClientUtil;
-import org.xcolab.client.contest.pojo.OntologySpace;
-import org.xcolab.client.contest.pojo.OntologyTerm;
+import org.xcolab.client.contest.pojo.OntologySpaceWrapper;
+import org.xcolab.client.contest.pojo.OntologyTermWrapper;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.errors.AccessDeniedPage;
@@ -54,16 +54,16 @@ public class OntologyEditorController {
         JSONArray responseArray = new JSONArray();
         if (ontologySpaceId != null) {
             //
-            List<OntologyTerm> ontologyTerms =
+            List<OntologyTermWrapper> ontologyTerms =
                     OntologyClientUtil.getOntologyTerms(ontologyTermParentId, ontologySpaceId);
-            for (OntologyTerm ot : ontologyTerms) {
+            for (OntologyTermWrapper ot : ontologyTerms) {
                 responseArray
                         .put(ontologyTermNode(ot.getName(), ot.getOntologySpaceId(), ot.getId()));
             }
 
         } else {
-            List<OntologySpace> ontologySpaces = OntologyClientUtil.getAllOntologySpaces();
-            for (OntologySpace os : ontologySpaces) {
+            List<OntologySpaceWrapper> ontologySpaces = OntologyClientUtil.getAllOntologySpaces();
+            for (OntologySpaceWrapper os : ontologySpaces) {
                 responseArray.put(ontologySpaceNode(os.getName(), os.getId()));
             }
         }
@@ -79,7 +79,7 @@ public class OntologyEditorController {
             throws IOException {
         JSONObject articleVersion = new JSONObject();
 
-        OntologyTerm ontologyTerm = OntologyClientUtil.getOntologyTerm(ontologyTermId);
+        OntologyTermWrapper ontologyTerm = OntologyClientUtil.getOntologyTerm(ontologyTermId);
         if (ontologyTerm != null) {
             articleVersion.put("id", ontologyTerm.getId());
             articleVersion.put("order", ontologyTerm.getOrder());
@@ -94,10 +94,10 @@ public class OntologyEditorController {
     }
 
     private void deleteOntologyTermAndChildren(Long id) {
-        OntologyTerm ot = OntologyClientUtil.getOntologyTerm(id);
-        List<OntologyTerm> children = ot.getChildren();
+        OntologyTermWrapper ot = OntologyClientUtil.getOntologyTerm(id);
+        List<OntologyTermWrapper> children = ot.getChildren();
         if (children != null) {
-            for (OntologyTerm child : children) {
+            for (OntologyTermWrapper child : children) {
                 deleteOntologyTermAndChildren(child.getId());
             }
         }
@@ -127,14 +127,14 @@ public class OntologyEditorController {
 
 
         if (id != null && id != 0L) {
-            OntologyTerm ontologyTerm = OntologyClientUtil.getOntologyTerm(id);
+            OntologyTermWrapper ontologyTerm = OntologyClientUtil.getOntologyTerm(id);
             ontologyTerm.setDescriptionUrl(descriptionUrl);
             ontologyTerm.setSortOrder(order);
             ontologyTerm.setName(name);
 
             OntologyClientUtil.updateOntologyTerm(ontologyTerm);
         } else {
-            OntologyTerm ontologyTerm = new OntologyTerm();
+            OntologyTermWrapper ontologyTerm = new OntologyTermWrapper();
             ontologyTerm.setOntologySpaceId(ontologySpaceId);
             ontologyTerm.setParentId(parentId);
             ontologyTerm.setDescriptionUrl(descriptionUrl);
@@ -191,7 +191,7 @@ public class OntologyEditorController {
     }
 
     private void printOntologyHierarchy() {
-        for (OntologyTerm oTerm : OntologyClientUtil.getAllOntologyTerms()) {
+        for (OntologyTermWrapper oTerm : OntologyClientUtil.getAllOntologyTerms()) {
             if (oTerm.getParent() == null) {
                 printOntologies(OntologyClientUtil.getOntologyTerm(oTerm.getId()), 0);
             } else if (oTerm.getParent().getId() == 0) {
@@ -200,8 +200,8 @@ public class OntologyEditorController {
         }
     }
 
-    private void printOntologies(OntologyTerm term, int depth) {
-        for (OntologyTerm child : OntologyClientUtil.getChildOntologyTerms(term.getId())) {
+    private void printOntologies(OntologyTermWrapper term, int depth) {
+        for (OntologyTermWrapper child : OntologyClientUtil.getChildOntologyTerms(term.getId())) {
             StringBuilder prefix = new StringBuilder();
             for (int i = 0; i < depth; i++) {
                 prefix.append("; ");

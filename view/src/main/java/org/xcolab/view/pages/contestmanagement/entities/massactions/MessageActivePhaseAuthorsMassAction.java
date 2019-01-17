@@ -1,8 +1,8 @@
 package org.xcolab.view.pages.contestmanagement.entities.massactions;
 
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.pojo.Proposal;
 
@@ -15,8 +15,8 @@ public class MessageActivePhaseAuthorsMassAction extends MessageMassAction {
     }
 
     @Override
-    protected List<Proposal> getProposalsToBeMessaged(Contest contest) {
-        ContestPhase activeContestPhase = ContestClientUtil.getActivePhase(contest.getId());
+    protected List<Proposal> getProposalsToBeMessaged(ContestWrapper contest) {
+        ContestPhaseWrapper activeContestPhase = ContestClientUtil.getActivePhase(contest.getId());
         return ProposalClientUtil
                 .getActiveProposalsInContestPhase(activeContestPhase.getId());
     }

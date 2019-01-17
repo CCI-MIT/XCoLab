@@ -7,7 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
-import org.xcolab.model.tables.pojos.ContestTeamMember;
+import org.xcolab.client.contest.pojo.IContestTeamMember;
+import org.xcolab.client.contest.pojo.tables.pojos.ContestTeamMember;
 import org.xcolab.model.tables.records.ContestTeamMemberRecord;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
@@ -29,7 +30,7 @@ public class ContestTeamMemberDaoImpl implements ContestTeamMemberDao{
     }
 
     @Override
-    public ContestTeamMember create(ContestTeamMember contestTeamMember) {
+    public IContestTeamMember create(IContestTeamMember contestTeamMember) {
 
         ContestTeamMemberRecord ret = this.dslContext.insertInto(CONTEST_TEAM_MEMBER)
                 .set(CONTEST_TEAM_MEMBER.CONTEST_ID, contestTeamMember.getContestId())
@@ -45,7 +46,7 @@ public class ContestTeamMemberDaoImpl implements ContestTeamMemberDao{
     }
 
     @Override
-    public Optional<ContestTeamMember> get(Long id) throws NotFoundException{
+    public Optional<IContestTeamMember> get(Long id) throws NotFoundException{
 
         final Record record =  this.dslContext.selectFrom(CONTEST_TEAM_MEMBER)
                 .where(CONTEST_TEAM_MEMBER.ID.eq(id))
@@ -67,7 +68,7 @@ public class ContestTeamMemberDaoImpl implements ContestTeamMemberDao{
 
     }
     @Override
-    public ContestTeamMember findOneBy(Long userId, Long contestId, Long roleId) {
+    public IContestTeamMember findOneBy(Long userId, Long contestId, Long roleId) {
 
         final Record record =  this.dslContext.selectFrom(CONTEST_TEAM_MEMBER)
                 .where(CONTEST_TEAM_MEMBER.USER_ID.eq(userId))
@@ -82,7 +83,7 @@ public class ContestTeamMemberDaoImpl implements ContestTeamMemberDao{
     }
 
     @Override
-    public boolean update(ContestTeamMember contestTeamMember) {
+    public boolean update(IContestTeamMember contestTeamMember) {
         return dslContext.update(CONTEST_TEAM_MEMBER)
                 .set(CONTEST_TEAM_MEMBER.CONTEST_ID, contestTeamMember.getContestId())
                 .set(CONTEST_TEAM_MEMBER.USER_ID, contestTeamMember.getUserId())
@@ -92,7 +93,7 @@ public class ContestTeamMemberDaoImpl implements ContestTeamMemberDao{
     }
 
     @Override
-    public List<ContestTeamMember> findByGiven(Long userId, Long contestId, Long roleId) {
+    public List<IContestTeamMember> findByGiven(Long userId, Long contestId, Long roleId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(CONTEST_TEAM_MEMBER).getQuery();
 
@@ -109,7 +110,7 @@ public class ContestTeamMemberDaoImpl implements ContestTeamMemberDao{
     }
 
     @Override
-    public List<ContestTeamMember> findByContestYear(Long roleId, Long contestYear) {
+    public List<IContestTeamMember> findByContestYear(Long roleId, Long contestYear) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(CONTEST_TEAM_MEMBER).getQuery();
 

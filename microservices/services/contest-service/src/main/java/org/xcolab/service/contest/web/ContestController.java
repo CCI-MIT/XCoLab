@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.xcolab.client.contest.pojo.IContestCollectionCard;
+import org.xcolab.client.contest.pojo.IContestDiscussion;
+import org.xcolab.client.contest.pojo.IContestTranslation;
 import org.xcolab.model.tables.pojos.Contest;
-import org.xcolab.model.tables.pojos.ContestCollectionCard;
-import org.xcolab.model.tables.pojos.ContestDiscussion;
 import org.xcolab.model.tables.pojos.ContestPhase;
-import org.xcolab.model.tables.pojos.ContestTranslation;
 import org.xcolab.service.contest.domain.contest.ContestDao;
 import org.xcolab.service.contest.domain.contestcollectioncard.ContestCollectionCardDao;
 import org.xcolab.service.contest.domain.contestdiscussion.ContestDiscussionDao;
@@ -61,20 +61,20 @@ public class ContestController {
     }
 
     @GetMapping("/contestCollectionCards/{contestCollectionCardId}")
-    public ContestCollectionCard getContestCollectionCard(
+    public IContestCollectionCard getContestCollectionCard(
             @PathVariable long contestCollectionCardId) throws NotFoundException {
         return contestCollectionCardDao.get(contestCollectionCardId);
     }
 
     @PostMapping("/contestCollectionCards")
-    public ContestCollectionCard createContestCollectionCard(
-            @RequestBody ContestCollectionCard contestCollectionCard) {
+    public IContestCollectionCard createContestCollectionCard(
+            @RequestBody IContestCollectionCard contestCollectionCard) {
         return contestCollectionCardDao.create(contestCollectionCard);
     }
 
     @PutMapping("/contestCollectionCards/{contestCollectionCardId}")
     public boolean updateContestCollectionCard(
-            @RequestBody ContestCollectionCard contestCollectionCard,
+            @RequestBody IContestCollectionCard contestCollectionCard,
             @PathVariable long contestCollectionCardId) throws NotFoundException {
 
         if (contestCollectionCardDao.get(contestCollectionCardId) == null) {
@@ -86,7 +86,7 @@ public class ContestController {
     }
 
     @GetMapping("/contestCollectionCards")
-    public List<ContestCollectionCard> getContestCollectionCards(
+    public List<IContestCollectionCard> getContestCollectionCards(
             @RequestParam(required = false) Long parentCollectionCardId) throws NotFoundException {
         return contestCollectionCardDao.findByGiven(parentCollectionCardId);
     }
@@ -244,7 +244,7 @@ public class ContestController {
     }
 
     @PutMapping("/contests/{contestId}/translations/{lang}")
-    public boolean updateTranslation(@RequestBody ContestTranslation contestTranslation,
+    public boolean updateTranslation(@RequestBody IContestTranslation contestTranslation,
             @PathVariable long contestId, @PathVariable String lang) {
         contestTranslation.setContestId(contestId);
         contestTranslation.setLang(lang);
@@ -257,7 +257,7 @@ public class ContestController {
     }
 
     @GetMapping("/contests/{contestId}/translations")
-    public List<ContestTranslation> getTranslations(@RequestParam long contestId) {
+    public List<IContestTranslation> getTranslations(@RequestParam long contestId) {
         return contestTranslationDao.listByContestId(contestId);
     }
 
@@ -274,7 +274,7 @@ public class ContestController {
     }
 
     @ListMapping("/contestDiscussions")
-    public List<ContestDiscussion> getContestDiscussions(
+    public List<IContestDiscussion> getContestDiscussions(
             @RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
             @RequestParam(required = false) String sort,
@@ -286,19 +286,19 @@ public class ContestController {
     }
 
     @PostMapping("/contestDiscussions")
-    public ContestDiscussion createContestDiscussion(
-            @RequestBody ContestDiscussion contestDiscussion) {
+    public IContestDiscussion createContestDiscussion(
+            @RequestBody IContestDiscussion contestDiscussion) {
         return this.contestDiscussionDao.create(contestDiscussion);
     }
 
     @GetMapping("/contestDiscussions/{discussionId}")
-    public ContestDiscussion getContestDiscussion(@PathVariable long discussionId)
+    public IContestDiscussion getContestDiscussion(@PathVariable long discussionId)
             throws NotFoundException {
         return contestDiscussionDao.get(discussionId).orElseThrow(NotFoundException::new);
     }
 
     @PutMapping("/contestDiscussions/{discussionId}")
-    public boolean updateContestDiscussion(@RequestBody ContestDiscussion contestDiscussion,
+    public boolean updateContestDiscussion(@RequestBody IContestDiscussion contestDiscussion,
             @PathVariable long discussionId) throws NotFoundException {
 
         if (!contestDiscussionDao.get(discussionId).isPresent()) {

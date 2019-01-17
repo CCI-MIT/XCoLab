@@ -13,7 +13,7 @@ import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.comment.pojo.tables.pojos.Comment;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestWrapper;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.search.pojo.ISearchPojo;
@@ -89,7 +89,7 @@ public class DiscussionSearchItem extends AbstractSearchItem {
 
     private String getContestDiscussionUrl() {
         try {
-            Contest contest = ContestClientUtil.getContestByThreadId(thread.getId());
+            ContestWrapper contest = ContestClientUtil.getContestByThreadId(thread.getId());
             return contest.getContestDiscussionLinkUrl();
         } catch (ContestNotFoundException e1) {
             return null;

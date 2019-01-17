@@ -6,7 +6,8 @@ import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.model.tables.pojos.ContestDiscussion;
+import org.xcolab.client.contest.pojo.IContestDiscussion;
+import org.xcolab.client.contest.pojo.tables.pojos.ContestDiscussion;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
 
@@ -26,7 +27,7 @@ public class ContestDiscussionDaoImpl implements ContestDiscussionDao {
     }
 
     @Override
-    public ContestDiscussion create(ContestDiscussion contest) {
+    public IContestDiscussion create(IContestDiscussion contest) {
         this.dslContext.insertInto(CONTEST_DISCUSSION)
                 .set(CONTEST_DISCUSSION.ID, contest.getId())
                 .set(CONTEST_DISCUSSION.CONTEST_ID, contest.getContestId())
@@ -35,7 +36,7 @@ public class ContestDiscussionDaoImpl implements ContestDiscussionDao {
     }
 
     @Override
-    public boolean update(ContestDiscussion contest) {
+    public boolean update(IContestDiscussion contest) {
         return dslContext.update(CONTEST_DISCUSSION)
                 .set(CONTEST_DISCUSSION.CONTEST_ID, contest.getContestId())
                 .set(CONTEST_DISCUSSION.TAB, contest.getTab())
@@ -44,7 +45,7 @@ public class ContestDiscussionDaoImpl implements ContestDiscussionDao {
     }
 
     @Override
-    public Optional<ContestDiscussion> get(Long contestDiscussion) throws NotFoundException {
+    public Optional<IContestDiscussion> get(Long contestDiscussion) throws NotFoundException {
         final Record record = this.dslContext.selectFrom(CONTEST_DISCUSSION)
                 .where(CONTEST_DISCUSSION.ID.eq(contestDiscussion))
                 .fetchOne();
@@ -56,7 +57,7 @@ public class ContestDiscussionDaoImpl implements ContestDiscussionDao {
     }
 
     @Override
-    public List<ContestDiscussion> findByGiven(PaginationHelper paginationHelper, Long contestId,
+    public List<IContestDiscussion> findByGiven(PaginationHelper paginationHelper, Long contestId,
             String tab) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(CONTEST_DISCUSSION).getQuery();

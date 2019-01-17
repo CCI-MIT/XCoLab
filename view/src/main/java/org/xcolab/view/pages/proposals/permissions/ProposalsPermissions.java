@@ -4,9 +4,9 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.enums.ContestStatus;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
-import org.xcolab.client.contest.pojo.ContestPhaseType;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.IContestPhaseType;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalClient;
@@ -27,8 +27,8 @@ public class ProposalsPermissions {
     private final boolean isGuest;
 
     private final Proposal proposal;
-    private final Contest contest;
-    private final ContestPhase contestPhase;
+    private final ContestWrapper contest;
+    private final ContestPhaseWrapper contestPhase;
     private final ContestStatus contestStatus;
 
     private final ContestPermissions contestPermissions;
@@ -38,7 +38,7 @@ public class ProposalsPermissions {
 
 
     public ProposalsPermissions(ClientHelper clientHelper, Member member, Proposal proposal,
-            Contest contest, ContestPhase contestPhase) {
+            ContestWrapper contest, ContestPhaseWrapper contestPhase) {
         this.member = member;
 
         this.proposalClient = clientHelper.getProposalClient();
@@ -47,7 +47,7 @@ public class ProposalsPermissions {
         if (contestPhase != null) {
             final long contestPhaseTypeId = contestPhase.getContestPhaseTypeId();
 
-            final ContestPhaseType contestPhaseType = clientHelper.getContestClient()
+            final IContestPhaseType contestPhaseType = clientHelper.getContestClient()
                     .getContestPhaseType(contestPhaseTypeId);
             String statusStr = contestPhaseType.getStatus();
             contestStatus = ContestStatus.valueOf(statusStr);
@@ -256,7 +256,7 @@ public class ProposalsPermissions {
         return contestPhase != null && getCanPromoteProposalToNextPhase(contestPhase);
     }
 
-    public boolean getCanPromoteProposalToNextPhase(ContestPhase contestPhase) {
+    public boolean getCanPromoteProposalToNextPhase(ContestPhaseWrapper contestPhase) {
         if (wasProposalMovedElsewhere()) {
             return false;
         }
@@ -267,8 +267,8 @@ public class ProposalsPermissions {
         }
 
         try {
-            Contest latestProposalContest = proposalClient.getCurrentContestForProposal(proposal.getId());
-            ContestPhase activePhaseForContest = contestClient.getActivePhase(latestProposalContest.getId());
+            ContestWrapper latestProposalContest = proposalClient.getCurrentContestForProposal(proposal.getId());
+            ContestPhaseWrapper activePhaseForContest = contestClient.getActivePhase(latestProposalContest.getId());
             boolean onlyPromoteIfThisIsNotTheLatestContestPhaseInContest = contestPhase.equals(activePhaseForContest);
             return !onlyPromoteIfThisIsNotTheLatestContestPhaseInContest && getCanAdminAll();
         }catch (ContestNotFoundException ignored){

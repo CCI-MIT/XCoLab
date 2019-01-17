@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestWrapper;
 import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.pages.proposals.view.proposal.BaseProposalsController;
@@ -38,7 +38,7 @@ public class ContestModelController extends BaseProposalsController {
 			RomaClientUtil.client().getManager().clearCache();
 			RomaClientUtil.client().getManager().refreshSimulations();
     	}
-        Contest contest = proposalContext.getContest();
+        ContestWrapper contest = proposalContext.getContest();
         Long modelId = contest.getDefaultModelId();
 
         Map<Long, String> modelIdsWithNames;

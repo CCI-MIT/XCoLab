@@ -7,16 +7,16 @@ import org.springframework.stereotype.Service;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.email.IEmailClient;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.IContestPhaseType;
+import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.contest.pojo.Proposal2Phase;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.contest.proposals.exceptions.Proposal2PhaseNotFoundException;
-import org.xcolab.client.contest.pojo.Proposal;
-import org.xcolab.client.contest.pojo.Proposal2Phase;
+import org.xcolab.client.email.IEmailClient;
 import org.xcolab.entity.utils.email.ContestPhasePromotionEmail;
-import org.xcolab.model.tables.pojos.Contest;
-import org.xcolab.model.tables.pojos.ContestPhase;
-import org.xcolab.model.tables.pojos.ContestPhaseType;
 import org.xcolab.service.contest.domain.contest.ContestDao;
 import org.xcolab.service.contest.domain.contestphase.ContestPhaseDao;
 import org.xcolab.service.contest.domain.contestphasetype.ContestPhaseTypeDao;
@@ -81,9 +81,9 @@ public class PromotionService {
 
     private int doBasicPromotion() {
         int promotedProposals = 0;
-        final List<ContestPhase> phasesToPromote =
+        final List<ContestPhaseWrapper> phasesToPromote =
                 contestPhaseDao.findByPhaseAutopromote(ContestPhasePromoteType.PROMOTE.getValue());
-        for (ContestPhase phase : phasesToPromote) {
+        for (ContestPhaseWrapper phase : phasesToPromote) {
             PhasePromotionHelper phasePromotionHelper = new PhasePromotionHelper(phase);
             if (phasePromotionHelper.isPhaseContestScheduleTemplatePhase()) {
                 continue;
@@ -99,9 +99,9 @@ public class PromotionService {
                 // we have a candidate for promotion, find next phase
                 try {
                     log.info("promoting phase {}", phase.getId());
-                    Contest contest = contestDao.get(phase.getContestId());
+                    ContestWrapper contest = contestDao.get(phase.getContestId());
                     log.info("promoting contest {}", contest.getId());
-                    ContestPhase nextPhase = contestPhaseService.getNextContestPhase(phase);
+                    ContestPhaseWrapper nextPhase = contestPhaseService.getNextContestPhase(phase);
                     //TODO: this should not be calling the client
                     final List<Proposal> proposalsInPhase = ProposalClientUtil
                             .getProposalsInContestPhase(phase.getId());
@@ -141,9 +141,9 @@ public class PromotionService {
 
     private int doJudgingBasedPromotion() {
         int promotedProposals = 0;
-        final List<ContestPhase> phasesToPromote = contestPhaseDao
+        final List<ContestPhaseWrapper> phasesToPromote = contestPhaseDao
                 .findByPhaseAutopromote(ContestPhasePromoteType.PROMOTE_JUDGED.getValue());
-        for (ContestPhase phase : phasesToPromote) {
+        for (ContestPhaseWrapper phase : phasesToPromote) {
             PhasePromotionHelper phasePromotionHelper = new PhasePromotionHelper(phase);
             if (phasePromotionHelper.isPhaseContestScheduleTemplatePhase()) {
                 continue;
@@ -160,9 +160,9 @@ public class PromotionService {
                 try {
                     // Only do the promotion if all proposals have been successfully reviewed
                     if (phasePromotionHelper.isAllProposalsReviewed()) {
-                        Contest contest = contestDao.get(phase.getContestId());
+                        ContestWrapper contest = contestDao.get(phase.getContestId());
                         log.info("promoting contest {} (judging) ", contest.getId());
-                        ContestPhase nextPhase = contestPhaseService.getNextContestPhase(phase);
+                        ContestPhaseWrapper nextPhase = contestPhaseService.getNextContestPhase(phase);
                         for (Proposal p : ProposalClientUtil
                                 .getProposalsInContestPhase(phase.getId())) {
                             try {
@@ -198,7 +198,7 @@ public class PromotionService {
                             // Add this check for extra security to prevent proposal authors from being spammed (see COLAB-500)
                             if (phasePromotionHelper.isProposalReviewed(p)) {
                                 //TODO COLAB-2603: Migrate logic to send email.
-                                org.xcolab.client.contest.pojo.ContestPhase cp = ContestClientUtil.getContestPhase(phase.getId());
+                                ContestPhaseWrapper cp = ContestClientUtil.getContestPhase(phase.getId());
                                 ContestPhasePromotionEmail.contestPhasePromotionEmailNotifyProposalContributors(p, cp);
                                 PhasePromotionHelper.createProposalContestPhasePromotionDoneAttribute(p.getId(), phase.getId());
 
@@ -216,7 +216,7 @@ public class PromotionService {
 
                         log.info("done promoting phase {}", phase.getId());
                     } else {
-                        log.warn("Judge promoting failed for ContestPhase with ID {} - not all "
+                        log.warn("Judge promoting failed for ContestPhaseWrapper with ID {} - not all "
                                 + "proposals have been reviewed", phase.getId());
                     }
                 } catch (NotFoundException ignored) {
@@ -229,9 +229,9 @@ public class PromotionService {
 
     private int distributeRibbons() {
         int promotedProposals = 0;
-        final List<ContestPhase> phasesToPromote = contestPhaseDao
+        final List<ContestPhaseWrapper> phasesToPromote = contestPhaseDao
                 .findByPhaseAutopromote(ContestPhasePromoteType.PROMOTE_RIBBONIZE.getValue());
-        for (ContestPhase phase : phasesToPromote) {
+        for (ContestPhaseWrapper phase : phasesToPromote) {
             PhasePromotionHelper phasePromotionHelper = new PhasePromotionHelper(phase);
             if (phasePromotionHelper.isPhaseContestScheduleTemplatePhase()) {
                 continue;
@@ -247,17 +247,17 @@ public class PromotionService {
 
                 try {
                     log.info("promoting phase {}", phase.getId());
-                    Contest contest = contestDao.get(phase.getContestId());
-                    ContestPhase nextPhase = contestPhaseService.getNextContestPhase(phase);
+                    ContestWrapper contest = contestDao.get(phase.getContestId());
+                    ContestPhaseWrapper nextPhase = contestPhaseService.getNextContestPhase(phase);
 
-                    List<ContestPhase> contestPhases =
+                    List<ContestPhaseWrapper> contestPhases =
                             contestService.getAllContestPhases(contest.getId());
-                    ContestPhase finalistSelection = null;
-                    ContestPhase semifinalistSelection = null;
-                    Set<ContestPhase> proposalCreationPhases = new HashSet<>();
+                    ContestPhaseWrapper finalistSelection = null;
+                    ContestPhaseWrapper semifinalistSelection = null;
+                    Set<ContestPhaseWrapper> proposalCreationPhases = new HashSet<>();
 
-                    for (ContestPhase cp : contestPhases) {
-                        final Optional<ContestPhaseType> phaseType =
+                    for (ContestPhaseWrapper cp : contestPhases) {
+                        final Optional<IContestPhaseType> phaseType =
                                 contestPhaseTypeDao.get(cp.getContestPhaseTypeId());
 
                         if (phaseType.isPresent()) {
@@ -276,7 +276,7 @@ public class PromotionService {
 
                     Set<Proposal> allProposals = new HashSet<>();
                     if (!proposalCreationPhases.isEmpty()) {
-                        for (ContestPhase creationPhase : proposalCreationPhases) {
+                        for (ContestPhaseWrapper creationPhase : proposalCreationPhases) {
                             final List<Proposal> proposalsInContestPhase = ProposalClientUtil
                                     .getProposalsInContestPhase(creationPhase.getId());
                             addAllVisibleProposalsToCollection(proposalsInContestPhase,
@@ -290,7 +290,7 @@ public class PromotionService {
                     List<Proposal> finalists = null;
                     List<Proposal> semifinalists = null;
                     if (finalistSelection != null) {
-                        ContestPhase finalsPhase =
+                        ContestPhaseWrapper finalsPhase =
                                 contestPhaseService.getNextContestPhase(finalistSelection);
                         finalists = ProposalClientUtil
                                 .getProposalsInContestPhase(finalsPhase.getId());
@@ -298,7 +298,7 @@ public class PromotionService {
                         addAllVisibleProposalsToCollection(finalists, allProposals, finalsPhase);
 
                         if (semifinalistSelection != null) {
-                            ContestPhase semifinalsPhase =
+                            ContestPhaseWrapper semifinalsPhase =
                                     contestPhaseService.getNextContestPhase(semifinalistSelection);
                             semifinalists = ProposalClientUtil.getProposalsInContestPhase(
                                     semifinalsPhase.getId());
@@ -347,7 +347,7 @@ public class PromotionService {
         return promotedProposals;
     }
 
-    private boolean hasNoValidContest(ContestPhase phase) {
+    private boolean hasNoValidContest(ContestPhaseWrapper phase) {
         try {
             contestDao.get(phase.getContestId());
         } catch (NotFoundException e) {
@@ -358,7 +358,7 @@ public class PromotionService {
     }
 
     private void addAllVisibleProposalsToCollection(Collection<Proposal> sourceCollection,
-            Collection<Proposal> toCollection, ContestPhase inPhase) {
+            Collection<Proposal> toCollection, ContestPhaseWrapper inPhase) {
         PhasePromotionHelper phasePromotionHelper = new PhasePromotionHelper(inPhase);
         for (Proposal p : sourceCollection) {
             if (!phasePromotionHelper.isProposalVisible(p)) {
@@ -369,7 +369,7 @@ public class PromotionService {
     }
 
     private void associateProposalsWithCompletedPhase(Set<Proposal> proposals,
-            ContestPhase previousPhase, ContestPhase completedPhase) throws NotFoundException {
+            ContestPhaseWrapper previousPhase, ContestPhaseWrapper completedPhase) throws NotFoundException {
 
         for (Proposal proposal : proposals) {
             //update the last phase association - set the end version to the current version

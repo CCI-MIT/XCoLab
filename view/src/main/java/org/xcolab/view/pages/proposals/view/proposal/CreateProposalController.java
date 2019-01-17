@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.ProposalTemplateSectionDefinition;
 import org.xcolab.client.members.PlatformTeamsClient;
 import org.xcolab.client.members.pojo.Member;
@@ -69,19 +69,19 @@ public class CreateProposalController extends BaseProposalsController {
         final ContestClient contestClient = clients.getContestClient();
         final ProposalClient proposalClient = clients.getProposalClient();
 
-        final Contest contest = proposalContext.getContest();
+        final ContestWrapper contest = proposalContext.getContest();
         Proposal proposal = new Proposal();
 
         proposal.setId(0L);
         proposal.setVisible(true);
         proposal.setAuthorUserId(userId);
 
-        final ContestPhase contestPhase = proposalContext.getContestPhase();
+        final ContestPhaseWrapper contestPhase = proposalContext.getContestPhase();
 
         proposal = new Proposal(proposal, 0, contest, contestPhase, null);
         if (baseProposalId != null && baseProposalId > 0) {
             try {
-                Contest baseContest = contestClient.getContest(baseContestId);
+                ContestWrapper baseContest = contestClient.getContest(baseContestId);
                 Proposal baseProposal = new Proposal(proposalClient.getProposal(baseProposalId),
                         baseProposalVersion, baseContest, contestClient.getActivePhase(baseContest.getId()), null);
 

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.ContestSchedule;
+import org.xcolab.client.contest.pojo.IContestSchedule;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.html.LabelStringValue;
 import org.xcolab.commons.html.LabelValue;
@@ -100,7 +100,7 @@ public class SchedulesTabController extends AbstractTabController {
     }
 
     private Long getFirstScheduleId() {
-        final List<ContestSchedule> contestSchedules =
+        final List<IContestSchedule> contestSchedules =
                 ContestClientUtil.getAllContestSchedules();
         if (!contestSchedules.isEmpty()) {
             return contestSchedules.get(0).getId();
@@ -136,7 +136,7 @@ public class SchedulesTabController extends AbstractTabController {
 
     private String createSchedule(HttpServletRequest request, HttpServletResponse response,
             Model model, Member member) {
-        ContestSchedule newContestSchedule = ContestScheduleLifecycleUtil.createNewSchedule();
+        IContestSchedule newContestSchedule = ContestScheduleLifecycleUtil.createNewSchedule();
 
         AlertMessage.CREATED.flash(request);
         model.asMap().remove(CONTEST_SCHEDULE_BEAN_ATTRIBUTE_KEY);

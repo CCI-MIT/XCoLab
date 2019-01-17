@@ -15,7 +15,7 @@ import org.xcolab.client.content.pojo.IContentArticle;
 import org.xcolab.client.content.pojo.IContentArticleVersion;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestWrapper;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.errors.AccessDeniedPage;
@@ -76,7 +76,7 @@ public class WikiController {
             Model model, @PathVariable long contestYear, @PathVariable String contestUrlName)
             throws ContestNotFoundException, IOException {
 
-        final Contest contest = ContestClientUtil.getContest(contestUrlName, contestYear);
+        final ContestWrapper contest = ContestClientUtil.getContest(contestUrlName, contestYear);
 
         if (contest == null) {
             response.setStatus(HttpStatus.NOT_FOUND.value());

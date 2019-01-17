@@ -1,7 +1,7 @@
 package org.xcolab.client.contest;
 
-import org.xcolab.client.contest.pojo.ContestTeamMember;
-import org.xcolab.client.contest.pojo.ContestTeamMemberRole;
+import org.xcolab.client.contest.pojo.IContestTeamMember;
+import org.xcolab.client.contest.pojo.IContestTeamMemberRole;
 
 import java.util.List;
 import java.util.Map;
@@ -17,8 +17,8 @@ public final class ContestTeamMemberClientUtil {
         return client;
     }
 
-    public static ContestTeamMember createContestTeamMember(
-            ContestTeamMember contestTeamMember) {
+    public static IContestTeamMember createContestTeamMember(
+            IContestTeamMember contestTeamMember) {
         return client.createContestTeamMember(contestTeamMember);
     }
 
@@ -26,7 +26,7 @@ public final class ContestTeamMemberClientUtil {
         client.deleteContestTeamMember(contestTeamuserId);
     }
 
-    public static ContestTeamMemberRole getContestTeamMemberRole(long id) {
+    public static IContestTeamMemberRole getContestTeamMemberRole(long id) {
         return client.getContestTeamMemberRole(id);
     }
 
@@ -43,10 +43,10 @@ public final class ContestTeamMemberClientUtil {
         return client.getContestTeamMembersByRole(contestId);
     }
 
-    public static List<ContestTeamMember> getTeamMembers(Long userId, Long contestId, Long roleId) {
+    public static List<IContestTeamMember> getTeamMembers(Long userId, Long contestId, Long roleId) {
         return client.getTeamMembers(userId, contestId, roleId);
     }
-    public static List<ContestTeamMember> getTeamMembers(Long categoryId, Long contestYear) {
+    public static List<IContestTeamMember> getTeamMembers(Long categoryId, Long contestYear) {
         return client.getTeamMembers(categoryId, contestYear);
     }
 

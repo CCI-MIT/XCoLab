@@ -1,7 +1,7 @@
 package org.xcolab.view.pages.proposals.discussion;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestWrapper;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.contest.pojo.Proposal;
 import org.xcolab.client.contest.pojo.ProposalTeamMember;
@@ -70,7 +70,7 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
     }
 
     private boolean isUserFellowOrJudgeOrAdvisor() {
-        Contest contest =  proposal.getContest();
+        ContestWrapper contest =  proposal.getContest();
 
         boolean isJudge = proposal.getIsUserAmongSelectedJudges(userId);
         boolean isFellow = proposal.isUserAmongFellows(userId);

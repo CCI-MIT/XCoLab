@@ -1,8 +1,8 @@
 package org.xcolab.view.pages.proposals.impact;
 
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.OntologyTerm;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.OntologyTermWrapper;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.pojo.Proposal;
 import org.xcolab.util.enums.contest.ContestTier;
@@ -40,10 +40,10 @@ public class IntegratedProposalImpactSeries {
 
     private final Proposal proposal;
 
-    private final OntologyTerm regionOntologyTerm;
+    private final OntologyTermWrapper regionOntologyTerm;
 
     public IntegratedProposalImpactSeries(ProposalContext proposalContext,
-            Proposal proposal, Contest contest) {
+            Proposal proposal, ContestWrapper contest) {
         this.regionOntologyTerm = contest.getWhere().get(0);
             this.proposal = proposal;
             this.resultSeriesValues = new ProposalImpactSeriesValues();
@@ -65,7 +65,7 @@ public class IntegratedProposalImpactSeries {
         if (!proposals.isEmpty()) {
             for (Proposal proposal : proposals) {
                 try {
-                    Contest contestOfProposal =
+                    ContestWrapper contestOfProposal =
                             proposalContext.getClients().getProposalClient().getLatestContestInProposal(proposal.getId());
                     if (Objects.equals(contestTierId, contestOfProposal.getContestTier())) {
                         subProposalsOnContestTier.addAll(proposals);

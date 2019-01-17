@@ -2,11 +2,10 @@ package org.xcolab.client.contest.proposals;
 
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.contest.resources.ProposalResource;
 import org.xcolab.client.contest.pojo.Proposal;
-import org.xcolab.client.contest.pojo.SupportedProposal;
 import org.xcolab.client.contest.pojo.ProposalSupporter;
 import org.xcolab.client.contest.pojo.ProposalVote;
+import org.xcolab.client.contest.pojo.SupportedProposal;
 import org.xcolab.util.activities.enums.ProposalActivityType;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
@@ -21,19 +20,9 @@ import java.util.stream.Collectors;
 
 public final class ProposalMemberRatingClient {
 
-    private final RestResource1<ProposalSupporter, Long> proposalSupporterResource;
-    private final RestResource<ProposalVote, Long> proposalVoteResource;
-    private final RestResource<SupportedProposal, Long> supportedProposalsResource;
-
-    public ProposalMemberRatingClient() {
-        proposalSupporterResource = new RestResource1<>(ProposalResource.PROPOSAL_SUPPORTER,
-                ProposalSupporter.TYPES);
-        proposalVoteResource = new RestResource1<>(ProposalResource.PROPOSAL_VOTE,
-                ProposalVote.TYPES);
-
-        supportedProposalsResource = new RestResource1<>(ProposalResource.SUPPORTED_PROPOSALS,
-                 SupportedProposal.TYPES);
-    }
+    private final RestResource1<ProposalSupporter, Long> proposalSupporterResource = null; // proposalSupporters
+    private final RestResource<ProposalVote, Long> proposalVoteResource = null; // proposalVotes
+    private final RestResource<SupportedProposal, Long> supportedProposalsResource = null; // supportedProposals
 
     public List<ProposalSupporter> getProposalSupporters(long proposalId) {
         return proposalSupporterResource.list()

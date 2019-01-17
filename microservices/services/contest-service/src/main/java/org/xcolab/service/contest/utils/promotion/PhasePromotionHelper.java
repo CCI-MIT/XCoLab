@@ -3,11 +3,11 @@ package org.xcolab.service.contest.utils.promotion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
-import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.Proposal;
 import org.xcolab.client.contest.pojo.ProposalContestPhaseAttribute;
-import org.xcolab.model.tables.pojos.ContestPhase;
+import org.xcolab.client.contest.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 
 import static org.xcolab.util.enums.promotion.JudgingSystemActions.AdvanceDecision;
@@ -20,9 +20,9 @@ public class PhasePromotionHelper {
 
     private static final Logger _log = LoggerFactory.getLogger(PhasePromotionHelper.class);
 
-    private final ContestPhase phase;
+    private final ContestPhaseWrapper phase;
 
-    public PhasePromotionHelper(ContestPhase phase) {
+    public PhasePromotionHelper(ContestPhaseWrapper phase) {
         this.phase = phase;
     }
 

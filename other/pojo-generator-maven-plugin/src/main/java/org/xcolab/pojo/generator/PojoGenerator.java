@@ -297,7 +297,9 @@ public class PojoGenerator extends AbstractMojo {
         List<MethodSource<JavaInterfaceSource>> defaultMethods =
                 src.getMethods().stream().filter(m -> m.isDefault()).collect(Collectors.toList());
         for (MethodSource<JavaInterfaceSource> defaultMethod : defaultMethods) {
-            defaultMethod.addAnnotation(Override.class);
+            if (!defaultMethod.hasAnnotation(Override.class)) {
+                defaultMethod.addAnnotation(Override.class);
+            }
             if (!defaultMethod.hasAnnotation(JsonIgnore.class)) {
                 defaultMethod.addAnnotation(JsonIgnore.class);
             }

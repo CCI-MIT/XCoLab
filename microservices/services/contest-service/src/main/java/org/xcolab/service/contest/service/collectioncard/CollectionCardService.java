@@ -3,8 +3,8 @@ package org.xcolab.service.contest.service.collectioncard;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.xcolab.client.contest.pojo.IContestCollectionCard;
 import org.xcolab.model.tables.pojos.Contest;
-import org.xcolab.model.tables.pojos.ContestCollectionCard;
 import org.xcolab.service.contest.domain.contestcollectioncard.ContestCollectionCardDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.service.contest.ContestService;
@@ -47,7 +47,7 @@ public class CollectionCardService {
                         }
                     }
                 }
-                for(ContestCollectionCard childCollectionCard : contestCollectionCardDao.findByGiven(collectionCards.get(0))) {
+                for(IContestCollectionCard childCollectionCard : contestCollectionCardDao.findByGiven(collectionCards.get(0))) {
                     if(childCollectionCard.getVisible()) {
                         collectionCards.add(childCollectionCard.getId());
                     }
@@ -67,7 +67,7 @@ public class CollectionCardService {
                 return false;
             }
             long parentId = contestCollectionCardDao.get(collectionCardId).getParent();
-            for(ContestCollectionCard card : contestCollectionCardDao.findByGiven(collectionCardId)) {
+            for(IContestCollectionCard card : contestCollectionCardDao.findByGiven(collectionCardId)) {
                 card.setParent(parentId);
                 contestCollectionCardDao.update(card);
             }

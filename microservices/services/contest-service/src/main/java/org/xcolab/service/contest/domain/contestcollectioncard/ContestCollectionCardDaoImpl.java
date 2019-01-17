@@ -6,7 +6,8 @@ import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.model.tables.pojos.ContestCollectionCard;
+import org.xcolab.client.contest.pojo.IContestCollectionCard;
+import org.xcolab.client.contest.pojo.tables.pojos.ContestCollectionCard;
 import org.xcolab.model.tables.records.ContestCollectionCardRecord;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
@@ -22,7 +23,7 @@ public class ContestCollectionCardDaoImpl implements ContestCollectionCardDao {
 
 
     @Override
-    public ContestCollectionCard create(ContestCollectionCard contestCollectionCard) {
+    public IContestCollectionCard create(IContestCollectionCard contestCollectionCard) {
 
         ContestCollectionCardRecord ret = this.dslContext.insertInto(CONTEST_COLLECTION_CARD)
                 .set(CONTEST_COLLECTION_CARD.PARENT, contestCollectionCard.getParent())
@@ -46,7 +47,7 @@ public class ContestCollectionCardDaoImpl implements ContestCollectionCardDao {
     }
 
     @Override
-    public boolean update(ContestCollectionCard contestCollectionCard) {
+    public boolean update(IContestCollectionCard contestCollectionCard) {
 
         return dslContext.update(CONTEST_COLLECTION_CARD)
                 .set(CONTEST_COLLECTION_CARD.PARENT, contestCollectionCard.getParent())
@@ -71,7 +72,7 @@ public class ContestCollectionCardDaoImpl implements ContestCollectionCardDao {
 
 
     @Override
-    public ContestCollectionCard get(Long contestCollectionCardId) throws NotFoundException {
+    public IContestCollectionCard get(Long contestCollectionCardId) throws NotFoundException {
 
         final Record record = this.dslContext.selectFrom(CONTEST_COLLECTION_CARD)
                 .where(CONTEST_COLLECTION_CARD.ID.eq(contestCollectionCardId)).fetchOne();
@@ -84,7 +85,7 @@ public class ContestCollectionCardDaoImpl implements ContestCollectionCardDao {
     }
 
     @Override
-    public List<ContestCollectionCard> findByGiven(Long parentCollectionCardId) throws NotFoundException {
+    public List<IContestCollectionCard> findByGiven(Long parentCollectionCardId) throws NotFoundException {
         final SelectQuery<Record> query = dslContext.select()
                 .from(CONTEST_COLLECTION_CARD).getQuery();
 

@@ -11,11 +11,11 @@ import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.ProposalTemplateClientUtil;
-import org.xcolab.client.contest.pojo.OntologyTerm;
+import org.xcolab.client.contest.pojo.OntologyTermWrapper;
 import org.xcolab.client.contest.pojo.ProposalTemplateSectionDefinition;
 import org.xcolab.client.contest.proposals.PointsClientUtil;
 import org.xcolab.client.contest.proposals.enums.points.DistributionStrategy;
-import org.xcolab.client.contest.pojo.PointType;
+import org.xcolab.client.contest.pojo.PointTypeWrapper;
 import org.xcolab.commons.html.LabelStringValue;
 import org.xcolab.commons.html.LabelValue;
 import org.xcolab.util.enums.contest.ContestTier;
@@ -92,7 +92,7 @@ public abstract class AbstractProposalTemplateTabController extends BaseTabContr
     private List<LabelValue> getPointTypeSelectionItems() {
         List<LabelValue> selectItems = new ArrayList<>();
         selectItems.add(new LabelValue(0L, "Default"));
-        for (PointType pointType : PointsClientUtil.getAllPointTypes()) {
+        for (PointTypeWrapper pointType : PointsClientUtil.getAllPointTypes()) {
             if (pointType.getDistributionStrategy()
                     .equalsIgnoreCase(DistributionStrategy.SECTION_DEFINED.name())) {
                 selectItems.add(new LabelValue(pointType.getId(),
@@ -156,25 +156,25 @@ public abstract class AbstractProposalTemplateTabController extends BaseTabContr
     }
 
     private List<LabelValue> getTermsFromOntologySpace(OntologySpaceEnum ontologySpace) {
-        List<Stack<OntologyTerm>> allParentsPaths =
+        List<Stack<OntologyTermWrapper>> allParentsPaths =
                 getAllOntologyTermParentPathStacks(ontologySpace);
         sortOntologyTermParentPathsAlphabetically(allParentsPaths);
 
         return buildOntologyTermParentPathSelectItemList(allParentsPaths);
     }
 
-    private List<Stack<OntologyTerm>> getAllOntologyTermParentPathStacks(
+    private List<Stack<OntologyTermWrapper>> getAllOntologyTermParentPathStacks(
             OntologySpaceEnum ontologySpace) {
 
-        List<Stack<OntologyTerm>> allParentsPaths = new ArrayList<>();
-        for (OntologyTerm term : OntologyClientUtil
+        List<Stack<OntologyTermWrapper>> allParentsPaths = new ArrayList<>();
+        for (OntologyTermWrapper term : OntologyClientUtil
                 .getAllOntologyTerms()) {
             // Just consider terms in the passed ontologySpace
             if (term.getOntologySpaceId() != ontologySpace.getSpaceId()) {
                 continue;
             }
 
-            Stack<OntologyTerm> parentsPath = getOntologyTermParentPath(term);
+            Stack<OntologyTermWrapper> parentsPath = getOntologyTermParentPath(term);
             allParentsPaths.add(parentsPath);
         }
 
@@ -183,12 +183,12 @@ public abstract class AbstractProposalTemplateTabController extends BaseTabContr
     }
 
     private void sortOntologyTermParentPathsAlphabetically(
-            List<Stack<OntologyTerm>> allParentsPaths) {
+            List<Stack<OntologyTermWrapper>> allParentsPaths) {
         allParentsPaths.sort((o1, o2) -> compareOntologyTermStacks(
-                (Stack<OntologyTerm>) o1.clone(), (Stack<OntologyTerm>) o2.clone()));
+                (Stack<OntologyTermWrapper>) o1.clone(), (Stack<OntologyTermWrapper>) o2.clone()));
     }
 
-    private int compareOntologyTermStacks(Stack<OntologyTerm> stack1, Stack<OntologyTerm> stack2) {
+    private int compareOntologyTermStacks(Stack<OntologyTermWrapper> stack1, Stack<OntologyTermWrapper> stack2) {
         String stack1FirstItemName;
         try {
             stack1FirstItemName = stack1.pop().getName();
@@ -210,11 +210,11 @@ public abstract class AbstractProposalTemplateTabController extends BaseTabContr
     }
 
     private List<LabelValue> buildOntologyTermParentPathSelectItemList(
-            List<Stack<OntologyTerm>> allParentsPaths) {
+            List<Stack<OntologyTermWrapper>> allParentsPaths) {
         List<LabelValue> termSelectItems = new ArrayList<>();
 
-        for (Stack<OntologyTerm> ontologyTermParentsPath : allParentsPaths) {
-            OntologyTerm childTerm = ontologyTermParentsPath.firstElement();
+        for (Stack<OntologyTermWrapper> ontologyTermParentsPath : allParentsPaths) {
+            OntologyTermWrapper childTerm = ontologyTermParentsPath.firstElement();
             String ontologyTermPathString = buildOntologyTermPathString(ontologyTermParentsPath);
             termSelectItems.add(new LabelValue(childTerm.getId(), ontologyTermPathString));
         }
@@ -223,10 +223,10 @@ public abstract class AbstractProposalTemplateTabController extends BaseTabContr
     }
 
 
-    private Stack<OntologyTerm> getOntologyTermParentPath(OntologyTerm term) {
+    private Stack<OntologyTermWrapper> getOntologyTermParentPath(OntologyTermWrapper term) {
 
-        Stack<OntologyTerm> parentsPath = new Stack<>();
-        OntologyTerm current = term;
+        Stack<OntologyTermWrapper> parentsPath = new Stack<>();
+        OntologyTermWrapper current = term;
         while (current != null) {
             parentsPath.push(current);
             current = OntologyClientUtil.getOntologyTermParent(current);
@@ -236,13 +236,13 @@ public abstract class AbstractProposalTemplateTabController extends BaseTabContr
 
     }
 
-    private String buildOntologyTermPathString(Stack<OntologyTerm> parentsPath) {
+    private String buildOntologyTermPathString(Stack<OntologyTermWrapper> parentsPath) {
         if (parentsPath.size() == 1) {
             return parentsPath.pop().getName();
         }
 
         // Build a path string in the form of "--|--|--|-- childTermName"
-        OntologyTerm currentTerm = parentsPath.pop();
+        OntologyTermWrapper currentTerm = parentsPath.pop();
         StringBuilder nameStr = new StringBuilder();
         boolean firstItem = true;
         while (!parentsPath.isEmpty()) {

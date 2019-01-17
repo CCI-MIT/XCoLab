@@ -1,7 +1,7 @@
 package org.xcolab.client.contest.proposals;
 
-import org.xcolab.client.contest.pojo.PointType;
-import org.xcolab.client.contest.pojo.PointsDistributionConfiguration;
+import org.xcolab.client.contest.pojo.PointTypeWrapper;
+import org.xcolab.client.contest.pojo.IPointsDistributionConfiguration;
 
 import java.util.List;
 
@@ -13,12 +13,12 @@ public final class PointsClientUtil {
         return client;
     }
 
-    public static PointsDistributionConfiguration createPointsDistributionConfiguration(
-            PointsDistributionConfiguration pointsDistributionConfiguration) {
+    public static IPointsDistributionConfiguration createPointsDistributionConfiguration(
+            IPointsDistributionConfiguration pointsDistributionConfiguration) {
         return client.createPointsDistributionConfiguration(pointsDistributionConfiguration);
     }
 
-    public static PointsDistributionConfiguration
+    public static IPointsDistributionConfiguration
     getPointsDistributionConfigurationByTargetProposalTemplateSectionDefinitionId(
             long targetProposalTemplateSectionDefinitionId) {
         return client.getPointsDistributionConfigurationByTargetProposalTemplateSectionDefinitionId(
@@ -26,11 +26,11 @@ public final class PointsClientUtil {
     }
 
     public static boolean updatePointsDistributionConfiguration(
-            PointsDistributionConfiguration pointsDistributionConfiguration) {
+            IPointsDistributionConfiguration pointsDistributionConfiguration) {
         return client.updatePointsDistributionConfiguration(pointsDistributionConfiguration);
     }
 
-    public static List<PointsDistributionConfiguration>
+    public static List<IPointsDistributionConfiguration>
     getPointsDistributionByProposalIdPointTypeId(
             Long proposalId, Long pointTypeId) {
         return client.getPointsDistributionByProposalIdPointTypeId(proposalId, pointTypeId);
@@ -48,15 +48,15 @@ public final class PointsClientUtil {
          client.verifyDistributionConfigurationsForProposalId(proposalId);
     }
 
-    public static PointType getPointType(long Id) {
+    public static PointTypeWrapper getPointType(long Id) {
         return client.getPointType(Id);
     }
 
-    public static List<PointType> getAllPointTypes() {
+    public static List<PointTypeWrapper> getAllPointTypes() {
         return client.getAllPointTypes();
     }
 
-    public static List<PointType> getChildrenOfPointType(
+    public static List<PointTypeWrapper> getChildrenOfPointType(
             Long parentPointTypeId) {
         return client.getChildrenOfPointType(parentPointTypeId);
     }

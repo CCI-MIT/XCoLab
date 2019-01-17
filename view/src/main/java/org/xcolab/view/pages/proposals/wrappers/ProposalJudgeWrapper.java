@@ -1,7 +1,7 @@
 package org.xcolab.view.pages.proposals.wrappers;
 
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.contest.pojo.Proposal;
@@ -23,14 +23,14 @@ public class ProposalJudgeWrapper extends Proposal {
         setProposalRatings(proposal.getId(), contestPhase);
     }
 
-    public ProposalJudgeWrapper(Proposal proposal, int version, Contest contest,
-            ContestPhase contestPhase, Proposal2Phase proposal2Phase, Member currentMember) {
+    public ProposalJudgeWrapper(Proposal proposal, int version, ContestWrapper contest,
+            ContestPhaseWrapper contestPhase, Proposal2Phase proposal2Phase, Member currentMember) {
         super(proposal, version, contest, contestPhase, proposal2Phase);
         this.currentMember = currentMember;
         setProposalRatings(proposal.getId(), contestPhase);
     }
 
-    private void setProposalRatings(long proposalId, ContestPhase contestPhase) {
+    private void setProposalRatings(long proposalId, ContestPhaseWrapper contestPhase) {
 
         if(contestPhase!=null) {
             List<ProposalRating> list = ProposalJudgeRatingClientUtil

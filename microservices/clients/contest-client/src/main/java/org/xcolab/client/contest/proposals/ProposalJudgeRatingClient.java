@@ -1,28 +1,18 @@
 package org.xcolab.client.contest.proposals;
 
-import org.xcolab.client.contest.resources.ProposalResource;
-import org.xcolab.client.contest.proposals.enums.ProposalJudgeType;
 import org.xcolab.client.contest.pojo.ProposalRating;
 import org.xcolab.client.contest.pojo.ProposalRatingType;
 import org.xcolab.client.contest.pojo.ProposalRatingValue;
+import org.xcolab.client.contest.proposals.enums.ProposalJudgeType;
 import org.xcolab.util.http.client.RestResource1;
 
 import java.util.List;
 
 public final class ProposalJudgeRatingClient {
 
-    private final RestResource1<ProposalRating, Long> proposalRatingResource;
-    private final RestResource1<ProposalRatingValue, Long> proposalRatingValueResource;
-    private final RestResource1<ProposalRatingType, Long> proposalRatingTypeResource;
-
-    public ProposalJudgeRatingClient() {
-        proposalRatingResource = new RestResource1<>(ProposalResource.PROPOSAL_RATING,
-                ProposalRating.TYPES);
-        proposalRatingValueResource = new RestResource1<>(ProposalResource.PROPOSAL_RATING_VALUE,
-                ProposalRatingValue.TYPES);
-        proposalRatingTypeResource = new RestResource1<>(ProposalResource.PROPOSAL_RATING_TYPE,
-                ProposalRatingType.TYPES);
-    }
+    private final RestResource1<ProposalRating, Long> proposalRatingResource = null; // proposalRatings
+    private final RestResource1<ProposalRatingValue, Long> proposalRatingValueResource = null; // proposalRatingValues
+    private final RestResource1<ProposalRatingType, Long> proposalRatingTypeResource = null; // proposalRatingTypes
 
     public List<ProposalRating> getProposalRatingsByProposalUserContestPhase(Long proposalId,
             Long contestPhaseId, Long userId) {

@@ -1,10 +1,10 @@
 package org.xcolab.service.contest.domain.impactdefaultseries;
 
-import org.xcolab.model.tables.pojos.ImpactDefaultSeries;
+import org.xcolab.client.contest.pojo.IImpactDefaultSeries;
 
 import java.util.List;
 
 public interface ImpactDefaultSeriesDao {
 
-    List<ImpactDefaultSeries> findByGiven(Long focusAreaId, String name);
+    List<IImpactDefaultSeries> findByGiven(Long focusAreaId, String name);
 }

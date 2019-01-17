@@ -3,7 +3,7 @@ package org.xcolab.view.pages.proposals.utils.voting;
 import org.joda.time.DateTime;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestWrapper;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.pojo.Proposal;
@@ -27,11 +27,11 @@ public class VoteValidator {
 
     private final Member member;
     private final Proposal proposal;
-    private final Contest contest;
+    private final ContestWrapper contest;
     private final String remoteIp;
     private final ClientHelper clients;
 
-    public VoteValidator(Member member, Proposal proposal, Contest contest,
+    public VoteValidator(Member member, Proposal proposal, ContestWrapper contest,
             String remoteIp, ClientHelper clients) {
         this.member = member;
         this.proposal = proposal;

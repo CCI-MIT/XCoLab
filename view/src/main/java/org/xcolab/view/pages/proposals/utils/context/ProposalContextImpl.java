@@ -9,8 +9,8 @@ import org.springframework.web.servlet.LocaleResolver;
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.pojo.Proposal;
 import org.xcolab.client.contest.pojo.Proposal2Phase;
@@ -32,9 +32,9 @@ public class ProposalContextImpl implements ProposalContext {
     private final LocaleResolver localeResolver;
     private final HttpServletRequest request;
 
-    private Contest contest;
+    private ContestWrapper contest;
     private ContestType contestType;
-    private ContestPhase contestPhase;
+    private ContestPhaseWrapper contestPhase;
     private Proposal2Phase proposal2Phase;
     private Proposal proposal;
     private ProposalsPermissions permissions;
@@ -133,7 +133,7 @@ public class ProposalContextImpl implements ProposalContext {
     //    }
 
     @Override
-    public Contest getContest() {
+    public ContestWrapper getContest() {
         return contest;
     }
 
@@ -143,7 +143,7 @@ public class ProposalContextImpl implements ProposalContext {
     }
 
     @Override
-    public ContestPhase getContestPhase() {
+    public ContestPhaseWrapper getContestPhase() {
         return contestPhase;
     }
 

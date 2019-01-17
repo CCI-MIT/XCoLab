@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contest.ImpactClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ImpactIteration;
-import org.xcolab.client.contest.pojo.FocusArea;
-import org.xcolab.client.contest.pojo.OntologyTerm;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.IImpactIteration;
+import org.xcolab.client.contest.pojo.FocusAreaWrapper;
+import org.xcolab.client.contest.pojo.OntologyTermWrapper;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalAttributeClient;
 import org.xcolab.client.contest.proposals.ProposalAttributeClientUtil;
@@ -50,8 +50,8 @@ public class ProposalImpactJSONController {
     public void proposalImpactGetRegions(HttpServletResponse response,
             ProposalContext proposalContext) throws IOException {
 
-        Map<OntologyTerm, List<OntologyTerm>> ontologyMap = getOntologyMap(proposalContext);
-        List<OntologyTerm> regionTerms = new ArrayList<>(ontologyMap.keySet());
+        Map<OntologyTermWrapper, List<OntologyTermWrapper>> ontologyMap = getOntologyMap(proposalContext);
+        List<OntologyTermWrapper> regionTerms = new ArrayList<>(ontologyMap.keySet());
 
         response.getOutputStream().write(ontologyTermListToJSONArray(regionTerms).toString().getBytes());
     }
@@ -62,9 +62,9 @@ public class ProposalImpactJSONController {
             ProposalContext proposalContext,
             @RequestParam(value = "regionTermId") Long regionTermId) throws IOException {
 
-        Map<OntologyTerm, List<OntologyTerm>> ontologyMap = getOntologyMap(proposalContext);
+        Map<OntologyTermWrapper, List<OntologyTermWrapper>> ontologyMap = getOntologyMap(proposalContext);
 
-        List<OntologyTerm> sectorTerms = ontologyMap.get(OntologyClientUtil.getOntologyTerm(regionTermId));
+        List<OntologyTermWrapper> sectorTerms = ontologyMap.get(OntologyClientUtil.getOntologyTerm(regionTermId));
         response.getOutputStream().write(ontologyTermListToJSONArray(sectorTerms).toString().getBytes());
     }
 
@@ -81,12 +81,12 @@ public class ProposalImpactJSONController {
         }
 
         try {
-            Contest contest = proposalContext.getContest();
-            OntologyTerm sectorOntologyTerm = OntologyClientUtil.getOntologyTerm(sectorTermId);
-            OntologyTerm regionOntologyTerm = OntologyClientUtil.getOntologyTerm(regionTermId);
+            ContestWrapper contest = proposalContext.getContest();
+            OntologyTermWrapper sectorOntologyTerm = OntologyClientUtil.getOntologyTerm(sectorTermId);
+            OntologyTermWrapper regionOntologyTerm = OntologyClientUtil.getOntologyTerm(regionTermId);
 
             // ProposalImpactSeriesList impactSeriesList = getProposalImpactSeriesList(request);
-            FocusArea selectedFocusArea = new ProposalImpactUtil(contest).getFocusAreaAssociatedWithTerms(sectorOntologyTerm, regionOntologyTerm);
+            FocusAreaWrapper selectedFocusArea = new ProposalImpactUtil(contest).getFocusAreaAssociatedWithTerms(sectorOntologyTerm, regionOntologyTerm);
 
             // Create a impact series with all data series for one sector-region pair
             ProposalImpactSeries impactSeries = new ProposalImpactSeries(contest, proposalContext.getProposal(), selectedFocusArea);
@@ -116,8 +116,8 @@ public class ProposalImpactJSONController {
             return;
         }
 
-        FocusArea focusArea = OntologyClientUtil.getFocusArea(focusAreaId);
-        Contest contest = proposalContext.getContest();
+        FocusAreaWrapper focusArea = OntologyClientUtil.getFocusArea(focusAreaId);
+        ContestWrapper contest = proposalContext.getContest();
 
         JSONObject requestJson = new JSONObject(request.getParameter("json"));
         ProposalImpactSeries impactSeries = new ProposalImpactSeries(contest, proposalContext.getProposal(), focusArea, requestJson);
@@ -149,10 +149,10 @@ public class ProposalImpactJSONController {
 
         Proposal proposal = proposalContext.getProposal();
 
-        final List<ImpactIteration> iterations =
+        final List<IImpactIteration> iterations =
                 ImpactClientUtil.getContestImpactIterations(proposalContext.getContest());
         final List<ProposalAttribute> impactAttributes = new ArrayList<>();
-        for (ImpactIteration iteration : iterations) {
+        for (IImpactIteration iteration : iterations) {
             impactAttributes.addAll(proposalAttributeClient
                     .getAllProposalAttributes(proposal.getId(),
                             ImpactSeriesType.IMPACT_ADOPTION_RATE.getAttributeName(iteration.getYear()),
@@ -189,7 +189,7 @@ public class ProposalImpactJSONController {
         }
 
         Proposal proposal = proposalContext.getProposal();
-        Contest contest = proposalContext.getContest();
+        ContestWrapper contest = proposalContext.getContest();
         JSONObject requestJson = new JSONObject(request.getParameter("json"));
 
         try {
@@ -253,7 +253,7 @@ public class ProposalImpactJSONController {
     }
 
 
-    private JSONArray ontologyTermListToJSONArray(List<OntologyTerm> terms) {
+    private JSONArray ontologyTermListToJSONArray(List<OntologyTermWrapper> terms) {
         JSONArray array = new JSONArray();
 
         if (terms == null || terms.isEmpty()) {
@@ -269,7 +269,7 @@ public class ProposalImpactJSONController {
             }
 
         });
-        for (OntologyTerm term: terms) {
+        for (OntologyTermWrapper term: terms) {
             JSONObject termJson = new JSONObject();
             termJson.put("id", term.getId());
             termJson.put("name", term.getName());
@@ -279,8 +279,8 @@ public class ProposalImpactJSONController {
         return array;
     }
 
-    private Map<OntologyTerm, List<OntologyTerm>> getOntologyMap(ProposalContext proposalContext) {
-        Contest contest = proposalContext.getContest();
+    private Map<OntologyTermWrapper, List<OntologyTermWrapper>> getOntologyMap(ProposalContext proposalContext) {
+        ContestWrapper contest = proposalContext.getContest();
         Proposal proposal = proposalContext.getProposal();
 
         ProposalImpactSeriesList proposalImpactSeriesList = new ProposalImpactSeriesList(contest, proposal);
@@ -288,7 +288,7 @@ public class ProposalImpactJSONController {
     }
 
     private ProposalImpactSeriesList getProposalImpactSeriesList(ProposalContext proposalContext) {
-        Contest contest = proposalContext.getContest();
+        ContestWrapper contest = proposalContext.getContest();
         Proposal proposal = proposalContext.getProposal();
 
         return new ProposalImpactSeriesList(contest, proposal);

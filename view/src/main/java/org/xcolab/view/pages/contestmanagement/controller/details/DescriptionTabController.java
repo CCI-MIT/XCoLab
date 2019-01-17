@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ProposalTemplateClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestWrapper;
 import org.xcolab.client.contest.pojo.ProposalTemplate;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.html.LabelValue;
@@ -60,7 +60,7 @@ public class DescriptionTabController extends AbstractTabController {
     @ModelAttribute("scheduleTemplateSelectionItems")
     public List<LabelValue> populateScheduleSelectionItems(HttpServletRequest request,
             @PathVariable long contestId) {
-        Contest contest = ContestClientUtil.getContest(contestId);
+        ContestWrapper contest = ContestClientUtil.getContest(contestId);
         Long existingContestScheduleId = contest.getContestScheduleId();
         boolean contestHasProposals = contest.getProposalsCount() > 0;
         return ContestScheduleLifecycleUtil
@@ -82,7 +82,7 @@ public class DescriptionTabController extends AbstractTabController {
             return new AccessDeniedPage(member).toViewName(response);
         }
         if (!model.containsAttribute("contestDescriptionBean")) {
-            Contest contest = ContestClientUtil.getContest(contestId);
+            ContestWrapper contest = ContestClientUtil.getContest(contestId);
             model.addAttribute("contestDescriptionBean", new ContestDescriptionBean(contest));
         }
         return TAB_VIEW;
@@ -97,7 +97,7 @@ public class DescriptionTabController extends AbstractTabController {
             return new AccessDeniedPage(member).toViewName(response);
         }
         //check for contest name year uniqueness
-        final Contest contest = ContestClientUtil.getContest(contestId);
+        final ContestWrapper contest = ContestClientUtil.getContest(contestId);
         if (!ContestClientUtil
                 .isContestTitleYearUnique(contestDescriptionBean.getTitle(), contest.getContestYear(),
                         contest.getId())) {

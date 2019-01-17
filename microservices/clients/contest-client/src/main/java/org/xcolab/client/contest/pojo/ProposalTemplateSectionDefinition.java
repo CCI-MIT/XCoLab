@@ -216,7 +216,7 @@ public class ProposalTemplateSectionDefinition extends AbstractProposalTemplateS
     }
 
 
-    public OntologyTerm getNumericValueAsOntologyTerm() {
+    public OntologyTermWrapper getNumericValueAsOntologyTerm() {
         ProposalAttribute attr = getSectionAttribute();
         if (attr == null || attr.getNumericValue() <= 0) {
             return null;
@@ -269,12 +269,12 @@ public class ProposalTemplateSectionDefinition extends AbstractProposalTemplateS
         return attr.getStringValue();
     }
 
-    public List<OntologyTerm> getFocusAreaTerms() {
+    public List<OntologyTermWrapper> getFocusAreaTerms() {
         if (this.getFocusAreaId() <= 0) {
             return null;
         }
 
-        FocusArea area = OntologyClientUtil.getFocusArea(this.getFocusAreaId());
+        FocusAreaWrapper area = OntologyClientUtil.getFocusArea(this.getFocusAreaId());
 
         return OntologyClientUtil.getOntologyTermsForFocusArea(area);
     }

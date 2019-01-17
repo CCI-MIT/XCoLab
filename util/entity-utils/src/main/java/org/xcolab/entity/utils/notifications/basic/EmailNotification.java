@@ -12,7 +12,7 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.admin.pojo.IEmailTemplate;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestWrapper;
 import org.xcolab.client.email.StaticEmailContext;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.Member;
@@ -77,7 +77,7 @@ public abstract class EmailNotification {
         _log = LoggerFactory.getLogger(this.getClass());
     }
 
-    private String getProposalLinkWithLinkText(Contest contest,
+    private String getProposalLinkWithLinkText(ContestWrapper contest,
                                                Proposal proposal, String linkText, String tab) {
 
             String proposalLinkUrl = baseUrl + proposal.getProposalLinkUrl((contest));
@@ -96,7 +96,7 @@ public abstract class EmailNotification {
      * @return Proposal URL as String
      */
     //TODO COLAB-2505: remove if we just use a normal proposal link
-    protected String getProposalLinkForDirectVoting(Contest contest, Proposal proposal) {
+    protected String getProposalLinkForDirectVoting(ContestWrapper contest, Proposal proposal) {
         final String proposalName = new ProposalAttributeHelper(proposal,
                 ProposalAttributeClientUtil.getClient())
                 .getAttributeValueString(ProposalAttributeKeys.NAME, "");
@@ -111,12 +111,12 @@ public abstract class EmailNotification {
      * @param contest The contest object
      * @return Contest URL as String
      */
-    private String getContestLink(Contest contest) {
+    private String getContestLink(ContestWrapper contest) {
         final String contestLinkUrl = baseUrl + contest.getContestLinkUrl();
         return String.format(LINK_FORMAT_STRING, contestLinkUrl, contest.getTitle());
     }
 
-    protected Contest getContest() {
+    protected ContestWrapper getContest() {
         return null;
     }
 
@@ -138,7 +138,7 @@ public abstract class EmailNotification {
      * @param contest         Contest in which the proposal is in
      * @param proposalToShare The Proposal that should be shared
      */
-    protected String getProposalLinkUrl(Contest contest, Proposal proposalToShare) {
+    protected String getProposalLinkUrl(ContestWrapper contest, Proposal proposalToShare) {
         return baseUrl + proposalToShare.getProposalLinkUrl(contest);
     }
 
@@ -147,7 +147,7 @@ public abstract class EmailNotification {
      *
      * @param contest Contest to be shared
      */
-    protected String getContestLinkUrl(Contest contest) {
+    protected String getContestLinkUrl(ContestWrapper contest) {
         return baseUrl + contest.getContestLinkUrl();
     }
 
@@ -276,7 +276,7 @@ public abstract class EmailNotification {
             if (node != null) {
                 return node;
             }
-            Contest contest = getContest();
+            ContestWrapper contest = getContest();
             Proposal proposal = getProposal();
             final boolean hasProposal = contest != null && proposal != null;
 

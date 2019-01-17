@@ -10,8 +10,8 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.enums.ContestStatus;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestPhase;
+import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalClient;
@@ -79,8 +79,8 @@ public class ContestProposalsController extends BaseProposalsController {
         final ClientHelper clients = proposalContext.getClients();
         final ProposalClient proposalClient = clients.getProposalClient();
 
-        ContestPhase contestPhase = proposalContext.getContestPhase();
-        Contest contest = proposalContext.getContest();
+        ContestPhaseWrapper contestPhase = proposalContext.getContestPhase();
+        ContestWrapper contest = proposalContext.getContest();
 
         final List<Proposal> activeProposals;
         final ContestStatus phaseStatus = contestPhase.getStatus();
@@ -121,8 +121,8 @@ public class ContestProposalsController extends BaseProposalsController {
     private String showContestProposalsPage(HttpServletResponse response, Model model, ProposalContext proposalContext,
             final SortFilterPage sortFilterPage, Member loggedInMember) {
 
-        Contest contest = proposalContext.getContest();
-        ContestPhase contestPhase = proposalContext.getContestPhase();
+        ContestWrapper contest = proposalContext.getContest();
+        ContestPhaseWrapper contestPhase = proposalContext.getContestPhase();
 
         final ContestType contestType = contest.getContestType();
         if (contestType.isRestrictedAccess() && !new ContestPermissions(loggedInMember)
@@ -180,7 +180,7 @@ public class ContestProposalsController extends BaseProposalsController {
 
         if (proposalContext.getPermissions().getCanFellowActions()) {
 
-            final Contest contest = proposalContext.getContest();
+            final ContestWrapper contest = proposalContext.getContest();
             final ProposalClient proposalClient = proposalContext.getClients().getProposalClient();
             long contestPhaseId = proposalContext.getContestPhase().getId();
 
@@ -210,7 +210,7 @@ public class ContestProposalsController extends BaseProposalsController {
 
         if (proposalContext.getPermissions().getCanFellowActions()) {
 
-            final Contest contest = proposalContext.getContest();
+            final ContestWrapper contest = proposalContext.getContest();
             final ProposalClient proposalClient = proposalContext.getClients().getProposalClient();
             long contestPhaseId = proposalContext.getContestPhase().getId();
 

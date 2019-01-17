@@ -7,13 +7,13 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.OntologyTermToFocusAreaMapper;
 import org.xcolab.client.contest.ProposalTemplateClientUtil;
-import org.xcolab.client.contest.pojo.FocusArea;
-import org.xcolab.client.contest.pojo.OntologySpace;
-import org.xcolab.client.contest.pojo.OntologyTerm;
+import org.xcolab.client.contest.pojo.FocusAreaWrapper;
+import org.xcolab.client.contest.pojo.OntologySpaceWrapper;
+import org.xcolab.client.contest.pojo.OntologyTermWrapper;
 import org.xcolab.client.contest.pojo.ProposalTemplateSectionDefinition;
 import org.xcolab.client.contest.pojo.ProposalTemplateSection;
 import org.xcolab.client.contest.proposals.PointsClientUtil;
-import org.xcolab.client.contest.pojo.PointsDistributionConfiguration;
+import org.xcolab.client.contest.pojo.IPointsDistributionConfiguration;
 import org.xcolab.commons.IdListUtil;
 import org.xcolab.view.util.entity.enums.OntologySpaceEnum;
 
@@ -76,7 +76,7 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
                 IdListUtil.getIdsFromString(proposalTemplateSectionDefinition.getAllowedContestTypeIds());
 
 
-        PointsDistributionConfiguration pdc =
+        IPointsDistributionConfiguration pdc =
                 PointsClientUtil
                         .getPointsDistributionConfigurationByTargetProposalTemplateSectionDefinitionId(id);
         if (pdc != null) {
@@ -103,11 +103,11 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
 
     private void initOntologyTermIdsWithFocusAreaId() {
         if (focusAreaId != null) {
-            FocusArea focusArea = OntologyClientUtil.getFocusArea(this.focusAreaId);
+            FocusAreaWrapper focusArea = OntologyClientUtil.getFocusArea(this.focusAreaId);
 
-            OntologySpace space = OntologyClientUtil
+            OntologySpaceWrapper space = OntologyClientUtil
                     .getOntologySpace(OntologySpaceEnum.WHAT.getSpaceId());
-            List<OntologyTerm> terms =
+            List<OntologyTermWrapper> terms =
                     OntologyClientUtil
                             .getAllOntologyTermsFromFocusAreaWithOntologySpace(focusArea,
                                     space);
@@ -134,9 +134,9 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
 
     }
 
-    private List<Long> getIdsFromOntologyTerms(List<OntologyTerm> ontologyTerms) {
+    private List<Long> getIdsFromOntologyTerms(List<OntologyTermWrapper> ontologyTerms) {
         List<Long> ids = new ArrayList<>(ontologyTerms.size());
-        for (OntologyTerm term : ontologyTerms) {
+        for (OntologyTermWrapper term : ontologyTerms) {
             ids.add(term.getId());
         }
 
@@ -252,7 +252,7 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
 
     public void persist(boolean createNew) {
         ProposalTemplateSectionDefinition psd;
-        PointsDistributionConfiguration pdc = null;
+        IPointsDistributionConfiguration pdc = null;
         if (id == null || createNew) {
             psd = new ProposalTemplateSectionDefinition();
 
@@ -298,7 +298,7 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
         }
         if (pdc == null) {
             if (pointType > 0L) {
-                pdc = new PointsDistributionConfiguration();
+                pdc = new IPointsDistributionConfiguration();
                 pdc.setPercentage(Double.valueOf(pointPercentage));
                 pdc.setPointTypeId(pointType);
                 pdc.setTargetProposalTemplateSectionDefinitionId(id);
@@ -441,12 +441,12 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
         this.howTermIds = howTermIds;
     }
 
-    private FocusArea getFocusAreaViaOntologyTerms() {
-        List<OntologyTerm> termsToBeMatched = getAllSelectedOntologyTerms();
+    private FocusAreaWrapper getFocusAreaViaOntologyTerms() {
+        List<OntologyTermWrapper> termsToBeMatched = getAllSelectedOntologyTerms();
 
         OntologyTermToFocusAreaMapper focusAreaMapper =
                 new OntologyTermToFocusAreaMapper(termsToBeMatched);
-        FocusArea focusArea = focusAreaMapper.getFocusAreaMatchingTermsExactly();
+        FocusAreaWrapper focusArea = focusAreaMapper.getFocusAreaMatchingTermsExactly();
 
         if (focusArea != null) {
             focusArea = createNewFocusAreaWithTerms(termsToBeMatched);
@@ -455,14 +455,14 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
         return focusArea;
     }
 
-    private FocusArea createNewFocusAreaWithTerms(List<OntologyTerm> focusAreaOntologyTerms) {
-        FocusArea newFocusArea = new FocusArea();
+    private FocusAreaWrapper createNewFocusAreaWithTerms(List<OntologyTermWrapper> focusAreaOntologyTerms) {
+        FocusAreaWrapper newFocusArea = new FocusAreaWrapper();
 
         newFocusArea.setName("created for proposalTemplateSectionDefinition '" + this.title + "'");
 
         newFocusArea = OntologyClientUtil.createFocusArea(newFocusArea);
 
-        for (OntologyTerm ontologyTerm : focusAreaOntologyTerms) {
+        for (OntologyTermWrapper ontologyTerm : focusAreaOntologyTerms) {
             OntologyClientUtil
                     .addOntologyTermsToFocusAreaByOntologyTermId(newFocusArea.getId(),
                             ontologyTerm.getId());
@@ -474,13 +474,13 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
         return pointType;
     }
 
-    private List<OntologyTerm> getAllSelectedOntologyTerms() {
+    private List<OntologyTermWrapper> getAllSelectedOntologyTerms() {
 
         List[] ontologyTermIdLists = {
                 getWhatTermIds(), getWhereTermIds(), getWhoTermIds(), getHowTermIds()
         };
 
-        List<OntologyTerm> selectedOntologyTerms = new ArrayList<>();
+        List<OntologyTermWrapper> selectedOntologyTerms = new ArrayList<>();
         for (List<Long> ontologyTermIds : ontologyTermIdLists) {
             for (Long ontologyTermId : ontologyTermIds) {
                 selectedOntologyTerms
