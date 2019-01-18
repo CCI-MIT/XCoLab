@@ -5,11 +5,11 @@ import org.jsoup.nodes.Node;
 
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.pojo.IEmailTemplate;
-import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.entity.utils.notifications.basic.ContestNotification;
 
 import java.util.List;
@@ -20,11 +20,11 @@ public class ContestVoteQuestionNotification extends ContestNotification {
 
     private static final String SUPPORTED_PROPOSALS_PLACEHOLDER = "supported-proposals";
 
-    private final List<Proposal> supportedProposals;
+    private final List<ProposalWrapper> supportedProposals;
     private ContestVoteQuestionTemplate templateWrapper;
 
     public ContestVoteQuestionNotification(Member recipient, ContestWrapper contest,
-            List<Proposal> supportedProposals, String baseUrl) {
+            List<ProposalWrapper> supportedProposals, String baseUrl) {
         super(contest, recipient, null);
         this.supportedProposals = supportedProposals;
     }
@@ -63,7 +63,7 @@ public class ContestVoteQuestionNotification extends ContestNotification {
                 case SUPPORTED_PROPOSALS_PLACEHOLDER:
                     StringBuilder supportedProposalsLinks = new StringBuilder();
                     supportedProposalsLinks.append("<span>");
-                    for (Proposal proposal : supportedProposals) {
+                    for (ProposalWrapper proposal : supportedProposals) {
                         Member member;
                         try {
                             member = MembersClient.getMember(proposal.getAuthorUserId());

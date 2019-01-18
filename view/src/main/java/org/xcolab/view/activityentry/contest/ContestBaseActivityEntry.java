@@ -6,7 +6,7 @@ import org.xcolab.util.activities.enums.ContestActivityType;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.view.activityentry.ActivityInitializationException;
 import org.xcolab.view.activityentry.provider.AbstractActivityEntryContentProvider;

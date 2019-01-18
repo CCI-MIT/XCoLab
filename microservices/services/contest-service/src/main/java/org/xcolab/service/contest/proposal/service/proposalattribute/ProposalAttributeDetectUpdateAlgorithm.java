@@ -1,6 +1,6 @@
 package org.xcolab.service.contest.proposal.service.proposalattribute;
 
-import org.xcolab.model.tables.pojos.ProposalAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,7 +39,6 @@ public class ProposalAttributeDetectUpdateAlgorithm {
         // Else use default algorithm
         return PROPOSAL_OTHER_ATTRIBUTE_UPDATE.hasBeenUpdated(proposalAttribute, attributeName, additionalId, numericValue, realValue);
     }
-
 
     interface ProposalAttributeDetectUpdateImpl {
         boolean hasBeenUpdated(ProposalAttribute attribute, String attributeName, long additionalId, long numericValue, double realValue);

@@ -1,6 +1,6 @@
 package org.xcolab.service.contest.proposal.domain.proposalcontestphaseattribute;
 
-import org.xcolab.model.tables.pojos.ProposalContestPhaseAttribute;
+import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.util.List;
@@ -9,13 +9,13 @@ public interface ProposalContestPhaseAttributeDao {
 
     int delete(Long id);
 
-    List<ProposalContestPhaseAttribute> findByGiven(Long proposalId, Long contestPhaseId, String name);
+    List<IProposalContestPhaseAttribute> findByGiven(Long proposalId, Long contestPhaseId, String name);
 
-    ProposalContestPhaseAttribute get(Long id) throws NotFoundException;
+    IProposalContestPhaseAttribute get(Long id) throws NotFoundException;
 
-    ProposalContestPhaseAttribute create(ProposalContestPhaseAttribute proposalContestPhaseAttribute);
+    IProposalContestPhaseAttribute create(IProposalContestPhaseAttribute proposalContestPhaseAttribute);
 
-    ProposalContestPhaseAttribute getByProposalIdContestPhaseIdName(Long proposalId, Long contestPhaseId, String name) throws NotFoundException;
+    IProposalContestPhaseAttribute getByProposalIdContestPhaseIdName(Long proposalId, Long contestPhaseId, String name) throws NotFoundException;
 
-    boolean update(ProposalContestPhaseAttribute proposalContestPhaseAttribute);
+    boolean update(IProposalContestPhaseAttribute proposalContestPhaseAttribute);
 }

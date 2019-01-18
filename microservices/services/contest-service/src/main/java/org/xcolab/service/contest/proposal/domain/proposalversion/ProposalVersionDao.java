@@ -1,22 +1,22 @@
 package org.xcolab.service.contest.proposal.domain.proposalversion;
 
 
-import org.xcolab.model.tables.pojos.Proposal2Phase;
-import org.xcolab.model.tables.pojos.ProposalVersion;
+import org.xcolab.client.contest.pojo.IProposal2Phase;
+import org.xcolab.client.contest.pojo.wrapper.ProposalVersionWrapper;
 
 import java.util.List;
 
 public interface ProposalVersionDao {
 
-    List<ProposalVersion> findByGiven(Long proposalId, Integer version);
+    List<ProposalVersionWrapper> findByGiven(Long proposalId, Integer version);
 
     int findMaxVersion(Long proposalId);
 
-    ProposalVersion create(ProposalVersion proposalVersion);
+    ProposalVersionWrapper create(ProposalVersionWrapper proposalVersion);
 
-    ProposalVersion getByProposalIdVersion(Long proposalId, Integer version);
+    ProposalVersionWrapper getByProposalIdVersion(Long proposalId, Integer version);
 
-    List<ProposalVersion> findByProposal2Phase(List<Proposal2Phase> proposal2Phases, Long proposalId);
+    List<ProposalVersionWrapper> findByProposal2Phase(List<IProposal2Phase> proposal2Phases, Long proposalId);
 
     int countByGiven(Long proposalId);
 }

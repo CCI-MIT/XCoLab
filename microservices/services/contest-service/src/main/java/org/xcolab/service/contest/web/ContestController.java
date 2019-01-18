@@ -14,8 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.xcolab.client.contest.pojo.IContestCollectionCard;
 import org.xcolab.client.contest.pojo.IContestDiscussion;
 import org.xcolab.client.contest.pojo.IContestTranslation;
-import org.xcolab.model.tables.pojos.Contest;
-import org.xcolab.model.tables.pojos.ContestPhase;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.commons.spring.web.annotation.ListMapping;
 import org.xcolab.service.contest.domain.contest.ContestDao;
 import org.xcolab.service.contest.domain.contestcollectioncard.ContestCollectionCardDao;
 import org.xcolab.service.contest.domain.contestdiscussion.ContestDiscussionDao;
@@ -26,7 +27,6 @@ import org.xcolab.service.contest.service.contest.ContestService;
 import org.xcolab.service.contest.service.ontology.OntologyService;
 import org.xcolab.service.utils.ControllerUtils;
 import org.xcolab.service.utils.PaginationHelper;
-import org.xcolab.commons.spring.web.annotation.ListMapping;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -98,7 +98,7 @@ public class ContestController {
     }
 
     @ListMapping("/contests")
-    public List<Contest> getContests(HttpServletResponse response,
+    public List<ContestWrapper> getContests(HttpServletResponse response,
             @RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
             @RequestParam(required = false) String sort,
@@ -130,7 +130,7 @@ public class ContestController {
                 Integer.toString(contestDao.countByGiven(contestUrlName, contestYear, active, featured,
                         contestTiers, focusAreaIds, contestScheduleId, proposalTemplateId,
                         contestTypeIds, contestPrivate, searchTerm)));
-        final List<Contest> contests = contestDao
+        final List<ContestWrapper> contests = contestDao
                 .findByGiven(paginationHelper, contestUrlName, contestYear, active, featured,
                         contestTiers, focusAreaIds, contestScheduleId, proposalTemplateId,
                         contestTypeIds, contestPrivate, searchTerm);
@@ -141,7 +141,7 @@ public class ContestController {
     }
 
     @ListMapping("/contests/getContestMatchingOntologyTerms")
-    public List<Contest> getContestMatchingOntologyTerms(
+    public List<ContestWrapper> getContestMatchingOntologyTerms(
             @RequestParam(required = false) List<Long> focusAreaOntologyTerms) {
         return contestService.getContestsMatchingOntologyTerms(focusAreaOntologyTerms);
     }
@@ -160,7 +160,7 @@ public class ContestController {
     }
 
     @ListMapping("/contests/getContestsByOntologyTerm")
-    public List<Contest> getContestsByOntologyTerm(
+    public List<ContestWrapper> getContestsByOntologyTerm(
             @RequestParam(required = false) Long focusAreaOntologyTerm,
             @RequestParam(required = false) Boolean getActive,
             @RequestParam(required = false) Boolean onlyPrivate) {
@@ -199,23 +199,23 @@ public class ContestController {
     }
 
     @ListMapping("/contests/{contestId}/subContestsByOntologySpaceId")
-    public List<Contest> getSubContestsByOntologySpaceId(@PathVariable long contestId,
+    public List<ContestWrapper> getSubContestsByOntologySpaceId(@PathVariable long contestId,
             @RequestParam Long ontologySpaceId) {
 
         return contestService.getSubContestsByOntologySpaceId(contestId, ontologySpaceId);
     }
 
     @PostMapping("/contests")
-    public Contest createContest(@RequestBody Contest contest) {
+    public ContestWrapper createContest(@RequestBody ContestWrapper contest) {
         contest.setCreatedAt(new Timestamp(new Date().getTime()));
         contest.setUpdatedAt(new Timestamp(new Date().getTime()));
         return this.contestDao.create(contest);
     }
 
     @GetMapping("/contests/{contestId}")
-    public Contest getContest(@PathVariable long contestId,
+    public ContestWrapper getContest(@PathVariable long contestId,
             @RequestParam(required = false) String lang) throws NotFoundException {
-        final Contest contest = contestDao.get(contestId);
+        final ContestWrapper contest = contestDao.get(contestId);
         if (StringUtils.isNotEmpty(lang) && !"en".equalsIgnoreCase(lang)) {
             return contestService.resolveTranslation(contest, lang);
         }
@@ -223,11 +223,11 @@ public class ContestController {
     }
 
     @PutMapping("/contests/{contestId}")
-    public boolean updateContest(@RequestBody Contest contest, @PathVariable long contestId)
+    public boolean updateContest(@RequestBody ContestWrapper contest, @PathVariable long contestId)
             throws NotFoundException {
 
         if (contestDao.get(contestId) == null) {
-            throw new NotFoundException("No Contest with id " + contestId);
+            throw new NotFoundException("No ContestWrapper with id " + contestId);
         } else {
             contest.setUpdatedAt(new Timestamp(new Date().getTime()));
             return contestDao.update(contest);
@@ -237,7 +237,7 @@ public class ContestController {
     @DeleteMapping("/contests/{contestId}")
     public boolean deleteContest(@PathVariable long contestId) throws NotFoundException {
         if (contestDao.get(contestId) == null) {
-            throw new NotFoundException("No Contest with id " + contestId);
+            throw new NotFoundException("No ContestWrapper with id " + contestId);
         } else {
             return contestDao.delete(contestId);
         }
@@ -262,13 +262,13 @@ public class ContestController {
     }
 
     @GetMapping("/contests/getContestByThreadId")
-    public Contest getContestByThreadId(@RequestParam(required = false) Long threadId)
+    public ContestWrapper getContestByThreadId(@RequestParam(required = false) Long threadId)
             throws NotFoundException {
         return contestDao.getByThreadId(threadId);
     }
 
     @GetMapping("/contests/getContestByResourceArticleId")
-    public Contest getContestByResourceArticleId(
+    public ContestWrapper getContestByResourceArticleId(
             @RequestParam(required = false) Long resourceArticleId) throws NotFoundException {
         return contestDao.getByResourceId(resourceArticleId);
     }
@@ -309,19 +309,18 @@ public class ContestController {
     }
 
     @GetMapping("/contests/{contestId}/activePhase")
-    public ContestPhase getActivePhaseForContest(@PathVariable long contestId)
+    public ContestPhaseWrapper getActivePhaseForContest(@PathVariable long contestId)
             throws NotFoundException {
 
-        ContestPhase activePhase = contestService.getActiveOrLastPhase(contestId);
+        ContestPhaseWrapper activePhase = contestService.getActiveOrLastPhase(contestId);
         if (activePhase == null) {
             throw new NotFoundException();
         }
         return activePhase;
-
     }
 
     @GetMapping("/contests/{contestId}/visiblePhases")
-    public List<ContestPhase> getVisiblePhases(@PathVariable Long contestId) {
+    public List<ContestPhaseWrapper> getVisiblePhases(@PathVariable Long contestId) {
         return contestService.getVisiblePhases(contestId);
     }
 }

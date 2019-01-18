@@ -8,7 +8,8 @@ import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.model.tables.pojos.ProposalVote;
+import org.xcolab.client.contest.pojo.IProposalVote;
+import org.xcolab.client.contest.pojo.tables.pojos.ProposalVote;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.io.Serializable;
@@ -27,8 +28,7 @@ public class ProposalVoteDaoImpl implements ProposalVoteDao {
     }
 
     @Override
-    public ProposalVote create(ProposalVote proposalVote) {
-
+    public IProposalVote create(IProposalVote proposalVote) {
         this.dslContext.insertInto(PROPOSAL_VOTE)
                 .set(PROPOSAL_VOTE.PROPOSAL_ID, proposalVote.getProposalId())
                 .set(PROPOSAL_VOTE.CONTEST_PHASE_ID, proposalVote.getContestPhaseId())
@@ -49,8 +49,7 @@ public class ProposalVoteDaoImpl implements ProposalVoteDao {
         return proposalVote;
     }
 
-    public ProposalVote get(Long proposalId, Long contestPhaseId) throws NotFoundException {
-
+    public IProposalVote get(Long proposalId, Long contestPhaseId) throws NotFoundException {
         final Record record = this.dslContext.selectFrom(PROPOSAL_VOTE)
                 .where(PROPOSAL_VOTE.PROPOSAL_ID.eq(proposalId))
                 .and(PROPOSAL_VOTE.CONTEST_PHASE_ID.eq(contestPhaseId))
@@ -64,7 +63,7 @@ public class ProposalVoteDaoImpl implements ProposalVoteDao {
     }
 
     @Override
-    public boolean update(ProposalVote proposalVote) {
+    public boolean update(IProposalVote proposalVote) {
         return dslContext.update(PROPOSAL_VOTE)
                 .set(PROPOSAL_VOTE.VALUE, proposalVote.getValue())
                 .set(PROPOSAL_VOTE.VOTER_IP, proposalVote.getVoterIp())
@@ -83,7 +82,7 @@ public class ProposalVoteDaoImpl implements ProposalVoteDao {
     }
 
     @Override
-    public List<ProposalVote> findByGiven(Long proposalId, Long contestPhaseId, Long userId) {
+    public List<IProposalVote> findByGiven(Long proposalId, Long contestPhaseId, Long userId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(PROPOSAL_VOTE).getQuery();
 
@@ -96,7 +95,6 @@ public class ProposalVoteDaoImpl implements ProposalVoteDao {
         if (userId != null) {
             query.addConditions(PROPOSAL_VOTE.USER_ID.eq(userId));
         }
-
 
         return query.fetchInto(ProposalVote.class);
     }

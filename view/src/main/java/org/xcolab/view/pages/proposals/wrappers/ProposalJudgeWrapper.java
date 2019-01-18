@@ -1,30 +1,30 @@
 package org.xcolab.view.pages.proposals.wrappers;
 
-import org.xcolab.client.contest.pojo.ContestWrapper;
-import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalJudgeRatingClientUtil;
-import org.xcolab.client.contest.pojo.Proposal;
-import org.xcolab.client.contest.pojo.ProposalRating;
-import org.xcolab.client.contest.pojo.Proposal2Phase;
-import org.xcolab.client.contest.pojo.ProposalContestPhaseAttribute;
-import org.xcolab.client.contest.pojo.UserProposalRatings;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper;
+import org.xcolab.client.contest.pojo.IProposal2Phase;
+import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
+import org.xcolab.client.contest.pojo.wrapper.UserProposalRatings;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
 
 import java.util.List;
 
-public class ProposalJudgeWrapper extends Proposal {
+public class ProposalJudgeWrapper extends ProposalWrapper {
     private final Member currentMember;
 
-    public ProposalJudgeWrapper(Proposal proposal, Member currentMember) {
+    public ProposalJudgeWrapper(ProposalWrapper proposal, Member currentMember) {
         super(proposal, proposal.getContestPhase());
         this.currentMember = currentMember;
         setProposalRatings(proposal.getId(), contestPhase);
     }
 
-    public ProposalJudgeWrapper(Proposal proposal, int version, ContestWrapper contest,
-            ContestPhaseWrapper contestPhase, Proposal2Phase proposal2Phase, Member currentMember) {
+    public ProposalJudgeWrapper(ProposalWrapper proposal, int version, ContestWrapper contest,
+            ContestPhaseWrapper contestPhase, IProposal2Phase proposal2Phase, Member currentMember) {
         super(proposal, version, contest, contestPhase, proposal2Phase);
         this.currentMember = currentMember;
         setProposalRatings(proposal.getId(), contestPhase);
@@ -33,7 +33,7 @@ public class ProposalJudgeWrapper extends Proposal {
     private void setProposalRatings(long proposalId, ContestPhaseWrapper contestPhase) {
 
         if(contestPhase!=null) {
-            List<ProposalRating> list = ProposalJudgeRatingClientUtil
+            List<ProposalRatingWrapper> list = ProposalJudgeRatingClientUtil
                     .getJudgeRatingsForProposalAndUser(
                             currentMember.getId(),
                             proposalId,
@@ -70,7 +70,7 @@ public class ProposalJudgeWrapper extends Proposal {
     }
 
     public boolean isPassedToJudges() {
-        ProposalContestPhaseAttribute a = proposalContestPhaseAttributeHelper
+        IProposalContestPhaseAttribute a = proposalContestPhaseAttributeHelper
                 .getAttributeOrCreate(ProposalContestPhaseAttributeKeys.FELLOW_ACTION, 0);
         JudgingSystemActions.FellowAction fellowAction = JudgingSystemActions.FellowAction.fromInt(
                 a.getNumericValue().intValue());

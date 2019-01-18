@@ -3,9 +3,9 @@ package org.xcolab.service.contest.utils.promotion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
-import org.xcolab.client.contest.pojo.Proposal;
-import org.xcolab.client.contest.pojo.ProposalContestPhaseAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
@@ -26,25 +26,25 @@ public class PhasePromotionHelper {
         this.phase = phase;
     }
 
-    public boolean isProposalVisible(Proposal p) {
+    public boolean isProposalVisible(ProposalWrapper p) {
         if (!p.getVisible()) {
             return false;
         }
 
-        ProposalContestPhaseAttribute attr = ProposalPhaseClientUtil
+        IProposalContestPhaseAttribute attr = ProposalPhaseClientUtil
                 .getProposalContestPhaseAttribute(p.getId(),
                         phase.getId(), ProposalContestPhaseAttributeKeys.VISIBLE);
 
         return attr == null || attr.getNumericValue() != 0;
     }
 
-    private ProposalContestPhaseAttribute getAttribute(long proposalId, String key) {
+    private IProposalContestPhaseAttribute getAttribute(long proposalId, String key) {
         return ProposalPhaseClientUtil.getProposalContestPhaseAttribute(proposalId, phase.getId(), key);
     }
 
     public boolean isAllProposalsReviewed() {
         boolean allProposalsReviewed = true;
-        for (Proposal p : ProposalClientUtil.getProposalsInContestPhase(phase.getId())) {
+        for (ProposalWrapper p : ProposalClientUtil.getProposalsInContestPhase(phase.getId())) {
             if (!isProposalReviewed(p)) {
                 allProposalsReviewed = false;
                 break;
@@ -54,7 +54,7 @@ public class PhasePromotionHelper {
         return allProposalsReviewed;
     }
 
-    public boolean isProposalPromoted(Proposal p) {
+    public boolean isProposalPromoted(ProposalWrapper p) {
         boolean hasProposalAlreadyBeenPromoted = ProposalPhaseClientUtil.isProposalContestPhaseAttributeSetAndTrue(
                 p.getId(),
                 phase.getId(),
@@ -69,7 +69,7 @@ public class PhasePromotionHelper {
         }
     }
 
-    public boolean isProposalReviewed(Proposal p) {
+    public boolean isProposalReviewed(ProposalWrapper p) {
         final AdvanceDecision judgesAdvanceDecision = getJudgeAdvancingDecision(p);
         final FellowAction fellowAdvanceDecision = getFellowAdvancingDecision(p);
 
@@ -77,8 +77,8 @@ public class PhasePromotionHelper {
                 || fellowAdvanceDecision.isActionProhibitingAdvancing();
     }
 
-    private FellowAction getFellowAdvancingDecision(Proposal p) {
-        ProposalContestPhaseAttribute fellowAction = getAttribute(p.getId(),
+    private FellowAction getFellowAdvancingDecision(ProposalWrapper p) {
+        IProposalContestPhaseAttribute fellowAction = getAttribute(p.getId(),
                 ProposalContestPhaseAttributeKeys.FELLOW_ACTION);
         final FellowAction fellowAdvanceDecision;
         if (fellowAction == null) {
@@ -90,8 +90,8 @@ public class PhasePromotionHelper {
         return fellowAdvanceDecision;
     }
 
-    private AdvanceDecision getJudgeAdvancingDecision(Proposal p) {
-        ProposalContestPhaseAttribute judgeDecision = getAttribute(p.getId(),
+    private AdvanceDecision getJudgeAdvancingDecision(ProposalWrapper p) {
+        IProposalContestPhaseAttribute judgeDecision = getAttribute(p.getId(),
                 ProposalContestPhaseAttributeKeys.JUDGE_DECISION);
         final AdvanceDecision judgesAdvanceDecision;
         if (judgeDecision == null) {
@@ -103,7 +103,7 @@ public class PhasePromotionHelper {
         return judgesAdvanceDecision;
     }
 
-    public boolean didJudgeDecideToPromote(Proposal p) {
+    public boolean didJudgeDecideToPromote(ProposalWrapper p) {
         final AdvanceDecision judgesAdvanceDecision = getJudgeAdvancingDecision(p);
         return judgesAdvanceDecision == AdvanceDecision.MOVE_ON;
     }

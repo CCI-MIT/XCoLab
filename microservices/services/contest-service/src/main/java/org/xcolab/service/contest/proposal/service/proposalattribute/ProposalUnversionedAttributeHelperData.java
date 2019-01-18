@@ -1,6 +1,6 @@
 package org.xcolab.service.contest.proposal.service.proposalattribute;
 
-import org.xcolab.model.tables.pojos.ProposalUnversionedAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ProposalUnversionedAttribute;
 
 import java.util.Collections;
 import java.util.HashMap;

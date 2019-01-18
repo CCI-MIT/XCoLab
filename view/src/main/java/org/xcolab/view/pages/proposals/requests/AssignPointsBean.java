@@ -6,7 +6,7 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.PointsClientUtil;
 import org.xcolab.client.contest.proposals.enums.points.DistributionStrategy;
 import org.xcolab.client.contest.proposals.enums.points.ReceiverLimitationStrategy;
-import org.xcolab.client.contest.pojo.PointTypeWrapper;
+import org.xcolab.client.contest.pojo.wrapper.PointTypeWrapper;
 import org.xcolab.client.contest.pojo.IPointsDistributionConfiguration;
 import org.xcolab.commons.exceptions.InternalException;
 

@@ -2,9 +2,9 @@ package org.xcolab.client.contest.proposals;
 
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.contest.pojo.Proposal;
-import org.xcolab.client.contest.pojo.ProposalDto;
-import org.xcolab.client.contest.pojo.ProposalTeamMembershipRequest;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalDto;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMembershipRequestWrapper;
 import org.xcolab.client.contest.proposals.exceptions.MembershipRequestNotFoundException;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.commons.exceptions.InternalException;
@@ -26,16 +26,16 @@ public class MembershipClient {
 
     private final RestResource1<ProposalDto, Long> proposalResource = null; // proposals
 
-    private final RestResource1<ProposalTeamMembershipRequest, Long> membershipRequestResource = null; // membershipRequests
+    private final RestResource1<ProposalTeamMembershipRequestWrapper, Long> membershipRequestResource = null; // membershipRequests
     private final RestResource2<ProposalDto, Long, Long, Long> proposalTeamMemberResource = null; // proposals / teamMembers
 
     private final ProposalClient proposalClient = null;
 
-    public void denyMembershipRequest(Proposal proposal, long userId, long membershipRequestId,
+    public void denyMembershipRequest(ProposalWrapper proposal, long userId, long membershipRequestId,
             String reply, long updateauthorUserId) {
         if (hasUserRequestedMembership(proposal, userId)) {
             try {
-                ProposalTeamMembershipRequest membershipRequest = getMembershipRequest(membershipRequestId);
+                ProposalTeamMembershipRequestWrapper membershipRequest = getMembershipRequest(membershipRequestId);
                 membershipRequest.setStatusId(MembershipRequestStatus.STATUS_DENIED);
                 membershipRequest.setReplierUserId(updateauthorUserId);
                 membershipRequest.setReplyComments(reply);
@@ -47,16 +47,17 @@ public class MembershipClient {
         }
     }
 
-    public boolean updateMembershipRequest(ProposalTeamMembershipRequest membershipRequest) {
+    public boolean updateMembershipRequest(ProposalTeamMembershipRequestWrapper membershipRequest) {
         return membershipRequestResource
-                .update(new ProposalTeamMembershipRequest(membershipRequest),
+                .update(new ProposalTeamMembershipRequestWrapper(membershipRequest),
                         membershipRequest.getId())
                 .execute();
     }
 
-    public Boolean hasUserRequestedMembership(Proposal proposal, Long userId) {
+    public Boolean hasUserRequestedMembership(ProposalWrapper proposal, Long userId) {
         try {
-            ProposalTeamMembershipRequest userRequest = getActiveMembershipRequestByUser(proposal, userId);
+            ProposalTeamMembershipRequestWrapper
+                    userRequest = getActiveMembershipRequestByUser(proposal, userId);
             if (userRequest != null) {
                 return true;
             }
@@ -66,25 +67,25 @@ public class MembershipClient {
         return false;
     }
 
-    public ProposalTeamMembershipRequest getActiveMembershipRequestByUser(Proposal proposal, Long userId) {
+    public ProposalTeamMembershipRequestWrapper getActiveMembershipRequestByUser(ProposalWrapper proposal, Long userId) {
         return membershipRequestResource.list()
                 .optionalQueryParam("proposalId", proposal.getId())
                 .optionalQueryParam("userId", userId)
                 .executeWithResult().getOneIfExists();
     }
 
-    public ProposalTeamMembershipRequest getMembershipRequest(long MembershipRequestId)
+    public ProposalTeamMembershipRequestWrapper getMembershipRequest(long MembershipRequestId)
             throws MembershipRequestNotFoundException {
         return membershipRequestResource.get(MembershipRequestId)
                 .execute();
     }
 
-    public void approveMembershipRequest(Proposal proposal, Long userId, ProposalTeamMembershipRequest request,
+    public void approveMembershipRequest(ProposalWrapper proposal, Long userId, ProposalTeamMembershipRequestWrapper request,
             String reply, Long updateauthorUserId) {
 
         if (hasUserRequestedMembership(proposal, userId)) {
             try {
-                ProposalTeamMembershipRequest membershipRequest =
+                ProposalTeamMembershipRequestWrapper membershipRequest =
                         getMembershipRequest(request.getId());
                 membershipRequest.setStatusId(MembershipRequestStatus.STATUS_APPROVED);
                 membershipRequest.setReplierUserId(updateauthorUserId);
@@ -98,7 +99,7 @@ public class MembershipClient {
         }
     }
 
-    public void addUserToProposalTeam(Long userId, Proposal proposal) {
+    public void addUserToProposalTeam(Long userId, ProposalWrapper proposal) {
         long proposalId = proposal.getId();
         try {
             proposalTeamMemberResource.resolveParentId(proposalResource.id(proposalId))
@@ -121,16 +122,17 @@ public class MembershipClient {
         }
     }
 
-    public ProposalTeamMembershipRequest addInvitedMembershipRequest(Long proposalId, Long userId,
+    public ProposalTeamMembershipRequestWrapper addInvitedMembershipRequest(Long proposalId, Long userId,
             String comment) {
         return createMembershipRequest(proposalId, userId, comment,
                 MembershipRequestStatus.STATUS_PENDING_INVITED);
     }
 
-    private ProposalTeamMembershipRequest createMembershipRequest(Long proposalId, Long userId, String comment,
+    private ProposalTeamMembershipRequestWrapper createMembershipRequest(Long proposalId, Long userId, String comment,
             Integer status) {
         try {
-            ProposalTeamMembershipRequest membershipRequest = new ProposalTeamMembershipRequest();
+            ProposalTeamMembershipRequestWrapper
+                    membershipRequest = new ProposalTeamMembershipRequestWrapper();
             membershipRequest.setComments(comment == null ? "" : comment);
             membershipRequest.setProposalId(proposalId);
             membershipRequest.setUserId(userId);
@@ -143,30 +145,30 @@ public class MembershipClient {
         return null;
     }
 
-    public ProposalTeamMembershipRequest createMembershipRequest(
-            ProposalTeamMembershipRequest membershipRequest) {
-        return membershipRequestResource.create(new ProposalTeamMembershipRequest(membershipRequest))
+    public ProposalTeamMembershipRequestWrapper createMembershipRequest(
+            ProposalTeamMembershipRequestWrapper membershipRequest) {
+        return membershipRequestResource.create(new ProposalTeamMembershipRequestWrapper(membershipRequest))
                 .execute();
     }
 
-    public ProposalTeamMembershipRequest addRequestedMembershipRequest(Long proposalId, Long userId,
+    public ProposalTeamMembershipRequestWrapper addRequestedMembershipRequest(Long proposalId, Long userId,
             String comment) {
         return createMembershipRequest(proposalId, userId, comment,
                 MembershipRequestStatus.STATUS_PENDING_REQUESTED);
     }
 
-    public List<ProposalTeamMembershipRequest> getMembershipRequests(Long proposalId) {
+    public List<ProposalTeamMembershipRequestWrapper> getMembershipRequests(Long proposalId) {
 
         try {
-            Proposal proposal = proposalClient.getProposal(proposalId);
-            List<ProposalTeamMembershipRequest> invited = getMembershipRequestsByStatus(proposal.getId(),
+            ProposalWrapper proposal = proposalClient.getProposal(proposalId);
+            List<ProposalTeamMembershipRequestWrapper> invited = getMembershipRequestsByStatus(proposal.getId(),
                     MembershipRequestStatus.STATUS_PENDING_INVITED);
-            List<ProposalTeamMembershipRequest> requested = getMembershipRequestsByStatus(proposal.getId(),
+            List<ProposalTeamMembershipRequestWrapper> requested = getMembershipRequestsByStatus(proposal.getId(),
                     MembershipRequestStatus.STATUS_PENDING_REQUESTED);
-            List<ProposalTeamMembershipRequest> olderRequests =
+            List<ProposalTeamMembershipRequestWrapper> olderRequests =
                     getMembershipRequestsByStatus(proposal.getId(),
                             MembershipRequestStatus.STATUS_PENDING);
-            List<ProposalTeamMembershipRequest> combined = new ArrayList<>();
+            List<ProposalTeamMembershipRequestWrapper> combined = new ArrayList<>();
             if (invited != null && !invited.isEmpty()) {
                 combined.addAll(invited);
             }
@@ -182,9 +184,9 @@ public class MembershipClient {
         }
     }
 
-    public List<ProposalTeamMembershipRequest> getMembershipRequestsByStatus(Long proposalId, Integer statusId) {
+    public List<ProposalTeamMembershipRequestWrapper> getMembershipRequestsByStatus(Long proposalId, Integer statusId) {
         return membershipRequestResource.list()
-                .withCache(CacheKeys.withClass(ProposalTeamMembershipRequest.class)
+                .withCache(CacheKeys.withClass(ProposalTeamMembershipRequestWrapper.class)
                         .withParameter("proposalId", proposalId)
                         .withParameter("statusId", statusId).asList(), CacheName.MISC_REQUEST)
                 .optionalQueryParam("proposalId", proposalId)

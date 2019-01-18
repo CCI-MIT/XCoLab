@@ -14,7 +14,7 @@ import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.flagging.pojo.AggregatedReport;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.util.enums.flagging.ManagerAction;
 import org.xcolab.util.enums.flagging.TargetType;
 
@@ -46,7 +46,7 @@ public class FlaggingReportWrapper {
     public String getTargetName() {
         switch (TargetType.valueOf(report.getTargetType())) {
             case PROPOSAL:
-                final Proposal proposal = getTargetProposal();
+                final ProposalWrapper proposal = getTargetProposal();
                 return proposal != null ? proposal.getName() : "unknown proposal";
             case COMMENT:
                 final IComment commentTarget = getTargetComment();
@@ -66,7 +66,7 @@ public class FlaggingReportWrapper {
         }
     }
 
-    private Proposal getTargetProposal() {
+    private ProposalWrapper getTargetProposal() {
         try {
             return ProposalClientUtil.getProposal(report.getTargetId());
         } catch (ProposalNotFoundException e) {
@@ -85,7 +85,7 @@ public class FlaggingReportWrapper {
     public String getTargetLink() {
         switch (TargetType.valueOf(report.getTargetType())) {
             case PROPOSAL:
-                final Proposal proposal = getTargetProposal();
+                final ProposalWrapper proposal = getTargetProposal();
                 if (proposal != null) {
                     return (proposal).getProposalUrl();
                 }

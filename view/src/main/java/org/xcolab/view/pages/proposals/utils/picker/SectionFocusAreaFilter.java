@@ -7,11 +7,11 @@ import org.slf4j.LoggerFactory;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.ContestWrapper;
-import org.xcolab.client.contest.pojo.FocusAreaWrapper;
-import org.xcolab.client.contest.pojo.OntologyTermWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.FocusAreaWrapper;
+import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
-import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,7 +32,7 @@ public class SectionFocusAreaFilter {
      * @param proposals the list of proposals to be filtered. Will be modified and contains the
      * result!
      */
-    public void filterProposals(List<Proposal> proposals, Long sectionFocusAreaId,
+    public void filterProposals(List<ProposalWrapper> proposals, Long sectionFocusAreaId,
             Long contestFocusAreaId, List<Long> filterExceptionContestIds) {
 
         List<OntologyTermWrapper> terms =

@@ -7,8 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
-import org.xcolab.model.tables.pojos.ProposalMoveHistory;
+import org.xcolab.client.contest.pojo.IProposalMoveHistory;
 import org.xcolab.service.contest.proposal.domain.proposalmovehistory.ProposalMoveHistoryDao;
 
 import java.util.List;
@@ -20,7 +19,7 @@ public class ProposalMoveHistoryController {
     ProposalMoveHistoryDao proposalMoveHistoryDao;
 
     @RequestMapping(value = "/proposalMoveHistories", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<ProposalMoveHistory> getProposalMoveHistories(
+    public List<IProposalMoveHistory> getProposalMoveHistories(
             @RequestParam(required = false) Long sourceProposalId,
             @RequestParam(required = false) Long sourceContestId,
             @RequestParam(required = false) Long targetProposalId,
@@ -30,8 +29,7 @@ public class ProposalMoveHistoryController {
     }
 
     @RequestMapping(value = "/proposalMoveHistories", method = RequestMethod.POST)
-    public ProposalMoveHistory createProposalMoveHistory(@RequestBody ProposalMoveHistory proposalMoveHistory) {
+    public IProposalMoveHistory createProposalMoveHistory(@RequestBody IProposalMoveHistory proposalMoveHistory) {
         return this.proposalMoveHistoryDao.create(proposalMoveHistory);
     }
-
 }

@@ -1,8 +1,8 @@
 package org.xcolab.client.contest.proposals;
 
-import org.xcolab.client.contest.pojo.SupportedProposal;
-import org.xcolab.client.contest.pojo.ProposalSupporter;
-import org.xcolab.client.contest.pojo.ProposalVote;
+import org.xcolab.client.contest.pojo.wrapper.SupportedProposal;
+import org.xcolab.client.contest.pojo.IProposalSupporter;
+import org.xcolab.client.contest.pojo.IProposalVote;
 import org.xcolab.util.http.caching.CacheName;
 
 import java.util.List;
@@ -15,12 +15,12 @@ public final class ProposalMemberRatingClientUtil {
         return client;
     }
 
-    public static List<ProposalSupporter> getProposalSupporters(
+    public static List<IProposalSupporter> getProposalSupporters(
             Long proposalId) {
         return client.getProposalSupporters(proposalId);
     }
 
-    public static List<ProposalSupporter> getProposalSupportersByUserId(
+    public static List<IProposalSupporter> getProposalSupportersByUserId(
             Long userId) {
         return client.getProposalSupportersByUserId(userId);
     }
@@ -45,8 +45,8 @@ public final class ProposalMemberRatingClientUtil {
         client.addProposalSupporter(proposalId, userId, publishActivity);
     }
 
-    public static ProposalSupporter createProposalSupporter(
-            ProposalSupporter proposalSupporter) {
+    public static IProposalSupporter createProposalSupporter(
+            IProposalSupporter proposalSupporter) {
         return client.createProposalSupporter(proposalSupporter);
     }
 
@@ -77,22 +77,22 @@ public final class ProposalMemberRatingClientUtil {
         return client.deleteProposalVote(proposalId, contestPhaseId, userId);
     }
 
-    public static ProposalVote addProposalVote(Long proposalId, Long contestPhaseId, Long userId,
+    public static IProposalVote addProposalVote(Long proposalId, Long contestPhaseId, Long userId,
             int value) {
         return client.addProposalVote(proposalId,contestPhaseId, userId, value);
     }
 
-    public static List<ProposalVote> getProposalVotesInPhase(
+    public static List<IProposalVote> getProposalVotesInPhase(
             Long contestPhaseId) {
         return client.getProposalVotesInPhase(contestPhaseId);
     }
 
-    public static List<ProposalVote> getProposalVotes(
+    public static List<IProposalVote> getProposalVotes(
             Long contestPhaseId, Long proposalId, Long userId) {
         return client.getProposalVotes(contestPhaseId, proposalId, userId);
     }
 
-    public static List<ProposalVote> getVotesByMember(long userId) {
+    public static List<IProposalVote> getVotesByMember(long userId) {
         return client.getVotesByMember(userId);
     }
 
@@ -100,11 +100,11 @@ public final class ProposalMemberRatingClientUtil {
         client.invalidateVotesForMember(userId, reason);
     }
 
-    public static boolean updateProposalVote(ProposalVote proposalVote) {
+    public static boolean updateProposalVote(IProposalVote proposalVote) {
         return client.updateProposalVote(proposalVote);
     }
 
-    public static ProposalVote getProposalVoteByProposalIdUserId(
+    public static IProposalVote getProposalVoteByProposalIdUserId(
             Long proposalId, Long userId) {
         return client.getProposalVoteByProposalIdUserId(proposalId, userId);
     }

@@ -1,9 +1,10 @@
 package org.xcolab.service.contest.proposal.helper;
 
-import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
-import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
+import org.xcolab.client.contest.pojo.tables.pojos.ProposalContestPhaseAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
-import org.xcolab.client.contest.pojo.ProposalContestPhaseAttribute;
 
 import java.util.List;
 
@@ -11,9 +12,9 @@ public class ProposalContestPhaseAttributeHelper {
 
     private final Long proposalId;
     private Long contestPhaseId;
-    private List<ProposalContestPhaseAttribute> proposalContestPhaseAttributes;
+    private List<IProposalContestPhaseAttribute> proposalContestPhaseAttributes;
 
-    public ProposalContestPhaseAttributeHelper(Proposal proposal, ContestPhaseWrapper contestPhase) {
+    public ProposalContestPhaseAttributeHelper(ProposalWrapper proposal, ContestPhaseWrapper contestPhase) {
         this.proposalId = proposal.getId();
         if (contestPhase != null) {
             this.contestPhaseId = contestPhase.getId();
@@ -23,18 +24,18 @@ public class ProposalContestPhaseAttributeHelper {
     }
 
     public long getAttributeLongValue(String attributeName, long additionalId, long defaultVal) {
-        ProposalContestPhaseAttribute pa = getAttributeOrNull(attributeName, additionalId);
+        IProposalContestPhaseAttribute pa = getAttributeOrNull(attributeName, additionalId);
         return pa == null ? defaultVal : pa.getNumericValue();
     }
 
     public String getAttributeStringValue(String attributeName, long additionalId, String defaultVal)  {
-        ProposalContestPhaseAttribute pa = getAttributeOrNull(attributeName, additionalId);
+        IProposalContestPhaseAttribute pa = getAttributeOrNull(attributeName, additionalId);
         return pa == null ? defaultVal : pa.getStringValue();
     }
 
-    public ProposalContestPhaseAttribute getAttributeOrNull(String attributeName, long additionalId) {
+    public IProposalContestPhaseAttribute getAttributeOrNull(String attributeName, long additionalId) {
         if (proposalContestPhaseAttributes != null) {
-            for (ProposalContestPhaseAttribute attr: proposalContestPhaseAttributes) {
+            for (IProposalContestPhaseAttribute attr: proposalContestPhaseAttributes) {
                 if (attr.getName().equals(attributeName) && attr.getAdditionalId() == additionalId) {
                     return attr;
                 }
@@ -43,9 +44,9 @@ public class ProposalContestPhaseAttributeHelper {
         return null;
     }
 
-    public ProposalContestPhaseAttribute getAttributeOrCreate(
+    public IProposalContestPhaseAttribute getAttributeOrCreate(
             String attributeName, long additionalId) {
-        ProposalContestPhaseAttribute attribute = getAttributeOrNull(attributeName, additionalId);
+        IProposalContestPhaseAttribute attribute = getAttributeOrNull(attributeName, additionalId);
         if (attribute != null) {
                 return attribute;
             }

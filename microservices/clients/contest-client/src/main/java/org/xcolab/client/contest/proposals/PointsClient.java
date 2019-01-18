@@ -1,7 +1,7 @@
 package org.xcolab.client.contest.proposals;
 
 import org.xcolab.client.contest.pojo.IPointsDistributionConfiguration;
-import org.xcolab.client.contest.pojo.PointTypeWrapper;
+import org.xcolab.client.contest.pojo.wrapper.PointTypeWrapper;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource1;

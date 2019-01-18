@@ -2,14 +2,14 @@ package org.xcolab.view.pages.proposals.judging;
 
 
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalClient;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.view.pages.proposals.wrappers.ProposalJudgeWrapper;
 
 import javax.servlet.jsp.JspException;
@@ -63,7 +63,7 @@ public class JudgeReviewStatusTag extends BodyTagSupport {
             Member judge = MembersClient.getMember(userId);
             ContestWrapper contest = ContestClientUtil.getContest(contestId);
             ProposalClient proposalClient = ProposalClientUtil.getClient();
-            Proposal proposal = proposalClient.getProposal(proposalId);
+            ProposalWrapper proposal = proposalClient.getProposal(proposalId);
             //ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
             ProposalJudgeWrapper judgeWrapper = new ProposalJudgeWrapper(proposal, judge);
 

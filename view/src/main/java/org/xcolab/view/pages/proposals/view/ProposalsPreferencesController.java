@@ -13,23 +13,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.ContestWrapper;
-import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.IContestPhaseType;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.contest.pojo.IProposal2Phase;
+import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
+import org.xcolab.client.contest.pojo.tables.pojos.Proposal2Phase;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalVersionWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.contest.proposals.exceptions.Proposal2PhaseNotFoundException;
-import org.xcolab.client.contest.pojo.Proposal;
-import org.xcolab.client.contest.pojo.ProposalVersion;
-import org.xcolab.client.contest.pojo.Proposal2Phase;
-import org.xcolab.client.contest.pojo.ProposalContestPhaseAttribute;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.IdListUtil;
+import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.util.enums.contest.ContestPhaseTypeValue;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.pages.proposals.wrappers.ProposalsPreferencesWrapper;
 import org.xcolab.view.util.entity.EntityIdListUtil;
-import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.view.widgets.AbstractWidgetController;
 
 import java.io.IOException;
@@ -79,7 +80,7 @@ public class ProposalsPreferencesController extends AbstractWidgetController<Pro
         Map<Long, IContestPhaseType> contestPhaseTypeMap = new HashMap<>();
         Map<Long, List<ContestPhaseWrapper>> contestPhasesMap = new HashMap<>();
         //contestphaseId to proposal
-        Map<Long, List<Proposal>> proposalsMap = new HashMap<>();
+        Map<Long, List<ProposalWrapper>> proposalsMap = new HashMap<>();
         for (ContestWrapper c : contests) {
             List<ContestPhaseWrapper> contestPhases = getPhasesByContest(c, 1);
 
@@ -89,8 +90,8 @@ public class ProposalsPreferencesController extends AbstractWidgetController<Pro
                 if (!contestPhaseTypeMap.containsKey(cp.getContestPhaseTypeId())) {
                     contestPhaseTypeMap.put(cp.getContestPhaseTypeId(), ContestClientUtil.getContestPhaseType(cp.getContestPhaseTypeId()));
                 }
-                List<Proposal> proposals = proposalContext.getClients().getProposalClient().getProposalsInContestPhase(cp.getId());
-                List<Proposal> wrappers = new ArrayList<>();
+                List<ProposalWrapper> proposals = proposalContext.getClients().getProposalClient().getProposalsInContestPhase(cp.getId());
+                List<ProposalWrapper> wrappers = new ArrayList<>();
                 wrappers.addAll(proposals);
                 proposalsMap.put(cp.getId(), wrappers);
             }
@@ -156,7 +157,7 @@ public class ProposalsPreferencesController extends AbstractWidgetController<Pro
 
             message.append("<br/><br/>\nCONTEST: ").append(c.getTitle()).append("<br/><br/>\n");
 
-            for (Proposal p : proposalContext.getClients().getProposalClient().getProposalsInContest(c.getId())) {
+            for (ProposalWrapper p : proposalContext.getClients().getProposalClient().getProposalsInContest(c.getId())) {
                 //author id check
                 Long authorUserId = p.getAuthorUserId();
 
@@ -173,7 +174,7 @@ public class ProposalsPreferencesController extends AbstractWidgetController<Pro
 
                 //proposal version check
                 boolean warningIssued = false;
-                for (ProposalVersion pv: proposalContext.getClients().getProposalClient().getAllProposalVersions(p.getId())) {
+                for (ProposalVersionWrapper pv: proposalContext.getClients().getProposalClient().getAllProposalVersions(p.getId())) {
                     boolean foundVersionAuthor = false;
                     for (Member u: members) {
                         if (u.getId() == pv.getAuthorUserId()) {
@@ -245,9 +246,9 @@ public class ProposalsPreferencesController extends AbstractWidgetController<Pro
 
             if (winnersAwarded != null && winnersSelection != null && finalistSelection != null && proposalCreation != null) {
                 //get all proposals in Winners selection
-                List<Proposal> finalists = proposalContext.getClients().getProposalClient().getActiveProposalsInContestPhase(winnersSelection.getId());
-                List<Proposal> semiFinalists = proposalContext.getClients().getProposalClient().getActiveProposalsInContestPhase(finalistSelection.getId());
-                List<Proposal> otherProposals = proposalContext.getClients().getProposalClient().getActiveProposalsInContestPhase(proposalCreation.getId());
+                List<ProposalWrapper> finalists = proposalContext.getClients().getProposalClient().getActiveProposalsInContestPhase(winnersSelection.getId());
+                List<ProposalWrapper> semiFinalists = proposalContext.getClients().getProposalClient().getActiveProposalsInContestPhase(finalistSelection.getId());
+                List<ProposalWrapper> otherProposals = proposalContext.getClients().getProposalClient().getActiveProposalsInContestPhase(proposalCreation.getId());
 
                 final Long finalistRibbon = 1L;
                 final Long semiFinalistRibbon = 3L;
@@ -266,7 +267,7 @@ public class ProposalsPreferencesController extends AbstractWidgetController<Pro
         response.sendRedirect("/proposals/preferences");
     }
 
-    private String moveProposals(ProposalContext proposalContext, List<Proposal> proposalsToBeMoved,
+    private String moveProposals(ProposalContext proposalContext, List<ProposalWrapper> proposalsToBeMoved,
             Long moveFromContestId, Long moveToContestPhaseId, Long ribbonId,
             boolean forceRibbonCreation) {
         StringBuilder message = new StringBuilder();
@@ -282,12 +283,12 @@ public class ProposalsPreferencesController extends AbstractWidgetController<Pro
                 List<ContestPhaseWrapper> contestPhases = getPhasesByContest(moveFromContest, -1);
 
                 //traverse proposals to be moved
-                for (Proposal proposal : proposalsToBeMoved) {
+                for (ProposalWrapper proposal : proposalsToBeMoved) {
                     //find out the last phase the proposal was in.
                     ContestPhaseWrapper lastPhaseContainingProposal = null;
                     //traverse phases, later phases are first.
                     for (ContestPhaseWrapper cp: contestPhases) {
-                        List<Proposal> proposalsInThisPhase = proposalContext.getClients().getProposalClient().getProposalsInContestPhase(cp.getId());
+                        List<ProposalWrapper> proposalsInThisPhase = proposalContext.getClients().getProposalClient().getProposalsInContestPhase(cp.getId());
                         if (proposalsInThisPhase.contains(proposal)) {
                             //found the last phase
                             lastPhaseContainingProposal = cp;
@@ -313,7 +314,8 @@ public class ProposalsPreferencesController extends AbstractWidgetController<Pro
                             throw new IllegalStateException("Proposal not found");
                         }
                         try {
-                            Proposal2Phase oldP2p = proposalContext.getClients().getProposalPhaseClient().getProposal2PhaseByProposalIdContestPhaseId(proposal.getId(), lastPhaseContainingProposal.getId());
+                            IProposal2Phase
+                                    oldP2p = proposalContext.getClients().getProposalPhaseClient().getProposal2PhaseByProposalIdContestPhaseId(proposal.getId(), lastPhaseContainingProposal.getId());
 
                             assert oldP2p != null;
 
@@ -325,7 +327,7 @@ public class ProposalsPreferencesController extends AbstractWidgetController<Pro
                                 isBoundedVersion = true;
                             }
 
-                            Proposal2Phase p2p = new Proposal2Phase();
+                            IProposal2Phase p2p = new Proposal2Phase();
                             p2p.setProposalId(proposal.getId());
                             p2p.setContestPhaseId(moveToContestPhase.getId());
                             p2p.setVersionFrom(currentProposalVersion);
@@ -346,7 +348,7 @@ public class ProposalsPreferencesController extends AbstractWidgetController<Pro
 
                             //first, see if a ribbon already exists
 
-                            ProposalContestPhaseAttribute attribute = ProposalPhaseClientUtil
+                            IProposalContestPhaseAttribute attribute = ProposalPhaseClientUtil
                                     .getProposalContestPhaseAttribute(proposal.getId(),
                                             moveToContestPhase.getId(),
                                             ProposalContestPhaseAttributeKeys.RIBBON);

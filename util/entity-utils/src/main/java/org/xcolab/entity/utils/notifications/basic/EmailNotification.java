@@ -12,14 +12,14 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.admin.pojo.IEmailTemplate;
-import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.email.StaticEmailContext;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.contest.proposals.helpers.ProposalAttributeHelper;
-import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.entity.utils.notifications.EmailTemplateWrapper;
@@ -78,7 +78,7 @@ public abstract class EmailNotification {
     }
 
     private String getProposalLinkWithLinkText(ContestWrapper contest,
-                                               Proposal proposal, String linkText, String tab) {
+                                               ProposalWrapper proposal, String linkText, String tab) {
 
             String proposalLinkUrl = baseUrl + proposal.getProposalLinkUrl((contest));
             if (tab != null) {
@@ -96,7 +96,7 @@ public abstract class EmailNotification {
      * @return Proposal URL as String
      */
     //TODO COLAB-2505: remove if we just use a normal proposal link
-    protected String getProposalLinkForDirectVoting(ContestWrapper contest, Proposal proposal) {
+    protected String getProposalLinkForDirectVoting(ContestWrapper contest, ProposalWrapper proposal) {
         final String proposalName = new ProposalAttributeHelper(proposal,
                 ProposalAttributeClientUtil.getClient())
                 .getAttributeValueString(ProposalAttributeKeys.NAME, "");
@@ -128,7 +128,7 @@ public abstract class EmailNotification {
         return proposalAttributeHelper;
     }
 
-    protected Proposal getProposal() {
+    protected ProposalWrapper getProposal() {
         return null;
     }
 
@@ -138,7 +138,7 @@ public abstract class EmailNotification {
      * @param contest         Contest in which the proposal is in
      * @param proposalToShare The Proposal that should be shared
      */
-    protected String getProposalLinkUrl(ContestWrapper contest, Proposal proposalToShare) {
+    protected String getProposalLinkUrl(ContestWrapper contest, ProposalWrapper proposalToShare) {
         return baseUrl + proposalToShare.getProposalLinkUrl(contest);
     }
 
@@ -277,7 +277,7 @@ public abstract class EmailNotification {
                 return node;
             }
             ContestWrapper contest = getContest();
-            Proposal proposal = getProposal();
+            ProposalWrapper proposal = getProposal();
             final boolean hasProposal = contest != null && proposal != null;
 
             final ContestType contestType =

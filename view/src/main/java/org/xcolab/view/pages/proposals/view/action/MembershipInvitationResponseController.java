@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.Member;
@@ -17,8 +17,8 @@ import org.xcolab.client.contest.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.contest.proposals.ProposalClient;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
-import org.xcolab.client.contest.pojo.Proposal;
-import org.xcolab.client.contest.pojo.ProposalTeamMembershipRequest;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMembershipRequestWrapper;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
 
@@ -57,7 +57,7 @@ public class MembershipInvitationResponseController {
         ProposalClient proposalClient = ProposalClientUtil.getClient();
         ProposalAttributeClient proposalAttributeClient = ProposalAttributeClientUtil.getClient();
 
-        ProposalTeamMembershipRequest membershipRequest = membershipClient.getMembershipRequest(requestId);
+        ProposalTeamMembershipRequestWrapper membershipRequest = membershipClient.getMembershipRequest(requestId);
 
         List<Long> recipients = new ArrayList<>();
         List<Member> contributors = proposalClient.getProposalMembers(proposalId);
@@ -66,7 +66,7 @@ public class MembershipInvitationResponseController {
             recipients.add(user.getId());
         }
 
-        Proposal proposal = proposalClient.getProposal(proposalId);
+        ProposalWrapper proposal = proposalClient.getProposal(proposalId);
         ContestType contestType = proposal.getContest().getContestType();
 
         String proposalName = proposalAttributeClient

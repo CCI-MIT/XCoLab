@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.contest.ContestTeamMemberClientUtil;
 import org.xcolab.client.contest.pojo.IContestTeamMember;
+import org.xcolab.client.contest.pojo.tables.pojos.ContestTeamMember;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.permissions.SystemRole;
 import org.xcolab.util.activities.enums.ActivityCategory;
@@ -52,7 +53,7 @@ public class ContestTeamWrapper {
 
     private void assignMembersToContestWithRole(List<Long> userIds, SystemRole systemRole) {
         for (Long userId : userIds) {
-            IContestTeamMember contestTeamMember = new IContestTeamMember();
+            IContestTeamMember contestTeamMember = new ContestTeamMember();
             contestTeamMember.setContestId(contestId);
             contestTeamMember.setUserId(userId);
             contestTeamMember.setRoleId(systemRole.getRoleId());

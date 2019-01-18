@@ -6,13 +6,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.contest.pojo.ContestWrapper;
-import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.contest.proposals.PointsClientUtil;
-import org.xcolab.client.contest.pojo.Proposal;
-import org.xcolab.client.contest.pojo.PointTypeWrapper;
 import org.xcolab.client.contest.pojo.IPointsDistributionConfiguration;
+import org.xcolab.client.contest.pojo.tables.pojos.PointsDistributionConfiguration;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.PointTypeWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.PointsClientUtil;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.pages.proposals.requests.AssignPointsBean;
 import org.xcolab.view.pages.proposals.tabs.ProposalTab;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
@@ -45,7 +46,7 @@ public class AssignPointsActionController {
             @Valid AssignPointsBean assignPointsBean, BindingResult result)
             throws IOException {
 
-        final Proposal proposal = proposalContext.getProposal();
+        final ProposalWrapper proposal = proposalContext.getProposal();
         final ContestWrapper contest = proposalContext.getContest();
         final ContestPhaseWrapper contestPhase = proposalContext.getContestPhase();
 
@@ -94,7 +95,7 @@ public class AssignPointsActionController {
                     //round to four decimals
                     percentage = (double) Math.round(percentage * 10000) / 10000;
                     IPointsDistributionConfiguration pointsDistributionConfiguration =
-                            new IPointsDistributionConfiguration();
+                            new PointsDistributionConfiguration();
                     pointsDistributionConfiguration.setProposalId(proposal.getId());
                     pointsDistributionConfiguration.setPointTypeId(pointTypeId);
                     pointsDistributionConfiguration.setTargetUserId(entry.getKey());

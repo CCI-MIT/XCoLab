@@ -5,7 +5,8 @@ import org.jooq.Record;
 import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.xcolab.model.tables.pojos.OntologyTerm;
+
+import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
 import org.xcolab.model.tables.records.OntologyTermRecord;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
@@ -26,8 +27,7 @@ public class OntologyTermDaoImpl implements OntologyTermDao {
     }
 
     @Override
-    public OntologyTerm get(Long id) throws NotFoundException {
-
+    public OntologyTermWrapper get(Long id) throws NotFoundException {
         final Record record = this.dslContext.selectFrom(ONTOLOGY_TERM)
                 .where(ONTOLOGY_TERM.ID.eq(id))
                 .fetchOne();
@@ -35,12 +35,11 @@ public class OntologyTermDaoImpl implements OntologyTermDao {
         if (record == null) {
             throw new NotFoundException("OntologyTerm with id " + id + " does not exist");
         }
-        return record.into(OntologyTerm.class);
-
+        return record.into(OntologyTermWrapper.class);
     }
 
     @Override
-    public List<OntologyTerm> findByGiven(String name, Long parentId, Long ontologySpaceId) {
+    public List<OntologyTermWrapper> findByGiven(String name, Long parentId, Long ontologySpaceId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(ONTOLOGY_TERM).getQuery();
 
@@ -53,11 +52,11 @@ public class OntologyTermDaoImpl implements OntologyTermDao {
         if(ontologySpaceId != null){
             query.addConditions(ONTOLOGY_TERM.ONTOLOGY_SPACE_ID.eq(ontologySpaceId));
         }
-        return query.fetchInto(OntologyTerm.class);
+        return query.fetchInto(OntologyTermWrapper.class);
     }
 
     @Override
-    public boolean update(OntologyTerm ontologyTerm) {
+    public boolean update(OntologyTermWrapper ontologyTerm) {
         return dslContext.update(ONTOLOGY_TERM)
                 .set(ONTOLOGY_TERM.PARENT_ID, ontologyTerm.getParentId())
                 .set(ONTOLOGY_TERM.ONTOLOGY_SPACE_ID, ontologyTerm.getOntologySpaceId())
@@ -67,6 +66,7 @@ public class OntologyTermDaoImpl implements OntologyTermDao {
                 .where(ONTOLOGY_TERM.ID.eq(ontologyTerm.getId()))
                 .execute() > 0;
     }
+
     @Override
     public int delete(Long id) {
         return dslContext.deleteFrom(ONTOLOGY_TERM)
@@ -75,8 +75,7 @@ public class OntologyTermDaoImpl implements OntologyTermDao {
     }
 
     @Override
-    public OntologyTerm create(OntologyTerm ontologyTerm) {
-
+    public OntologyTermWrapper create(OntologyTermWrapper ontologyTerm) {
         OntologyTermRecord ret = this.dslContext.insertInto(ONTOLOGY_TERM)
                 .set(ONTOLOGY_TERM.PARENT_ID, ontologyTerm.getParentId())
                 .set(ONTOLOGY_TERM.ONTOLOGY_SPACE_ID, ontologyTerm.getOntologySpaceId())
@@ -91,12 +90,10 @@ public class OntologyTermDaoImpl implements OntologyTermDao {
         } else {
             return null;
         }
-
     }
 
-
     @Override
-    public List<OntologyTerm> getOntologyTermByFocusAreaAndOntologySpaceName(Long focusArea,
+    public List<OntologyTermWrapper> getOntologyTermByFocusAreaAndOntologySpaceName(Long focusArea,
             String ontologySpaceName) {
 
         final SelectQuery<Record> query = dslContext.select(ONTOLOGY_TERM.fields())
@@ -108,10 +105,6 @@ public class OntologyTermDaoImpl implements OntologyTermDao {
         query.addConditions(FOCUS_AREA_ONTOLOGY_TERM.FOCUS_AREA_ID.eq(focusArea));
         query.addConditions(ONTOLOGY_SPACE.NAME.eq(ontologySpaceName));
 
-        return query.fetchInto(OntologyTerm.class);
+        return query.fetchInto(OntologyTermWrapper.class);
     }
-
-
-
-
 }

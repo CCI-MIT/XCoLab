@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.view.widgets.AbstractWidgetController;
 
 import java.util.ArrayList;
@@ -66,10 +66,10 @@ public class RandomProposalsController
         return VIEW_BASE_PATH + "/showProposals";
     }
 
-    private List<Proposal> getProposals(RandomProposalsPreferences preferences) {
+    private List<ProposalWrapper> getProposals(RandomProposalsPreferences preferences) {
 
-        List<Proposal> ret = new ArrayList<>();
-        List<Proposal> proposals = getAvailableProposals(preferences);
+        List<ProposalWrapper> ret = new ArrayList<>();
+        List<ProposalWrapper> proposals = getAvailableProposals(preferences);
 
         //TODO COLAB-2630: remove loop and use micro service pojo
         if (proposals != null) {
@@ -85,14 +85,14 @@ public class RandomProposalsController
         return ret;
     }
 
-    private List<Proposal> getAvailableProposals(RandomProposalsPreferences preferences) {
+    private List<ProposalWrapper> getAvailableProposals(RandomProposalsPreferences preferences) {
         Long[] selectedPhases = preferences.getSelectedPhases();
         if (selectedPhases == null) {
             return null;
         }
         Long[] flagFilters = preferences.getFlagFilters();
 
-        List<Proposal> availableProposals = new ArrayList<>();
+        List<ProposalWrapper> availableProposals = new ArrayList<>();
         for (Long contestPhaseId : selectedPhases) {
             if (flagFilters == null || flagFilters.length == 0) {
                 availableProposals.addAll(ProposalClientUtil

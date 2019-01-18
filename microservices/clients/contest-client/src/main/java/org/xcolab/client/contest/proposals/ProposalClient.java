@@ -7,12 +7,12 @@ import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.ContestWrapper;
-import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
-import org.xcolab.client.contest.pojo.Proposal;
-import org.xcolab.client.contest.pojo.ProposalDto;
-import org.xcolab.client.contest.pojo.ProposalReference;
-import org.xcolab.client.contest.pojo.ProposalVersion;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalDto;
+import org.xcolab.client.contest.pojo.IProposalReference;
+import org.xcolab.client.contest.pojo.wrapper.ProposalVersionWrapper;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
@@ -38,8 +38,8 @@ public final class ProposalClient {
     //TODO COLAB-2594: rethink these endpoints
     private final RestResource<Long, Long> proposalIdResource = null; // proposalIds
 
-    private final RestResource1<ProposalVersion, Long> proposalVersionResource = null; // proposalVersions
-    private final RestResource1<ProposalReference, Long> proposalReferenceResource = null; // proposalReferences
+    private final RestResource1<ProposalVersionWrapper, Long> proposalVersionResource = null; // proposalVersions
+    private final RestResource1<IProposalReference, Long> proposalReferenceResource = null; // proposalReferences
 
     //TODO COLAB-2600: methods that use this should be in the service!
     private final ContestClient contestClient;
@@ -51,23 +51,23 @@ public final class ProposalClient {
         activitiesClient = ActivitiesClientUtil.getClient();
     }
 
-    public Proposal createProposal(Proposal proposal) {
+    public ProposalWrapper createProposal(ProposalWrapper proposal) {
         return proposalResource
                 .create(new ProposalDto(proposal))
                 .execute().toProposal();
     }
 
-    public List<Proposal> listProposals(long contestId) {
+    public List<ProposalWrapper> listProposals(long contestId) {
         return listProposals(0, Integer.MAX_VALUE, contestId, null, null, null);
     }
 
-    public List<Proposal> listProposals(int start, int limit, Long contestId, Boolean visible,
+    public List<ProposalWrapper> listProposals(int start, int limit, Long contestId, Boolean visible,
         Long contestPhaseId, Integer ribbon) {
         return listProposals(start, limit, null, contestId, null,
             null, visible, contestPhaseId, ribbon);
     }
 
-    public List<Proposal> listProposalsInActiveContests() {
+    public List<ProposalWrapper> listProposalsInActiveContests() {
         return ProposalDto.toProposals(proposalResource.list()
                 .addRange(0, Integer.MAX_VALUE)
                 .queryParam("visible", true)
@@ -77,7 +77,7 @@ public final class ProposalClient {
                 .execute());
     }
 
-    public List<Proposal> listProposalsInCompletedContests(List<Integer> ribbons) {
+    public List<ProposalWrapper> listProposalsInCompletedContests(List<Integer> ribbons) {
         return ProposalDto.toProposals(proposalResource.list()
                 .addRange(0, Integer.MAX_VALUE)
                 .queryParam("visible", true)
@@ -88,7 +88,7 @@ public final class ProposalClient {
                 .execute());
     }
 
-    public List<Proposal> listProposals(int start, int limit, String filterText, Long contestId,
+    public List<ProposalWrapper> listProposals(int start, int limit, String filterText, Long contestId,
         List<Long> contestTypeIds, List<Long> contestTierIds, Boolean visible, Long contestPhaseId,
         Integer ribbon) {
         return ProposalDto.toProposals(proposalResource.list()
@@ -103,7 +103,7 @@ public final class ProposalClient {
                 .execute());
     }
 
-    public List<Proposal> getProposalsInPublicContests(List<Long> contestTypeIds,
+    public List<ProposalWrapper> getProposalsInPublicContests(List<Long> contestTypeIds,
             List<Long> contestTierIds, String filterText) {
 
         return ProposalDto.toProposals(proposalResource.list()
@@ -138,15 +138,15 @@ public final class ProposalClient {
                 .execute();
     }
 
-    public List<Proposal> getProposalsInContestPhase(Long contestPhaseId) {
+    public List<ProposalWrapper> getProposalsInContestPhase(Long contestPhaseId) {
         return listProposals(0, Integer.MAX_VALUE, null, true, contestPhaseId, null);
     }
 
-    public List<Proposal> getAllProposals() {
+    public List<ProposalWrapper> getAllProposals() {
         return listProposals(0, Integer.MAX_VALUE, null, true, null, null);
     }
 
-    public List<Proposal> getProposalsInContest(Long contestId) {
+    public List<ProposalWrapper> getProposalsInContest(Long contestId) {
         ContestPhaseWrapper cp = contestClient.getActivePhase(contestId);
 
         return listProposals(0, Integer.MAX_VALUE, null, true, cp.getId(), null);
@@ -180,7 +180,7 @@ public final class ProposalClient {
                 .get();
     }
 
-    public List<Proposal> getActiveProposalsInContestPhase(Long contestPhaseId, CacheName cacheName) {
+    public List<ProposalWrapper> getActiveProposalsInContestPhase(Long contestPhaseId, CacheName cacheName) {
         return ProposalDto.toProposals(proposalResource.list()
                 .addRange(0, Integer.MAX_VALUE)
                 .optionalQueryParam("visible", true)
@@ -190,44 +190,44 @@ public final class ProposalClient {
                 .execute());
     }
 
-    public List<Proposal> getActiveProposalsInContestPhase(Long contestPhaseId) {
+    public List<ProposalWrapper> getActiveProposalsInContestPhase(Long contestPhaseId) {
         return getActiveProposalsInContestPhase(contestPhaseId, CacheName.PROPOSAL_LIST);
     }
 
-    public Proposal createProposal(long authorUserId, long contestPhaseId, boolean publishActivity) {
-        return proposalResource.collectionService("createProposal", Proposal.class)
+    public ProposalWrapper createProposal(long authorUserId, long contestPhaseId, boolean publishActivity) {
+        return proposalResource.collectionService("createProposal", ProposalWrapper.class)
                 .queryParam("authorUserId", authorUserId)
                 .queryParam("contestPhaseId", contestPhaseId)
                 .queryParam("publishActivity", publishActivity)
                 .post();
     }
 
-    public List<Proposal> getContestIntegrationRelevantSubproposals(Long proposalId) {
+    public List<ProposalWrapper> getContestIntegrationRelevantSubproposals(Long proposalId) {
         return ProposalDto.toProposals(proposalResource.elementService(proposalId, "contestIntegrationRelevantSubproposal",
                 ProposalDto.TYPES.getTypeReference()).getList());
     }
 
-    public List<Proposal> getLinkingProposalsForUser(long userId) {
-        final List<Proposal> userProposals = getMemberProposals(userId);
-        List<Proposal> linkingProposals = new ArrayList<>();
-        for (Proposal proposal : userProposals) {
+    public List<ProposalWrapper> getLinkingProposalsForUser(long userId) {
+        final List<ProposalWrapper> userProposals = getMemberProposals(userId);
+        List<ProposalWrapper> linkingProposals = new ArrayList<>();
+        for (ProposalWrapper proposal : userProposals) {
             linkingProposals.addAll(getLinkingProposals(proposal.getId()));
         }
         return linkingProposals;
     }
 
-    public List<Proposal> getMemberProposals(Long userId) {
+    public List<ProposalWrapper> getMemberProposals(Long userId) {
         return ProposalDto.toProposals(proposalResource.collectionService("getMemberProposals", ProposalDto.TYPES.getTypeReference())
                 .queryParam("userId", userId)
                 .getList());
     }
 
-    public List<Proposal> getLinkingProposals(long proposalId) {
-        List<ProposalReference> proposalReferences = getProposalReference(null, proposalId);
-        List<Proposal> linkingProposals = new ArrayList<>();
-        for (ProposalReference proposalReference : proposalReferences) {
+    public List<ProposalWrapper> getLinkingProposals(long proposalId) {
+        List<IProposalReference> proposalReferences = getProposalReference(null, proposalId);
+        List<ProposalWrapper> linkingProposals = new ArrayList<>();
+        for (IProposalReference proposalReference : proposalReferences) {
             try {
-                final Proposal proposal = getProposal(proposalReference.getProposalId());
+                final ProposalWrapper proposal = getProposal(proposalReference.getProposalId());
                 if (!linkingProposals.contains(proposal)) {
                     linkingProposals.add(proposal);
                 }
@@ -238,7 +238,7 @@ public final class ProposalClient {
         return linkingProposals;
     }
 
-    public Proposal getProposalByThreadId(long threadId) {
+    public ProposalWrapper getProposalByThreadId(long threadId) {
         final ProposalDto proposalDto = proposalResource.list()
                 .queryParam("threadId", threadId)
                 .executeWithResult()
@@ -249,17 +249,17 @@ public final class ProposalClient {
         throw new ProposalNotFoundException("No proposal with threadId = " + threadId);
     }
 
-    public Proposal getProposal(long proposalId) throws ProposalNotFoundException {
+    public ProposalWrapper getProposal(long proposalId) throws ProposalNotFoundException {
         return getProposal(proposalId, false);
     }
 
     public void invalidateProposalCache(long proposalId) {
-        ServiceRequestUtils.invalidateCache(CacheKeys.withClass(Proposal.class)
+        ServiceRequestUtils.invalidateCache(CacheKeys.withClass(ProposalWrapper.class)
                 .withParameter("proposalId", proposalId)
                 .withParameter("includeDeleted", false).build(), CacheName.MISC_REQUEST);
     }
 
-    public Proposal getProposal(long proposalId, boolean includeDeleted)
+    public ProposalWrapper getProposal(long proposalId, boolean includeDeleted)
             throws ProposalNotFoundException {
         try {
             return proposalResource.get(proposalId)
@@ -274,14 +274,14 @@ public final class ProposalClient {
         }
     }
 
-    public List<ProposalReference> getProposalReference(Long proposalId, Long subProposalId) {
+    public List<IProposalReference> getProposalReference(Long proposalId, Long subProposalId) {
         return proposalReferenceResource.list()
                 .optionalQueryParam("proposalId", proposalId)
                 .optionalQueryParam("subProposalId", subProposalId)
                 .execute();
     }
 
-    public List<Proposal> getSubproposals(Long proposalId, Boolean includeProposalsInSameContest) {
+    public List<ProposalWrapper> getSubproposals(Long proposalId, Boolean includeProposalsInSameContest) {
         return ProposalDto.toProposals(proposalResource
                 .elementService(proposalId, "getSubproposals", ProposalDto.TYPES.getTypeReference())
                 .queryParam("includeProposalsInSameContest", includeProposalsInSameContest)
@@ -289,7 +289,7 @@ public final class ProposalClient {
     }
 
 
-    public List<Proposal> getLinkingProposalsForProposalId(Long proposalId) {
+    public List<ProposalWrapper> getLinkingProposalsForProposalId(Long proposalId) {
         return ProposalDto.toProposals(proposalResource.elementService(proposalId, "listProposalLinks", ProposalDto.TYPES.getTypeReference())
                 .getList());
     }
@@ -314,9 +314,9 @@ public final class ProposalClient {
 
     }
 
-    public ProposalReference getProposalReferenceByProposalIdSubProposalId(Long proposalId,
+    public IProposalReference getProposalReferenceByProposalIdSubProposalId(Long proposalId,
             Long subProposalId) {
-        List<ProposalReference> list = proposalReferenceResource.list()
+        List<IProposalReference> list = proposalReferenceResource.list()
                 .optionalQueryParam("proposalId", proposalId)
                 .optionalQueryParam("subProposalId", subProposalId)
                 .execute();
@@ -327,7 +327,7 @@ public final class ProposalClient {
         }
     }
 
-    public boolean updateProposal(Proposal proposal) {
+    public boolean updateProposal(ProposalWrapper proposal) {
         return proposalResource
                 .update(new ProposalDto(proposal), proposal.getId())
                 .cacheKey(CacheKeys.withClass(ProposalDto.class)
@@ -340,15 +340,15 @@ public final class ProposalClient {
         return proposalResource.delete(proposalId).execute();
     }
 
-    public ProposalVersion getProposalVersionByProposalIdVersion(Long proposalId, Integer version) {
-        return proposalVersionResource.collectionService("getByProposalIdVersion", ProposalVersion.class)
+    public ProposalVersionWrapper getProposalVersionByProposalIdVersion(Long proposalId, Integer version) {
+        return proposalVersionResource.collectionService("getByProposalIdVersion", ProposalVersionWrapper.class)
                 .queryParam("proposalId", proposalId)
                 .queryParam("version", version)
                 .get()
                 ;
     }
-    public List<ProposalVersion> getProposalVersionsGroupedVersionsByContest(Long proposalId, Long contestId, int start, int end) {
-        return proposalVersionResource.collectionService("getGroupedVersionsByContest", ProposalVersion.TYPES.getTypeReference())
+    public List<ProposalVersionWrapper> getProposalVersionsGroupedVersionsByContest(Long proposalId, Long contestId, int start, int end) {
+        return proposalVersionResource.collectionService("getGroupedVersionsByContest", ProposalVersionWrapper.TYPES.getTypeReference())
                 .queryParam("proposalId", proposalId)
                 .queryParam("contestId", contestId)
                 .queryParam("start", start)
@@ -372,14 +372,14 @@ public final class ProposalClient {
                 .get();
     }
 
-    public ProposalVersion getProposalVersionByProposal(Long proposalId) {
-        return proposalVersionResource.collectionService("getByProposalIdVersion", ProposalVersion.class)
+    public ProposalVersionWrapper getProposalVersionByProposal(Long proposalId) {
+        return proposalVersionResource.collectionService("getByProposalIdVersion", ProposalVersionWrapper.class)
                 .queryParam("proposalId", proposalId)
                 .get()
                 ;
     }
 
-    public List<ProposalVersion> getAllProposalVersions(Long proposalId) {
+    public List<ProposalVersionWrapper> getAllProposalVersions(Long proposalId) {
         return proposalVersionResource.list()
                 .optionalQueryParam("proposalId", proposalId)
                 .execute();
@@ -392,7 +392,7 @@ public final class ProposalClient {
                     .getContestType(contest.getContestTypeId());
         } catch (ContestNotFoundException e) {
             throw ReferenceResolutionException.toObject(ContestWrapper.class, "")
-                    .fromObject(Proposal.class, proposalId);
+                    .fromObject(ProposalWrapper.class, proposalId);
         }
     }
 

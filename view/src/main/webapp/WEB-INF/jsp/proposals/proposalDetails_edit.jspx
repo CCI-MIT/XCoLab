@@ -47,8 +47,8 @@
 
     <!--ProposalSectionsTabController-->
     <c:if test="${isMove}">
-        <jsp:useBean id="baseProposal" scope="request" type="org.xcolab.client.contest.pojo.Proposal"/>
-        <jsp:useBean id="baseContest" scope="request" type="org.xcolab.client.contest.pojo.ContestWrapper"/>
+        <jsp:useBean id="baseProposal" scope="request" type="org.xcolab.client.contest.pojo.wrapper.ProposalWrapper"/>
+        <jsp:useBean id="baseContest" scope="request" type="org.xcolab.client.contest.pojo.wrapper.ContestWrapper"/>
     </c:if>
 
     <div class="mb-3">

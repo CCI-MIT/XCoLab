@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.MembershipClient;
-import org.xcolab.client.contest.pojo.Proposal;
-import org.xcolab.client.contest.pojo.ProposalTeamMembershipRequest;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMembershipRequestWrapper;
 import org.xcolab.entity.utils.notifications.proposal.ProposalMembershipInviteNotification;
 import org.xcolab.entity.utils.notifications.proposal.ProposalUserActionNotification;
 import org.xcolab.commons.html.HtmlUtil;
@@ -60,7 +60,7 @@ public class ProposalRequestMembershipActionController {
             return;
         }
 
-        final Proposal proposal = proposalContext.getProposal();
+        final ProposalWrapper proposal = proposalContext.getProposal();
         final ContestWrapper contest = proposalContext.getContest();
 
         final String tabUrl = proposal.getProposalLinkUrl(contest) + "/tab/TEAM";
@@ -101,7 +101,7 @@ public class ProposalRequestMembershipActionController {
             @Valid RequestMembershipInviteBean requestMembershipInviteBean, BindingResult result)
             throws IOException {
 
-        final Proposal proposal = proposalContext.getProposal();
+        final ProposalWrapper proposal = proposalContext.getProposal();
         final ContestWrapper contest = proposalContext.getContest();
         final String tabUrl = proposal.getProposalLinkUrl(contest) + "/tab/TEAM";
 
@@ -166,7 +166,7 @@ public class ProposalRequestMembershipActionController {
             ProposalContext proposalContext, Member loggedInMember, @RequestParam String approve,
             @RequestParam String comment, @RequestParam long requestId) throws IOException {
 
-        final Proposal proposal = proposalContext.getProposal();
+        final ProposalWrapper proposal = proposalContext.getProposal();
         final ContestWrapper contest = proposalContext.getContest();
         final String tabUrl = proposal.getProposalLinkUrl(contest) + "/tab/ADMIN";
 
@@ -182,8 +182,8 @@ public class ProposalRequestMembershipActionController {
 
         long proposalId = proposal.getId();
 
-        ProposalTeamMembershipRequest membershipRequest = null;
-        for (ProposalTeamMembershipRequest mr : membershipClient.getMembershipRequests(proposalId)) {
+        ProposalTeamMembershipRequestWrapper membershipRequest = null;
+        for (ProposalTeamMembershipRequestWrapper mr : membershipClient.getMembershipRequests(proposalId)) {
             if (mr.getId() == requestId) {
                 membershipRequest = mr;
             }

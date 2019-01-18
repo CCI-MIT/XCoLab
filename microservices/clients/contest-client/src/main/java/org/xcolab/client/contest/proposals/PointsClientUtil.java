@@ -1,6 +1,6 @@
 package org.xcolab.client.contest.proposals;
 
-import org.xcolab.client.contest.pojo.PointTypeWrapper;
+import org.xcolab.client.contest.pojo.wrapper.PointTypeWrapper;
 import org.xcolab.client.contest.pojo.IPointsDistributionConfiguration;
 
 import java.util.List;

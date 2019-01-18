@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.model.tables.pojos.ProposalTeamMembershipRequest;
-import org.xcolab.service.contest.proposal.domain.membershiprequest.ProposalTeamMembershipRequestDao;
-import org.xcolab.service.contest.exceptions.NotFoundException;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMembershipRequestWrapper;
 import org.xcolab.service.contest.exceptions.ConflictException;
+import org.xcolab.service.contest.exceptions.NotFoundException;
+import org.xcolab.service.contest.proposal.domain.membershiprequest.ProposalTeamMembershipRequestDao;
 import org.xcolab.service.contest.proposal.domain.proposalteammember.ProposalTeamMemberDao;
 
 import java.sql.Timestamp;
@@ -34,13 +34,14 @@ public class MembershipController {
     }
 
     @RequestMapping(value = "/membershipRequests", method = RequestMethod.POST)
-    public ProposalTeamMembershipRequest createProposalTeamMembershipRequest(@RequestBody ProposalTeamMembershipRequest proposalTeamMembershipRequest) {
+    public ProposalTeamMembershipRequestWrapper createProposalTeamMembershipRequest(@RequestBody
+            ProposalTeamMembershipRequestWrapper proposalTeamMembershipRequest) {
             proposalTeamMembershipRequest.setCreatedAt(new Timestamp(new Date().getTime()));
         return this.proposalTeamMembershipRequestDao.create(proposalTeamMembershipRequest);
     }
 
     @RequestMapping(value = "/membershipRequests/{membershipRequestId}", method = RequestMethod.GET)
-    public ProposalTeamMembershipRequest getProposalTeamMembershipRequest(@PathVariable Long membershipRequestId) throws NotFoundException {
+    public ProposalTeamMembershipRequestWrapper getProposalTeamMembershipRequest(@PathVariable Long membershipRequestId) throws NotFoundException {
         if (membershipRequestId == null || membershipRequestId == 0) {
             throw new NotFoundException("No membershipRequestId given");
         } else {
@@ -49,7 +50,8 @@ public class MembershipController {
     }
 
     @RequestMapping(value = "/membershipRequests/{membershipRequestId}", method = RequestMethod.PUT)
-    public boolean updateProposalTeamMembershipRequest(@RequestBody ProposalTeamMembershipRequest proposalTeamMembershipRequest,
+    public boolean updateProposalTeamMembershipRequest(@RequestBody
+            ProposalTeamMembershipRequestWrapper proposalTeamMembershipRequest,
                                            @PathVariable Long membershipRequestId) throws NotFoundException {
 
         if (membershipRequestId == null || membershipRequestId == 0 || proposalTeamMembershipRequestDao
@@ -62,7 +64,7 @@ public class MembershipController {
     }
 
     @RequestMapping(value = "/membershipRequests", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<ProposalTeamMembershipRequest> getActiveProposalTeamMembershipRequests(
+    public List<ProposalTeamMembershipRequestWrapper> getActiveProposalTeamMembershipRequests(
             @RequestParam(required = false) Long proposalId,
             @RequestParam(required = false) Integer statusId,
             @RequestParam(required = false) Long userId

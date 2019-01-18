@@ -1,6 +1,6 @@
 package org.xcolab.service.contest.proposal.domain.proposalattribute;
 
-import org.xcolab.client.contest.pojo.ProposalAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.util.List;

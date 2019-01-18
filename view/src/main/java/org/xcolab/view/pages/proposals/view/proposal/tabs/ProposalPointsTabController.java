@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.PointsClient;
 import org.xcolab.client.contest.proposals.ProposalClient;
@@ -16,8 +16,8 @@ import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.enums.points.DistributionStrategy;
 import org.xcolab.client.contest.proposals.enums.points.PointsTarget;
 import org.xcolab.client.contest.proposals.enums.points.ReceiverLimitationStrategy;
-import org.xcolab.client.contest.pojo.Proposal;
-import org.xcolab.client.contest.pojo.PointTypeWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.wrapper.PointTypeWrapper;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
@@ -50,7 +50,7 @@ public class ProposalPointsTabController extends BaseProposalTabController {
         final PointsClient pointsClient = clients.getPointsClient();
         final ProposalClient proposalClient = clients.getProposalClient();
 
-        Proposal proposal = proposalContext.getProposal();
+        ProposalWrapper proposal = proposalContext.getProposal();
         ContestWrapper contest = proposalContext.getContest();
 
         final String lang = LocaleContextHolder.getLocale().getLanguage();
@@ -65,7 +65,7 @@ public class ProposalPointsTabController extends BaseProposalTabController {
 
         setCommonModelAndPageAttributes(request, model, proposalContext, ProposalTab.POINTS);
 
-        List<Proposal> subProposalsWrapped = ProposalClientUtil
+        List<ProposalWrapper> subProposalsWrapped = ProposalClientUtil
                 .getSubproposals(proposal.getId(), false);
 
         //TODO COLAB-2597: make this flexible
@@ -89,7 +89,7 @@ public class ProposalPointsTabController extends BaseProposalTabController {
             basicPercentages.add(new PointsTargetProposalWrapper(target, 2L));
         }
 
-        final List<Proposal> linkingProposalsWrapped = proposalClient.getLinkingProposals(proposal.getId());
+        final List<ProposalWrapper> linkingProposalsWrapped = proposalClient.getLinkingProposals(proposal.getId());
 
         List<Member> members = proposalClient.getProposalMembers(proposal.getId());
 

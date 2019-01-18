@@ -13,8 +13,8 @@ import org.springframework.util.CollectionUtils;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.comment.IThreadClient;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.commons.SortColumn;
-import org.xcolab.model.tables.pojos.Contest;
 import org.xcolab.model.tables.records.ContestRecord;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
@@ -61,7 +61,7 @@ public class ContestDaoImpl implements ContestDao {
     }
 
     @Override
-    public Contest create(Contest contest) {
+    public ContestWrapper create(ContestWrapper contest) {
 
         final ContestRecord contestRecord = this.dslContext
                 .insertInto(CONTEST).set(CONTEST.ID, contest.getId())
@@ -127,7 +127,7 @@ public class ContestDaoImpl implements ContestDao {
     }
 
     @Override
-    public boolean update(Contest contest) {
+    public boolean update(ContestWrapper contest) {
         return dslContext.update(CONTEST).set(CONTEST.ID, contest.getId())
                 .set(CONTEST.CONTEST_TYPE_ID, contest.getContestTypeId())
                 .set(CONTEST.QUESTION, contest.getQuestion())
@@ -186,30 +186,30 @@ public class ContestDaoImpl implements ContestDao {
     }
 
     @Override
-    public Contest get(Long contestId) throws NotFoundException {
+    public ContestWrapper get(Long contestId) throws NotFoundException {
         final Record record =
                 dslContext.select().from(CONTEST).where(CONTEST.ID.eq(contestId))
                         .fetchOne();
         if (record == null) {
             throw new NotFoundException("Contest with id " + contestId + " was not found");
         }
-        return record.into(Contest.class);
+        return record.into(ContestWrapper.class);
     }
 
 
     @Override
-    public Contest getByThreadId(Long threadId) throws NotFoundException {
+    public ContestWrapper getByThreadId(Long threadId) throws NotFoundException {
         final Record record =
                 dslContext.select().from(CONTEST).where(CONTEST.DISCUSSION_GROUP_ID.eq(threadId))
                         .fetchOne();
         if (record == null) {
             throw new NotFoundException("Contest with thread id " + threadId + " was not found");
         }
-        return record.into(Contest.class);
+        return record.into(ContestWrapper.class);
     }
 
     @Override
-    public Contest getByResourceId(Long resourceId) throws NotFoundException {
+    public ContestWrapper getByResourceId(Long resourceId) throws NotFoundException {
         final Record record =
                 dslContext.select().from(CONTEST).where(CONTEST.RESOURCE_ARTICLE_ID.eq(resourceId))
                         .fetchOne();
@@ -217,7 +217,7 @@ public class ContestDaoImpl implements ContestDao {
             throw new NotFoundException(
                     "Contest with resource id " + resourceId + " was not found");
         }
-        return record.into(Contest.class);
+        return record.into(ContestWrapper.class);
     }
 
     @Override
@@ -232,7 +232,7 @@ public class ContestDaoImpl implements ContestDao {
     }
 
     @Override
-    public List<Contest> findByGiven(PaginationHelper paginationHelper, String contestUrlName,
+    public List<ContestWrapper> findByGiven(PaginationHelper paginationHelper, String contestUrlName,
             Long contestYear, Boolean active, Boolean featured, List<Long> contestTiers,
             List<Long> focusAreaIds, Long contestScheduleId, Long proposalTemplateId,
             List<Long> contestTypeIds, Boolean contestPrivate, String searchTerm) {
@@ -261,7 +261,7 @@ public class ContestDaoImpl implements ContestDao {
             }
         }
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
-        return query.fetchInto(Contest.class);
+        return query.fetchInto(ContestWrapper.class);
     }
 
     @Override

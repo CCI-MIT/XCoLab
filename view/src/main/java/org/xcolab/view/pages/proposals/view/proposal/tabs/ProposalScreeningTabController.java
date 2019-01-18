@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.ContestWrapper;
-import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
-import org.xcolab.client.contest.pojo.Proposal;
-import org.xcolab.client.contest.pojo.ProposalRating;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper;
 import org.xcolab.entity.utils.helper.ProposalJudgingCommentHelper;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
@@ -43,9 +43,9 @@ public class ProposalScreeningTabController extends BaseProposalTabController {
 
         setCommonModelAndPageAttributes(request, model, proposalContext, ProposalTab.SCREENING);
 
-        Proposal proposal = proposalContext.getProposal();
+        ProposalWrapper proposal = proposalContext.getProposal();
         ContestPhaseWrapper contestPhase = proposalContext.getContestPhase();
-        Proposal proposalWrapper = new Proposal(proposal, contestPhase);
+        ProposalWrapper proposalWrapper = new ProposalWrapper(proposal, contestPhase);
         ProposalFellowWrapper proposalFellowWrapper = new ProposalFellowWrapper(proposalContext,
                 proposalWrapper, currentMember);
 
@@ -73,7 +73,7 @@ public class ProposalScreeningTabController extends BaseProposalTabController {
             @ModelAttribute FellowProposalScreeningBean fellowProposalScreeningBean) {
 
         final ContestWrapper contest = proposalContext.getContest();
-        final Proposal proposal = proposalContext.getProposal();
+        final ProposalWrapper proposal = proposalContext.getProposal();
         long proposalId = proposal.getId();
         long contestPhaseId = fellowProposalScreeningBean.getContestPhaseId();
         ProposalsPermissions permissions = proposalContext.getPermissions();
@@ -131,7 +131,7 @@ public class ProposalScreeningTabController extends BaseProposalTabController {
 
         // save fellow comment and rating
         //find existing ratings
-        List<ProposalRating> existingRatings =
+        List<ProposalRatingWrapper> existingRatings =
                 ProposalJudgeRatingClientUtil.getFellowRatingForProposalAndUser(
                         currentMember.getId(),
                         proposalId,

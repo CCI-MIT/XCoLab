@@ -11,11 +11,11 @@ import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.ProposalTemplateClientUtil;
-import org.xcolab.client.contest.pojo.OntologyTermWrapper;
-import org.xcolab.client.contest.pojo.ProposalTemplateSectionDefinition;
+import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
 import org.xcolab.client.contest.proposals.PointsClientUtil;
 import org.xcolab.client.contest.proposals.enums.points.DistributionStrategy;
-import org.xcolab.client.contest.pojo.PointTypeWrapper;
+import org.xcolab.client.contest.pojo.wrapper.PointTypeWrapper;
 import org.xcolab.commons.html.LabelStringValue;
 import org.xcolab.commons.html.LabelValue;
 import org.xcolab.util.enums.contest.ContestTier;
@@ -130,7 +130,7 @@ public abstract class AbstractProposalTemplateTabController extends BaseTabContr
             @PathVariable long sectionDefinitionId)
             throws IOException {
 
-        ProposalTemplateSectionDefinition proposalTemplateSectionDefinition =
+        ProposalTemplateSectionDefinitionWrapper proposalTemplateSectionDefinition =
                 ProposalTemplateClientUtil.getProposalTemplateSectionDefinition(sectionDefinitionId);
         SectionDefinitionWrapper sectionDefinitionWrapper =
                 new SectionDefinitionWrapper(proposalTemplateSectionDefinition);

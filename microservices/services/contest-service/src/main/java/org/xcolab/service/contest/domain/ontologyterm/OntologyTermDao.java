@@ -1,6 +1,6 @@
 package org.xcolab.service.contest.domain.ontologyterm;
 
-import org.xcolab.client.contest.pojo.OntologyTermWrapper;
+import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.util.List;

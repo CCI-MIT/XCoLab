@@ -10,20 +10,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.ContestTeamMemberClientUtil;
-import org.xcolab.client.contest.pojo.ContestWrapper;
-import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
 import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
-import org.xcolab.client.contest.pojo.Proposal;
-import org.xcolab.client.contest.pojo.ProposalRating;
-import org.xcolab.client.contest.pojo.ProposalRatingType;
-import org.xcolab.client.contest.pojo.ProposalContestPhaseAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper;
+import org.xcolab.client.contest.pojo.IProposalRatingType;
+import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
 import org.xcolab.commons.exceptions.InternalException;
-import org.xcolab.view.pages.proposals.judging.ProposalRatingWrapper;
 import org.xcolab.view.pages.proposals.judging.ProposalReview;
 import org.xcolab.view.pages.proposals.judging.ProposalReviewCsvExporter;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
@@ -89,19 +88,19 @@ public class JudgingCsvController {
     private String getProposalJudgeReviewCsv(ContestWrapper contest, ContestPhaseWrapper currentPhase,
             ProposalContext proposalContext) {
 
-        Map<Proposal, List<ProposalReview>> proposalToProposalReviewsMap = new HashMap<>();
+        Map<ProposalWrapper, List<ProposalReview>> proposalToProposalReviewsMap = new HashMap<>();
 
-        List<Proposal> stillActiveProposals = proposalContext.getClients().getProposalClient()
+        List<ProposalWrapper> stillActiveProposals = proposalContext.getClients().getProposalClient()
                 .getActiveProposalsInContestPhase(currentPhase.getId());
-        Set<ProposalRatingType> occurringRatingTypes = new HashSet<>();
+        Set<IProposalRatingType> occurringRatingTypes = new HashSet<>();
 
         for (ContestPhaseWrapper judgingPhase : contest.getPhases()) {
             if (!judgingPhase.getFellowScreeningActive()) {
                 continue;
             }
 
-            for (Proposal proposal : stillActiveProposals) {
-                ProposalContestPhaseAttribute fellowActionAttribute = ProposalPhaseClientUtil
+            for (ProposalWrapper proposal : stillActiveProposals) {
+                IProposalContestPhaseAttribute fellowActionAttribute = ProposalPhaseClientUtil
                         .getProposalContestPhaseAttribute(proposal.getId(),
                                 judgingPhase.getId(),
                                 ProposalContestPhaseAttributeKeys.FELLOW_ACTION);
@@ -123,13 +122,13 @@ public class JudgingCsvController {
                     proposalReview.setReviewers(ImmutableSet
                             .copyOf(getProposalReviewingJudges(proposal, judgingPhase,
                                     proposalContext)));
-                    List<ProposalRating> ratings = ProposalJudgeRatingClientUtil
+                    List<ProposalRatingWrapper> ratings = ProposalJudgeRatingClientUtil
                             .getJudgeRatingsForProposal(proposal.getId(),
                                     judgingPhase.getId());
-                    Map<ProposalRatingType, List<Long>> ratingsPerType = new HashMap<>();
+                    Map<IProposalRatingType, List<Long>> ratingsPerType = new HashMap<>();
 
-                    for (ProposalRating rating : ratings) {
-                        ProposalRatingWrapper ratingWrapper = new ProposalRatingWrapper(rating);
+                    for (ProposalRatingWrapper rating : ratings) {
+                        org.xcolab.view.pages.proposals.judging.ProposalRatingWrapper ratingWrapper = new org.xcolab.view.pages.proposals.judging.ProposalRatingWrapper(rating);
                         ratingsPerType.computeIfAbsent(ratingWrapper.getRatingType(),
                                 k -> new ArrayList<>());
                         ratingsPerType.get(ratingWrapper.getRatingType())
@@ -150,7 +149,7 @@ public class JudgingCsvController {
                     }
 
                     //take the average for each type
-                    for (ProposalRatingType key : ratingsPerType.keySet()) {
+                    for (IProposalRatingType key : ratingsPerType.keySet()) {
                         double sum = 0;
                         int count = 0;
                         for (Long val : ratingsPerType.get(key)) {
@@ -175,7 +174,7 @@ public class JudgingCsvController {
         return csvExporter.getCsvString();
     }
 
-    private List<Member> getProposalReviewingJudges(Proposal proposal, ContestPhaseWrapper judgingPhase,
+    private List<Member> getProposalReviewingJudges(ProposalWrapper proposal, ContestPhaseWrapper judgingPhase,
             ProposalContext proposalContext) {
 
         final ClientHelper clients = proposalContext.getClients();
@@ -183,7 +182,7 @@ public class JudgingCsvController {
 
 
         if (judgingPhase.getFellowScreeningActive()) {
-            final ProposalContestPhaseAttribute selectedJudgesAttribute = proposalPhaseClient
+            final IProposalContestPhaseAttribute selectedJudgesAttribute = proposalPhaseClient
                     .getProposalContestPhaseAttribute(proposal.getId(),
                             judgingPhase.getId(),
                             ProposalContestPhaseAttributeKeys.SELECTED_JUDGES);

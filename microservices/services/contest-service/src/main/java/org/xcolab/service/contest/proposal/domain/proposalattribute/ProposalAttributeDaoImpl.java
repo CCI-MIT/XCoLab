@@ -6,7 +6,7 @@ import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.client.contest.pojo.ProposalAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
 import org.xcolab.model.tables.records.ProposalAttributeRecord;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 

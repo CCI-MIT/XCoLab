@@ -6,13 +6,13 @@ import org.jooq.Record1;
 import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.xcolab.model.tables.pojos.ProposalSupporter;
 
+import org.xcolab.client.contest.pojo.IProposalSupporter;
+import org.xcolab.client.contest.pojo.tables.pojos.ProposalSupporter;
 
 import java.util.List;
 
 import static org.jooq.impl.DSL.countDistinct;
-
 import static org.xcolab.model.Tables.PROPOSAL_SUPPORTER;
 
 @Repository
@@ -26,7 +26,7 @@ public class ProposalSupporterDaoImpl implements ProposalSupporterDao {
     }
 
     @Override
-    public ProposalSupporter create(ProposalSupporter proposalSupporter) {
+    public IProposalSupporter create(IProposalSupporter proposalSupporter) {
 
         this.dslContext.insertInto(PROPOSAL_SUPPORTER)
                 .set(PROPOSAL_SUPPORTER.PROPOSAL_ID, proposalSupporter.getProposalId())
@@ -47,7 +47,7 @@ public class ProposalSupporterDaoImpl implements ProposalSupporterDao {
     }
 
     @Override
-    public List<ProposalSupporter> findByGiven(Long proposalId, Long userId) {
+    public List<IProposalSupporter> findByGiven(Long proposalId, Long userId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(PROPOSAL_SUPPORTER).getQuery();
 

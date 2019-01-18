@@ -22,8 +22,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import org.xcolab.client.contest.pojo.AbstractContestPhase;
-import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.service.contest.domain.contestphase.ContestPhaseDao;
 import org.xcolab.service.contest.domain.contestphaseribbontype.ContestPhaseRibbonTypeDao;
 import org.xcolab.service.contest.domain.contestphasetype.ContestPhaseTypeDao;
@@ -95,9 +95,7 @@ public class ContestPhaseControllerTest {
 
     @Test
     public void shouldCreateNewContestPhase() throws Exception {
-
-        AbstractContestPhase contest = new AbstractContestPhase(){};
-
+        ContestPhaseWrapper contest = new ContestPhaseWrapper();
 
         this.mockMvc.perform(post("/contestPhases").contentType(contentType).accept(contentType)
                 .content(objectMapper.writeValueAsString(contest))).andExpect(status().isOk());
@@ -107,8 +105,7 @@ public class ContestPhaseControllerTest {
 
     @Test
     public void shouldUpdateContestPhase() throws Exception {
-
-        AbstractContestPhase contestPhase = new AbstractContestPhase(){};
+        ContestPhaseWrapper contestPhase = new ContestPhaseWrapper();
         contestPhase.setId(123L);
 
         this.mockMvc.perform(put("/contestPhases/" + contestPhase.getId()).contentType(contentType)

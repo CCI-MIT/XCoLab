@@ -4,13 +4,13 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.ContestWrapper;
-import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.contest.pojo.Proposal;
-import org.xcolab.client.contest.pojo.ProposalVersion;
-import org.xcolab.client.contest.pojo.ProposalReference;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalVersionWrapper;
+import org.xcolab.client.contest.pojo.IProposalReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,16 +25,16 @@ public final class ProposalClientUtil {
         return client;
     }
 
-    public static Proposal createProposal(
-            Proposal proposal) {
+    public static ProposalWrapper createProposal(
+            ProposalWrapper proposal) {
         return client.createProposal(proposal);
     }
 
-    public static List<Proposal> listProposals(long contestId) {
+    public static List<ProposalWrapper> listProposals(long contestId) {
         return client.listProposals(contestId);
     }
 
-    public static List<Proposal> listProposals(int start, int limit,
+    public static List<ProposalWrapper> listProposals(int start, int limit,
             Long contestId, Boolean visible, Long contestPhaseId, Integer ribbon) {
         return client.listProposals(start, limit, contestId, visible, contestPhaseId, ribbon);
     }
@@ -44,24 +44,24 @@ public final class ProposalClientUtil {
         return client.listProposalIds(start, limit, contestId, visible, contestPhaseId, ribbon);
     }
 
-    public static List<Proposal> getProposalsInContestPhase(
+    public static List<ProposalWrapper> getProposalsInContestPhase(
             Long contestPhaseId) {
         return client.getProposalsInContestPhase(contestPhaseId);
     }
 
-    public static List<Proposal> getAllProposals() {
+    public static List<ProposalWrapper> getAllProposals() {
         return client.getAllProposals();
     }
 
-    public static List<Proposal> listProposalsInActiveContests() {
+    public static List<ProposalWrapper> listProposalsInActiveContests() {
         return client.listProposalsInActiveContests();
     }
 
-    public static List<Proposal> listProposalsInCompletedContests(List<Integer> ribbons) {
+    public static List<ProposalWrapper> listProposalsInCompletedContests(List<Integer> ribbons) {
         return client.listProposalsInCompletedContests(ribbons);
     }
 
-    public static List<Proposal> getProposalsInContest(
+    public static List<ProposalWrapper> getProposalsInContest(
             Long contestId) {
         return client.getProposalsInContest(contestId);
     }
@@ -78,55 +78,55 @@ public final class ProposalClientUtil {
         return client.isUserInProposalTeam(proposalId, memberUserId);
     }
 
-    public static List<Proposal> getActiveProposalsInContestPhase(
+    public static List<ProposalWrapper> getActiveProposalsInContestPhase(
             Long contestPhaseId) {
         return client.getActiveProposalsInContestPhase(contestPhaseId);
     }
 
-    public static Proposal createProposal(long authorUserId, long contestPhaseId,
+    public static ProposalWrapper createProposal(long authorUserId, long contestPhaseId,
             boolean publishActivity) {
         return client.createProposal(authorUserId, contestPhaseId, publishActivity);
     }
 
-    public static List<Proposal> getContestIntegrationRelevantSubproposals(
+    public static List<ProposalWrapper> getContestIntegrationRelevantSubproposals(
             Long proposalId) {
         return client.getContestIntegrationRelevantSubproposals(proposalId);
     }
 
-    public static List<Proposal> getLinkingProposalsForUser(
+    public static List<ProposalWrapper> getLinkingProposalsForUser(
             long userId) {
         return client.getLinkingProposalsForUser(userId);
     }
 
-    public static List<Proposal> getMemberProposals(
+    public static List<ProposalWrapper> getMemberProposals(
             Long userId) {
         return client.getMemberProposals(userId);
     }
 
-    public static List<Proposal> getLinkingProposals(
+    public static List<ProposalWrapper> getLinkingProposals(
             long proposalId) {
         return client.getLinkingProposals(proposalId);
     }
 
-    public static Proposal getProposalByThreadId(long threadId) throws ProposalNotFoundException {
+    public static ProposalWrapper getProposalByThreadId(long threadId) throws ProposalNotFoundException {
         return client.getProposalByThreadId(threadId);
     }
 
-    public static Proposal getProposal(long proposalId) throws ProposalNotFoundException {
+    public static ProposalWrapper getProposal(long proposalId) throws ProposalNotFoundException {
         return client.getProposal(proposalId);
     }
 
-    public static Proposal getProposal(long proposalId,
+    public static ProposalWrapper getProposal(long proposalId,
             boolean includeDeleted) throws ProposalNotFoundException {
         return client.getProposal(proposalId, includeDeleted);
     }
 
-    public static List<ProposalReference> getProposalReference(
+    public static List<IProposalReference> getProposalReference(
             Long proposalId, Long subProposalId) {
         return client.getProposalReference(proposalId, subProposalId);
     }
 
-    public static List<Proposal> getSubproposals(
+    public static List<ProposalWrapper> getSubproposals(
             Long proposalId, Boolean includeProposalsInSameContest) {
         return client.getSubproposals(proposalId, includeProposalsInSameContest);
     }
@@ -142,12 +142,12 @@ public final class ProposalClientUtil {
         return client.getNumberOfProposalsForJudge(userId, contestPhaseId);
     }
 
-    public static ProposalReference getProposalReferenceByProposalIdSubProposalId(
+    public static IProposalReference getProposalReferenceByProposalIdSubProposalId(
             Long proposalId, Long subProposalId) {
         return client.getProposalReferenceByProposalIdSubProposalId(proposalId, subProposalId);
     }
 
-    public static boolean updateProposal(Proposal proposal) {
+    public static boolean updateProposal(ProposalWrapper proposal) {
         return client.updateProposal(proposal);
     }
 
@@ -155,12 +155,12 @@ public final class ProposalClientUtil {
         return client.deleteProposal(proposalId);
     }
 
-    public static ProposalVersion getProposalVersionByProposalIdVersion(
+    public static ProposalVersionWrapper getProposalVersionByProposalIdVersion(
             Long proposalId, Integer version) {
         return client.getProposalVersionByProposalIdVersion(proposalId, version);
     }
 
-    public static List<ProposalVersion> getProposalVersionsGroupedVersionsByContest(Long proposalId, Long contestId, int start , int end) {
+    public static List<ProposalVersionWrapper> getProposalVersionsGroupedVersionsByContest(Long proposalId, Long contestId, int start , int end) {
         return client.getProposalVersionsGroupedVersionsByContest(proposalId,contestId, start, end);
 
     }
@@ -172,12 +172,12 @@ public final class ProposalClientUtil {
         return client.countProposalVersions(proposalId);
     }
 
-    public static ProposalVersion getProposalVersionByProposal(
+    public static ProposalVersionWrapper getProposalVersionByProposal(
             Long proposalId) {
         return client.getProposalVersionByProposal(proposalId);
     }
 
-    public static List<ProposalVersion> getAllProposalVersions(
+    public static List<ProposalVersionWrapper> getAllProposalVersions(
             Long proposalId) {
         return client.getAllProposalVersions(proposalId);
     }
@@ -222,7 +222,7 @@ public final class ProposalClientUtil {
         client.unsubscribeMemberFromProposal(proposalId, userId);
     }
 
-    public static Proposal getProposalFromLinkUrl(String linkUrl) {
+    public static ProposalWrapper getProposalFromLinkUrl(String linkUrl) {
         List<Long> proposalIds = getProposalIdsFromLinksInText(linkUrl);
         if (!proposalIds.isEmpty()) {
             try {
@@ -233,7 +233,7 @@ public final class ProposalClientUtil {
 
         return null;
     }
-    public static  List<Proposal> getProposalsByCurrentContests(List<Long> contestTypeIds, List<Long> contestTierIds,
+    public static  List<ProposalWrapper> getProposalsByCurrentContests(List<Long> contestTypeIds, List<Long> contestTierIds,
             String filterText) {
         return client.getProposalsInPublicContests(contestTypeIds, contestTierIds, filterText);
     }

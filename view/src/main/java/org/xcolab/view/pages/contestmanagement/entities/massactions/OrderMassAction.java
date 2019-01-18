@@ -1,7 +1,7 @@
 package org.xcolab.view.pages.contestmanagement.entities.massactions;
 
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 
 import java.util.List;
 

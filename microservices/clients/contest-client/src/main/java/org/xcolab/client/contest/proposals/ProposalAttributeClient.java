@@ -1,12 +1,12 @@
 package org.xcolab.client.contest.proposals;
 
-import org.xcolab.client.contest.pojo.Proposal;
-import org.xcolab.client.contest.pojo.ProposalAttribute;
-import org.xcolab.client.contest.pojo.ProposalAttributeHelperDataDto;
-import org.xcolab.client.contest.pojo.ProposalDto;
-import org.xcolab.client.contest.pojo.ProposalUnversionedAttribute;
-import org.xcolab.client.contest.pojo.ProposalUnversionedAttributeHelperDataDto;
-import org.xcolab.client.contest.pojo.ProposalVersion;
+import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ProposalUnversionedAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalAttributeHelperDataDto;
+import org.xcolab.client.contest.pojo.wrapper.ProposalDto;
+import org.xcolab.client.contest.pojo.wrapper.ProposalUnversionedAttributeHelperDataDto;
+import org.xcolab.client.contest.pojo.wrapper.ProposalVersionWrapper;
 import org.xcolab.client.contest.proposals.exceptions.ProposalAttributeNotFoundException;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheKeys;
@@ -25,7 +25,7 @@ public final class ProposalAttributeClient {
             proposalUnversionedAttributeResource = null; // proposalUnversionedAttributes
 
     private final RestResource1<ProposalDto, Long> proposalResource = null; // proposals
-    private final RestResource2L<ProposalDto, ProposalVersion> proposalVersionResource = null; // proposals / versions
+    private final RestResource2L<ProposalDto, ProposalVersionWrapper> proposalVersionResource = null; // proposals / versions
 
     public ProposalAttribute createProposalAttribute(ProposalAttribute proposalAttribute) {
         return proposalAttributeResource.create(new ProposalAttribute(proposalAttribute))
@@ -69,7 +69,7 @@ public final class ProposalAttributeClient {
         return proposalAttributeResource.delete(id).execute();
     }
 
-    public List<ProposalAttribute> getImpactProposalAttributes(Proposal proposal) {
+    public List<ProposalAttribute> getImpactProposalAttributes(ProposalWrapper proposal) {
         return proposalAttributeResource
                 .collectionService("getImpactProposalAttributes", ProposalAttribute.TYPES.getTypeReference())
                 .queryParam("proposalId", proposal.getId())
@@ -143,8 +143,8 @@ public final class ProposalAttributeClient {
     }
 
 
-    public void invalidateProposalAttibuteCache(Proposal proposal) {
-        ServiceRequestUtils.invalidateCache(CacheKeys.withClass(Proposal.class)
+    public void invalidateProposalAttibuteCache(ProposalWrapper proposal) {
+        ServiceRequestUtils.invalidateCache(CacheKeys.withClass(ProposalWrapper.class)
                 .withParameter("proposalId", proposal.getId())
                 .withParameter("version", proposal.getVersion()).asList(), CacheName.PROPOSAL_DETAILS);
     }

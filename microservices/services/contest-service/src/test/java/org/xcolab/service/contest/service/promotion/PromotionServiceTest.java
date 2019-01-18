@@ -14,8 +14,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import org.xcolab.client.contest.pojo.ContestWrapper;
-import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
 import org.xcolab.service.contest.utils.promotion.PromotionService;
@@ -31,7 +31,7 @@ import java.util.Date;
         ServiceRequestUtils.class,
         ProposalClientUtil.class,
         ProposalPhaseClientUtil.class,
-        Proposal.class,
+        ProposalWrapper.class,
         ContestWrapper.class
 })
 @ComponentScan("org.xcolab.service.contest")

@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
-import org.xcolab.model.tables.pojos.ProposalTeamMembershipRequest;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMembershipRequestWrapper;
 import org.xcolab.model.tables.records.ProposalTeamMembershipRequestRecord;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
@@ -27,7 +27,8 @@ public class ProposalTeamMembershipRequestDaoImpl implements ProposalTeamMembers
     }
 
     @Override
-    public ProposalTeamMembershipRequest create(ProposalTeamMembershipRequest membershipRequest) {
+    public ProposalTeamMembershipRequestWrapper create(
+            ProposalTeamMembershipRequestWrapper membershipRequest) {
 
         ProposalTeamMembershipRequestRecord ret = this.dslContext.insertInto(PROPOSAL_TEAM_MEMBERSHIP_REQUEST)
                 .set(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.ID, membershipRequest.getId())
@@ -50,7 +51,7 @@ public class ProposalTeamMembershipRequestDaoImpl implements ProposalTeamMembers
     }
 
     @Override
-    public boolean update(ProposalTeamMembershipRequest membershipRequest) {
+    public boolean update(ProposalTeamMembershipRequestWrapper membershipRequest) {
         return dslContext.update(PROPOSAL_TEAM_MEMBERSHIP_REQUEST)
                 .set(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.REPLY_COMMENTS, membershipRequest.getReplyComments())
                 .set(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.REPLY_DATE, membershipRequest.getReplyDate())
@@ -61,7 +62,7 @@ public class ProposalTeamMembershipRequestDaoImpl implements ProposalTeamMembers
     }
 
     @Override
-    public ProposalTeamMembershipRequest get(Long membershipRequestId) throws NotFoundException {
+    public ProposalTeamMembershipRequestWrapper get(Long membershipRequestId) throws NotFoundException {
 
         final Record record =  this.dslContext.selectFrom(PROPOSAL_TEAM_MEMBERSHIP_REQUEST)
                 .where(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.ID.eq(membershipRequestId))
@@ -70,12 +71,11 @@ public class ProposalTeamMembershipRequestDaoImpl implements ProposalTeamMembers
         if (record == null) {
             throw new NotFoundException("ProposalTeamMembershipRequest with id " + membershipRequestId + " does not exist");
         }
-        return record.into(ProposalTeamMembershipRequest.class);
-
+        return record.into(ProposalTeamMembershipRequestWrapper.class);
     }
 
     @Override
-    public List<ProposalTeamMembershipRequest> findByGiven(Long proposalId, Integer statusId, Long userId) {
+    public List<ProposalTeamMembershipRequestWrapper> findByGiven(Long proposalId, Integer statusId, Long userId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(PROPOSAL_TEAM_MEMBERSHIP_REQUEST).getQuery();
 
@@ -88,6 +88,6 @@ public class ProposalTeamMembershipRequestDaoImpl implements ProposalTeamMembers
         if (userId != null) {
             query.addConditions(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.USER_ID.eq(userId));
         }
-        return query.fetchInto(ProposalTeamMembershipRequest.class);
+        return query.fetchInto(ProposalTeamMembershipRequestWrapper.class);
     }
 }

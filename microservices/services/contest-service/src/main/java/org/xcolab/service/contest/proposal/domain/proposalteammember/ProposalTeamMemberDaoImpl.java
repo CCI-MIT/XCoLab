@@ -5,7 +5,7 @@ import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.model.tables.pojos.ProposalTeamMember;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMemberWrapper;
 
 import java.util.List;
 
@@ -30,17 +30,17 @@ public class ProposalTeamMemberDaoImpl implements ProposalTeamMemberDao {
     }
 
     @Override
-    public List<ProposalTeamMember> findByProposalId(long proposalId) {
+    public List<ProposalTeamMemberWrapper> findByProposalId(long proposalId) {
         return dslContext.select().from(PROPOSAL_TEAM_MEMBER)
                 .where(PROPOSAL_TEAM_MEMBER.PROPOSAL_ID.eq(proposalId))
-                .fetch().into(ProposalTeamMember.class);
+                .fetch().into(ProposalTeamMemberWrapper.class);
     }
 
     @Override
-    public List<ProposalTeamMember> findByUserId(long userId) {
+    public List<ProposalTeamMemberWrapper> findByUserId(long userId) {
         return dslContext.select().from(PROPOSAL_TEAM_MEMBER)
                 .where(PROPOSAL_TEAM_MEMBER.USER_ID.eq(userId))
-                .fetch().into(ProposalTeamMember.class);
+                .fetch().into(ProposalTeamMemberWrapper.class);
     }
 
     @Override

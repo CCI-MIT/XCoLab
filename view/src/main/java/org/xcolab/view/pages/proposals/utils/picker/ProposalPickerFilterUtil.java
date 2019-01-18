@@ -6,14 +6,14 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.ProposalTemplateClientUtil;
-import org.xcolab.client.contest.pojo.ContestWrapper;
-import org.xcolab.client.contest.pojo.OntologyTermWrapper;
-import org.xcolab.client.contest.pojo.ProposalTemplateSectionDefinition;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
 import org.xcolab.client.contest.proposals.ProposalClient;
 import org.xcolab.client.contest.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.contest.pojo.Proposal;
-import org.xcolab.client.contest.pojo.ProposalSupporter;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.IProposalSupporter;
 import org.xcolab.commons.IdListUtil;
 import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
@@ -32,7 +32,7 @@ public class ProposalPickerFilterUtil {
 
     public static List<ContestWrapper> getTextFilteredContests(long sectionId, String contestName) {
 
-        ProposalTemplateSectionDefinition proposalTemplateSectionDefinition =
+        ProposalTemplateSectionDefinitionWrapper proposalTemplateSectionDefinition =
                 ProposalTemplateClientUtil.getProposalTemplateSectionDefinition(sectionId);
 
         final Long focusAreaId = proposalTemplateSectionDefinition.getFocusAreaId();
@@ -52,17 +52,17 @@ public class ProposalPickerFilterUtil {
                         allowedTiers);
     }
 
-    public static List<Proposal> getFilteredSubscribedSupportingProposalsForUser(
+    public static List<ProposalWrapper> getFilteredSubscribedSupportingProposalsForUser(
             ProposalContext proposalContext, long userId, String filterKey, long sectionId) {
-        List<Proposal> proposals =
+        List<ProposalWrapper> proposals =
                 getFilteredSubscribedProposalsForUser(proposalContext, userId, filterKey,
                         sectionId);
 
         Set<Long> includedProposals = new HashSet<>();
-        for (Proposal proposal : proposals) {
+        for (ProposalWrapper proposal : proposals) {
             includedProposals.add(proposal.getId());
         }
-        for (Proposal proposal : getFilteredSupportingProposalsForUser(proposalContext, userId,
+        for (ProposalWrapper proposal : getFilteredSupportingProposalsForUser(proposalContext, userId,
                 filterKey, sectionId)) {
             if (includedProposals.contains(proposal.getId())) {
                 continue;
@@ -73,9 +73,9 @@ public class ProposalPickerFilterUtil {
         return proposals;
     }
 
-    public static List<Proposal> getFilteredSubscribedProposalsForUser(
+    public static List<ProposalWrapper> getFilteredSubscribedProposalsForUser(
             ProposalContext proposalContext, long userId, String filterKey, long sectionId) {
-        List<Proposal> proposals = new ArrayList<>();
+        List<ProposalWrapper> proposals = new ArrayList<>();
         List<ActivitySubscription> activitySubscriptions =
                 ActivitiesClientUtil.getActivitySubscriptions(null, null, userId);
 
@@ -86,7 +86,7 @@ public class ProposalPickerFilterUtil {
 
             try {
                 if (subscription.getActivityCategoryEnum() == ActivityCategory.PROPOSAL) {
-                    final Proposal proposal = proposalClient.getProposal(subscription.getCategoryId());
+                    final ProposalWrapper proposal = proposalClient.getProposal(subscription.getCategoryId());
                     if (proposal.isVisible()) {
                         proposals.add(proposal);
                     }
@@ -101,12 +101,12 @@ public class ProposalPickerFilterUtil {
         return proposals;
     }
 
-    public static List<Proposal> getFilteredSupportingProposalsForUser(
+    public static List<ProposalWrapper> getFilteredSupportingProposalsForUser(
             ProposalContext proposalContext, long userId, String filterKey, long sectionId) {
-        List<Proposal> proposals = new ArrayList<>();
+        List<ProposalWrapper> proposals = new ArrayList<>();
         final ClientHelper clients = proposalContext.getClients();
         final ProposalClient proposalClient = clients.getProposalClient();
-        for (ProposalSupporter ps : ProposalMemberRatingClientUtil
+        for (IProposalSupporter ps : ProposalMemberRatingClientUtil
                 .getProposalSupportersByUserId(userId)) {
             try {
                 proposals.add(proposalClient.getProposal(ps.getProposalId()));
@@ -120,13 +120,13 @@ public class ProposalPickerFilterUtil {
         return proposals;
     }
 
-    public static List<Proposal> getFilteredAllProposals(ProposalContext proposalContext,
+    public static List<ProposalWrapper> getFilteredAllProposals(ProposalContext proposalContext,
             String filterText, String filterKey, long sectionId, Long contestId) {
 
         ClientHelper clients = proposalContext.getClients();
         ProposalClient proposalClient = clients.getProposalClient();
 
-        ProposalTemplateSectionDefinition proposalTemplateSectionDefinition =
+        ProposalTemplateSectionDefinitionWrapper proposalTemplateSectionDefinition =
                 ProposalTemplateClientUtil.getProposalTemplateSectionDefinition(sectionId);
         List<Long> contestTypes = new ArrayList<>(
                 IdListUtil.getIdsFromString(proposalTemplateSectionDefinition.getAllowedContestTypeIds()));
@@ -136,7 +136,7 @@ public class ProposalPickerFilterUtil {
             contestTypes.add(defaultTypeId);
         }
 
-        List<Proposal> proposals;
+        List<ProposalWrapper> proposals;
         if (contestId > 0) {
             proposals = proposalClient.getProposalsInContest(contestId);
         } else {
@@ -145,7 +145,7 @@ public class ProposalPickerFilterUtil {
                     filterText.isEmpty() ? null : filterText);
         }
 
-        final ArrayList<Proposal> filteredProposals = new ArrayList<>(proposals);
+        final ArrayList<ProposalWrapper> filteredProposals = new ArrayList<>(proposals);
         filterProposals(proposalContext, filteredProposals, filterKey, sectionId);
         return filteredProposals;
     }
@@ -172,13 +172,13 @@ public class ProposalPickerFilterUtil {
         return null;
     }
 
-    private static void filterProposals(ProposalContext proposalContext, List<Proposal> proposals,
+    private static void filterProposals(ProposalContext proposalContext, List<ProposalWrapper> proposals,
             String filterKey, long sectionId) {
         if (filterKey != null && "WINNERSONLY".equalsIgnoreCase(filterKey)) {
             proposals.removeIf(proposal -> !proposal.hasRibbon());
         }
 
-        ProposalTemplateSectionDefinition proposalTemplateSectionDefinition =
+        ProposalTemplateSectionDefinitionWrapper proposalTemplateSectionDefinition =
                 ProposalTemplateClientUtil.getProposalTemplateSectionDefinition(sectionId);
 
         List<Long> filterExceptionContestIds = proposalTemplateSectionDefinition.getAdditionalIdsAsList();

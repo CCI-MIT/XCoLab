@@ -5,8 +5,8 @@
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
     <!--@elvariable id="proposalsPermissions" type="org.xcolab.view.pages.proposals.permissions.ProposalsPermissions"-->
-    <!--@elvariable id="contest" type="org.xcolab.client.contest.pojo.ContestWrapper"-->
-    <!--@elvariable id="contestPhase" type="org.xcolab.client.contest.pojo.ContestPhaseWrapper"-->
+    <!--@elvariable id="contest" type="org.xcolab.client.contest.pojo.wrapper.ContestWrapper"-->
+    <!--@elvariable id="contestPhase" type="org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper"-->
     <!--@elvariable id="contestType" type="org.xcolab.client.admin.pojo.ContestType"-->
     <!--@elvariable id="proposalsDisplayPermissions" type="org.xcolab.view.pages.proposals.permissions.ProposalsDisplayPermissions"-->
     <!--@elvariable id="judgeId" type="java.lang.Long"-->
@@ -16,7 +16,7 @@
     <c:set var="shouldHideRibbons" value="${contest.hideRibbons and not proposalsPermissions.canAdminAll}"/>
 
     <c:forEach var="proposal" items="${proposals}" varStatus="status">
-        <!--@elvariable id="proposal" type="org.xcolab.client.contest.pojo.Proposal"-->
+        <!--@elvariable id="proposal" type="org.xcolab.client.contest.pojo.wrapper.ProposalWrapper"-->
 
         <c:set var="additionalCSSClasses" scope="session" value="" />
         <c:choose>

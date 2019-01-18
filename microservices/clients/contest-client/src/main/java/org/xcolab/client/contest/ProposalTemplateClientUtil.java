@@ -1,8 +1,8 @@
 package org.xcolab.client.contest;
 
-import org.xcolab.client.contest.pojo.ProposalTemplate;
-import org.xcolab.client.contest.pojo.ProposalTemplateSection;
-import org.xcolab.client.contest.pojo.ProposalTemplateSectionDefinition;
+import org.xcolab.client.contest.pojo.IProposalTemplate;
+import org.xcolab.client.contest.pojo.IProposalTemplateSection;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
 
 import java.util.List;
 
@@ -17,16 +17,16 @@ public final class ProposalTemplateClientUtil {
         return client;
     }
 
-    public static ProposalTemplate getProposalTemplate(long Id) {
+    public static IProposalTemplate getProposalTemplate(long Id) {
         return client.getProposalTemplate(Id);
     }
 
-    public static List<ProposalTemplate> getProposalTemplates() {
+    public static List<IProposalTemplate> getProposalTemplates() {
         return client.getProposalTemplates();
     }
 
-    public static ProposalTemplate createProposalTemplate(
-            ProposalTemplate proposalTemplate) {
+    public static IProposalTemplate createProposalTemplate(
+            IProposalTemplate proposalTemplate) {
         return client.createProposalTemplate(proposalTemplate);
     }
 
@@ -34,30 +34,30 @@ public final class ProposalTemplateClientUtil {
         return  client.deleteProposalTemplate(id);
     }
 
-    public static boolean updateProposalTemplate(ProposalTemplate proposalTemplate) {
+    public static boolean updateProposalTemplate(IProposalTemplate proposalTemplate) {
         return client.updateProposalTemplate(proposalTemplate);
     }
 
-    public static ProposalTemplateSectionDefinition getProposalTemplateSectionDefinition(long id) {
+    public static ProposalTemplateSectionDefinitionWrapper getProposalTemplateSectionDefinition(long id) {
         return client.getProposalTemplateSectionDefinition(id);
     }
 
     public static boolean updateProposalTemplateSectionDefinition(
-            ProposalTemplateSectionDefinition proposalTemplateSectionDefinition) {
+            ProposalTemplateSectionDefinitionWrapper proposalTemplateSectionDefinition) {
         return client.updateProposalTemplateSectionDefinition(proposalTemplateSectionDefinition);
     }
 
-    public static ProposalTemplateSectionDefinition createProposalTemplateSectionDefinition(
-            ProposalTemplateSectionDefinition proposalTemplateSectionDefinition) {
+    public static ProposalTemplateSectionDefinitionWrapper createProposalTemplateSectionDefinition(
+            ProposalTemplateSectionDefinitionWrapper proposalTemplateSectionDefinition) {
         return client.createProposalTemplateSectionDefinition(proposalTemplateSectionDefinition);
     }
 
-    public static ProposalTemplateSection createProposalTemplateSection(
-            ProposalTemplateSection proposalTemplateSection) {
+    public static IProposalTemplateSection createProposalTemplateSection(
+            IProposalTemplateSection proposalTemplateSection) {
         return client.createProposalTemplateSection(proposalTemplateSection);
     }
 
-    public static List<ProposalTemplateSectionDefinition> getProposalTemplateSectionDefinitionByProposalTemplateId(
+    public static List<ProposalTemplateSectionDefinitionWrapper> getProposalTemplateSectionDefinitionByProposalTemplateId(
             Long proposalTemplateId, Boolean weight) {
         return client.getProposalTemplateSectionDefinitionByProposalTemplateId(proposalTemplateId, weight);
     }
@@ -71,25 +71,25 @@ public final class ProposalTemplateClientUtil {
         return client.deleteProposalTemplateSection(proposalTemplateId, proposalTemplateSectionDefinitionId);
     }
 
-    public static List<ProposalTemplateSection> getProposalTemplateSectionByProposalTemplateId(
+    public static List<IProposalTemplateSection> getProposalTemplateSectionByProposalTemplateId(
             Long proposalTemplateId) {
         return client.getProposalTemplateSectionByProposalTemplateId(proposalTemplateId);
     }
 
     public static boolean updateProposalTemplateSection(
-            ProposalTemplateSection proposalTemplateSection) {
+            IProposalTemplateSection proposalTemplateSection) {
         return client.updateProposalTemplateSection(proposalTemplateSection);
     }
 
-    public static List<ProposalTemplateSection> getProposalTemplateSectionsByTemplateId(long proposalTemplateId) {
+    public static List<IProposalTemplateSection> getProposalTemplateSectionsByTemplateId(long proposalTemplateId) {
         return client.getProposalTemplateSectionsByTemplateId(proposalTemplateId);
     }
 
-    public static List<ProposalTemplateSection> getProposalTemplateSectionsBySectionDefinitionId(long sectionDefinitionId) {
+    public static List<IProposalTemplateSection> getProposalTemplateSectionsBySectionDefinitionId(long sectionDefinitionId) {
         return client.getProposalTemplateSectionsBySectionDefinitionId(sectionDefinitionId);
     }
 
-    public static ProposalTemplateSection getProposalTemplateSection(Long proposalTemplateId, Long sectionDefinitionId) {
+    public static IProposalTemplateSection getProposalTemplateSection(Long proposalTemplateId, Long sectionDefinitionId) {
         return client.getProposalTemplateSection(proposalTemplateId, sectionDefinitionId);
     }
 }

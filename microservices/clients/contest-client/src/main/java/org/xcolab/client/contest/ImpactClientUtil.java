@@ -1,6 +1,6 @@
 package org.xcolab.client.contest;
 
-import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.IImpactIteration;
 import org.xcolab.client.contest.pojo.IImpactTemplateFocusAreaList;
 import org.xcolab.client.contest.pojo.IImpactTemplateMaxFocusArea;

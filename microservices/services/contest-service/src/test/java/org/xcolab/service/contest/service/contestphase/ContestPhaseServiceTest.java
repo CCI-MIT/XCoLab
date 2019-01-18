@@ -17,10 +17,10 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
-import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.util.http.ServiceRequestUtils;
 
@@ -34,7 +34,7 @@ import static org.mockito.Matchers.anyString;
 @PrepareForTest({
         ProposalClientUtil.class,
         ProposalPhaseClientUtil.class,
-        Proposal.class,
+        ProposalWrapper.class,
         ContestWrapper.class
 })
 @ComponentScan("org.xcolab.service.contest")
@@ -61,7 +61,7 @@ public class ContestPhaseServiceTest {
 
         Mockito.when(ProposalClientUtil.getProposal(anyLong()))
                 .thenAnswer(invocation -> {
-                    Proposal proposal = Mockito.mock(Proposal.class);
+                    ProposalWrapper proposal = Mockito.mock(ProposalWrapper.class);
                     proposal.setId(1333850L);
                     return proposal;
                 });

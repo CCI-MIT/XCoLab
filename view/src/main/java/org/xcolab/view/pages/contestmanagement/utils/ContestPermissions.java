@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.contestmanagement.utils;
 
-import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.permissions.SystemRole;
 import org.xcolab.view.auth.MemberAuthUtil;

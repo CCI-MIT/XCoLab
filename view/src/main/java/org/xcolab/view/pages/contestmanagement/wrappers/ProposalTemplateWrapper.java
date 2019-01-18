@@ -4,10 +4,11 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ProposalTemplateClientUtil;
-import org.xcolab.client.contest.pojo.ContestWrapper;
-import org.xcolab.client.contest.pojo.ProposalTemplateSectionDefinition;
-import org.xcolab.client.contest.pojo.ProposalTemplate;
-import org.xcolab.client.contest.pojo.ProposalTemplateSection;
+import org.xcolab.client.contest.pojo.IProposalTemplate;
+import org.xcolab.client.contest.pojo.IProposalTemplateSection;
+import org.xcolab.client.contest.pojo.tables.pojos.ProposalTemplateSection;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
 import org.xcolab.commons.html.LabelValue;
 import org.xcolab.view.pages.contestmanagement.utils.ProposalTemplateLifecycleUtil;
 
@@ -21,7 +22,7 @@ public class ProposalTemplateWrapper {
 
     private List<SectionDefinitionWrapper> sections;
     private Integer numberOfSections;
-    private ProposalTemplate proposalTemplate;
+    private IProposalTemplate proposalTemplate;
     private String templateName;
     private Long proposalTemplateId;
     private Boolean updateExistingSections = false;
@@ -38,7 +39,7 @@ public class ProposalTemplateWrapper {
     private void populateExistingProposalTemplateSections() {
         sections = new ArrayList<>();
         if (proposalTemplate != null) {
-            for (ProposalTemplateSectionDefinition proposalTemplateSectionDefinition : ProposalTemplateClientUtil
+            for (ProposalTemplateSectionDefinitionWrapper proposalTemplateSectionDefinition : ProposalTemplateClientUtil
                     .getProposalTemplateSectionDefinitionByProposalTemplateId(proposalTemplate.getId(), null)) {
                 if (!proposalTemplateSectionDefinition.getLocked()) {
                     sections.add(new SectionDefinitionWrapper(proposalTemplateSectionDefinition,
@@ -64,7 +65,7 @@ public class ProposalTemplateWrapper {
     public static List<LabelValue> getAllProposalTemplateSelectionItems() {
         List<LabelValue> selectItems = new ArrayList<>();
 
-        for (ProposalTemplate proposalTemplateItem : ProposalTemplateClientUtil.getProposalTemplates()) {
+        for (IProposalTemplate proposalTemplateItem : ProposalTemplateClientUtil.getProposalTemplates()) {
             selectItems.add(new LabelValue(proposalTemplateItem.getId(), proposalTemplateItem.getName()));
         }
 
@@ -95,11 +96,11 @@ public class ProposalTemplateWrapper {
         this.updateExistingSections = updateExistingSections;
     }
 
-    public ProposalTemplate getProposalTemplate() {
+    public IProposalTemplate getProposalTemplate() {
         return proposalTemplate;
     }
 
-    public void setProposalTemplate(ProposalTemplate proposalTemplate) {
+    public void setProposalTemplate(IProposalTemplate proposalTemplate) {
         this.proposalTemplate = proposalTemplate;
     }
 
@@ -171,9 +172,9 @@ public class ProposalTemplateWrapper {
         }
 
 
-        List<ProposalTemplateSectionDefinition> proposalTemplateSectionDefinitions = ProposalTemplateClientUtil
+        List<ProposalTemplateSectionDefinitionWrapper> proposalTemplateSectionDefinitions = ProposalTemplateClientUtil
                 .getProposalTemplateSectionDefinitionByProposalTemplateId(proposalTemplate.getId(), null);
-        for (ProposalTemplateSectionDefinition proposalTemplateSectionDefinition : proposalTemplateSectionDefinitions) {
+        for (ProposalTemplateSectionDefinitionWrapper proposalTemplateSectionDefinition : proposalTemplateSectionDefinitions) {
             if (!remainingProposalTemplateSectionDefinitionIds.contains(proposalTemplateSectionDefinition.getId())) {
                 if (!ProposalTemplateLifecycleUtil
                         .isProposalTemplateSectionDefinitionUsedInOtherTemplate(
@@ -206,7 +207,7 @@ public class ProposalTemplateWrapper {
     private void duplicateExistingProposalTemplate() {
 
         proposalTemplate.setId(null);
-        ProposalTemplate newProposalTemplate = ProposalTemplateClientUtil.createProposalTemplate(
+        IProposalTemplate newProposalTemplate = ProposalTemplateClientUtil.createProposalTemplate(
                 proposalTemplate);
         proposalTemplateId = newProposalTemplate.getId();
         proposalTemplate = newProposalTemplate;
@@ -229,7 +230,7 @@ public class ProposalTemplateWrapper {
         long sectionDefinitionId = sectionDefinitionWrapper.getId();
         int weight = sectionDefinitionWrapper.getWeight();
 
-        ProposalTemplateSection templateSection = ProposalTemplateClientUtil
+        IProposalTemplateSection templateSection = ProposalTemplateClientUtil
                 .getProposalTemplateSection(proposalTemplateId, sectionDefinitionId);
 
         if (templateSection != null) {
@@ -237,7 +238,7 @@ public class ProposalTemplateWrapper {
             ProposalTemplateClientUtil.updateProposalTemplateSection(templateSection);
 
         } else {
-            ProposalTemplateSection pts = new ProposalTemplateSection();
+            IProposalTemplateSection pts = new ProposalTemplateSection();
             pts.setProposalTemplateId(proposalTemplateId);
             pts.setSectionDefinitionId(sectionDefinitionId);
             pts.setWeight(weight);

@@ -1,6 +1,6 @@
 package org.xcolab.view.caching;
 
-import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.util.http.caching.validation.AbstractCacheValidator;
 
 public class ContestCacheValidator extends AbstractCacheValidator<ContestWrapper> {

@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.model.tables.pojos.Proposal;
-import org.xcolab.model.tables.pojos.ProposalReference;
+import org.xcolab.client.contest.pojo.IProposalReference;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.proposal.domain.proposal.ProposalDao;
 import org.xcolab.service.contest.proposal.domain.proposalreference.ProposalReferenceDao;
@@ -35,13 +35,13 @@ public class ProposalReferenceController {
 
     @GetMapping("/proposalReferences/populateTableWithProposal")
     public Boolean getProposalReference(@RequestParam Long proposalId) throws NotFoundException {
-        Proposal proposal = proposalDao.get(proposalId);
+        ProposalWrapper proposal = proposalDao.get(proposalId);
         proposalReferenceService.populateTableWithProposal(proposal);
         return true;
     }
 
     @RequestMapping(value = "/proposalReferences", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<ProposalReference> getProposalReferences(
+    public List<IProposalReference> getProposalReferences(
             @RequestParam(required = false) Long proposalId,
             @RequestParam(required = false) Long subProposalId) {
         return proposalReferenceDao.findByGiven(proposalId, subProposalId);

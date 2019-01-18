@@ -3,7 +3,7 @@ package org.xcolab.view.pages.proposals.wrappers;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.enums.points.PointsTarget;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 
 public class PointsTargetProposalWrapper {
 
@@ -16,7 +16,7 @@ public class PointsTargetProposalWrapper {
         this.percentageIn = percentageIn;
     }
 
-    public Proposal getProposal() {
+    public ProposalWrapper getProposal() {
         try {
             return ProposalClientUtil.getProposal(target.getProposalId());
         } catch (ProposalNotFoundException ignored) {

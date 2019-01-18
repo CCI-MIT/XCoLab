@@ -6,11 +6,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.contest.OntologyClientUtil;
-import org.xcolab.client.contest.pojo.ContestWrapper;
-import org.xcolab.client.contest.pojo.FocusAreaWrapper;
-import org.xcolab.client.contest.pojo.OntologyTermWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.FocusAreaWrapper;
+import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
 import org.xcolab.client.contest.proposals.enums.ImpactSeriesType;
-import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.view.pages.proposals.exceptions.ProposalImpactDataParserException;
 
 import java.util.ArrayList;
@@ -64,7 +64,7 @@ public class ProposalImpactDataParser {
     }
 
     private final String tabSeparatedString;
-    private final Proposal proposal;
+    private final ProposalWrapper proposal;
     private final ContestWrapper contest;
 
 
@@ -72,7 +72,7 @@ public class ProposalImpactDataParser {
      * Creates a new ProposalImpactDataParser object with the input String (tab-separated string
      * copy-pasted from Excel) and the Contest of the proposal in question.
      */
-    public ProposalImpactDataParser(String tabSeparatedString, Proposal proposal, ContestWrapper contest) {
+    public ProposalImpactDataParser(String tabSeparatedString, ProposalWrapper proposal, ContestWrapper contest) {
         this.tabSeparatedString = tabSeparatedString;
         this.proposal = proposal;
         this.contest = contest;

@@ -12,12 +12,12 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
-import org.xcolab.client.contest.pojo.ContestWrapper;
 import org.xcolab.client.contest.pojo.IContestCollectionCard;
-import org.xcolab.client.contest.pojo.FocusAreaWrapper;
 import org.xcolab.client.contest.pojo.IFocusAreaOntologyTerm;
-import org.xcolab.client.contest.pojo.OntologySpaceWrapper;
-import org.xcolab.client.contest.pojo.OntologyTermWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.FocusAreaWrapper;
+import org.xcolab.client.contest.pojo.wrapper.OntologySpaceWrapper;
+import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.http.servlet.RequestUtil;
@@ -143,7 +143,7 @@ public class ContestsIndexController extends BaseProposalsController {
                 ontologyTermToLoad = null; //get all
             } else {
                 ontologyTermToLoad = ContestClientUtil.getContestCollectionCard(currentCollectionCardId)
-                        .getOntology_term_to_load();
+                        .getOntologyTermToLoad();
             }
 
             List<CollectionCardWrapper> collectionCards = new ArrayList<>();
@@ -174,8 +174,8 @@ public class ContestsIndexController extends BaseProposalsController {
             model.addAttribute("showOnlyFeatured", showOnlyFeatured);
 
             //if only featured
-            if(ContestClientUtil.getContestCollectionCard(currentCollectionCardId).getOntology_term_to_load() != null) {
-                model.addAttribute("ontologySpaceId", OntologyClientUtil.getOntologyTerm(ContestClientUtil.getContestCollectionCard(currentCollectionCardId).getOntology_term_to_load()).getOntologySpaceId());
+            if(ContestClientUtil.getContestCollectionCard(currentCollectionCardId).getOntologyTermToLoad() != null) {
+                model.addAttribute("ontologySpaceId", OntologyClientUtil.getOntologyTerm(ContestClientUtil.getContestCollectionCard(currentCollectionCardId).getOntologyTermToLoad()).getOntologySpaceId());
             } else {
                 model.addAttribute("ontologySpaceId", 0);
             }

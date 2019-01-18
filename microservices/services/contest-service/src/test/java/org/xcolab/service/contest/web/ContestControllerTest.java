@@ -21,9 +21,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import org.xcolab.client.contest.pojo.AbstractContest;
-import org.xcolab.client.contest.pojo.ContestWrapper;
-import org.xcolab.client.contest.pojo.IContestDiscussion;
+import org.xcolab.client.contest.pojo.tables.pojos.ContestDiscussion;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.service.contest.domain.contest.ContestDao;
 import org.xcolab.service.contest.domain.contestcollectioncard.ContestCollectionCardDao;
 import org.xcolab.service.contest.domain.contestdiscussion.ContestDiscussionDao;
@@ -64,10 +63,8 @@ public class ContestControllerTest {
     @Autowired
     ObjectMapper objectMapper;
 
-
     @InjectMocks
     private ContestController controller;
-
 
     @Mock
     private ContestDao contestDao;
@@ -84,13 +81,11 @@ public class ContestControllerTest {
     @Mock
     private CollectionCardService collectionCardService;
 
-
     @Mock
     private OntologyService ontologyService;
 
     @Before
     public void before() throws Exception {
-
         ServiceRequestUtils.setInitialized(true);
 
         this.mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
@@ -98,26 +93,22 @@ public class ContestControllerTest {
         objectMapper.setSerializationInclusion(Include.NON_NULL);
         objectMapper.setSerializationInclusion(Include.NON_EMPTY);
 
-
         Mockito.when(contestDao.get(anyLong()))
-                .thenAnswer(invocation -> new org.xcolab.model.tables.pojos.Contest());
+                .thenAnswer(invocation -> new ContestWrapper());
 
         Mockito.when(contestDiscussionDao.get(anyLong()))
-                .thenAnswer(
-                        invocation -> Optional.of(new org.xcolab.model.tables.pojos.ContestDiscussion()));
+                .thenAnswer(invocation -> Optional.of(new ContestDiscussion()));
     }
 
-    private static AbstractContest getContest() {
-        AbstractContest contest = new AbstractContest() {};
+    private static ContestWrapper getContest() {
+        ContestWrapper contest = new ContestWrapper();
         contest.setAuthorUserId(1L);
         return contest;
     }
 
     @Test
     public void shouldCreateNewContest() throws Exception {
-
-        AbstractContest contest = getContest();
-
+        ContestWrapper contest = getContest();
 
         this.mockMvc.perform(post("/contests").contentType(contentType).accept(contentType)
                 .content(objectMapper.writeValueAsString(contest))).andExpect(status().isOk());
@@ -162,8 +153,7 @@ public class ContestControllerTest {
 
     @Test
     public void shouldUpdateContestPost() throws Exception {
-
-        AbstractContest contest = getContest();
+        ContestWrapper contest = getContest();
         contest.setId(10L);
         this.mockMvc.perform(put("/contests/" + contest.getId()).contentType(contentType)
                 .accept(contentType).content(objectMapper.writeValueAsString(contest)))
@@ -172,33 +162,30 @@ public class ContestControllerTest {
         Mockito.verify(contestDao, Mockito.times(1)).update(Mockito.anyObject());
     }
 
-        @Test
-        public void shouldGetContestDiscussion() throws Exception {
-            this.mockMvc.perform(
-                    get("/contestDiscussions").param("startRecord", "1").param("limitRecord", "100")
-                            .param("sort", "").param("contestId", "").param("tab", "2016")
+    @Test
+    public void shouldGetContestDiscussion() throws Exception {
+        this.mockMvc.perform(
+                get("/contestDiscussions").param("startRecord", "1").param("limitRecord", "100")
+                        .param("sort", "").param("contestId", "").param("tab", "2016")
 
-            ).andExpect(status().isOk());
-            Mockito.verify(contestDiscussionDao, Mockito.times(1))
-                    .findByGiven(Mockito.anyObject(), Mockito.anyObject(), Mockito.anyObject());
-        }
+        ).andExpect(status().isOk());
+        Mockito.verify(contestDiscussionDao, Mockito.times(1))
+                .findByGiven(Mockito.anyObject(), Mockito.anyObject(), Mockito.anyObject());
+    }
+
     @Test
     public void shouldUpdateContestDiscussion() throws Exception {
+        ContestDiscussion contestDisc = new ContestDiscussion();
+        contestDisc.setId(10L);
 
-        IContestDiscussion contestDisc = new IContestDiscussion();
-        contestDisc.setDiscussionId(10L);
-
-
-        this.mockMvc.perform(put("/contestDiscussions/"+contestDisc.getDiscussionId()).contentType(contentType).accept(contentType)
+        this.mockMvc.perform(put("/contestDiscussions/"+contestDisc.getId()).contentType(contentType).accept(contentType)
                 .content(objectMapper.writeValueAsString(contestDisc))).andExpect(status().isOk());
 
         Mockito.verify(contestDiscussionDao, Mockito.times(1)).update(Mockito.anyObject());
     }
     @Test
     public void shouldCreateNewContestDiscussion() throws Exception {
-
-        IContestDiscussion contest = new IContestDiscussion();
-
+        ContestDiscussion contest = new ContestDiscussion();
 
         this.mockMvc.perform(post("/contestDiscussions").contentType(contentType).accept(contentType)
                 .content(objectMapper.writeValueAsString(contest))).andExpect(status().isOk());

@@ -7,9 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.xcolab.model.tables.pojos.ProposalContestPhaseAttribute;
-import org.xcolab.service.contest.proposal.domain.proposalcontestphaseattribute.ProposalContestPhaseAttributeDao;
+
+import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
 import org.xcolab.service.contest.exceptions.NotFoundException;
+import org.xcolab.service.contest.proposal.domain.proposalcontestphaseattribute.ProposalContestPhaseAttributeDao;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class ProposalContestPhaseAttributeController {
     private ProposalContestPhaseAttributeDao proposalContestPhaseAttributeDao;
 
     @RequestMapping(value = "/proposalContestPhaseAttributes", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<ProposalContestPhaseAttribute> getProposalContestPhaseAttributes(
+    public List<IProposalContestPhaseAttribute> getProposalContestPhaseAttributes(
             @RequestParam(required = false) Long contestPhaseId,
             @RequestParam(required = false) Long proposalId,
             @RequestParam(required = false) String name
@@ -28,12 +29,12 @@ public class ProposalContestPhaseAttributeController {
         return proposalContestPhaseAttributeDao.findByGiven(proposalId, contestPhaseId, name);
     }
     @RequestMapping(value = "/proposalContestPhaseAttributes/getByContestPhaseProposalIdName", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public ProposalContestPhaseAttribute getProposalContestPhaseAttributesByContestPhase(
+    public IProposalContestPhaseAttribute getProposalContestPhaseAttributesByContestPhase(
             @RequestParam(required = false) Long contestPhaseId,
             @RequestParam(required = false) Long proposalId,
             @RequestParam(required = false) String name
     ) throws NotFoundException {
-        List<ProposalContestPhaseAttribute> prop = proposalContestPhaseAttributeDao.findByGiven(proposalId, contestPhaseId , name);
+        List<IProposalContestPhaseAttribute> prop = proposalContestPhaseAttributeDao.findByGiven(proposalId, contestPhaseId , name);
         if(prop!= null && prop.size()>=1) {
             return prop.get(0);
         }
@@ -42,7 +43,7 @@ public class ProposalContestPhaseAttributeController {
         }
     }
     @RequestMapping(value = "/proposalContestPhaseAttributes", method = RequestMethod.POST)
-    public ProposalContestPhaseAttribute createProposalContestPhaseAttribute(@RequestBody ProposalContestPhaseAttribute proposalContestPhaseAttribute) {
+    public IProposalContestPhaseAttribute createProposalContestPhaseAttribute(@RequestBody IProposalContestPhaseAttribute proposalContestPhaseAttribute) {
         if(proposalContestPhaseAttribute.getAdditionalId() == null){
             proposalContestPhaseAttribute.setAdditionalId(0L);
         }
@@ -59,9 +60,8 @@ public class ProposalContestPhaseAttributeController {
     }
 
     @RequestMapping(value = "/proposalContestPhaseAttributes/{id}", method = RequestMethod.PUT)
-    public boolean updateProposalContestPhaseAttribute(@RequestBody ProposalContestPhaseAttribute proposalContestPhaseAttribute,
+    public boolean updateProposalContestPhaseAttribute(@RequestBody IProposalContestPhaseAttribute proposalContestPhaseAttribute,
                                                        @PathVariable("id") Long id) throws NotFoundException {
-
         if (id == null || id == 0 || proposalContestPhaseAttributeDao.get(id) == null) {
             throw new NotFoundException("No ProposalContestPhaseAttribute with id " + id);
         } else {
@@ -72,11 +72,10 @@ public class ProposalContestPhaseAttributeController {
     @RequestMapping(value = "/proposalContestPhaseAttributes/{id}", method = RequestMethod.DELETE)
     public String deleteProposalContestPhaseAttribute(@PathVariable("id") Long id)
             throws NotFoundException {
-
         if (id == null || id == 0) {
             throw new NotFoundException("No ProposalContestPhaseAttribute with id given");
         } else {
-            ProposalContestPhaseAttribute proposalContestPhaseAttribute = this.proposalContestPhaseAttributeDao.get(id);
+            IProposalContestPhaseAttribute proposalContestPhaseAttribute = this.proposalContestPhaseAttributeDao.get(id);
             if (proposalContestPhaseAttribute != null) {
                 this.proposalContestPhaseAttributeDao.delete(proposalContestPhaseAttribute.getId());
                 return "ProposalContestPhaseAttribute deleted successfully";

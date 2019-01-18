@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
-import org.xcolab.client.contest.pojo.ContestWrapper;
-import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
@@ -80,17 +80,17 @@ public class ContestPhaseService {
     public void transferSupportsToVote(ContestWrapper contest, ContestPhaseWrapper votingPhase) {
 
 //        TODO: this should not be calling the client!
-        final List<Proposal> proposalsInPhase = ProposalClientUtil
+        final List<ProposalWrapper> proposalsInPhase = ProposalClientUtil
                 .getProposalsInContestPhase(votingPhase.getId());
         Set<Long> proposalIdsInPhase = proposalsInPhase.stream()
-                .map(Proposal::getId)
+                .map(ProposalWrapper::getId)
                 .collect(Collectors.toSet());
 
-        Map<Member, Set<Proposal>> supportedProposalsByMember =
+        Map<Member, Set<ProposalWrapper>> supportedProposalsByMember =
                 getSupportedProposalsByMember(contest);
         for (Member user : supportedProposalsByMember.keySet()) {
 
-            List<Proposal> supportedProposalsInPhase = supportedProposalsByMember.get(user).stream()
+            List<ProposalWrapper> supportedProposalsInPhase = supportedProposalsByMember.get(user).stream()
                     .filter(p -> proposalIdsInPhase.contains(p.getId()))
                     .collect(Collectors.toList());
 
@@ -105,7 +105,7 @@ public class ContestPhaseService {
             ContestWrapper contestPojo = ContestClientUtil
                     .getContest(contest.getId());
             if (supportedProposalsInPhase.size() == 1) {
-                final Proposal proposal = supportedProposalsInPhase.get(0);
+                final ProposalWrapper proposal = supportedProposalsInPhase.get(0);
                 ProposalMemberRatingClientUtil.addProposalVote(proposal.getId(),
                         votingPhase.getId(), user.getId(), 1);
 
@@ -117,8 +117,8 @@ public class ContestPhaseService {
         }
     }
 
-    private Map<Member, Set<Proposal>> getSupportedProposalsByMember(ContestWrapper contest) {
-        List<Proposal> proposalsInContest = ProposalClientUtil
+    private Map<Member, Set<ProposalWrapper>> getSupportedProposalsByMember(ContestWrapper contest) {
+        List<ProposalWrapper> proposalsInContest = ProposalClientUtil
                 .getProposalsInContest(contest.getId());
 
         return new GroupingHelper<>(proposalsInContest).groupWithDuplicateKeysAndValues(
@@ -131,7 +131,7 @@ public class ContestPhaseService {
     public void forcePromotionOfProposalInPhase(Long proposalId, Long phaseId) throws NotFoundException {
         ContestPhaseWrapper phase = contestPhaseDao.get(phaseId).get();
         try {
-            Proposal p = ProposalClientUtil.getProposal(proposalId);
+            ProposalWrapper p = ProposalClientUtil.getProposal(proposalId);
             ContestPhaseWrapper nextPhase = getNextContestPhase(phase);
             PhasePromotionHelper phasePromotionHelper = new PhasePromotionHelper(phase);
             //skip already promoted proposal

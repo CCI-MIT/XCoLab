@@ -1,6 +1,6 @@
 package org.xcolab.service.contest.proposal.domain.proposalvote;
 
-import org.xcolab.model.tables.pojos.ProposalVote;
+import org.xcolab.client.contest.pojo.IProposalVote;
 
 import java.util.List;
 
@@ -8,12 +8,12 @@ public interface ProposalVoteDao {
 
     int delete(long proposalId, long userId, long contestPhaseId);
 
-    List<ProposalVote> findByGiven(Long proposalId, Long contestPhaseId, Long userId);
+    List<IProposalVote> findByGiven(Long proposalId, Long contestPhaseId, Long userId);
 
     Integer countByGiven(Long proposalId, Long contestPhaseId, Long userId,
             Boolean isValidOverride);
 
-    boolean update(ProposalVote proposalVote);
+    boolean update(IProposalVote proposalVote);
 
-    ProposalVote create(ProposalVote proposalVote);
+    IProposalVote create(IProposalVote proposalVote);
 }

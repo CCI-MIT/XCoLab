@@ -15,17 +15,17 @@ import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.ContestWrapper;
-import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
-import org.xcolab.client.contest.pojo.ProposalTemplateSectionDefinition;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
 import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.members.PlatformTeamsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalClient;
 import org.xcolab.client.contest.proposals.ProposalMoveClient;
-import org.xcolab.client.contest.pojo.ContestTypeProposal;
-import org.xcolab.client.contest.pojo.Proposal;
-import org.xcolab.client.contest.pojo.ProposalMoveHistory;
+import org.xcolab.client.contest.pojo.wrapper.ContestTypeProposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.IProposalMoveHistory;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.util.enums.contest.ContestPhaseTypeValue;
 import org.xcolab.util.enums.flagging.TargetType;
@@ -108,7 +108,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
         // which might not be the proposal's contests (e.g. when moving)
         model.addAttribute("saveUrl", proposalContext.getProposal().getProposalLinkUrl(proposalContext.getContest()));
 
-        final Proposal proposal = proposalContext.getProposal();
+        final ProposalWrapper proposal = proposalContext.getProposal();
 
         final ClientHelper clients = proposalContext.getClients();
         final ProposalClient proposalClient = clients.getProposalClient();
@@ -125,7 +125,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
             ContestPhaseWrapper baseContestPhase =
                     ContestClientUtil.getActivePhase(baseContest.getId());
 
-            Proposal baseProposalWrapped = new Proposal(proposal, proposal.getCurrentVersion(),
+            ProposalWrapper baseProposalWrapped = new ProposalWrapper(proposal, proposal.getCurrentVersion(),
                     baseContest, baseContestPhase, null);
 
             UpdateProposalDetailsBean updateProposalDetailsBean = new UpdateProposalDetailsBean(
@@ -186,9 +186,9 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
         return "proposals/proposalDetails";
     }
 
-    private boolean hasUnmappedSections(ContestWrapper moveToContest, Proposal baseProposalWrapped) {
+    private boolean hasUnmappedSections(ContestWrapper moveToContest, ProposalWrapper baseProposalWrapped) {
         Set<Long> newContestSections = moveToContest.getSections().stream()
-                .map(ProposalTemplateSectionDefinition::getSectionDefinitionId)
+                .map(ProposalTemplateSectionDefinitionWrapper::getSectionDefinitionId)
                 .collect(Collectors.toSet());
 
         return baseProposalWrapped.getSections().stream()
@@ -196,23 +196,23 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
                 .anyMatch(section -> !newContestSections.contains(section.getSectionDefinitionId()));
     }
 
-    private boolean hasProposalPicker(Proposal proposal) {
+    private boolean hasProposalPicker(ProposalWrapper proposal) {
         return proposal.getSections().stream()
-                .map(ProposalTemplateSectionDefinition::getTypeEnum)
+                .map(ProposalTemplateSectionDefinitionWrapper::getTypeEnum)
                 .anyMatch(ProposalTemplateSectionType.PROPOSAL_PICKER_SECTION_TYPES::contains);
     }
 
     private void populateMoveHistory(Model model, ProposalContext proposalContext,
-            Proposal proposal, ContestWrapper contest) {
+            ProposalWrapper proposal, ContestWrapper contest) {
 
         final ClientHelper clients = proposalContext.getClients();
         final ProposalMoveClient proposalMoveClient = clients.getProposalMoveClient();
-        List<ProposalMoveHistory> sourceMoveHistories = proposalMoveClient
+        List<IProposalMoveHistory> sourceMoveHistories = proposalMoveClient
                         .getBySourceProposalIdContestId(proposal.getId(),
                                 contest.getId());
         model.addAttribute("sourceMoveHistories", sourceMoveHistories);
 
-        ProposalMoveHistory targetMoveHistory = proposalMoveClient
+        IProposalMoveHistory targetMoveHistory = proposalMoveClient
                         .getByTargetProposalIdContestId(proposal.getId(),
                                 contest.getId());
         if (targetMoveHistory != null) {
@@ -220,21 +220,21 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
         }
     }
 
-    private void setLinkedProposals(Model model, ProposalContext proposalContext, Proposal proposal) {
+    private void setLinkedProposals(Model model, ProposalContext proposalContext, ProposalWrapper proposal) {
         final ClientHelper clients = proposalContext.getClients();
         final ProposalClient proposalClient = clients.getProposalClient();
-        List<Proposal> linkedProposals = proposalClient
+        List<ProposalWrapper> linkedProposals = proposalClient
                         .getSubproposals(proposal.getId(), true);
-        Map<ContestType, Set<Proposal>> proposalsByContestType =
+        Map<ContestType, Set<ProposalWrapper>> proposalsByContestType =
                 EntityGroupingUtil.groupByContestType(linkedProposals);
         Map<Long, ContestTypeProposal> contestTypeProposalWrappersByContestTypeId = new HashMap<>();
 
         for (ContestType contestType : contestTypeClient.getActiveContestTypes()) {
             contestTypeProposalWrappersByContestTypeId.put(contestType.getId(),
                     new ContestTypeProposal(contestType));
-            final Set<Proposal> proposalsInContestType = proposalsByContestType.get(contestType);
+            final Set<ProposalWrapper> proposalsInContestType = proposalsByContestType.get(contestType);
             if (proposalsInContestType != null) {
-                for (Proposal p : proposalsInContestType) {
+                for (ProposalWrapper p : proposalsInContestType) {
                     contestTypeProposalWrappersByContestTypeId.get(contestType.getId())
                             .getProposals().add((p));
                 }
@@ -250,7 +250,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
         if (judgeProposalFeedbackBean == null
                 || judgeProposalFeedbackBean.getContestPhaseId() == null) {
 
-            final Proposal proposal = proposalContext.getProposal();
+            final ProposalWrapper proposal = proposalContext.getProposal();
             final ContestPhaseWrapper contestPhase = proposalContext.getContestPhase();
 
             ProposalJudgeWrapper proposalJudgeWrapper = new ProposalJudgeWrapper(proposal, member);
@@ -306,7 +306,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
             @Valid UpdateProposalDetailsBean updateProposalDetailsBean, BindingResult result)
             throws ProposalsAuthorizationException, IOException {
 
-        Proposal proposal = proposalContext.getProposal();
+        ProposalWrapper proposal = proposalContext.getProposal();
         final ProposalsPermissions permissions = proposalContext.getPermissions();
         if (proposal != null && !permissions.getCanEdit()) {
             return new AccessDeniedPage(currentMember).toViewName(response);

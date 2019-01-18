@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.util.activities.enums.ProposalActivityType;
-import org.xcolab.model.tables.pojos.ProposalSupporter;
+import org.xcolab.client.contest.pojo.IProposalSupporter;
 import org.xcolab.service.contest.proposal.domain.proposalsupporter.ProposalSupporterDao;
 import org.xcolab.service.contest.proposal.service.ProposalSupportService;
 import org.xcolab.service.contest.proposal.service.ProposalSupportService.SupportedProposal;
+import org.xcolab.util.activities.enums.ProposalActivityType;
 
 import java.util.List;
 
@@ -31,7 +31,7 @@ public class ProposalSupporterController {
     }
 
     @RequestMapping(value = "/proposalSupporters", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<ProposalSupporter> getProposalSupporters(
+    public List<IProposalSupporter> getProposalSupporters(
             @RequestParam(required = false) Long proposalId,
             @RequestParam(required = false) Long userId
     ) {
@@ -56,7 +56,7 @@ public class ProposalSupporterController {
     }
 
     @RequestMapping(value = "/proposalSupporters", method = RequestMethod.POST)
-    public ProposalSupporter createProposalSupporter(@RequestBody ProposalSupporter proposalSupporter) {
+    public IProposalSupporter createProposalSupporter(@RequestBody IProposalSupporter proposalSupporter) {
         return this.proposalSupporterDao.create(proposalSupporter);
 
     }
@@ -66,7 +66,7 @@ public class ProposalSupporterController {
             @RequestParam Long proposalId,
             @RequestParam Long userId
     ) {
-        List<ProposalSupporter> ret = proposalSupporterDao.findByGiven(proposalId, userId);
+        List<IProposalSupporter> ret = proposalSupporterDao.findByGiven(proposalId, userId);
 
         if (ret != null && ret.size() == 1) {
             return true;
@@ -84,5 +84,4 @@ public class ProposalSupporterController {
                 proposalId);
         return true;
     }
-
 }

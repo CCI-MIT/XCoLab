@@ -7,7 +7,7 @@ import org.xcolab.util.activities.enums.ActivityType;
 import org.xcolab.util.activities.enums.ContestActivityType;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.view.activityentry.ActivityInitializationException;
 import org.xcolab.view.i18n.ResourceMessageResolver;
 
@@ -18,7 +18,7 @@ public class ProposalCreatedActivityEntry extends ContestBaseActivityEntry {
 
     private final ResourceMessageResolver resourceMessageResolver;
 
-    private Proposal proposal;
+    private ProposalWrapper proposal;
 
     @Autowired
     public ProposalCreatedActivityEntry(ResourceMessageResolver resourceMessageResolver) {

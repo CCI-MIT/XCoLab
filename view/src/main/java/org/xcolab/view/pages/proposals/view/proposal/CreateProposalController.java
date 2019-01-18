@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.ContestWrapper;
-import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
-import org.xcolab.client.contest.pojo.ProposalTemplateSectionDefinition;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
 import org.xcolab.client.members.PlatformTeamsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalClient;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.util.enums.proposal.ProposalTemplateSectionType;
 import org.xcolab.view.auth.MemberAuthUtil;
@@ -70,7 +70,7 @@ public class CreateProposalController extends BaseProposalsController {
         final ProposalClient proposalClient = clients.getProposalClient();
 
         final ContestWrapper contest = proposalContext.getContest();
-        Proposal proposal = new Proposal();
+        ProposalWrapper proposal = new ProposalWrapper();
 
         proposal.setId(0L);
         proposal.setVisible(true);
@@ -78,11 +78,11 @@ public class CreateProposalController extends BaseProposalsController {
 
         final ContestPhaseWrapper contestPhase = proposalContext.getContestPhase();
 
-        proposal = new Proposal(proposal, 0, contest, contestPhase, null);
+        proposal = new ProposalWrapper(proposal, 0, contest, contestPhase, null);
         if (baseProposalId != null && baseProposalId > 0) {
             try {
                 ContestWrapper baseContest = contestClient.getContest(baseContestId);
-                Proposal baseProposal = new Proposal(proposalClient.getProposal(baseProposalId),
+                ProposalWrapper baseProposal = new ProposalWrapper(proposalClient.getProposal(baseProposalId),
                         baseProposalVersion, baseContest, contestClient.getActivePhase(baseContest.getId()), null);
 
                 model.addAttribute("baseProposal", baseProposal);
@@ -135,9 +135,9 @@ public class CreateProposalController extends BaseProposalsController {
         return "proposals/proposalDetails_edit";
     }
 
-    private boolean hasProposalPicker(Proposal proposal) {
+    private boolean hasProposalPicker(ProposalWrapper proposal) {
         return proposal.getSections().stream()
-                .map(ProposalTemplateSectionDefinition::getTypeEnum)
+                .map(ProposalTemplateSectionDefinitionWrapper::getTypeEnum)
                 .anyMatch(ProposalTemplateSectionType.PROPOSAL_PICKER_SECTION_TYPES::contains);
     }
 
@@ -147,7 +147,7 @@ public class CreateProposalController extends BaseProposalsController {
             @PathVariable String contestYear, @PathVariable String contestUrlName,
             @Valid UpdateProposalDetailsBean updateProposalDetailsBean, BindingResult result) {
 
-        Proposal proposal = proposalContext.getProposal();
+        ProposalWrapper proposal = proposalContext.getProposal();
         final ProposalsPermissions permissions = proposalContext.getPermissions();
         if (!permissions.getCanCreate()) {
             return new AccessDeniedPage(permissions.getMember()).toViewName(response);

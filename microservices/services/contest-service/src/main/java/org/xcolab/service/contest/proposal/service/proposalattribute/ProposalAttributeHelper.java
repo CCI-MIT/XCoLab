@@ -1,6 +1,6 @@
 package org.xcolab.service.contest.proposal.service.proposalattribute;
 
-import org.xcolab.model.tables.pojos.ProposalAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
 
 import java.util.ArrayList;
 import java.util.Collections;

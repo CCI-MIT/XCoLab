@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.ContestWrapper;
-import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalClient;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
-import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
@@ -56,7 +56,7 @@ public class ProposalAdminTabController extends BaseProposalTabController {
 
         if (proposalContext.getPermissions().getCanDelete()) {
             ContestPhaseWrapper contestPhase = proposalContext.getContestPhase();
-            Proposal proposal = proposalContext.getProposal();
+            ProposalWrapper proposal = proposalContext.getProposal();
             ContestWrapper contest = proposalContext.getContest();
 
 
@@ -83,7 +83,7 @@ public class ProposalAdminTabController extends BaseProposalTabController {
         final ClientHelper clients = proposalContext.getClients();
         final ContestClient contestClient = clients.getContestClient();
         ContestPhaseWrapper contestPhase = contestClient.getContestPhase(contestPhaseId);
-        final Proposal proposal = proposalContext.getProposal();
+        final ProposalWrapper proposal = proposalContext.getProposal();
         final ContestWrapper contest = proposalContext.getContest();
         if (proposalsPermissions.getCanPromoteProposalToNextPhase(contestPhase)) {
             try {

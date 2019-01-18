@@ -1,26 +1,26 @@
 package org.xcolab.client.contest.proposals.helpers;
 
+import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ProposalAttributeHelperDataDto;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.ProposalAttributeClient;
-import org.xcolab.client.contest.pojo.Proposal;
-import org.xcolab.client.contest.pojo.ProposalAttribute;
-import org.xcolab.client.contest.pojo.ProposalAttributeHelperDataDto;
 
 import java.util.Map;
 
 public class ProposalAttributeHelper extends AttributeHelper<ProposalAttribute> {
 
-    private final Proposal proposal;
+    private final ProposalWrapper proposal;
     private final int version;
 
     private final ProposalAttributeClient proposalAttributeClient;
 
-    public ProposalAttributeHelper(Proposal proposal, int version, ProposalAttributeClient proposalAttributeClient) {
+    public ProposalAttributeHelper(ProposalWrapper proposal, int version, ProposalAttributeClient proposalAttributeClient) {
         this.proposal = proposal;
         this.version = version;
         this.proposalAttributeClient = proposalAttributeClient;
     }
 
-    public ProposalAttributeHelper(Proposal proposal, ProposalAttributeClient proposalAttributeClient) {
+    public ProposalAttributeHelper(ProposalWrapper proposal, ProposalAttributeClient proposalAttributeClient) {
         this(proposal, proposal.getCurrentVersion(), proposalAttributeClient);
     }
 

@@ -2,10 +2,10 @@ package org.xcolab.service.contest.proposal.enums;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.IPointType;
 import org.xcolab.client.contest.pojo.IPointsDistributionConfiguration;
-import org.xcolab.model.tables.pojos.PointType;
-import org.xcolab.model.tables.pojos.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.service.contest.proposal.service.pointsdistributionconfiguration.PointsDistributionConfigurationService;
 import org.xcolab.service.contest.proposal.service.proposal.ProposalService;
 import org.xcolab.util.enums.contest.ContestTier;
@@ -23,7 +23,7 @@ public enum ReceiverLimitationStrategy {
 		PointsDistributionConfigurationService pointsDistributionConfigurationService;
 
 		@Override
-		public List<PointsTarget> getPointTargets(Proposal proposal, PointType pointType, DistributionStrategy distributionStrategy) {
+		public List<PointsTarget> getPointTargets(ProposalWrapper proposal, IPointType pointType, DistributionStrategy distributionStrategy) {
 			// check if there is any configuration, if there is create appropriate targets
 			List<PointsTarget> targets = new ArrayList<>();
 			if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
@@ -39,21 +39,21 @@ public enum ReceiverLimitationStrategy {
 			}
 			return targets;
 		}
-		
-	}), 
-	
+	}),
+
 	ANY_NON_TEAM_MEMBER(Type.USER, new ReceiverLimitationTargetsPickerAlgorithm() {
 
 		@Autowired
 		PointsDistributionConfigurationService pointsDistributionConfigurationService;
+
 		@Autowired
 		ProposalService proposalService;
 
 		@Override
-		public List<PointsTarget> getPointTargets(Proposal proposal,
-				PointType pointType, DistributionStrategy distributionStrategy) {
+		public List<PointsTarget> getPointTargets(ProposalWrapper proposal,
+				IPointType pointType, DistributionStrategy distributionStrategy) {
 			List<PointsTarget> targets = new ArrayList<>();
-			
+
 			if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
 				for (IPointsDistributionConfiguration pdc: pointsDistributionConfigurationService.getPointsDistributionConfiguration(proposal.getId(), pointType.getId())) {
 					if (pdc.getTargetUserId() > 0 && !proposalService.isUserAMember(proposal.getId(), pdc.getTargetUserId())) {
@@ -66,18 +66,19 @@ public enum ReceiverLimitationStrategy {
 			}
 			return targets;
 		}
-		
 	}),
+
 	ANY_TEAM_MEMBER(Type.USER, new ReceiverLimitationTargetsPickerAlgorithm() {
 
         @Autowired
         PointsDistributionConfigurationService pointsDistributionConfigurationService;
+
         @Autowired
         ProposalService proposalService;
 
 		@Override
-		public List<PointsTarget> getPointTargets(Proposal proposal,
-				PointType pointType, DistributionStrategy distributionStrategy)  {
+		public List<PointsTarget> getPointTargets(ProposalWrapper proposal,
+				IPointType pointType, DistributionStrategy distributionStrategy)  {
 			List<PointsTarget> targets = new ArrayList<>();
 
 			if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
@@ -97,36 +98,36 @@ public enum ReceiverLimitationStrategy {
 			}
 			return targets;
 		}
-		
 	}),
+
     SUBPROPOSALS(Type.SUB_PROPOSAL, new ReceiverLimitationTargetsPickerAlgorithm() {
 
         @Autowired
         ProposalService proposalService;
 
         @Override
-        public List<PointsTarget> getPointTargets(Proposal proposal,
-                                                  PointType pointType, DistributionStrategy distributionStrategy)  {
-            List<Proposal> subProposals = proposalService.getSubproposals(proposal.getId(), false);
+        public List<PointsTarget> getPointTargets(ProposalWrapper proposal,
+                                                  IPointType pointType, DistributionStrategy distributionStrategy)  {
+            List<ProposalWrapper> subProposals = proposalService.getSubproposals(proposal.getId(), false);
             Set<Long> subProposalIds = new HashSet<>();
-            for(Proposal subProposal : subProposals) {
+            for(ProposalWrapper subProposal : subProposals) {
                 subProposalIds.add(subProposal.getId());
             }
             return PointsDistributionUtil.distributeAmongProposals(distributionStrategy, proposal, pointType, subProposalIds);
         }
-
     }),
+
     REGIONAL_SUBPROPOSALS(Type.SUB_PROPOSAL, new ReceiverLimitationTargetsPickerAlgorithm() {
 
         @Autowired
         ProposalService proposalService;
 
         @Override
-        public List<PointsTarget> getPointTargets(Proposal proposal,
-                                                  PointType pointType, DistributionStrategy distributionStrategy) {
-            List<Proposal> subProposals = proposalService.getSubproposals(proposal.getId(), false);
+        public List<PointsTarget> getPointTargets(ProposalWrapper proposal,
+                                                  IPointType pointType, DistributionStrategy distributionStrategy) {
+            List<ProposalWrapper> subProposals = proposalService.getSubproposals(proposal.getId(), false);
             Set<Long> subProposalIds = new HashSet<>();
-            for (Proposal subProposal : subProposals) {
+            for (ProposalWrapper subProposal : subProposals) {
                 final ContestWrapper latestProposalContest = proposalService.getLatestProposalContest(subProposal.getId());
                 final ContestTier contestTier = ContestTier.getContestTierByTierType(latestProposalContest.getContestTier());
                 if (contestTier == ContestTier.REGION_AGGREGATE) {
@@ -136,19 +137,19 @@ public enum ReceiverLimitationStrategy {
             subProposalIds.remove(proposal.getId());
             return PointsDistributionUtil.distributeAmongProposals(distributionStrategy, proposal, pointType, subProposalIds);
         }
-
     }),
+
     BASIC_SUBPROPOSALS(Type.SUB_PROPOSAL, new ReceiverLimitationTargetsPickerAlgorithm() {
 
         @Autowired
         ProposalService proposalService;
 
         @Override
-        public List<PointsTarget> getPointTargets(Proposal proposal,
-                                                  PointType pointType, DistributionStrategy distributionStrategy) {
-            List<Proposal> subProposals = proposalService.getSubproposals(proposal.getId(), false);
+        public List<PointsTarget> getPointTargets(ProposalWrapper proposal,
+                                                  IPointType pointType, DistributionStrategy distributionStrategy) {
+            List<ProposalWrapper> subProposals = proposalService.getSubproposals(proposal.getId(), false);
             Set<Long> subProposalIds = new HashSet<>();
-            for (Proposal subProposal : subProposals) {
+            for (ProposalWrapper subProposal : subProposals) {
                 final ContestWrapper latestProposalContest = proposalService.getLatestProposalContest(subProposal.getId());
                 final ContestTier contestTier = ContestTier.getContestTierByTierType(latestProposalContest.getContestTier());
                 if (contestTier == ContestTier.BASIC || contestTier == ContestTier.NONE) {
@@ -158,21 +159,20 @@ public enum ReceiverLimitationStrategy {
             subProposalIds.remove(proposal.getId());
             return PointsDistributionUtil.distributeAmongProposals(distributionStrategy, proposal, pointType, subProposalIds);
         }
-
     }),
+
 	NONE(Type.OTHER, (proposal, pointType, distributionStrategy) -> null);
 
 	private final Type type;
 	private final ReceiverLimitationTargetsPickerAlgorithm targetsPickerAlgorithm;
-	
+
 	ReceiverLimitationStrategy(Type type, ReceiverLimitationTargetsPickerAlgorithm algorithm) {
 		this.type = type;
 		targetsPickerAlgorithm = algorithm;
 	}
-	
-	public List<PointsTarget> getTargets(Proposal proposal, PointType pointType, DistributionStrategy distributionStrategy)  {
+
+	public List<PointsTarget> getTargets(ProposalWrapper proposal, IPointType pointType, DistributionStrategy distributionStrategy)  {
 		return targetsPickerAlgorithm.getPointTargets(proposal, pointType, distributionStrategy);
-		
 	}
 
 	public Type getType() {
@@ -180,7 +180,7 @@ public enum ReceiverLimitationStrategy {
 	}
 
 	public interface ReceiverLimitationTargetsPickerAlgorithm {
-		List<PointsTarget> getPointTargets(Proposal proposal, PointType pointType, DistributionStrategy distributionStrategy);
+		List<PointsTarget> getPointTargets(ProposalWrapper proposal, IPointType pointType, DistributionStrategy distributionStrategy);
 	}
 
 	public enum Type {

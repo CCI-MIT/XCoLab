@@ -7,7 +7,7 @@
 package org.xcolab.client.contest.enums;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.commons.SortColumn;
 
 import java.util.Comparator;
@@ -48,7 +48,7 @@ public enum ContestStatus {
         return canCreate || canVote || canEdit;
     }
 
-    public Comparator<Proposal> getDefaultProposalComparator() {
+    public Comparator<ProposalWrapper> getDefaultProposalComparator() {
         final SortColumn sortColumn;
         switch (this) {
             case OPEN_FOR_SUBMISSION:
@@ -64,7 +64,7 @@ public enum ContestStatus {
                         ConfigurationAttributeKey.PROPOSALS_PHASE_CLOSED_SORT_ORDER.get());
                 break;
         }
-        final Comparator<Proposal> comparator =
+        final Comparator<ProposalWrapper> comparator =
                 ProposalSortColumn.valueOf(sortColumn.getColumnName()).getComparator();
         return sortColumn.isAscending() ? comparator : comparator.reversed();
     }

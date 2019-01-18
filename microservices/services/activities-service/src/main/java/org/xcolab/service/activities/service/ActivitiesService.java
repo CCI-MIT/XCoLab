@@ -7,10 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.model.tables.pojos.ActivitySubscription;
 import org.xcolab.model.tables.records.ActivitySubscriptionRecord;
 import org.xcolab.service.activities.domain.activitySubscription.ActivitySubscriptionDao;
@@ -75,10 +75,10 @@ public class ActivitiesService {
 
         subscribeDiscussion(userId,contest.getDiscussionGroupId(), true);
 
-        final List<Proposal> proposals = ProposalClientUtil
+        final List<ProposalWrapper> proposals = ProposalClientUtil
                 .listProposals(contestId);
         final Set<Long> processedProposals = new HashSet<>();
-        for (Proposal proposal : proposals) {
+        for (ProposalWrapper proposal : proposals) {
             if (!processedProposals.contains(proposal.getId())) {
                 subscribeProposal(userId, proposal.getId(), true);
                 processedProposals.add(proposal.getId());
@@ -108,7 +108,7 @@ public class ActivitiesService {
                     proposalId, 0);
         }
         try {
-            Proposal proposal = ProposalClientUtil.getProposal(proposalId);
+            ProposalWrapper proposal = ProposalClientUtil.getProposal(proposalId);
             subscribeDiscussion(userId, proposal.getDiscussionId(), true);
         } catch (ProposalNotFoundException e) {
             log.warn("Proposal {} not found", proposalId, e);
@@ -164,10 +164,10 @@ public class ActivitiesService {
         queries.add(activitySubscriptionDao
                 .getDeleteQuery(ActivityCategory.CONTEST, userId, contestId));
 
-        final List<Proposal> proposals = ProposalClientUtil
+        final List<ProposalWrapper> proposals = ProposalClientUtil
                 .listProposals(contestId);
         final Set<Long> processedProposals = new HashSet<>();
-        for (Proposal proposal : proposals) {
+        for (ProposalWrapper proposal : proposals) {
             if (!processedProposals.contains(proposal.getId())) {
                 queries.addAll(
                         getProposalDeleteQueries(userId, proposal.getId(), true));
@@ -238,7 +238,7 @@ public class ActivitiesService {
         queries.add(activitySubscriptionDao
                 .getDeleteQuery(ActivityCategory.PROPOSAL, userId, proposalId));
         try {
-            final Proposal proposal = ProposalClientUtil.getProposal(proposalId);
+            final ProposalWrapper proposal = ProposalClientUtil.getProposal(proposalId);
             queries.addAll(getDiscussionDeleteQueries(userId,
                     proposal.getDiscussionId(), true));
         } catch (ProposalNotFoundException ignored) {

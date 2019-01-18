@@ -1,6 +1,6 @@
 package org.xcolab.view.taglibs.xcolab.interfaces;
 
-import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 
 import java.io.Serializable;
 

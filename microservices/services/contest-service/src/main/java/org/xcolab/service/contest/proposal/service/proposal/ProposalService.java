@@ -12,18 +12,19 @@ import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ProposalTemplateClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.ContestWrapper;
-import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
-import org.xcolab.client.contest.pojo.ProposalTemplateSectionDefinition;
+import org.xcolab.client.contest.pojo.IProposal2Phase;
+import org.xcolab.client.contest.pojo.IProposalReference;
+import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMemberWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.model.tables.pojos.Proposal;
-import org.xcolab.model.tables.pojos.Proposal2Phase;
-import org.xcolab.model.tables.pojos.ProposalAttribute;
-import org.xcolab.model.tables.pojos.ProposalReference;
-import org.xcolab.model.tables.pojos.ProposalTeamMember;
+import org.xcolab.client.contest.pojo.tables.pojos.Proposal2Phase;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.proposal.domain.proposal.ProposalDao;
 import org.xcolab.service.contest.proposal.domain.proposal2phase.Proposal2PhaseDao;
@@ -69,9 +70,9 @@ public class ProposalService {
         this.threadClient = threadClient;
     }
 
-    public Proposal create(long authorUserId, long contestPhaseId, boolean publishActivity) {
+    public ProposalWrapper create(long authorUserId, long contestPhaseId, boolean publishActivity) {
         try {
-            Proposal proposal = new Proposal();
+            ProposalWrapper proposal = new ProposalWrapper();
             proposal.setVisible(true);
             proposal.setAuthorUserId(authorUserId);
 
@@ -103,7 +104,7 @@ public class ProposalService {
 
             if (contestPhaseId > 0) {
                 // associate proposal with phase
-                Proposal2Phase p2p = new Proposal2Phase();
+                IProposal2Phase p2p = new Proposal2Phase();
                 p2p.setProposalId(proposalId);
                 p2p.setContestPhaseId(contestPhaseId);
                 p2p.setVersionFrom(proposalVersionDao.findMaxVersion(proposalId));
@@ -138,8 +139,8 @@ public class ProposalService {
         return commentThread;
     }
 
-    public ProposalReference getReferenceByProposalIdAndSubProposalId(long proposalId, long subProposalId) {
-        ProposalReference ref = null;
+    public IProposalReference getReferenceByProposalIdAndSubProposalId(long proposalId, long subProposalId) {
+        IProposalReference ref = null;
         try {
             ref = proposalReferenceDao.get(proposalId, subProposalId);
         } catch (NotFoundException ignored) {
@@ -148,7 +149,6 @@ public class ProposalService {
     }
 
     public ProposalAttribute getProposalAttribute(long sectionAttributeId) {
-
         ProposalAttribute attribute = null;
         try {
             attribute = proposalAttributeDao.get(sectionAttributeId);
@@ -157,32 +157,32 @@ public class ProposalService {
         return attribute;
     }
 
-    public List<Proposal> getContestIntegrationRelevantSubproposals(long proposalId) {
+    public List<ProposalWrapper> getContestIntegrationRelevantSubproposals(long proposalId) {
         final boolean onlyWithContestIntegrationRelevance = true;
         final boolean includeProposalsInSameContest = false;
         return getSubproposals(proposalId, includeProposalsInSameContest, onlyWithContestIntegrationRelevance);
     }
 
-    public List<Proposal> getSubproposals(long proposalId, boolean includeProposalsInSameContest) {
+    public List<ProposalWrapper> getSubproposals(long proposalId, boolean includeProposalsInSameContest) {
         final boolean onlyWithContestIntegrationRelevance = false;
         return getSubproposals(proposalId, includeProposalsInSameContest, onlyWithContestIntegrationRelevance);
     }
 
-    public List<Proposal> getSubproposals(long proposalId, boolean includeProposalsInSameContest, boolean onlyWithContestIntegrationRelevance) {
-        List<ProposalReference> proposalReferences = proposalReferenceDao.findByGiven(proposalId, null);
+    public List<ProposalWrapper> getSubproposals(long proposalId, boolean includeProposalsInSameContest, boolean onlyWithContestIntegrationRelevance) {
+        List<IProposalReference> proposalReferences = proposalReferenceDao.findByGiven(proposalId, null);
 
-        List<Proposal> proposals = new ArrayList<>();
-        for (ProposalReference proposalReference : proposalReferences) {
+        List<ProposalWrapper> proposals = new ArrayList<>();
+        for (IProposalReference proposalReference : proposalReferences) {
             try {
                 if (onlyWithContestIntegrationRelevance) {
                     ProposalAttribute attribute = proposalAttributeDao.get(proposalReference.getSectionAttributeId());
-                    ProposalTemplateSectionDefinition psd = ProposalTemplateClientUtil.getProposalTemplateSectionDefinition(attribute.getAdditionalId());
+                    ProposalTemplateSectionDefinitionWrapper psd = ProposalTemplateClientUtil.getProposalTemplateSectionDefinition(attribute.getAdditionalId());
                     if (!psd.getContestIntegrationRelevance()) {
                         continue;
                     }
                 }
                 final long subProposalId = proposalReference.getSubProposalId();
-                Proposal p = proposalDao.get(subProposalId);
+                ProposalWrapper p = proposalDao.get(subProposalId);
                 if (p != null) {
                     if (!includeProposalsInSameContest) {
                         if (getLatestContestIdForProposal(proposalId).equals(
@@ -202,10 +202,10 @@ public class ProposalService {
     }
 
     public Long getLatestContestPhaseIdInProposal(Long proposalId) throws NotFoundException {
-        List<Proposal2Phase> allP2p = proposal2PhaseDao.findByGiven(proposalId, null, null);
+        List<IProposal2Phase> allP2p = proposal2PhaseDao.findByGiven(proposalId, null, null);
         long newestVersionContestPhaseId = 0;
         int newestVersion = 0;
-        for (Proposal2Phase p2p : allP2p) {
+        for (IProposal2Phase p2p : allP2p) {
             long contestPhaseId = p2p.getContestPhaseId();
             if (p2p.getVersionTo() == -1) {
                 return contestPhaseId;
@@ -218,7 +218,7 @@ public class ProposalService {
         if (newestVersion != 0 && newestVersionContestPhaseId != 0) {
             return newestVersionContestPhaseId;
         }
-        throw new NotFoundException("Proposal " + proposalId  + " is not associated with any phases");
+        throw new NotFoundException("ProposalWrapper " + proposalId  + " is not associated with any phases");
     }
 
     public Long getLatestContestIdForProposal(Long proposalId) {
@@ -244,11 +244,11 @@ public class ProposalService {
 
     public List<Member> getProposalMembers(Long proposalId) throws ProposalNotFoundException {
         final List<Member> members = proposalTeamMemberDao.findByProposalId(proposalId).stream()
-                .map(ProposalTeamMember::getUserId)
+                .map(ProposalTeamMemberWrapper::getUserId)
                 .map(MembersClient::getMemberUnchecked)
                 .collect(Collectors.toList());
         if (members.isEmpty()) {
-            throw new ProposalNotFoundException("Proposal with id : " + proposalId + " not found");
+            throw new ProposalNotFoundException("ProposalWrapper with id : " + proposalId + " not found");
         }
         return members;
     }
@@ -256,24 +256,24 @@ public class ProposalService {
     public void removeProposalTeamMember(Long proposalId, Long userId) throws ProposalNotFoundException {
         final boolean success = proposalTeamMemberDao.delete(proposalId, userId);
         if (!success) {
-            throw new ProposalNotFoundException("Proposal with id : " + proposalId + " not found.");
+            throw new ProposalNotFoundException("ProposalWrapper with id : " + proposalId + " not found.");
         }
     }
 
     public void promoteMemberToProposalOwner(Long proposalId, Long userId) throws ProposalNotFoundException {
         try {
-            Proposal proposal = proposalDao.get(proposalId);
+            ProposalWrapper proposal = proposalDao.get(proposalId);
             proposal.setAuthorUserId(userId);
             proposalDao.update(proposal);
         } catch (NotFoundException ignored) {
-            throw new ProposalNotFoundException("Proposal with id : " + proposalId + " not found.");
+            throw new ProposalNotFoundException("ProposalWrapper with id : " + proposalId + " not found.");
         }
     }
 
-    public List<Proposal> getMemberProposals(Long userId) {
-        final List<ProposalTeamMember> proposalTeamMembers = proposalTeamMemberDao.findByUserId(userId);
+    public List<ProposalWrapper> getMemberProposals(Long userId) {
+        final List<ProposalTeamMemberWrapper> proposalTeamMembers = proposalTeamMemberDao.findByUserId(userId);
         return proposalTeamMembers.stream()
-                .map(ProposalTeamMember::getProposalId)
+                .map(ProposalTeamMemberWrapper::getProposalId)
                 .map(proposalDao::getOpt)
                 .filter(Optional::isPresent)
                 .map(Optional::get)

@@ -3,16 +3,16 @@ package org.xcolab.view.pages.proposals.utils.edit;
 import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.contest.pojo.ProposalTemplateSectionDefinition;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
 import org.xcolab.client.members.PlatformTeamsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.PlatformTeam;
 import org.xcolab.client.contest.proposals.MembershipClient;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.contest.pojo.Proposal;
-import org.xcolab.client.contest.pojo.ProposalAttribute;
-import org.xcolab.client.contest.pojo.Proposal2Phase;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
+import org.xcolab.client.contest.pojo.IProposal2Phase;
 import org.xcolab.commons.IdListUtil;
 import org.xcolab.util.enums.proposal.ProposalTemplateSectionType;
 import org.xcolab.commons.html.HtmlUtil;
@@ -33,8 +33,8 @@ public class ProposalUpdateHelper {
     public final static String PROPOSAL_ANALYTICS_LABEL = "";
 
     private final UpdateProposalDetailsBean updateProposalSectionsBean;
-    private final Proposal proposal;
-    private final Proposal2Phase p2p;
+    private final ProposalWrapper proposal;
+    private final IProposal2Phase p2p;
     private final long userId;
     private Integer version;
 
@@ -42,8 +42,8 @@ public class ProposalUpdateHelper {
     private final ProposalContext proposalContext;
 
     public ProposalUpdateHelper(HttpServletRequest request, ProposalContext proposalContext,
-            UpdateProposalDetailsBean updateProposalSectionsBean, Proposal proposal,
-            Proposal2Phase p2p, long userId) {
+            UpdateProposalDetailsBean updateProposalSectionsBean, ProposalWrapper proposal,
+            IProposal2Phase p2p, long userId) {
         this.request = request;
         this.proposalContext = proposalContext;
         this.updateProposalSectionsBean = updateProposalSectionsBean;
@@ -52,7 +52,7 @@ public class ProposalUpdateHelper {
         this.userId = userId;
     }
 
-    private ProposalAttribute updateAttribute(String stringValue, ProposalTemplateSectionDefinition section,
+    private ProposalAttribute updateAttribute(String stringValue, ProposalTemplateSectionDefinitionWrapper section,
             Integer version) {
         return proposalContext.getClients().getProposalAttributeClient()
                 .setProposalAttribute(userId, proposal.getId(),
@@ -60,7 +60,7 @@ public class ProposalUpdateHelper {
                         stringValue, version);
     }
 
-    private ProposalAttribute updateAttribute(Long newNumericVal, ProposalTemplateSectionDefinition section,
+    private ProposalAttribute updateAttribute(Long newNumericVal, ProposalTemplateSectionDefinitionWrapper section,
             Integer version) {
         return proposalContext.getClients().getProposalAttributeClient().setProposalAttribute(
                 userId,
@@ -73,7 +73,7 @@ public class ProposalUpdateHelper {
 
         boolean updateProposalReferences = false;
         boolean evictCache = false;
-        for (ProposalTemplateSectionDefinition section : proposal.getSections()) {
+        for (ProposalTemplateSectionDefinitionWrapper section : proposal.getSections()) {
             String newSectionValue =
                     updateProposalSectionsBean.getSectionsContent().get(section.getSectionDefinitionId());
             final ProposalTemplateSectionType sectionType = section.getTypeEnum();
@@ -142,7 +142,8 @@ public class ProposalUpdateHelper {
         if (p2p != null && p2p.getVersionTo() != -1) {
             // we are in a completed phase - need to adjust the end version
             try {
-                final Proposal updatedProposal = proposalContext.getClients().getProposalClient().getProposal(
+                final ProposalWrapper
+                        updatedProposal = proposalContext.getClients().getProposalClient().getProposal(
                         proposal.getId());
                 p2p.setVersionTo(updatedProposal.getCurrentVersion());
                 proposalContext.getClients().getProposalPhaseClient().updateProposal2Phase(p2p);

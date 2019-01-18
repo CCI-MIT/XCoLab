@@ -1,7 +1,7 @@
 package org.xcolab.view.pages.proposals.utils.picker;
 
-import org.xcolab.client.contest.pojo.ContestWrapper;
-import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 
 import java.util.Comparator;
 import java.util.List;
@@ -46,29 +46,29 @@ public class ProposalPickerSortingUtil {
     }
 
     public static void sortProposalsList(String sortOrder, String sortColumn,
-            List<Proposal> proposals) {
+            List<ProposalWrapper> proposals) {
 
         if (sortColumn != null) {
 
-            Comparator<Proposal> comparator;
+            Comparator<ProposalWrapper> comparator;
             switch (sortColumn.toLowerCase()) {
                 case "contest":
                     comparator = Comparator.comparing(o -> o.getContest().getQuestion());
                     break;
                 case "proposal":
-                    comparator = Comparator.comparing(Proposal::getName);
+                    comparator = Comparator.comparing(ProposalWrapper::getName);
                     break;
                 case "author":
-                    comparator = Comparator.comparing(Proposal::getAuthorName);
+                    comparator = Comparator.comparing(ProposalWrapper::getAuthorName);
                     break;
                 case "date":
-                    comparator = Comparator.comparing(Proposal::getCreatedAt);
+                    comparator = Comparator.comparing(ProposalWrapper::getCreatedAt);
                     break;
                 case "supporters":
-                    comparator = Comparator.comparing(Proposal::getSupportersCountCached);
+                    comparator = Comparator.comparing(ProposalWrapper::getSupportersCountCached);
                     break;
                 case "comments":
-                    comparator = Comparator.comparing(Proposal::getCommentsCount);
+                    comparator = Comparator.comparing(ProposalWrapper::getCommentsCount);
                     break;
                 default:
                     throw new UnsupportedOperationException("Unknown sort column");

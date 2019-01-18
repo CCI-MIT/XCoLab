@@ -3,13 +3,14 @@ package org.xcolab.service.contest.proposal.service.proposal2phase;
 import org.springframework.stereotype.Service;
 
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
-import org.xcolab.model.tables.pojos.Proposal2Phase;
-import org.xcolab.model.tables.pojos.ProposalContestPhaseAttribute;
+import org.xcolab.client.contest.pojo.IProposal2Phase;
+import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
+import org.xcolab.client.contest.pojo.tables.pojos.Proposal2Phase;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.proposal.domain.proposal2phase.Proposal2PhaseDao;
 import org.xcolab.service.contest.proposal.domain.proposalcontestphaseattribute.ProposalContestPhaseAttributeDao;
 import org.xcolab.service.contest.proposal.domain.proposalversion.ProposalVersionDao;
-import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.proposal.helper.autopromotion.PhasePromotionHelper;
 
 import java.util.LinkedList;
@@ -79,7 +80,8 @@ public class Proposal2PhaseService {
             }
 
             try {
-                Proposal2Phase o = proposal2PhaseDao.getByProposalIdContestPhaseId(proposalId, closestPhase.getId());
+                IProposal2Phase
+                        o = proposal2PhaseDao.getByProposalIdContestPhaseId(proposalId, closestPhase.getId());
                 if (o.getVersionTo() < 0) {
                     o.setVersionTo(currentProposalVersion);
                     proposal2PhaseDao.update(o);
@@ -91,26 +93,24 @@ public class Proposal2PhaseService {
             }
         }
 
-        Proposal2Phase p2p = new Proposal2Phase();
+        IProposal2Phase p2p = new Proposal2Phase();
         p2p.setProposalId(proposalId);
         p2p.setContestPhaseId(nextPhaseId);
         p2p.setVersionFrom(currentProposalVersion);
         p2p.setVersionTo(isBoundedVersion ? currentProposalVersion : -1);
         proposal2PhaseDao.create(p2p);
 
-        ProposalContestPhaseAttribute proposalContestPhaseAttribute
+        IProposalContestPhaseAttribute proposalContestPhaseAttribute
                 = PhasePromotionHelper.createProposalContestPhasePromotionDoneAttribute(proposalId, currentPhaseId);
         proposalContestPhaseAttributeDao.create(proposalContestPhaseAttribute);
-
-
     }
 
     public List<Long> getContestPhasesForProposal(long proposalId) {
-        List<Proposal2Phase> proposal2Phases = proposal2PhaseDao.findByGiven(proposalId, null, null);
+        List<IProposal2Phase> proposal2Phases = proposal2PhaseDao.findByGiven(proposalId, null, null);
 
         return proposal2Phases.stream()
                 .filter(p2p -> ContestClientUtil.getContestPhase(p2p.getContestPhaseId()) != null)
-                .map(Proposal2Phase::getContestPhaseId)
+                .map(IProposal2Phase::getContestPhaseId)
                 .collect(Collectors.toCollection(LinkedList::new));
     }
 }

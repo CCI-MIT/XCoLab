@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.model.tables.ProposalContestPhaseAttributeTable;
-import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.records.ProposalRecord;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
@@ -43,7 +43,7 @@ public class ProposalDaoImpl implements ProposalDao {
     }
 
     @Override
-    public List<Proposal> findByGiven(PaginationHelper paginationHelper, String filterText,
+    public List<ProposalWrapper> findByGiven(PaginationHelper paginationHelper, String filterText,
             List<Long> contestIds, Boolean visible, Long contestPhaseId, List<Integer> ribbon,
             List<Long> contestTypeIds, List<Long> contestTierIds, Boolean contestActive,
             Boolean contestPrivate, Long threadId) {
@@ -107,7 +107,7 @@ public class ProposalDaoImpl implements ProposalDao {
         }
 
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
-        return query.fetchInto(Proposal.class);
+        return query.fetchInto(ProposalWrapper.class);
     }
 
     private void addJoins(SelectQuery<Record> query, boolean addContest, boolean addPhase) {
@@ -226,19 +226,18 @@ public class ProposalDaoImpl implements ProposalDao {
     }
 
     @Override
-    public List<Proposal> findLinkedProposalIdsByGivenProposalId(Long proposalId) {
+    public List<ProposalWrapper> findLinkedProposalIdsByGivenProposalId(Long proposalId) {
         final SelectQuery<Record> query =
                 dslContext.selectDistinct(PROPOSAL.fields()).from(PROPOSAL).getQuery();
 
         query.addJoin(POINTS, PROPOSAL.ID.eq(POINTS.ORIGINATING_PROPOSAL_ID));
         query.addConditions(POINTS.ORIGINATING_PROPOSAL_ID.notEqual(POINTS.PROPOSAL_ID));
         query.addConditions(POINTS.PROPOSAL_ID.eq(proposalId));
-        return query.fetchInto(Proposal.class);
+        return query.fetchInto(ProposalWrapper.class);
     }
 
     @Override
-    public Proposal create(Proposal proposal) {
-
+    public ProposalWrapper create(ProposalWrapper proposal) {
         ProposalRecord ret = this.dslContext.insertInto(PROPOSAL)
                 .set(PROPOSAL.CREATED_AT, DSL.currentTimestamp())
                 .set(PROPOSAL.UPDATED_AT, DSL.currentTimestamp())
@@ -258,14 +257,13 @@ public class ProposalDaoImpl implements ProposalDao {
     }
 
     @Override
-    public Proposal get(Long proposalId) throws NotFoundException {
-
+    public ProposalWrapper get(Long proposalId) throws NotFoundException {
         return getOpt(proposalId).orElseThrow(
                 () -> new NotFoundException("Proposal with id " + proposalId + " does not exist"));
     }
 
     @Override
-    public Optional<Proposal> getOpt(long proposalId) {
+    public Optional<ProposalWrapper> getOpt(long proposalId) {
         final Record record =
                 this.dslContext.selectFrom(PROPOSAL).where(PROPOSAL.ID.eq(proposalId))
                         .fetchOne();
@@ -273,7 +271,7 @@ public class ProposalDaoImpl implements ProposalDao {
         if (record == null) {
             return Optional.empty();
         }
-        return Optional.of(record.into(Proposal.class));
+        return Optional.of(record.into(ProposalWrapper.class));
     }
 
     @Override
@@ -283,7 +281,7 @@ public class ProposalDaoImpl implements ProposalDao {
     }
 
     @Override
-    public boolean update(Proposal proposal) {
+    public boolean update(ProposalWrapper proposal) {
 
         return dslContext.update(PROPOSAL)
                 .set(PROPOSAL.UPDATED_AT, DSL.currentTimestamp())
@@ -302,7 +300,7 @@ public class ProposalDaoImpl implements ProposalDao {
     }
 
     @Override
-    public List<Proposal> filterByGiven(Collection<Long> proposalIds, Boolean visible,
+    public List<ProposalWrapper> filterByGiven(Collection<Long> proposalIds, Boolean visible,
             Boolean contestPrivate) {
         final SelectQuery<Record> query = dslContext.selectDistinct(PROPOSAL.fields())
                         .from(PROPOSAL)
@@ -316,6 +314,6 @@ public class ProposalDaoImpl implements ProposalDao {
 
         addVisibilityConditions(visible, contestPrivate, query);
 
-        return query.fetchInto(Proposal.class);
+        return query.fetchInto(ProposalWrapper.class);
     }
 }

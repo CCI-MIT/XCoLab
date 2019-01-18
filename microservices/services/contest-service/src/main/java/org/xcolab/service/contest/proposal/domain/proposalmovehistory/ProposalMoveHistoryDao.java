@@ -1,15 +1,15 @@
 package org.xcolab.service.contest.proposal.domain.proposalmovehistory;
 
-import org.xcolab.model.tables.pojos.ProposalMoveHistory;
+import org.xcolab.client.contest.pojo.IProposalMoveHistory;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.util.List;
 
 public interface ProposalMoveHistoryDao {
 
-    List<ProposalMoveHistory> findByGiven(Long sourceProposalId, Long sourceContestId, Long targetProposalId, Long targetContestId);
+    List<IProposalMoveHistory> findByGiven(Long sourceProposalId, Long sourceContestId, Long targetProposalId, Long targetContestId);
 
-    ProposalMoveHistory get(Long id) throws NotFoundException;
+    IProposalMoveHistory get(Long id) throws NotFoundException;
 
-    ProposalMoveHistory create(ProposalMoveHistory proposalMoveHistory);
+    IProposalMoveHistory create(IProposalMoveHistory proposalMoveHistory);
 }

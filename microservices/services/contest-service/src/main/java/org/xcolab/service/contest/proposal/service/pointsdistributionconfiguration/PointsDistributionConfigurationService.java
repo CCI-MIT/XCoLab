@@ -3,15 +3,15 @@ package org.xcolab.service.contest.proposal.service.pointsdistributionconfigurat
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.xcolab.client.contest.pojo.IPointType;
 import org.xcolab.client.contest.pojo.IPointsDistributionConfiguration;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.contest.pojo.tables.pojos.PointsDistributionConfiguration;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.model.tables.pojos.PointType;
-import org.xcolab.model.tables.pojos.PointsDistributionConfiguration;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.proposal.domain.pointsdistributionconfiguration.PointsDistributionConfigurationDao;
 import org.xcolab.service.contest.proposal.domain.pointtype.PointTypeDao;
 import org.xcolab.service.contest.proposal.enums.ReceiverLimitationStrategy;
-import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.proposal.service.proposal.ProposalService;
 
 import java.sql.Timestamp;
@@ -65,7 +65,7 @@ public class PointsDistributionConfigurationService {
 
 
             try {
-                PointType pointType = pointTypeDao.get(pointTypeId);
+                IPointType pointType = pointTypeDao.get(pointTypeId);
                 if (ReceiverLimitationStrategy.valueOf(pointType.getReceiverLimitationStrategy())
                         .equals(ReceiverLimitationStrategy.ANY_TEAM_MEMBER)) {
                     verifyTeamMemberships(proposalId, pointTypeId, pdcs);
@@ -116,16 +116,14 @@ public class PointsDistributionConfigurationService {
                 // _log.info(String.format("Adding missing PointsDistributionConfiguration for team member %d for proposal %d pointType %d.",
                 //        userId, proposalId, pointTypeId));
             }
-        }catch (ProposalNotFoundException ignored){
+        } catch (ProposalNotFoundException ignored) {
 
         }
     }
 
-    public IPointsDistributionConfiguration addDistributionConfiguration(long proposalId, long pointTypeId,
-                                                                        Long targetUserId, Long targetSubProposalId,
-                                                                        double percentage, long creator) {
-
-
+    public IPointsDistributionConfiguration addDistributionConfiguration(long proposalId,
+            long pointTypeId, Long targetUserId, Long targetSubProposalId, double percentage,
+            long creator) {
         IPointsDistributionConfiguration model = new PointsDistributionConfiguration();
 
         model.setProposalId(proposalId);

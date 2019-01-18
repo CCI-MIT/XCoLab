@@ -5,11 +5,11 @@ import java.util.List;
 
 public class OntologyTermWrapper {
 
-    private final org.xcolab.client.contest.pojo.OntologyTermWrapper wrapped;
+    private final org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper wrapped;
     private final List<OntologyTermWrapper> children = new ArrayList<>();
     private OntologyTermWrapper parent;
 
-    public OntologyTermWrapper(org.xcolab.client.contest.pojo.OntologyTermWrapper wrapped) {
+    public OntologyTermWrapper(org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper wrapped) {
         this.wrapped = wrapped;
     }
 

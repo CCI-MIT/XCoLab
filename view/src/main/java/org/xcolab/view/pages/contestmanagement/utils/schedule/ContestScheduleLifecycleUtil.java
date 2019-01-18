@@ -5,15 +5,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.ContestWrapper;
 import org.xcolab.client.contest.pojo.IContestSchedule;
-import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
-import org.xcolab.client.contest.util.ContestScheduleChangeHelper;
+import org.xcolab.client.contest.pojo.IProposal2Phase;
+import org.xcolab.client.contest.pojo.tables.pojos.ContestSchedule;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
-import org.xcolab.client.contest.pojo.Proposal2Phase;
+import org.xcolab.client.contest.util.ContestScheduleChangeHelper;
+import org.xcolab.commons.html.LabelValue;
 import org.xcolab.util.enums.contest.ContestPhaseTypeValue;
 import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
-import org.xcolab.commons.html.LabelValue;
 import org.xcolab.view.pages.contestmanagement.utils.ContestCreatorUtil;
 
 import java.sql.Timestamp;
@@ -58,7 +59,7 @@ public final class ContestScheduleLifecycleUtil {
 
     private static void removeContestPhase(ContestPhaseWrapper contestPhase) {
         Long contestPhaseId = contestPhase.getId();
-        List<Proposal2Phase> proposal2Phases = ProposalPhaseClientUtil
+        List<IProposal2Phase> proposal2Phases = ProposalPhaseClientUtil
                 .getProposal2PhaseByContestPhaseId(contestPhaseId);
         if (!proposal2Phases.isEmpty()) {
             // TODO COLAB-2615: how should we treat these remaining entries?
@@ -121,7 +122,7 @@ public final class ContestScheduleLifecycleUtil {
     }
 
     public static IContestSchedule createProposalCreationOnlySchedule(String name) {
-        IContestSchedule newContestSchedule = new IContestSchedule();
+        IContestSchedule newContestSchedule = new ContestSchedule();
         newContestSchedule.setName(name);
 
         newContestSchedule = ContestClientUtil.createContestSchedule(newContestSchedule);

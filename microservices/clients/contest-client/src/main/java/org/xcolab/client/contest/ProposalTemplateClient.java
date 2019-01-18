@@ -1,8 +1,8 @@
 package org.xcolab.client.contest;
 
-import org.xcolab.client.contest.pojo.ProposalTemplate;
-import org.xcolab.client.contest.pojo.ProposalTemplateSection;
-import org.xcolab.client.contest.pojo.ProposalTemplateSectionDefinition;
+import org.xcolab.client.contest.pojo.IProposalTemplate;
+import org.xcolab.client.contest.pojo.IProposalTemplateSection;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
 import org.xcolab.client.contest.proposals.exceptions.ProposalTemplateNotFoundException;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource1;
@@ -12,11 +12,11 @@ import java.util.List;
 
 public class ProposalTemplateClient {
 
-    private final RestResource1<ProposalTemplate, Long> proposalTemplateResource = null; // proposalTemplates
-    private final RestResource1<ProposalTemplateSectionDefinition, Long> proposalTemplateSectionDefinitionResource = null; // proposalTemplateSectionDefinitions
-    private final RestResource1<ProposalTemplateSection, Long> proposalTemplateSectionResource = null; // proposalTemplateSections
+    private final RestResource1<IProposalTemplate, Long> proposalTemplateResource = null; // proposalTemplates
+    private final RestResource1<ProposalTemplateSectionDefinitionWrapper, Long> proposalTemplateSectionDefinitionResource = null; // proposalTemplateSectionDefinitions
+    private final RestResource1<IProposalTemplateSection, Long> proposalTemplateSectionResource = null; // proposalTemplateSections
 
-    public ProposalTemplate getProposalTemplate(long id) {
+    public IProposalTemplate getProposalTemplate(long id) {
         try {
             return proposalTemplateResource.get(id)
                     .executeChecked();
@@ -25,7 +25,7 @@ public class ProposalTemplateClient {
         }
     }
 
-    public List<ProposalTemplate> getProposalTemplates() {
+    public List<IProposalTemplate> getProposalTemplates() {
         return proposalTemplateResource.list()
                 .execute();
     }
@@ -35,37 +35,37 @@ public class ProposalTemplateClient {
     }
 
 
-    public ProposalTemplate createProposalTemplate(ProposalTemplate proposalTemplate) {
-        return proposalTemplateResource.create(new ProposalTemplate(proposalTemplate))
+    public IProposalTemplate createProposalTemplate(IProposalTemplate proposalTemplate) {
+        return proposalTemplateResource.create(proposalTemplate)
                 .execute();
     }
 
-    public boolean updateProposalTemplate(ProposalTemplate proposalTemplate) {
-        return proposalTemplateResource.update(new ProposalTemplate(proposalTemplate), proposalTemplate.getId())
+    public boolean updateProposalTemplate(IProposalTemplate proposalTemplate) {
+        return proposalTemplateResource.update(proposalTemplate, proposalTemplate.getId())
                 .execute();
     }
 
-    public ProposalTemplateSectionDefinition getProposalTemplateSectionDefinition(long id) {
+    public ProposalTemplateSectionDefinitionWrapper getProposalTemplateSectionDefinition(long id) {
         return proposalTemplateSectionDefinitionResource.get(id)
                 .withCache(CacheName.MISC_REQUEST)
                 .execute();
     }
 
     public boolean updateProposalTemplateSectionDefinition(
-            ProposalTemplateSectionDefinition proposalTemplateSectionDefinition) {
+            ProposalTemplateSectionDefinitionWrapper proposalTemplateSectionDefinition) {
         return proposalTemplateSectionDefinitionResource.update(
-                new ProposalTemplateSectionDefinition(proposalTemplateSectionDefinition), proposalTemplateSectionDefinition.getId())
+                new ProposalTemplateSectionDefinitionWrapper(proposalTemplateSectionDefinition), proposalTemplateSectionDefinition.getId())
                 .execute();
     }
 
-    public ProposalTemplateSectionDefinition createProposalTemplateSectionDefinition(
-            ProposalTemplateSectionDefinition proposalTemplateSectionDefinition) {
+    public ProposalTemplateSectionDefinitionWrapper createProposalTemplateSectionDefinition(
+            ProposalTemplateSectionDefinitionWrapper proposalTemplateSectionDefinition) {
         return proposalTemplateSectionDefinitionResource
-                .create(new ProposalTemplateSectionDefinition(proposalTemplateSectionDefinition))
+                .create(new ProposalTemplateSectionDefinitionWrapper(proposalTemplateSectionDefinition))
                 .execute();
     }
 
-    public List<ProposalTemplateSectionDefinition> getProposalTemplateSectionDefinitionByProposalTemplateId(Long proposalTemplateId,
+    public List<ProposalTemplateSectionDefinitionWrapper> getProposalTemplateSectionDefinitionByProposalTemplateId(Long proposalTemplateId,
             Boolean weight) {
 
         return proposalTemplateSectionDefinitionResource.list()
@@ -85,39 +85,38 @@ public class ProposalTemplateClient {
                 .delete();
     }
 
-    public List<ProposalTemplateSection> getProposalTemplateSectionByProposalTemplateId(Long proposalTemplateId) {
+    public List<IProposalTemplateSection> getProposalTemplateSectionByProposalTemplateId(Long proposalTemplateId) {
         return proposalTemplateSectionResource.list()
                 .optionalQueryParam("proposalTemplateId", proposalTemplateId)
                 .execute();
     }
-    public ProposalTemplateSection createProposalTemplateSection(
-            ProposalTemplateSection proposalTemplateSection) {
-        return proposalTemplateSectionResource.create(new ProposalTemplateSection(proposalTemplateSection))
+    public IProposalTemplateSection createProposalTemplateSection(
+            IProposalTemplateSection proposalTemplateSection) {
+        return proposalTemplateSectionResource.create(proposalTemplateSection)
                 .execute();
     }
 
-    public boolean updateProposalTemplateSection(ProposalTemplateSection proposalTemplateSection) {
+    public boolean updateProposalTemplateSection(IProposalTemplateSection proposalTemplateSection) {
         return proposalTemplateSectionResource.collectionService("updateTemplateSection",Boolean.class)
-                .post(new ProposalTemplateSection(proposalTemplateSection));
+                .post(proposalTemplateSection);
     }
 
-
-    public List<ProposalTemplateSection> getProposalTemplateSectionsByTemplateId(long proposalTemplateId) {
+    public List<IProposalTemplateSection> getProposalTemplateSectionsByTemplateId(long proposalTemplateId) {
         return getProposalTemplateSections(proposalTemplateId, null);
     }
 
-    public List<ProposalTemplateSection> getProposalTemplateSectionsBySectionDefinitionId(long sectionDefinitionId) {
+    public List<IProposalTemplateSection> getProposalTemplateSectionsBySectionDefinitionId(long sectionDefinitionId) {
         return getProposalTemplateSections(null, sectionDefinitionId);
     }
 
-    private List<ProposalTemplateSection> getProposalTemplateSections(Long proposalTemplateId, Long sectionDefinitionId) {
+    private List<IProposalTemplateSection> getProposalTemplateSections(Long proposalTemplateId, Long sectionDefinitionId) {
         return proposalTemplateSectionResource.list()
                 .optionalQueryParam("proposalTemplateId", proposalTemplateId)
                 .optionalQueryParam("planSectionId", sectionDefinitionId)
                 .execute();
     }
 
-    public ProposalTemplateSection getProposalTemplateSection(long proposalTemplateId, long sectionDefinitionId) {
+    public IProposalTemplateSection getProposalTemplateSection(long proposalTemplateId, long sectionDefinitionId) {
         return proposalTemplateSectionResource.list()
                 .queryParam("proposalTemplateId", proposalTemplateId)
                 .queryParam("planSectionId", sectionDefinitionId)

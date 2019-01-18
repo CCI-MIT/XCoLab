@@ -1,10 +1,10 @@
 package org.xcolab.view.pages.contestmanagement.entities.massactions;
 
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.ContestWrapper;
-import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
-import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.view.pages.contestmanagement.utils.CsvExportHelper;
 
 import java.io.IOException;
@@ -32,7 +32,7 @@ public class ReportPeopleInCurrentPhaseMassAction extends AbstractContestMassAct
         for (ContestWrapper contest : contests) {
             Long contestId = contest.getId();
             ContestPhaseWrapper activeContestPhase = ContestClientUtil.getActivePhase(contestId);
-            List<Proposal> proposalsInActiveContestPhase = ProposalClientUtil
+            List<ProposalWrapper> proposalsInActiveContestPhase = ProposalClientUtil
                     .getActiveProposalsInContestPhase(activeContestPhase.getId());
             csvExportHelper
                     .addProposalAndAuthorDetailsToExportData(proposalsInActiveContestPhase,

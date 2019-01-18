@@ -1,7 +1,7 @@
 package org.xcolab.client.contest.enums;
 
-import org.xcolab.client.contest.pojo.Proposal;
-import org.xcolab.client.contest.pojo.ProposalRibbon;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalRibbonWrapper;
 
 import java.util.Comparator;
 
@@ -19,7 +19,7 @@ public enum ProposalSortColumn {
             (o1, o2) -> (o1.getScreeningStatus().getStatusValue() - o2.getScreeningStatus().getStatusValue())),
     IAFSTATUS(
             (o1, o2) -> (o1.getImpactAssessmentStatus().getStatusValue() - o2.getImpactAssessmentStatus().getStatusValue())),
-    MODIFIED(Comparator.comparing(Proposal::getLastupdatedAt)),
+    MODIFIED(Comparator.comparing(ProposalWrapper::getLastupdatedAt)),
     CONTRIBUTORS((o1, o2) -> {
         if (o1.isOpen()) {
             return o2.isOpen() ? 0 : -1;
@@ -28,8 +28,8 @@ public enum ProposalSortColumn {
         }
     }),
     RIBBONS((o1, o2) -> {
-        final ProposalRibbon ribbon1 = o1.getRibbonWrapper();
-        final ProposalRibbon ribbon2 = o2.getRibbonWrapper();
+        final ProposalRibbonWrapper ribbon1 = o1.getRibbonWrapper();
+        final ProposalRibbonWrapper ribbon2 = o2.getRibbonWrapper();
 
         int sortOrderDiff = ribbon1.getSortOrder() - ribbon2.getSortOrder();
         if (sortOrderDiff != 0) {
@@ -39,13 +39,13 @@ public enum ProposalSortColumn {
         return ribbon1.getRibbon() - ribbon2.getRibbon();
     });
     
-    private final Comparator<Proposal> proposalsComparator;
+    private final Comparator<ProposalWrapper> proposalsComparator;
 
-    ProposalSortColumn(Comparator<Proposal> comparator) {
+    ProposalSortColumn(Comparator<ProposalWrapper> comparator) {
         proposalsComparator = comparator;
     }
 
-    public Comparator<Proposal> getComparator() {
+    public Comparator<ProposalWrapper> getComparator() {
         return proposalsComparator;
     }
 

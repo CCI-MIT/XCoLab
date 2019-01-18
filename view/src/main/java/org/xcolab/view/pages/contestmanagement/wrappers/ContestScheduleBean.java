@@ -1,9 +1,10 @@
 package org.xcolab.view.pages.contestmanagement.wrappers;
 
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.ContestWrapper;
 import org.xcolab.client.contest.pojo.IContestSchedule;
-import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.tables.pojos.ContestSchedule;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.view.pages.contestmanagement.beans.ContestPhaseBean;
@@ -181,7 +182,7 @@ public class ContestScheduleBean {
     }
 
     private void createNewScheduleFromExistingSchedule() {
-        IContestSchedule newContestSchedule = new IContestSchedule();
+        IContestSchedule newContestSchedule = new ContestSchedule();
         newContestSchedule.setBaseScheduleId(contestSchedule.getBaseScheduleId());
         newContestSchedule.setDescription(contestSchedule.getDescription());
         newContestSchedule.setName(contestSchedule.getName());

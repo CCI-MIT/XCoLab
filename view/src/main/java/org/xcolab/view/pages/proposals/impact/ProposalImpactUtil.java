@@ -3,11 +3,11 @@ package org.xcolab.view.pages.proposals.impact;
 import org.xcolab.client.contest.ImpactClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.OntologyTermToFocusAreaMapper;
-import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.IImpactTemplateMaxFocusArea;
-import org.xcolab.client.contest.pojo.FocusAreaWrapper;
-import org.xcolab.client.contest.pojo.OntologySpaceWrapper;
-import org.xcolab.client.contest.pojo.OntologyTermWrapper;
+import org.xcolab.client.contest.pojo.wrapper.FocusAreaWrapper;
+import org.xcolab.client.contest.pojo.wrapper.OntologySpaceWrapper;
+import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
 import org.xcolab.view.util.entity.enums.OntologySpaceEnum;
 
 import java.util.ArrayList;

@@ -8,7 +8,7 @@ import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.pojo.IComment;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.model.tables.pojos.Report;
 import org.xcolab.model.tables.pojos.ReportTarget;
 import org.xcolab.service.flagging.domain.report.ReportDao;
@@ -106,7 +106,7 @@ public class FlaggingService {
     }
 
     private void approveProposal(long proposalId) throws ProposalNotFoundException {
-        final Proposal proposal = ProposalClientUtil.getProposal(proposalId, true);
+        final ProposalWrapper proposal = ProposalClientUtil.getProposal(proposalId, true);
         if (!proposal.getVisible()) {
             proposal.setVisible(true);
             ProposalClientUtil.updateProposal(proposal);

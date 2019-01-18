@@ -5,7 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.modeling.roma.RomaClient;
 import org.xcolab.client.modeling.roma.RomaClient.RomaClientNotConnectedException;
 import org.xcolab.client.modeling.roma.RomaClientUtil;

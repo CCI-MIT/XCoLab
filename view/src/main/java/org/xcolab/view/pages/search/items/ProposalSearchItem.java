@@ -9,13 +9,13 @@ import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.contest.proposals.exceptions.ProposalAttributeNotFoundException;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.contest.proposals.helpers.ProposalAttributeHelper;
-import org.xcolab.client.contest.pojo.Proposal;
-import org.xcolab.client.contest.pojo.ProposalAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
 import org.xcolab.client.search.pojo.ISearchPojo;
 
 public class ProposalSearchItem extends AbstractSearchItem {
 
-    private Proposal proposal;
+    private ProposalWrapper proposal;
 
     private ProposalAttribute proposalAttribute;
 

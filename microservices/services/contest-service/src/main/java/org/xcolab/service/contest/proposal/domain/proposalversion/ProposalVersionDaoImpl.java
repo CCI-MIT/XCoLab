@@ -9,13 +9,10 @@ import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-
-import org.xcolab.model.tables.pojos.Proposal2Phase;
-import org.xcolab.model.tables.pojos.ProposalVersion;
+import org.xcolab.client.contest.pojo.IProposal2Phase;
+import org.xcolab.client.contest.pojo.wrapper.ProposalVersionWrapper;
 
 import java.util.List;
-
-
 
 import static org.xcolab.model.Tables.PROPOSAL_VERSION;
 
@@ -30,7 +27,7 @@ public class ProposalVersionDaoImpl implements ProposalVersionDao {
     }
 
     @Override
-    public ProposalVersion create(ProposalVersion proposalVersion) {
+    public ProposalVersionWrapper create(ProposalVersionWrapper proposalVersion) {
 
         this.dslContext.insertInto(PROPOSAL_VERSION)
                 .set(PROPOSAL_VERSION.PROPOSAL_ID, proposalVersion.getProposalId())
@@ -45,7 +42,7 @@ public class ProposalVersionDaoImpl implements ProposalVersionDao {
     }
 
     @Override
-    public List<ProposalVersion> findByGiven(Long proposalId, Integer version) {
+    public List<ProposalVersionWrapper> findByGiven(Long proposalId, Integer version) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(PROPOSAL_VERSION).getQuery();
 
@@ -55,7 +52,7 @@ public class ProposalVersionDaoImpl implements ProposalVersionDao {
         if (version != null) {
             query.addConditions(PROPOSAL_VERSION.VERSION.eq(version));
         }
-        return query.fetchInto(ProposalVersion.class);
+        return query.fetchInto(ProposalVersionWrapper.class);
     }
 
     @Override
@@ -67,7 +64,7 @@ public class ProposalVersionDaoImpl implements ProposalVersionDao {
     }
 
     @Override
-    public ProposalVersion getByProposalIdVersion(Long proposalId, Integer version) {
+    public ProposalVersionWrapper getByProposalIdVersion(Long proposalId, Integer version) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(PROPOSAL_VERSION).getQuery();
 
@@ -77,7 +74,7 @@ public class ProposalVersionDaoImpl implements ProposalVersionDao {
         if (version != null) {
             query.addConditions(PROPOSAL_VERSION.VERSION.eq(version));
         }
-        return query.fetchOne().into(ProposalVersion.class);
+        return query.fetchOne().into(ProposalVersionWrapper.class);
     }
 
     @Override
@@ -90,15 +87,14 @@ public class ProposalVersionDaoImpl implements ProposalVersionDao {
         return query.fetchOne().into(Integer.class);
     }
 
-
     @Override
-    public List<ProposalVersion> findByProposal2Phase(List<Proposal2Phase> proposal2Phases, Long proposalId) {
+    public List<ProposalVersionWrapper> findByProposal2Phase(List<IProposal2Phase> proposal2Phases, Long proposalId) {
 
         final SelectQuery<Record> query = dslContext.selectDistinct()
                 .from(PROPOSAL_VERSION).getQuery();
         Condition versionsRange = null;
         Condition versionsRangeOr = null ;
-        for(Proposal2Phase p2p : proposal2Phases) {
+        for(IProposal2Phase p2p : proposal2Phases) {
 
             if(!p2p.getVersionTo().equals(-1)) {
                 versionsRange = PROPOSAL_VERSION.VERSION.ge(p2p.getVersionFrom())
@@ -116,7 +112,6 @@ public class ProposalVersionDaoImpl implements ProposalVersionDao {
             query.addConditions(versionsRangeOr);
         }
 
-        return query.fetchInto(ProposalVersion.class);
+        return query.fetchInto(ProposalVersionWrapper.class);
     }
-
 }

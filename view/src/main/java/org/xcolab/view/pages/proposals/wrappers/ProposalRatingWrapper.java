@@ -2,9 +2,8 @@ package org.xcolab.view.pages.proposals.wrappers;
 
 
 import org.xcolab.client.contest.proposals.ProposalJudgeRatingClientUtil;
-import org.xcolab.client.contest.pojo.ProposalRating;
-import org.xcolab.client.contest.pojo.ProposalRatingType;
-import org.xcolab.client.contest.pojo.ProposalRatingValue;
+import org.xcolab.client.contest.pojo.IProposalRatingType;
+import org.xcolab.client.contest.pojo.IProposalRatingValue;
 
 import java.text.DecimalFormat;
 
@@ -12,16 +11,18 @@ import java.text.DecimalFormat;
  * Created by Manuel Thurner
  */
 public class ProposalRatingWrapper {
-    private ProposalRating proposalRating;
-    private ProposalRatingType ratingType;
-    private ProposalRatingValue ratingValue;
+    private org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper proposalRating;
+    private IProposalRatingType ratingType;
+    private IProposalRatingValue ratingValue;
     private Long roundFactor = 1L;
 
-    public ProposalRatingWrapper(ProposalRating proposalRating) {
+    public ProposalRatingWrapper(
+            org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper proposalRating) {
         this.proposalRating = proposalRating;
     }
 
-    public ProposalRatingWrapper(ProposalRating proposalRating, Long roundFactor) {
+    public ProposalRatingWrapper(
+            org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper proposalRating, Long roundFactor) {
         this.proposalRating = proposalRating;
         this.roundFactor = roundFactor;
     }
@@ -31,7 +32,7 @@ public class ProposalRatingWrapper {
     }
 
     public String getRatingValueName() {
-        ProposalRatingValue ratingValue = this.getRatingValue();
+        IProposalRatingValue ratingValue = this.getRatingValue();
         if (ratingValue != null) {
             return ratingValue.getName();
         } else {
@@ -40,7 +41,7 @@ public class ProposalRatingWrapper {
     }
 
     public String getRatingTypeLabel() {
-        ProposalRatingType ratingType = this.getRatingType();
+        IProposalRatingType ratingType = this.getRatingType();
         if (ratingType != null) {
             return ratingType.getLabel();
         } else {
@@ -49,7 +50,7 @@ public class ProposalRatingWrapper {
     }
 
     public boolean getIsActive() {
-        ProposalRatingType ratingType = this.getRatingType();
+        IProposalRatingType ratingType = this.getRatingType();
         if (ratingType != null) {
             return ratingType.getIsActive();
         } else {
@@ -58,7 +59,7 @@ public class ProposalRatingWrapper {
     }
 
     public Long getRatingTypeId() {
-        ProposalRatingType ratingType = this.getRatingType();
+        IProposalRatingType ratingType = this.getRatingType();
         if (ratingType != null) {
             return ratingType.getId();
         } else {
@@ -66,8 +67,8 @@ public class ProposalRatingWrapper {
         }
     }
 
-    public ProposalRatingType getRatingType() {
-        ProposalRatingValue ratingValue = this.getRatingValue();
+    public IProposalRatingType getRatingType() {
+        IProposalRatingValue ratingValue = this.getRatingValue();
         if (ratingValue != null) {
             if (ratingType == null)
                 ratingType = ProposalJudgeRatingClientUtil.getProposalRatingType(ratingValue.getRatingTypeId());
@@ -77,7 +78,7 @@ public class ProposalRatingWrapper {
         return null;
     }
 
-    public ProposalRatingValue getRatingValue() {
+    public IProposalRatingValue getRatingValue() {
         if (ratingValue == null)
             if (roundFactor == null) {
                 roundFactor = 1L;
@@ -114,7 +115,7 @@ public class ProposalRatingWrapper {
         return ratingValueInPercent;
     }
 
-    public ProposalRating unwrap() {
+    public org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper unwrap() {
         return proposalRating;
     }
 

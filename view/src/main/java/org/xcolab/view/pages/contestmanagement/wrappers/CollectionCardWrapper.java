@@ -5,7 +5,8 @@ import org.apache.commons.text.StringEscapeUtils;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.IContestCollectionCard;
-import org.xcolab.client.contest.pojo.OntologyTermWrapper;
+import org.xcolab.client.contest.pojo.tables.pojos.ContestCollectionCard;
+import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,18 +22,18 @@ public class CollectionCardWrapper {
     public CollectionCardWrapper(long collectionCardId, long bigOntologyTerm,
             long ontologyTermToLoad, long smallOntologyTerm, boolean onlyFeatured, boolean visible,
             long parentId) {
-        contestCollectionCard = new IContestCollectionCard();
-        contestCollectionCard.setOntology_term_to_load(ontologyTermToLoad);
+        contestCollectionCard = new ContestCollectionCard();
+        contestCollectionCard.setOntologyTermToLoad(ontologyTermToLoad);
         contestCollectionCard.setId(collectionCardId);
-        contestCollectionCard.setBig_ontology_term(bigOntologyTerm);
-        contestCollectionCard.setSmall_ontology_term(smallOntologyTerm);
+        contestCollectionCard.setBigOntologyTerm(bigOntologyTerm);
+        contestCollectionCard.setSmallOntologyTerm(smallOntologyTerm);
         contestCollectionCard.setParent(parentId);
-        contestCollectionCard.setOnly_featured(onlyFeatured);
+        contestCollectionCard.setOnlyFeatured(onlyFeatured);
         contestCollectionCard.setVisible(visible);
     }
 
     public CollectionCardWrapper() {
-        contestCollectionCard = new IContestCollectionCard();
+        contestCollectionCard = new ContestCollectionCard();
     }
 
     public CollectionCardWrapper(long collectionCardId) {
@@ -89,7 +90,7 @@ public class CollectionCardWrapper {
         Map<Long, String> cards = new HashMap<>();
         cards.put(1L - 1, REFERENCE_NULL_IDENTIFIER);
         for (IContestCollectionCard card : ContestClientUtil.getAllContestCollectionCards()) {
-            cards.put(card.getId(), StringEscapeUtils.escapeEcmaScript(card.getShort_name()));
+            cards.put(card.getId(), StringEscapeUtils.escapeEcmaScript(card.getShortName()));
         }
         return cards;
     }
@@ -112,62 +113,62 @@ public class CollectionCardWrapper {
     }
 
     public String getShortName() {
-        return StringEscapeUtils.escapeEcmaScript(contestCollectionCard.getShort_name());
+        return StringEscapeUtils.escapeEcmaScript(contestCollectionCard.getShortName());
     }
 
     public void setShortName(String shortName) {
-        contestCollectionCard.setShort_name(shortName);
+        contestCollectionCard.setShortName(shortName);
     }
 
     public String getOntologyTermToLoad() {
-        if (contestCollectionCard.getOntology_term_to_load() != null) {
+        if (contestCollectionCard.getOntologyTermToLoad() != null) {
             return StringEscapeUtils.escapeEcmaScript(OntologyClientUtil
-                    .getOntologyTerm(contestCollectionCard.getOntology_term_to_load()).getName());
+                    .getOntologyTerm(contestCollectionCard.getOntologyTermToLoad()).getName());
         }
         return "";
     }
 
     public void setOntologyTermToLoad(long ontologyTermToLoadId) {
-        contestCollectionCard.setOntology_term_to_load(ontologyTermToLoadId);
+        contestCollectionCard.setOntologyTermToLoad(ontologyTermToLoadId);
     }
 
     public long getOntologyTermToLoadId() {
-        Long term = contestCollectionCard.getOntology_term_to_load();
+        Long term = contestCollectionCard.getOntologyTermToLoad();
         return term != null ? term : -1;
     }
 
     public String getBigOntologyTerm() {
-        if (contestCollectionCard.getBig_ontology_term() != null) {
+        if (contestCollectionCard.getBigOntologyTerm() != null) {
             return StringEscapeUtils.escapeEcmaScript(
-                    OntologyClientUtil.getOntologyTerm(contestCollectionCard.getBig_ontology_term())
+                    OntologyClientUtil.getOntologyTerm(contestCollectionCard.getBigOntologyTerm())
                             .getName());
         }
         return "";
     }
 
     public void setBigOntologyTerm(long bigOntologyTermId) {
-        contestCollectionCard.setBig_ontology_term(bigOntologyTermId);
+        contestCollectionCard.setBigOntologyTerm(bigOntologyTermId);
     }
 
     public long getBigOntologyTermId() {
-        Long term = contestCollectionCard.getBig_ontology_term();
+        Long term = contestCollectionCard.getBigOntologyTerm();
         return term != null ? term : -1;
     }
 
     public String getSmallOntologyTerm() {
-        if (contestCollectionCard.getSmall_ontology_term() != null) {
+        if (contestCollectionCard.getSmallOntologyTerm() != null) {
             return StringEscapeUtils.escapeEcmaScript(OntologyClientUtil
-                    .getOntologyTerm(contestCollectionCard.getSmall_ontology_term()).getName());
+                    .getOntologyTerm(contestCollectionCard.getSmallOntologyTerm()).getName());
         }
         return "";
     }
 
     public void setSmallOntologyTerm(long smallOntologyTermId) {
-        contestCollectionCard.setSmall_ontology_term(smallOntologyTermId);
+        contestCollectionCard.setSmallOntologyTerm(smallOntologyTermId);
     }
 
     public long getSmallOntologyTermId() {
-        Long term = contestCollectionCard.getSmall_ontology_term();
+        Long term = contestCollectionCard.getSmallOntologyTerm();
         return term != null ? term : -1;
     }
 
@@ -189,20 +190,20 @@ public class CollectionCardWrapper {
     }
 
     public boolean isOnlyFeatured() {
-        return contestCollectionCard.getOnly_featured();
+        return contestCollectionCard.getOnlyFeatured();
     }
 
     public void setOnlyFeatured(boolean onlyFeatured) {
-        contestCollectionCard.setOnly_featured(onlyFeatured);
+        contestCollectionCard.setOnlyFeatured(onlyFeatured);
     }
 
     public int getOrder() {
-        Integer order = contestCollectionCard.getOrder();
+        Integer order = contestCollectionCard.getSortOrder();
         return order != null ? order : 0;
     }
 
     public void setOrder(int order) {
-        contestCollectionCard.setOrder(order);
+        contestCollectionCard.setSortOrder(order);
     }
 
 }

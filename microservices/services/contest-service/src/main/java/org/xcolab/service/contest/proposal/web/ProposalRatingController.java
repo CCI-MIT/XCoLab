@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.model.tables.pojos.ProposalRating;
-import org.xcolab.model.tables.pojos.ProposalRatingType;
-import org.xcolab.model.tables.pojos.ProposalRatingValue;
+import org.xcolab.client.contest.pojo.IProposalRating;
+import org.xcolab.client.contest.pojo.IProposalRatingType;
+import org.xcolab.client.contest.pojo.IProposalRatingValue;
+import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.proposal.domain.proposalrating.ProposalRatingDao;
 import org.xcolab.service.contest.proposal.domain.proposalratingtype.ProposalRatingTypeDao;
 import org.xcolab.service.contest.proposal.domain.proposalratingvalue.ProposalRatingValueDao;
-import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.util.List;
 
@@ -23,13 +23,15 @@ public class ProposalRatingController {
 
     @Autowired
     private ProposalRatingDao proposalRatingDao;
+
     @Autowired
     private ProposalRatingValueDao proposalRatingValueDao;
+
     @Autowired
     private ProposalRatingTypeDao proposalRatingTypeDao;
 
     @RequestMapping(value = "/proposalRatings", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<ProposalRating> getProposalRatings(
+    public List<IProposalRating> getProposalRatings(
             @RequestParam(required = false) Long proposalId,
             @RequestParam(required = false) Long contestPhaseId,
             @RequestParam(required = false) Long userId
@@ -38,7 +40,7 @@ public class ProposalRatingController {
     }
 
     @RequestMapping(value = "/proposalRatings/findByProposalIdJudgeTypeJudgeIdContestPhaseId", method = {RequestMethod.GET})
-    public List<ProposalRating> getProposalRatings(
+    public List<IProposalRating> getProposalRatings(
             @RequestParam(required = false) Long proposalId,
             @RequestParam(required = false) Long contestPhaseId,
             @RequestParam(required = false) Long userId,
@@ -49,7 +51,7 @@ public class ProposalRatingController {
 
 
     @RequestMapping(value = "/proposalRatingValues/{proposalRatingValueId}", method = RequestMethod.GET)
-    public ProposalRatingValue getProposalRatingValue(@PathVariable("proposalRatingValueId") Long proposalRatingValueId) throws NotFoundException {
+    public IProposalRatingValue getProposalRatingValue(@PathVariable("proposalRatingValueId") Long proposalRatingValueId) throws NotFoundException {
         if (proposalRatingValueId == null || proposalRatingValueId == 0) {
             throw new NotFoundException("No proposalRatingValueId given");
         } else {
@@ -58,14 +60,14 @@ public class ProposalRatingController {
     }
 
     @RequestMapping(value = "/proposalRatingValues", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<ProposalRatingValue> getProposalRatingValues(
+    public List<IProposalRatingValue> getProposalRatingValues(
             @RequestParam(required = false) Long ratingTypeId
     ) {
         return proposalRatingValueDao.findByGiven(ratingTypeId);
     }
 
     @RequestMapping(value = "/proposalRatingTypes/{proposalRatingTypeId}", method = RequestMethod.GET)
-    public ProposalRatingType getProposalRatingType(@PathVariable("proposalRatingTypeId") Long proposalRatingTypeId) throws NotFoundException {
+    public IProposalRatingType getProposalRatingType(@PathVariable("proposalRatingTypeId") Long proposalRatingTypeId) throws NotFoundException {
         if (proposalRatingTypeId == null || proposalRatingTypeId == 0) {
             throw new NotFoundException("No proposalRatingTypeId given");
         } else {
@@ -74,20 +76,19 @@ public class ProposalRatingController {
     }
 
     @RequestMapping(value = "/proposalRatingTypes")
-    public List<ProposalRatingType> getProposalRatingTypes(@RequestParam Integer judgeType,
+    public List<IProposalRatingType> getProposalRatingTypes(@RequestParam Integer judgeType,
             @RequestParam(required = false) Boolean active)
             throws NotFoundException {
         return proposalRatingTypeDao.findByGiven(judgeType, active);
     }
 
-
     @RequestMapping(value = "/proposalRatings", method = RequestMethod.POST)
-    public ProposalRating createProposalRating(@RequestBody ProposalRating proposalRating) {
+    public IProposalRating createProposalRating(@RequestBody IProposalRating proposalRating) {
         return this.proposalRatingDao.create(proposalRating);
     }
 
     @RequestMapping(value = "/proposalRatings/{id}", method = RequestMethod.PUT)
-    public boolean updateProposalRating(@RequestBody ProposalRating proposalRating,
+    public boolean updateProposalRating(@RequestBody IProposalRating proposalRating,
                                         @PathVariable("id") Long id) throws NotFoundException {
 
         if (id == null || id == 0 || proposalRatingDao.get(id) == null) {
@@ -96,6 +97,5 @@ public class ProposalRatingController {
             return proposalRatingDao.update(proposalRating);
         }
     }
-
     // findByProposalIdJudgeTypeJudgeIdContestPhaseId
 }

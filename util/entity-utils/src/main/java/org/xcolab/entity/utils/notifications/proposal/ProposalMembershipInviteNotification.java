@@ -7,10 +7,10 @@ import org.jsoup.nodes.TextNode;
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.pojo.IEmailTemplate;
-import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
-import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 
 public class ProposalMembershipInviteNotification extends ProposalUserActionNotification {
 
@@ -20,7 +20,7 @@ public class ProposalMembershipInviteNotification extends ProposalUserActionNoti
     private final String message;
     private ProposalMembershipRequestTemplate templateWrapper;
 
-    public ProposalMembershipInviteNotification(Proposal proposal, ContestWrapper contest, Member sender,
+    public ProposalMembershipInviteNotification(ProposalWrapper proposal, ContestWrapper contest, Member sender,
             Member invitee, String message) {
         super(proposal, contest, sender, invitee, null,
                 PlatformAttributeKey.COLAB_URL.get());

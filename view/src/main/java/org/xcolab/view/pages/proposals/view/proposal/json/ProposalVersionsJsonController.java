@@ -7,15 +7,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.ContestWrapper;
-import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalClient;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
 import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
-import org.xcolab.client.contest.pojo.ProposalVersion;
-import org.xcolab.client.contest.pojo.Proposal2Phase;
+import org.xcolab.client.contest.pojo.wrapper.ProposalVersionWrapper;
+import org.xcolab.client.contest.pojo.IProposal2Phase;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 
 import java.io.IOException;
@@ -36,7 +36,7 @@ public class ProposalVersionsJsonController {
     public void getProposalVersionFirstIndex(HttpServletRequest request, HttpServletResponse response,
             @PathVariable("phaseId") long contestPhaseId, @PathVariable("proposalId") long proposalId)
             throws IOException {
-        Proposal2Phase p2p = null;
+        IProposal2Phase p2p = null;
         if (contestPhaseId > 0) {
             p2p = ProposalPhaseClientUtil
                     .getProposal2PhaseByProposalIdContestPhaseId(proposalId, contestPhaseId);
@@ -44,7 +44,7 @@ public class ProposalVersionsJsonController {
 
         int index = 0;
         Date oldDate = new Date();
-        for (ProposalVersion proposalVersion : ProposalClientUtil.getAllProposalVersions(proposalId)) {
+        for (ProposalVersionWrapper proposalVersion : ProposalClientUtil.getAllProposalVersions(proposalId)) {
             if (p2p == null || p2p.getVersionTo() == -1
                     || (proposalVersion.getVersion() >= p2p.getVersionFrom() && (proposalVersion.getVersion() < p2p.getVersionTo() ))
                     ) {
@@ -87,7 +87,7 @@ public class ProposalVersionsJsonController {
             @PathVariable("proposalId") long proposalId, @RequestParam int start, @RequestParam int end)
             throws IOException {
 
-        Proposal2Phase p2p = null;
+        IProposal2Phase p2p = null;
         ContestWrapper contest = ContestClientUtil.getContest(contestId);
         ClientHelper clientHelper = new ClientHelper();
         ProposalPhaseClient proposalPhaseClient = clientHelper.getProposalPhaseClient();
@@ -98,7 +98,7 @@ public class ProposalVersionsJsonController {
 
         final JsonArrayBuilder proposalVersionsArray = Json.createArrayBuilder();
         int counter = 0;
-        for(ProposalVersion proposalVersion: clientHelper.getProposalClient().getProposalVersionsGroupedVersionsByContest(proposalId,contest.getId(),start, end)){
+        for(ProposalVersionWrapper proposalVersion: clientHelper.getProposalClient().getProposalVersionsGroupedVersionsByContest(proposalId,contest.getId(),start, end)){
 
                 long cphId = proposalVersion.getContestPhaseId();
                 final ContestPhaseWrapper contestPhase = contestClient.getContestPhase(cphId);

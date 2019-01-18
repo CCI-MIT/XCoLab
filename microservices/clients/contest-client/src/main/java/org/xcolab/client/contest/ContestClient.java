@@ -8,16 +8,16 @@ import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.exceptions.ContestPhaseNotFoundException;
 import org.xcolab.client.contest.exceptions.ContestScheduleNotFoundException;
-import org.xcolab.client.contest.pojo.ContestWrapper;
-import org.xcolab.client.contest.pojo.ContestDto;
-import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestDto;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.IContestCollectionCard;
 import org.xcolab.client.contest.pojo.IContestDiscussion;
 import org.xcolab.client.contest.pojo.IContestPhaseRibbonType;
 import org.xcolab.client.contest.pojo.IContestPhaseType;
 import org.xcolab.client.contest.pojo.IContestSchedule;
 import org.xcolab.client.contest.pojo.IContestTranslation;
-import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.pojo.tables.pojos.ContestDiscussion;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.modeling.roma.RomaClientUtil;
@@ -164,9 +164,9 @@ public class ContestClient {
 
     public Integer getProposalCount(Long contestId) {
         try {
-            return contestResource.<Proposal, Integer>elementService(contestId,
+            return contestResource.<ProposalWrapper, Integer>elementService(contestId,
                     "proposalCountForActivePhase", Integer.class)
-                    .withCache(CacheKeys.withClass(Proposal.class)
+                    .withCache(CacheKeys.withClass(ProposalWrapper.class)
                             .withParameter("contestId", contestId).asCount(), CacheName.MISC_MEDIUM)
                     .getChecked();
         } catch (EntityNotFoundException e) {

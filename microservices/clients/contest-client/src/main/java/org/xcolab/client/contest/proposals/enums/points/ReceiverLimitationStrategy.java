@@ -1,11 +1,11 @@
 package org.xcolab.client.contest.proposals.enums.points;
 
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.proposals.PointsClientUtil;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
-import org.xcolab.client.contest.pojo.Proposal;
-import org.xcolab.client.contest.pojo.PointTypeWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.wrapper.PointTypeWrapper;
 import org.xcolab.client.contest.pojo.IPointsDistributionConfiguration;
 import org.xcolab.util.enums.contest.ContestTier;
 
@@ -69,20 +69,20 @@ public enum ReceiverLimitationStrategy {
         return targets;
     }),
     SUBPROPOSALS(Type.SUB_PROPOSAL, (proposal, pointType, distributionStrategy) -> {
-        List<Proposal> subProposals = ProposalClientUtil
+        List<ProposalWrapper> subProposals = ProposalClientUtil
                 .getSubproposals(proposal.getId(), false);
         Set<Long> subProposalIds = new HashSet<>();
-        for (Proposal subProposal : subProposals) {
+        for (ProposalWrapper subProposal : subProposals) {
             subProposalIds.add(subProposal.getId());
         }
         return PointsDistributionUtil.distributeAmongProposals(distributionStrategy, proposal, pointType, subProposalIds);
     }),
     REGIONAL_SUBPROPOSALS(Type.SUB_PROPOSAL, (proposal, pointType, distributionStrategy) -> {
         try {
-            List<Proposal> subProposals = ProposalClientUtil
+            List<ProposalWrapper> subProposals = ProposalClientUtil
                     .getSubproposals(proposal.getId(), false);
             Set<Long> subProposalIds = new HashSet<>();
-            for (Proposal subProposal : subProposals) {
+            for (ProposalWrapper subProposal : subProposals) {
                 final ContestWrapper latestProposalContest = ProposalClientUtil.getCurrentContestForProposal(subProposal.getId());
                 final ContestTier contestTier = ContestTier.getContestTierByTierType(latestProposalContest.getContestTier());
                 if (contestTier == ContestTier.REGION_AGGREGATE) {
@@ -97,10 +97,10 @@ public enum ReceiverLimitationStrategy {
         return null;
     }),
     BASIC_SUBPROPOSALS(Type.SUB_PROPOSAL, (proposal, pointType, distributionStrategy) -> {
-        List<Proposal> subProposals = ProposalClientUtil
+        List<ProposalWrapper> subProposals = ProposalClientUtil
                 .getSubproposals(proposal.getId(), false);
         Set<Long> subProposalIds = new HashSet<>();
-        for (Proposal subProposal : subProposals) {
+        for (ProposalWrapper subProposal : subProposals) {
             try {
                 final ContestWrapper latestProposalContest = ProposalClientUtil.getCurrentContestForProposal(subProposal.getId());
                 final ContestTier contestTier = ContestTier.getContestTierByTierType(latestProposalContest.getContestTier());
@@ -124,7 +124,7 @@ public enum ReceiverLimitationStrategy {
         targetsPickerAlgorithm = algorithm;
     }
 
-    public List<PointsTarget> getTargets(Proposal proposal, PointTypeWrapper pointType, DistributionStrategy distributionStrategy) {
+    public List<PointsTarget> getTargets(ProposalWrapper proposal, PointTypeWrapper pointType, DistributionStrategy distributionStrategy) {
         return targetsPickerAlgorithm.getPointTargets(proposal, pointType, distributionStrategy);
 
     }
@@ -134,7 +134,7 @@ public enum ReceiverLimitationStrategy {
     }
 
     public interface ReceiverLimitationTargetsPickerAlgorithm {
-        List<PointsTarget> getPointTargets(Proposal proposal, PointTypeWrapper pointType,
+        List<PointsTarget> getPointTargets(ProposalWrapper proposal, PointTypeWrapper pointType,
                 DistributionStrategy distributionStrategy) ;
     }
 

@@ -1,6 +1,6 @@
 package org.xcolab.service.contest.proposal.domain.proposalunversionedattribute;
 
-import org.xcolab.model.tables.pojos.ProposalUnversionedAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ProposalUnversionedAttribute;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.util.List;

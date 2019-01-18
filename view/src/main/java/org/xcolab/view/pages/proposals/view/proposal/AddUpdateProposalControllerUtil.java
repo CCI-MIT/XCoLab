@@ -4,11 +4,11 @@ import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.enums.ContestStatus;
-import org.xcolab.client.contest.pojo.ContestWrapper;
-import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.client.contest.pojo.Proposal;
-import org.xcolab.client.contest.pojo.Proposal2Phase;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.IProposal2Phase;
 import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.util.activities.enums.ContestActivityType;
 import org.xcolab.util.activities.enums.ProposalActivityType;
@@ -39,7 +39,7 @@ public final class AddUpdateProposalControllerUtil {
     }
 
     public static String createOrUpdateProposal(HttpServletRequest request,
-            UpdateProposalDetailsBean updateProposalSectionsBean, Proposal proposal,
+            UpdateProposalDetailsBean updateProposalSectionsBean, ProposalWrapper proposal,
             ProposalContext proposalContext) {
         long userId = MemberAuthUtil.getUserId();
         final ContestWrapper contest = proposalContext.getContest();
@@ -60,7 +60,7 @@ public final class AddUpdateProposalControllerUtil {
                     .createProposal(userId, updateProposalSectionsBean, contest, contestPhase);
         }
 
-        final Proposal2Phase p2p = proposalContext.getProposal2Phase();
+        final IProposal2Phase p2p = proposalContext.getProposal2Phase();
         ProposalUpdateHelper proposalUpdateHelper = new ProposalUpdateHelper(request,
                 proposalContext, updateProposalSectionsBean, proposal, p2p, userId);
         proposalUpdateHelper.updateProposal();

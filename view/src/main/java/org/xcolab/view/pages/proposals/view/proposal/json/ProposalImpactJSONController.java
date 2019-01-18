@@ -11,18 +11,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contest.ImpactClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
-import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ProposalUnversionedAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.IImpactIteration;
-import org.xcolab.client.contest.pojo.FocusAreaWrapper;
-import org.xcolab.client.contest.pojo.OntologyTermWrapper;
+import org.xcolab.client.contest.pojo.wrapper.FocusAreaWrapper;
+import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalAttributeClient;
 import org.xcolab.client.contest.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.contest.proposals.enums.ImpactSeriesType;
 import org.xcolab.client.contest.proposals.enums.ProposalUnversionedAttributeName;
-import org.xcolab.client.contest.pojo.Proposal;
-import org.xcolab.client.contest.pojo.ProposalAttribute;
-import org.xcolab.client.contest.pojo.ProposalUnversionedAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.view.pages.proposals.exceptions.ProposalImpactDataParserException;
 import org.xcolab.view.pages.proposals.impact.ProposalImpactDataParser;
@@ -147,7 +147,7 @@ public class ProposalImpactJSONController {
             return;
         }
 
-        Proposal proposal = proposalContext.getProposal();
+        ProposalWrapper proposal = proposalContext.getProposal();
 
         final List<IImpactIteration> iterations =
                 ImpactClientUtil.getContestImpactIterations(proposalContext.getContest());
@@ -188,7 +188,7 @@ public class ProposalImpactJSONController {
             return;
         }
 
-        Proposal proposal = proposalContext.getProposal();
+        ProposalWrapper proposal = proposalContext.getProposal();
         ContestWrapper contest = proposalContext.getContest();
         JSONObject requestJson = new JSONObject(request.getParameter("json"));
 
@@ -224,7 +224,7 @@ public class ProposalImpactJSONController {
             response.getOutputStream().write(responseJSON.toString().getBytes());
             return;
         }
-        Proposal proposal = proposalContext.getProposal();
+        ProposalWrapper proposal = proposalContext.getProposal();
 
         List<ProposalUnversionedAttribute> unversionedAttributes = ProposalAttributeClientUtil
                 .getProposalUnversionedAttributesByProposalId(proposal.getId());
@@ -281,7 +281,7 @@ public class ProposalImpactJSONController {
 
     private Map<OntologyTermWrapper, List<OntologyTermWrapper>> getOntologyMap(ProposalContext proposalContext) {
         ContestWrapper contest = proposalContext.getContest();
-        Proposal proposal = proposalContext.getProposal();
+        ProposalWrapper proposal = proposalContext.getProposal();
 
         ProposalImpactSeriesList proposalImpactSeriesList = new ProposalImpactSeriesList(contest, proposal);
         return new ProposalImpactUtil(contest).calculateAvailableOntologyMap(proposalImpactSeriesList.getImpactSerieses());
@@ -289,7 +289,7 @@ public class ProposalImpactJSONController {
 
     private ProposalImpactSeriesList getProposalImpactSeriesList(ProposalContext proposalContext) {
         ContestWrapper contest = proposalContext.getContest();
-        Proposal proposal = proposalContext.getProposal();
+        ProposalWrapper proposal = proposalContext.getProposal();
 
         return new ProposalImpactSeriesList(contest, proposal);
     }

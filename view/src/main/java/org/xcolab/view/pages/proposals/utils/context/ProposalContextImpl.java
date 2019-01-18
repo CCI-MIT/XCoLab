@@ -9,11 +9,11 @@ import org.springframework.web.servlet.LocaleResolver;
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.contest.pojo.ContestWrapper;
-import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.contest.pojo.Proposal;
-import org.xcolab.client.contest.pojo.Proposal2Phase;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.IProposal2Phase;
 import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.pages.proposals.exceptions.InvalidAccessException;
@@ -35,8 +35,8 @@ public class ProposalContextImpl implements ProposalContext {
     private ContestWrapper contest;
     private ContestType contestType;
     private ContestPhaseWrapper contestPhase;
-    private Proposal2Phase proposal2Phase;
-    private Proposal proposal;
+    private IProposal2Phase proposal2Phase;
+    private ProposalWrapper proposal;
     private ProposalsPermissions permissions;
     private ProposalsDisplayPermissions displayPermissions;
     private ProposalsPreferencesWrapper preferences;
@@ -148,12 +148,12 @@ public class ProposalContextImpl implements ProposalContext {
     }
 
     @Override
-    public Proposal2Phase getProposal2Phase() {
+    public IProposal2Phase getProposal2Phase() {
         return proposal2Phase;
     }
 
     @Override
-    public Proposal getProposal() {
+    public ProposalWrapper getProposal() {
         return proposal;
     }
 

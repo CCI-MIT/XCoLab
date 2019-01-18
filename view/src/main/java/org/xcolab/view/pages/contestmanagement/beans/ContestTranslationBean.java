@@ -4,8 +4,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.ContestWrapper;
 import org.xcolab.client.contest.pojo.IContestTranslation;
+import org.xcolab.client.contest.pojo.tables.pojos.ContestTranslation;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.util.i18n.I18nUtils;
 
 import java.io.Serializable;
@@ -32,7 +33,7 @@ public class ContestTranslationBean implements Serializable {
 
         for (String lang : I18nUtils.getAllLanguages()) {
             translations.computeIfAbsent(lang, k -> {
-                IContestTranslation translation = new IContestTranslation();
+                IContestTranslation translation = new ContestTranslation();
                 translation.setLang(lang);
                 translation.setContestId(contest.getId());
                 return translation;

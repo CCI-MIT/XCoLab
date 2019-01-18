@@ -7,14 +7,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.enums.ContestStatus;
-import org.xcolab.client.contest.pojo.ContestWrapper;
-import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
-import org.xcolab.client.contest.pojo.ProposalTemplateSectionDefinition;
-import org.xcolab.client.contest.pojo.ProposalTemplate;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
+import org.xcolab.client.contest.pojo.IProposalTemplate;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Role;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
-import org.xcolab.client.contest.pojo.ProposalAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 
@@ -117,11 +117,11 @@ public class ProposalMoveJsonController {
         ContestWrapper contest = ContestClientUtil.getContest(contestId);
         ClientHelper clientHelper = new ClientHelper();
 
-        ProposalTemplate proposalTemplate = clientHelper.getProposalTemplateClient()
+        IProposalTemplate proposalTemplate = clientHelper.getProposalTemplateClient()
                 .getProposalTemplate(contest.getProposalTemplateId());
 
         if (proposalTemplate != null) {
-            for (ProposalTemplateSectionDefinition psd : clientHelper.getProposalTemplateClient()
+            for (ProposalTemplateSectionDefinitionWrapper psd : clientHelper.getProposalTemplateClient()
                     .getProposalTemplateSectionDefinitionByProposalTemplateId(proposalTemplate.getId(), false)) {
                 ProposalAttribute attribute = clientHelper.getProposalAttributeClient()
                         .getProposalAttribute(proposalId, version,

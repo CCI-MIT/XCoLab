@@ -1,9 +1,9 @@
 package org.xcolab.client.contest.proposals;
 
+import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ProposalUnversionedAttribute;
 import org.xcolab.client.contest.proposals.exceptions.ProposalAttributeNotFoundException;
-import org.xcolab.client.contest.pojo.Proposal;
-import org.xcolab.client.contest.pojo.ProposalAttribute;
-import org.xcolab.client.contest.pojo.ProposalUnversionedAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 
 import java.util.List;
 
@@ -40,7 +40,7 @@ public final class ProposalAttributeClientUtil {
     }
 
     public static List<ProposalAttribute> getImpactProposalAttributes(
-            Proposal proposal) {
+            ProposalWrapper proposal) {
         return client.getImpactProposalAttributes(proposal);
     }
 

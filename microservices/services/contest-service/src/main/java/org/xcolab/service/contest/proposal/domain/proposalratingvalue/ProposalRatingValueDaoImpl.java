@@ -5,7 +5,9 @@ import org.jooq.Record;
 import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.xcolab.model.tables.pojos.ProposalRatingValue;
+
+import org.xcolab.client.contest.pojo.IProposalRatingValue;
+import org.xcolab.client.contest.pojo.tables.pojos.ProposalRatingValue;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.util.List;
@@ -23,8 +25,7 @@ public class ProposalRatingValueDaoImpl implements ProposalRatingValueDao {
     }
 
     @Override
-    public ProposalRatingValue get(Long id) throws NotFoundException {
-
+    public IProposalRatingValue get(Long id) throws NotFoundException {
         final Record record = this.dslContext.selectFrom(PROPOSAL_RATING_VALUE)
                 .where(PROPOSAL_RATING_VALUE.ID.eq(id))
                 .fetchOne();
@@ -33,11 +34,10 @@ public class ProposalRatingValueDaoImpl implements ProposalRatingValueDao {
             throw new NotFoundException("ProposalRatingValue with id " + id + " does not exist");
         }
         return record.into(ProposalRatingValue.class);
-
     }
 
     @Override
-    public List<ProposalRatingValue> findByGiven(Long ratingTypeId) {
+    public List<IProposalRatingValue> findByGiven(Long ratingTypeId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(PROPOSAL_RATING_VALUE).getQuery();
 

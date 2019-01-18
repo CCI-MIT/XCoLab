@@ -1,12 +1,13 @@
 package org.xcolab.view.pages.profile.beans;
 
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.IContestPhaseRibbonType;
+import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
+import org.xcolab.client.contest.pojo.tables.pojos.ProposalContestPhaseAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
-import org.xcolab.client.contest.pojo.Proposal;
-import org.xcolab.client.contest.pojo.ProposalContestPhaseAttribute;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.view.pages.profile.entity.Badge;
 
@@ -29,11 +30,11 @@ public class BadgeBean implements Serializable {
 
     private List<Badge> getBadges(long userId) {
         final List<Badge> badges = new ArrayList<>();
-        for (Proposal proposal : ProposalClientUtil.getMemberProposals(userId)) {
-            final Optional<ProposalContestPhaseAttribute> ribbonAttributeOpt =
+        for (ProposalWrapper proposal : ProposalClientUtil.getMemberProposals(userId)) {
+            final Optional<IProposalContestPhaseAttribute> ribbonAttributeOpt =
                     getLatestRibbonAttribute(proposal);
             if (ribbonAttributeOpt.isPresent()) {
-                final ProposalContestPhaseAttribute ribbonAttribute = ribbonAttributeOpt.get();
+                final IProposalContestPhaseAttribute ribbonAttribute = ribbonAttributeOpt.get();
                 final IContestPhaseRibbonType ribbonType = ContestClientUtil
                         .getContestPhaseRibbonType(ribbonAttribute.getNumericValue());
 
@@ -48,16 +49,17 @@ public class BadgeBean implements Serializable {
         return badges;
     }
 
-    private Optional<ProposalContestPhaseAttribute> getLatestRibbonAttribute(Proposal proposal) {
+    private Optional<IProposalContestPhaseAttribute> getLatestRibbonAttribute(
+            ProposalWrapper proposal) {
         List<Long> phasesForProposal = ProposalPhaseClientUtil.getContestPhasesForProposal(
                 proposal.getId());
         return phasesForProposal.stream()
                 .map(phaseId -> getRibbonAttribute(proposal.getId(), phaseId))
                 .filter(Objects::nonNull)
-                .max(Comparator.comparing(ProposalContestPhaseAttribute::getStartDate));
+                .max(Comparator.comparing(phase -> phase.getStartDate()));
     }
 
-    private ProposalContestPhaseAttribute getRibbonAttribute(long proposalId, long phaseId) {
+    private IProposalContestPhaseAttribute getRibbonAttribute(long proposalId, long phaseId) {
         return ProposalPhaseClientUtil.getProposalContestPhaseAttribute(proposalId, phaseId,
                         ProposalContestPhaseAttributeKeys.RIBBON);
     }

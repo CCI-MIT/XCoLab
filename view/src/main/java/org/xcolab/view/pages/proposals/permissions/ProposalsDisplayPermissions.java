@@ -1,10 +1,10 @@
 package org.xcolab.view.pages.proposals.permissions;
 
 
-import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.client.contest.pojo.Proposal;
-import org.xcolab.client.contest.pojo.ProposalTeamMembershipRequest;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMembershipRequestWrapper;
 import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 
@@ -15,13 +15,13 @@ public class ProposalsDisplayPermissions {
 
     private final ProposalsPermissions proposalsPermissions;
     private final ClientHelper clientHelper;
-    private final Proposal proposal;
+    private final ProposalWrapper proposal;
     private final ContestPhaseWrapper contestPhase;
     private final long userId;
     private final boolean isGuest;
     private final boolean isLoggedIn;
 
-    public ProposalsDisplayPermissions(ProposalsPermissions proposalsPermissions, Proposal proposal,
+    public ProposalsDisplayPermissions(ProposalsPermissions proposalsPermissions, ProposalWrapper proposal,
             ContestPhaseWrapper contestPhase, ClientHelper clientHelper, long userId) {
         this.proposalsPermissions = proposalsPermissions;
         this.proposal = proposal;
@@ -44,7 +44,7 @@ public class ProposalsDisplayPermissions {
     }
 
     public boolean getUserHasOpenMembershipRequest() {
-        for (ProposalTeamMembershipRequest mr : clientHelper.getMembershipClient()
+        for (ProposalTeamMembershipRequestWrapper mr : clientHelper.getMembershipClient()
                 .getMembershipRequests(proposal.getId())) {
             if (mr.getUserId() == userId && (
                     (mr.getStatusId() == MembershipRequestStatus.STATUS_PENDING)

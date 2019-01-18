@@ -1,6 +1,6 @@
 package org.xcolab.client.contest.proposals;
 
-import org.xcolab.client.contest.pojo.ProposalMoveHistory;
+import org.xcolab.client.contest.pojo.IProposalMoveHistory;
 import org.xcolab.util.enums.proposal.MoveType;
 
 import java.util.List;
@@ -13,24 +13,24 @@ public final class ProposalMoveClientUtil {
         return client;
     }
 
-    public static List<ProposalMoveHistory> getBySourceProposalIdContestId(
+    public static List<IProposalMoveHistory> getBySourceProposalIdContestId(
             Long sourceProposalId, Long sourceContestId) {
         return client.getBySourceProposalIdContestId(sourceProposalId, sourceContestId);
     }
 
-    public static List<ProposalMoveHistory> getProposalMoveHistory(
+    public static List<IProposalMoveHistory> getProposalMoveHistory(
             Long sourceProposalId, Long sourceContestId, Long targetProposalId,
             Long targetContestId) {
         return client.getProposalMoveHistory(sourceProposalId, sourceContestId, targetProposalId,
                 targetContestId);
     }
 
-    public static ProposalMoveHistory getByTargetProposalIdContestId(
+    public static IProposalMoveHistory getByTargetProposalIdContestId(
             Long targetProposalId, Long targetContestId) {
         return client.getByTargetProposalIdContestId(targetProposalId, targetContestId);
     }
 
-    public static ProposalMoveHistory createProposalMoveHistory(
+    public static IProposalMoveHistory createProposalMoveHistory(
             long proposalId, long srcContestId, long targetContestId,
             long targetPhaseId, long userId) {
         return client
@@ -38,7 +38,7 @@ public final class ProposalMoveClientUtil {
                         targetPhaseId, userId);
     }
 
-    public static ProposalMoveHistory createProposalMoveHistory(
+    public static IProposalMoveHistory createProposalMoveHistory(
             long srcProposalId, long targetProposalId, long srcContestId, long targetContestId,
             long sourcePhaseId, long targetPhaseId, long userId, MoveType moveType) {
         return client
@@ -47,19 +47,19 @@ public final class ProposalMoveClientUtil {
                         targetPhaseId, userId, moveType);
     }
 
-    public static ProposalMoveHistory createProposalMoveHistory(
-            ProposalMoveHistory proposalMoveHistory) {
+    public static IProposalMoveHistory createProposalMoveHistory(
+            IProposalMoveHistory proposalMoveHistory) {
         return client.createProposalMoveHistory(proposalMoveHistory);
     }
 
-    public static ProposalMoveHistory createCopyProposalMoveHistory(
+    public static IProposalMoveHistory createCopyProposalMoveHistory(
             long proposalId, long srcContestId, long targetContestId,
             long targetPhaseId, long userId) {
         return client.createCopyProposalMoveHistory(proposalId, srcContestId, targetContestId,
                 targetPhaseId, userId);
     }
 
-    public static ProposalMoveHistory createForkProposalMoveHistory(
+    public static IProposalMoveHistory createForkProposalMoveHistory(
             long srcProposalId, long targetProposalId, long srcContestId, long targetContestId,
             long targetPhaseId, long userId) {
         return client.createForkProposalMoveHistory(srcProposalId, targetProposalId, srcContestId,

@@ -1,10 +1,10 @@
 package org.xcolab.view.pages.proposals.impact;
 
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.ContestWrapper;
-import org.xcolab.client.contest.pojo.OntologyTermWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
-import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.util.enums.contest.ContestTier;
 import org.xcolab.view.pages.proposals.utils.SectorTypes;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
@@ -38,12 +38,12 @@ public class IntegratedProposalImpactSeries {
 
     private final ProposalImpactSeriesValues resultSeriesValues;
 
-    private final Proposal proposal;
+    private final ProposalWrapper proposal;
 
     private final OntologyTermWrapper regionOntologyTerm;
 
     public IntegratedProposalImpactSeries(ProposalContext proposalContext,
-            Proposal proposal, ContestWrapper contest) {
+            ProposalWrapper proposal, ContestWrapper contest) {
         this.regionOntologyTerm = contest.getWhere().get(0);
             this.proposal = proposal;
             this.resultSeriesValues = new ProposalImpactSeriesValues();
@@ -52,25 +52,25 @@ public class IntegratedProposalImpactSeries {
 
     }
 
-    public static Set<Proposal> getSubProposalsOnContestTier(ProposalContext proposalContext,
-            Proposal proposal, Long contestTierId) {
-        Set<Proposal> subProposalsOnContestTier = new HashSet<>();
+    public static Set<ProposalWrapper> getSubProposalsOnContestTier(ProposalContext proposalContext,
+            ProposalWrapper proposal, Long contestTierId) {
+        Set<ProposalWrapper> subProposalsOnContestTier = new HashSet<>();
         getSubProposalsOnContestTier(proposalContext, Collections.singletonList(proposal), subProposalsOnContestTier,
                 contestTierId);
         return subProposalsOnContestTier;
     }
 
-    private static void getSubProposalsOnContestTier(ProposalContext proposalContext, List<Proposal> proposals,
-            Set<Proposal> subProposalsOnContestTier, Long contestTierId) {
+    private static void getSubProposalsOnContestTier(ProposalContext proposalContext, List<ProposalWrapper> proposals,
+            Set<ProposalWrapper> subProposalsOnContestTier, Long contestTierId) {
         if (!proposals.isEmpty()) {
-            for (Proposal proposal : proposals) {
+            for (ProposalWrapper proposal : proposals) {
                 try {
                     ContestWrapper contestOfProposal =
                             proposalContext.getClients().getProposalClient().getLatestContestInProposal(proposal.getId());
                     if (Objects.equals(contestTierId, contestOfProposal.getContestTier())) {
                         subProposalsOnContestTier.addAll(proposals);
                     } else {
-                        List<Proposal> subProposals = ProposalClientUtil
+                        List<ProposalWrapper> subProposals = ProposalClientUtil
                                 .getContestIntegrationRelevantSubproposals(
                                         proposal.getId());
                         getSubProposalsOnContestTier(proposalContext, subProposals, subProposalsOnContestTier,
@@ -100,7 +100,7 @@ public class IntegratedProposalImpactSeries {
     }
 
     private void calculateIntegratedImpactSeries(ProposalContext proposalContext, boolean global) {
-        Set<Proposal> referencedSubProposals =
+        Set<ProposalWrapper> referencedSubProposals =
                 getSubProposalsOnContestTier(proposalContext, proposal, ContestTier.BASIC.getTierType());
         seriesTypeToAggregatedSeriesMap = new LinkedHashMap<>(REFERENCE_SERIES_TYPES.length);
         seriesTypeToDescriptionMap = new LinkedHashMap<>(REFERENCE_SERIES_TYPES.length);
@@ -124,7 +124,7 @@ public class IntegratedProposalImpactSeries {
             sectorOntologyTermIds.add(seriesType.getSectorOntologyTermId());
         }
 
-        for (Proposal referencedSubProposal : referencedSubProposals) {
+        for (ProposalWrapper referencedSubProposal : referencedSubProposals) {
             try {
 
                 ProposalImpactSeriesList impactSeriesList =

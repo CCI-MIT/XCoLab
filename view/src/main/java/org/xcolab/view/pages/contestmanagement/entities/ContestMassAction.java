@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.contestmanagement.entities;
 
-import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.view.pages.contestmanagement.entities.massactions.MassActionDataWrapper;
 
 import java.io.IOException;

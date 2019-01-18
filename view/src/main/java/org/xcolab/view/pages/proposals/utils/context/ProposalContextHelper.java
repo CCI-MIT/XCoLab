@@ -7,16 +7,16 @@ import org.slf4j.LoggerFactory;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.ContestWrapper;
-import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalClient;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
 import org.xcolab.client.contest.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.contest.pojo.Proposal;
-import org.xcolab.client.contest.pojo.Proposal2Phase;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.IProposal2Phase;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
 import org.xcolab.commons.servlet.RequestParamUtil;
 import org.xcolab.view.auth.MemberAuthUtil;
@@ -128,7 +128,7 @@ public class ProposalContextHelper {
         return clientHelper;
     }
 
-    public ContestPhaseWrapper getContestPhase(ContestWrapper contest, Proposal proposal) {
+    public ContestPhaseWrapper getContestPhase(ContestWrapper contest, ProposalWrapper proposal) {
         final ContestClient contestClient = clientHelper.getContestClient();
         final ProposalClient proposalClient = clientHelper.getProposalClient();
 
@@ -149,7 +149,7 @@ public class ProposalContextHelper {
         return contestPhase;
     }
 
-    public Proposal2Phase getProposal2Phase(ContestPhaseWrapper contestPhase) {
+    public IProposal2Phase getProposal2Phase(ContestPhaseWrapper contestPhase) {
         final ProposalPhaseClient proposalPhaseClient = clientHelper.getProposalPhaseClient();
         try {
             return proposalPhaseClient.getProposal2PhaseByProposalIdContestPhaseId(givenProposalId,
@@ -159,13 +159,13 @@ public class ProposalContextHelper {
         }
     }
 
-    public Proposal getProposal(ContestWrapper contest) throws InvalidProposalUrlException {
+    public ProposalWrapper getProposal(ContestWrapper contest) throws InvalidProposalUrlException {
         final ProposalClient proposalClient = clientHelper.getProposalClient();
-        Proposal proposal = null;
+        ProposalWrapper proposal = null;
         if (givenProposalId > 0) {
             try {
                 Integer version = givenVersion > 0 ? givenVersion : null;
-                proposal = new Proposal(proposalClient.getProposal(givenProposalId), version, contest);
+                proposal = new ProposalWrapper(proposalClient.getProposal(givenProposalId), version, contest);
             } catch (ProposalNotFoundException e) {
                 log.debug("Invalid proposal supplied: givenProposalId = {}", givenProposalId);
                 throw new InvalidProposalUrlException(contest, null, givenProposalId);
@@ -174,16 +174,16 @@ public class ProposalContextHelper {
         return proposal;
     }
 
-    public Proposal getProposalWrapper(Proposal proposal, Proposal2Phase proposal2Phase,
+    public ProposalWrapper getProposalWrapper(ProposalWrapper proposal, IProposal2Phase proposal2Phase,
             ContestPhaseWrapper contestPhase, ContestWrapper contest, Member member) {
-        Proposal proposalWrapper;
+        ProposalWrapper proposalWrapper;
         if (givenVersion > 0) {
             if (member != null && PermissionsClient
                     .canJudge(member.getId(), contest.getId())) {
                 proposalWrapper = new ProposalJudgeWrapper(proposal, givenVersion,
                         contest, contestPhase, proposal2Phase, member);
             } else {
-                proposalWrapper = new Proposal(proposal, givenVersion,
+                proposalWrapper = new ProposalWrapper(proposal, givenVersion,
                         contest,
                         contestPhase, proposal2Phase);
             }
@@ -200,7 +200,7 @@ public class ProposalContextHelper {
                         localVersion,
                         contest, contestPhase, proposal2Phase, member);
             } else {
-                proposalWrapper = new Proposal(proposal, localVersion,
+                proposalWrapper = new ProposalWrapper(proposal, localVersion,
                         contest, contestPhase, proposal2Phase);
             }
         }

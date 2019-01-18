@@ -4,7 +4,7 @@ import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.contest.proposals.ProposalClient;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.view.pages.proposals.discussion.ProposalDiscussionPermissions;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
 
@@ -17,7 +17,7 @@ public abstract class BaseDiscussionsActionController {
         final ProposalClient proposalClient = ProposalClientUtil.getClient();
 
         if (commentThread.getCategory() == null) {
-            final Proposal proposal = getProposal(proposalClient, commentThread);
+            final ProposalWrapper proposal = getProposal(proposalClient, commentThread);
             if (proposal != null) {
                 return new ProposalDiscussionPermissions(request, proposal);
             }
@@ -25,7 +25,7 @@ public abstract class BaseDiscussionsActionController {
         return new DiscussionPermissions();
     }
 
-    protected Proposal getProposal(ProposalClient proposalClient, IThread commentThread) {
+    protected ProposalWrapper getProposal(ProposalClient proposalClient, IThread commentThread) {
         try {
             return proposalClient.getProposalByThreadId(commentThread.getId());
         } catch (ProposalNotFoundException e) {

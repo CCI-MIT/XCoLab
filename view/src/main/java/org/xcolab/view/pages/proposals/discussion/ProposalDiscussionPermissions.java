@@ -1,10 +1,10 @@
 package org.xcolab.view.pages.proposals.discussion;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.contest.pojo.Proposal;
-import org.xcolab.client.contest.pojo.ProposalTeamMember;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMemberWrapper;
 import org.xcolab.view.pages.proposals.tabs.ProposalTab;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
 
@@ -13,9 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 public class ProposalDiscussionPermissions extends DiscussionPermissions {
 
     private final String discussionTabName;
-    private final Proposal proposal;
+    private final ProposalWrapper proposal;
 
-    public ProposalDiscussionPermissions(HttpServletRequest request, Proposal proposal) {
+    public ProposalDiscussionPermissions(HttpServletRequest request, ProposalWrapper proposal) {
         super();
         this.discussionTabName = getTabName(request);
         this.proposal = proposal;
@@ -82,7 +82,7 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
     private boolean isUserProposalAuthorOrTeamMember() {
         boolean isAuthor = proposal.getAuthorUserId() == userId;
         boolean isMember = proposal.getMembers().stream()
-                .map(ProposalTeamMember::getUserId)
+                .map(ProposalTeamMemberWrapper::getUserId)
                 .anyMatch(id -> id == userId);
 
         return isAuthor || isMember;

@@ -3,7 +3,7 @@ package org.xcolab.view.pages.proposals.wrappers;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.IContestCollectionCard;
-import org.xcolab.client.contest.pojo.OntologyTermWrapper;
+import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
 
 public class CollectionCardWrapper{
 
@@ -55,23 +55,23 @@ public class CollectionCardWrapper{
     }
 
     public OntologyTermWrapper getBigOntologyTerm() {
-        return OntologyClientUtil.getOntologyTerm(this.contestCollectionCard.getBig_ontology_term());
+        return OntologyClientUtil.getOntologyTerm(this.contestCollectionCard.getBigOntologyTerm());
     }
 
     public OntologyTermWrapper getSmallOntologyTerm() {
-        return OntologyClientUtil.getOntologyTerm(this.contestCollectionCard.getSmall_ontology_term());
+        return OntologyClientUtil.getOntologyTerm(this.contestCollectionCard.getSmallOntologyTerm());
     }
 
     public OntologyTermWrapper getOntologyTermToLoad() {
-        return OntologyClientUtil.getOntologyTerm(this.contestCollectionCard.getOntology_term_to_load());
+        return OntologyClientUtil.getOntologyTerm(this.contestCollectionCard.getOntologyTermToLoad());
     }
 
     public int getOrder() {
-        return this.contestCollectionCard.getOrder();
+        return this.contestCollectionCard.getSortOrder();
     }
 
     public boolean getOnlyFeatured() {
-        return this.contestCollectionCard.getOnly_featured();
+        return this.contestCollectionCard.getOnlyFeatured();
     }
 
     public boolean getVisible() {
@@ -83,7 +83,7 @@ public class CollectionCardWrapper{
     }
 
     public String getShortName() {
-        return this.contestCollectionCard.getShort_name();
+        return this.contestCollectionCard.getShortName();
     }
 
 }

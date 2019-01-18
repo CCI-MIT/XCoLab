@@ -8,7 +8,8 @@ import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.model.tables.pojos.Proposal2Phase;
+import org.xcolab.client.contest.pojo.IProposal2Phase;
+import org.xcolab.client.contest.pojo.tables.pojos.Proposal2Phase;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.util.Collections;
@@ -29,8 +30,7 @@ public class Proposal2PhaseDaoImpl implements Proposal2PhaseDao {
 
 
     @Override
-    public Proposal2Phase create(Proposal2Phase proposal2Phase) {
-
+    public IProposal2Phase create(IProposal2Phase proposal2Phase) {
         this.dslContext.insertInto(PROPOSAL2_PHASE)
                 .set(PROPOSAL2_PHASE.PROPOSAL_ID, proposal2Phase.getProposalId())
                 .set(PROPOSAL2_PHASE.CONTEST_PHASE_ID, proposal2Phase.getContestPhaseId())
@@ -40,13 +40,10 @@ public class Proposal2PhaseDaoImpl implements Proposal2PhaseDao {
                 .set(PROPOSAL2_PHASE.AUTOPROMOTE_CANDIDATE, proposal2Phase.getAutopromoteCandidate())
                 .execute();
         return proposal2Phase;
-
     }
 
-
     @Override
-    public Proposal2Phase getByProposalIdContestPhaseId(Long proposalId, Long contestPhaseId) throws NotFoundException {
-
+    public IProposal2Phase getByProposalIdContestPhaseId(Long proposalId, Long contestPhaseId) throws NotFoundException {
         final Record record = this.dslContext.selectFrom(PROPOSAL2_PHASE)
                 .where(PROPOSAL2_PHASE.PROPOSAL_ID.eq(proposalId))
                 .and(PROPOSAL2_PHASE.CONTEST_PHASE_ID.eq(contestPhaseId))
@@ -56,11 +53,10 @@ public class Proposal2PhaseDaoImpl implements Proposal2PhaseDao {
             throw new NotFoundException("Proposal2Phase with id " + proposalId + " does not exist");
         }
         return record.into(Proposal2Phase.class);
-
     }
 
     @Override
-    public boolean update(Proposal2Phase proposal2Phase) {
+    public boolean update(IProposal2Phase proposal2Phase) {
         return dslContext.update(PROPOSAL2_PHASE)
                 .set(PROPOSAL2_PHASE.PROPOSAL_ID, proposal2Phase.getProposalId())
                 .set(PROPOSAL2_PHASE.CONTEST_PHASE_ID, proposal2Phase.getContestPhaseId())
@@ -73,12 +69,10 @@ public class Proposal2PhaseDaoImpl implements Proposal2PhaseDao {
                 .execute() > 0;
     }
 
-
     @Override
-    public List<Proposal2Phase> findByGiven(Long proposalId, Long contestPhaseId, Integer version) {
+    public List<IProposal2Phase> findByGiven(Long proposalId, Long contestPhaseId, Integer version) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(PROPOSAL2_PHASE).getQuery();
-
         if (proposalId != null) {
             query.addConditions(PROPOSAL2_PHASE.PROPOSAL_ID.eq(proposalId));
         }
@@ -99,15 +93,13 @@ public class Proposal2PhaseDaoImpl implements Proposal2PhaseDao {
     }
 
     @Override
-    public List<Proposal2Phase> findByContestAndProposal(Long proposalId, Long contestId) {
+    public List<IProposal2Phase> findByContestAndProposal(Long proposalId, Long contestId) {
         final SelectQuery<Record> query = dslContext.select(PROPOSAL2_PHASE.fields())
                 .from(PROPOSAL2_PHASE)
                 .join(CONTEST_PHASE).on(CONTEST_PHASE.ID.eq(PROPOSAL2_PHASE.CONTEST_PHASE_ID))
                 .getQuery();
 
-
         query.addConditions(PROPOSAL2_PHASE.PROPOSAL_ID.eq(proposalId));
-
 
         query.addConditions(CONTEST_PHASE.CONTEST_ID.eq(contestId));
 
@@ -121,7 +113,6 @@ public class Proposal2PhaseDaoImpl implements Proposal2PhaseDao {
 
     @Override
     public Integer getProposalCountForActiveContestPhase(Long contestPhaseId) {
-
         final SelectQuery<Record1<Long>> query = dslContext.select(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.PROPOSAL_ID)
                 .from(PROPOSAL_CONTEST_PHASE_ATTRIBUTE)
                 .where(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.NAME.eq("VISIBLE")
@@ -144,7 +135,6 @@ public class Proposal2PhaseDaoImpl implements Proposal2PhaseDao {
         }
     }
 
-
     @Override
     public int delete(Long proposalId, Long contestPhaseId) {
         return dslContext.deleteFrom(PROPOSAL2_PHASE)
@@ -152,5 +142,4 @@ public class Proposal2PhaseDaoImpl implements Proposal2PhaseDao {
                 .and(PROPOSAL2_PHASE.CONTEST_PHASE_ID.eq(contestPhaseId))
                 .execute();
     }
-
 }

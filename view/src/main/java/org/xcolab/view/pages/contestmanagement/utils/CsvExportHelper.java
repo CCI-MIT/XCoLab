@@ -7,16 +7,16 @@ import org.springframework.util.CollectionUtils;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.ContestWrapper;
-import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.IContestPhaseType;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.contest.proposals.exceptions.Proposal2PhaseNotFoundException;
-import org.xcolab.client.contest.pojo.Proposal;
-import org.xcolab.client.contest.pojo.ProposalTeamMember;
-import org.xcolab.client.contest.pojo.Proposal2Phase;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMemberWrapper;
+import org.xcolab.client.contest.pojo.IProposal2Phase;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -46,8 +46,8 @@ public class CsvExportHelper {
     }
 
     public void addProposalAndAuthorDetailsToExportData(
-            List<Proposal> proposals, ContestPhaseWrapper contestPhase) {
-        for (Proposal proposal : proposals) {
+            List<ProposalWrapper> proposals, ContestPhaseWrapper contestPhase) {
+        for (ProposalWrapper proposal : proposals) {
             List<String[]> proposalAndAuthorDetailsRows =
                     generateProposalAndAuthorDetailsRows(proposal, contestPhase);
             if (!CollectionUtils.isEmpty(proposalAndAuthorDetailsRows)) {
@@ -56,14 +56,14 @@ public class CsvExportHelper {
         }
     }
 
-    private List<String[]> generateProposalAndAuthorDetailsRows(Proposal proposal,
+    private List<String[]> generateProposalAndAuthorDetailsRows(ProposalWrapper proposal,
             ContestPhaseWrapper contestPhase) {
 
         try {
-            Proposal2Phase proposal2Phase = ProposalPhaseClientUtil
+            IProposal2Phase proposal2Phase = ProposalPhaseClientUtil
                     .getProposal2PhaseByProposalIdContestPhaseId(proposal.getId(),
                             contestPhase.getId());
-            Proposal proposalWrapper =
+            ProposalWrapper proposalWrapper =
                     getProposalWithLatestVersionInContestPhase(proposal2Phase, proposal);
             Long contestId = contestPhase.getContestId();
 
@@ -74,9 +74,9 @@ public class CsvExportHelper {
             String proposalLink = URL_DOMAIN + proposalWrapper.getProposalUrl();
             String lastPhaseTitle = getContestPhaseTitle(contestPhase);
 
-            List<ProposalTeamMember> proposalTeam = proposalWrapper.getMembers();
+            List<ProposalTeamMemberWrapper> proposalTeam = proposalWrapper.getMembers();
             List<String[]> proposalExportData = new ArrayList<>();
-            for (ProposalTeamMember teamMemberWrapper : proposalTeam) {
+            for (ProposalTeamMemberWrapper teamMemberWrapper : proposalTeam) {
                 String[] csvRow =
                         generateProposalAndUserDetailsRow(contestTitle, proposalTitle, proposalLink,
                                 teamMemberWrapper,
@@ -90,12 +90,12 @@ public class CsvExportHelper {
         return null;
     }
 
-    private static Proposal getProposalWithLatestVersionInContestPhase(
-            Proposal2Phase proposal2Phase, Proposal proposal) {
+    private static ProposalWrapper getProposalWithLatestVersionInContestPhase(
+            IProposal2Phase proposal2Phase, ProposalWrapper proposal) {
         if (proposal2Phase.getVersionTo() == -1 || proposal2Phase.getVersionFrom() == 0) {
             return (proposal);
         }
-        return new Proposal(proposal, proposal2Phase.getVersionTo());
+        return new ProposalWrapper(proposal, proposal2Phase.getVersionTo());
     }
 
     private static String normalizeApostrophes(String stringToBeCleaned) {
@@ -110,7 +110,7 @@ public class CsvExportHelper {
     }
 
     private String[] generateProposalAndUserDetailsRow(String contestTitle, String proposalTitle,
-            String proposalLink, ProposalTeamMember teamMember,
+            String proposalLink, ProposalTeamMemberWrapper teamMember,
             String lastPhaseTitle) {
         Member member = MembersClient.getMemberUnchecked(teamMember.getUserId());
         String username = member.getScreenName();

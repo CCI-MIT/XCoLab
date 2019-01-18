@@ -5,7 +5,9 @@ import org.jooq.Record;
 import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.xcolab.model.tables.pojos.PointType;
+
+import org.xcolab.client.contest.pojo.IPointType;
+import org.xcolab.client.contest.pojo.tables.pojos.PointType;
 import org.xcolab.model.tables.records.PointTypeRecord;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
@@ -24,8 +26,7 @@ public class PointTypeDaoImpl implements PointTypeDao {
     }
 
     @Override
-    public PointType create(PointType pointType) {
-
+    public IPointType create(IPointType pointType) {
         PointTypeRecord ret = this.dslContext.insertInto(POINT_TYPE)
                 .set(POINT_TYPE.ID, pointType.getId())
                 .set(POINT_TYPE.PARENT_POINT_TYPE_ID, pointType.getParentPointTypeId())
@@ -46,8 +47,7 @@ public class PointTypeDaoImpl implements PointTypeDao {
     }
 
     @Override
-    public PointType get(Long id) throws NotFoundException {
-
+    public IPointType get(Long id) throws NotFoundException {
         final Record record =  this.dslContext.selectFrom(POINT_TYPE)
                 .where(POINT_TYPE.ID.eq(id))
                 .fetchOne();
@@ -56,11 +56,10 @@ public class PointTypeDaoImpl implements PointTypeDao {
             throw new NotFoundException("PointType with id " + id + " does not exist");
         }
         return record.into(PointType.class);
-
     }
 
     @Override
-    public boolean update(PointType pointType) {
+    public boolean update(IPointType pointType) {
         return dslContext.update(POINT_TYPE)
                 .set(POINT_TYPE.ID, pointType.getId())
                 .set(POINT_TYPE.PARENT_POINT_TYPE_ID, pointType.getParentPointTypeId())
@@ -74,7 +73,7 @@ public class PointTypeDaoImpl implements PointTypeDao {
     }
 
     @Override
-    public List<PointType> findByGiven(Long parentPointTypeId) {
+    public List<IPointType> findByGiven(Long parentPointTypeId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(POINT_TYPE).getQuery();
 

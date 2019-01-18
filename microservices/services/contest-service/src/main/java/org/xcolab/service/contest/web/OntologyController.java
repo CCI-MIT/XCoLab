@@ -15,10 +15,10 @@ import org.xcolab.client.contest.pojo.IImpactDefaultSeries;
 import org.xcolab.client.contest.pojo.IImpactDefaultSeriesData;
 import org.xcolab.client.contest.pojo.IImpactTemplateFocusAreaList;
 import org.xcolab.client.contest.pojo.IImpactTemplateMaxFocusArea;
+import org.xcolab.client.contest.pojo.wrapper.FocusAreaWrapper;
+import org.xcolab.client.contest.pojo.wrapper.OntologySpaceWrapper;
+import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
 import org.xcolab.commons.spring.web.annotation.ListMapping;
-import org.xcolab.model.tables.pojos.FocusArea;
-import org.xcolab.model.tables.pojos.OntologySpace;
-import org.xcolab.model.tables.pojos.OntologyTerm;
 import org.xcolab.service.contest.domain.focusarea.FocusAreaDao;
 import org.xcolab.service.contest.domain.focusareaontologyterm.FocusAreaOntologyTermDao;
 import org.xcolab.service.contest.domain.impactdefaultseries.ImpactDefaultSeriesDao;
@@ -64,25 +64,29 @@ public class OntologyController {
     private OntologyService ontologyService;
 
     @ListMapping("/ontologyTerms/getAllOntologyTermDescendant")
-    public List<OntologyTerm> getOntologyTerms(@RequestParam Long ontologyTermId) throws  NotFoundException {
-        OntologyTerm ontologyTerm = ontologyTermDao.get(ontologyTermId);
+    public List<OntologyTermWrapper> getOntologyTerms(@RequestParam Long ontologyTermId)
+            throws NotFoundException {
+        OntologyTermWrapper ontologyTerm = ontologyTermDao.get(ontologyTermId);
         return ontologyService.getAllOntologyTermDescendantTerms(ontologyTerm);
     }
 
     @ListMapping("/ontologyTerms/getOntologyTermsByFocusAreaOntologySpaceName")
-    public List<OntologyTerm> getOntologyTermsByFocusAreaOntologySpaceName(@RequestParam Long focusAreaId, @RequestParam String ontologySpaceName) {
-        return ontologyTermDao.getOntologyTermByFocusAreaAndOntologySpaceName(focusAreaId,ontologySpaceName );
+    public List<OntologyTermWrapper> getOntologyTermsByFocusAreaOntologySpaceName(
+            @RequestParam Long focusAreaId, @RequestParam String ontologySpaceName) {
+        return ontologyTermDao
+                .getOntologyTermByFocusAreaAndOntologySpaceName(focusAreaId, ontologySpaceName);
     }
 
     @ListMapping("/ontologyTerms")
-    public List<OntologyTerm> getOntologyTerms(@RequestParam(required = false) String name,
+    public List<OntologyTermWrapper> getOntologyTerms(@RequestParam(required = false) String name,
             @RequestParam(required = false) Long parentId,
             @RequestParam(required = false) Long ontologySpaceId) {
-        return ontologyTermDao.findByGiven(name,parentId, ontologySpaceId);
+        return ontologyTermDao.findByGiven(name, parentId, ontologySpaceId);
     }
 
     @GetMapping("/ontologyTerms/{ontologyTermId}")
-    public OntologyTerm getOntologyTerm(@PathVariable("ontologyTermId") Long ontologyTermId) throws NotFoundException {
+    public OntologyTermWrapper getOntologyTerm(@PathVariable("ontologyTermId") Long ontologyTermId)
+            throws NotFoundException {
         if (ontologyTermId == null || ontologyTermId == 0) {
             throw new NotFoundException("No ontologyTermId given");
         } else {
@@ -91,7 +95,7 @@ public class OntologyController {
     }
 
     @PutMapping("/ontologyTerms/{id}")
-    public boolean updateOntologyTerm(@RequestBody OntologyTerm ontologyTerm,
+    public boolean updateOntologyTerm(@RequestBody OntologyTermWrapper ontologyTerm,
             @PathVariable("id") Long id) throws NotFoundException {
 
         if (id == null || id == 0 || ontologyTermDao.get(id) == null) {
@@ -108,7 +112,7 @@ public class OntologyController {
         if (id == null || id == 0) {
             throw new NotFoundException("No OntologyTerm with id given");
         } else {
-            OntologyTerm ontologyTerm = this.ontologyTermDao.get(id);
+            OntologyTermWrapper ontologyTerm = this.ontologyTermDao.get(id);
             if (ontologyTerm != null) {
                 this.ontologyTermDao.delete(ontologyTerm.getId());
                 return "OntologyTerm deleted successfully";
@@ -119,15 +123,17 @@ public class OntologyController {
     }
 
     @PostMapping("/ontologyTerms")
-    public OntologyTerm createOntologyTerm(@RequestBody OntologyTerm ontologyTerm) {
+    public OntologyTermWrapper createOntologyTerm(@RequestBody OntologyTermWrapper ontologyTerm) {
         return this.ontologyTermDao.create(ontologyTerm);
     }
 
     @GetMapping("/focusAreas/{focusAreaId}")
-    public FocusArea getFocusArea(@PathVariable("focusAreaId") Long focusAreaId) throws NotFoundException {
+    public FocusAreaWrapper getFocusArea(@PathVariable("focusAreaId") Long focusAreaId)
+            throws NotFoundException {
         /*
         if(focusAreaId == 0 ){
-            focusAreaId = 2l; //This is done because a lot of old contests use focus area id = 0 that the auto increment no longer allows.
+            focusAreaId = 2l; //This is done because a lot of old contests use focus area id = 0
+            that the auto increment no longer allows.
         }
         if (focusAreaId == null ) {
             throw new NotFoundException("No focusAreaId given");
@@ -139,24 +145,24 @@ public class OntologyController {
     }
 
     @ListMapping("/focusAreas")
-    public List<FocusArea> getFocusAreas(
-        @RequestParam(required = false) Long ontologyTermId) throws NotFoundException{
-        List<FocusArea> focusAreas = new ArrayList<>();
-        for (IFocusAreaOntologyTerm term: focusAreaOntologyTermDao.findByGiven(null, ontologyTermId)) {
+    public List<FocusAreaWrapper> getFocusAreas(
+            @RequestParam(required = false) Long ontologyTermId) throws NotFoundException {
+        List<FocusAreaWrapper> focusAreas = new ArrayList<>();
+        for (IFocusAreaOntologyTerm term : focusAreaOntologyTermDao
+                .findByGiven(null, ontologyTermId)) {
             focusAreas.add(focusAreaDao.get(term.getFocusAreaId()));
         }
         return focusAreas;
     }
 
     @PostMapping("/focusAreas")
-    public FocusArea createFocusArea(@RequestBody FocusArea focusArea) {
+    public FocusAreaWrapper createFocusArea(@RequestBody FocusAreaWrapper focusArea) {
         return this.focusAreaDao.create(focusArea);
     }
 
     @PutMapping("/focusAreas/{id}")
-    public boolean updateFocusArea(@RequestBody FocusArea focusArea,
+    public boolean updateFocusArea(@RequestBody FocusAreaWrapper focusArea,
             @PathVariable("id") Long id) throws NotFoundException {
-
         if (id == null || id == 0 || focusAreaDao.get(id) == null) {
             throw new NotFoundException("No FocusArea with id " + id);
         } else {
@@ -172,7 +178,7 @@ public class OntologyController {
         if (id == null || id == 0) {
             throw new NotFoundException("No FocusArea with id given");
         } else {
-            FocusArea focusArea = this.focusAreaDao.get(id);
+            FocusAreaWrapper focusArea = this.focusAreaDao.get(id);
             if (focusArea != null) {
                 this.focusAreaDao.delete(focusArea.getId());
                 return "FocusArea deleted successfully";
@@ -183,28 +189,29 @@ public class OntologyController {
     }
 
     @DeleteMapping("/focusAreaOntologyTerms/deleteFocusAreaOntologyTerm")
-    public String deleteFocusAreaOntologyTerm(@RequestParam("focusAreaId") Long focusAreaId, @RequestParam Long ontologyTermId)
+    public String deleteFocusAreaOntologyTerm(@RequestParam("focusAreaId") Long focusAreaId,
+            @RequestParam Long ontologyTermId)
             throws NotFoundException {
 
         if (focusAreaId == null || focusAreaId == 0) {
             throw new NotFoundException("No FocusAreaOntologyTerm with id given");
         } else {
-            this.focusAreaOntologyTermDao.deleteAllFocusAreasOntologyTerms(focusAreaId,ontologyTermId);
+            this.focusAreaOntologyTermDao
+                    .deleteAllFocusAreasOntologyTerms(focusAreaId, ontologyTermId);
             return "FocusAreaOntologyTerm deleted successfully";
         }
     }
 
     @ListMapping("/ontologySpaces")
-    public List<OntologySpace> getOntologySpaces(
-    ) {
+    public List<OntologySpaceWrapper> getOntologySpaces() {
         return ontologySpaceDao.findByGiven();
     }
 
     @ListMapping("/focusAreaOntologyTerms")
-    public List<IFocusAreaOntologyTerm> getFocusAreaOntologyTerms(@RequestParam(required = false) Long focusAreaId,
-                                                                 @RequestParam(required = false) Long ontologTermId
-    ) {
-        return focusAreaOntologyTermDao.findByGiven(focusAreaId,ontologTermId);
+    public List<IFocusAreaOntologyTerm> getFocusAreaOntologyTerms(
+            @RequestParam(required = false) Long focusAreaId,
+            @RequestParam(required = false) Long ontologTermId) {
+        return focusAreaOntologyTermDao.findByGiven(focusAreaId, ontologTermId);
     }
 
     @PostMapping("/focusAreaOntologyTerms")
@@ -213,16 +220,16 @@ public class OntologyController {
         return this.focusAreaOntologyTermDao.create(focusAreaOntologyTerm);
     }
 
-
     @ListMapping("/impactTemplateMaxFocusAreas")
     public List<IImpactTemplateMaxFocusArea> getImpactTemplateMaxFocusAreas(
-            @RequestParam(required = false) Long focusAreaListId
-    ) {
+            @RequestParam(required = false) Long focusAreaListId) {
         return impactTemplateMaxFocusAreaDao.findByGiven(focusAreaListId);
     }
 
     @GetMapping("/impactTemplateFocusAreaLists/{impactTemplateFocusAreaListId}")
-    public IImpactTemplateFocusAreaList getImpactTemplateFocusAreaList(@PathVariable("impactTemplateFocusAreaListId") Long impactTemplateFocusAreaListId) throws NotFoundException {
+    public IImpactTemplateFocusAreaList getImpactTemplateFocusAreaList(
+            @PathVariable("impactTemplateFocusAreaListId") Long impactTemplateFocusAreaListId)
+            throws NotFoundException {
         if (impactTemplateFocusAreaListId == null || impactTemplateFocusAreaListId == 0) {
             throw new NotFoundException("No impactTemplateFocusAreaListId given");
         } else {
@@ -231,7 +238,8 @@ public class OntologyController {
     }
 
     @GetMapping("/ontologySpaces/{ontologySpaceId}")
-    public OntologySpace getOntologySpace(@PathVariable("ontologySpaceId") Long ontologySpaceId) throws NotFoundException {
+    public OntologySpaceWrapper getOntologySpace(
+            @PathVariable("ontologySpaceId") Long ontologySpaceId) throws NotFoundException {
         if (ontologySpaceId == null || ontologySpaceId == 0) {
             throw new NotFoundException("No ontologySpaceId given");
         } else {
@@ -242,16 +250,14 @@ public class OntologyController {
     @ListMapping("/impactDefaultSeries")
     public List<IImpactDefaultSeries> getImpactDefaultSeries(
             @RequestParam(required = false) Long focusAreaId,
-            @RequestParam(required = false) String name
-    ) {
-        return impactDefaultSeriesDao.findByGiven(focusAreaId,name);
+            @RequestParam(required = false) String name) {
+        return impactDefaultSeriesDao.findByGiven(focusAreaId, name);
     }
 
     @ListMapping("/impactDefaultSeriesDatas")
     public List<IImpactDefaultSeriesData> getImpactDefaultSeriesDatas(
             @RequestParam(required = false) Long seriesId,
-            @RequestParam(required = false) Integer year
-    ) {
+            @RequestParam(required = false) Integer year) {
         return impactDefaultSeriesDataDao.findByGiven(seriesId, year);
     }
 }

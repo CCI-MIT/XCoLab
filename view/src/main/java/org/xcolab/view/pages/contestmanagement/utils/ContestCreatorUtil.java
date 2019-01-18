@@ -11,9 +11,9 @@ import org.xcolab.client.admin.pojo.IConfigurationAttribute;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ProposalTemplateClientUtil;
 import org.xcolab.client.contest.exceptions.ContestScheduleNotFoundException;
-import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.IContestSchedule;
-import org.xcolab.client.contest.pojo.ProposalTemplate;
+import org.xcolab.client.contest.pojo.IProposalTemplate;
 import org.xcolab.client.contest.util.ContestScheduleChangeHelper;
 import org.xcolab.client.contest.proposals.exceptions.ProposalTemplateNotFoundException;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
@@ -49,13 +49,13 @@ public final class ContestCreatorUtil {
         return contest;
     }
 
-    private static ProposalTemplate getOrCreateDefaultTemplate() {
+    private static IProposalTemplate getOrCreateDefaultTemplate() {
         final long defaultTemplateId = ConfigurationAttributeKey.DEFAULT_CONTEST_TEMPLATE_ID.get();
         try {
             if (defaultTemplateId > 0) {
                 return ProposalTemplateClientUtil.getProposalTemplate(defaultTemplateId);
             }
-            final ProposalTemplate newDefaultTemplate = ProposalTemplateLifecycleUtil
+            final IProposalTemplate newDefaultTemplate = ProposalTemplateLifecycleUtil
                     .create(DEFAULT_TEMPLATE_NAME);
 
             IConfigurationAttribute defaultTemplateAttribute = new ConfigurationAttribute();
@@ -71,7 +71,7 @@ public final class ContestCreatorUtil {
         } catch (ProposalTemplateNotFoundException e) {
             //fail early if it doesn't exist
             throw ReferenceResolutionException
-                    .toObject(ProposalTemplate.class, defaultTemplateId)
+                    .toObject(IProposalTemplate.class, defaultTemplateId)
                     .fromObject(ConfigurationAttribute.class, "DEFAULT_CONTEST_TEMPLATE_ID");
         }
     }

@@ -7,7 +7,7 @@ import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.model.tables.pojos.ProposalUnversionedAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ProposalUnversionedAttribute;
 import org.xcolab.model.tables.records.ProposalUnversionedAttributeRecord;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
@@ -27,7 +27,6 @@ public class ProposalUnversionedAttributeDaoImpl implements ProposalUnversionedA
 
     @Override
     public ProposalUnversionedAttribute create(ProposalUnversionedAttribute proposalUnversionedAttribute) {
-
         final long additionalId = proposalUnversionedAttribute.getAdditionalId() != null
                 ? proposalUnversionedAttribute.getAdditionalId() : 0;
         ProposalUnversionedAttributeRecord ret = this.dslContext.insertInto(PROPOSAL_UNVERSIONED_ATTRIBUTE)
@@ -50,12 +49,10 @@ public class ProposalUnversionedAttributeDaoImpl implements ProposalUnversionedA
         } else {
             return null;
         }
-
     }
 
     @Override
     public ProposalUnversionedAttribute get(Long id) throws NotFoundException {
-
         final Record record = this.dslContext.selectFrom(PROPOSAL_UNVERSIONED_ATTRIBUTE)
                 .where(PROPOSAL_UNVERSIONED_ATTRIBUTE.ID.eq(id))
                 .fetchOne();
@@ -64,7 +61,6 @@ public class ProposalUnversionedAttributeDaoImpl implements ProposalUnversionedA
             throw new NotFoundException("ProposalUnversionedAttribute with id " + id + " does not exist");
         }
         return record.into(ProposalUnversionedAttribute.class);
-
     }
 
     @Override
@@ -119,6 +115,4 @@ public class ProposalUnversionedAttributeDaoImpl implements ProposalUnversionedA
                 .where(PROPOSAL_UNVERSIONED_ATTRIBUTE.ID.eq(id))
                 .execute();
     }
-
-
 }

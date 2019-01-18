@@ -5,7 +5,9 @@ import org.jooq.Record;
 import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.xcolab.model.tables.pojos.ProposalRating;
+
+import org.xcolab.client.contest.pojo.IProposalRating;
+import org.xcolab.client.contest.pojo.tables.pojos.ProposalRating;
 import org.xcolab.model.tables.records.ProposalRatingRecord;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
@@ -22,8 +24,7 @@ public class ProposalRatingDaoImpl implements ProposalRatingDao {
     private DSLContext dslContext;
 
     @Override
-    public ProposalRating create(ProposalRating proposalRating) {
-
+    public IProposalRating create(IProposalRating proposalRating) {
         ProposalRatingRecord ret = this.dslContext.insertInto(PROPOSAL_RATING)
                 .set(PROPOSAL_RATING.PROPOSAL_ID, proposalRating.getProposalId())
                 .set(PROPOSAL_RATING.CONTEST_PHASE_ID, proposalRating.getContestPhaseId())
@@ -41,11 +42,10 @@ public class ProposalRatingDaoImpl implements ProposalRatingDao {
         } else {
             return null;
         }
-
     }
 
     @Override
-    public boolean update(ProposalRating proposalRating) {
+    public boolean update(IProposalRating proposalRating) {
         return dslContext.update(PROPOSAL_RATING)
                 .set(PROPOSAL_RATING.PROPOSAL_ID, proposalRating.getProposalId())
                 .set(PROPOSAL_RATING.CONTEST_PHASE_ID, proposalRating.getContestPhaseId())
@@ -60,8 +60,7 @@ public class ProposalRatingDaoImpl implements ProposalRatingDao {
     }
 
     @Override
-    public ProposalRating get(Long id) throws NotFoundException {
-
+    public IProposalRating get(Long id) throws NotFoundException {
         final Record record = this.dslContext.selectFrom(PROPOSAL_RATING)
                 .where(PROPOSAL_RATING.ID.eq(id))
                 .fetchOne();
@@ -70,13 +69,10 @@ public class ProposalRatingDaoImpl implements ProposalRatingDao {
             throw new NotFoundException("ProposalRating with id " + id + " does not exist");
         }
         return record.into(ProposalRating.class);
-
     }
 
     @Override
-    public List<ProposalRating> findByProposalIdJudgeTypeJudgeIdContestPhaseId(Long proposalId, Integer judgeType, Long contestPhaseId, Long userId) {
-
-
+    public List<IProposalRating> findByProposalIdJudgeTypeJudgeIdContestPhaseId(Long proposalId, Integer judgeType, Long contestPhaseId, Long userId) {
         final SelectQuery<Record> query = dslContext.select(PROPOSAL_RATING.fields())
                 .from(PROPOSAL_RATING).getQuery();
         query.addJoin(PROPOSAL_RATING_VALUE);
@@ -96,12 +92,10 @@ public class ProposalRatingDaoImpl implements ProposalRatingDao {
         return query.fetchInto(ProposalRating.class);
     }
 
-
     @Override
-    public List<ProposalRating> findByGiven(Long proposalId, Long contestPhaseId, Long userId) {
+    public List<IProposalRating> findByGiven(Long proposalId, Long contestPhaseId, Long userId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(PROPOSAL_RATING).getQuery();
-
         if (proposalId != null) {
             query.addConditions(PROPOSAL_RATING.PROPOSAL_ID.eq(proposalId));
         }

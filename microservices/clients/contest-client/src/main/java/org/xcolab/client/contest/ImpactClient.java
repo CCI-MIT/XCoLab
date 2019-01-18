@@ -1,11 +1,11 @@
 package org.xcolab.client.contest;
 
-import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.IImpactIteration;
 import org.xcolab.client.contest.pojo.IImpactTemplateFocusAreaList;
 import org.xcolab.client.contest.pojo.IImpactTemplateMaxFocusArea;
 import org.xcolab.client.contest.pojo.IImpactTemplateSeries;
-import org.xcolab.client.contest.pojo.ProposalTemplate;
+import org.xcolab.client.contest.pojo.IProposalTemplate;
 import org.xcolab.util.http.client.RestResource1;
 
 import java.util.List;
@@ -25,7 +25,7 @@ public class ImpactClient {
     }
 
     public IImpactTemplateFocusAreaList getContestImpactFocusAreaList(ContestWrapper contest) {
-        ProposalTemplate proposalTemplate =
+        IProposalTemplate proposalTemplate =
                 ProposalTemplateClientUtil.getProposalTemplate(contest.getProposalTemplateId());
         return getImpactTemplateFocusAreaList(proposalTemplate.getFocusAreaListTemplateId());
     }
@@ -48,7 +48,7 @@ public class ImpactClient {
 
     public IImpactTemplateSeries getContestImpactTemplateSeries(ContestWrapper contest) {
 
-        ProposalTemplate proposalTemplate =
+        IProposalTemplate proposalTemplate =
                 ProposalTemplateClientUtil.getProposalTemplate(contest.getProposalTemplateId());
         return getImpactTemplateSeries(proposalTemplate.getImpactSeriesTemplateId());
 

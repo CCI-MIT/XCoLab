@@ -3,16 +3,16 @@ package org.xcolab.view.pages.proposals.impact;
 import org.xcolab.client.contest.ImpactClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.IImpactIteration;
-import org.xcolab.client.contest.pojo.FocusAreaWrapper;
-import org.xcolab.client.contest.pojo.OntologyTermWrapper;
+import org.xcolab.client.contest.pojo.wrapper.FocusAreaWrapper;
+import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.enums.ImpactSeriesType;
 import org.xcolab.client.contest.proposals.helpers.ProposalAttributeHelper;
-import org.xcolab.client.contest.pojo.Proposal;
-import org.xcolab.client.contest.pojo.ProposalAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -75,11 +75,11 @@ public class ProposalImpactSeriesList {
 
     private final List<ProposalImpactSeries> impactSerieses;
 
-    public ProposalImpactSeriesList(Proposal proposal) throws ContestNotFoundException {
+    public ProposalImpactSeriesList(ProposalWrapper proposal) throws ContestNotFoundException {
         this(ProposalClientUtil.getLatestContestInProposal(proposal.getId()), proposal);
     }
 
-    public ProposalImpactSeriesList(ContestWrapper contest, Proposal proposal) {
+    public ProposalImpactSeriesList(ContestWrapper contest, ProposalWrapper proposal) {
 
         this.impactSerieses = new ArrayList<>();
 
@@ -102,7 +102,7 @@ public class ProposalImpactSeriesList {
         });
     }
 
-    public List<FocusAreaWrapper> getImpactProposalFocusAreas(ContestWrapper contest, Proposal proposal) {
+    public List<FocusAreaWrapper> getImpactProposalFocusAreas(ContestWrapper contest, ProposalWrapper proposal) {
         final ProposalAttributeHelper attributeHelper = proposal.getProposalAttributeHelper();
         final List<IImpactIteration> iterations =
                 ImpactClientUtil.getContestImpactIterations(contest);

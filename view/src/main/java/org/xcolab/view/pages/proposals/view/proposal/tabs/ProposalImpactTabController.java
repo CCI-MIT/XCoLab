@@ -16,15 +16,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ImpactClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.IImpactIteration;
-import org.xcolab.client.contest.pojo.OntologyTermWrapper;
+import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.client.contest.proposals.ProposalAttributeClient;
 import org.xcolab.client.contest.proposals.enums.ProposalUnversionedAttributeName;
 import org.xcolab.client.contest.proposals.helpers.ProposalUnversionedAttributeHelper;
-import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.util.enums.contest.ContestTier;
@@ -71,7 +71,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         }
 
         ContestWrapper contest = proposalContext.getContest();
-        Proposal proposal = proposalContext.getProposal();
+        ProposalWrapper proposal = proposalContext.getProposal();
         setCommonModelAndPageAttributes(request, model, proposalContext, ProposalTab.IMPACT);
 
         boolean userAllowedToEdit = false;
@@ -152,7 +152,8 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         return "/proposals/proposalImpactError";
     }
 
-    private Long getModelIdIfProposalHasScenarioIdOrContestDefaultModelId(Proposal proposalWrapper) {
+    private Long getModelIdIfProposalHasScenarioIdOrContestDefaultModelId(
+            ProposalWrapper proposalWrapper) {
         Long modelId = proposalWrapper.getModelId();
         boolean scenarioIdValid =
                proposalWrapper.getScenarioId() != null && proposalWrapper.getScenarioId() > 0;
@@ -193,10 +194,10 @@ public class ProposalImpactTabController extends BaseProposalTabController {
     }
 
     private String showImpactTabEditGlobal(Model model, ProposalContext proposalContext,
-            Proposal proposal)
+            ProposalWrapper proposal)
             throws IOException, ScenarioNotFoundException, ModelNotFoundException {
 
-        List<Proposal> subProposals =
+        List<ProposalWrapper> subProposals =
                 proposalContext.getClients().getProposalClient().getContestIntegrationRelevantSubproposals(proposal.getId());
         ProposalImpactScenarioCombinationWrapper proposalImpactScenarioCombinationWrapper =
                 new ProposalImpactScenarioCombinationWrapper(subProposals);
@@ -256,7 +257,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
     }
 
     private String showImpactTabBasic(Model model, ProposalContext proposalContext,
-            ContestWrapper contest, Proposal proposal) {
+            ContestWrapper contest, ProposalWrapper proposal) {
 
         List<IImpactIteration> impactIterations = ImpactClientUtil.getContestImpactIterations(contest);
         model.addAttribute("impactIterations", impactIterations);
@@ -274,15 +275,15 @@ public class ProposalImpactTabController extends BaseProposalTabController {
     }
 
     private List<ProposalImpactSeries> getImpactTabBasicProposal(ProposalContext proposalContext,
-            Proposal proposalParent, ContestWrapper contest) {
-        Set<Proposal> referencedSubProposals =
+            ProposalWrapper proposalParent, ContestWrapper contest) {
+        Set<ProposalWrapper> referencedSubProposals =
                 IntegratedProposalImpactSeries.getSubProposalsOnContestTier(proposalContext,
                         proposalParent,
                         ContestTier.BASIC.getTierType());
         try {
             List<OntologyTermWrapper> ontologyTermList = contest.getWhere();
             List<ProposalImpactSeries> proposalImpactSerieses = new ArrayList<>();
-            for (Proposal proposal : referencedSubProposals) {
+            for (ProposalWrapper proposal : referencedSubProposals) {
                 ProposalImpactSeriesList proposalImpactSeriesList = new ProposalImpactSeriesList(
                         contest, proposal);
                 for (ProposalImpactSeries proposalImpactSeries : proposalImpactSeriesList.getImpactSerieses()) {
@@ -343,7 +344,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             return new AccessDeniedPage(currentMember).toViewName(response);
         }
 
-        Proposal proposal = proposalContext.getProposal();
+        ProposalWrapper proposal = proposalContext.getProposal();
         Long consolidatedScenario = isConsolidatedScenario != null && isConsolidatedScenario ? 1L : 0L;
         proposal.setScenarioId(scenarioId, consolidatedScenario, currentMember.getId());
 

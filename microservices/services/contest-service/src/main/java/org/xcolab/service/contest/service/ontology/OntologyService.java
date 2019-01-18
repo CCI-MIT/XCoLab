@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.xcolab.client.contest.pojo.IFocusAreaOntologyTerm;
-import org.xcolab.client.contest.pojo.OntologyTermWrapper;
+import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
 import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.service.contest.domain.focusareaontologyterm.FocusAreaOntologyTermDao;
 import org.xcolab.service.contest.domain.ontologyterm.OntologyTermDao;

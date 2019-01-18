@@ -1,6 +1,7 @@
 package org.xcolab.client.contest.pojo;
 
 import org.xcolab.client.contest.StaticContestContext;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 
 public interface IContestSchedule {
 

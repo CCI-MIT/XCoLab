@@ -5,7 +5,9 @@ import org.jooq.Record;
 import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.xcolab.model.tables.pojos.ProposalMoveHistory;
+
+import org.xcolab.client.contest.pojo.IProposalMoveHistory;
+import org.xcolab.client.contest.pojo.tables.pojos.ProposalMoveHistory;
 import org.xcolab.model.tables.records.ProposalMoveHistoryRecord;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
@@ -22,8 +24,7 @@ public class ProposalMoveHistoryDaoImpl implements ProposalMoveHistoryDao {
     public ProposalMoveHistoryDaoImpl(DSLContext dslContext) {this.dslContext = dslContext;}
 
     @Override
-    public ProposalMoveHistory create(ProposalMoveHistory proposalMoveHistory) {
-
+    public IProposalMoveHistory create(IProposalMoveHistory proposalMoveHistory) {
         ProposalMoveHistoryRecord ret = this.dslContext.insertInto(PROPOSAL_MOVE_HISTORY)
                 .set(PROPOSAL_MOVE_HISTORY.SOURCE_PROPOSAL_ID, proposalMoveHistory.getSourceProposalId())
                 .set(PROPOSAL_MOVE_HISTORY.SOURCE_CONTEST_ID, proposalMoveHistory.getSourceContestId())
@@ -42,12 +43,10 @@ public class ProposalMoveHistoryDaoImpl implements ProposalMoveHistoryDao {
         } else {
             return null;
         }
-
     }
 
     @Override
-    public ProposalMoveHistory get(Long id) throws NotFoundException {
-
+    public IProposalMoveHistory get(Long id) throws NotFoundException {
         final Record record = this.dslContext.selectFrom(PROPOSAL_MOVE_HISTORY)
                 .where(PROPOSAL_MOVE_HISTORY.ID.eq(id))
                 .fetchOne();
@@ -56,11 +55,10 @@ public class ProposalMoveHistoryDaoImpl implements ProposalMoveHistoryDao {
             throw new NotFoundException("ProposalMoveHistory with id " + id + " does not exist");
         }
         return record.into(ProposalMoveHistory.class);
-
     }
 
     @Override
-    public List<ProposalMoveHistory> findByGiven(Long sourceProposalId, Long sourceContestId, Long targetProposalId, Long targetContestId) {
+    public List<IProposalMoveHistory> findByGiven(Long sourceProposalId, Long sourceContestId, Long targetProposalId, Long targetContestId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(PROPOSAL_MOVE_HISTORY).getQuery();
 

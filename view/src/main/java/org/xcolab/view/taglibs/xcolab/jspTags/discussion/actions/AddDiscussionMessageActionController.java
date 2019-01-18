@@ -21,10 +21,10 @@ import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.comment.pojo.tables.pojos.Comment;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.proposals.ProposalClient;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
-import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.entity.utils.LinkUtils;
@@ -106,7 +106,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
                             userId, commentThread.getId(), comment.getId());
                 } else {
                     final ProposalClient proposalClient = ProposalClientUtil.getClient();
-                    final Proposal proposal = getProposal(proposalClient, commentThread);
+                    final ProposalWrapper proposal = getProposal(proposalClient, commentThread);
                     if (proposal != null) {
                         //proposal
                         activityClient

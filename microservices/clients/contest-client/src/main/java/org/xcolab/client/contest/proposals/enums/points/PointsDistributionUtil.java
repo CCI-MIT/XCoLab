@@ -1,15 +1,15 @@
 package org.xcolab.client.contest.proposals.enums.points;
 
+import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.PointsClientUtil;
 import org.xcolab.client.contest.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.exceptions.ProposalAttributeNotFoundException;
-import org.xcolab.client.contest.pojo.Proposal;
-import org.xcolab.client.contest.pojo.ProposalAttribute;
-import org.xcolab.client.contest.pojo.PointTypeWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.wrapper.PointTypeWrapper;
 import org.xcolab.client.contest.pojo.IPointsDistributionConfiguration;
-import org.xcolab.client.contest.pojo.ProposalReference;
+import org.xcolab.client.contest.pojo.IProposalReference;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -37,11 +37,11 @@ public class PointsDistributionUtil {
         return targets;
     }
 
-    public static List<PointsTarget> distributeSectionDefinedAmongProposals(Proposal proposal, PointTypeWrapper pointType, Set<Long> subProposalIds)  {
+    public static List<PointsTarget> distributeSectionDefinedAmongProposals(ProposalWrapper proposal, PointTypeWrapper pointType, Set<Long> subProposalIds)  {
         List<PointsTarget> targets = new ArrayList<>();
         for (long subProposalId : subProposalIds) {
             try {
-                ProposalReference reference = ProposalClientUtil.getProposalReferenceByProposalIdSubProposalId(proposal.getId(), subProposalId);
+                IProposalReference reference = ProposalClientUtil.getProposalReferenceByProposalIdSubProposalId(proposal.getId(), subProposalId);
                 final ProposalAttribute referenceSectionProposalAttribute = ProposalAttributeClientUtil
 
                         .getProposalAttribute(reference.getSectionAttributeId());
@@ -58,7 +58,7 @@ public class PointsDistributionUtil {
         return targets;
     }
 
-    public static List<PointsTarget> distributeUserDefinedAmongProposals(Proposal proposal, PointTypeWrapper pointType, Set<Long> subProposalIds)  {
+    public static List<PointsTarget> distributeUserDefinedAmongProposals(ProposalWrapper proposal, PointTypeWrapper pointType, Set<Long> subProposalIds)  {
         List<PointsTarget> targets = new ArrayList<>();
         for (IPointsDistributionConfiguration pdc : PointsClientUtil
                 .getPointsDistributionByProposalIdPointTypeId(proposal.getId(), pointType.getId())) {
@@ -72,7 +72,7 @@ public class PointsDistributionUtil {
         return targets;
     }
 
-    public static List<PointsTarget> distributeAmongProposals(DistributionStrategy distributionStrategy, Proposal parentProposals, PointTypeWrapper pointType, Set<Long> proposalIds) {
+    public static List<PointsTarget> distributeAmongProposals(DistributionStrategy distributionStrategy, ProposalWrapper parentProposals, PointTypeWrapper pointType, Set<Long> proposalIds) {
         switch (distributionStrategy) {
             case USER_DEFINED:
                 return distributeUserDefinedAmongProposals(parentProposals, pointType, proposalIds);

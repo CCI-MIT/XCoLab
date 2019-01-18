@@ -17,9 +17,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
-import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.model.tables.pojos.ActivitySubscription;
 import org.xcolab.service.activities.domain.activitySubscription.ActivitySubscriptionDao;
 import org.xcolab.util.activities.enums.ActivityCategory;
@@ -38,7 +38,7 @@ import static org.mockito.Matchers.anyLong;
     ProposalClientUtil.class,
     org.xcolab.client.contest.ContestClientUtil.class,
     org.xcolab.client.contest.ContestClient.class,
-    Proposal.class,
+    ProposalWrapper.class,
     ContestWrapper.class
 })
 @ComponentScan("org.xcolab.service.activities")
@@ -65,11 +65,11 @@ public class ActivitiesServiceTest {
 
 
 
-        Mockito.mock(Proposal.class);
+        Mockito.mock(ProposalWrapper.class);
 
         Mockito.when(ProposalClientUtil.getProposal(anyLong()))
             .thenAnswer(invocation -> {
-                Proposal proposal = Mockito.mock(Proposal.class);
+                ProposalWrapper proposal = Mockito.mock(ProposalWrapper.class);
                 proposal.setDiscussionId(123456L);
                 return proposal;
 

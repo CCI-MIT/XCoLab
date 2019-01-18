@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 
 import java.io.IOException;
 
@@ -59,7 +59,7 @@ public class LegacyRedirectController {
 
         try {
             ContestWrapper contest = ContestClientUtil.getContest(contestId);
-            Proposal proposal = ProposalClientUtil.getProposal(proposalId);
+            ProposalWrapper proposal = ProposalClientUtil.getProposal(proposalId);
 
             String redirectUrl;
             if (phaseId != null) {

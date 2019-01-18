@@ -1,19 +1,19 @@
 package org.xcolab.service.contest.proposal.domain.proposalreference;
 
-import org.xcolab.model.tables.pojos.ProposalReference;
+import org.xcolab.client.contest.pojo.IProposalReference;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.util.List;
 
 public interface ProposalReferenceDao {
 
-    List<ProposalReference> findByGiven(Long proposalId, Long subProposalId);
+    List<IProposalReference> findByGiven(Long proposalId, Long subProposalId);
 
-    ProposalReference get(Long proposalId, Long subProposalId) throws NotFoundException;
+    IProposalReference get(Long proposalId, Long subProposalId) throws NotFoundException;
 
-    ProposalReference create(ProposalReference proposalReference);
+    IProposalReference create(IProposalReference proposalReference);
 
-    boolean update(ProposalReference proposalReference);
+    boolean update(IProposalReference proposalReference);
 
     int delete(Long proposalId, Long subproposalId);
 }

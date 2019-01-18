@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.proposals.ProposalMemberRatingClientUtil;
-import org.xcolab.client.contest.pojo.ProposalVote;
+import org.xcolab.client.contest.pojo.IProposalVote;
 import org.xcolab.util.activities.enums.ActivityType;
 import org.xcolab.util.activities.enums.ProposalActivityType;
 import org.xcolab.view.activityentry.ActivityInitializationException;
@@ -17,7 +17,7 @@ import java.util.List;
 @Component
 public class ProposalVoteActivityEntry extends ProposalBaseActivityEntry {
 
-    private ProposalVote proposalVote;
+    private IProposalVote proposalVote;
 
     @Autowired
     public ProposalVoteActivityEntry(ResourceMessageResolver resourceMessageResolver) {
@@ -34,7 +34,7 @@ public class ProposalVoteActivityEntry extends ProposalBaseActivityEntry {
         super.initializeInternal();
         long proposalId = getActivityEntry().getCategoryId();
         long userId = getActivityEntry().getUserId();
-        final List<ProposalVote> proposalVotes =
+        final List<IProposalVote> proposalVotes =
                 ProposalMemberRatingClientUtil.getProposalVotes(null, proposalId, userId);
         //TODO COLAB-2657: we should store the actual vote ID in additionalId
         proposalVote = proposalVotes.size() == 1 ? proposalVotes.get(0) : null;

@@ -1,11 +1,11 @@
 package org.xcolab.view.pages.contestmanagement.utils;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.contest.pojo.ContestWrapper;
-import org.xcolab.client.contest.pojo.ProposalTemplateSectionDefinition;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
-import org.xcolab.client.contest.pojo.Proposal;
-import org.xcolab.client.contest.pojo.ProposalTeamMember;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMemberWrapper;
 import org.xcolab.commons.CsvResponseWriter;
 
 import java.io.IOException;
@@ -45,9 +45,9 @@ public class ProposalCsvWriter extends CsvResponseWriter {
     public void writeProposalsInContest(ContestWrapper contest) {
         final String colabUrl = PlatformAttributeKey.COLAB_URL.get();
 
-        List<Proposal> proposals = ProposalClientUtil.listProposals(contest.getId());
+        List<ProposalWrapper> proposals = ProposalClientUtil.listProposals(contest.getId());
 
-        for (Proposal proposal : proposals) {
+        for (ProposalWrapper proposal : proposals) {
             List<String> row = new ArrayList<>();
             addValue(row, contest.getId());
             addValue(row, contest.getTitle());
@@ -59,11 +59,11 @@ public class ProposalCsvWriter extends CsvResponseWriter {
             addValue(row, proposal.getTeam());
             addValue(row, proposal.getMembers().size());
             addValue(row, proposal.getMembers().stream()
-                    .map(ProposalTeamMember::getUserId)
+                    .map(ProposalTeamMemberWrapper::getUserId)
                     .map(String::valueOf)
                     .collect(Collectors.joining(",")));
             addValue(row, proposal.getMembers().stream()
-                    .map(ProposalTeamMember::getFullName)
+                    .map(ProposalTeamMemberWrapper::getFullName)
                     .map(String::valueOf)
                     .collect(Collectors.joining(",")));
             addValue(row, proposal.getAuthorUserId());
@@ -76,7 +76,7 @@ public class ProposalCsvWriter extends CsvResponseWriter {
             addValue(row, proposal.getPitch());
 
             List<String> sectionContent = new ArrayList<>();
-            for (ProposalTemplateSectionDefinition section:  proposal.getSections()) {
+            for (ProposalTemplateSectionDefinitionWrapper section:  proposal.getSections()) {
                 addValue(sectionContent, "<h1>" + section.getTitle() + "</h1>" + section.getContent());
             }
 

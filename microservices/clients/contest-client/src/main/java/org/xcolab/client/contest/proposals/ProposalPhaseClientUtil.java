@@ -1,8 +1,8 @@
 package org.xcolab.client.contest.proposals;
 
 import org.xcolab.client.contest.proposals.exceptions.Proposal2PhaseNotFoundException;
-import org.xcolab.client.contest.pojo.Proposal2Phase;
-import org.xcolab.client.contest.pojo.ProposalContestPhaseAttribute;
+import org.xcolab.client.contest.pojo.IProposal2Phase;
+import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
 
 import java.util.List;
 
@@ -14,33 +14,33 @@ public final class ProposalPhaseClientUtil {
         return client;
     }
 
-    public static Proposal2Phase getProposal2PhaseByProposalIdContestPhaseId(
+    public static IProposal2Phase getProposal2PhaseByProposalIdContestPhaseId(
             Long proposalId, Long contestPhaseId) throws Proposal2PhaseNotFoundException {
         return client.getProposal2PhaseByProposalIdContestPhaseId(proposalId, contestPhaseId);
     }
 
-    public static List<Proposal2Phase> getProposal2PhaseByProposalId(
+    public static List<IProposal2Phase> getProposal2PhaseByProposalId(
             Long proposalId) {
         return client.getProposal2PhaseByProposalId(proposalId);
     }
 
-    public static List<Proposal2Phase> getProposal2PhaseByContestPhaseId(Long contestPhaseId) {
+    public static List<IProposal2Phase> getProposal2PhaseByContestPhaseId(Long contestPhaseId) {
         return client.getProposal2PhaseByContestPhaseId(contestPhaseId);
     }
 
-    public static Proposal2Phase getProposal2PhaseByProposalIdVersion(long proposalId, int version) {
+    public static IProposal2Phase getProposal2PhaseByProposalIdVersion(long proposalId, int version) {
         return client.getProposal2PhaseByProposalIdVersion(proposalId, version);
     }
 
-    public static void createProposal2Phase(Proposal2Phase proposal2Phase) {
+    public static void createProposal2Phase(IProposal2Phase proposal2Phase) {
         client.createProposal2Phase(proposal2Phase);
     }
 
-    public static void updateProposal2Phase(Proposal2Phase proposal2Phase) {
+    public static void updateProposal2Phase(IProposal2Phase proposal2Phase) {
         client.updateProposal2Phase(proposal2Phase);
     }
 
-    public static void deleteProposal2Phase(Proposal2Phase proposal2Phase) {
+    public static void deleteProposal2Phase(IProposal2Phase proposal2Phase) {
         client.deleteProposal2Phase(proposal2Phase);
     }
 
@@ -53,7 +53,7 @@ public final class ProposalPhaseClientUtil {
         client.promoteProposal(proposalId, activePhaseForContest, currentProposalContestPhase);
     }
 
-    public static List<ProposalContestPhaseAttribute> getAllProposalContestPhaseProposalAttributes(
+    public static List<IProposalContestPhaseAttribute> getAllProposalContestPhaseProposalAttributes(
             Long contestPhaseId, Long proposalId) {
         return client.getAllProposalContestPhaseProposalAttributes(contestPhaseId, proposalId);
 
@@ -64,7 +64,7 @@ public final class ProposalPhaseClientUtil {
         return client.isProposalContestPhaseAttributeSetAndTrue(proposalId, contestPhaseId, name);
     }
 
-    public static ProposalContestPhaseAttribute getProposalContestPhaseAttribute(
+    public static IProposalContestPhaseAttribute getProposalContestPhaseAttribute(
             Long proposalId, Long contestPhaseId, String name) {
         return client.getProposalContestPhaseAttribute(proposalId, contestPhaseId, name);
     }
@@ -73,16 +73,16 @@ public final class ProposalPhaseClientUtil {
             List<Long> selectedJudges) {
         return client.persistSelectedJudgesAttribute(proposalId, contestPhaseId, selectedJudges);
     }
-    public static ProposalContestPhaseAttribute persistProposalContestPhaseAttribute(Long proposalId, Long contestPhaseId, String name, Long aditionalId, Long numericValue, String stringValue) {
+    public static IProposalContestPhaseAttribute persistProposalContestPhaseAttribute(Long proposalId, Long contestPhaseId, String name, Long aditionalId, Long numericValue, String stringValue) {
         return client.persistProposalContestPhaseAttribute(proposalId,contestPhaseId, name, aditionalId, numericValue, stringValue);
     }
 
     public static boolean updateProposalContestPhaseAttribute(
-            ProposalContestPhaseAttribute proposalContestPhaseAttribute) {
+            IProposalContestPhaseAttribute proposalContestPhaseAttribute) {
         return client.updateProposalContestPhaseAttribute(proposalContestPhaseAttribute);
     }
 
-    public static ProposalContestPhaseAttribute setProposalContestPhaseAttribute(
+    public static IProposalContestPhaseAttribute setProposalContestPhaseAttribute(
             Long proposalId, Long contestPhaseId, String name, Long additionalId,
             Long numericValue, String stringValue) {
         return client.setProposalContestPhaseAttribute(proposalId, contestPhaseId, name,
@@ -91,12 +91,12 @@ public final class ProposalPhaseClientUtil {
     public static Boolean hasProposalContestPhaseAttribute(Long proposalId, long contestPhaseId, String name) {
         return client.hasProposalContestPhaseAttribute(proposalId,contestPhaseId, name);
     }
-    public static ProposalContestPhaseAttribute getOrCreateProposalContestPhaseAttribute(Long proposalId, Long contestPhaseId, String name, Long aditionalId, Long numericValue, String stringValue) {
+    public static IProposalContestPhaseAttribute getOrCreateProposalContestPhaseAttribute(Long proposalId, Long contestPhaseId, String name, Long aditionalId, Long numericValue, String stringValue) {
         return client.getOrCreateProposalContestPhaseAttribute(proposalId, contestPhaseId, name,aditionalId, numericValue, stringValue);
     }
 
-    public static ProposalContestPhaseAttribute createProposalContestPhaseAttribute(
-            ProposalContestPhaseAttribute proposalContestPhaseAttribute) {
+    public static IProposalContestPhaseAttribute createProposalContestPhaseAttribute(
+            IProposalContestPhaseAttribute proposalContestPhaseAttribute) {
         return client.createProposalContestPhaseAttribute(proposalContestPhaseAttribute);
     }
 

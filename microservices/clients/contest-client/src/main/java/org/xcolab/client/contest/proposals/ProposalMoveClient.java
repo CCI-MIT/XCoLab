@@ -1,6 +1,7 @@
 package org.xcolab.client.contest.proposals;
 
-import org.xcolab.client.contest.pojo.ProposalMoveHistory;
+import org.xcolab.client.contest.pojo.IProposalMoveHistory;
+import org.xcolab.client.contest.pojo.tables.pojos.ProposalMoveHistory;
 import org.xcolab.util.enums.proposal.MoveType;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
@@ -12,17 +13,17 @@ import java.util.List;
 
 public final class ProposalMoveClient {
 
-    private final RestResource1<ProposalMoveHistory, Long> proposalMoveHistoryResource = null; // proposalMoveHistories
+    private final RestResource1<IProposalMoveHistory, Long> proposalMoveHistoryResource = null; // proposalMoveHistories
 
-    public List<ProposalMoveHistory> getBySourceProposalIdContestId(Long sourceProposalId,
+    public List<IProposalMoveHistory> getBySourceProposalIdContestId(Long sourceProposalId,
             Long sourceContestId) {
         return getProposalMoveHistory(sourceProposalId, sourceContestId, null, null);
     }
 
-    public List<ProposalMoveHistory> getProposalMoveHistory(Long sourceProposalId,
+    public List<IProposalMoveHistory> getProposalMoveHistory(Long sourceProposalId,
             Long sourceContestId, Long targetProposalId, Long targetContestId) {
         return proposalMoveHistoryResource.list()
-                .withCache(CacheKeys.withClass(ProposalMoveHistory.class)
+                .withCache(CacheKeys.withClass(IProposalMoveHistory.class)
                                 .withParameter("sourceProposalId", sourceProposalId)
                                 .withParameter("sourceContestId", sourceContestId)
                                 .withParameter("targetProposalId", targetProposalId)
@@ -36,9 +37,9 @@ public final class ProposalMoveClient {
                 .execute();
     }
 
-    public ProposalMoveHistory getByTargetProposalIdContestId(Long targetProposalId,
+    public IProposalMoveHistory getByTargetProposalIdContestId(Long targetProposalId,
             Long targetContestId) {
-        List<ProposalMoveHistory> list =
+        List<IProposalMoveHistory> list =
                 getProposalMoveHistory(null, null, targetProposalId, targetContestId);
         if (list != null && !list.isEmpty()) {
             return list.get(0);
@@ -47,16 +48,16 @@ public final class ProposalMoveClient {
         }
     }
 
-    public ProposalMoveHistory createProposalMoveHistory(long proposalId, long srcContestId,
+    public IProposalMoveHistory createProposalMoveHistory(long proposalId, long srcContestId,
             long targetContestId, long targetPhaseId, long userId) {
         return createProposalMoveHistory(proposalId, proposalId, srcContestId, targetContestId,
                 targetPhaseId, userId, MoveType.MOVE_PERMANENTLY);
     }
 
-    public ProposalMoveHistory createProposalMoveHistory(long srcProposalId, long targetProposalId,
+    public IProposalMoveHistory createProposalMoveHistory(long srcProposalId, long targetProposalId,
             long srcContestId, long targetContestId,
             long targetPhaseId, long userId, MoveType moveType) {
-        ProposalMoveHistory proposalMoveHistory = new ProposalMoveHistory();
+        IProposalMoveHistory proposalMoveHistory = new ProposalMoveHistory();
         proposalMoveHistory.setSourceProposalId(srcProposalId);
         proposalMoveHistory.setTargetProposalId(targetProposalId);
 
@@ -74,20 +75,20 @@ public final class ProposalMoveClient {
         return proposalMoveHistory;
     }
 
-    public ProposalMoveHistory createProposalMoveHistory(ProposalMoveHistory proposalMoveHistory) {
+    public IProposalMoveHistory createProposalMoveHistory(IProposalMoveHistory proposalMoveHistory) {
         return proposalMoveHistoryResource
-                .create(new ProposalMoveHistory(proposalMoveHistory))
+                .create(proposalMoveHistory)
                 .execute();
     }
 
-    public ProposalMoveHistory createCopyProposalMoveHistory(long proposalId, long srcContestId,
+    public IProposalMoveHistory createCopyProposalMoveHistory(long proposalId, long srcContestId,
             long targetContestId,
             long targetPhaseId, long userId) {
         return createProposalMoveHistory(proposalId, proposalId, srcContestId, targetContestId,
                 targetPhaseId, userId, MoveType.COPY);
     }
 
-    public ProposalMoveHistory createForkProposalMoveHistory(long srcProposalId,
+    public IProposalMoveHistory createForkProposalMoveHistory(long srcProposalId,
             long targetProposalId, long srcContestId, long targetContestId,
             long targetPhaseId, long userId) {
         return createProposalMoveHistory(srcProposalId, targetProposalId, srcContestId,

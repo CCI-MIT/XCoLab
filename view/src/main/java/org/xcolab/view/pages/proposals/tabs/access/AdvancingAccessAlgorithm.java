@@ -1,7 +1,7 @@
 package org.xcolab.view.pages.proposals.tabs.access;
 
-import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
-import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.tabs.ProposalTabCanAccessAlgorithm;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
@@ -27,7 +27,7 @@ public class AdvancingAccessAlgorithm implements ProposalTabCanAccessAlgorithm {
             return true;
         }
 
-        Proposal proposal = new Proposal(proposalContext.getProposal(), contestPhase);
+        ProposalWrapper proposal = new ProposalWrapper(proposalContext.getProposal(), contestPhase);
         ProposalJudgeWrapper proposalJudgeWrapper = new ProposalJudgeWrapper(proposal,
                 permissions.getMember());
         return proposalJudgeWrapper.isPassedToJudges();

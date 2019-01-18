@@ -12,12 +12,12 @@ import org.xcolab.client.comment.pojo.ICategoryGroup;
 import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 
 public class ActivitySubscriptionNameGenerator {
     private static final Logger _log = LoggerFactory.getLogger(ActivitySubscriptionNameGenerator.class);
@@ -45,7 +45,7 @@ public class ActivitySubscriptionNameGenerator {
     private static String getNameForProposalSubscription(ActivitySubscription subscription){
         Long proposalId = subscription.getCategoryId();
         try {
-            Proposal proposal = ProposalClientUtil.getProposal(proposalId);
+            ProposalWrapper proposal = ProposalClientUtil.getProposal(proposalId);
             ContestWrapper contest = ProposalClientUtil.getCurrentContestForProposal(proposalId);
             return "Proposal: " + String.format(HYPERLINK,
                     proposal.getProposalLinkUrl(contest),

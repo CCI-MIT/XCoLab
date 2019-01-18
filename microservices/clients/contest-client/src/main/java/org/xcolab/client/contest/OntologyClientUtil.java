@@ -2,10 +2,10 @@ package org.xcolab.client.contest;
 
 import org.xcolab.client.contest.pojo.IImpactDefaultSeries;
 import org.xcolab.client.contest.pojo.IImpactDefaultSeriesData;
-import org.xcolab.client.contest.pojo.FocusAreaWrapper;
+import org.xcolab.client.contest.pojo.wrapper.FocusAreaWrapper;
 import org.xcolab.client.contest.pojo.IFocusAreaOntologyTerm;
-import org.xcolab.client.contest.pojo.OntologySpaceWrapper;
-import org.xcolab.client.contest.pojo.OntologyTermWrapper;
+import org.xcolab.client.contest.pojo.wrapper.OntologySpaceWrapper;
+import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
 
 import java.util.List;
 

@@ -1,19 +1,19 @@
 package org.xcolab.service.contest.domain.proposaltemplate;
 
-import org.xcolab.model.tables.pojos.ProposalTemplate;
+import org.xcolab.client.contest.pojo.IProposalTemplate;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.util.List;
 
 public interface ProposalTemplateDao {
 
-    ProposalTemplate get(Long id) throws NotFoundException;
+    IProposalTemplate get(Long id) throws NotFoundException;
 
-    boolean update(ProposalTemplate proposalTemplate);
+    boolean update(IProposalTemplate proposalTemplate);
 
-    ProposalTemplate create(ProposalTemplate proposalTemplate);
+    IProposalTemplate create(IProposalTemplate proposalTemplate);
 
-    List<ProposalTemplate> findByGiven();
+    List<IProposalTemplate> findByGiven();
 
     int delete(Long id);
 }

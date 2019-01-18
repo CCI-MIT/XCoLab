@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalClient;
-import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
@@ -29,7 +29,7 @@ public class SubscribeProposalActionController {
             throws ProposalsAuthorizationException, IOException {
 
         if (proposalContext.getPermissions().getCanSubscribeProposal()) {
-            final Proposal proposal = proposalContext.getProposal();
+            final ProposalWrapper proposal = proposalContext.getProposal();
             long proposalId = proposal.getId();
             long userId = currentMember.getId();
             final ProposalClient proposalClient = proposalContext.getClients().getProposalClient();
@@ -53,7 +53,7 @@ public class SubscribeProposalActionController {
                 "Could not subscribe to proposal, please make sure to click the button only once.")
                 .flash(request);
         final ContestWrapper contest = proposalContext.getContest();
-        final Proposal proposal = proposalContext.getProposal();
+        final ProposalWrapper proposal = proposalContext.getProposal();
         return "redirect:" + proposal.getProposalLinkUrl(contest);
     }
 }

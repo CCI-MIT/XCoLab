@@ -1,8 +1,8 @@
 package org.xcolab.view.pages.contestmanagement.wrappers;
 
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.AbstractContest;
-import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.IContest;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.html.LabelValue;
 import org.xcolab.view.pages.contestmanagement.beans.ContestFlagTextToolTipBean;
@@ -45,7 +45,7 @@ public class ContestOverviewWrapper implements MassActionDataWrapper {
     private void populateContestsAndSelectedList() {
         List<ContestWrapper> allContests = ContestClientUtil.getAllContests();
         // LinkedHashMap will maintain insertion order
-        allContests.sort(Comparator.comparing(AbstractContest::getWeight));
+        allContests.sort(Comparator.comparing(IContest::getWeight));
         for (ContestWrapper contest : allContests) {
             contests.put(contest.getId(), contest);
             selectedContests.put(contest.getId(), false);

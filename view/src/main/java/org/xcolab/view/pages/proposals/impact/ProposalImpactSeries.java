@@ -5,21 +5,21 @@ import org.json.JSONObject;
 
 import org.xcolab.client.contest.ImpactClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
-import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.IImpactDefaultSeries;
 import org.xcolab.client.contest.pojo.IImpactDefaultSeriesData;
 import org.xcolab.client.contest.pojo.IImpactIteration;
-import org.xcolab.client.contest.pojo.FocusAreaWrapper;
-import org.xcolab.client.contest.pojo.OntologyTermWrapper;
+import org.xcolab.client.contest.pojo.wrapper.FocusAreaWrapper;
+import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.enums.ImpactSeriesType;
 import org.xcolab.client.contest.proposals.helpers.ProposalAttributeHelper;
-import org.xcolab.client.contest.pojo.Proposal;
-import org.xcolab.client.contest.pojo.ProposalVersion;
-import org.xcolab.client.contest.pojo.ProposalAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalVersionWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -45,19 +45,19 @@ public class ProposalImpactSeries {
     private final OntologyTermWrapper whatTerm;
     private final OntologyTermWrapper whereTerm;
     private final FocusAreaWrapper focusArea;
-    private final Proposal proposal;
+    private final ProposalWrapper proposal;
     private final Map<ImpactSeriesType, ProposalImpactSeriesValues> seriesTypeToSeriesMap;
     private final Map<ImpactSeriesType, Boolean> seriesTypeToEditableMap;
     private final IImpactDefaultSeries bauSeries;
-    private ProposalVersion lastModifiedVersion;
+    private ProposalVersionWrapper lastModifiedVersion;
     //    private ImpactDefaultSeries ddppSeries;
     private ProposalImpactSeriesValues resultValues;
 
-    public ProposalImpactSeries(ContestWrapper contest, Proposal proposal, FocusAreaWrapper focusArea) {
+    public ProposalImpactSeries(ContestWrapper contest, ProposalWrapper proposal, FocusAreaWrapper focusArea) {
         this(contest, proposal, focusArea, true);
     }
 
-    private ProposalImpactSeries(ContestWrapper contest, Proposal proposal, FocusAreaWrapper focusArea,
+    private ProposalImpactSeries(ContestWrapper contest, ProposalWrapper proposal, FocusAreaWrapper focusArea,
             boolean loadData) {
         this.seriesTypeToSeriesMap = new HashMap<>();
         this.seriesTypeToEditableMap = new HashMap<>();
@@ -160,7 +160,7 @@ public class ProposalImpactSeries {
         seriesValues.putSeriesValue(year, value);
     }
 
-    public ProposalImpactSeries(ContestWrapper contest, Proposal proposal, FocusAreaWrapper focusArea,
+    public ProposalImpactSeries(ContestWrapper contest, ProposalWrapper proposal, FocusAreaWrapper focusArea,
             JSONObject json) {
         this(contest, proposal, focusArea, false);
 
@@ -334,7 +334,7 @@ public class ProposalImpactSeries {
         return lastModifiedVersion.getCreatedAt();
     }
 
-    public Proposal getProposal() {
+    public ProposalWrapper getProposal() {
         return proposal;
     }
 

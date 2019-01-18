@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.client.contest.pojo.IContestPhaseRibbonType;
 import org.xcolab.client.contest.pojo.IContestPhaseType;
-import org.xcolab.model.tables.pojos.ContestPhase;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.service.contest.domain.contestphase.ContestPhaseDao;
 import org.xcolab.service.contest.domain.contestphaseribbontype.ContestPhaseRibbonTypeDao;
 import org.xcolab.service.contest.domain.contestphasetype.ContestPhaseTypeDao;
@@ -46,7 +46,7 @@ public class ContestPhaseController {
     }
 
     @RequestMapping(value = "/contestPhases", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<ContestPhase> getContestPhases(@RequestParam(required = false) Long contestId,
+    public List<ContestPhaseWrapper> getContestPhases(@RequestParam(required = false) Long contestId,
             @RequestParam(required = false) Long contestScheduleId,
             @RequestParam(required = false) Long contestPhaseTypeId) {
         return contestPhaseDao.findByGiven(contestId, contestScheduleId, contestPhaseTypeId);
@@ -65,19 +65,19 @@ public class ContestPhaseController {
     }
 
     @GetMapping(value = "/contestPhases/{phaseId}")
-    public ContestPhase getContestPhase(@PathVariable long phaseId)
+    public ContestPhaseWrapper getContestPhase(@PathVariable long phaseId)
             throws NotFoundException {
         return contestPhaseDao.get(phaseId).orElseThrow(NotFoundException::new);
     }
 
     @PostMapping(value = "/contestPhases")
-    public ContestPhase createContestPhase(@RequestBody ContestPhase contestPhase) {
+    public ContestPhaseWrapper createContestPhase(@RequestBody ContestPhaseWrapper contestPhase) {
         return this.contestPhaseDao.create(contestPhase);
     }
 
     @PutMapping(value = "/contestPhases/{contestPhaseId}")
     public boolean updateContestPhase(@PathVariable long contestPhaseId,
-            @RequestBody ContestPhase contestPhase) throws NotFoundException {
+            @RequestBody ContestPhaseWrapper contestPhase) throws NotFoundException {
 
         if (contestPhaseDao.exists(contestPhaseId)) {
             return contestPhaseDao.update(contestPhase);

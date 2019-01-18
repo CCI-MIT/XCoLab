@@ -1,8 +1,8 @@
 package org.xcolab.client.contest.proposals;
 
-import org.xcolab.client.contest.pojo.ProposalRating;
-import org.xcolab.client.contest.pojo.ProposalRatingType;
-import org.xcolab.client.contest.pojo.ProposalRatingValue;
+import org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper;
+import org.xcolab.client.contest.pojo.IProposalRatingType;
+import org.xcolab.client.contest.pojo.IProposalRatingValue;
 import org.xcolab.client.contest.proposals.enums.ProposalJudgeType;
 import org.xcolab.util.http.client.RestResource1;
 
@@ -10,11 +10,11 @@ import java.util.List;
 
 public final class ProposalJudgeRatingClient {
 
-    private final RestResource1<ProposalRating, Long> proposalRatingResource = null; // proposalRatings
-    private final RestResource1<ProposalRatingValue, Long> proposalRatingValueResource = null; // proposalRatingValues
-    private final RestResource1<ProposalRatingType, Long> proposalRatingTypeResource = null; // proposalRatingTypes
+    private final RestResource1<ProposalRatingWrapper, Long> proposalRatingResource = null; // proposalRatings
+    private final RestResource1<IProposalRatingValue, Long> proposalRatingValueResource = null; // proposalRatingValues
+    private final RestResource1<IProposalRatingType, Long> proposalRatingTypeResource = null; // proposalRatingTypes
 
-    public List<ProposalRating> getProposalRatingsByProposalUserContestPhase(Long proposalId,
+    public List<ProposalRatingWrapper> getProposalRatingsByProposalUserContestPhase(Long proposalId,
             Long contestPhaseId, Long userId) {
         return proposalRatingResource.list()
                 //.withCache(CacheKeys.withClass(ProposalRating.class)
@@ -28,53 +28,53 @@ public final class ProposalJudgeRatingClient {
                 .execute();
     }
 
-    public List<ProposalRating> getFellowRatingsForProposal(long proposalId, long contestPhaseId) {
+    public List<ProposalRatingWrapper> getFellowRatingsForProposal(long proposalId, long contestPhaseId) {
         return getRatingsForProposal(proposalId, contestPhaseId, ProposalJudgeType.FELLOW.getId());
     }
 
 
-    public  List<ProposalRatingType> getRatingTypesForJudges() {
+    public  List<IProposalRatingType> getRatingTypesForJudges() {
         return this.getRatingTypesForJudgeType(ProposalJudgeType.JUDGE.getId());
     }
 
-    public List<ProposalRatingType> getRatingTypesForFellows() {
+    public List<IProposalRatingType> getRatingTypesForFellows() {
             return this.getRatingTypesForJudgeType(ProposalJudgeType.FELLOW.getId());
     }
 
-    private List<ProposalRatingType> getRatingTypesForJudgeType(int judgeType) {
+    private List<IProposalRatingType> getRatingTypesForJudgeType(int judgeType) {
         return proposalRatingTypeResource.list()
                 .queryParam("judgeType", judgeType)
                 .queryParam("active", true)
                 .execute();
     }
 
-    protected List<ProposalRating> getRatingsForProposal(long proposalId, long contestPhaseId,
+    protected List<ProposalRatingWrapper> getRatingsForProposal(long proposalId, long contestPhaseId,
             int judgeType) {
 
         return proposalRatingResource
                 .collectionService("findByProposalIdJudgeTypeJudgeIdContestPhaseId",
-                        ProposalRating.TYPES.getTypeReference())
+                        ProposalRatingWrapper.TYPES.getTypeReference())
                 .queryParam("proposalId", proposalId)
                 .queryParam("judgeType", judgeType)
                 .queryParam("contestPhaseId", contestPhaseId)
                 .getList();
     }
 
-    public List<ProposalRating> getJudgeRatingsForProposal(long proposalId, long contestPhaseId) {
+    public List<ProposalRatingWrapper> getJudgeRatingsForProposal(long proposalId, long contestPhaseId) {
         return getRatingsForProposal(proposalId, contestPhaseId, ProposalJudgeType.JUDGE.getId());
     }
 
-    public List<ProposalRating> getJudgeRatingsForProposalAndUser(long userId, long proposalId,
+    public List<ProposalRatingWrapper> getJudgeRatingsForProposalAndUser(long userId, long proposalId,
             long contestPhaseId) {
         return getRatingsForProposalAndUser(proposalId, ProposalJudgeType.JUDGE.getId(), userId,
                 contestPhaseId);
     }
 
-    protected List<ProposalRating> getRatingsForProposalAndUser(long proposalId, int judgeType,
+    protected List<ProposalRatingWrapper> getRatingsForProposalAndUser(long proposalId, int judgeType,
             long userId, long contestPhaseId) {
         return proposalRatingResource
                 .collectionService("findByProposalIdJudgeTypeJudgeIdContestPhaseId",
-                        ProposalRating.TYPES.getTypeReference())
+                        ProposalRatingWrapper.TYPES.getTypeReference())
                 .queryParam("proposalId", proposalId)
                 .queryParam("judgeType", judgeType)
                 .queryParam("userId", userId)
@@ -83,36 +83,36 @@ public final class ProposalJudgeRatingClient {
 
     }
 
-    public List<ProposalRating> getFellowRatingForProposalAndUser(long userId, long proposalId,
+    public List<ProposalRatingWrapper> getFellowRatingForProposalAndUser(long userId, long proposalId,
             long contestPhaseId) {
         return getRatingsForProposalAndUser(proposalId, ProposalJudgeType.FELLOW.getId(), userId,
                 contestPhaseId);
     }
 
-    public ProposalRating createProposalRating(ProposalRating proposalRating) {
+    public ProposalRatingWrapper createProposalRating(ProposalRatingWrapper proposalRating) {
         return proposalRatingResource
-                .create(new ProposalRating(proposalRating))
+                .create(new ProposalRatingWrapper(proposalRating))
                 .execute();
     }
 
-    public boolean updateProposalRating(ProposalRating proposalRating) {
+    public boolean updateProposalRating(ProposalRatingWrapper proposalRating) {
         return proposalRatingResource
-                .update(new ProposalRating(proposalRating), proposalRating.getId())
+                .update(new ProposalRatingWrapper(proposalRating), proposalRating.getId())
                 .execute();
     }
 
-    public ProposalRatingValue getProposalRatingValue(long id) {
+    public IProposalRatingValue getProposalRatingValue(long id) {
         return proposalRatingValueResource.get(id)
                 .execute();
     }
 
-    public List<ProposalRatingValue> getProposalRatingValuesByProposalRatingTypeId(Long ratingTypeId) {
+    public List<IProposalRatingValue> getProposalRatingValuesByProposalRatingTypeId(Long ratingTypeId) {
         return proposalRatingValueResource.list()
                 .optionalQueryParam("ratingTypeId", ratingTypeId)
                 .execute();
     }
 
-    public ProposalRatingType getProposalRatingType(long id) {
+    public IProposalRatingType getProposalRatingType(long id) {
         return proposalRatingTypeResource.get(id)
                 .execute();
     }

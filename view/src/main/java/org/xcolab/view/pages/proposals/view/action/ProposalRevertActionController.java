@@ -6,14 +6,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.contest.pojo.ProposalTemplateSectionDefinition;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.contest.pojo.Proposal;
-import org.xcolab.client.contest.pojo.Proposal2Phase;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.IProposal2Phase;
 import org.xcolab.util.enums.proposal.ProposalTemplateSectionType;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
@@ -43,7 +43,7 @@ public class ProposalRevertActionController {
         long userId = MemberAuthUtil.getUserId();
 
         if (proposalContext.getProposal() != null) {
-            Proposal oldProposalVersionToBeBecomeCurrent = proposalContext.getProposal();
+            ProposalWrapper oldProposalVersionToBeBecomeCurrent = proposalContext.getProposal();
 
             Integer version = updateProposalSpecialAttributes(userId, oldProposalVersionToBeBecomeCurrent);
 
@@ -55,9 +55,9 @@ public class ProposalRevertActionController {
     }
 
     private void updateProposalAttributes(ProposalContext proposalContext, long userId,
-            Proposal oldProposalVersionToBeBecomeCurrent, Integer version) {
+            ProposalWrapper oldProposalVersionToBeBecomeCurrent, Integer version) {
         boolean updateProposalReferences = false;
-        for (ProposalTemplateSectionDefinition section : oldProposalVersionToBeBecomeCurrent.getSections()) {
+        for (ProposalTemplateSectionDefinitionWrapper section : oldProposalVersionToBeBecomeCurrent.getSections()) {
             String newSectionValue = section.getStringValue();
             final ProposalTemplateSectionType sectionType = section.getTypeEnum();
             if (sectionType == ProposalTemplateSectionType.TEXT
@@ -127,11 +127,11 @@ public class ProposalRevertActionController {
         //this code was on the proposal add/update controller, if the user could edit and save ,
         // he might just want to revert
         // and leave it like that , so this code must be executed as well.
-        final Proposal2Phase p2p = proposalContext.getProposal2Phase();
+        final IProposal2Phase p2p = proposalContext.getProposal2Phase();
         try {
             if (p2p != null && p2p.getVersionTo() != -1) {
                 // we are in a completed phase - need to adjust the end version
-                final Proposal updatedProposal = proposalContext.getClients().getProposalClient()
+                final ProposalWrapper updatedProposal = proposalContext.getClients().getProposalClient()
                         .getProposal(oldProposalVersionToBeBecomeCurrent.getId());
                 p2p.setVersionTo(updatedProposal.getCurrentVersion());
                 proposalContext.getClients().getProposalPhaseClient().updateProposal2Phase(p2p);
@@ -147,7 +147,7 @@ public class ProposalRevertActionController {
     }
 
     private Integer updateProposalSpecialAttributes(long userId,
-            Proposal oldProposalVersionToBeBecomeCurrent) {
+            ProposalWrapper oldProposalVersionToBeBecomeCurrent) {
         Integer version = null;
         version = ProposalAttributeClientUtil
                 .setProposalAttribute(userId, oldProposalVersionToBeBecomeCurrent.getId(),

@@ -4,13 +4,13 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.enums.ContestStatus;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.ContestWrapper;
-import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.IContestPhaseType;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalClient;
-import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.view.pages.proposals.tabs.access.AdaptationImpactAccessAlgorithm;
 import org.xcolab.view.pages.proposals.tabs.access.ImpactAccessAlgorithm;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
@@ -26,7 +26,7 @@ public class ProposalsPermissions {
     private final boolean isLoggedIn;
     private final boolean isGuest;
 
-    private final Proposal proposal;
+    private final ProposalWrapper proposal;
     private final ContestWrapper contest;
     private final ContestPhaseWrapper contestPhase;
     private final ContestStatus contestStatus;
@@ -37,7 +37,7 @@ public class ProposalsPermissions {
     private final ContestClient contestClient;
 
 
-    public ProposalsPermissions(ClientHelper clientHelper, Member member, Proposal proposal,
+    public ProposalsPermissions(ClientHelper clientHelper, Member member, ProposalWrapper proposal,
             ContestWrapper contest, ContestPhaseWrapper contestPhase) {
         this.member = member;
 

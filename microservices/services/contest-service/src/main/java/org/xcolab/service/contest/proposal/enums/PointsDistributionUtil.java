@@ -1,16 +1,20 @@
 package org.xcolab.service.contest.proposal.enums;
 
+import org.xcolab.client.contest.pojo.IPointType;
 import org.xcolab.client.contest.pojo.IPointsDistributionConfiguration;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.contest.pojo.IProposalReference;
+import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.model.tables.pojos.PointType;
-import org.xcolab.model.tables.pojos.ProposalReference;
-import org.xcolab.model.tables.pojos.Proposal;
-import org.xcolab.model.tables.pojos.ProposalAttribute;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.service.contest.proposal.service.pointsdistributionconfiguration.PointsDistributionConfigurationService;
 import org.xcolab.service.contest.proposal.service.proposal.ProposalService;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 public class PointsDistributionUtil {
 
@@ -36,10 +40,10 @@ public class PointsDistributionUtil {
         return targets;
     }
 
-    public static List<PointsTarget> distributeSectionDefinedAmongProposals(Proposal proposal, PointType pointType, Set<Long> subProposalIds)  {
+    public static List<PointsTarget> distributeSectionDefinedAmongProposals(ProposalWrapper proposal, IPointType pointType, Set<Long> subProposalIds)  {
         List<PointsTarget> targets = new ArrayList<>();
         for (long subProposalId : subProposalIds) {
-            ProposalReference reference = proposalService.getReferenceByProposalIdAndSubProposalId(proposal.getId(), subProposalId);
+            IProposalReference reference = proposalService.getReferenceByProposalIdAndSubProposalId(proposal.getId(), subProposalId);
             //ProposalReference reference = ProposalReferenceLocalServiceUtil.getByProposalIdSubProposalId(proposal.getId(), subProposalId);
             final ProposalAttribute referenceSectionProposalAttribute = proposalService.getProposalAttribute(reference.getSectionAttributeId());
             //final ProposalAttribute referenceSectionProposalAttribute = ProposalAttributeLocalServiceUtil.getProposalAttribute(reference.getSectionAttributeId());
@@ -52,7 +56,7 @@ public class PointsDistributionUtil {
         return targets;
     }
 
-    public static List<PointsTarget> distributeUserDefinedAmongProposals(Proposal proposal, PointType pointType, Set<Long> subProposalIds) {
+    public static List<PointsTarget> distributeUserDefinedAmongProposals(ProposalWrapper proposal, IPointType pointType, Set<Long> subProposalIds) {
         List<PointsTarget> targets = new ArrayList<>();
         //for (PointsDistributionConfiguration pdc : PointsDistributionConfigurationLocalServiceUtil.findByProposalIdPointTypeId(proposal.getId(), pointType.getId())) {
         for (IPointsDistributionConfiguration pdc : pointsDistributionConfigurationService.getPointsDistributionConfiguration(proposal.getId(), pointType.getId())) {
@@ -66,7 +70,7 @@ public class PointsDistributionUtil {
         return targets;
     }
 
-    public static List<PointsTarget> distributeAmongProposals(DistributionStrategy distributionStrategy, Proposal parentProposals, PointType pointType, Set<Long> proposalIds) {
+    public static List<PointsTarget> distributeAmongProposals(DistributionStrategy distributionStrategy, ProposalWrapper parentProposals, IPointType pointType, Set<Long> proposalIds) {
         switch (distributionStrategy) {
             case USER_DEFINED:
                 return distributeUserDefinedAmongProposals(parentProposals, pointType, proposalIds);

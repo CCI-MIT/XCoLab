@@ -6,10 +6,10 @@ import org.springframework.stereotype.Service;
 import org.xcolab.client.comment.IThreadClient;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.IThread;
-import org.xcolab.model.tables.pojos.Proposal;
-import org.xcolab.model.tables.pojos.ProposalAttribute;
-import org.xcolab.model.tables.pojos.ProposalUnversionedAttribute;
-import org.xcolab.model.tables.pojos.ProposalVersion;
+import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ProposalUnversionedAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ProposalVersionWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.proposal.domain.proposal.ProposalDao;
 import org.xcolab.service.contest.proposal.domain.proposalattribute.ProposalAttributeDao;
@@ -65,9 +65,8 @@ public class ProposalAttributeService {
     }
 
     public ProposalAttribute setAttribute(ProposalAttribute proposalAttribute, Long authorUserId) {
-
         try {
-            Proposal proposal = proposalDao.get(proposalAttribute.getProposalId());
+            ProposalWrapper proposal = proposalDao.get(proposalAttribute.getProposalId());
 
             int currentVersion = proposalVersionDao.findMaxVersion(proposalAttribute.getProposalId());
             Integer version = proposalAttribute.getVersion();
@@ -160,8 +159,7 @@ public class ProposalAttributeService {
 
     private void createProposalVersionDescription(long authorUserId, long proposalId, int version,
             String updateType, long additionalId) {
-
-        ProposalVersion proposalVersion = new ProposalVersion();
+        ProposalVersionWrapper proposalVersion = new ProposalVersionWrapper();
         proposalVersion.setProposalId(proposalId);
         proposalVersion.setVersion(version);
         proposalVersion.setAuthorUserId(authorUserId);

@@ -1,10 +1,10 @@
 package org.xcolab.view.pages.profile.entity;
 
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.ContestWrapper;
-import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.IContestPhaseRibbonType;
-import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.commons.time.DateUtil;
 
 import java.io.Serializable;
@@ -16,13 +16,13 @@ public class Badge implements Serializable {
 
     private final IContestPhaseRibbonType ribbonType;
     private final ContestWrapper contest;
-    private final Proposal proposal;
+    private final ProposalWrapper proposal;
     private final String planTitle;
     private final boolean hideRibbon;
     private int year = 2013;
 
 
-    public Badge(IContestPhaseRibbonType ribbonType, Proposal proposal, String planTitle,
+    public Badge(IContestPhaseRibbonType ribbonType, ProposalWrapper proposal, String planTitle,
             ContestWrapper contest) {
         this.ribbonType = ribbonType;
         this.planTitle = planTitle;

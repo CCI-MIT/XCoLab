@@ -7,13 +7,14 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.OntologyTermToFocusAreaMapper;
 import org.xcolab.client.contest.ProposalTemplateClientUtil;
-import org.xcolab.client.contest.pojo.FocusAreaWrapper;
-import org.xcolab.client.contest.pojo.OntologySpaceWrapper;
-import org.xcolab.client.contest.pojo.OntologyTermWrapper;
-import org.xcolab.client.contest.pojo.ProposalTemplateSectionDefinition;
-import org.xcolab.client.contest.pojo.ProposalTemplateSection;
-import org.xcolab.client.contest.proposals.PointsClientUtil;
 import org.xcolab.client.contest.pojo.IPointsDistributionConfiguration;
+import org.xcolab.client.contest.pojo.IProposalTemplateSection;
+import org.xcolab.client.contest.pojo.tables.pojos.PointsDistributionConfiguration;
+import org.xcolab.client.contest.pojo.wrapper.FocusAreaWrapper;
+import org.xcolab.client.contest.pojo.wrapper.OntologySpaceWrapper;
+import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
+import org.xcolab.client.contest.proposals.PointsClientUtil;
 import org.xcolab.commons.IdListUtil;
 import org.xcolab.view.util.entity.enums.OntologySpaceEnum;
 
@@ -55,11 +56,13 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
     public SectionDefinitionWrapper() {
     }
 
-    public SectionDefinitionWrapper(ProposalTemplateSectionDefinition proposalTemplateSectionDefinition) {
+    public SectionDefinitionWrapper(
+            ProposalTemplateSectionDefinitionWrapper proposalTemplateSectionDefinition) {
         initProposalTemplateSectionDefinition(proposalTemplateSectionDefinition);
     }
 
-    private void initProposalTemplateSectionDefinition(ProposalTemplateSectionDefinition proposalTemplateSectionDefinition) {
+    private void initProposalTemplateSectionDefinition(
+            ProposalTemplateSectionDefinitionWrapper proposalTemplateSectionDefinition) {
         this.id = proposalTemplateSectionDefinition.getId();
         this.type = proposalTemplateSectionDefinition.getType();
         this.title = proposalTemplateSectionDefinition.getTitle();
@@ -143,15 +146,16 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
         return ids;
     }
 
-    public SectionDefinitionWrapper(ProposalTemplateSectionDefinition proposalTemplateSectionDefinition,
+    public SectionDefinitionWrapper(
+            ProposalTemplateSectionDefinitionWrapper proposalTemplateSectionDefinition,
             Long proposalTemplateId) {
 
         initProposalTemplateSectionDefinition(proposalTemplateSectionDefinition);
 
-        List<ProposalTemplateSection> proposalTemplateSections =
+        List<IProposalTemplateSection> proposalTemplateSections =
                 ProposalTemplateClientUtil.getProposalTemplateSectionByProposalTemplateId(proposalTemplateId);
 
-        for (ProposalTemplateSection proposalTemplateSection : proposalTemplateSections) {
+        for (IProposalTemplateSection proposalTemplateSection : proposalTemplateSections) {
             if (Objects.equals(
                     proposalTemplateSection.getSectionDefinitionId(), proposalTemplateSectionDefinition.getId())) {
                 initProposalTemplateSection(proposalTemplateSection);
@@ -163,7 +167,7 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
 
     }
 
-    private void initProposalTemplateSection(ProposalTemplateSection proposalTemplateSection) {
+    private void initProposalTemplateSection(IProposalTemplateSection proposalTemplateSection) {
         this.weight = proposalTemplateSection.getWeight();
     }
 
@@ -251,10 +255,10 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
     }
 
     public void persist(boolean createNew) {
-        ProposalTemplateSectionDefinition psd;
+        ProposalTemplateSectionDefinitionWrapper psd;
         IPointsDistributionConfiguration pdc = null;
         if (id == null || createNew) {
-            psd = new ProposalTemplateSectionDefinition();
+            psd = new ProposalTemplateSectionDefinitionWrapper();
 
             populateProposalTemplateSectionDefinition(psd);
 
@@ -298,7 +302,7 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
         }
         if (pdc == null) {
             if (pointType > 0L) {
-                pdc = new IPointsDistributionConfiguration();
+                pdc = new PointsDistributionConfiguration();
                 pdc.setPercentage(Double.valueOf(pointPercentage));
                 pdc.setPointTypeId(pointType);
                 pdc.setTargetProposalTemplateSectionDefinitionId(id);
@@ -307,10 +311,10 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
         }
 
         ProposalTemplateClientUtil.updateProposalTemplateSectionDefinition(psd);
-
     }
 
-    private void populateProposalTemplateSectionDefinition(ProposalTemplateSectionDefinition psd) {
+    private void populateProposalTemplateSectionDefinition(
+            ProposalTemplateSectionDefinitionWrapper psd) {
         psd.setType(this.getType());
         psd.setTitle(this.getTitle());
         psd.setDefaultText(this.getDefaultText());
@@ -524,7 +528,7 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
     }
 
     public boolean hasUpdates() {
-        ProposalTemplateSectionDefinition psd = ProposalTemplateClientUtil
+        ProposalTemplateSectionDefinitionWrapper psd = ProposalTemplateClientUtil
                 .getProposalTemplateSectionDefinition(id);
         return !this.equals(new SectionDefinitionWrapper(psd));
     }

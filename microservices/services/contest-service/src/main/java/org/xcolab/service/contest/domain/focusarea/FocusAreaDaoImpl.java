@@ -5,7 +5,8 @@ import org.jooq.Record;
 import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.xcolab.model.tables.pojos.FocusArea;
+
+import org.xcolab.client.contest.pojo.wrapper.FocusAreaWrapper;
 import org.xcolab.model.tables.records.FocusAreaRecord;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
@@ -22,8 +23,7 @@ public class FocusAreaDaoImpl implements FocusAreaDao {
     public FocusAreaDaoImpl(DSLContext dslContext) {this.dslContext = dslContext;}
 
     @Override
-    public FocusArea get(Long id) throws NotFoundException {
-
+    public FocusAreaWrapper get(Long id) throws NotFoundException {
         final Record record = this.dslContext.selectFrom(FOCUS_AREA)
                 .where(FOCUS_AREA.ID.eq(id))
                 .fetchOne();
@@ -31,12 +31,11 @@ public class FocusAreaDaoImpl implements FocusAreaDao {
         if (record == null) {
             throw new NotFoundException("FocusArea with id " + id + " does not exist");
         }
-        return record.into(FocusArea.class);
+        return record.into(FocusAreaWrapper.class);
     }
 
     @Override
-    public FocusArea create(FocusArea focusArea) {
-
+    public FocusAreaWrapper create(FocusAreaWrapper focusArea) {
         FocusAreaRecord ret = this.dslContext.insertInto(FOCUS_AREA)
                 .set(FOCUS_AREA.NAME, focusArea.getName())
                 .set(FOCUS_AREA.SORT_ORDER, focusArea.getSortOrder())
@@ -48,11 +47,10 @@ public class FocusAreaDaoImpl implements FocusAreaDao {
         } else {
             return null;
         }
-
     }
 
     @Override
-    public boolean update(FocusArea focusArea) {
+    public boolean update(FocusAreaWrapper focusArea) {
         return dslContext.update(FOCUS_AREA)
                 .set(FOCUS_AREA.NAME, focusArea.getName())
                 .set(FOCUS_AREA.SORT_ORDER, focusArea.getSortOrder())
@@ -61,12 +59,11 @@ public class FocusAreaDaoImpl implements FocusAreaDao {
     }
 
     @Override
-    public List<FocusArea> findByGiven() {
+    public List<FocusAreaWrapper> findByGiven() {
         final SelectQuery<Record> query = dslContext.select()
                 .from(FOCUS_AREA).getQuery();
 
-
-        return query.fetchInto(FocusArea.class);
+        return query.fetchInto(FocusAreaWrapper.class);
     }
 
     @Override
@@ -75,6 +72,4 @@ public class FocusAreaDaoImpl implements FocusAreaDao {
                 .where(FOCUS_AREA.ID.eq(id))
                 .execute();
     }
-
-
 }

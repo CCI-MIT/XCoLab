@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.pages.proposals.utils.picker.ProposalPickerFilterUtil;
@@ -38,7 +38,7 @@ public class ProposalPickerJSONController {
             @RequestParam(required = false) Long sectionId,
             @RequestParam(required = false) long contestId) throws IOException {
 
-        List<Proposal> proposals;
+        List<ProposalWrapper> proposals;
         final long userId = user.getId();
 
         switch (tab) {

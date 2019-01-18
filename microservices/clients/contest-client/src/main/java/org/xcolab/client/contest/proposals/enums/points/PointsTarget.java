@@ -2,7 +2,7 @@ package org.xcolab.client.contest.proposals.enums.points;
 
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.contest.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 
 public class PointsTarget {
 	private long proposalId;
@@ -77,7 +77,7 @@ public class PointsTarget {
         return target;
     }
 
-	public Proposal getProposal(){
+	public ProposalWrapper getProposal(){
 		try {
 			return ProposalClientUtil.getProposal(this.getProposalId());
 		} catch (ProposalNotFoundException ignored) {

@@ -1,7 +1,7 @@
 package org.xcolab.service.contest.domain.contestphase;
 
 
-import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.util.List;

@@ -2,15 +2,15 @@ package org.xcolab.view.pages.proposals.judging;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
-import org.xcolab.client.contest.pojo.Proposal;
-import org.xcolab.client.contest.pojo.ProposalAttribute;
-import org.xcolab.client.contest.pojo.ProposalRatingType;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
+import org.xcolab.client.contest.pojo.IProposalRatingType;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,17 +18,17 @@ import java.util.Map;
 import java.util.Set;
 
 public class ProposalReview {
-    private Proposal proposal;
+    private ProposalWrapper proposal;
     private ContestPhaseWrapper contestPhase;
     private String proposalUrl;
 
-    private Map<ProposalRatingType, Double> ratingAverages;
+    private Map<IProposalRatingType, Double> ratingAverages;
     private Map<Member, String> reviews;
     private final Map<Member, Boolean> shouldAdvanceDecisions;
     private Set<Member> reviewers;
-    private final Map<Member, Map<ProposalRatingType, Double> > userRatings;
+    private final Map<Member, Map<IProposalRatingType, Double> > userRatings;
 
-    public ProposalReview(Proposal proposal, ContestPhaseWrapper contestPhase, String proposalUrl) {
+    public ProposalReview(ProposalWrapper proposal, ContestPhaseWrapper contestPhase, String proposalUrl) {
         this.proposal = proposal;
         this.contestPhase = contestPhase;
         this.proposalUrl = proposalUrl;
@@ -55,19 +55,19 @@ public class ProposalReview {
         return shouldAdvanceDecisions.get(judge);
     }
 
-    public void addRatingAverage(ProposalRatingType ratingType, double average) {
+    public void addRatingAverage(IProposalRatingType ratingType, double average) {
         this.ratingAverages.put(ratingType, average);
     }
 
-    public Double getRatingAverage(ProposalRatingType type) {
+    public Double getRatingAverage(IProposalRatingType type) {
         return ratingAverages.get(type);
     }
 
-    public Map<ProposalRatingType, Double> getRatingAverages() {
+    public Map<IProposalRatingType, Double> getRatingAverages() {
         return ratingAverages;
     }
 
-    public void setRatingAverages(Map<ProposalRatingType, Double> ratingAverages) {
+    public void setRatingAverages(Map<IProposalRatingType, Double> ratingAverages) {
         this.ratingAverages = ratingAverages;
     }
 
@@ -75,7 +75,7 @@ public class ProposalReview {
         double sum = 0;
         int count =  ratingAverages.keySet().size();
 
-        for(Map.Entry<ProposalRatingType, Double> entry : ratingAverages.entrySet()){
+        for(Map.Entry<IProposalRatingType, Double> entry : ratingAverages.entrySet()){
             sum += entry.getValue();
         }
 
@@ -87,8 +87,8 @@ public class ProposalReview {
         return avg;
     }
 
-    public void addUserRating(Member user, final ProposalRatingType ratingType, final double rating) {
-        Map<ProposalRatingType, Double> ratings;
+    public void addUserRating(Member user, final IProposalRatingType ratingType, final double rating) {
+        Map<IProposalRatingType, Double> ratings;
         if (this.userRatings.get(user) == null) {
             ratings = new HashMap<>();
             this.userRatings.put(user, ratings);
@@ -98,11 +98,11 @@ public class ProposalReview {
         ratings.put(ratingType, rating);
     }
 
-    public Map<ProposalRatingType, Double> getUserRatings(Member user) {
+    public Map<IProposalRatingType, Double> getUserRatings(Member user) {
         return this.userRatings.get(user);
     }
 
-    public Double getUserRating(Member user, ProposalRatingType ratingType) {
+    public Double getUserRating(Member user, IProposalRatingType ratingType) {
         if(this.userRatings.get(user) != null) {
             return this.userRatings.get(user).get(ratingType);
         }
@@ -118,7 +118,7 @@ public class ProposalReview {
             int count =  userRatings.get(user).keySet().size();
 
             //take the average for each user
-            for (Map.Entry<ProposalRatingType, Double> entry : userRatings.get(user).entrySet()) {
+            for (Map.Entry<IProposalRatingType, Double> entry : userRatings.get(user).entrySet()) {
                 sum += entry.getValue();
             }
             double avg = 0F;
@@ -150,11 +150,11 @@ public class ProposalReview {
         this.reviews = reviews;
     }
 
-    public Proposal getProposal() {
+    public ProposalWrapper getProposal() {
         return proposal;
     }
 
-    public void setProposal(Proposal proposal) {
+    public void setProposal(ProposalWrapper proposal) {
         this.proposal = proposal;
     }
 

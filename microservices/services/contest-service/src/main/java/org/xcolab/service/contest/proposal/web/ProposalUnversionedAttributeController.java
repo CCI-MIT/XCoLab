@@ -7,9 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.xcolab.model.tables.pojos.ProposalUnversionedAttribute;
-import org.xcolab.service.contest.proposal.domain.proposalunversionedattribute.ProposalUnversionedAttributeDao;
+
+import org.xcolab.client.contest.pojo.wrapper.ProposalUnversionedAttribute;
 import org.xcolab.service.contest.exceptions.NotFoundException;
+import org.xcolab.service.contest.proposal.domain.proposalunversionedattribute.ProposalUnversionedAttributeDao;
 
 import java.util.List;
 
@@ -32,7 +33,6 @@ public class ProposalUnversionedAttributeController {
     @RequestMapping(value = "/proposalUnversionedAttributes/{id}", method = RequestMethod.PUT)
     public boolean updateProposalUnversionedAttribute(@RequestBody ProposalUnversionedAttribute proposalUnversionedAttribute,
                                                       @PathVariable("id") Long id) throws NotFoundException {
-
         if (id == null || id == 0 || proposalUnversionedAttributeDao.get(id) == null) {
             throw new NotFoundException("No ProposalUnversionedAttribute with id " + id);
         } else {
@@ -50,7 +50,6 @@ public class ProposalUnversionedAttributeController {
             return rt;
         }
         throw new NotFoundException("Proposal Unversioned Attribute with id: "+ proposalId + " name: "+ name);
-
     }
 
     @RequestMapping(value = "/proposalUnversionedAttributes", method = {RequestMethod.GET, RequestMethod.HEAD})
@@ -76,7 +75,4 @@ public class ProposalUnversionedAttributeController {
             }
         }
     }
-
-
-
 }

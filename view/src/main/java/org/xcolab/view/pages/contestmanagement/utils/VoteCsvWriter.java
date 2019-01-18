@@ -7,15 +7,15 @@ import org.slf4j.LoggerFactory;
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.ContestWrapper;
-import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.contest.pojo.Proposal;
-import org.xcolab.client.contest.pojo.ProposalVote;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.IProposalVote;
 import org.xcolab.client.tracking.ITrackingClient;
 import org.xcolab.client.tracking.pojo.ILocation;
 import org.xcolab.commons.CsvResponseWriter;
@@ -72,22 +72,22 @@ public class VoteCsvWriter extends CsvResponseWriter {
         this.trackingClient = trackingClient;
     }
 
-    public void writeVotes(List<ProposalVote> proposalVotes) {
+    public void writeVotes(List<IProposalVote> proposalVotes) {
         final String colabUrl = PlatformAttributeKey.COLAB_URL.get();
 
         //local caches, since many votes will likely be in the same contest
         Map<Long, ContestWrapper> contests  = new HashMap<>();
         Map<Long, ContestPhaseWrapper> phases  = new HashMap<>();
-        Map<Long, Proposal> proposals  = new HashMap<>();
+        Map<Long, ProposalWrapper> proposals  = new HashMap<>();
 
-        for (ProposalVote vote : proposalVotes) {
+        for (IProposalVote vote : proposalVotes) {
             ContestPhaseWrapper contestPhase = phases.computeIfAbsent(vote.getContestPhaseId(),
                     ContestClientUtil::getContestPhase);
             ContestWrapper contest = contests.computeIfAbsent(contestPhase.getContestId(),
                     ContestClientUtil::getContest);
 
             Member member = getMemberOrNull(vote);
-            Proposal proposal = getProposalOrNull(proposals, vote);
+            ProposalWrapper proposal = getProposalOrNull(proposals, vote);
 
             List<String> row = new ArrayList<>();
             addValue(row, vote.getProposalId());
@@ -145,7 +145,7 @@ public class VoteCsvWriter extends CsvResponseWriter {
         }
     }
 
-    private Proposal getProposalOrNull(Map<Long, Proposal> proposals, ProposalVote vote) {
+    private ProposalWrapper getProposalOrNull(Map<Long, ProposalWrapper> proposals, IProposalVote vote) {
         try {
             return proposals.computeIfAbsent(vote.getProposalId(),
                     ProposalClientUtil::getProposal);
@@ -155,7 +155,7 @@ public class VoteCsvWriter extends CsvResponseWriter {
         }
     }
 
-    private Member getMemberOrNull(ProposalVote vote) {
+    private Member getMemberOrNull(IProposalVote vote) {
         try {
             return MembersClient.getMember(vote.getUserId());
         } catch (MemberNotFoundException e) {

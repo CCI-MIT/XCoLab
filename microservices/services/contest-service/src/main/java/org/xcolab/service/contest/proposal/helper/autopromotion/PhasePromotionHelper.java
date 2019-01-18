@@ -2,7 +2,8 @@ package org.xcolab.service.contest.proposal.helper.autopromotion;
 
 
 
-import org.xcolab.model.tables.pojos.ProposalContestPhaseAttribute;
+import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
+import org.xcolab.client.contest.pojo.tables.pojos.ProposalContestPhaseAttribute;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 
 /**
@@ -12,17 +13,16 @@ import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
  */
 public class PhasePromotionHelper {
 
-    public static ProposalContestPhaseAttribute createProposalContestPhasePromotionDoneAttribute(long proposalId, long currentPhaseId) {
+    public static IProposalContestPhaseAttribute createProposalContestPhasePromotionDoneAttribute(long proposalId, long currentPhaseId) {
         //save the information that the promotion has been done.
         if (currentPhaseId != 0) {
-            ProposalContestPhaseAttribute proposalContestPhaseAttribute = new ProposalContestPhaseAttribute();
+            IProposalContestPhaseAttribute proposalContestPhaseAttribute = new ProposalContestPhaseAttribute();
             proposalContestPhaseAttribute.setProposalId(proposalId);
             proposalContestPhaseAttribute.setContestPhaseId(currentPhaseId);
             proposalContestPhaseAttribute.setName(ProposalContestPhaseAttributeKeys.PROMOTE_DONE);
             proposalContestPhaseAttribute.setAdditionalId(0L);
             proposalContestPhaseAttribute.setStringValue("true");
             return proposalContestPhaseAttribute;
-
         }
         return null;
     }

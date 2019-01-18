@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.view.seo.sitemaps.xml.XmlUrl;
 import org.xcolab.view.seo.sitemaps.xml.XmlUrl.ChangeFrequency;
 import org.xcolab.view.seo.sitemaps.xml.XmlUrl.Priority;

@@ -1,14 +1,14 @@
 package org.xcolab.service.contest.proposal.domain.proposalsupporter;
 
-import org.xcolab.model.tables.pojos.ProposalSupporter;
+import org.xcolab.client.contest.pojo.IProposalSupporter;
 
 import java.util.List;
 
 public interface ProposalSupporterDao {
 
-    ProposalSupporter create(ProposalSupporter proposalSupporter);
+    IProposalSupporter create(IProposalSupporter proposalSupporter);
 
-    List<ProposalSupporter> findByGiven(Long proposalId, Long userId);
+    List<IProposalSupporter> findByGiven(Long proposalId, Long userId);
 
     Integer countByProposalId(Long proposalId);
 

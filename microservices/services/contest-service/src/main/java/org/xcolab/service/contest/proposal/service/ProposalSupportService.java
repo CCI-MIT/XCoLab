@@ -3,11 +3,11 @@ package org.xcolab.service.contest.proposal.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import org.xcolab.model.tables.pojos.Proposal;
-import org.xcolab.model.tables.pojos.ProposalSupporter;
+import org.xcolab.client.contest.pojo.IProposalSupporter;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.commons.GroupingHelper;
 import org.xcolab.service.contest.proposal.domain.proposal.ProposalDao;
 import org.xcolab.service.contest.proposal.domain.proposalsupporter.ProposalSupporterDao;
-import org.xcolab.commons.GroupingHelper;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -29,9 +29,9 @@ public class ProposalSupportService {
 
     public List<SupportedProposal> getSupportedProposalsForUser(long userId, boolean onlyVisible,
             boolean excludePrivateContests) {
-        final List<ProposalSupporter> proposalSupporters = proposalSupporterDao.findByGiven(null, userId);
-        Map<Long, ProposalSupporter> supportsByProposalId = new GroupingHelper<>(proposalSupporters)
-                .groupUnique(ProposalSupporter::getProposalId);
+        final List<IProposalSupporter> proposalSupporters = proposalSupporterDao.findByGiven(null, userId);
+        Map<Long, IProposalSupporter> supportsByProposalId = new GroupingHelper<>(proposalSupporters)
+                .groupUnique(IProposalSupporter::getProposalId);
 
         final Boolean visible = onlyVisible ? true : null;
         final Boolean contestPrivate = excludePrivateContests ? false : null;
@@ -41,11 +41,11 @@ public class ProposalSupportService {
                 .collect(Collectors.toList());
     }
 
-    public static class SupportedProposal extends Proposal {
+    public static class SupportedProposal extends ProposalWrapper {
 
-        private final ProposalSupporter proposalSupporter;
+        private final IProposalSupporter proposalSupporter;
 
-        public SupportedProposal(Proposal proposal, ProposalSupporter proposalSupporter) {
+        public SupportedProposal(ProposalWrapper proposal, IProposalSupporter proposalSupporter) {
             super(proposal);
             this.proposalSupporter = proposalSupporter;
         }
@@ -57,6 +57,5 @@ public class ProposalSupportService {
         public Long getSupporterUserId() {
             return proposalSupporter.getUserId();
         }
-
     }
 }

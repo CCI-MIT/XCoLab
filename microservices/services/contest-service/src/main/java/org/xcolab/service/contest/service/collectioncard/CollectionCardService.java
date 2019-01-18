@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.xcolab.client.contest.pojo.IContestCollectionCard;
-import org.xcolab.model.tables.pojos.Contest;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.service.contest.domain.contestcollectioncard.ContestCollectionCardDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.service.contest.ContestService;
@@ -36,7 +36,7 @@ public class CollectionCardService {
             collectionCards.add(contestCollectionCardDao.get(collectionCardId).getId());
             List<Long> contestList = new ArrayList<>();
             while(!collectionCards.isEmpty()) {
-                for(Contest contest: contestService.getContestsByOntologyTerm(contestCollectionCardDao.get(collectionCards.get(0)).getOntologyTermToLoad(), getActive, false)) {
+                for(ContestWrapper contest: contestService.getContestsByOntologyTerm(contestCollectionCardDao.get(collectionCards.get(0)).getOntologyTermToLoad(), getActive, false)) {
                     if(!contestList.contains(contest.getId())) {
                         if(     (!onlyFeatured || contest.getFeatured())                                   &&
                                 (   (viewType.equals(VIEW_TYPE_GRID) && contest.getShowInTileView())     ||

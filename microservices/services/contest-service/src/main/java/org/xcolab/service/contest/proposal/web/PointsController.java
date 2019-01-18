@@ -1,6 +1,5 @@
 package org.xcolab.service.contest.proposal.web;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,11 +8,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.xcolab.client.contest.pojo.IPointType;
 import org.xcolab.client.contest.pojo.IPointsDistributionConfiguration;
-import org.xcolab.model.tables.pojos.PointType;
+import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.proposal.domain.pointsdistributionconfiguration.PointsDistributionConfigurationDao;
 import org.xcolab.service.contest.proposal.domain.pointtype.PointTypeDao;
-import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.proposal.service.pointsdistributionconfiguration.PointsDistributionConfigurationService;
 
 import java.sql.Timestamp;
@@ -46,6 +45,7 @@ public class PointsController {
     ) {
         return pointsDistributionConfigurationDao.findByGiven(proposalId, pointTypeId);
     }
+
     @RequestMapping(value = "/pointsDistributionConfigurations/removeByProposalId", method = RequestMethod.DELETE)
     public String deletePointsDistributionConfigurationByProposalId(@RequestParam("proposalId") Long proposalId)
             throws NotFoundException {
@@ -54,9 +54,9 @@ public class PointsController {
         } else {
             this.pointsDistributionConfigurationDao.deleteByProposalId(proposalId);
             return "PointsDistributionConfiguration deleted successfully";
-
         }
     }
+
     @RequestMapping(value = "/pointsDistributionConfigurations/verifyDistributionConfigurationsForProposalId", method = RequestMethod.GET)
     public String verifyDistributionConfigurationsForProposalId(@RequestParam("proposalId") Long proposalId)
             throws NotFoundException {
@@ -66,20 +66,20 @@ public class PointsController {
         } else {
             this.pointsDistributionConfigurationService.verifyDistributionConfigurationsForProposalId(proposalId);
             return "PointsDistributionConfiguration checked successfully";
-
         }
     }
+
     @RequestMapping(value = "/pointsDistributionConfigurations/{id}", method = RequestMethod.PUT)
     public boolean updatePointsDistributionConfiguration(@RequestBody
             IPointsDistributionConfiguration pointsDistributionConfiguration,
-                                                         @PathVariable("id") Long id) throws NotFoundException {
-
+            @PathVariable("id") Long id) throws NotFoundException {
         if (id == null || id == 0 || pointsDistributionConfigurationDao.get(id) == null) {
             throw new NotFoundException("No PointsDistributionConfiguration with id " + id);
         } else {
             return pointsDistributionConfigurationDao.update(pointsDistributionConfiguration);
         }
     }
+
     @RequestMapping(value = "/pointsDistributionConfigurations/getByTargetProposalTemplateSectionDefinitionId", method = RequestMethod.GET)
     public IPointsDistributionConfiguration getPointsDistributionConfiguration(@RequestParam("targetProposalTemplateSectionDefinitionId") Long targetProposalTemplateSectionDefinitionId) throws NotFoundException {
         if (targetProposalTemplateSectionDefinitionId == null || targetProposalTemplateSectionDefinitionId == 0) {
@@ -88,10 +88,10 @@ public class PointsController {
             return pointsDistributionConfigurationDao.getByProposalTemplateSectionDefinitionId(targetProposalTemplateSectionDefinitionId);
         }
     }
+
     @RequestMapping(value = "/pointsDistributionConfigurations/{id}", method = RequestMethod.DELETE)
     public String deletePointsDistributionConfiguration(@PathVariable("id") Long id)
             throws NotFoundException {
-
         if (id == null || id == 0) {
             throw new NotFoundException("No PointsDistributionConfiguration with id given");
         } else {
@@ -105,10 +105,8 @@ public class PointsController {
         }
     }
 
-
-
     @RequestMapping(value = "/pointTypes/{pointTypeId}", method = RequestMethod.GET)
-    public PointType getPointType(@PathVariable("pointTypeId") Long pointTypeId) throws NotFoundException {
+    public IPointType getPointType(@PathVariable("pointTypeId") Long pointTypeId) throws NotFoundException {
         if (pointTypeId == null || pointTypeId == 0) {
             throw new NotFoundException("No pointTypeId given");
         } else {
@@ -117,11 +115,9 @@ public class PointsController {
     }
 
     @RequestMapping(value = "/pointTypes", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<PointType> getPointTypes(
+    public List<IPointType> getPointTypes(
             @RequestParam(required = false) Long parentPointTypeId
     ) {
         return pointTypeDao.findByGiven(parentPointTypeId);
     }
-
-
 }

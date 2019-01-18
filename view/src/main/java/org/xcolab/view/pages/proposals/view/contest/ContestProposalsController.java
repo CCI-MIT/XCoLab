@@ -10,15 +10,15 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.enums.ContestStatus;
-import org.xcolab.client.contest.pojo.ContestWrapper;
-import org.xcolab.client.contest.pojo.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.ProposalClient;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
 import org.xcolab.client.contest.proposals.exceptions.Proposal2PhaseNotFoundException;
-import org.xcolab.client.contest.pojo.Proposal;
-import org.xcolab.client.contest.pojo.Proposal2Phase;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.IProposal2Phase;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.view.errors.AccessDeniedPage;
@@ -75,14 +75,14 @@ public class ContestProposalsController extends BaseProposalsController {
                 loggedInMember);
     }
 
-    private List<Proposal> getProposals(ProposalContext proposalContext, Member loggedInMember) {
+    private List<ProposalWrapper> getProposals(ProposalContext proposalContext, Member loggedInMember) {
         final ClientHelper clients = proposalContext.getClients();
         final ProposalClient proposalClient = clients.getProposalClient();
 
         ContestPhaseWrapper contestPhase = proposalContext.getContestPhase();
         ContestWrapper contest = proposalContext.getContest();
 
-        final List<Proposal> activeProposals;
+        final List<ProposalWrapper> activeProposals;
         final ContestStatus phaseStatus = contestPhase.getStatus();
         switch (phaseStatus) {
             case OPEN_FOR_SUBMISSION:
@@ -95,18 +95,18 @@ public class ContestProposalsController extends BaseProposalsController {
                         contestPhase.getId(), CacheName.PROPOSAL_LIST_CLOSED);
         }
 
-        List<Proposal> proposals = new ArrayList<>();
-        for (Proposal proposal : activeProposals) {
+        List<ProposalWrapper> proposals = new ArrayList<>();
+        for (ProposalWrapper proposal : activeProposals) {
 
             try {
                 final ProposalPhaseClient proposalPhaseClient = clients.getProposalPhaseClient();
-                Proposal2Phase p2p = proposalPhaseClient.getProposal2PhaseByProposalIdContestPhaseId(proposal.getId(), contestPhase.getId());
-                Proposal proposalWrapper;
+                IProposal2Phase p2p = proposalPhaseClient.getProposal2PhaseByProposalIdContestPhaseId(proposal.getId(), contestPhase.getId());
+                ProposalWrapper proposalWrapper;
 
                 if (loggedInMember != null && PermissionsClient.canJudge(loggedInMember.getId(), contest.getId())) {
                     proposalWrapper = new ProposalJudgeWrapper(proposal, p2p.getVersionTo() == -1 ? proposal.getCurrentVersion() : p2p.getVersionTo(), contest, contestPhase, p2p, loggedInMember);
                 } else {
-                    proposalWrapper = new Proposal(proposal, p2p.getVersionTo() == -1 ? proposal.getCurrentVersion() : p2p.getVersionTo(), contest, contestPhase, p2p);
+                    proposalWrapper = new ProposalWrapper(proposal, p2p.getVersionTo() == -1 ? proposal.getCurrentVersion() : p2p.getVersionTo(), contest, contestPhase, p2p);
                 }
 
                 proposals.add(proposalWrapper);
@@ -130,7 +130,7 @@ public class ContestProposalsController extends BaseProposalsController {
             return new AccessDeniedPage(loggedInMember).toViewName(response);
         }
 
-        List<Proposal> proposals = getProposals(proposalContext, loggedInMember);
+        List<ProposalWrapper> proposals = getProposals(proposalContext, loggedInMember);
 
         model.addAttribute("sortFilterPage", sortFilterPage);
         model.addAttribute("proposals", new SortedProposalList(proposals, sortFilterPage,
@@ -189,7 +189,7 @@ public class ContestProposalsController extends BaseProposalsController {
                 selectedJudges.add(judge.getId());
             }
 
-            for (Proposal proposal : proposalClient.getProposalsInContest(contest.getId())) {
+            for (ProposalWrapper proposal : proposalClient.getProposalsInContest(contest.getId())) {
                 proposalContext.getClients().getProposalPhaseClient().persistSelectedJudgesAttribute(
                         proposal.getId(),
                         contestPhaseId,
@@ -214,7 +214,7 @@ public class ContestProposalsController extends BaseProposalsController {
             final ProposalClient proposalClient = proposalContext.getClients().getProposalClient();
             long contestPhaseId = proposalContext.getContestPhase().getId();
 
-            for (Proposal proposal : proposalClient.getProposalsInContest(contest.getId())) {
+            for (ProposalWrapper proposal : proposalClient.getProposalsInContest(contest.getId())) {
                 List<Long> newSelectedJudges = proposal.getSelectedJudges().stream()
                         .filter(proposal::getIsReviewFinishedForJudge)
                         .collect(Collectors.toList());
@@ -238,7 +238,7 @@ public class ContestProposalsController extends BaseProposalsController {
             throws IOException {
 
         try (ContestProposalsCsvWriter csvWriter = new ContestProposalsCsvWriter(response)) {
-            List<Proposal> contestProposalsList = getProposals(proposalContext, loggedInMember);
+            List<ProposalWrapper> contestProposalsList = getProposals(proposalContext, loggedInMember);
             csvWriter.writeProposals(contestProposalsList);
         }
     }
