@@ -18,7 +18,7 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
-import org.xcolab.client.flagging.FlaggingClient;
+import org.xcolab.client.moderation.IModerationClient;
 import org.xcolab.client.members.PlatformTeamsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalClient;
@@ -28,7 +28,7 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.ProposalMoveHistory;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.util.enums.contest.ContestPhaseTypeValue;
-import org.xcolab.util.enums.flagging.TargetType;
+import org.xcolab.util.enums.moderation.TargetType;
 import org.xcolab.util.enums.proposal.MoveType;
 import org.xcolab.util.enums.proposal.ProposalTemplateSectionType;
 import org.xcolab.view.errors.AccessDeniedPage;
@@ -63,6 +63,9 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/contests/{contestYear}/{contestUrlName}")
 public class ProposalDescriptionTabController extends BaseProposalTabController {
+
+    @Autowired
+    private IModerationClient moderationClient;
 
     @Autowired
     private IContestTypeClient contestTypeClient;
@@ -100,7 +103,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
         }
         model.addAttribute("edit", editValidated);
         model.addAttribute("voted", voted);
-        model.addAttribute("reportTargets", FlaggingClient.listReportTargets(TargetType.PROPOSAL));
+        model.addAttribute("reportTargets", moderationClient.listReportTargets(TargetType.PROPOSAL));
         model.addAttribute("showOpennessStatus",
             ConfigurationAttributeKey.CONTESTS_ALLOW_OPEN_PROPOSALS.get());
 

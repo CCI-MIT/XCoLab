@@ -176,7 +176,7 @@
         </dependency>
         <dependency>
             <groupId>org.xcolab</groupId>
-            <artifactId>flagging-client</artifactId>
+            <artifactId>moderation-client</artifactId>
             <version>${project.version}</version>
         </dependency>
 		<dependency>

@@ -24,7 +24,7 @@ public enum ContestManagerTabs implements TabEnum {
     TEAMS("Teams", "team",
             TabPermissionAlgorithm.adminOnlyViewAndEdit,
             TabActivityCountAlgorithm.alwaysZero),
-    FLAGGING("Flagging", "flagging",
+    MODERATION("Flagging", "moderation",
             TabPermissionAlgorithm.adminOnlyViewAndEdit,
             TabActivityCountAlgorithm.alwaysZero),
     COLLECTION_CARDS("Collection Cards", "collectionCard",

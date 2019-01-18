@@ -19,14 +19,17 @@ import org.xcolab.client.content.IFileClient;
 import org.xcolab.client.email.IEmailClient;
 import org.xcolab.client.email.StaticEmailContext;
 import org.xcolab.client.modeling.IModelingClient;
+import org.xcolab.client.moderation.IModerationClient;
+import org.xcolab.client.moderation.StaticModerationContext;
 import org.xcolab.client.search.ISearchClient;
 import org.xcolab.view.activityentry.discussion.DiscussionBaseActivityEntry;
-import org.xcolab.view.pages.contestmanagement.wrappers.FlaggingReportWrapper;
+import org.xcolab.view.pages.contestmanagement.wrappers.ModerationReportWrapper;
 import org.xcolab.view.pages.loginregister.ImageUploadUtils;
 import org.xcolab.view.pages.modeling.admin.form.UpdateModelInputWidgetsBean;
 import org.xcolab.view.pages.profile.utils.ActivitySubscriptionNameGenerator;
 import org.xcolab.view.pages.search.items.DiscussionSearchItem;
 import org.xcolab.view.pages.search.paging.SearchDataPage;
+import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.LoadThreadStartTag;
 import org.xcolab.view.tags.LoadContentArticleTag;
 import org.xcolab.view.util.entity.activityEntry.ActivitySubscriptionEmailHelper;
@@ -40,15 +43,18 @@ public class StaticInjector {
             ICategoryClient categoryClient, ISearchClient searchClient,
             IModelingClient modelingClient, IAdminClient adminClient,
             IContestTypeClient contestTypeClient, IEmailTemplateClient emailTemplateClient,
-            IEmailClient emailClient, IActivityClient activityClient) {
+            IEmailClient emailClient, IModerationClient moderationClient, IActivityClient activityClient) {
         // Module Internal
         ImageUploadUtils.setFileClient(fileClient);
         LoadContentArticleTag.setContentClient(contentClient);
+        LoadThreadStartTag.setModerationClient(moderationClient);
+        ModerationReportWrapper.setModerationClient(moderationClient);
+        DiscussionPermissions.setModerationClient(moderationClient);
         UpdateModelInputWidgetsBean.setModelingClient(modelingClient);
         ActivitySubscriptionNameGenerator.setThreadClient(threadClient);
         DiscussionBaseActivityEntry.setThreadClient(threadClient);
         LoadThreadStartTag.setThreadClient(threadClient);
-        FlaggingReportWrapper.setClients(commentClient, threadClient);
+        ModerationReportWrapper.setClients(commentClient, threadClient);
         ActivitySubscriptionEmailHelper.setCommentClient(commentClient);
         DiscussionSearchItem.setClients(commentClient, threadClient);
         LoadThreadStartTag.setCategoryClient(categoryClient);
@@ -59,6 +65,7 @@ public class StaticInjector {
         StaticContestProposalContext.setClients(commentClient, categoryClient, threadClient);
         StaticAdminContext.setClients(adminClient, contestTypeClient, emailTemplateClient);
         StaticEmailContext.setEmailClient(emailClient);
+        StaticModerationContext.setModerationClient(moderationClient);
         StaticActivityContext.setActivityClient(activityClient);
     }
 }
