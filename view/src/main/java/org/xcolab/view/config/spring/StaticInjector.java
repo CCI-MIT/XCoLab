@@ -18,6 +18,7 @@ import org.xcolab.client.email.IEmailClient;
 import org.xcolab.client.email.StaticEmailContext;
 import org.xcolab.client.modeling.IModelingClient;
 import org.xcolab.client.moderation.IModerationClient;
+import org.xcolab.client.moderation.StaticModerationContext;
 import org.xcolab.client.search.ISearchClient;
 import org.xcolab.view.activityentry.discussion.DiscussionBaseActivityEntry;
 import org.xcolab.view.pages.contestmanagement.wrappers.ModerationReportWrapper;
@@ -62,5 +63,6 @@ public class StaticInjector {
         StaticContestProposalContext.setClients(commentClient, categoryClient, threadClient);
         StaticAdminContext.setClients(adminClient, contestTypeClient, emailTemplateClient);
         StaticEmailContext.setEmailClient(emailClient);
+        StaticModerationContext.setModerationClient(moderationClient);
     }
 }
