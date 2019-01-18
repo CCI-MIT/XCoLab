@@ -10,10 +10,11 @@ import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.client.moderation.pojo.AggregatedReport;
+import org.xcolab.client.moderation.pojo.IAggregatedReport;
 import org.xcolab.client.moderation.pojo.IReport;
 
 import org.xcolab.client.moderation.pojo.tables.pojos.Report;
+import org.xcolab.client.moderation.pojo.tables.pojos.AggregatedReport;
 
 import org.xcolab.model.tables.records.ReportRecord;
 import org.xcolab.service.utils.PaginationHelper;
@@ -68,7 +69,7 @@ public class ReportDaoImpl implements ReportDao {
     }
 
     @Override
-    public List<AggregatedReport> findAggregatedByGiven(PaginationHelper paginationHelper,
+    public List<IAggregatedReport> findAggregatedByGiven(PaginationHelper paginationHelper,
             Long reporteruserId, Long manageruserId, String targetType, Long targetId,
             Long targetAdditionalId, String managerAction) {
 

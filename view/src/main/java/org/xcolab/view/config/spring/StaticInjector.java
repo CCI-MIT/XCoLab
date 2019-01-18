@@ -14,29 +14,22 @@ import org.xcolab.client.comment.IThreadClient;
 import org.xcolab.client.comment.StaticCommentContext;
 import org.xcolab.client.content.IContentClient;
 import org.xcolab.client.content.IFileClient;
-import org.xcolab.client.moderation.IModerationClient;
-import org.xcolab.client.modeling.IModelingClient;
-import org.xcolab.client.search.ISearchClient;
-import org.xcolab.view.moderation.ModerationController;
-import org.xcolab.view.pages.contestmanagement.controller.manager.FlaggingTabController;
-import org.xcolab.view.pages.contestmanagement.wrappers.ModerationReportWrapper;
-import org.xcolab.view.pages.loginregister.ImageUploadUtils;
-import org.xcolab.view.pages.proposals.view.proposal.tabs.ProposalDescriptionTabController;
-import org.xcolab.view.pages.search.paging.SearchDataPage;
-import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
-import org.xcolab.view.taglibs.xcolab.jspTags.discussion.LoadThreadStartTag;
-import org.xcolab.client.email.StaticEmailContext;
 import org.xcolab.client.email.IEmailClient;
+import org.xcolab.client.email.StaticEmailContext;
+import org.xcolab.client.modeling.IModelingClient;
+import org.xcolab.client.moderation.IModerationClient;
+import org.xcolab.client.search.ISearchClient;
 import org.xcolab.view.activityentry.discussion.DiscussionBaseActivityEntry;
+import org.xcolab.view.pages.contestmanagement.wrappers.ModerationReportWrapper;
 import org.xcolab.view.pages.loginregister.ImageUploadUtils;
 import org.xcolab.view.pages.modeling.admin.form.UpdateModelInputWidgetsBean;
 import org.xcolab.view.pages.profile.utils.ActivitySubscriptionNameGenerator;
 import org.xcolab.view.pages.search.items.DiscussionSearchItem;
 import org.xcolab.view.pages.search.paging.SearchDataPage;
+import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.LoadThreadStartTag;
 import org.xcolab.view.tags.LoadContentArticleTag;
 import org.xcolab.view.util.entity.activityEntry.ActivitySubscriptionEmailHelper;
-import org.xcolab.client.email.StaticEmailContext;
 
 @Component
 public class StaticInjector {
@@ -51,11 +44,8 @@ public class StaticInjector {
         // Module Internal
         ImageUploadUtils.setFileClient(fileClient);
         LoadContentArticleTag.setContentClient(contentClient);
-        FlaggingTabController.setModerationClient(moderationClient);
-        ModerationController.setModerationClient(moderationClient);
         LoadThreadStartTag.setModerationClient(moderationClient);
         ModerationReportWrapper.setModerationClient(moderationClient);
-        ProposalDescriptionTabController.setModerationClient(moderationClient);
         DiscussionPermissions.setModerationClient(moderationClient);
         UpdateModelInputWidgetsBean.setModelingClient(modelingClient);
         ActivitySubscriptionNameGenerator.setThreadClient(threadClient);

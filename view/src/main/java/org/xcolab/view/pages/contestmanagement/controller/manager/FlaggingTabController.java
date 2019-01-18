@@ -2,6 +2,7 @@ package org.xcolab.view.pages.contestmanagement.controller.manager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.moderation.IModerationClient;
 import org.xcolab.client.moderation.exceptions.ReportTargetNotFoundException;
-import org.xcolab.client.moderation.pojo.AggregatedReport;
+import org.xcolab.client.moderation.pojo.IAggregatedReport;
 import org.xcolab.client.moderation.pojo.IReportTarget;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.enums.moderation.ManagerAction;
@@ -40,13 +41,11 @@ public class FlaggingTabController extends AbstractTabController {
 
     private static final Logger _log =
             LoggerFactory.getLogger(FlaggingTabController.class);
-    static final private ContestManagerTabs tab = ContestManagerTabs.FLAGGING;
+    static final private ContestManagerTabs tab = ContestManagerTabs.MODERATION;
     static final private String TAB_VIEW = "contestmanagement/manager/flaggingTab";
-    private static IModerationClient moderationClient;
 
-    public static void setModerationClient(IModerationClient moderationClient) {
-        FlaggingTabController.moderationClient = moderationClient;
-    }
+    @Autowired
+    private IModerationClient moderationClient;
 
     @ModelAttribute("currentTabWrapped")
     @Override
@@ -80,10 +79,10 @@ public class FlaggingTabController extends AbstractTabController {
         }
         model.addAttribute("selectionItems", selectionItems);
 
-        final List<AggregatedReport> reports =
+        final List<IAggregatedReport> reports =
                 moderationClient.listAggregatedReports(0, Integer.MAX_VALUE);
         final List<ModerationReportWrapper> reportWrappers = new ArrayList<>();
-        for (AggregatedReport report : reports) {
+        for (IAggregatedReport report : reports) {
             reportWrappers.add(new ModerationReportWrapper(report));
         }
         model.addAttribute("reports", reportWrappers);

@@ -2,45 +2,33 @@ package org.xcolab.client.moderation;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.moderation.exceptions.ReportNotFoundException;
 import org.xcolab.client.moderation.exceptions.ReportTargetNotFoundException;
-import org.xcolab.client.moderation.pojo.AggregatedReport;
+import org.xcolab.client.moderation.pojo.IAggregatedReport;
 import org.xcolab.client.moderation.pojo.IReport;
 import org.xcolab.client.moderation.pojo.IReportTarget;
 import org.xcolab.util.enums.moderation.ManagerAction;
 import org.xcolab.util.enums.moderation.TargetType;
 
+import java.util.Collections;
 import java.util.List;
 
 @Component
 @Profile("test")
 public class ModerationClientMockImpl implements IModerationClient {
 
-    public List<IReport> listReports(
-            @RequestParam(value = "startRecord", required = false) Integer startRecord,
-            @RequestParam(value = "lastRecord", required = false) Integer lastRecord,
-            @RequestParam(value = "reporterUserId", required = false) Long reporterUserId,
-            @RequestParam(value = "targetType", required = false) TargetType targetType,
-            @RequestParam(value = "targetId", required = false) Long targetId,
-            @RequestParam(value = "targetAdditionalId", required = false) Long targetAdditionalId,
-            @RequestParam(value = "managerUserId", required = false) Long managerUserId) {
-        return null;
+    public List<IReport> listReports(Integer startRecord, Integer lastRecord, Long reporterUserId,
+            TargetType targetType, Long targetId, Long targetAdditionalId, Long managerUserId) {
+        return Collections.emptyList();
     }
 
-    public int countReports(@RequestParam(value = "reporterUserId", required = false) Long reporterUserId,
-            @RequestParam(value = "targetType", required = false) TargetType targetType,
-            @RequestParam(value = "targetId", required = false) Long targetId,
-            @RequestParam(value = "targetAdditionalId", required = false) Long targetAdditionalId,
-            @RequestParam(value = "managerUserId", required = false) Long managerUserId) {
+    public int countReports(Long reporterUserId, TargetType targetType, Long targetId,
+            Long targetAdditionalId, Long managerUserId) {
         return 0;
     }
 
-    public IReport getReport(@PathVariable(value = "reportId") Long reportId)
-            throws ReportNotFoundException {
+    public IReport getReport(Long reportId) throws ReportNotFoundException {
         return null;
     }
 
@@ -52,40 +40,33 @@ public class ModerationClientMockImpl implements IModerationClient {
         return true;
     }
 
-    public List<AggregatedReport> listAggregatedReports(
-            @RequestParam(value = "startRecord", required = false) Integer startRecord,
-            @RequestParam(value = "lastRecord", required = false) Integer lastRecord) {
+    public List<IAggregatedReport> listAggregatedReports(Integer startRecord, Integer lastRecord) {
+        return Collections.emptyList();
+    }
+
+    public List<IReportTarget> listReportTargets(Integer startRecord, Integer lastRecord,
+            TargetType type) {
         return null;
     }
 
-    public List<IReportTarget> listReportTargets(
-            @RequestParam(value = "startRecord", required = false) Integer startRecord,
-            @RequestParam(value = "lastRecord", required = false) Integer lastRecord,
-            @RequestParam(value = "type", required = false) TargetType type) {
+    public IReportTarget getReportTarget(Long reportTargetId) throws ReportTargetNotFoundException {
         return null;
     }
 
-    public IReportTarget getReportTarget(@PathVariable(value = "reportTargetId") Long reportTargetId)
-            throws ReportTargetNotFoundException {
+    public IReportTarget createReportTarget(IReportTarget reportTarget) {
         return null;
     }
 
-    public IReportTarget createReportTarget(@RequestBody IReportTarget reportTarget) {
-        return null;
-    }
-
-    public boolean updateReportTarget(IReportTarget reportTarget) throws ReportTargetNotFoundException {
-        return true;
-    }
-
-    public boolean deleteReportTarget(@PathVariable(value = "reportTargetId") Long reportTargetId)
+    public boolean updateReportTarget(IReportTarget reportTarget)
             throws ReportTargetNotFoundException {
         return true;
     }
 
-    public boolean handleReport(@RequestParam(value = "managerId") Long managerId,
-            @RequestParam(value = "managerAction") ManagerAction managerAction,
-            @PathVariable(value = "reportId") Long reportId) {
+    public boolean deleteReportTarget(Long reportTargetId) throws ReportTargetNotFoundException {
+        return true;
+    }
+
+    public boolean handleReport(Long managerId, ManagerAction managerAction, Long reportId) {
         return true;
     }
 }

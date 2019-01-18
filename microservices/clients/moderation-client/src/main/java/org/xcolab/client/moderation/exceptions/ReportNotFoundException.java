@@ -1,8 +1,10 @@
 package org.xcolab.client.moderation.exceptions;
 
-public class ReportNotFoundException extends Exception {
+import org.xcolab.util.http.exceptions.EntityNotFoundException;
+
+public class ReportNotFoundException extends EntityNotFoundException {
 
     public ReportNotFoundException(long reportId) {
-        super("Report with id " + reportId + " not found");
+        super("Report with id " + reportId + " not found", ReportNotFoundException.class);
     }
 }

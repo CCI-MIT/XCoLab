@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.moderation.exceptions.ReportNotFoundException;
 import org.xcolab.client.moderation.exceptions.ReportTargetNotFoundException;
-import org.xcolab.client.moderation.pojo.AggregatedReport;
+import org.xcolab.client.moderation.pojo.IAggregatedReport;
 import org.xcolab.client.moderation.pojo.IReport;
 import org.xcolab.client.moderation.pojo.IReportTarget;
 import org.xcolab.client.moderation.pojo.tables.pojos.Report;
@@ -50,7 +50,7 @@ public interface IModerationClient {
             throws ReportNotFoundException;
 
     @PostMapping("/reports")
-    IReport createReport(IReport report);
+    IReport createReport(@RequestBody IReport report);
 
     default IReport report(Member reporter, long targetId, Long targetAdditionalId,
             TargetType targetType, String reason, String comment) {
@@ -67,10 +67,10 @@ public interface IModerationClient {
     }
 
     @PutMapping("/reports")
-    boolean updateReport(IReport report) throws ReportNotFoundException;
+    boolean updateReport(@RequestBody IReport report) throws ReportNotFoundException;
 
     @GetMapping(value = "/aggregatedReports")
-    List<AggregatedReport> listAggregatedReports(
+    List<IAggregatedReport> listAggregatedReports(
             @RequestParam(value = "startRecord", required = false) Integer startRecord,
             @RequestParam(value = "lastRecord", required = false) Integer lastRecord);
 
@@ -96,7 +96,8 @@ public interface IModerationClient {
     IReportTarget createReportTarget(@RequestBody IReportTarget reportTarget);
 
     @PutMapping("/reportTargets")
-    boolean updateReportTarget(IReportTarget reportTarget) throws ReportTargetNotFoundException;
+    boolean updateReportTarget(@RequestBody IReportTarget reportTarget)
+            throws ReportTargetNotFoundException;
 
     @DeleteMapping("/reportTargets/{reportTargetId}")
     boolean deleteReportTarget(@PathVariable(value = "reportTargetId") Long reportTargetId)

@@ -64,11 +64,8 @@ import javax.validation.Valid;
 @RequestMapping("/contests/{contestYear}/{contestUrlName}")
 public class ProposalDescriptionTabController extends BaseProposalTabController {
 
-    private static IModerationClient moderationClient;
-
-    public static void setModerationClient(IModerationClient moderationClient) {
-        ProposalDescriptionTabController.moderationClient = moderationClient;
-    }
+    @Autowired
+    private IModerationClient moderationClient;
 
     @Autowired
     private IContestTypeClient contestTypeClient;

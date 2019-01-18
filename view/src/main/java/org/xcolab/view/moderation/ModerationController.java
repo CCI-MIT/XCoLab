@@ -1,5 +1,6 @@
 package org.xcolab.view.moderation;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,11 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 public class ModerationController {
 
-    private static IModerationClient moderationClient;
-
-    public static void setModerationClient(IModerationClient moderationClient) {
-        ModerationController.moderationClient = moderationClient;
-    }
+    @Autowired
+    private IModerationClient moderationClient;
 
     @PostMapping("/flagging/report")
     public ResponseJson report(HttpServletRequest request, HttpServletResponse response,

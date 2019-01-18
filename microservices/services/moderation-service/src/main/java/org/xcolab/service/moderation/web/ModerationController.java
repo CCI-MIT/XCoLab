@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.xcolab.client.moderation.IModerationClient;
 import org.xcolab.client.moderation.exceptions.ReportNotFoundException;
 import org.xcolab.client.moderation.exceptions.ReportTargetNotFoundException;
+import org.xcolab.client.moderation.pojo.IAggregatedReport;
 import org.xcolab.client.moderation.pojo.IReport;
 import org.xcolab.client.moderation.pojo.IReportTarget;
-import org.xcolab.client.moderation.pojo.AggregatedReport;
 import org.xcolab.service.moderation.domain.report.ReportDao;
 import org.xcolab.service.moderation.domain.reportTarget.ReportTargetDao;
 import org.xcolab.service.moderation.service.ModerationService;
@@ -54,21 +54,20 @@ public class ModerationController implements IModerationClient {
             @RequestParam(required = false) Long managerUserId) {
         Integer limitRecord = lastRecord - startRecord;
         PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, "");
-        /*
-        response.setHeader(ControllerUtils.COUNT_HEADER_NAME,
-                Integer.toString(reportDao.countByGiven(reporteruserId, manageruserId,
-                        targetType != null ?targetType.name() : null,
-                        targetId, targetAdditionalId, managerAction)));
-        */
+
         return reportDao.findByGiven(paginationHelper, reporterUserId,
                 managerUserId, targetType != null ? targetType.name() : null,
                 targetId, targetAdditionalId, null);
     }
 
     @GetMapping(value = "/count/reports")
-    public int countReports(Long reporterUserId, TargetType targetType, Long targetId,
-            Long targetAdditionalId, Long managerUserId) {
-        return reportDao.countByGiven(reporterUserId, managerUserId, targetType.toString(), targetId, targetAdditionalId, "");
+    public int countReports(@RequestParam(required = false) Long reporterUserId,
+            @RequestParam(required = false) TargetType targetType,
+            @RequestParam(required = false) Long targetId,
+            @RequestParam(required = false) Long targetAdditionalId, Long managerUserId) {
+        return reportDao
+                .countByGiven(reporterUserId, managerUserId, targetType.toString(), targetId,
+                        targetAdditionalId, "");
     }
 
     @GetMapping("/reports/{reportId}")
@@ -95,17 +94,13 @@ public class ModerationController implements IModerationClient {
     }
 
     @GetMapping(value = "/aggregatedReports")
-    public List<AggregatedReport> listAggregatedReports(
+    public List<IAggregatedReport> listAggregatedReports(
             @RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer lastRecord) {
         Integer limitRecord = lastRecord - startRecord;
         PaginationHelper paginationHelper =
                 new PaginationHelper(startRecord, limitRecord, "firstReportDate");
-        /*
-        response.setHeader(ControllerUtils.COUNT_HEADER_NAME,
-                Integer.toString(reportDao.countByGiven(reporteruserId, manageruserId,
-                        targetType, targetId, targetAdditionalId, managerAction)));
-        */
+
         return reportDao.findAggregatedByGiven(paginationHelper, null,
                 null, null, null, null, "PENDING");
     }

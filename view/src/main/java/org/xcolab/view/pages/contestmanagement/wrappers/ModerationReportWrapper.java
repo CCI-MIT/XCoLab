@@ -11,7 +11,8 @@ import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.IComment;
 import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.moderation.IModerationClient;
-import org.xcolab.client.moderation.pojo.AggregatedReport;
+import org.xcolab.client.moderation.pojo.IAggregatedReport;
+import org.xcolab.client.moderation.pojo.tables.pojos.AggregatedReport;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -24,7 +25,7 @@ public class ModerationReportWrapper {
 
     private static final Logger _log = LoggerFactory.getLogger(ModerationReportWrapper.class);
 
-    private final AggregatedReport report;
+    private final IAggregatedReport report;
 
     private ManagerAction managerAction = ManagerAction.PENDING;
 
@@ -45,7 +46,7 @@ public class ModerationReportWrapper {
         report = new AggregatedReport();
     }
 
-    public ModerationReportWrapper(AggregatedReport report) {
+    public ModerationReportWrapper(IAggregatedReport report) {
         this.report = report;
     }
 
@@ -124,11 +125,11 @@ public class ModerationReportWrapper {
     }
 
     public Long getReporteruserId() {
-        return report.getReporteruserId();
+        return report.getReporterUserId();
     }
 
     public void setReporteruserId(Long reporteruserId) {
-        report.setReporteruserId(reporteruserId);
+        report.setReporterUserId(reporteruserId);
     }
 
     public String getTargetType() {
