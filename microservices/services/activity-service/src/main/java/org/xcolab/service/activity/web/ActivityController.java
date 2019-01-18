@@ -49,8 +49,7 @@ public class ActivityController implements IActivityClient {
         try {
             return activityEntryDao.get(activityEntryId);
         } catch (NotFoundException e) {
-            throw new ActivityEntryNotFoundException(
-                    "ActivityEntry with id " + activityEntryId + " not found.");
+            throw new ActivityEntryNotFoundException(activityEntryId);
         }
     }
 
@@ -103,9 +102,7 @@ public class ActivityController implements IActivityClient {
             throws ActivitySubscriptionNotFoundException {
         return activitySubscriptionDao
                 .get(activitySubscriptionId).orElseThrow(
-                        () -> new ActivitySubscriptionNotFoundException(
-                                "ActivitySubscription with id " + activitySubscriptionId
-                                        + " not found."));
+                        () -> new ActivitySubscriptionNotFoundException(activitySubscriptionId));
     }
 
     @Override
