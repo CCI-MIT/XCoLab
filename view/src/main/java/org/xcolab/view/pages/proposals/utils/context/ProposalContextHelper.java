@@ -5,18 +5,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.IProposal2Phase;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
-import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.ProposalClient;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
 import org.xcolab.client.contest.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.pojo.IProposal2Phase;
+import org.xcolab.client.members.PermissionsClient;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
 import org.xcolab.commons.servlet.RequestParamUtil;
 import org.xcolab.view.auth.MemberAuthUtil;
@@ -96,10 +96,10 @@ public class ProposalContextHelper {
         ContestWrapper localContest = null;
         try {
             if (StringUtils.isNotBlank(givenContestUrlName) && givenContestYear > 0) {
-                localContest = ContestClientUtil
+                localContest = StaticContestContext.getContestClient()
                         .getContest(givenContestUrlName, givenContestYear);
             } else if (givenContestId > 0) {
-                localContest = ContestClientUtil.getContest(givenContestId);
+                localContest = StaticContestContext.getContestClient().getContest(givenContestId);
             }
         } catch (ContestNotFoundException e) {
             log.debug("Contest not found: {}", e.getMessage());

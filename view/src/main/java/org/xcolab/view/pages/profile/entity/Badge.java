@@ -1,9 +1,9 @@
 package org.xcolab.view.pages.profile.entity;
 
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
-import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.IContestPhaseRibbonType;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.commons.time.DateUtil;
 
@@ -32,9 +32,9 @@ public class Badge implements Serializable {
         // Associate the year and get hideRibbon property from contest
         hideRibbon = contest.getHideRibbons();
 
-        ContestPhaseWrapper lastPhase = ContestClientUtil.getActivePhase(contest.getId());
-        Date referenceDate =
-                lastPhase.getPhaseEndDate() == null ? lastPhase.getPhaseStartDate()
+        ContestPhaseWrapper lastPhase = StaticContestContext.getContestClient()
+                .getActivePhase(contest.getId());
+        Date referenceDate = lastPhase.getPhaseEndDate() == null ? lastPhase.getPhaseStartDate()
                         : lastPhase.getPhaseEndDate();
         year = DateUtil.getYearFromDate(referenceDate) ;
     }

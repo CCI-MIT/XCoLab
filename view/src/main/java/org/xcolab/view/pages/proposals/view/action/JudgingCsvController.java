@@ -3,26 +3,27 @@ package org.xcolab.view.pages.proposals.view.action;
 import au.com.bytecode.opencsv.CSVWriter;
 import com.google.common.collect.ImmutableSet;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.contest.ContestTeamMemberClientUtil;
-import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.ContestTeamMemberClient;
+import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
+import org.xcolab.client.contest.pojo.IProposalRatingType;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
 import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper;
-import org.xcolab.client.contest.pojo.IProposalRatingType;
-import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
-import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.view.pages.proposals.judging.ProposalReview;
 import org.xcolab.view.pages.proposals.judging.ProposalReviewCsvExporter;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
@@ -47,6 +48,9 @@ import static org.xcolab.view.util.entity.EntityIdListUtil.MEMBERS;
 @Controller
 @RequestMapping("/contests/{contestYear}/{contestUrlName}")
 public class JudgingCsvController {
+
+    @Autowired
+    private ContestTeamMemberClient contestTeamMemberClient;
 
     @GetMapping({"phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/ADVANCING/getJudgingCsv",
             "c/{proposalUrlString}/{proposalId}/tab/ADVANCING/getJudgingCsv"})
@@ -196,8 +200,8 @@ public class JudgingCsvController {
 
         } else {
             // Choose all judges
-            List<Long> judgeIds = ContestTeamMemberClientUtil
-                        .getJudgesForContest(judgingPhase.getContestId());
+            List<Long> judgeIds = contestTeamMemberClient
+                    .getJudgesForContest(judgingPhase.getContestId());
             return MEMBERS.fromIdList(judgeIds);
         }
     }

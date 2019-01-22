@@ -4,25 +4,26 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.contest.ImpactClientUtil;
-import org.xcolab.client.contest.OntologyClientUtil;
-import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
-import org.xcolab.client.contest.pojo.wrapper.ProposalUnversionedAttribute;
-import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.ImpactClient;
+import org.xcolab.client.contest.OntologyClient;
 import org.xcolab.client.contest.pojo.IImpactIteration;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.FocusAreaWrapper;
 import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ProposalUnversionedAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.ProposalAttributeClient;
 import org.xcolab.client.contest.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.contest.proposals.enums.ImpactSeriesType;
 import org.xcolab.client.contest.proposals.enums.ProposalUnversionedAttributeName;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.view.pages.proposals.exceptions.ProposalImpactDataParserException;
 import org.xcolab.view.pages.proposals.impact.ProposalImpactDataParser;
@@ -46,6 +47,12 @@ public class ProposalImpactJSONController {
 
     private static final Logger _log = LoggerFactory.getLogger(ProposalImpactJSONController.class);
 
+    @Autowired
+    private ImpactClient impactClient;
+
+    @Autowired
+    private OntologyClient ontologyClient;
+
     @GetMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/IMPACT/proposalImpactGetRegions")
     public void proposalImpactGetRegions(HttpServletResponse response,
             ProposalContext proposalContext) throws IOException {
@@ -64,7 +71,7 @@ public class ProposalImpactJSONController {
 
         Map<OntologyTermWrapper, List<OntologyTermWrapper>> ontologyMap = getOntologyMap(proposalContext);
 
-        List<OntologyTermWrapper> sectorTerms = ontologyMap.get(OntologyClientUtil.getOntologyTerm(regionTermId));
+        List<OntologyTermWrapper> sectorTerms = ontologyMap.get(ontologyClient.getOntologyTerm(regionTermId));
         response.getOutputStream().write(ontologyTermListToJSONArray(sectorTerms).toString().getBytes());
     }
 
@@ -82,8 +89,8 @@ public class ProposalImpactJSONController {
 
         try {
             ContestWrapper contest = proposalContext.getContest();
-            OntologyTermWrapper sectorOntologyTerm = OntologyClientUtil.getOntologyTerm(sectorTermId);
-            OntologyTermWrapper regionOntologyTerm = OntologyClientUtil.getOntologyTerm(regionTermId);
+            OntologyTermWrapper sectorOntologyTerm = ontologyClient.getOntologyTerm(sectorTermId);
+            OntologyTermWrapper regionOntologyTerm = ontologyClient.getOntologyTerm(regionTermId);
 
             // ProposalImpactSeriesList impactSeriesList = getProposalImpactSeriesList(request);
             FocusAreaWrapper selectedFocusArea = new ProposalImpactUtil(contest).getFocusAreaAssociatedWithTerms(sectorOntologyTerm, regionOntologyTerm);
@@ -116,7 +123,7 @@ public class ProposalImpactJSONController {
             return;
         }
 
-        FocusAreaWrapper focusArea = OntologyClientUtil.getFocusArea(focusAreaId);
+        FocusAreaWrapper focusArea = ontologyClient.getFocusArea(focusAreaId);
         ContestWrapper contest = proposalContext.getContest();
 
         JSONObject requestJson = new JSONObject(request.getParameter("json"));
@@ -150,7 +157,7 @@ public class ProposalImpactJSONController {
         ProposalWrapper proposal = proposalContext.getProposal();
 
         final List<IImpactIteration> iterations =
-                ImpactClientUtil.getContestImpactIterations(proposalContext.getContest());
+                impactClient.getContestImpactIterations(proposalContext.getContest());
         final List<ProposalAttribute> impactAttributes = new ArrayList<>();
         for (IImpactIteration iteration : iterations) {
             impactAttributes.addAll(proposalAttributeClient

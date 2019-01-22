@@ -2,8 +2,8 @@ package org.xcolab.view.pages.contestmanagement.wrappers;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ProposalTemplateClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.IProposalTemplate;
 import org.xcolab.client.contest.pojo.IProposalTemplateSection;
 import org.xcolab.client.contest.pojo.tables.pojos.ProposalTemplateSection;
@@ -259,12 +259,12 @@ public class ProposalTemplateWrapper {
 
         Long proposalTemplateId = proposalTemplate.getId();
         List<ContestWrapper> contestsUsingSelectedTemplateList =
-                ContestClientUtil.getContestsByProposalTemplateId(proposalTemplateId);
+                StaticContestContext.getContestClient()
+                        .getContestsByProposalTemplateId(proposalTemplateId);
 
         List<ContestWrapper> contestsUsingSelectedTemplate = new ArrayList<>();
         contestsUsingSelectedTemplate.addAll(contestsUsingSelectedTemplateList);
 
         return contestsUsingSelectedTemplate;
     }
-
 }

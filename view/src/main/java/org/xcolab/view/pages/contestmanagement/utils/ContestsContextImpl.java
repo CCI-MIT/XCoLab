@@ -2,13 +2,13 @@ package org.xcolab.view.pages.contestmanagement.utils;
 
 import org.springframework.stereotype.Component;
 
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.commons.exceptions.InternalException;
+import org.xcolab.commons.servlet.RequestParamUtil;
 import org.xcolab.view.taglibs.xcolab.interfaces.TabContext;
 import org.xcolab.view.taglibs.xcolab.interfaces.TabPermissions;
-import org.xcolab.commons.servlet.RequestParamUtil;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -51,7 +51,7 @@ public class ContestsContextImpl implements TabContext {
         if (contestId > 0) {
             ContestWrapper contest;
             try {
-                contest = ContestClientUtil.getContest(contestId);
+                contest = StaticContestContext.getContestClient().getContest(contestId);
             } catch (ContestNotFoundException e) {
                 throw new InternalException(e);
             }

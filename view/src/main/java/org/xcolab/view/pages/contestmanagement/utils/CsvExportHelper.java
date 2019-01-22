@@ -5,18 +5,18 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.util.CollectionUtils;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
-import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.IContestPhaseType;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.contest.pojo.IProposal2Phase;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMemberWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.contest.proposals.exceptions.Proposal2PhaseNotFoundException;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMemberWrapper;
-import org.xcolab.client.contest.pojo.IProposal2Phase;
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.pojo.Member;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -67,7 +67,7 @@ public class CsvExportHelper {
                     getProposalWithLatestVersionInContestPhase(proposal2Phase, proposal);
             Long contestId = contestPhase.getContestId();
 
-            ContestWrapper contest = ContestClientUtil.getContest(contestId);
+            ContestWrapper contest = StaticContestContext.getContestClient().getContest(contestId);
 
             String contestTitle = normalizeApostrophes(contest.getTitle());
             String proposalTitle = normalizeApostrophes(proposalWrapper.getName());
@@ -105,7 +105,7 @@ public class CsvExportHelper {
     private static String getContestPhaseTitle(ContestPhaseWrapper contestPhase) {
         Long contestPhaseTypeId = contestPhase.getContestPhaseTypeId();
         IContestPhaseType contestPhaseType =
-                ContestClientUtil.getContestPhaseType(contestPhaseTypeId);
+                StaticContestContext.getContestClient().getContestPhaseType(contestPhaseTypeId);
         return contestPhaseType.getName();
     }
 

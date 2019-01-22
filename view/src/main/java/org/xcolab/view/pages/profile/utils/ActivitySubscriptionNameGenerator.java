@@ -10,14 +10,14 @@ import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.ICategory;
 import org.xcolab.client.comment.pojo.ICategoryGroup;
 import org.xcolab.client.comment.pojo.IThread;
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 
 public class ActivitySubscriptionNameGenerator {
     private static final Logger _log = LoggerFactory.getLogger(ActivitySubscriptionNameGenerator.class);
@@ -58,7 +58,8 @@ public class ActivitySubscriptionNameGenerator {
     }
 
     private static String getNameForContestSubscription(ActivitySubscription subscription){
-        ContestWrapper contest = ContestClientUtil.getContest(subscription.getCategoryId());
+        ContestWrapper contest = StaticContestContext.getContestClient()
+                .getContest(subscription.getCategoryId());
         final String contestNameString = contest.getContestType().getContestName();
         return contest.getTitleWithEndYear() + " " + StringUtils.uncapitalize(contestNameString);
     }

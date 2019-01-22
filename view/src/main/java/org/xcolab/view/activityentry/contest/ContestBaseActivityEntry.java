@@ -2,12 +2,12 @@ package org.xcolab.view.activityentry.contest;
 
 import org.springframework.context.i18n.LocaleContextHolder;
 
-import org.xcolab.util.activities.enums.ContestActivityType;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
+import org.xcolab.util.activities.enums.ContestActivityType;
 import org.xcolab.view.activityentry.ActivityInitializationException;
 import org.xcolab.view.activityentry.provider.AbstractActivityEntryContentProvider;
 
@@ -19,7 +19,8 @@ public abstract class ContestBaseActivityEntry extends AbstractActivityEntryCont
     @Override
     protected void initializeInternal() throws ActivityInitializationException {
         try {
-            contest = ContestClientUtil.getContest(getActivityEntry().getCategoryId());
+            contest = StaticContestContext.getContestClient().getContest(getActivityEntry()
+                    .getCategoryId());
         } catch (ContestNotFoundException e) {
             //TODO COLAB-2486: This won't be needed once legacy activities are fixed
             if (ContestActivityType.PROPOSAL_CREATED.equals(getActivityType())) {

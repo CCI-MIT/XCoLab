@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.contest.ContestTeamMemberClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.IContestTeamMember;
 import org.xcolab.client.contest.pojo.tables.pojos.ContestTeamMember;
 import org.xcolab.client.members.MembersClient;
@@ -57,7 +57,8 @@ public class ContestTeamWrapper {
             contestTeamMember.setContestId(contestId);
             contestTeamMember.setUserId(userId);
             contestTeamMember.setRoleId(systemRole.getRoleId());
-            ContestTeamMemberClientUtil.createContestTeamMember(contestTeamMember);
+            StaticContestContext.getContestTeamMemberClient()
+                    .createContestTeamMember(contestTeamMember);
         }
     }
 
@@ -69,13 +70,15 @@ public class ContestTeamWrapper {
 
     private void removeTeamMember(IContestTeamMember contestTeamMember) {
         try {
-            ContestTeamMemberClientUtil.deleteContestTeamMember(contestTeamMember.getId());
+            StaticContestContext.getContestTeamMemberClient()
+                    .deleteContestTeamMember(contestTeamMember.getId());
         } catch (UncheckedEntityNotFoundException e) {
             log.warn("ContestTeamMember {} already deleted", contestTeamMember.getId());
         }
         Long userId = contestTeamMember.getUserId();
         Long roleId = contestTeamMember.getRoleId();
-        if (ContestTeamMemberClientUtil.getTeamMembers(userId, null, roleId).isEmpty()) {
+        if (StaticContestContext.getContestTeamMemberClient()
+                .getTeamMembers(userId, null, roleId).isEmpty()) {
             MembersClient.removeMemberRole(userId, roleId);
         }
 
@@ -83,7 +86,8 @@ public class ContestTeamWrapper {
 
     private void removeAllContestTeamMembersForContest() {
         List<IContestTeamMember> contestTeamMembers =
-                ContestTeamMemberClientUtil.getTeamMembers(null, contestId, null);
+                StaticContestContext.getContestTeamMemberClient()
+                        .getTeamMembers(null, contestId, null);
         for (IContestTeamMember contestTeamMember : contestTeamMembers) {
             removeTeamMember(contestTeamMember);
         }

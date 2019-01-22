@@ -5,12 +5,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.contest.OntologyClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.FocusAreaWrapper;
 import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
-import org.xcolab.client.contest.proposals.enums.ImpactSeriesType;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.enums.ImpactSeriesType;
 import org.xcolab.view.pages.proposals.exceptions.ProposalImpactDataParserException;
 
 import java.util.ArrayList;
@@ -280,7 +280,8 @@ public class ProposalImpactDataParser {
             name = excelTermToOntologyTermNameMap.get(name);
         }
 
-        List<OntologyTermWrapper> ontologyTerms = OntologyClientUtil.getOntologyTermsByName(name);
+        List<OntologyTermWrapper> ontologyTerms = StaticContestContext.getOntologyClient()
+                .getOntologyTermsByName(name);
         if (ontologyTerms == null || ontologyTerms.isEmpty()) {
             throw new ProposalImpactDataParserException(
                     "Could not match ontology term with name '" + name + "'");

@@ -4,9 +4,9 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.OntologyTermToFocusAreaMapper;
 import org.xcolab.client.contest.ProposalTemplateClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.IPointsDistributionConfiguration;
 import org.xcolab.client.contest.pojo.IProposalTemplateSection;
 import org.xcolab.client.contest.pojo.tables.pojos.PointsDistributionConfiguration;
@@ -106,35 +106,33 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
 
     private void initOntologyTermIdsWithFocusAreaId() {
         if (focusAreaId != null) {
-            FocusAreaWrapper focusArea = OntologyClientUtil.getFocusArea(this.focusAreaId);
+            FocusAreaWrapper focusArea = StaticContestContext.getOntologyClient()
+                    .getFocusArea(this.focusAreaId);
 
-            OntologySpaceWrapper space = OntologyClientUtil
+            OntologySpaceWrapper space = StaticContestContext.getOntologyClient()
                     .getOntologySpace(OntologySpaceEnum.WHAT.getSpaceId());
-            List<OntologyTermWrapper> terms =
-                    OntologyClientUtil
-                            .getAllOntologyTermsFromFocusAreaWithOntologySpace(focusArea,
-                                    space);
+            List<OntologyTermWrapper> terms = StaticContestContext.getOntologyClient()
+                            .getAllOntologyTermsFromFocusAreaWithOntologySpace(focusArea, space);
             this.whatTermIds = getIdsFromOntologyTerms(terms);
 
-            space = OntologyClientUtil
+            space = StaticContestContext.getOntologyClient()
                     .getOntologySpace(OntologySpaceEnum.WHERE.getSpaceId());
-            terms = OntologyClientUtil
+            terms = StaticContestContext.getOntologyClient()
                     .getAllOntologyTermsFromFocusAreaWithOntologySpace(focusArea, space);
             this.whereTermIds = getIdsFromOntologyTerms(terms);
 
-            space = OntologyClientUtil
+            space = StaticContestContext.getOntologyClient()
                     .getOntologySpace(OntologySpaceEnum.WHO.getSpaceId());
-            terms = OntologyClientUtil
+            terms = StaticContestContext.getOntologyClient()
                     .getAllOntologyTermsFromFocusAreaWithOntologySpace(focusArea, space);
             this.whoTermIds = getIdsFromOntologyTerms(terms);
 
-            space = OntologyClientUtil
+            space = StaticContestContext.getOntologyClient()
                     .getOntologySpace(OntologySpaceEnum.HOW.getSpaceId());
-            terms = OntologyClientUtil
+            terms = StaticContestContext.getOntologyClient()
                     .getAllOntologyTermsFromFocusAreaWithOntologySpace(focusArea, space);
             this.howTermIds = getIdsFromOntologyTerms(terms);
         }
-
     }
 
     private List<Long> getIdsFromOntologyTerms(List<OntologyTermWrapper> ontologyTerms) {
@@ -464,10 +462,10 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
 
         newFocusArea.setName("created for proposalTemplateSectionDefinition '" + this.title + "'");
 
-        newFocusArea = OntologyClientUtil.createFocusArea(newFocusArea);
+        newFocusArea = StaticContestContext.getOntologyClient().createFocusArea(newFocusArea);
 
         for (OntologyTermWrapper ontologyTerm : focusAreaOntologyTerms) {
-            OntologyClientUtil
+            StaticContestContext.getOntologyClient()
                     .addOntologyTermsToFocusAreaByOntologyTermId(newFocusArea.getId(),
                             ontologyTerm.getId());
         }
@@ -479,7 +477,6 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
     }
 
     private List<OntologyTermWrapper> getAllSelectedOntologyTerms() {
-
         List[] ontologyTermIdLists = {
                 getWhatTermIds(), getWhereTermIds(), getWhoTermIds(), getHowTermIds()
         };
@@ -487,12 +484,11 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
         List<OntologyTermWrapper> selectedOntologyTerms = new ArrayList<>();
         for (List<Long> ontologyTermIds : ontologyTermIdLists) {
             for (Long ontologyTermId : ontologyTermIds) {
-                selectedOntologyTerms
-                        .add(OntologyClientUtil.getOntologyTerm(ontologyTermId));
+                selectedOntologyTerms.add(StaticContestContext.getOntologyClient()
+                        .getOntologyTerm(ontologyTermId));
             }
         }
         return selectedOntologyTerms;
-
     }
 
     public String getAdditionalIds() {

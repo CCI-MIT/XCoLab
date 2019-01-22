@@ -13,22 +13,29 @@ public final class StaticContestContext {
     private static IThreadClient threadClient;
     private static ContestClient contestClient;
     private static ContestTeamMemberClient contestTeamMemberClient;
+    private static ImpactClient impactClient;
+    private static OntologyClient ontologyClient;
 
     private StaticContestContext() {}
 
     public static void setClients(ICommentClient commentClient, ICategoryClient categoryClient,
             IThreadClient threadClient, ContestClient contestClient,
-            ContestTeamMemberClient contestTeamMemberClient) {
+            ContestTeamMemberClient contestTeamMemberClient, ImpactClient impactClient,
+            OntologyClient ontologyClient) {
         Assert.notNull(commentClient, "commentClient must not be null!");
         Assert.notNull(categoryClient, "categoryClient must not be null!");
         Assert.notNull(threadClient, "threadClient must not be null!");
         Assert.notNull(contestClient, "contestClient must not be null!");
         Assert.notNull(contestTeamMemberClient, "contestTeamMemberClient must not be null!");
+        Assert.notNull(impactClient, "impactClient must not be null!");
+        Assert.notNull(ontologyClient, "ontologyClient must not be null!");
         StaticContestContext.commentClient = commentClient;
         StaticContestContext.categoryClient = categoryClient;
         StaticContestContext.threadClient = threadClient;
         StaticContestContext.contestClient = contestClient;
         StaticContestContext.contestTeamMemberClient = contestTeamMemberClient;
+        StaticContestContext.impactClient = impactClient;
+        StaticContestContext.ontologyClient = ontologyClient;
     }
 
     public static ICommentClient getCommentClient() {
@@ -49,5 +56,13 @@ public final class StaticContestContext {
 
     public static ContestTeamMemberClient getContestTeamMemberClient() {
         return contestTeamMemberClient;
+    }
+
+    public static OntologyClient getOntologyClient() {
+        return ontologyClient;
+    }
+
+    public static ImpactClient getImpactClient() {
+        return impactClient;
     }
 }

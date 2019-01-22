@@ -1,15 +1,15 @@
 package org.xcolab.entity.utils.helper;
 
 import org.xcolab.client.admin.StaticAdminContext;
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
 import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
 import org.xcolab.entity.utils.notifications.EmailTemplateWrapper;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.promotion.JudgingSystemActions.AdvanceDecision;
@@ -114,8 +114,8 @@ public class ProposalJudgingCommentHelper {
             String proposalName = ProposalAttributeClientUtil
                     .getProposalAttribute(proposal.getId(), ProposalAttributeKeys.NAME, 0L)
                     .getStringValue();
-            String contestName = ContestClientUtil.getContest(contestPhase.getContestId())
-                    .getTitle();
+            String contestName = StaticContestContext.getContestClient()
+                    .getContest(contestPhase.getContestId()).getTitle();
 
             //get fellow decision
 

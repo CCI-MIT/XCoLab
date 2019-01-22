@@ -7,14 +7,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.entity.utils.helper.ProposalJudgingCommentHelper;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
@@ -115,7 +114,7 @@ public class ProposalScreeningTabController extends BaseProposalTabController {
             //save fellow action comment
             ProposalJudgingCommentHelper commentHelper =
                     new ProposalJudgingCommentHelper(proposal,
-                            ContestClientUtil.getContestPhase(contestPhaseId));
+                            contestClient.getContestPhase(contestPhaseId));
 
             if (fellowProposalScreeningBean.getFellowScreeningAction()
                     == JudgingSystemActions.FellowAction.INCOMPLETE.getAttributeValue()

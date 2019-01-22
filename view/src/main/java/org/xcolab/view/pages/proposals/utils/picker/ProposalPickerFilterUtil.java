@@ -3,17 +3,16 @@ package org.xcolab.view.pages.proposals.utils.picker;
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.ProposalTemplateClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
+import org.xcolab.client.contest.pojo.IProposalSupporter;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.ProposalClient;
 import org.xcolab.client.contest.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.pojo.IProposalSupporter;
 import org.xcolab.commons.IdListUtil;
 import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
@@ -38,8 +37,9 @@ public class ProposalPickerFilterUtil {
         final Long focusAreaId = proposalTemplateSectionDefinition.getFocusAreaId();
         List<Long> ontologyTermIds = null;
         if (focusAreaId != null) {
-            ontologyTermIds = OntologyClientUtil
-                    .getOntologyTermsForFocusArea(OntologyClientUtil.getFocusArea(focusAreaId))
+            ontologyTermIds = StaticContestContext.getOntologyClient()
+                    .getOntologyTermsForFocusArea(StaticContestContext.getOntologyClient()
+                            .getFocusArea(focusAreaId))
                     .stream().map(OntologyTermWrapper::getId).collect(Collectors.toList());
         }
 
@@ -47,7 +47,7 @@ public class ProposalPickerFilterUtil {
 
         final List<Long> allowedContestTypeIds =
                 IdListUtil.getIdsFromString(proposalTemplateSectionDefinition.getAllowedContestTypeIds());
-        return ContestClientUtil
+        return StaticContestContext.getContestClient()
                 .findPublicContests(contestName, ontologyTermIds, allowedContestTypeIds,
                         allowedTiers);
     }

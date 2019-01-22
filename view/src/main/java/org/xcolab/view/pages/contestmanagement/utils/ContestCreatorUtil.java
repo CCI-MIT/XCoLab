@@ -6,16 +6,16 @@ import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.admin.pojo.tables.pojos.ConfigurationAttribute;
 import org.xcolab.client.admin.pojo.IConfigurationAttribute;
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.admin.pojo.tables.pojos.ConfigurationAttribute;
 import org.xcolab.client.contest.ProposalTemplateClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.exceptions.ContestScheduleNotFoundException;
-import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.IContestSchedule;
 import org.xcolab.client.contest.pojo.IProposalTemplate;
-import org.xcolab.client.contest.util.ContestScheduleChangeHelper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.proposals.exceptions.ProposalTemplateNotFoundException;
+import org.xcolab.client.contest.util.ContestScheduleChangeHelper;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
 import org.xcolab.view.pages.contestmanagement.utils.schedule.ContestScheduleLifecycleUtil;
 
@@ -30,7 +30,8 @@ public final class ContestCreatorUtil {
     private ContestCreatorUtil() { }
 
     public static ContestWrapper createNewContest(String title, long authorUserId) {
-        ContestWrapper contest = ContestClientUtil.createContest(authorUserId, title);
+        ContestWrapper contest = StaticContestContext.getContestClient()
+                .createContest(authorUserId, title);
         contest.setContestYear((long) DateTime.now().getYear());
         contest.setContestPrivate(true);
         contest.setShowInTileView(true);
@@ -41,7 +42,7 @@ public final class ContestCreatorUtil {
         final Long contestScheduleId = getOrCreateDefaultContestSchedule().getId();
         contest.setContestScheduleId(contestScheduleId);
         contest.setContestTypeId(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
-        ContestClientUtil.updateContest(contest);
+        StaticContestContext.getContestClient().updateContest(contest);
         ContestScheduleChangeHelper
                 changeHelper = new ContestScheduleChangeHelper(contest.getId(), contestScheduleId);
         changeHelper.changeScheduleForBlankContest();
@@ -81,7 +82,8 @@ public final class ContestCreatorUtil {
                 .DEFAULT_CONTEST_SCHEDULE_ID.get();
         try {
             if (defaultContestScheduleId > 0) {
-                return ContestClientUtil.getContestSchedule(defaultContestScheduleId);
+                return StaticContestContext.getContestClient().getContestSchedule(
+                        defaultContestScheduleId);
             }
             final IContestSchedule newDefaultSchedule = ContestScheduleLifecycleUtil
                     .createProposalCreationOnlySchedule(DEFAULT_SCHEDULE_NAME);
@@ -105,7 +107,7 @@ public final class ContestCreatorUtil {
     }
 
     public static void insertSeedDataToContestScheduleTableIfNotAvailable() {
-        if (ContestClientUtil.getAllContestSchedules().isEmpty()) {
+        if (StaticContestContext.getContestClient().getAllContestSchedules().isEmpty()) {
             ContestScheduleLifecycleUtil
                     .createProposalCreationOnlySchedule(SEED_CONTEST_SCHEDULE_NAME);
         }

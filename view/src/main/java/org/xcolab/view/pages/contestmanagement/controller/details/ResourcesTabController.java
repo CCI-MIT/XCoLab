@@ -17,7 +17,6 @@ import org.xcolab.client.content.pojo.IContentArticle;
 import org.xcolab.client.content.pojo.IContentArticleVersion;
 import org.xcolab.client.content.pojo.IContentFolder;
 import org.xcolab.client.content.pojo.tables.pojos.ContentArticleVersion;
-import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.servlet.flash.AlertMessage;
@@ -57,7 +56,7 @@ public class ResourcesTabController extends AbstractTabController {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
-        ContestWrapper contest = ContestClientUtil.getContest(contestId);
+        ContestWrapper contest = contestClient.getContest(contestId);
         boolean enabled = contest.getResourceArticleId() != 0;
 
         if (enabled) {
@@ -79,7 +78,7 @@ public class ResourcesTabController extends AbstractTabController {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
-        ContestWrapper contest = ContestClientUtil.getContest(contestId);
+        ContestWrapper contest = contestClient.getContest(contestId);
         if (enable) {
             IContentArticleVersion contentArticleVersion = new ContentArticleVersion();
             contentArticleVersion.setFolderId(IContentFolder.RESOURCE_FOLDER_ID);
@@ -91,7 +90,7 @@ public class ResourcesTabController extends AbstractTabController {
             try {
                 IContentArticle contentArticle = contentClient.getContentArticle(contentArticleVersion.getArticleId());
                 contest.setResourceArticleId(contentArticle.getId());
-                ContestClientUtil.updateContest(contest);
+                contestClient.updateContest(contest);
             } catch (ContentNotFoundException e) {
                 throw new IllegalStateException("Could not retrieve ContentArticle after creation");
             }

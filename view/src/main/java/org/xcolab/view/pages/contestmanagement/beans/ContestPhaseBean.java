@@ -2,12 +2,12 @@ package org.xcolab.view.pages.contestmanagement.beans;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
-import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.IContestPhaseType;
-import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.contest.pojo.IProposal2Phase;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
 import org.xcolab.util.enums.contest.ContestPhaseTypeValue;
 
 import java.io.Serializable;
@@ -53,10 +53,10 @@ public class ContestPhaseBean implements Serializable {
         this.phaseEndDate = contestPhase.getPhaseEndDate();
 
         this.contestPhaseHasProposalAssociations = false;
-        List<ContestWrapper> contestsUsingThisContestPhase = ContestClientUtil
+        List<ContestWrapper> contestsUsingThisContestPhase = StaticContestContext.getContestClient()
                 .getContestsByContestScheduleId(this.contestScheduleId);
         for (ContestWrapper contest : contestsUsingThisContestPhase) {
-            List<ContestPhaseWrapper> contestPhases = ContestClientUtil
+            List<ContestPhaseWrapper> contestPhases = StaticContestContext.getContestClient()
                     .getPhasesForContestScheduleIdAndContest(this.contestScheduleId,
                             contest.getId());
             for (ContestPhaseWrapper contestPhase1 : contestPhases) {
@@ -155,16 +155,16 @@ public class ContestPhaseBean implements Serializable {
         }
 
         if (contestPhaseDeleted) {
-            ContestClientUtil.deleteContestPhase(id);
+            StaticContestContext.getContestClient().deleteContestPhase(id);
         } else {
-            ContestClientUtil.updateContestPhase(getContestPhase());
+            StaticContestContext.getContestClient().updateContestPhase(getContestPhase());
         }
 
     }
 
     private void createNewContestPhase() {
         ContestPhaseWrapper contestPhase = new ContestPhaseWrapper();
-        contestPhase = ContestClientUtil.createContestPhase(contestPhase);
+        contestPhase = StaticContestContext.getContestClient().createContestPhase(contestPhase);
         id = contestPhase.getId();
     }
 
@@ -172,7 +172,7 @@ public class ContestPhaseBean implements Serializable {
     public ContestPhaseWrapper getContestPhase() {
         ContestPhaseWrapper contestPhase;
         if (id != null && id > 0) {
-            contestPhase = ContestClientUtil.getContestPhase(id);
+            contestPhase = StaticContestContext.getContestClient().getContestPhase(id);
         } else {
             contestPhase = new ContestPhaseWrapper();
         }
@@ -195,10 +195,12 @@ public class ContestPhaseBean implements Serializable {
         }
 
         if (contestPhaseTypeId != null) {
-            IContestPhaseType type = ContestClientUtil.getContestPhaseType(contestPhaseTypeId);
+            IContestPhaseType type = StaticContestContext.getContestClient()
+                    .getContestPhaseType(contestPhaseTypeId);
             contestPhase.setContestPhaseAutopromote(type.getDefaultPromotionType());
         } else if (contestPhaseTypeIdOld != null) {
-            IContestPhaseType type = ContestClientUtil.getContestPhaseType(contestPhaseTypeIdOld);
+            IContestPhaseType type = StaticContestContext.getContestClient()
+                    .getContestPhaseType(contestPhaseTypeIdOld);
             contestPhase.setContestPhaseAutopromote(type.getDefaultPromotionType());
         } else {
             contestPhase.setContestPhaseAutopromote(null);

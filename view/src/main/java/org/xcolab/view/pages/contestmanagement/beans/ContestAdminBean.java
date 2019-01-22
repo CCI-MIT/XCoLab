@@ -3,7 +3,7 @@ package org.xcolab.view.pages.contestmanagement.beans;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.xcolab.client.content.IContentClient;
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.view.pages.contestmanagement.wrappers.WikiPageWrapper;
 
@@ -66,7 +66,7 @@ public class ContestAdminBean implements Serializable {
         contest.setHideRibbons(hideRibbons);
         contest.setReadOnlyComments(readOnlyComments);
 
-        ContestClientUtil.updateContest(contest);
+        StaticContestContext.getContestClient().updateContest(contest);
 
         contestModelSettings.persist(contest);
     }

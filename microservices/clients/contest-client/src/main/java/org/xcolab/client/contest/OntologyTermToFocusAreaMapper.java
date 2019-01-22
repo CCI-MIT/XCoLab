@@ -20,8 +20,7 @@ public class OntologyTermToFocusAreaMapper {
      */
     public FocusAreaWrapper getFocusAreaMatchingTermsExactly() {
             return applyFilterToFocusAreasMatchingExactly(
-                    OntologyClientUtil.getAllFocusAreas(),
-                    true);
+                    StaticContestContext.getOntologyClient().getAllFocusAreas(), true);
     }
 
     /**
@@ -37,7 +36,8 @@ public class OntologyTermToFocusAreaMapper {
      *
      */
     public FocusAreaWrapper getFocusAreaMatchingTermsPartially() {
-        return applyFilterToFocusAreasMatchingExactly(OntologyClientUtil.getAllFocusAreas(), false);
+        return applyFilterToFocusAreasMatchingExactly(StaticContestContext.getOntologyClient()
+                .getAllFocusAreas(), false);
     }
 
     /**
@@ -73,14 +73,15 @@ public class OntologyTermToFocusAreaMapper {
     }
 
     private OntologyTermWrapper getTermWithSpaceId(FocusAreaWrapper focusArea, long spaceId) {
-            OntologySpaceWrapper space = OntologyClientUtil.getOntologySpace(spaceId);
-            return OntologyClientUtil
+            OntologySpaceWrapper space = StaticContestContext.getOntologyClient()
+                    .getOntologySpace(spaceId);
+            return StaticContestContext.getOntologyClient()
                     .getOntologyTermFromFocusAreaWithOntologySpace(focusArea, space);
 
     }
 
     private boolean isFocusAreaOntologyTermCountMatching(FocusAreaWrapper focusArea, int ontologyTermCount) {
-            return OntologyClientUtil.getOntologyTermsForFocusArea(focusArea).size() == ontologyTermCount;
-
+            return StaticContestContext.getOntologyClient()
+                    .getOntologyTermsForFocusArea(focusArea).size() == ontologyTermCount;
     }
 }

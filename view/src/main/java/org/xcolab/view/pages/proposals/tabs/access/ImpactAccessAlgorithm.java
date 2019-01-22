@@ -1,7 +1,7 @@
 package org.xcolab.view.pages.proposals.tabs.access;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.contest.OntologyClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.util.enums.contest.ContestTier;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
@@ -57,7 +57,7 @@ public class ImpactAccessAlgorithm implements ProposalTabCanAccessAlgorithm {
         final List<Long> excludedOntologyTermIds = ConfigurationAttributeKey
                 .IMPACT_TAB_EXCLUDED_ONTOLOGY_TERM_IDS.get();
         for (Long excludedOntologyTermId : excludedOntologyTermIds) {
-            if (OntologyClientUtil
+            if (StaticContestContext.getOntologyClient()
                     .isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(
                             focusAreaId, excludedOntologyTermId)) {
                 return true;

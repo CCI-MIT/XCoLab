@@ -2,14 +2,14 @@ package org.xcolab.view.pages.proposals.judging;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
+import org.xcolab.client.contest.pojo.IProposalRatingType;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.pojo.IProposalRatingType;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.html.HtmlUtil;
 
 import java.text.DecimalFormat;
@@ -127,7 +127,7 @@ public class ProposalReviewCsvExporter {
     }
 
     private String getRowHeader(String proposalName, ProposalReview proposalReview) {
-        String contestPhaseName = ContestClientUtil
+        String contestPhaseName = StaticContestContext.getContestClient()
                 .getContestPhaseType(proposalReview.getContestPhase().getContestPhaseTypeId())
                 .getName();
 

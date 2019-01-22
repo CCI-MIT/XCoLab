@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.contestmanagement.wrappers;
 
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.IContest;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.members.pojo.Member;
@@ -43,7 +43,7 @@ public class ContestOverviewWrapper implements MassActionDataWrapper {
     }
 
     private void populateContestsAndSelectedList() {
-        List<ContestWrapper> allContests = ContestClientUtil.getAllContests();
+        List<ContestWrapper> allContests = StaticContestContext.getContestClient().getAllContests();
         // LinkedHashMap will maintain insertion order
         allContests.sort(Comparator.comparing(IContest::getWeight));
         for (ContestWrapper contest : allContests) {
@@ -55,7 +55,7 @@ public class ContestOverviewWrapper implements MassActionDataWrapper {
     private void populateSubscribedToContestList(Member member) {
         for (Entry<Long, ContestWrapper> contestEntry : contests.entrySet()) {
             final Long contestId = contestEntry.getKey();
-            Boolean isUserSubscribedToContest = ContestClientUtil
+            Boolean isUserSubscribedToContest = StaticContestContext.getContestClient()
                     .isMemberSubscribedToContest(contestId, member.getId());
             subscribedToContest.put(contestId, isUserSubscribedToContest);
         }

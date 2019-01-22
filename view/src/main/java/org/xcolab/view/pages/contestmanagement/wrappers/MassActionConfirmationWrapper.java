@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.contestmanagement.wrappers;
 
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.view.pages.contestmanagement.beans.ContestFlagTextToolTipBean;
@@ -40,7 +40,8 @@ public class MassActionConfirmationWrapper implements MassActionDataWrapper {
     private void populateValidContestWrapper(List<Long> contestIds) {
         for (long contestId : contestIds) {
             try {
-                ContestWrapper contest = ContestClientUtil.getContest(contestId);
+                ContestWrapper contest = StaticContestContext.getContestClient()
+                        .getContest(contestId);
                 this.contestWrappers.add(contest);
                 this.selectedContest.add(false);
             } catch (ContestNotFoundException ignored) {

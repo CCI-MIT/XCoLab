@@ -3,11 +3,10 @@ package org.xcolab.view.widgets.contests;
 import org.json.JSONObject;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
-import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.IContestPhaseType;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.commons.IdListUtil;
 import org.xcolab.commons.attributes.AttributeGetter;
 import org.xcolab.util.i18n.I18nUtils;
@@ -102,7 +101,8 @@ public class ContestPreferences extends WidgetPreference {
     }
 
     private void populateContestMap() {
-        final List<ContestWrapper> contests = ContestClientUtil.getAllContests();
+        final List<ContestWrapper> contests = StaticContestContext.getContestClient()
+                .getAllContests();
         contestMap = new LinkedHashMap<>();
 
         contests.sort((o1, o2) -> {
@@ -119,14 +119,13 @@ public class ContestPreferences extends WidgetPreference {
         });
 
         for (ContestWrapper c : contests) {
-
-            ContestClient contestClient = ContestClientUtil.getClient();
-            ContestPhaseWrapper activeOrLastPhase = contestClient.getActivePhase(c.getId());
+            ContestPhaseWrapper activeOrLastPhase = StaticContestContext.getContestClient()
+                    .getActivePhase(c.getId());
             final String phaseName;
             if (activeOrLastPhase != null) {
                 final long contestPhaseTypeId = activeOrLastPhase.getContestPhaseTypeId();
-                final IContestPhaseType contestPhaseType =
-                        contestClient.getContestPhaseType(contestPhaseTypeId);
+                final IContestPhaseType contestPhaseType = StaticContestContext.getContestClient()
+                        .getContestPhaseType(contestPhaseTypeId);
                 phaseName = contestPhaseType.getName();
             } else {
                 phaseName = " ";
@@ -135,7 +134,6 @@ public class ContestPreferences extends WidgetPreference {
                     String.format("%d [%s] %s", c.getId(), phaseName,
                             c.getTitleWithEndYear()));
         }
-
     }
 
     public void setContestMap(Map<Long, String> contestMap) {

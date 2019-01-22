@@ -4,7 +4,7 @@ import edu.mit.cci.roma.client.Simulation;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.modeling.roma.RomaClient;
 import org.xcolab.client.modeling.roma.RomaClient.RomaClientNotConnectedException;
@@ -147,7 +147,6 @@ public class ContestModelSettingsBean implements Serializable {
         if (defaultModelSettings != null) {
             contest.setDefaultModelSettings(defaultModelSettings);
         }
-        ContestClientUtil.updateContest(contest);
-
+        StaticContestContext.getContestClient().updateContest(contest);
     }
 }

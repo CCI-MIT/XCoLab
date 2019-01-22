@@ -8,11 +8,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.OntologyClientUtil;
+import org.xcolab.client.contest.pojo.IFocusAreaOntologyTerm;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.FocusAreaWrapper;
-import org.xcolab.client.contest.pojo.IFocusAreaOntologyTerm;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.IdListUtil;
 import org.xcolab.view.errors.AccessDeniedPage;
@@ -62,7 +60,8 @@ public class OntologyTabController extends AbstractTabController {
         model.addAttribute("ontologyTerms", ontologyWrapper.getOntologyTerms());
         model.addAttribute("ontologySpaces", ontologyWrapper.getSortedOntologySpaces());
         model.addAttribute("contestOntologyTerms",
-                ontologyWrapper.getOntologyTermIdsForFocusAreaOfContest(ContestClientUtil.getContest(contestId)));
+                ontologyWrapper.getOntologyTermIdsForFocusAreaOfContest(
+                        contestClient.getContest(contestId)));
         return TAB_VIEW;
     }
 
@@ -78,29 +77,27 @@ public class OntologyTabController extends AbstractTabController {
         List<Long> selectedOntologyTerms =
                 IdListUtil.getIdsFromString(request.getParameter("selectedOntologyTerms"));
 
-        ContestWrapper contest = ContestClientUtil.getContest(contestId);
+        ContestWrapper contest = contestClient.getContest(contestId);
         Long focusAreaId = contest.getFocusAreaId();
         if (focusAreaId == null) {
             FocusAreaWrapper focusArea = new FocusAreaWrapper();
 
             focusArea.setName("Focus area for " + contest.getTitle());
             focusArea.setSortOrder(0);
-            focusArea = OntologyClientUtil.createFocusArea(focusArea);
+            focusArea = ontologyClient.createFocusArea(focusArea);
             focusAreaId = focusArea.getId();
             contest.setFocusAreaId(focusAreaId);
-            ContestClientUtil.updateContest(contest);
+            contestClient.updateContest(contest);
         }
 
-        for (IFocusAreaOntologyTerm focusAreaOntologyTerm : OntologyClientUtil
+        for (IFocusAreaOntologyTerm focusAreaOntologyTerm : ontologyClient
                 .getFocusAreaOntologyTermsByFocusArea(focusAreaId)) {
-            OntologyClientUtil
-                    .deleteFocusAreaOntologyTerm(focusAreaOntologyTerm.getFocusAreaId(),
+            ontologyClient.deleteFocusAreaOntologyTerm(focusAreaOntologyTerm.getFocusAreaId(),
                             focusAreaOntologyTerm.getOntologyTermId());
         }
 
         for (Long ontologyTerm : selectedOntologyTerms) {
-            OntologyClientUtil
-                    .addOntologyTermsToFocusAreaByOntologyTermId(focusAreaId, ontologyTerm);
+            ontologyClient.addOntologyTermsToFocusAreaByOntologyTermId(focusAreaId, ontologyTerm);
         }
         return "redirect:" + tab.getTabUrl(contestId);
     }

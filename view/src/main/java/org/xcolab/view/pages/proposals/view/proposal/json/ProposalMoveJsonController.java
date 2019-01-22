@@ -1,20 +1,21 @@
 package org.xcolab.view.pages.proposals.view.proposal.json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.enums.ContestStatus;
-import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
-import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
-import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
 import org.xcolab.client.contest.pojo.IProposalTemplate;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
+import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Role;
-import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
-import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 
@@ -31,6 +32,8 @@ public class ProposalMoveJsonController {
 
     private final ObjectMapper mapper = new ObjectMapper();
 
+    @Autowired
+    private ContestClient contestClient;
 
     @GetMapping("/api/contestsOpenForProposals")
     public void getContestsOpenForProposals(HttpServletRequest request, HttpServletResponse response)
@@ -50,8 +53,8 @@ public class ProposalMoveJsonController {
         }
 
         List<ImmutableContest> returnList = new ArrayList<>();
-        for (ContestWrapper contest: ContestClientUtil.findContestsByActive(true)) {
-            ContestPhaseWrapper cp = ContestClientUtil.getActivePhase(contest.getId());
+        for (ContestWrapper contest: contestClient.findContestsByActive(true)) {
+            ContestPhaseWrapper cp = contestClient.getActivePhase(contest.getId());
             if (cp.getPhaseActive()) {
                 String statusStr = cp.getContestStatusStr();
                 ContestStatus status = null;
@@ -66,7 +69,7 @@ public class ProposalMoveJsonController {
 
         // Add non active contests
         if (admin) {
-            final List<ContestWrapper> inactiveContests = ContestClientUtil.findContestsByActive(false);
+            final List<ContestWrapper> inactiveContests = contestClient.findContestsByActive(false);
             for (ContestWrapper inactiveContest : inactiveContests) {
                 returnList.add(new ImmutableContest(inactiveContest));
             }
@@ -114,7 +117,7 @@ public class ProposalMoveJsonController {
             throws IOException {
         List<ImmutableSection> returnList = new ArrayList<>();
 
-        ContestWrapper contest = ContestClientUtil.getContest(contestId);
+        ContestWrapper contest = contestClient.getContest(contestId);
         ClientHelper clientHelper = new ClientHelper();
 
         IProposalTemplate proposalTemplate = clientHelper.getProposalTemplateClient()

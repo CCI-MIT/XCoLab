@@ -9,13 +9,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.ProposalTemplateClientUtil;
 import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
+import org.xcolab.client.contest.pojo.wrapper.PointTypeWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
 import org.xcolab.client.contest.proposals.PointsClientUtil;
 import org.xcolab.client.contest.proposals.enums.points.DistributionStrategy;
-import org.xcolab.client.contest.pojo.wrapper.PointTypeWrapper;
 import org.xcolab.commons.html.LabelStringValue;
 import org.xcolab.commons.html.LabelValue;
 import org.xcolab.util.enums.contest.ContestTier;
@@ -167,8 +166,7 @@ public abstract class AbstractProposalTemplateTabController extends BaseTabContr
             OntologySpaceEnum ontologySpace) {
 
         List<Stack<OntologyTermWrapper>> allParentsPaths = new ArrayList<>();
-        for (OntologyTermWrapper term : OntologyClientUtil
-                .getAllOntologyTerms()) {
+        for (OntologyTermWrapper term : ontologyClient.getAllOntologyTerms()) {
             // Just consider terms in the passed ontologySpace
             if (term.getOntologySpaceId() != ontologySpace.getSpaceId()) {
                 continue;
@@ -222,18 +220,16 @@ public abstract class AbstractProposalTemplateTabController extends BaseTabContr
         return termSelectItems;
     }
 
-
     private Stack<OntologyTermWrapper> getOntologyTermParentPath(OntologyTermWrapper term) {
 
         Stack<OntologyTermWrapper> parentsPath = new Stack<>();
         OntologyTermWrapper current = term;
         while (current != null) {
             parentsPath.push(current);
-            current = OntologyClientUtil.getOntologyTermParent(current);
+            current = ontologyClient.getOntologyTermParent(current);
 
         }
         return parentsPath;
-
     }
 
     private String buildOntologyTermPathString(Stack<OntologyTermWrapper> parentsPath) {

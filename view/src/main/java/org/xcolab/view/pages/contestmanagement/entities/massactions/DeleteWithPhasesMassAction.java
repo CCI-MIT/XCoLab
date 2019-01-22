@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.contestmanagement.entities.massactions;
 
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.view.pages.contestmanagement.entities.MassActionRequiresConfirmationException;
 
@@ -24,7 +24,7 @@ public class DeleteWithPhasesMassAction extends AbstractContestMassAction {
 
         for (ContestWrapper contest : contests) {
             Long contestId = contest.getId();
-            ContestClientUtil.deleteContest(contestId);
+            StaticContestContext.getContestClient().deleteContest(contestId);
         }
     }
 }

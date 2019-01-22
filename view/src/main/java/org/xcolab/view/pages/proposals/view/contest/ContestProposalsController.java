@@ -8,17 +8,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.enums.ContestStatus;
-import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.IProposal2Phase;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
-import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.ProposalClient;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
 import org.xcolab.client.contest.proposals.exceptions.Proposal2PhaseNotFoundException;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.pojo.IProposal2Phase;
+import org.xcolab.client.members.PermissionsClient;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.view.errors.AccessDeniedPage;
@@ -160,12 +159,11 @@ public class ContestProposalsController extends BaseProposalsController {
         if (proposalContext.getPermissions().getCanSubscribeContest()) {
             long contestId = proposalContext.getContest().getId();
             long userId = currentMember.getId();
-            if (ContestClientUtil.isMemberSubscribedToContest(contestId, userId)) {
-                ContestClientUtil.unsubscribeMemberFromContest(contestId, userId);
+            if (contestClient.isMemberSubscribedToContest(contestId, userId)) {
+                contestClient.unsubscribeMemberFromContest(contestId, userId);
             }
             else {
-                ContestClientUtil.subscribeMemberToContest(contestId, userId);
-
+                contestClient.subscribeMemberToContest(contestId, userId);
             }
             response.sendRedirect(proposalContext.getContest().getContestLinkUrl());
         } else {

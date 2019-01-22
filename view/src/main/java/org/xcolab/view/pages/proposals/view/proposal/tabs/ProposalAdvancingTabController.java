@@ -9,19 +9,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalRatings;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.wrapper.UserProposalRatings;
 import org.xcolab.client.contest.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
 import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper;
-import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
-import org.xcolab.client.contest.pojo.wrapper.ProposalRatings;
-import org.xcolab.client.contest.pojo.wrapper.UserProposalRatings;
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.entity.utils.helper.ProposalJudgingCommentHelper;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
@@ -188,8 +187,7 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
 
         final String proposalUrl = proposal.getProposalLinkUrl(contest, phaseId);
         if (permissions.getCanAdminAll() && !isUndecided && isForcePromotion) {
-            ContestClientUtil.forcePromotionOfProposalInPhase(proposal.getId(),
-                    phaseId);
+            contestClient.forcePromotionOfProposalInPhase(proposal.getId(), phaseId);
             return "redirect:" + proposalUrl;
         } else {
             final String advancingTab = proposalUrl + "/tab/ADVANCING";
@@ -228,7 +226,7 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
         final ContestWrapper contest = proposalContext.getContest();
         ProposalWrapper proposal = proposalContext.getProposal();
         ContestPhaseWrapper contestPhase =
-                ContestClientUtil.getContestPhase(judgeProposalFeedbackBean.getContestPhaseId());
+                contestClient.getContestPhase(judgeProposalFeedbackBean.getContestPhaseId());
         ProposalsPermissions permissions = proposalContext.getPermissions();
         boolean isPublicRating = permissions.getCanPublicRating();
 

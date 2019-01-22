@@ -2,8 +2,7 @@ package org.xcolab.view.pages.contestmanagement.beans;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.IContestTranslation;
 import org.xcolab.client.contest.pojo.tables.pojos.ContestTranslation;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
@@ -25,9 +24,8 @@ public class ContestTranslationBean implements Serializable {
     }
 
     public ContestTranslationBean(ContestWrapper contest) {
-        ContestClient contestClient = ContestClientUtil.getClient();
         final Map<String, IContestTranslation> translations =
-                contestClient.getTranslationsForContestId(contest.getId())
+                StaticContestContext.getContestClient().getTranslationsForContestId(contest.getId())
                 .stream()
                 .collect(Collectors.toMap(IContestTranslation::getLang, t -> t));
 
@@ -51,7 +49,6 @@ public class ContestTranslationBean implements Serializable {
     }
 
     public void persist(ContestWrapper contest) {
-        ContestClient contestClient = ContestClientUtil.getClient();
         translations.stream()
                 .filter(translation -> !StringUtils.isAllEmpty(translation.getQuestion(),
                         translation.getTitle(), translation.getDescription()))
@@ -59,6 +56,6 @@ public class ContestTranslationBean implements Serializable {
                     translation.setContestId(contest.getId());
                     return translation;
                 })
-                .forEach(contestClient::saveTranslation);
+                .forEach(StaticContestContext.getContestClient()::saveTranslation);
     }
 }

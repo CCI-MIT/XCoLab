@@ -14,15 +14,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.admin.IAdminClient;
 import org.xcolab.client.admin.pojo.INotification;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.permissions.SystemRole;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.contest.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.tracking.ITrackingClient;
 import org.xcolab.commons.html.LabelStringValue;
 import org.xcolab.commons.html.LabelValue;
@@ -102,10 +101,10 @@ public class AdminTabController extends AbstractTabController {
 
     @ModelAttribute("votingPhaseSelectionItems")
     public List<LabelValue> votingPhaseSelectionItems() {
-        final List<ContestPhaseWrapper> contestPhasesByType = new ArrayList<>(ContestClientUtil
+        final List<ContestPhaseWrapper> contestPhasesByType = new ArrayList<>(contestClient
                 .getContestPhasesByType(ContestPhaseTypeValue.VOTING_PHASE_SOLVE.getTypeId()));
         //TODO COLAB-2613: don't hard code phase types
-        contestPhasesByType.addAll(ContestClientUtil.getContestPhasesByType(20L));
+        contestPhasesByType.addAll(contestClient.getContestPhasesByType(20L));
 
         final Date now = new Date();
         return contestPhasesByType
@@ -123,7 +122,7 @@ public class AdminTabController extends AbstractTabController {
 
     @ModelAttribute("contestSelectionItems")
     public List<LabelValue> contestSelectionItems() {
-        return ContestClientUtil.getAllContests()
+        return contestClient.getAllContests()
                 .stream()
                 .sorted(Comparator.comparing(ContestWrapper::getId).reversed())
                 .map(contest -> {
@@ -221,7 +220,7 @@ public class AdminTabController extends AbstractTabController {
         }
 
         try (ContestCsvWriter csvWriter = new ContestCsvWriter(response)) {
-            csvWriter.writeContests(ContestClientUtil.getAllContests());
+            csvWriter.writeContests(contestClient.getAllContests());
         }
     }
 

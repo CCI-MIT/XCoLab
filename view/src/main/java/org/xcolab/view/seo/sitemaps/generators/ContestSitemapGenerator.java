@@ -3,7 +3,7 @@ package org.xcolab.view.seo.sitemaps.generators;
 import org.springframework.stereotype.Service;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.view.seo.sitemaps.xml.XmlUrl;
 import org.xcolab.view.seo.sitemaps.xml.XmlUrl.ChangeFrequency;
@@ -20,7 +20,7 @@ public class ContestSitemapGenerator {
     public XmlUrlSet generateForActiveContests() {
         XmlUrlSet xmlUrlSet = new XmlUrlSet();
         final List<ContestWrapper> activeContests =
-                ContestClientUtil.getContestsByActivePrivate(true, false);
+                StaticContestContext.getContestClient().getContestsByActivePrivate(true, false);
         addContest(xmlUrlSet, activeContests, ChangeFrequency.DAILY, Priority.HIGHEST);
         return xmlUrlSet;
     }
@@ -28,7 +28,7 @@ public class ContestSitemapGenerator {
     public XmlUrlSet generateForCompletedContests() {
         XmlUrlSet xmlUrlSet = new XmlUrlSet();
         final List<ContestWrapper> completedContests =
-                ContestClientUtil.getContestsByActivePrivate(false, false);
+                StaticContestContext.getContestClient().getContestsByActivePrivate(false, false);
         addContest(xmlUrlSet, completedContests, ChangeFrequency.NEVER, Priority.HIGH);
         return xmlUrlSet;
     }

@@ -1,10 +1,11 @@
 package org.xcolab.view.pages.contestmanagement.controller.details;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.view.pages.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.view.taglibs.xcolab.controller.BaseTabController;
@@ -31,6 +32,6 @@ public abstract class AbstractTabController extends BaseTabController {
     @ModelAttribute("contestWrapper")
     public ContestWrapper populateContestWrapper(Model model, HttpServletRequest request,
             @PathVariable long contestId) {
-        return ContestClientUtil.getContest(contestId);
+        return contestClient.getContest(contestId);
     }
 }

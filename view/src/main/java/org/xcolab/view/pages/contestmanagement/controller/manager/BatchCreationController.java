@@ -15,18 +15,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.OntologyClientUtil;
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.OntologyClient;
 import org.xcolab.client.contest.ProposalTemplateClientUtil;
+import org.xcolab.client.contest.pojo.IProposalTemplate;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.FocusAreaWrapper;
 import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
-import org.xcolab.client.contest.pojo.IProposalTemplate;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.IdListUtil;
-import org.xcolab.util.enums.contest.ContestTier;
 import org.xcolab.commons.html.LabelValue;
+import org.xcolab.util.enums.contest.ContestTier;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.beans.ContestBatchBean;
 import org.xcolab.view.pages.contestmanagement.beans.ContestCSVBean;
@@ -53,6 +53,12 @@ public class BatchCreationController {
 
     @Autowired
     private IContestTypeClient contestTypeClient;
+
+    @Autowired
+    private ContestClient contestClient;
+
+    @Autowired
+    private OntologyClient ontologyClient;
 
     @ModelAttribute("proposalTemplateSelectionItems")
     public List<LabelValue> populateProposalTemplateSelectionItems() {
@@ -175,7 +181,7 @@ public class BatchCreationController {
                     IdListUtil.getIdsFromString(contestCSVBean.getOntologyTerms());
             Map<Long, Integer> uniqueSelectedOntologyTerms = new HashMap<>();
             for (Long termId : inputOntologyTerms) {
-                OntologyTermWrapper ontologyTerm = OntologyClientUtil.getOntologyTerm(termId);
+                OntologyTermWrapper ontologyTerm = ontologyClient.getOntologyTerm(termId);
                 if (ontologyTerm != null) {
                     uniqueSelectedOntologyTerms.put(ontologyTerm.getId(), 1);
                 }
@@ -184,14 +190,12 @@ public class BatchCreationController {
             Long focusAreaId = checkForExistingFocusArea(uniqueSelectedOntologyTerms);
             if (focusAreaId == 0L) {
                 FocusAreaWrapper focusArea = new FocusAreaWrapper();
-                focusArea = OntologyClientUtil.createFocusArea(focusArea);
+                focusArea = ontologyClient.createFocusArea(focusArea);
                 focusAreaId = focusArea.getId();
 
-                for (Map.Entry<Long, Integer> ontologyTerm : uniqueSelectedOntologyTerms
-                        .entrySet()) {
-                    OntologyClientUtil.addOntologyTermsToFocusAreaByOntologyTermId(focusAreaId,
+                for (Map.Entry<Long, Integer> ontologyTerm : uniqueSelectedOntologyTerms.entrySet()) {
+                    ontologyClient.addOntologyTermsToFocusAreaByOntologyTermId(focusAreaId,
                             ontologyTerm.getKey());
-
                 }
                 if (!reusableFocusArea.containsKey(focusAreaId)) {
                     reusableFocusArea.put(focusAreaId, uniqueSelectedOntologyTerms);
@@ -254,7 +258,7 @@ public class BatchCreationController {
         contest.setContestScheduleId(contestScheduleId);
         contest.setContestTier(contestTierId);
         contest.setContestTypeId(contestTypeId);
-        ContestClientUtil.updateContest(contest);
+        contestClient.updateContest(contest);
 
         contest.changeScheduleTo(contestScheduleId);
         return contest;
@@ -270,7 +274,7 @@ public class BatchCreationController {
 
         List<Long> inputOntologyTerms = IdListUtil.getIdsFromString(ontologyTerms);
         for (Long termId : inputOntologyTerms) {
-            OntologyTermWrapper ontologyTerm = OntologyClientUtil.getOntologyTerm(termId);
+            OntologyTermWrapper ontologyTerm = ontologyClient.getOntologyTerm(termId);
             if (ontologyTerm != null) {
                 JSONObject ontItem = new JSONObject();
                 ontItem.put("termId", ontologyTerm.getId());

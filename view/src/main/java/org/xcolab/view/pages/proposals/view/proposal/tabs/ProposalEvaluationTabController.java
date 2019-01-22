@@ -5,17 +5,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
-import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.contest.proposals.ProposalPhaseClient;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper;
 import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
 import org.xcolab.client.contest.pojo.wrapper.AverageProposalRating;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalRatings;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.ProposalPhaseClient;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.entity.utils.helper.ProposalJudgingCommentHelper;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
@@ -108,7 +106,6 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
         boolean hasContestPassedScreeningPhaseAlready = false;
 
         ContestWrapper contest = proposalContext.getContest();
-        final ContestClient contestClient = ContestClientUtil.getClient();
         ContestPhaseWrapper activeContestPhase = contestClient.getActivePhase(contest.getId());
         List<ContestPhaseWrapper> allContestPhasesForCurrentContest = contestClient.getAllContestPhases(contest.getId());
 

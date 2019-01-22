@@ -16,7 +16,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.contest.OntologyClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.tables.pojos.ProposalTemplateSectionDefinition;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
@@ -224,7 +224,7 @@ public class ProposalTemplateSectionDefinitionWrapper extends ProposalTemplateSe
             return null;
         }
 
-        return OntologyClientUtil.getOntologyTerm(attr.getNumericValue());
+        return StaticContestContext.getOntologyClient().getOntologyTerm(attr.getNumericValue());
     }
 
     public ProposalWrapper getNumericValueAsProposal() throws ProposalNotFoundException {
@@ -276,9 +276,10 @@ public class ProposalTemplateSectionDefinitionWrapper extends ProposalTemplateSe
             return null;
         }
 
-        FocusAreaWrapper area = OntologyClientUtil.getFocusArea(this.getFocusAreaId());
+        FocusAreaWrapper area = StaticContestContext.getOntologyClient()
+                .getFocusArea(this.getFocusAreaId());
 
-        return OntologyClientUtil.getOntologyTermsForFocusArea(area);
+        return StaticContestContext.getOntologyClient().getOntologyTermsForFocusArea(area);
     }
 
     public List<String> getOptionsForDropdownMenu() {

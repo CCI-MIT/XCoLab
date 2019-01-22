@@ -1,15 +1,15 @@
 package org.xcolab.view.pages.proposals.view.action;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.MessagingClient;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMembershipRequestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.MembershipClient;
 import org.xcolab.client.contest.proposals.MembershipClientUtil;
 import org.xcolab.client.contest.proposals.ProposalAttributeClient;
@@ -17,8 +17,9 @@ import org.xcolab.client.contest.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.contest.proposals.ProposalClient;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMembershipRequestWrapper;
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.MessagingClient;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
 
@@ -47,12 +48,15 @@ public class MembershipInvitationResponseController {
     private static final String MSG_MEMBERSHIP_INVITE_RESPONSE_CONTENT_REJECTED =
             "Your invitation of %s to join the <proposal/> %s has been rejected.";
 
+    @Autowired
+    private ContestClient contestClient;
+
     @PostMapping("/membershipRequests/reply")
     private void execute(HttpServletRequest request, HttpServletResponse response,
             @RequestParam long requestId, @RequestParam long proposalId,
             @RequestParam long contestId, @RequestParam String action) throws IOException {
 
-        ContestWrapper contest = ContestClientUtil.getContest(contestId);
+        ContestWrapper contest = contestClient.getContest(contestId);
         MembershipClient membershipClient = MembershipClientUtil.getClient();
         ProposalClient proposalClient = ProposalClientUtil.getClient();
         ProposalAttributeClient proposalAttributeClient = ProposalAttributeClientUtil.getClient();

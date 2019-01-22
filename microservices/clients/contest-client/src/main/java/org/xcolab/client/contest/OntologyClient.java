@@ -1,16 +1,21 @@
 package org.xcolab.client.contest;
 
-import org.xcolab.client.contest.pojo.wrapper.FocusAreaWrapper;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import org.xcolab.client.contest.pojo.IFocusAreaOntologyTerm;
 import org.xcolab.client.contest.pojo.IImpactDefaultSeries;
 import org.xcolab.client.contest.pojo.IImpactDefaultSeriesData;
+import org.xcolab.client.contest.pojo.tables.pojos.FocusAreaOntologyTerm;
+import org.xcolab.client.contest.pojo.wrapper.FocusAreaWrapper;
 import org.xcolab.client.contest.pojo.wrapper.OntologySpaceWrapper;
 import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
-import org.xcolab.client.contest.pojo.tables.pojos.FocusAreaOntologyTerm;
-import org.xcolab.util.http.ServiceRequestUtils;
-import org.xcolab.util.http.caching.CacheName;
-import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,119 +24,75 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class OntologyClient {
+@FeignClient("xcolab-contest-service")
+public interface OntologyClient {
 
-    private final RestResource1<OntologySpaceWrapper, Long> ontologySpaceResource = null; // ontologySpaces
+    @GetMapping("/ontologySpaces")
+    List<OntologySpaceWrapper> getAllOntologySpaces();
 
-    private final RestResource1<OntologyTermWrapper, Long> ontologyTermResource = null; // ontologyTerms
-
-    private final RestResource1<FocusAreaWrapper, Long> focusAreaResource = null; // focusAreas
-
-    private final RestResource1<IFocusAreaOntologyTerm, Long> focusAreaOntologyTermResource = null; // focusAreaOntologyTerms
-
-    private final RestResource1<IImpactDefaultSeries, Long> impactDefaultSeriesResource = null; // impactDefaultSeries
-
-    private final RestResource1<IImpactDefaultSeriesData, Long> impactDefaultSeriesDataResource = null; // impactDefaultSeriesDatas
-
-    public List<OntologySpaceWrapper> getAllOntologySpaces() {
-        return ontologySpaceResource.list()
-                .withCache(CacheName.CONTEST_ONTOLOGY)
-                .execute();
+    default List<OntologyTermWrapper> getAllOntologyTerms() {
+        return getOntologyTerms(null, null, null);
     }
 
-    public List<OntologyTermWrapper> getAllOntologyTerms() {
-        return ontologyTermResource.list()
-                .withCache(CacheName.CONTEST_ONTOLOGY)
-                .execute();
-    }
-    public List<OntologyTermWrapper> getOntologyTerms(Long parentId, Long ontologySpaceId) {
-        return ontologyTermResource.list()
-                .queryParam("parentId", parentId)
-                .queryParam("ontologySpaceId",ontologySpaceId)
-                .withCache(CacheName.CONTEST_ONTOLOGY)
-                .execute();
+    default List<OntologyTermWrapper> getOntologyTerms(Long parentId, Long ontologySpaceId) {
+        return getOntologyTerms(null, parentId, ontologySpaceId);
     }
 
-    public List<FocusAreaWrapper> getAllFocusAreas() {
-        return focusAreaResource.list()
-                .withCache(CacheName.CONTEST_ONTOLOGY)
-                .execute();
-    }
+    @GetMapping("/ontologyTerms")
+    List<OntologyTermWrapper> getOntologyTerms(
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "parentId", required = false) Long parentId,
+            @RequestParam(value = "ontologySpaceId", required = false) Long ontologySpaceId);
 
-    public FocusAreaWrapper createFocusArea(FocusAreaWrapper focusArea) {
-        final FocusAreaWrapper result = focusAreaResource.create(new FocusAreaWrapper(focusArea))
-                .execute();
-        //TODO COLAB-2589: fine-grained cache removal
-        ServiceRequestUtils.clearCache(CacheName.CONTEST_ONTOLOGY);
-        return result;
-    }
+    @GetMapping("/focusAreas")
+    List<FocusAreaWrapper> getAllFocusAreas();
 
-    public void addOntologyTermsToFocusAreaByOntologyTermId(Long focusAreaId, Long ontologyTermId) {
+    @PostMapping("/focusAreas")
+    FocusAreaWrapper createFocusArea(@RequestBody FocusAreaWrapper focusArea);
+
+    @PostMapping("/focusAreaOntologyTerms")
+    IFocusAreaOntologyTerm createFocusAreaOntologyTerm(
+            @RequestBody IFocusAreaOntologyTerm focusAreaOntologyTerm);
+
+    default void addOntologyTermsToFocusAreaByOntologyTermId(Long focusAreaId,
+            Long ontologyTermId) {
         IFocusAreaOntologyTerm faot = new FocusAreaOntologyTerm();
         faot.setFocusAreaId(focusAreaId);
         faot.setOntologyTermId(ontologyTermId);
         faot.setSortOrder((int) new Date().getTime());
-        focusAreaOntologyTermResource.create(faot).execute();
-
+        createFocusAreaOntologyTerm(faot);
     }
 
-    public List<IFocusAreaOntologyTerm> getAllFocusAreaOntologyTerms() {
-        return focusAreaOntologyTermResource.list()
-                .withCache(CacheName.CONTEST_ONTOLOGY)
-                .execute();
+    @GetMapping("/focusAreaOntologyTerms")
+    List<IFocusAreaOntologyTerm> getFocusAreaOntologyTerms(
+            @RequestParam(value = "focusAreaId", required = false) Long focusAreaId,
+            @RequestParam(value = "ontologyTermId", required = false) Long ontologyTermId);
+
+    default List<IFocusAreaOntologyTerm> getAllFocusAreaOntologyTerms() {
+        return getFocusAreaOntologyTerms(null, null);
     }
 
-    public OntologyTermWrapper getOntologyTermParent(OntologyTermWrapper ontologyTerm) {
+    default OntologyTermWrapper getOntologyTermParent(OntologyTermWrapper ontologyTerm) {
         if (ontologyTerm.getParentId() > 0) {
             return getOntologyTerm(ontologyTerm.getParentId());
         }
         return null;
     }
 
-    public OntologyTermWrapper getOntologyTerm(long Id) {
-         try {
-             return ontologyTermResource.get(Id)
-                     .withCache(CacheName.CONTEST_ONTOLOGY)
-                     .executeChecked();
-         } catch (EntityNotFoundException ignored) {
-             return null;
-         }
-    }
+    @GetMapping("/ontologyTerms/{ontologyTermId}")
+    OntologyTermWrapper getOntologyTerm(@PathVariable("ontologyTermId") Long ontologyTermId);
 
-    public OntologyTermWrapper createOntologyTerm(OntologyTermWrapper ontologyTerm) {
-        final OntologyTermWrapper result =
-                ontologyTermResource.create(new OntologyTermWrapper(ontologyTerm))
-                        .execute();
-        //TODO COLAB-2589: fine-grained cache removal
-        ServiceRequestUtils.clearCache(CacheName.CONTEST_ONTOLOGY);
-        return result;
-    }
+    @PostMapping("/ontologyTerms")
+    OntologyTermWrapper createOntologyTerm(@RequestBody OntologyTermWrapper ontologyTerm);
 
-    public boolean updateOntologyTerm(OntologyTermWrapper ontologyTerm) {
-        final Boolean result = ontologyTermResource
-                .update(new OntologyTermWrapper(ontologyTerm), ontologyTerm.getId())
-                .cacheName(CacheName.CONTEST_ONTOLOGY)
-                .execute();
-        //TODO COLAB-2589: fine-grained cache removal
-        ServiceRequestUtils.clearCache(CacheName.CONTEST_ONTOLOGY);
-        return result;
-    }
+    @PutMapping("/ontologyTerms")
+    boolean updateOntologyTerm(@RequestBody OntologyTermWrapper ontologyTerm);
 
-    public boolean deleteOntologyTerm(Long id) {
-        final Boolean result = ontologyTermResource.delete(id)
-                .cacheName(CacheName.CONTEST_ONTOLOGY)
-                .execute();
-        //TODO COLAB-2589: fine-grained cache removal
-        ServiceRequestUtils.clearCache(CacheName.CONTEST_ONTOLOGY);
-        return result;
-    }
+    @DeleteMapping("/ontologyTerms/{ontologyTermId}")
+    boolean deleteOntologyTerm(@PathVariable("ontologyTermId") Long ontologyTermId);
 
-
-
-
-    public Boolean isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(
-            Long focusAreaId, Long ontologyTermId) {
-
+    default Boolean isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(Long focusAreaId,
+            Long ontologyTermId) {
         OntologyTermWrapper ontologyParentTerm = getOntologyTerm(ontologyTermId);
         List<OntologyTermWrapper> ontologyTermList =
                 getAllOntologyTermDescendant(ontologyParentTerm.getId());
@@ -153,68 +114,47 @@ public class OntologyClient {
         return false;
     }
 
-    public List<IFocusAreaOntologyTerm> getFocusAreaOntologyTermsByFocusArea(Long focusAreaId) {
+    default List<IFocusAreaOntologyTerm> getFocusAreaOntologyTermsByFocusArea(Long focusAreaId) {
         if (focusAreaId == null) {
             return Collections.emptyList();
         }
-        return focusAreaOntologyTermResource.list()
-                .queryParam("focusAreaId", focusAreaId)
-                .execute();
+        return getFocusAreaOntologyTerms(focusAreaId, null);
     }
 
-    public List<OntologyTermWrapper> getAllOntologyTermDescendant(Long ontologyTermId) {
-        return ontologyTermResource
-                .collectionService("getAllOntologyTermDescendant", OntologyTermWrapper.TYPES.getTypeReference())
-                .queryParam("ontologyTermId", ontologyTermId)
-                .getList();
+    @GetMapping("/ontologyTerms/getAllOntologyTermDescendant")
+    List<OntologyTermWrapper> getAllOntologyTermDescendant(
+            @RequestParam("ontologyTermId") Long ontologyTermId);
+
+    @GetMapping("/ontologyTerms/getOntologyTermsByFocusAreaOntologySpaceName")
+    List<OntologyTermWrapper> getOntologyTermsByFocusAreaOntologySpaceName(
+            @RequestParam("focusAreaId") Long focusAreaId,
+            @RequestParam("ontologySpaceName") String ontologySpaceName);
+
+    default List<OntologyTermWrapper> getOntologyTermsByName(String name) {
+        return getOntologyTerms(name, null, null);
     }
 
-    public List<OntologyTermWrapper> getOntologyTermsByFocusAreaOntologySpaceName(Long focusAreaId, String ontologySpaceName) {
-        return ontologyTermResource
-                .collectionService("getOntologyTermsByFocusAreaOntologySpaceName", OntologyTermWrapper.TYPES.getTypeReference())
-                .queryParam("focusAreaId", focusAreaId)
-                .queryParam("ontologySpaceName", ontologySpaceName)
-                .getList();
+    default List<OntologyTermWrapper> getChildOntologyTerms(Long ontologyTermId) {
+        return getOntologyTerms(null, null, ontologyTermId);
     }
 
-    public List<OntologyTermWrapper> getOntologyTermsByName(String name) {
-        return ontologyTermResource.list()
-                .optionalQueryParam("name", name)
-                .execute();
-    }
+    @PutMapping("/focusAreas")
+    boolean updateFocusArea(@RequestBody FocusAreaWrapper focusArea);
 
-    public List<OntologyTermWrapper> getChildOntologyTerms(Long ontologyTermId) {
-        return ontologyTermResource.list()
-                .optionalQueryParam("parentId", ontologyTermId)
-                .execute();
-    }
+    @DeleteMapping("/focusAreas/{focusAreaId}")
+    boolean deleteFocusArea(@PathVariable("focusAreaId") Long focusAreaId);
 
-    public boolean updateFocusArea(FocusAreaWrapper focusArea) {
-        return focusAreaResource.update(new FocusAreaWrapper(focusArea), focusArea.getId())
-                .execute();
-    }
+    @DeleteMapping("/focusAreaOntologyTerms/deleteFocusAreaOntologyTerm")
+    boolean deleteFocusAreaOntologyTerm(@RequestParam("focusAreaId") Long focusAreaId,
+            @RequestParam("ontologyTermId") Long ontologyTermId);
 
-    public boolean deleteFocusArea(Long id) {
-        return  focusAreaResource.delete(id).execute();
-    }
+    @GetMapping("/focusAreas/{focusAreaId}")
+    FocusAreaWrapper getFocusArea(@PathVariable("focusAreaId") Long focusAreaId);
 
-    public boolean deleteFocusAreaOntologyTerm(Long focusAreaId,Long ontologyTermId) {
-        return  focusAreaOntologyTermResource.collectionService("deleteFocusAreaOntologyTerm",Boolean.class)
-                .queryParam("focusAreaId",focusAreaId)
-                .queryParam("ontologyTermId", ontologyTermId).delete();
-    }
+    @GetMapping("/ontologySpaces/{ontologySpaceId}")
+    OntologySpaceWrapper getOntologySpace(@PathVariable("ontologySpaceId") Long ontologySpaceId);
 
-    public FocusAreaWrapper getFocusArea(long Id) {
-        return focusAreaResource.get(Id)
-                .execute();
-    }
-
-    public OntologySpaceWrapper getOntologySpace(long id) {
-        return ontologySpaceResource.get(id)
-                .execute();
-    }
-
-    public List<OntologyTermWrapper> getAllOntologyTermsFromFocusAreaWithOntologySpace(
+    default List<OntologyTermWrapper> getAllOntologyTermsFromFocusAreaWithOntologySpace(
             FocusAreaWrapper focusArea, OntologySpaceWrapper ontologySpace) {
         List<OntologyTermWrapper> list = new ArrayList<>();
         for (OntologyTermWrapper term : getOntologyTermsForFocusArea(focusArea)) {
@@ -222,11 +162,10 @@ public class OntologyClient {
                 list.add(term);
             }
         }
-
         return list;
     }
 
-    public List<OntologyTermWrapper> getOntologyTermsForFocusArea(FocusAreaWrapper focusArea) {
+    default List<OntologyTermWrapper> getOntologyTermsForFocusArea(FocusAreaWrapper focusArea) {
         List<OntologyTermWrapper> ret = new ArrayList<>();
         for (IFocusAreaOntologyTerm faot : getFocusAreaOntologyTermsByFocusArea(
                 focusArea.getId())) {
@@ -235,57 +174,53 @@ public class OntologyClient {
         return ret;
     }
 
-    public OntologyTermWrapper getOntologyTermFromFocusAreaWithOntologySpace(FocusAreaWrapper focusArea,
-            OntologySpaceWrapper ontologySpace) {
+    default OntologyTermWrapper getOntologyTermFromFocusAreaWithOntologySpace(
+            FocusAreaWrapper focusArea, OntologySpaceWrapper ontologySpace) {
         for (OntologyTermWrapper term : getOntologyTermsForFocusArea(focusArea)) {
             if (term.getOntologySpaceId() == ontologySpace.getId().longValue()) {
                 return term;
             }
         }
-
         return null;
     }
 
-    public IImpactDefaultSeries getImpactDefaultSeriesByFocusAreaName(Long focusAreaId,
+    @GetMapping("/impactDefaultSeries")
+    List<IImpactDefaultSeries> getImpactDefaultSeries(
+            @RequestParam(value = "focusAreaId", required = false) Long focusAreaId,
+            @RequestParam(value = "name", required = false) String name);
+
+    default IImpactDefaultSeries getImpactDefaultSeriesByFocusAreaName(Long focusAreaId,
             String seriesName) {
         List<IImpactDefaultSeries> allImpactDefaultSeriesWithFocusAreaName =
-                impactDefaultSeriesResource.list()
-                        .optionalQueryParam("focusAreaId", focusAreaId)
-                        .optionalQueryParam("name", seriesName)
-                        .execute();
+                getImpactDefaultSeries(focusAreaId, seriesName);
         if (allImpactDefaultSeriesWithFocusAreaName != null
-                && !allImpactDefaultSeriesWithFocusAreaName
-                .isEmpty()) {
+                && !allImpactDefaultSeriesWithFocusAreaName.isEmpty()) {
             return allImpactDefaultSeriesWithFocusAreaName.get(0);
         } else {
             return null;
         }
     }
 
-    public List<IImpactDefaultSeries> getAllmpactDefaultSeriesByFocusArea(Long focusAreaId) {
-        return impactDefaultSeriesResource.list()
-                .optionalQueryParam("focusAreaId", focusAreaId)
-                .execute();
+    default List<IImpactDefaultSeries> getAllmpactDefaultSeriesByFocusArea(Long focusAreaId) {
+        return getImpactDefaultSeries(focusAreaId, null);
     }
 
-    public List<IImpactDefaultSeriesData> getImpactDefaultSeriesDataBySeries(Long seriesId) {
-        return impactDefaultSeriesDataResource.list()
-                .optionalQueryParam("seriesId", seriesId)
-                .execute();
+    @GetMapping("/impactDefaultSeriesDatas")
+    List<IImpactDefaultSeriesData> getImpactDefaultSeriesData(
+            @RequestParam(value = "seriesId", required = false) Long seriesId,
+            @RequestParam(value = "year", required = false) Integer year);
+
+    default List<IImpactDefaultSeriesData> getImpactDefaultSeriesDataBySeries(Long seriesId) {
+        return getImpactDefaultSeriesData(seriesId, null);
     }
 
-    public IImpactDefaultSeriesData getImpactDefaultSeriesDataBySeriesIdAndYear(Long seriesId,
+    default IImpactDefaultSeriesData getImpactDefaultSeriesDataBySeriesIdAndYear(Long seriesId,
             Integer year) {
-        List<IImpactDefaultSeriesData> ret =
-                impactDefaultSeriesDataResource.list()
-                        .optionalQueryParam("seriesId", seriesId)
-                        .optionalQueryParam("year", year)
-                        .execute();
+        List<IImpactDefaultSeriesData> ret = getImpactDefaultSeriesData(seriesId, year);
         if (ret != null && !ret.isEmpty()) {
             return ret.get(0);
         } else {
             return null;
         }
     }
-
 }

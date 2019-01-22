@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.contestmanagement.entities.massactions;
 
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 
 import java.util.List;
@@ -23,7 +23,7 @@ public abstract class SetContestPropertyMassAction extends AbstractContestMassAc
     public void execute(List<ContestWrapper> contests, boolean actionConfirmed,
             MassActionDataWrapper dataWrapper, HttpServletResponse response) {
         for (ContestWrapper contest : contests) {
-            contest = ContestClientUtil.getContest(contest.getId());
+            contest = StaticContestContext.getContestClient().getContest(contest.getId());
             setProperty(contest, setValue);
             contest.persist();
         }

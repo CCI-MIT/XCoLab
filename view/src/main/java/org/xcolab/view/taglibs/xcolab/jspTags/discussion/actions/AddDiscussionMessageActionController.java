@@ -19,12 +19,12 @@ import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.IComment;
 import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.comment.pojo.tables.pojos.Comment;
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.ProposalClient;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.entity.utils.LinkUtils;
@@ -59,6 +59,9 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
 
     @Autowired
     private ICommentClient commentClient;
+
+    @Autowired
+    private ContestClient contestClient;
 
     @PostMapping("/discussions/addDiscussionMessage")
     public String handleAction(HttpServletRequest request, HttpServletResponse response,
@@ -158,7 +161,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
 
     private ContestWrapper getContest(IThread commentThread) {
         try {
-            return ContestClientUtil.getContestByThreadId(commentThread.getId());
+            return contestClient.getContestByThreadId(commentThread.getId());
         } catch (ContestNotFoundException e) {
             return null;
         }

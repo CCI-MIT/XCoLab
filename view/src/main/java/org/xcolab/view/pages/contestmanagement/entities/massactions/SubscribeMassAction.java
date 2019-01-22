@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.contestmanagement.entities.massactions;
 
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 
 import java.util.List;
@@ -26,10 +26,11 @@ public class SubscribeMassAction extends AbstractContestMassAction {
         }
         for (ContestWrapper contest : contests) {
             if (isSubscribe) {
-                ContestClientUtil.subscribeMemberToContest(contest.getId(), userId);
+                StaticContestContext.getContestClient().subscribeMemberToContest(
+                        contest.getId(), userId);
             } else {
-                ContestClientUtil
-                        .unsubscribeMemberFromContest(contest.getId(), userId);
+                StaticContestContext.getContestClient().unsubscribeMemberFromContest(
+                        contest.getId(), userId);
             }
         }
     }

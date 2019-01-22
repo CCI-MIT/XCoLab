@@ -1,15 +1,15 @@
 package org.xcolab.view.pages.proposals.wrappers;
 
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.wrapper.UserProposalRatings;
+import org.xcolab.client.contest.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.contest.proposals.ProposalJudgeRatingClientUtil;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper;
-import org.xcolab.client.contest.pojo.wrapper.UserProposalRatings;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 
 import java.util.List;
@@ -22,7 +22,8 @@ public class ProposalFellowWrapper extends ProposalWrapper {
         try {
             //find out contestPhase
             ContestWrapper baseContest = proposalContext.getClients().getProposalClient().getCurrentContestForProposal(proposal.getId());
-            ContestPhaseWrapper contestPhase = ContestClientUtil.getActivePhase(baseContest.getId());
+            ContestPhaseWrapper contestPhase = StaticContestContext.getContestClient()
+                    .getActivePhase(baseContest.getId());
 
             List<ProposalRatingWrapper> list = ProposalJudgeRatingClientUtil.getFellowRatingForProposalAndUser(
                     currentMember.getId(),

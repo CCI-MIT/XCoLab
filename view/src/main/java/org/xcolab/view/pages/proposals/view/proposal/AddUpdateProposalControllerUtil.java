@@ -2,13 +2,13 @@ package org.xcolab.view.pages.proposals.view.proposal;
 
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.enums.ContestStatus;
-import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
-import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
-import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.pojo.IProposal2Phase;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.util.activities.enums.ContestActivityType;
 import org.xcolab.util.activities.enums.ProposalActivityType;
@@ -50,7 +50,8 @@ public final class AddUpdateProposalControllerUtil {
         final ContestPhaseWrapper contestPhase = proposalContext.getContestPhase();
         if (proposal != null) {
             if (updateProposalSectionsBean.getIsMove() && updateProposalSectionsBean.getMoveToContestId() > 0) {
-                ContestWrapper moveToContest = ContestClientUtil.getContest(updateProposalSectionsBean.getMoveToContestId());
+                ContestWrapper moveToContest = StaticContestContext.getContestClient()
+                        .getContest(updateProposalSectionsBean.getMoveToContestId());
                 ProposalMoveUtil.moveProposal(proposalContext, updateProposalSectionsBean,
                         proposal, contestPhase, moveToContest, userId);
             }
@@ -95,5 +96,4 @@ public final class AddUpdateProposalControllerUtil {
 
         return "redirect:" + proposal.getProposalLinkUrl(contest);
     }
-    
 }

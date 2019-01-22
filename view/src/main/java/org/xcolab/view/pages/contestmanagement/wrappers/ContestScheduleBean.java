@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.contestmanagement.wrappers;
 
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.IContestSchedule;
 import org.xcolab.client.contest.pojo.tables.pojos.ContestSchedule;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
@@ -38,9 +38,10 @@ public class ContestScheduleBean {
     private IContestSchedule loadContestSchedule(Long scheduleId) {
 
         if (scheduleId != null) {
-            return ContestClientUtil.getContestSchedule(scheduleId);
+            return StaticContestContext.getContestClient().getContestSchedule(scheduleId);
         } else {
-            List<IContestSchedule> contestScheduleList = ContestClientUtil.getAllContestSchedules();
+            List<IContestSchedule> contestScheduleList = StaticContestContext.getContestClient()
+                    .getAllContestSchedules();
             return contestScheduleList.get(0);
         }
     }
@@ -48,7 +49,8 @@ public class ContestScheduleBean {
     private List<ContestPhaseBean> loadContestPhases(Long scheduleId) {
         List<ContestPhaseBean> schedulePhaseBeans = new ArrayList<>();
         List<ContestPhaseWrapper> contestPhases =
-                ContestClientUtil.getTemplatePhasesForContestScheduleId(scheduleId);
+                StaticContestContext.getContestClient()
+                        .getTemplatePhasesForContestScheduleId(scheduleId);
         for (ContestPhaseWrapper contestPhase : contestPhases) {
             schedulePhaseBeans.add(new ContestPhaseBean(contestPhase));
         }
@@ -78,7 +80,7 @@ public class ContestScheduleBean {
     private List<ContestWrapper> loadContestsUsingSchedule(long scheduleId) {
         List<ContestWrapper> wrappedContestsUsingSchedule = new ArrayList<>();
         List<ContestWrapper> contestsUsingSchedule =
-                ContestClientUtil.getContestsByContestScheduleId(scheduleId);
+                StaticContestContext.getContestClient().getContestsByContestScheduleId(scheduleId);
         wrappedContestsUsingSchedule.addAll(contestsUsingSchedule);
         return wrappedContestsUsingSchedule;
     }
@@ -157,7 +159,8 @@ public class ContestScheduleBean {
                 .map(ContestPhaseBean::getContestPhase)
                 .collect(Collectors.toList());
 
-        return ContestClientUtil.getContestsByContestScheduleId(getScheduleId())
+        return StaticContestContext.getContestClient()
+                .getContestsByContestScheduleId(getScheduleId())
                 .stream()
                 .allMatch(contest -> contest.isCompatibleWithSchedulePhases(schedulePhases));
     }
@@ -187,7 +190,8 @@ public class ContestScheduleBean {
         newContestSchedule.setDescription(contestSchedule.getDescription());
         newContestSchedule.setName(contestSchedule.getName());
         newContestSchedule.setStatus(contestSchedule.getStatus());
-        newContestSchedule = ContestClientUtil.createContestSchedule(newContestSchedule);
+        newContestSchedule = StaticContestContext.getContestClient()
+                .createContestSchedule(newContestSchedule);
         contestSchedule = newContestSchedule;
 
         for (ContestPhaseBean contestPhaseBean : schedulePhases) {
@@ -200,7 +204,7 @@ public class ContestScheduleBean {
         updateScheduleContestPhases();
         updateContestsUsingSchedule(contestSchedule.getId());
 
-        ContestClientUtil.updateContestSchedule(contestSchedule);
+        StaticContestContext.getContestClient().updateContestSchedule(contestSchedule);
     }
 
     private void updateScheduleContestPhases() {
@@ -210,8 +214,7 @@ public class ContestScheduleBean {
     }
 
     private void updateContestsUsingSchedule(long contestScheduleId) {
-
-        List<ContestWrapper> contestsUsingScheduleId = ContestClientUtil
+        List<ContestWrapper> contestsUsingScheduleId = StaticContestContext.getContestClient()
                 .getContestsByContestScheduleId(contestScheduleId);
 
         for (ContestWrapper contest : contestsUsingScheduleId) {

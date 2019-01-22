@@ -8,10 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.ContestTeamMemberClientUtil;
-import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.IContestTeamMember;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.StaffMemberClient;
 import org.xcolab.client.members.legacy.enums.StaffMemberCategoryRole;
@@ -101,12 +99,12 @@ public class StaffMemberController extends AbstractWidgetController<StaffMembers
             if (categoryRole.getGroupByYear()) {
                 Map<String, List<StaffMemberWrapper>> membersPerYearInCategory =
                         new LinkedHashMap<>();
-                List<Long> years = ContestClientUtil.getContestYears();
+                List<Long> years = contestClient.getContestYears();
 
                 for (Long year : years) {
                     Set<Long> usersInYear = new HashSet<>();
                     List<StaffMemberWrapper> membersWithRolesInYear = new ArrayList<>();
-                    List<IContestTeamMember> contestTeamMembers = ContestTeamMemberClientUtil
+                    List<IContestTeamMember> contestTeamMembers = contestTeamMemberClient
                             .getTeamMembers(categoryRole.getRole().getRoleId(), year);
                     for (IContestTeamMember ctm : contestTeamMembers) {
                         boolean alreadyInStaffMembers = false;
@@ -124,7 +122,7 @@ public class StaffMemberController extends AbstractWidgetController<StaffMembers
                         }
                         if (!alreadyInStaffMembers) {
                             final ContestWrapper contest =
-                                    ContestClientUtil.getContest(ctm.getContestId());
+                                    contestClient.getContest(ctm.getContestId());
                             if (!contest.getContestPrivate() &&
                                     !usersInYear.contains(ctm.getUserId())) {
                                 Member member = MembersClient.getMemberUnchecked(ctm.getUserId());

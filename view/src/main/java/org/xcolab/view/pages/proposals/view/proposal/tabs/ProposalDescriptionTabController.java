@@ -14,18 +14,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.IProposalMoveHistory;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestTypeProposal;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.ProposalClient;
+import org.xcolab.client.contest.proposals.ProposalMoveClient;
 import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.members.PlatformTeamsClient;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.contest.proposals.ProposalClient;
-import org.xcolab.client.contest.proposals.ProposalMoveClient;
-import org.xcolab.client.contest.pojo.wrapper.ContestTypeProposal;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.pojo.IProposalMoveHistory;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.util.enums.contest.ContestPhaseTypeValue;
 import org.xcolab.util.enums.flagging.TargetType;
@@ -123,7 +122,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
         if (isMove) {
             // get base proposal from base contest
             ContestPhaseWrapper baseContestPhase =
-                    ContestClientUtil.getActivePhase(baseContest.getId());
+                    contestClient.getActivePhase(baseContest.getId());
 
             ProposalWrapper baseProposalWrapped = new ProposalWrapper(proposal, proposal.getCurrentVersion(),
                     baseContest, baseContestPhase, null);

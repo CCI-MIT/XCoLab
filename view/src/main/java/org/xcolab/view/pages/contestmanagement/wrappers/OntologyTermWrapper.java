@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.contestmanagement.wrappers;
 
-import org.xcolab.client.contest.OntologyClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,8 @@ public class OntologyTermWrapper {
     private final org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper ontologyTerm;
 
     public OntologyTermWrapper(long ontologyTermId) {
-        this.ontologyTerm = OntologyClientUtil.getOntologyTerm(ontologyTermId);
+        this.ontologyTerm = StaticContestContext.getOntologyClient()
+                .getOntologyTerm(ontologyTermId);
     }
 
     public OntologyTermWrapper(
@@ -28,8 +29,8 @@ public class OntologyTermWrapper {
 
     public List<OntologyTermWrapper> getChildren() {
         List<OntologyTermWrapper> children = new ArrayList<>();
-        for (org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper term : OntologyClientUtil
-                .getChildOntologyTerms(this.ontologyTerm.getId())) {
+        for (org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper term : StaticContestContext.
+                getOntologyClient().getChildOntologyTerms(this.ontologyTerm.getId())) {
             children.add(new OntologyTermWrapper(term));
         }
         return children;

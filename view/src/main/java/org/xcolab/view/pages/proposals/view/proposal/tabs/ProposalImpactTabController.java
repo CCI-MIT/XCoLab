@@ -13,18 +13,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.ImpactClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.IImpactIteration;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.modeling.roma.RomaClientUtil;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.ProposalAttributeClient;
 import org.xcolab.client.contest.proposals.enums.ProposalUnversionedAttributeName;
 import org.xcolab.client.contest.proposals.helpers.ProposalUnversionedAttributeHelper;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.util.enums.contest.ContestTier;
@@ -105,7 +103,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
 
         boolean tabUsesModeling = (isRegionalContest(contest) || isGlobalContest(contest));
         if (tabUsesModeling){
-            model.addAttribute("availableModels", ContestClientUtil.getModelIdsAndNames(contest.getId()));
+            model.addAttribute("availableModels", contestClient.getModelIdsAndNames(contest.getId()));
             model.addAttribute("modelId", getModelIdIfProposalHasScenarioIdOrContestDefaultModelId(
                     proposal));
             model.addAttribute("scenarioId", proposal.getScenarioId());
@@ -117,7 +115,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             IntegratedProposalImpactSeries integratedProposalImpactSeries =
                     new IntegratedProposalImpactSeries(proposalContext, proposal, contest);
             model.addAttribute("impactSeries", integratedProposalImpactSeries);
-            List<IImpactIteration> impactIterations = ImpactClientUtil.getContestImpactIterations(contest);
+            List<IImpactIteration> impactIterations = impactClient.getContestImpactIterations(contest);
             model.addAttribute("impactIterations", impactIterations);
         }
 
@@ -259,7 +257,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
     private String showImpactTabBasic(Model model, ProposalContext proposalContext,
             ContestWrapper contest, ProposalWrapper proposal) {
 
-        List<IImpactIteration> impactIterations = ImpactClientUtil.getContestImpactIterations(contest);
+        List<IImpactIteration> impactIterations = impactClient.getContestImpactIterations(contest);
         model.addAttribute("impactIterations", impactIterations);
 
         ProposalImpactSeriesList proposalImpactSeriesList =
@@ -376,5 +374,4 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         return showImpactTab(request, response, model, proposalContext, currentMember, contestYear,
                 contestUrlName, proposalId, false);
     }
-
 }

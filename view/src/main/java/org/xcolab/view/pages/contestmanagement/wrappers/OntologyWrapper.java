@@ -1,8 +1,8 @@
 package org.xcolab.view.pages.contestmanagement.wrappers;
 
-import org.xcolab.client.contest.OntologyClientUtil;
-import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.IFocusAreaOntologyTerm;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.OntologySpaceWrapper;
 import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
 
@@ -26,9 +26,10 @@ public class OntologyWrapper {
     }
 
     private void initOntologySpacesAndTerms() {
-
-        List<OntologySpaceWrapper> ontologySpacesRaw = OntologyClientUtil.getAllOntologySpaces();
-        List<OntologyTermWrapper> ontologyTermsRaw = OntologyClientUtil.getAllOntologyTerms();
+        List<OntologySpaceWrapper> ontologySpacesRaw = StaticContestContext.getOntologyClient()
+                .getAllOntologySpaces();
+        List<OntologyTermWrapper> ontologyTermsRaw = StaticContestContext.getOntologyClient()
+                .getAllOntologyTerms();
 
         for (OntologySpaceWrapper space : ontologySpacesRaw) {
             ontologySpaces.put(space.getId(), new org.xcolab.view.taglibs.xcolab.wrapper.OntologySpaceWrapper(space));
@@ -68,13 +69,11 @@ public class OntologyWrapper {
     public List<Long> getOntologyTermIdsForFocusAreaOfContest(ContestWrapper contest) {
         List<Long> ontologyTermIds = new ArrayList<>();
         Long focusAreaId = contest.getFocusAreaId();
-        for (IFocusAreaOntologyTerm focusAreaOntologyTerm : OntologyClientUtil
+        for (IFocusAreaOntologyTerm focusAreaOntologyTerm : StaticContestContext.getOntologyClient()
                 .getFocusAreaOntologyTermsByFocusArea(focusAreaId)) {
             Long ontologyTermId = focusAreaOntologyTerm.getOntologyTermId();
             ontologyTermIds.add(ontologyTermId);
         }
         return ontologyTermIds;
-
     }
-
 }

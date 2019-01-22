@@ -3,23 +3,22 @@ package org.xcolab.view.pages.proposals.impact;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.xcolab.client.contest.ImpactClientUtil;
-import org.xcolab.client.contest.OntologyClientUtil;
-import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.IImpactDefaultSeries;
 import org.xcolab.client.contest.pojo.IImpactDefaultSeriesData;
 import org.xcolab.client.contest.pojo.IImpactIteration;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.FocusAreaWrapper;
 import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ProposalVersionWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.enums.ImpactSeriesType;
 import org.xcolab.client.contest.proposals.helpers.ProposalAttributeHelper;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.pojo.wrapper.ProposalVersionWrapper;
-import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.pojo.Member;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -65,10 +64,10 @@ public class ProposalImpactSeries {
         this.proposal = proposal;
         this.whatTerm = ProposalImpactUtil.getWhatTerm(focusArea);
         this.whereTerm = ProposalImpactUtil.getWhereTerm(focusArea);
-        this.impactIterations = ImpactClientUtil.getContestImpactIterations(contest);
+        this.impactIterations = StaticContestContext.getImpactClient().getContestImpactIterations(contest);
         // Retrieve static serieses
-        bauSeries = OntologyClientUtil
-                .getImpactDefaultSeriesByFocusAreaAndSeriesName(focusArea.getId(), SERIES_TYPE_BAU_KEY);
+        bauSeries = StaticContestContext.getOntologyClient()
+                .getImpactDefaultSeriesByFocusAreaName(focusArea.getId(), SERIES_TYPE_BAU_KEY);
         addSeriesWithType(bauSeries, false, false);
 
         //        ddppSeries = ImpactDefaultSeriesLocalServiceUtil
@@ -82,7 +81,7 @@ public class ProposalImpactSeries {
 
     private void addSeriesWithType(IImpactDefaultSeries defaultSeries, boolean editable,
             boolean invertSeriesSign) {
-        List<IImpactDefaultSeriesData> seriesDataList = OntologyClientUtil
+        List<IImpactDefaultSeriesData> seriesDataList = StaticContestContext.getOntologyClient()
                 .getImpactDefaultSeriesDataBySeries(defaultSeries.getSeriesId());
         if (invertSeriesSign) {
             for (IImpactDefaultSeriesData seriesData : seriesDataList) {
@@ -108,8 +107,8 @@ public class ProposalImpactSeries {
 
     private void loadEditableData() {
         // Get default serieses
-        List<IImpactDefaultSeries> impactDefaultSerieses =
-                OntologyClientUtil.getAllmpactDefaultSeriesByFocusArea(focusArea.getId());
+        List<IImpactDefaultSeries> impactDefaultSerieses = StaticContestContext.getOntologyClient()
+                .getAllmpactDefaultSeriesByFocusArea(focusArea.getId());
 
         final ProposalAttributeHelper proposalAttributeHelper =
                 proposal.getProposalAttributeHelper();
@@ -141,8 +140,8 @@ public class ProposalImpactSeries {
                 // Use default data if not entered
                 if (!foundEnteredData) {
                     List<IImpactDefaultSeriesData> defaultSeriesDataList =
-                            OntologyClientUtil.getImpactDefaultSeriesDataBySeries(
-                                    defaultSeries.getSeriesId());
+                            StaticContestContext.getOntologyClient()
+                                    .getImpactDefaultSeriesDataBySeries(defaultSeries.getSeriesId());
                     addSeriesWithType(seriesType, defaultSeriesDataList, true);
                 }
             }
@@ -164,7 +163,7 @@ public class ProposalImpactSeries {
             JSONObject json) {
         this(contest, proposal, focusArea, false);
 
-        for (IImpactDefaultSeries defaultSeries : OntologyClientUtil
+        for (IImpactDefaultSeries defaultSeries : StaticContestContext.getOntologyClient()
                 .getAllmpactDefaultSeriesByFocusArea(focusArea.getId())) {
             if (!defaultSeries.getEditable()) {
                 continue;
@@ -208,10 +207,9 @@ public class ProposalImpactSeries {
         for (IImpactIteration impactIteration : impactIterations) {
             int currentYear = impactIteration.getYear();
 
-            double bauValue =
-                    OntologyClientUtil
-                            .getImpactDefaultSeriesDataBySeriesIdAndYear(bauSeries.getSeriesId(),
-                                    currentYear).getValue();
+            double bauValue = StaticContestContext.getOntologyClient()
+                    .getImpactDefaultSeriesDataBySeriesIdAndYear(bauSeries.getSeriesId(),
+                            currentYear).getValue();
 
             double reductionRate =
                     seriesTypeToSeriesMap.get(ImpactSeriesType.IMPACT_REDUCTION)
@@ -298,8 +296,8 @@ public class ProposalImpactSeries {
             ImpactSeriesType seriesType = entry.getKey();
             final ProposalImpactSeriesValues seriesValues = seriesTypeToSeriesMap.get(seriesType);
 
-            IImpactDefaultSeries defaultSeries = OntologyClientUtil
-                    .getImpactDefaultSeriesByFocusAreaAndSeriesName(focusArea.getId(), seriesType.name());
+            IImpactDefaultSeries defaultSeries = StaticContestContext.getOntologyClient()
+                    .getImpactDefaultSeriesByFocusAreaName(focusArea.getId(), seriesType.name());
 
             JSONObject series = new JSONObject();
             series.put("name", defaultSeries.getName());

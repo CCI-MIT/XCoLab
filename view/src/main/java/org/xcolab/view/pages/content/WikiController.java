@@ -13,7 +13,7 @@ import org.xcolab.client.content.IContentClient;
 import org.xcolab.client.content.exceptions.ContentNotFoundException;
 import org.xcolab.client.content.pojo.IContentArticle;
 import org.xcolab.client.content.pojo.IContentArticleVersion;
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.members.PermissionsClient;
@@ -32,6 +32,9 @@ public class WikiController {
 
     @Autowired
     private IContentClient contentClient;
+
+    @Autowired
+    private ContestClient contestClient;
 
     @GetMapping("/wiki")
     public String home(HttpServletRequest request, HttpServletResponse response, Model model,
@@ -76,7 +79,7 @@ public class WikiController {
             Model model, @PathVariable long contestYear, @PathVariable String contestUrlName)
             throws ContestNotFoundException, IOException {
 
-        final ContestWrapper contest = ContestClientUtil.getContest(contestUrlName, contestYear);
+        final ContestWrapper contest = contestClient.getContest(contestUrlName, contestYear);
 
         if (contest == null) {
             response.setStatus(HttpStatus.NOT_FOUND.value());

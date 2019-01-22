@@ -1,10 +1,9 @@
 package org.xcolab.view.pages.proposals.impact;
 
-import org.xcolab.client.contest.ImpactClientUtil;
-import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.OntologyTermToFocusAreaMapper;
-import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.IImpactTemplateMaxFocusArea;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.FocusAreaWrapper;
 import org.xcolab.client.contest.pojo.wrapper.OntologySpaceWrapper;
 import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
@@ -34,10 +33,12 @@ public class ProposalImpactUtil {
         Map<OntologyTermWrapper, List<OntologyTermWrapper>> ontologyTermMap = new HashMap<>();
         Map<Long, Boolean> impactSeriesAvailableMap = getImpactSeriesAvailableMap(impactSerieses);
 
-        List<IImpactTemplateMaxFocusArea> impactFocusAreas = ImpactClientUtil.getContestImpactFocusAreas(contest);
+        List<IImpactTemplateMaxFocusArea> impactFocusAreas = StaticContestContext.getImpactClient()
+                .getContestImpactFocusAreas(contest);
 
         for (IImpactTemplateMaxFocusArea impactFocusArea : impactFocusAreas) {
-            FocusAreaWrapper focusArea = OntologyClientUtil.getFocusArea(impactFocusArea.getFocusAreaId());
+            FocusAreaWrapper focusArea = StaticContestContext.getOntologyClient()
+                    .getFocusArea(impactFocusArea.getFocusAreaId());
 
             // Only consider focus areas where we did not have a filled out impact series
             if (impactSeriesAvailableMap.get(focusArea.getId()) == null) {
@@ -55,7 +56,8 @@ public class ProposalImpactUtil {
     }
 
     public FocusAreaWrapper getFocusAreaAssociatedWithTerms(OntologyTermWrapper whatTerm, OntologyTermWrapper whereTerm) {
-        List<IImpactTemplateMaxFocusArea> impactFocusAreas = ImpactClientUtil.getContestImpactFocusAreas(contest);
+        List<IImpactTemplateMaxFocusArea> impactFocusAreas = StaticContestContext.getImpactClient()
+                .getContestImpactFocusAreas(contest);
 
         List<OntologyTermWrapper> matchingOntologyTerms = new ArrayList<>();
         matchingOntologyTerms.add(whatTerm);
@@ -63,7 +65,8 @@ public class ProposalImpactUtil {
 
         List<FocusAreaWrapper> focusAreasToBeSearched = new ArrayList<>();
         for (IImpactTemplateMaxFocusArea impactFocusArea : impactFocusAreas) {
-            focusAreasToBeSearched.add(OntologyClientUtil.getFocusArea(impactFocusArea.getFocusAreaId()));
+            focusAreasToBeSearched.add(StaticContestContext.getOntologyClient()
+                    .getFocusArea(impactFocusArea.getFocusAreaId()));
         }
 
         OntologyTermToFocusAreaMapper termMapper = new OntologyTermToFocusAreaMapper(matchingOntologyTerms);
@@ -92,7 +95,9 @@ public class ProposalImpactUtil {
     }
 
     private static OntologyTermWrapper getTermWithSpaceId(FocusAreaWrapper focusArea, long spaceId) {
-        OntologySpaceWrapper space = OntologyClientUtil.getOntologySpace(spaceId);
-        return OntologyClientUtil.getOntologyTermFromFocusAreaWithOntologySpace(focusArea, space);
+        OntologySpaceWrapper space = StaticContestContext.getOntologyClient()
+                .getOntologySpace(spaceId);
+        return StaticContestContext.getOntologyClient()
+                .getOntologyTermFromFocusAreaWithOntologySpace(focusArea, space);
     }
 }

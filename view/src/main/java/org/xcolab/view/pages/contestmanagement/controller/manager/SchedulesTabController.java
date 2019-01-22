@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.IContestSchedule;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.html.LabelStringValue;
@@ -53,7 +52,7 @@ public class SchedulesTabController extends AbstractTabController {
 
     @ModelAttribute("contestPhaseTypesSelectionItems")
     public List<LabelValue> populateContestPhaseTypesSelectionItems() {
-        return ContestClientUtil.getAllContestPhaseTypes().stream()
+        return contestClient.getAllContestPhaseTypes().stream()
                 .filter(phaseType -> !phaseType.getIsDeprecated())
                 .map(phaseType -> new LabelValue(phaseType.getId(), phaseType.getName()))
                 .collect(Collectors.toList());
@@ -61,7 +60,7 @@ public class SchedulesTabController extends AbstractTabController {
 
     @ModelAttribute("contestPhaseTypesSelectionItemsDeprecated")
     public List<LabelValue> populateContestPhaseTypesSelectionItemsDeprecated() {
-        return ContestClientUtil.getAllContestPhaseTypes().stream()
+        return contestClient.getAllContestPhaseTypes().stream()
                 .filter(phaseType -> phaseType.getIsDeprecated())
                 .map(phaseType -> new LabelValue(phaseType.getId(), phaseType.getName() + " (Deprecated)"))
                 .collect(Collectors.toList());
@@ -101,7 +100,7 @@ public class SchedulesTabController extends AbstractTabController {
 
     private Long getFirstScheduleId() {
         final List<IContestSchedule> contestSchedules =
-                ContestClientUtil.getAllContestSchedules();
+                contestClient.getAllContestSchedules();
         if (!contestSchedules.isEmpty()) {
             return contestSchedules.get(0).getId();
         }

@@ -6,16 +6,16 @@ import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.StaticContestContext;
+import org.xcolab.client.contest.pojo.IProposalVote;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
-import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.pojo.IProposalVote;
 import org.xcolab.client.tracking.ITrackingClient;
 import org.xcolab.client.tracking.pojo.ILocation;
 import org.xcolab.commons.CsvResponseWriter;
@@ -82,9 +82,9 @@ public class VoteCsvWriter extends CsvResponseWriter {
 
         for (IProposalVote vote : proposalVotes) {
             ContestPhaseWrapper contestPhase = phases.computeIfAbsent(vote.getContestPhaseId(),
-                    ContestClientUtil::getContestPhase);
+                    StaticContestContext.getContestClient()::getContestPhase);
             ContestWrapper contest = contests.computeIfAbsent(contestPhase.getContestId(),
-                    ContestClientUtil::getContest);
+                    StaticContestContext.getContestClient()::getContest);
 
             Member member = getMemberOrNull(vote);
             ProposalWrapper proposal = getProposalOrNull(proposals, vote);

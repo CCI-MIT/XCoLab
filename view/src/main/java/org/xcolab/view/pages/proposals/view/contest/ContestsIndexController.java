@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.IContestCollectionCard;
 import org.xcolab.client.contest.pojo.IFocusAreaOntologyTerm;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
@@ -94,11 +92,10 @@ public class ContestsIndexController extends BaseProposalsController {
             return new AccessDeniedPage(loggedInMember).toViewName(response);
         }
 
-        final int totalContestCount = ContestClientUtil
-                .countContests(null, false, contestType.getId());
+        final int totalContestCount = contestClient.countContests(null, false, contestType.getId());
 
         if (contestType.isSuggestionsActive()) {
-            ContestWrapper c = ContestClientUtil.getContest(contestType.getSuggestionContestId());
+            ContestWrapper c = contestClient.getContest(contestType.getSuggestionContestId());
             String link = c.getContestLinkUrl();
             model.addAttribute("suggestionContestLink", link);
         }
@@ -142,25 +139,25 @@ public class ContestsIndexController extends BaseProposalsController {
                 showOnlyFeatured = true;  // filter with JSP  -> TODO COLAB-2627: increase performance
                 ontologyTermToLoad = null; //get all
             } else {
-                ontologyTermToLoad = ContestClientUtil.getContestCollectionCard(currentCollectionCardId)
+                ontologyTermToLoad = contestClient.getContestCollectionCard(currentCollectionCardId)
                         .getOntologyTermToLoad();
             }
 
             List<CollectionCardWrapper> collectionCards = new ArrayList<>();
             LinkedList<CollectionCardWrapper> collectionHierarchy = new LinkedList<>();
             if(showCollectionCards) { //don't display collectioncards if search results shown
-                for (IContestCollectionCard card: ContestClientUtil.getSubContestCollectionCards(currentCollectionCardId)) {
+                for (IContestCollectionCard card: contestClient.getSubContestCollectionCards(currentCollectionCardId)) {
                     collectionCards.add(new CollectionCardWrapper(card, viewType));
                 }
                 collectionCards.sort((o1, o2) ->
                         o1.getOrder() < o2.getOrder() ? -1
                                 : o1.getOrder() == o2.getOrder() ? 0 : 1);
                 long tempId = currentCollectionCardId;
-                while(ContestClientUtil.getContestCollectionCard(tempId).getParent() != null) {
-                    collectionHierarchy.addFirst(new CollectionCardWrapper(ContestClientUtil.getContestCollectionCard(tempId), viewType));
-                    tempId = ContestClientUtil.getContestCollectionCard(tempId).getParent();
+                while(contestClient.getContestCollectionCard(tempId).getParent() != null) {
+                    collectionHierarchy.addFirst(new CollectionCardWrapper(contestClient.getContestCollectionCard(tempId), viewType));
+                    tempId = contestClient.getContestCollectionCard(tempId).getParent();
                 }
-                collectionHierarchy.addFirst(new CollectionCardWrapper(ContestClientUtil.getContestCollectionCard(tempId), viewType));
+                collectionHierarchy.addFirst(new CollectionCardWrapper(contestClient.getContestCollectionCard(tempId), viewType));
                 if(collectionHierarchy.size() == 1) {
                     collectionHierarchy.clear();
                 }
@@ -174,8 +171,8 @@ public class ContestsIndexController extends BaseProposalsController {
             model.addAttribute("showOnlyFeatured", showOnlyFeatured);
 
             //if only featured
-            if(ContestClientUtil.getContestCollectionCard(currentCollectionCardId).getOntologyTermToLoad() != null) {
-                model.addAttribute("ontologySpaceId", OntologyClientUtil.getOntologyTerm(ContestClientUtil.getContestCollectionCard(currentCollectionCardId).getOntologyTermToLoad()).getOntologySpaceId());
+            if(contestClient.getContestCollectionCard(currentCollectionCardId).getOntologyTermToLoad() != null) {
+                model.addAttribute("ontologySpaceId", ontologyClient.getOntologyTerm(contestClient.getContestCollectionCard(currentCollectionCardId).getOntologyTermToLoad()).getOntologySpaceId());
             } else {
                 model.addAttribute("ontologySpaceId", 0);
             }
@@ -189,7 +186,7 @@ public class ContestsIndexController extends BaseProposalsController {
 
         if (viewType.equals(VIEW_TYPE_OUTLINE)) {
 
-            List<ContestWrapper> allContests = ContestClientUtil.getContests(
+            List<ContestWrapper> allContests = contestClient.getContests(
                     null, false, contestType.getId()).stream()
                     .filter(ContestWrapper::getShowInOutlineView)
                     .collect(Collectors.toList());
@@ -207,10 +204,10 @@ public class ContestsIndexController extends BaseProposalsController {
                 otherContests = allContests;
             }
 
-        	List<OntologySpaceWrapper> ontologySpacesRaw = OntologyClientUtil.getAllOntologySpaces();
-        	List<OntologyTermWrapper> ontologyTermsRaw = OntologyClientUtil.getAllOntologyTerms();
-        	List<FocusAreaWrapper> focusAreasRaw = OntologyClientUtil.getAllFocusAreas();
-        	List<IFocusAreaOntologyTerm> focusAreasOntologyTermsRaw = OntologyClientUtil.getAllFocusAreaOntologyTerms();
+        	List<OntologySpaceWrapper> ontologySpacesRaw = ontologyClient.getAllOntologySpaces();
+        	List<OntologyTermWrapper> ontologyTermsRaw = ontologyClient.getAllOntologyTerms();
+        	List<FocusAreaWrapper> focusAreasRaw = ontologyClient.getAllFocusAreas();
+        	List<IFocusAreaOntologyTerm> focusAreasOntologyTermsRaw = ontologyClient.getAllFocusAreaOntologyTerms();
         	Map<Long, FocusAreaWrapper> focusAreas = new TreeMap<>();
 
             for (FocusAreaWrapper area: focusAreasRaw) {
@@ -254,7 +251,7 @@ public class ContestsIndexController extends BaseProposalsController {
         	model.addAttribute("otherContests", otherContests);
         	model.addAttribute("contestType", contestType);
         } else if (!ConfigurationAttributeKey.COLAB_USES_CARDS.get()) {
-            contests = ContestClientUtil.getContests(
+            contests = contestClient.getContests(
                     showAllContests ? null : true, false, contestType.getId());
         }
 

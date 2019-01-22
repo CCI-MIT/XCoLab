@@ -3,15 +3,12 @@ package org.xcolab.view.pages.proposals.utils.context;
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ContestTeamMemberClient;
-import org.xcolab.client.contest.ContestTeamMemberClientUtil;
 import org.xcolab.client.contest.ImpactClient;
-import org.xcolab.client.contest.ImpactClientUtil;
 import org.xcolab.client.contest.OntologyClient;
-import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.ProposalTemplateClient;
 import org.xcolab.client.contest.ProposalTemplateClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.proposals.MembershipClient;
 import org.xcolab.client.contest.proposals.MembershipClientUtil;
 import org.xcolab.client.contest.proposals.PointsClient;
@@ -60,10 +57,10 @@ public class ClientHelper {
         proposalJudgeRatingClient = ProposalJudgeRatingClientUtil.getClient();
         proposalMemberRatingClient = ProposalMemberRatingClientUtil.getClient();
 
-        contestClient = ContestClientUtil.getClient();
-        contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
-        impactClient = ImpactClientUtil.getClient();
-        ontologyClient = OntologyClientUtil.getClient();
+        contestClient = StaticContestContext.getContestClient();
+        contestTeamMemberClient = StaticContestContext.getContestTeamMemberClient();
+        impactClient = StaticContestContext.getImpactClient();
+        ontologyClient = StaticContestContext.getOntologyClient();
         proposalTemplateClient = ProposalTemplateClientUtil.getClient();
 
         activitiesClient = ActivitiesClientUtil.getClient();

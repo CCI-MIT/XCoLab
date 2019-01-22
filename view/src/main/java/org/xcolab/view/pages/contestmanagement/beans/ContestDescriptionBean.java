@@ -11,7 +11,7 @@ import org.xcolab.client.comment.IThreadClient;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.content.IContentClient;
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.view.pages.contestmanagement.wrappers.WikiPageWrapper;
 
@@ -104,7 +104,7 @@ public class ContestDescriptionBean implements Serializable {
 
         if (shouldUpdateContestUrlName && !contest.getTitle().equals(oldContestName)) {
             contest.setContestUrlName((contest).generateContestUrlName());
-            ContestClientUtil.updateContest(contest);
+            StaticContestContext.getContestClient().updateContest(contest);
         }
         WikiPageWrapper.updateContestWiki(contentClient, contest);
         updateContestSchedule(contest, scheduleTemplateId);
@@ -119,7 +119,7 @@ public class ContestDescriptionBean implements Serializable {
         contest.setSponsorLogoId(sponsorLogoId);
         contest.setSponsorLink(sponsorLink);
         contest.setDefaultProposalLogoId(defaultProposalLogoId);
-        ContestClientUtil.updateContest(contest);
+        StaticContestContext.getContestClient().updateContest(contest);
     }
 
     private static void updateContestSchedule(ContestWrapper contest, Long contestScheduleId) {

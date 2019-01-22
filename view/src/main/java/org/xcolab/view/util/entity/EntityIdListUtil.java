@@ -2,12 +2,12 @@ package org.xcolab.view.util.entity;
 
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.commons.IdListUtil;
 
 import java.util.List;
@@ -26,7 +26,8 @@ public final class EntityIdListUtil {
      * strings
      */
     public final static IdListObjectConverter<ContestWrapper> CONTESTS =
-            new IdListObjectConverter<>(ContestClientUtil::getContest, ContestWrapper::getId);
+            new IdListObjectConverter<>(StaticContestContext.getContestClient()::getContest,
+                    ContestWrapper::getId);
 
     /**
      * Utility class to convert between lists of Proposals, their ids, and comma separated id

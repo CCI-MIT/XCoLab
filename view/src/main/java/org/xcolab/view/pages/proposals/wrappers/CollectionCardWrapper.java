@@ -1,7 +1,6 @@
 package org.xcolab.view.pages.proposals.wrappers;
 
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.OntologyClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.IContestCollectionCard;
 import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
 
@@ -13,7 +12,8 @@ public class CollectionCardWrapper{
     protected String viewType;
 
     public CollectionCardWrapper(long contestCollectionCardId, String viewType) {
-        this(ContestClientUtil.getContestCollectionCard(contestCollectionCardId), viewType);
+        this(StaticContestContext.getContestClient()
+                .getContestCollectionCard(contestCollectionCardId), viewType);
         this.viewType=viewType;
     }
 
@@ -24,7 +24,9 @@ public class CollectionCardWrapper{
 
     public CollectionCardWrapper getParent() {
         if(hasParent()){
-            return new CollectionCardWrapper(ContestClientUtil.getContestCollectionCard(this.contestCollectionCard.getParent()), this.viewType);
+            return new CollectionCardWrapper(StaticContestContext.getContestClient()
+                    .getContestCollectionCard(this.contestCollectionCard.getParent()),
+                    this.viewType);
         } else {
             return null;
         }
@@ -32,22 +34,25 @@ public class CollectionCardWrapper{
 
     public boolean hasParent() {
         if(this.contestCollectionCard.getParent() != null) {
-            return ContestClientUtil
+            return StaticContestContext.getContestClient()
                     .getContestCollectionCard(this.contestCollectionCard.getParent()) != null;
         }
         return false;
     }
 
     public int getNumberOfActiveContests() {
-        return ContestClientUtil.getNumberOfActiveContestsInCollectionCard(this.getId(), viewType, this.getOnlyFeatured());
+        return StaticContestContext.getContestClient().getNumberOfActiveContestsInCollectionCard(
+                this.getId(), viewType, this.getOnlyFeatured());
     }
 
     public int getNumberOfAllContests() {
-        return ContestClientUtil.getNumberOfAllContestsInCollectionCard(this.getId(), viewType, this.getOnlyFeatured());
+        return StaticContestContext.getContestClient().getNumberOfAllContestsInCollectionCard(
+                this.getId(), viewType, this.getOnlyFeatured());
     }
 
     public int getNumberOfPriorContests() {
-        return ContestClientUtil.getNumberOfPriorContestsInCollectionCard(this.getId(), viewType, this.getOnlyFeatured());
+        return StaticContestContext.getContestClient().getNumberOfPriorContestsInCollectionCard(
+                this.getId(), viewType, this.getOnlyFeatured());
     }
 
     public long getId() {
@@ -55,15 +60,18 @@ public class CollectionCardWrapper{
     }
 
     public OntologyTermWrapper getBigOntologyTerm() {
-        return OntologyClientUtil.getOntologyTerm(this.contestCollectionCard.getBigOntologyTerm());
+        return StaticContestContext.getOntologyClient()
+                .getOntologyTerm(this.contestCollectionCard.getBigOntologyTerm());
     }
 
     public OntologyTermWrapper getSmallOntologyTerm() {
-        return OntologyClientUtil.getOntologyTerm(this.contestCollectionCard.getSmallOntologyTerm());
+        return StaticContestContext.getOntologyClient()
+                .getOntologyTerm(this.contestCollectionCard.getSmallOntologyTerm());
     }
 
     public OntologyTermWrapper getOntologyTermToLoad() {
-        return OntologyClientUtil.getOntologyTerm(this.contestCollectionCard.getOntologyTermToLoad());
+        return StaticContestContext.getOntologyClient()
+                .getOntologyTerm(this.contestCollectionCard.getOntologyTermToLoad());
     }
 
     public int getOrder() {
@@ -85,5 +93,4 @@ public class CollectionCardWrapper{
     public String getShortName() {
         return this.contestCollectionCard.getShortName();
     }
-
 }
