@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.enums.ContestStatus;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.IContestPhaseType;
@@ -37,7 +37,7 @@ public class ContestPhaseWrapper extends ContestPhase {
     protected ContestStatus status;
 
     public ContestPhaseWrapper() {
-        contestClient = ContestClientUtil.getClient();
+        contestClient = StaticContestContext.getContestClient();
     }
 
     public ContestPhaseWrapper(ContestPhaseWrapper value) {
@@ -47,7 +47,7 @@ public class ContestPhaseWrapper extends ContestPhase {
 
     public ContestPhaseWrapper(ContestPhase abstractContestPhase) {
         super(abstractContestPhase);
-        contestClient = ContestClientUtil.getClient();
+        contestClient = StaticContestContext.getContestClient();
     }
 
     public static ContestPhaseWrapper clone(ContestPhaseWrapper originalPhase) {

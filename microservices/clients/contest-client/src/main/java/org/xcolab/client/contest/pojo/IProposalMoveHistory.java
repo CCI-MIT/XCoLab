@@ -1,6 +1,6 @@
 package org.xcolab.client.contest.pojo;
 
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
@@ -65,14 +65,14 @@ public interface IProposalMoveHistory {
 
     default ContestWrapper getSourceContest() {
         try {
-            return ContestClientUtil.getContest(this.getSourceContestId());
+            return StaticContestContext.getContestClient().getContest(this.getSourceContestId());
         } catch (ContestNotFoundException ignored) {
             return null;
         }
     }
 
     default ContestPhaseWrapper getSourceContestPhase() {
-        return (ContestClientUtil.getContestPhase(this.getSourcePhaseId()));
+        return StaticContestContext.getContestClient().getContestPhase(this.getSourcePhaseId());
     }
 
     default ProposalWrapper getTargetProposal() {
@@ -85,14 +85,14 @@ public interface IProposalMoveHistory {
 
     default ContestWrapper getTargetContest() {
         try {
-            return (ContestClientUtil.getContest(this.getTargetContestId()));
+            return StaticContestContext.getContestClient().getContest(this.getTargetContestId());
         } catch (ContestNotFoundException ignored) {
             return null;
         }
     }
 
     default ContestPhaseWrapper getTargetContestPhase() {
-        return (ContestClientUtil.getContestPhase(this.getTargetPhaseId()));
+        return StaticContestContext.getContestClient().getContestPhase(this.getTargetPhaseId());
     }
 
     default Member getMovingUser() {

@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.IContestPhaseType;
 import org.xcolab.client.contest.pojo.IProposal2Phase;
 import org.xcolab.client.contest.pojo.tables.pojos.Proposal2Phase;
@@ -55,20 +55,21 @@ public class PromotionService {
     private final ContestPhaseService contestPhaseService;
     private final ContestService contestService;
     private final IEmailClient emailClient;
+    private final ContestClient contestClient;
 
     private Date now;
 
     @Autowired
     public PromotionService(ContestPhaseDao contestPhaseDao, ContestDao contestDao,
             ContestPhaseService contestPhaseService, ContestPhaseTypeDao contestPhaseTypeDao,
-            ContestService contestService, IEmailClient emailClient) {
-
+            ContestService contestService, IEmailClient emailClient, ContestClient contestClient) {
         this.contestPhaseDao = contestPhaseDao;
         this.contestDao = contestDao;
         this.contestPhaseTypeDao = contestPhaseTypeDao;
         this.contestPhaseService = contestPhaseService;
         this.contestService = contestService;
         this.emailClient = emailClient;
+        this.contestClient = contestClient;
     }
 
     public synchronized int doPromotion(Date now) {
@@ -199,7 +200,7 @@ public class PromotionService {
                             // Add this check for extra security to prevent proposal authors from being spammed (see COLAB-500)
                             if (phasePromotionHelper.isProposalReviewed(p)) {
                                 //TODO COLAB-2603: Migrate logic to send email.
-                                ContestPhaseWrapper cp = ContestClientUtil.getContestPhase(phase.getId());
+                                ContestPhaseWrapper cp = contestClient.getContestPhase(phase.getId());
                                 ContestPhasePromotionEmail.contestPhasePromotionEmailNotifyProposalContributors(p, cp);
                                 PhasePromotionHelper.createProposalContestPhasePromotionDoneAttribute(p.getId(), phase.getId());
 
@@ -431,7 +432,7 @@ public class PromotionService {
                 if (!ProposalPhaseClientUtil.hasProposalContestPhaseAttribute(proposal.getId(), phasePK,
                         ProposalContestPhaseAttributeKeys.RIBBON)) {
 
-                    if (ContestClientUtil.getContestPhaseRibbonType(ribbonId) != null) {
+                    if (contestClient.getContestPhaseRibbonType(ribbonId) != null) {
                         ProposalPhaseClientUtil.setProposalContestPhaseAttribute(proposal.getId(), phasePK,
                                 ProposalContestPhaseAttributeKeys.RIBBON, 0L, ribbonId, "");
                     } else {

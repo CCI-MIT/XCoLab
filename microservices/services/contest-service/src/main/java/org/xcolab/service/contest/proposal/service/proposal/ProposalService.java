@@ -9,22 +9,22 @@ import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.comment.IThreadClient;
 import org.xcolab.client.comment.pojo.IThread;
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ProposalTemplateClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.IProposal2Phase;
 import org.xcolab.client.contest.pojo.IProposalReference;
+import org.xcolab.client.contest.pojo.tables.pojos.Proposal2Phase;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
 import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMemberWrapper;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
-import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.contest.pojo.tables.pojos.Proposal2Phase;
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.proposal.domain.proposal.ProposalDao;
 import org.xcolab.service.contest.proposal.domain.proposal2phase.Proposal2PhaseDao;
@@ -55,12 +55,13 @@ public class ProposalService {
     private final ProposalTeamMemberDao proposalTeamMemberDao;
 
     private final IThreadClient threadClient;
+    private final ContestClient contestClient;
 
     @Autowired
     public ProposalService(ProposalDao proposalDao, ProposalReferenceDao proposalReferenceDao,
             ProposalAttributeDao proposalAttributeDao, Proposal2PhaseDao proposal2PhaseDao,
             ProposalVersionDao proposalVersionDao, ProposalTeamMemberDao proposalTeamMemberDao,
-            IThreadClient threadClient) {
+            IThreadClient threadClient, ContestClient contestClient) {
         this.proposalDao = proposalDao;
         this.proposalReferenceDao = proposalReferenceDao;
         this.proposalAttributeDao = proposalAttributeDao;
@@ -68,6 +69,7 @@ public class ProposalService {
         this.proposalVersionDao = proposalVersionDao;
         this.proposalTeamMemberDao = proposalTeamMemberDao;
         this.threadClient = threadClient;
+        this.contestClient = contestClient;
     }
 
     public ProposalWrapper create(long authorUserId, long contestPhaseId, boolean publishActivity) {
@@ -76,8 +78,8 @@ public class ProposalService {
             proposal.setVisible(true);
             proposal.setAuthorUserId(authorUserId);
 
-            ContestPhaseWrapper contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
-            final ContestWrapper contest = ContestClientUtil.getContest(contestPhase.getContestId());
+            ContestPhaseWrapper contestPhase = contestClient.getContestPhase(contestPhaseId);
+            final ContestWrapper contest = contestClient.getContest(contestPhase.getContestId());
             ContestType contestType = StaticAdminContext.getContestTypeClient()
                     .getContestType(contest.getContestTypeId());
 
@@ -224,7 +226,7 @@ public class ProposalService {
     public Long getLatestContestIdForProposal(Long proposalId) {
         try {
             Long contestPhaseId = getLatestContestPhaseIdInProposal(proposalId);
-            ContestPhaseWrapper contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
+            ContestPhaseWrapper contestPhase = contestClient.getContestPhase(contestPhaseId);
             return contestPhase.getContestId();
         } catch (NotFoundException e) {
             return null;

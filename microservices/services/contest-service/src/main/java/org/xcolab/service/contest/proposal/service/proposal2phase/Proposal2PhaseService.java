@@ -1,8 +1,9 @@
 package org.xcolab.service.contest.proposal.service.proposal2phase;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.IProposal2Phase;
 import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
 import org.xcolab.client.contest.pojo.tables.pojos.Proposal2Phase;
@@ -25,13 +26,17 @@ public class Proposal2PhaseService {
     private final ProposalVersionDao proposalVersionDao;
 
     private final ProposalContestPhaseAttributeDao proposalContestPhaseAttributeDao;
+    private final ContestClient contestClient;
 
+    @Autowired
     public Proposal2PhaseService(Proposal2PhaseDao proposal2PhaseDao,
             ProposalVersionDao proposalVersionDao,
-            ProposalContestPhaseAttributeDao proposalContestPhaseAttributeDao) {
+            ProposalContestPhaseAttributeDao proposalContestPhaseAttributeDao,
+            ContestClient contestClient) {
         this.proposal2PhaseDao = proposal2PhaseDao;
         this.proposalVersionDao = proposalVersionDao;
         this.proposalContestPhaseAttributeDao = proposalContestPhaseAttributeDao;
+        this.contestClient = contestClient;
     }
 
     public void promoteProposal(long proposalId, long nextPhaseId, long currentPhaseId) {
@@ -50,7 +55,7 @@ public class Proposal2PhaseService {
             //throw new SystemException("Proposal not found");
             return;
         }
-        ContestPhaseWrapper nextPhase = ContestClientUtil.getContestPhase(nextPhaseId);
+        ContestPhaseWrapper nextPhase = contestClient.getContestPhase(nextPhaseId);
         if (nextPhase == null) {
             //throw new SystemException("phase not found");
             return;
@@ -61,7 +66,7 @@ public class Proposal2PhaseService {
         List<ContestPhaseWrapper> candidatePhase = new LinkedList<>();
 
         for (Long phId : phases) {
-            ContestPhaseWrapper ph = ContestClientUtil.getContestPhase(phId);
+            ContestPhaseWrapper ph = contestClient.getContestPhase(phId);
             if (ph.getContestId() == nextPhase.getContestId().longValue()) { //this contestphase is in our target contest
                 candidatePhase.add(ph);
             }
@@ -109,7 +114,7 @@ public class Proposal2PhaseService {
         List<IProposal2Phase> proposal2Phases = proposal2PhaseDao.findByGiven(proposalId, null, null);
 
         return proposal2Phases.stream()
-                .filter(p2p -> ContestClientUtil.getContestPhase(p2p.getContestPhaseId()) != null)
+                .filter(p2p -> contestClient.getContestPhase(p2p.getContestPhaseId()) != null)
                 .map(IProposal2Phase::getContestPhaseId)
                 .collect(Collectors.toCollection(LinkedList::new));
     }

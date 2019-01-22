@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.apache.commons.lang3.StringUtils;
 
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -96,8 +96,10 @@ public abstract class ProposalRatings {
             if (!ratings
                     .isEmpty()) {//this should never happen on cross lab otherwise oh snap
                 long contestPhaseId = ratings.get(0).getContestPhaseId();
-                ContestPhaseWrapper contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
-                contestPhaseTitleAux = ContestClientUtil.getContestPhaseName(contestPhase);
+                ContestPhaseWrapper contestPhase = StaticContestContext.getContestClient()
+                        .getContestPhase(contestPhaseId);
+                contestPhaseTitleAux = StaticContestContext.getContestClient()
+                        .getContestPhaseName(contestPhase);
             }
         }
 

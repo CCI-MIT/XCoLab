@@ -16,10 +16,10 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.model.tables.pojos.ActivitySubscription;
 import org.xcolab.service.activities.domain.activitySubscription.ActivitySubscriptionDao;
 import org.xcolab.util.activities.enums.ActivityCategory;
@@ -36,8 +36,7 @@ import static org.mockito.Matchers.anyLong;
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @PrepareForTest({
     ProposalClientUtil.class,
-    org.xcolab.client.contest.ContestClientUtil.class,
-    org.xcolab.client.contest.ContestClient.class,
+    ContestClient.class,
     ProposalWrapper.class,
     ContestWrapper.class
 })
@@ -52,18 +51,14 @@ public class ActivitiesServiceTest {
     @Autowired
     ActivitySubscriptionDao ActivitySubscriptionDao;
 
+    @Autowired
+    ContestClient contestClient;
+
     @Before
     public void setup() throws Exception {
-
         ServiceRequestUtils.setInitialized(true);
 
         PowerMockito.mockStatic(ProposalClientUtil.class);
-
-        PowerMockito.mockStatic(ContestClient.class);
-
-        PowerMockito.mockStatic(ContestClientUtil.class);
-
-
 
         Mockito.mock(ProposalWrapper.class);
 
@@ -75,25 +70,25 @@ public class ActivitiesServiceTest {
 
             });
 
-        Mockito.when(ContestClientUtil.getContest(anyLong()))
+        Mockito.when(contestClient.getContest(anyLong()))
             .thenAnswer(invocation -> {
                 ContestWrapper contest = Mockito.mock(ContestWrapper.class);
                 contest.setDiscussionGroupId(123123L);
                 return contest;
-
             });
+
+        StaticContestContext.setClients(null, null, null, contestClient);
     }
 
     @Test
     public void shouldSubscribeOnlyOnceForDiscussion() throws Exception {
-
         ActivitySubscription as1 =
             activitiesService.subscribe(1111, ActivityCategory.DISCUSSION, 222);
 
         assertTrue(ActivitySubscriptionDao
             .isSubscribed(ActivityCategory.DISCUSSION, 1111, 222L));
-
     }
+
     @Test
     public void shouldSubscribeOnlyOnceForProposal() throws Exception {
         ActivitySubscription asp1 =
@@ -110,23 +105,20 @@ public class ActivitiesServiceTest {
         ActivitySubscription asp4 =
             activitiesService.subscribe(111132, ActivityCategory.CONTEST,22241);
         assertEquals(asp3.getId(),asp4.getId());
-
     }
+
     @Test
     public void shouldUnsubscribeDiscussion() throws Exception {
-
         ActivitySubscription as1 =
             activitiesService.subscribe(1111, ActivityCategory.DISCUSSION, 222);
             activitiesService.unsubscribe(1111, ActivityCategory.DISCUSSION, 222);
 
         assertFalse(ActivitySubscriptionDao
             .isSubscribed(ActivityCategory.DISCUSSION, 1111, 222L));
-
     }
 
     @Test
     public void shouldUnsubscribeProposal() throws Exception {
-
         ActivitySubscription as1 =
             activitiesService.subscribe(1111, ActivityCategory.PROPOSAL, 222);
 
@@ -136,9 +128,9 @@ public class ActivitiesServiceTest {
             .isSubscribed(ActivityCategory.PROPOSAL, 1111, 222L));
 
     }
+
     @Test
     public void shouldUnsubscribeContest() throws Exception {
-
         ActivitySubscription as1 =
             activitiesService.subscribe(1111, ActivityCategory.CONTEST, 222);
 

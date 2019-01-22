@@ -1,6 +1,6 @@
 package org.xcolab.client.contest.pojo;
 
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 
 import java.util.Date;
 
@@ -39,7 +39,7 @@ public interface IProposalContestPhaseAttribute {
     void setRealValue(Double realValue);
 
     default Date getStartDate() {
-        return ContestClientUtil.getClient().getContestPhase(getContestPhaseId())
+        return StaticContestContext.getContestClient().getContestPhase(getContestPhaseId())
                 .getPhaseStartDateDt();
     }
 }

@@ -1,6 +1,6 @@
 package org.xcolab.client.contest.util;
 
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
 
@@ -18,12 +18,14 @@ public class ContestScheduleChangeHelper {
     private final List<SchedulePhase> newPhases;
 
     public ContestScheduleChangeHelper(long contestId, long newScheduleId) {
-        this(contestId, ContestClientUtil.getTemplatePhasesForContestScheduleId(newScheduleId));
+        this(contestId, StaticContestContext.getContestClient()
+                .getTemplatePhasesForContestScheduleId(newScheduleId));
     }
 
     public ContestScheduleChangeHelper(long contestId, List<ContestPhaseWrapper> newPhases) {
         this.contestId = contestId;
-        this.existingPhases = SchedulePhase.wrapList(ContestClientUtil.getAllContestPhases(contestId));
+        this.existingPhases = SchedulePhase.wrapList(StaticContestContext.getContestClient()
+                .getAllContestPhases(contestId));
         this.newPhases = SchedulePhase.wrapList(newPhases);
     }
 
@@ -105,7 +107,7 @@ public class ContestScheduleChangeHelper {
     private void removeFutureContestPhases() {
         for (ContestPhaseWrapper contestPhase : existingPhases) {
             if (!contestPhase.isAlreadyStarted()) {
-                ContestClientUtil.deleteContestPhase(contestPhase.getId());
+                StaticContestContext.getContestClient().deleteContestPhase(contestPhase.getId());
             }
         }
     }
@@ -148,7 +150,7 @@ public class ContestScheduleChangeHelper {
         contestPhase.setCreatedAt(new Timestamp(new Date().getTime()));
         contestPhase.setUpdatedAt(new Timestamp(new Date().getTime()));
 
-        ContestClientUtil.updateContestPhase(contestPhase);
+        StaticContestContext.getContestClient().updateContestPhase(contestPhase);
     }
 
     private static boolean isContestPhaseAlreadyPromoted(ContestPhaseWrapper contestPhase) {
@@ -169,7 +171,7 @@ public class ContestScheduleChangeHelper {
 
         ContestPhaseWrapper newContestPhase = ContestPhaseWrapper.clone(contestSchedulePhase);
         newContestPhase.setContestId(contestId);
-        ContestClientUtil.createContestPhase(newContestPhase);
+        StaticContestContext.getContestClient().createContestPhase(newContestPhase);
     }
 
     public void changeScheduleForBlankContest() {
@@ -182,9 +184,10 @@ public class ContestScheduleChangeHelper {
 
     private void removeExistingContestPhases() {
 
-        List<ContestPhaseWrapper> contestPhases = ContestClientUtil.getAllContestPhases(contestId);
+        List<ContestPhaseWrapper> contestPhases = StaticContestContext.getContestClient()
+                .getAllContestPhases(contestId);
         for (ContestPhaseWrapper contestPhase : contestPhases) {
-            ContestClientUtil.deleteContestPhase(contestPhase.getId());
+            StaticContestContext.getContestClient().deleteContestPhase(contestPhase.getId());
         }
     }
 

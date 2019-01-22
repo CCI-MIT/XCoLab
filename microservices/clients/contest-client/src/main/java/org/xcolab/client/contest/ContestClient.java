@@ -2,6 +2,7 @@ package org.xcolab.client.contest;
 
 import edu.mit.cci.roma.client.Simulation;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +30,6 @@ import org.xcolab.commons.IdListUtil;
 import org.xcolab.commons.spring.web.annotation.ListMapping;
 import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.util.http.caching.CacheName;
-import org.xcolab.util.http.client.RestResource1;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,9 +39,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+@FeignClient("xcolab-contest-service")
 public interface ContestClient {
-
-    RestResource1<ContestDto, Long> contestResource = null; // contests
 
     default ContestWrapper getContest(long contestId) {
         final String lang = LocaleContextHolder.getLocale().getLanguage();

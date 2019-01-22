@@ -6,11 +6,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.model.tables.pojos.ActivitySubscription;
 import org.xcolab.model.tables.records.ActivitySubscriptionRecord;
 import org.xcolab.service.activities.domain.activitySubscription.ActivitySubscriptionDao;
@@ -28,10 +28,12 @@ public class ActivitiesService {
     private static final Logger log = LoggerFactory.getLogger(ActivitiesService.class);
 
     private final ActivitySubscriptionDao activitySubscriptionDao;
+    private final ContestClient contestClient;
 
     @Autowired
-    public ActivitiesService(ActivitySubscriptionDao activitySubscriptionDao) {
+    public ActivitiesService(ActivitySubscriptionDao activitySubscriptionDao, ContestClient contestClient) {
         this.activitySubscriptionDao = activitySubscriptionDao;
+        this.contestClient = contestClient;
     }
 
     public ActivitySubscription subscribe(long userId,
@@ -71,7 +73,7 @@ public class ActivitiesService {
         final ActivitySubscription contestSubscription = createSubscription(userId,
                 ActivityCategory.CONTEST, contestId, 0);
 
-        ContestWrapper contest = ContestClientUtil.getContest(contestId);
+        ContestWrapper contest = contestClient.getContest(contestId);
 
         subscribeDiscussion(userId,contest.getDiscussionGroupId(), true);
 
@@ -174,7 +176,7 @@ public class ActivitiesService {
                 processedProposals.add(proposal.getId());
             }
         }
-        ContestWrapper contest = ContestClientUtil.getContest(contestId);
+        ContestWrapper contest = contestClient.getContest(contestId);
         queries.addAll(getDiscussionDeleteQueries(userId,
                 contest.getDiscussionGroupId(), true));
 

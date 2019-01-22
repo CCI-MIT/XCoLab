@@ -5,14 +5,14 @@ import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
-import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.pojo.wrapper.ProposalDto;
 import org.xcolab.client.contest.pojo.IProposalReference;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalDto;
 import org.xcolab.client.contest.pojo.wrapper.ProposalVersionWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
@@ -47,7 +47,7 @@ public final class ProposalClient {
     private final ActivitiesClient activitiesClient;
 
     public ProposalClient() {
-        contestClient = ContestClientUtil.getClient();
+        contestClient = StaticContestContext.getContestClient();
         activitiesClient = ActivitiesClientUtil.getClient();
     }
 

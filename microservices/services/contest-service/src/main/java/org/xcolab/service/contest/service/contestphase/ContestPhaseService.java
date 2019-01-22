@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
@@ -44,7 +44,6 @@ public class ContestPhaseService {
     @Autowired
     private ContestService contestService;
 
-
     @Autowired
     private ContestPhaseTypeDao contestPhaseTypeDao;
 
@@ -54,6 +53,8 @@ public class ContestPhaseService {
     @Autowired
     private ContestDao contestDao;
 
+    @Autowired
+    private ContestClient contestClient;
 
     public ContestStatus getContestStatus(ContestPhaseWrapper contestPhase) {
         String status = contestPhaseTypeDao.get(contestPhase.getContestPhaseTypeId()).get().getStatus();
@@ -102,8 +103,7 @@ public class ContestPhaseService {
             }
 
             //TODO COLAB-2501: we shouldn't use client pojos in the service
-            ContestWrapper contestPojo = ContestClientUtil
-                    .getContest(contest.getId());
+            ContestWrapper contestPojo = contestClient.getContest(contest.getId());
             if (supportedProposalsInPhase.size() == 1) {
                 final ProposalWrapper proposal = supportedProposalsInPhase.get(0);
                 ProposalMemberRatingClientUtil.addProposalVote(proposal.getId(),

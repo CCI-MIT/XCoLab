@@ -8,7 +8,6 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ContestTeamMemberClient;
 import org.xcolab.client.contest.ContestTeamMemberClientUtil;
 import org.xcolab.client.contest.OntologyClient;
@@ -80,7 +79,7 @@ public class ContestWrapper extends Contest {
     protected ContestPhaseWrapper activePhase;
 
     public ContestWrapper() {
-        contestClient = ContestClientUtil.getClient();
+        contestClient = StaticContestContext.getContestClient();
         contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
         ontologyClient = OntologyClientUtil.getClient();
         proposalTemplateClient = ProposalTemplateClientUtil.getClient();
@@ -88,7 +87,7 @@ public class ContestWrapper extends Contest {
 
     public ContestWrapper(Contest value) {
         super(value);
-        contestClient = ContestClientUtil.getClient();
+        contestClient = StaticContestContext.getContestClient();
         contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
         ontologyClient = OntologyClientUtil.getClient();
         proposalTemplateClient = ProposalTemplateClientUtil.getClient();
@@ -635,7 +634,7 @@ public class ContestWrapper extends Contest {
             contestScheduleChangeHelper.changeScheduleForStartedContest();
         }
         setContestScheduleId(contestScheduleId);
-        ContestClientUtil.updateContest(this);
+        contestClient.updateContest(this);
     }
 
     /**
