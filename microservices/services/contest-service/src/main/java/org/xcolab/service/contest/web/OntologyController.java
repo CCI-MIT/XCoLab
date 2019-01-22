@@ -49,12 +49,6 @@ public class OntologyController {
     private FocusAreaOntologyTermDao focusAreaOntologyTermDao;
 
     @Autowired
-    private ImpactTemplateMaxFocusAreaDao impactTemplateMaxFocusAreaDao;
-
-    @Autowired
-    private ImpactTemplateFocusAreaListDao impactTemplateFocusAreaListDao;
-
-    @Autowired
     private ImpactDefaultSeriesDao impactDefaultSeriesDao;
 
     @Autowired
@@ -220,22 +214,6 @@ public class OntologyController {
         return this.focusAreaOntologyTermDao.create(focusAreaOntologyTerm);
     }
 
-    @ListMapping("/impactTemplateMaxFocusAreas")
-    public List<IImpactTemplateMaxFocusArea> getImpactTemplateMaxFocusAreas(
-            @RequestParam(required = false) Long focusAreaListId) {
-        return impactTemplateMaxFocusAreaDao.findByGiven(focusAreaListId);
-    }
-
-    @GetMapping("/impactTemplateFocusAreaLists/{impactTemplateFocusAreaListId}")
-    public IImpactTemplateFocusAreaList getImpactTemplateFocusAreaList(
-            @PathVariable("impactTemplateFocusAreaListId") Long impactTemplateFocusAreaListId)
-            throws NotFoundException {
-        if (impactTemplateFocusAreaListId == null || impactTemplateFocusAreaListId == 0) {
-            throw new NotFoundException("No impactTemplateFocusAreaListId given");
-        } else {
-            return impactTemplateFocusAreaListDao.get(impactTemplateFocusAreaListId);
-        }
-    }
 
     @GetMapping("/ontologySpaces/{ontologySpaceId}")
     public OntologySpaceWrapper getOntologySpace(

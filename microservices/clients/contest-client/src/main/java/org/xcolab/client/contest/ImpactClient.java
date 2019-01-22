@@ -1,67 +1,58 @@
 package org.xcolab.client.contest;
 
-import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import org.xcolab.client.contest.pojo.IImpactIteration;
 import org.xcolab.client.contest.pojo.IImpactTemplateFocusAreaList;
 import org.xcolab.client.contest.pojo.IImpactTemplateMaxFocusArea;
 import org.xcolab.client.contest.pojo.IImpactTemplateSeries;
 import org.xcolab.client.contest.pojo.IProposalTemplate;
-import org.xcolab.util.http.client.RestResource1;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 
 import java.util.List;
 
-public class ImpactClient {
+@FeignClient("xcolab-contest-service")
+public interface ImpactClient {
 
-    private final RestResource1<IImpactTemplateSeries, Long> impactTemplateSeriesResource = null; // impactTemplateSeries
-    private final RestResource1<IImpactIteration, Long> impactIterationResource = null; // impactIterations
-    private final RestResource1<IImpactTemplateFocusAreaList, Long>
-            impactTemplateFocusAreaListResource = null; // impactTemplateFocusAreaLists
-    private final RestResource1<IImpactTemplateMaxFocusArea, Long>
-            impactTemplateMaxFocusAreaResource = null; // impactTemplateMaxFocusAreas
-
-    public List<IImpactTemplateMaxFocusArea> getContestImpactFocusAreas(ContestWrapper contest) {
+    default List<IImpactTemplateMaxFocusArea> getContestImpactFocusAreas(ContestWrapper contest) {
         IImpactTemplateFocusAreaList focusAreaList = getContestImpactFocusAreaList(contest);
         return getImpactTemplateMaxFocusArea(focusAreaList.getId());
     }
 
-    public IImpactTemplateFocusAreaList getContestImpactFocusAreaList(ContestWrapper contest) {
+    default IImpactTemplateFocusAreaList getContestImpactFocusAreaList(ContestWrapper contest) {
         IProposalTemplate proposalTemplate =
                 ProposalTemplateClientUtil.getProposalTemplate(contest.getProposalTemplateId());
         return getImpactTemplateFocusAreaList(proposalTemplate.getFocusAreaListTemplateId());
     }
 
-    public IImpactTemplateFocusAreaList getImpactTemplateFocusAreaList(long focusAreaListId) {
-        return impactTemplateFocusAreaListResource.get(focusAreaListId)
-                .execute();
-    }
+    @GetMapping("/impactTemplateFocusAreaLists/{impactTemplateFocusAreaListId}")
+    IImpactTemplateFocusAreaList getImpactTemplateFocusAreaList(
+            @PathVariable("impactTemplateFocusAreaListId") Long impactTemplateFocusAreaListId);
 
-    public List<IImpactTemplateMaxFocusArea> getImpactTemplateMaxFocusArea(Long focusAreaListId) {
-        return impactTemplateMaxFocusAreaResource.list()
-                .optionalQueryParam("focusAreaListId", focusAreaListId)
-                .execute();
-    }
+    @GetMapping("/impactTemplateMaxFocusAreas")
+    public List<IImpactTemplateMaxFocusArea> getImpactTemplateMaxFocusArea(
+            @RequestParam(value = "focusAreaListId", required = false) Long focusAreaListId);
 
-    public List<IImpactIteration> getContestImpactIterations(ContestWrapper contest) {
+    default List<IImpactIteration> getContestImpactIterations(ContestWrapper contest) {
         IImpactTemplateSeries impactSeries = getContestImpactTemplateSeries(contest);
         return getContestImpactIterations(impactSeries.getIterationId());
     }
 
-    public IImpactTemplateSeries getContestImpactTemplateSeries(ContestWrapper contest) {
-
+    default IImpactTemplateSeries getContestImpactTemplateSeries(ContestWrapper contest) {
         IProposalTemplate proposalTemplate =
                 ProposalTemplateClientUtil.getProposalTemplate(contest.getProposalTemplateId());
         return getImpactTemplateSeries(proposalTemplate.getImpactSeriesTemplateId());
 
     }
 
-    public IImpactTemplateSeries getImpactTemplateSeries(long seriesId) {
-        return impactTemplateSeriesResource.get(seriesId)
-                .execute();
-    }
+    @GetMapping("/impactTemplateSeries/{impactTemplateSeriesId}")
+    IImpactTemplateSeries getImpactTemplateSeries(
+            @PathVariable("impactTemplateSeriesId") Long impactTemplateSeriesId);
 
-    public List<IImpactIteration> getContestImpactIterations(Long iterationId) {
-        return impactIterationResource.list()
-                .optionalQueryParam("iterationId", iterationId)
-                .execute();
-    }
+    @GetMapping("/impactIterations")
+    List<IImpactIteration> getContestImpactIterations(
+            @RequestParam(value = "iterationId", required = false) Long iterationId);
 }
