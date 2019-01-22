@@ -719,12 +719,12 @@ public class ContestWrapper extends Contest {
 
     @JsonIgnore
     public boolean getMemberAgreedToTos(Member member) {
-        return contestClient.getMemberAgreedToTos(getId(), member);
+        return contestClient.getMemberAgreedToTos(getId(), member.getId());
     }
 
     @JsonIgnore
     public void setMemberAgreedToTos(Member member, boolean agreed) {
-        contestClient.setMemberAgreedToTos(getId(), member, agreed);
+        contestClient.setMemberAgreedToTos(getId(), member.getId(), agreed);
     }
 
     @JsonIgnore

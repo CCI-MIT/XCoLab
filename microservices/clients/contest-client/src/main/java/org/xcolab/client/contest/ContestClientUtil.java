@@ -15,7 +15,7 @@ import java.util.Map;
 
 public final class ContestClientUtil {
 
-    private static final ContestClient contestClient = new ContestClient();
+    private static final ContestClient contestClient = null;
 
     private ContestClientUtil() {
     }
@@ -48,10 +48,6 @@ public final class ContestClientUtil {
 
     public static boolean updateContest(ContestWrapper contest) {
         return contestClient.updateContest(contest);
-    }
-
-    public static Integer getProposalCount(Long contestId) {
-        return contestClient.getProposalCount(contestId);
     }
 
     public static ContestWrapper getContest(String contestUrlName, long contestYear)

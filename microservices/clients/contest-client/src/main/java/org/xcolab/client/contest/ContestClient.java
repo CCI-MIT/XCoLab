@@ -3,77 +3,56 @@ package org.xcolab.client.contest;
 import edu.mit.cci.roma.client.Simulation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.exceptions.ContestPhaseNotFoundException;
-import org.xcolab.client.contest.exceptions.ContestScheduleNotFoundException;
-import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
-import org.xcolab.client.contest.pojo.wrapper.ContestDto;
-import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.IContestCollectionCard;
 import org.xcolab.client.contest.pojo.IContestDiscussion;
 import org.xcolab.client.contest.pojo.IContestPhaseRibbonType;
 import org.xcolab.client.contest.pojo.IContestPhaseType;
 import org.xcolab.client.contest.pojo.IContestSchedule;
 import org.xcolab.client.contest.pojo.IContestTranslation;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.pojo.tables.pojos.ContestDiscussion;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.contest.pojo.wrapper.ContestDto;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.commons.IdListUtil;
+import org.xcolab.commons.spring.web.annotation.ListMapping;
 import org.xcolab.util.activities.enums.ActivityCategory;
-import org.xcolab.util.http.ServiceRequestUtils;
-import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
-import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.RestResource2;
-import org.xcolab.util.http.client.RestResource2L;
-import org.xcolab.util.http.exceptions.EntityNotFoundException;
-import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ContestClient {
+public interface ContestClient {
 
-    private final RestResource1<ContestDto, Long> contestResource = null; // contests
-    private final RestResource2<ContestDto, Long, Boolean, Long> tosAgreementResource = null; // contests / memberAgreedToTos
-    private final RestResource2<ContestDto, Long, IContestTranslation, String> contestTranslationResource = null; // contests / translations
-    private final RestResource<IContestDiscussion, Long> contestDiscussionResource = null; // contestDiscussions
+    RestResource1<ContestDto, Long> contestResource = null; // contests
 
-    private final RestResource2L<ContestDto, ContestPhaseWrapper> visiblePhasesResource = null; // contests / visiblePhases
-    private final RestResource2<ContestPhaseWrapper, Long, Long, Void> proposalThreadsInPhaseResource = null; // contest / proposalDiscussionThreads
-    private final RestResource1<ContestPhaseWrapper, Long> contestPhasesResource = null; // contestPhases
-    private final RestResource<IContestPhaseType, Long> contestPhaseTypesResource = null; // contestPhaseTypes
-    private final RestResource1<IContestPhaseRibbonType, Long> contestPhaseRibbonTypeResource = null; // contestPhaseRibbonTypes
-
-    private final RestResource1<IContestSchedule, Long> contestScheduleResource = null; // contestSchedules
-    private final RestResource1<IContestCollectionCard, Long> contestCollectionCardRestResource = null; // contestCollectionCards
-    private final RestResource<Long, Long> contestYearResource = null; // contestyears
-
-    public ContestWrapper getContest(long contestId) {
+    default ContestWrapper getContest(long contestId) {
         final String lang = LocaleContextHolder.getLocale().getLanguage();
         return getContest(contestId, lang);
     }
 
-    public ContestWrapper getContest(long contestId, String lang) {
-        try {
-            return contestResource.get(contestId)
-                    .optionalQueryParam("lang", lang)
-                    .withCache(CacheName.CONTEST_DETAILS)
-                    .executeChecked().toContest();
-        } catch (EntityNotFoundException e) {
-            throw new ContestNotFoundException(contestId);
-        }
-    }
+    @GetMapping("/contests/{contestId}")
+    ContestWrapper getContest(@PathVariable("contestId") Long contestId,
+            @RequestParam(value = "lang", required = false) String lang);
 
-    public ContestWrapper createContest(Long userId, String name) {
+    default ContestWrapper createContest(Long userId, String name) {
         ContestWrapper c = new ContestWrapper();
         c.setAuthorUserId(userId);
         c.setQuestion(name);
@@ -115,73 +94,52 @@ public class ContestClient {
         return createContest(c);
     }
 
-    public ContestWrapper createContest(ContestWrapper contest) {
-        final ContestWrapper result = contestResource
-                .create(new ContestDto(contest)).execute().toContest();
-        //TODO COLAB-2589: fine-grained cache removal
-        ServiceRequestUtils.clearCache(CacheName.CONTEST_LIST);
-        ServiceRequestUtils.clearCache(CacheName.CONTEST_DETAILS);
-        return result;
+    @PostMapping("/contests")
+    ContestWrapper createContest(@RequestBody ContestWrapper contest);
+
+    @DeleteMapping("/contests/{contestId}")
+    boolean deleteContest(@PathVariable("contestId") Long contestId);
+
+    default List<ContestWrapper> getContestsMatchingTier(Long contestTier) {
+        return getContests(null, Integer.MAX_VALUE, null, null, null, null, null, null,
+                Collections.singletonList(contestTier), null, null, null, null, null, null, null);
     }
 
-    public boolean deleteContest(long contestId) {
-        final Boolean result = contestResource.delete(contestId)
-                .execute();
-        //TODO COLAB-2589: fine-grained cache removal
-        ServiceRequestUtils.clearCache(CacheName.CONTEST_LIST);
-        ServiceRequestUtils.clearCache(CacheName.CONTEST_DETAILS);
-        return result;
-    }
+    @PutMapping("/contests")
+    boolean updateContest(@RequestBody ContestWrapper contest);
 
-    public List<ContestWrapper> getContestsMatchingTier(Long contestTier) {
-        return ContestDto.toContests(contestResource.list()
-                .queryParam("contestTiers", contestTier)
-                .queryParam("limitRecord", Integer.MAX_VALUE).execute());
-    }
+    @PostMapping("/contestDiscussions")
+    IContestDiscussion createContestDiscussion(@RequestBody IContestDiscussion contestDiscussion);
 
-    public boolean updateContest(ContestWrapper contest) {
-        final Boolean result =
-                contestResource.update(new ContestDto(contest), contest.getId())
-                        .execute();
-        //TODO COLAB-2589: fine-grained cache removal
-        ServiceRequestUtils.clearCache(CacheName.CONTEST_LIST);
-        ServiceRequestUtils.clearCache(CacheName.CONTEST_DETAILS);
-        return result;
-    }
-
-    public IContestDiscussion createContestDiscussion(long threadId, long contestId, String tab) {
+    default IContestDiscussion createContestDiscussion(Long threadId, Long contestId, String tab) {
         IContestDiscussion contestDiscussion = new ContestDiscussion(threadId, contestId, tab);
-        return contestDiscussionResource.create(contestDiscussion).execute();
+        return createContestDiscussion(contestDiscussion);
     }
 
-    public IContestDiscussion getContestDiscussion(long contestId, String tab) {
-        return contestDiscussionResource.list()
-                .queryParam("contestId", contestId)
-                .queryParam("tab", tab)
-                .executeWithResult()
-                .getFirst();
-    }
+    @GetMapping("/contestDiscussions")
+    public List<IContestDiscussion> getContestDiscussions(
+            @RequestParam(required = false) Integer startRecord,
+            @RequestParam(required = false) Integer limitRecord,
+            @RequestParam(required = false) String sort,
+            @RequestParam(required = false) Long contestId,
+            @RequestParam(required = false) String tab);
 
-    public Integer getProposalCount(Long contestId) {
-        try {
-            return contestResource.<ProposalWrapper, Integer>elementService(contestId,
-                    "proposalCountForActivePhase", Integer.class)
-                    .withCache(CacheKeys.withClass(ProposalWrapper.class)
-                            .withParameter("contestId", contestId).asCount(), CacheName.MISC_MEDIUM)
-                    .getChecked();
-        } catch (EntityNotFoundException e) {
-            return 0;
+    default IContestDiscussion getContestDiscussion(Long contestId, String tab) {
+        List<IContestDiscussion> contestDiscussions =
+                getContestDiscussions(null, null, null, contestId, tab);
+        if (!contestDiscussions.isEmpty()) {
+            return contestDiscussions.get(0);
         }
+        throw new IndexOutOfBoundsException();
     }
 
-    public ContestWrapper getContest(String contestUrlName, long contestYear)
+    default ContestWrapper getContest(String contestUrlName, long contestYear)
             throws ContestNotFoundException {
         final String lang = LocaleContextHolder.getLocale().getLanguage();
         return getContest(contestUrlName, contestYear, lang);
     }
 
-    public ContestWrapper getContest(String contestUrlName, long contestYear, String lang)
-            throws ContestNotFoundException {
+    default ContestWrapper getContest(String contestUrlName, long contestYear, String lang) {
         List<ContestDto> list = contestResource.list()
                 .queryParam("contestUrlName", contestUrlName)
                 .queryParam("contestYear", contestYear)
@@ -194,201 +152,133 @@ public class ContestClient {
         throw new ContestNotFoundException(contestUrlName, contestYear);
     }
 
-    public List<IContestTranslation> getTranslationsForContestId(long contestId) {
-        return contestTranslationResource.resolveParentId(contestResource.id(contestId))
-                .list()
-                .queryParam("contestId", contestId)
-                .execute();
-    }
+    @GetMapping("/contests/{contestId}/translations")
+    List<IContestTranslation> getTranslationsForContestId(
+            @PathVariable("contestId") Long contestId);
 
-    public boolean saveTranslation(IContestTranslation contestTranslation) {
-        return contestTranslationResource
-                .resolveParentId(contestResource.id(contestTranslation.getContestId()))
-                .update(contestTranslation, contestTranslation.getLang())
-                .execute();
-    }
+    @PutMapping("/contests/translations")
+    boolean saveTranslation(@RequestBody IContestTranslation contestTranslation);
 
+    @GetMapping("/contests/isContestTitleYearUnique")
+    boolean isContestTitleYearUnique(
+            @RequestParam(value = "contestShortName", required = false) String contestShortName,
+            @RequestParam(value = "year", required = false) Long year,
+            @RequestParam(value = "currentContestId", required = false) Long currentContestId);
 
-    public boolean isContestTitleYearUnique(String contestShortName, Long year,Long currentContestId) {
-
-        return contestResource.collectionService("isContestTitleYearUnique", Boolean.class)
-                .queryParam("contestShortName", contestShortName)
-                .queryParam("year",year)
-                .queryParam("currentContestId",currentContestId)
-                .execute();
-    }
-    public List<ContestWrapper> findContestsByActiveFeatured(Boolean active, Boolean featured) {
+    default List<ContestWrapper> findContestsByActiveFeatured(Boolean active, Boolean featured) {
         String lang = LocaleContextHolder.getLocale().getLanguage();
-        return ContestDto.toContests(contestResource.list()
-                .optionalQueryParam("active", active)
-                .optionalQueryParam("featured", featured)
-                .queryParam("lang", lang)
-                .withCache(CacheName.CONTEST_LIST)
-                .execute());
+        return getContests(null, null, null, lang, null, null, active, featured, null,
+                null, null, null, null, null, null, null);
     }
 
-    public List<ContestWrapper> findContestsByActive(boolean active) {
+    default List<ContestWrapper> findContestsByActive(boolean active) {
         String lang = LocaleContextHolder.getLocale().getLanguage();
-        return ContestDto.toContests(contestResource.list()
-                .queryParam("lang", lang)
-                .optionalQueryParam("active", active)
-                .withCache(CacheName.CONTEST_LIST)
-                .execute());
+        return getContests(null, null, null, lang, null, null, active, null, null, null, null, null,
+                null, null, false, null);
     }
 
-    public List<ContestWrapper> findPublicContests(String contestName,
+    default List<ContestWrapper> findPublicContests(String contestName,
             List<Long> ontologyTermIds, List<Long> contestTypeIds, List<Long> contestTiers) {
         String lang = LocaleContextHolder.getLocale().getLanguage();
-        return ContestDto.toContests(contestResource.list()
-                .addRange(0, Integer.MAX_VALUE)
-                .queryParam("lang", lang)
-                .optionalQueryParam("searchTerm", contestName)
-                .optionalQueryParam("ontologyTermIds",  ontologyTermIds)
-                .optionalQueryParam("contestTypeIds",  contestTypeIds)
-                .optionalQueryParam("contestTiers",  contestTiers)
-                .queryParam("contestPrivate", false)
-                .withCache(CacheName.CONTEST_LIST)
-                .execute());
+        return getContests(0, Integer.MAX_VALUE, null, lang, null, null, null, null,
+                contestTiers, null, null, null, ontologyTermIds, contestTypeIds, null, contestName);
     }
 
-    public List<ContestWrapper> findContestsByTierAndOntologyTermIds(Long contestTier,
+    default List<ContestWrapper> findContestsByTierAndOntologyTermIds(Long contestTier,
             List<Long> focusAreaOntologyTerms) {
         String lang = LocaleContextHolder.getLocale().getLanguage();
-        return ContestDto.toContests(contestResource.list()
-                .queryParam("lang", lang)
-                .queryParam("contestTiers", contestTier)
-                .queryParam("focusAreaIds", focusAreaOntologyTerms.toArray())
-                .withCache(CacheName.CONTEST_LIST)
-                .execute());
+        return getContests(null, null, null, lang, null, null, null, null,
+                Collections.singletonList(contestTier), null, null, null, focusAreaOntologyTerms,
+                null, false, null);
     }
 
     //TODO COLAB-2595: Confusing Variable naming
-    public List<ContestWrapper> getContestMatchingOntologyTerms(List<Long> ontologyTermIds) {
-        return ContestDto.toContests(contestResource
-                .collectionService("getContestsByOntologyTerm", ContestDto.TYPES.getTypeReference())
-                .queryParam("focusAreaIds", ontologyTermIds.toArray())
-                .getList());
+    @GetMapping("/contests/getContestMatchingOntologyTerms")
+    List<ContestWrapper> getContestMatchingOntologyTerms(
+            @RequestParam(value = "focusAreaOntologyTerms", required = false)
+                    List<Long> focusAreaOntologyTerms);
+
+    @ListMapping("/contestyears")
+    List<Long> getContestYears();
+
+
+    @GetMapping("/contests/getContestByThreadId")
+    ContestWrapper getContestByThreadId(@RequestParam(value = "", required = false) Long threadId);
+
+    @GetMapping("/contests/getContestByResourceArticleId")
+    ContestWrapper getContestByResourceArticleId(
+            @RequestParam(value = "resourceArticleId", required = false) Long resourceArticleId);
+
+
+    @GetMapping("contests/getNumberOfAllContestsInCollectionCard")
+    int getNumberOfAllContestsInCollectionCard(
+            @RequestParam("collectionCardId") Long collectionCardId,
+            @RequestParam("viewType") String viewType,
+            @RequestParam("onlyFeatured") Boolean onlyFeatured);
+
+    @GetMapping("contests/getNumberOfActiveContestsInCollectionCard")
+    int getNumberOfActiveContestsInCollectionCard(
+            @RequestParam("collectionCardId") Long collectionCardId,
+            @RequestParam("viewType") String viewType,
+            @RequestParam("onlyFeatured") Boolean onlyFeatured);
+
+    @GetMapping("contests/getNumberOfPriorContestsInCollectionCard")
+    int getNumberOfPriorContestsInCollectionCard(
+            @RequestParam("collectionCardId") Long collectionCardId,
+            @RequestParam("viewType") String viewType,
+            @RequestParam("onlyFeatured") Boolean onlyFeatured);
+
+    @PutMapping("/contestCollectionCards")
+    boolean updateContestCollectionCard(@RequestBody IContestCollectionCard contestCollectionCard);
+
+    @DeleteMapping("/contestCollectionCards/{contestCollectionCardId}")
+    boolean deleteContestCollectionCard(
+            @PathVariable("contestCollectionCardId") Long contestCollectionCardId);
+
+    @PostMapping("/contestCollectionCards")
+    IContestCollectionCard createContestCollectionCard(
+            @RequestBody IContestCollectionCard contestCollectionCard);
+
+    @GetMapping("/contests/getContestsByOntologyTerm")
+    List<ContestWrapper> getContestByOntologyTerm(
+            @RequestParam(value = "focusAreaOntologyTerm", required = false)
+                    Long focusAreaOntologyTerm,
+            @RequestParam(value = "getActive", required = false) Boolean getActive);
+
+    @GetMapping("/contests/getNumberOfContestsByOntologyTerm")
+    int getNumberOfContestsByOntologyTerm(
+            @RequestParam(value = "focusAreaOntologyTerm", required = false)
+                    Long focusAreaOntologyTerm);
+
+    @GetMapping("/contests/{contestId}/subContestsByOntologySpaceId")
+    List<ContestWrapper> getSubContestsByOntologySpaceId(@PathVariable("contestId") Long contestId,
+            @RequestParam("ontologySpaceId") Long ontologySpaceId);
+
+    @GetMapping("/contestPhases/autoPromoteProposals")
+    int autoPromoteProposals();
+
+    @PutMapping("/contestPhases/{contestPhaseId}/forcePromotionOfProposalInContestPhaseId")
+    boolean forcePromotionOfProposalInPhase(@PathVariable("contestPhaseId") Long contestPhaseId,
+            @RequestParam("proposalId") Long proposalId);
+
+    default List<ContestWrapper> getAllContests() {
+        String lang = LocaleContextHolder.getLocale().getLanguage();
+        return getContests(0, Integer.MAX_VALUE, "weight", lang, null, null, null, null, null,
+                null, null, null, null, null, null, null);
     }
 
-    public List<Long> getContestYears() {
-        return contestYearResource.list().execute();
-    }
-
-
-    public ContestWrapper getContestByThreadId(Long threadId) {
-        try {
-            return contestResource.collectionService("getContestByThreadId", ContestWrapper.class)
-                    .queryParam("threadId", threadId).execute();
-        } catch (UncheckedEntityNotFoundException e) {
-            throw new ContestNotFoundException("No contest with threadId = " + threadId);
-        }
-    }
-
-    public ContestWrapper getContestByResourceArticleId(Long resourceArticleId) {
-        return contestResource
-                .collectionService("getContestByResourceArticleId", ContestWrapper.class)
-                .queryParam("resourceArticleId", resourceArticleId)
-                .execute();
-    }
-
-
-    public int getNumberOfAllContestsInCollectionCard(Long collectionCardId, String viewType, boolean onlyFeatured) {
-        return contestResource.collectionService("getNumberOfAllContestsInCollectionCard", Integer.class)
-                .queryParam("collectionCardId", collectionCardId)
-                .queryParam("viewType", viewType)
-                .queryParam("onlyFeatured", onlyFeatured)
-                .execute();
-    }
-
-    public int getNumberOfActiveContestsInCollectionCard(Long collectionCardId, String viewType, boolean onlyFeatured) {
-        return contestResource.collectionService("getNumberOfActiveContestsInCollectionCard", Integer.class)
-                .queryParam("collectionCardId", collectionCardId)
-                .queryParam("viewType", viewType)
-                .queryParam("onlyFeatured", onlyFeatured)
-                .execute();
-    }
-
-    public int getNumberOfPriorContestsInCollectionCard(Long collectionCardId, String viewType, boolean onlyFeatured) {
-        return contestResource.collectionService("getNumberOfPriorContestsInCollectionCard", Integer.class)
-                .queryParam("collectionCardId", collectionCardId)
-                .queryParam("viewType", viewType)
-                .queryParam("onlyFeatured", onlyFeatured)
-                .execute();
-    }
-
-    public boolean updateContestCollectionCard(IContestCollectionCard contestCollectionCard) {
-        return contestCollectionCardRestResource.update(contestCollectionCard,contestCollectionCard.getId())
-                .execute();
-    }
-
-    public boolean deleteContestCollectionCard(long id) {
-        return contestCollectionCardRestResource.delete(id).execute();
-    }
-
-    public IContestCollectionCard createContestCollectionCard(
-            IContestCollectionCard contestCollectionCard) {
-        return contestCollectionCardRestResource
-                .create(contestCollectionCard)
-                .execute();
-
-    }
-
-    public List<ContestWrapper> getContestByOntologyTerm(Long ontologyTermId, Boolean getActive) {
-        return ContestDto.toContests(contestResource
-                .collectionService("getContestsByOntologyTerm", ContestDto.TYPES.getTypeReference())
-                .queryParam("focusAreaOntologyTerm", ontologyTermId)
-                .queryParam("getActive", getActive)
-                .getList());
-    }
-
-    public int getNumberOfContestsByOntologyTerm(Long ontologyTermId) {
-        return contestResource.collectionService("getNumberOfContestsByOntologyTerm", Integer.class)
-                .queryParam("ontologyTermId", ontologyTermId)
-                .execute();
-    }
-
-    public List<ContestWrapper> getSubContestsByOntologySpaceId(Long contestId, Long ontologySpaceId) {
-        return ContestDto.toContests(contestResource.elementService(contestId, "getSubContestsByOntologySpaceId",
-                ContestDto.TYPES.getTypeReference())
-                .optionalQueryParam("ontologySpaceId", ontologySpaceId)
-                .getList());
-
-    }
-
-    public int autoPromoteProposals() {
-        return contestPhasesResource.collectionService("autoPromoteProposals", Integer.class).get();
-    }
-
-    public void forcePromotionOfProposalInPhase(Long proposalId, Long contestPhaseId) {
-        contestPhasesResource
-                .elementService(contestPhaseId, "forcePromotionOfProposalInContestPhaseId", Boolean.class)
-                .queryParam("proposalId", proposalId)
-                .put();
-
-    }
-
-    public List<ContestWrapper> getAllContests() {
+    default List<ContestWrapper> getAllContestsInYear(Integer contestYear) {
         String lang = LocaleContextHolder.getLocale().getLanguage();
         return ContestDto.toContests(contestResource.list()
                 .addRange(0, Integer.MAX_VALUE)
                 .queryParam("lang", lang)
-                .queryParam("sort", "weight")
-                .withCache(CacheName.CONTEST_LIST)
-                .execute());
-    }
-
-    public List<ContestWrapper> getAllContestsInYear(Integer contestYear) {
-        String lang = LocaleContextHolder.getLocale().getLanguage();
-        return ContestDto.toContests(contestResource.list()
-                .addRange(0, Integer.MAX_VALUE)
-                .queryParam("lang", lang)
-                .queryParam("contestYear",contestYear)
+                .queryParam("contestYear", contestYear)
                 .queryParam("sort", "ContestShortName")
                 .withCache(CacheName.CONTEST_LIST)
                 .execute());
     }
 
-    public Map<Long, String> getModelIdsAndNames(long contestId) {
+    default Map<Long, String> getModelIdsAndNames(long contestId) {
         try {
             List<Long> modelIds = getModelIds(contestId);
 
@@ -407,7 +297,7 @@ public class ContestClient {
         }
     }
 
-    public List<Long> getModelIds(long contestId) throws ContestNotFoundException {
+    default List<Long> getModelIds(long contestId) throws ContestNotFoundException {
         ContestWrapper contest = getContest(contestId);
         List<Long> modelIds = new ArrayList<>();
 
@@ -421,122 +311,89 @@ public class ContestClient {
         return modelIds;
     }
 
-    public List<ContestWrapper> getContestsByProposalTemplateId(Long proposalTemplateId) {
+    default List<ContestWrapper> getContestsByProposalTemplateId(Long proposalTemplateId) {
         String lang = LocaleContextHolder.getLocale().getLanguage();
-        return ContestDto.toContests(contestResource
-                .list()
-                .queryParam("lang", lang)
-                .queryParam("proposalTemplateId", proposalTemplateId)
-                .execute());
+        return getContests(null, null, null, lang, null, null, null, null, null,
+                null, proposalTemplateId, null, null, null, null, null);
     }
 
-    public List<ContestWrapper> getContestsByContestScheduleId(Long contestScheduleId) {
+    default List<ContestWrapper> getContestsByContestScheduleId(Long contestScheduleId) {
         String lang = LocaleContextHolder.getLocale().getLanguage();
-        return ContestDto.toContests(contestResource
-                .list()
-                .queryParam("lang", lang)
-                .queryParam("contestScheduleId", contestScheduleId)
-                .execute());
+        return getContests(null, null, null, lang, null, null, null, null, null,
+                contestScheduleId, null, null, null, null, null, null);
     }
 
-    public List<ContestWrapper> getContestsByActivePrivate(boolean contestActive, boolean contestPrivate) {
+    default List<ContestWrapper> getContestsByActivePrivate(boolean contestActive,
+            boolean contestPrivate) {
         String lang = LocaleContextHolder.getLocale().getLanguage();
-        return ContestDto.toContests(contestResource
-                .list()
-                .addRange(0, Integer.MAX_VALUE)
-                .queryParam("lang", lang)
-                .queryParam("active", contestActive)
-                .queryParam("contestPrivate", contestPrivate)
-                .execute());
+        return getContests(0, Integer.MAX_VALUE, null, lang, null, null, contestActive, null, null,
+                null, null, null, null, null, contestPrivate, null);
     }
 
+    @GetMapping("/contests")
+    List<ContestWrapper> getContests(
+            @RequestParam(value = "", required = false) Integer startRecord,
+            @RequestParam(value = "", required = false) Integer limitRecord,
+            @RequestParam(value = "", required = false) String sort,
+            @RequestParam(value = "", required = false) String lang,
+            @RequestParam(value = "", required = false) String contestUrlName,
+            @RequestParam(value = "", required = false) Long contestYear,
+            @RequestParam(value = "", required = false) Boolean active,
+            @RequestParam(value = "", required = false) Boolean featured,
+            @RequestParam(value = "", required = false) List<Long> contestTiers,
+            @RequestParam(value = "", required = false) Long contestScheduleId,
+            @RequestParam(value = "", required = false) Long proposalTemplateId,
+            @RequestParam(value = "", required = false) List<Long> focusAreaIds,
+            @RequestParam(value = "", required = false) List<Long> ontologyTermIds,
+            @RequestParam(value = "", required = false) List<Long> contestTypeIds,
+            @RequestParam(value = "", required = false) Boolean contestPrivate,
+            @RequestParam(value = "", required = false) String searchTerm);
 
-    public List<ContestWrapper> getContests(Boolean contestActive,
-            Boolean contestPrivate, Long contestTypeId) {
+    default List<ContestWrapper> getContests(Boolean contestActive, Boolean contestPrivate,
+            Long contestTypeId) {
         String lang = LocaleContextHolder.getLocale().getLanguage();
-        return ContestDto.toContests(contestResource.list()
-                .addRange(0, Integer.MAX_VALUE)
-                .queryParam("lang", lang)
-                .optionalQueryParam("active", contestActive)
-                .optionalQueryParam("contestPrivate", contestPrivate)
-                .optionalQueryParam("contestTypeIds", contestTypeId)
-                .execute());
+        return getContests(null, null, null, lang, null, null, contestActive, null, null, null,
+                null, null, null,
+                Collections.singletonList(contestTypeId), contestPrivate, null);
     }
 
-    public int countContests(Boolean contestActive, Boolean contestPrivate, Long contestTypeId) {
-        return contestResource.count()
-                .optionalQueryParam("active", contestActive)
-                .optionalQueryParam("contestPrivate", contestPrivate)
-                .optionalQueryParam("contestTypeIds", contestTypeId)
-                .withCache(CacheName.CONTEST_LIST)
-                .execute();
-    }
+    @GetMapping("/count/contests")
+    int countContests(@RequestParam("contestActive") Boolean contestActive,
+            @RequestParam("contestPrivate") Boolean contestPrivate,
+            @RequestParam("contestTypeId") Long contestTypeId);
 
-    public List<ContestWrapper> getContestsByContestTypeId(Long contestTypeId) {
+    default List<ContestWrapper> getContestsByContestTypeId(Long contestTypeId) {
         String lang = LocaleContextHolder.getLocale().getLanguage();
-        return ContestDto.toContests(contestResource
-                .list()
-                .queryParam("lang", lang)
-                .queryParam("contestTypeIds", contestTypeId)
-                .queryParam("limitRecord", Integer.MAX_VALUE)
-                .execute());
+        return getContests(null, Integer.MAX_VALUE, null, lang, null, null, null, null, null, null,
+                null, null, null,
+                Collections.singletonList(contestTypeId), null, null);
     }
 
-    public IContestSchedule createContestSchedule(IContestSchedule contestSchedule) {
-        return contestScheduleResource.create(contestSchedule)
-                .execute();
-    }
+    @PostMapping("/contestSchedules")
+    IContestSchedule createContestSchedule(@RequestBody IContestSchedule contestSchedule);
 
-    public boolean updateContestSchedule(IContestSchedule contestSchedule) {
-        return contestScheduleResource
-                .update(contestSchedule, contestSchedule.getId())
-                .cacheName(CacheName.MISC_REQUEST)
-                .execute();
-    }
+    @PutMapping("/contestSchedules")
+    public boolean updateContestSchedule(@RequestBody IContestSchedule contestSchedule);
 
-    public IContestSchedule getContestSchedule(long id) {
-        try {
-            return contestScheduleResource.get(id)
-                    .withCache(CacheName.MISC_REQUEST)
-                    .execute();
-        } catch (UncheckedEntityNotFoundException e) {
-            throw new ContestScheduleNotFoundException(id);
-        }
-    }
+    @GetMapping("/contestSchedules/{contestScheduleId}")
+    IContestSchedule getContestSchedule(@PathVariable("contestScheduleId") Long contestScheduleId);
 
-    public boolean isContestScheduleUsed(long contestScheduleId) {
-        return contestScheduleResource.elementService(contestScheduleId, "isUsed", Boolean.class)
-                .get();
-    }
+    @GetMapping("/contestSchedules/{contestScheduleId}/isUsed")
+    boolean isContestScheduleUsed(@PathVariable("contestScheduleId") Long contestScheduleId);
 
-    public List<IContestSchedule> getAllContestSchedules() {
-        return contestScheduleResource.list().execute();
-    }
+    @GetMapping("/contestSchedules")
+    List<IContestSchedule> getAllContestSchedules();
 
-    public boolean deleteContestSchedule(long contestScheduleId) {
-        return contestScheduleResource.delete(contestScheduleId)
-                .execute();
-    }
+    @DeleteMapping("/contestSchedules/{id}")
+    boolean deleteContestSchedule(@PathVariable("id") Long id);
 
-    public List<ContestPhaseWrapper> getVisibleContestPhases(Long contestId) {
-        return visiblePhasesResource.resolveParentId(contestResource.id(contestId))
-                .list()
-                .withCache(CacheKeys.withClass(ContestPhaseWrapper.class)
-                                .withParameter("contestId", contestId)
-                                .withParameter("visible", true).asList(),
-                        CacheName.CONTEST_DETAILS)
-                .execute();
-    }
+    @GetMapping("/contests/{contestId}/visiblePhases")
+    List<ContestPhaseWrapper> getVisibleContestPhases(@PathVariable("contestId") Long contestId);
 
-    public List<Long> getProposalDiscussionThreads(long contestPhaseId) {
-        return proposalThreadsInPhaseResource
-                .resolveParentId(contestPhasesResource.id(contestPhaseId))
-                .list()
-                .withCache(CacheName.CONTEST_LIST)
-                .execute();
-    }
+    @GetMapping("/contestPhases/{phaseId}/proposalDiscussionThreads")
+    List<Long> getProposalDiscussionThreads(@PathVariable("phaseId") Long phaseId);
 
-    public int getPointsAccessibleForActivePhaseOfContest(ContestWrapper contest) {
+    default int getPointsAccessibleForActivePhaseOfContest(ContestWrapper contest) {
         ContestPhaseWrapper activePhase = getActivePhase(contest.getId());
         if (activePhase != null) {
             IContestPhaseType cpType = getContestPhaseType(activePhase.getContestPhaseTypeId());
@@ -547,151 +404,110 @@ public class ContestClient {
         return 0;
     }
 
-    public ContestPhaseWrapper getActivePhase(Long contestId) {
-        return contestResource.<ContestPhaseWrapper, ContestPhaseWrapper>elementService(contestId, "activePhase", ContestPhaseWrapper.class)
-                .withCache(CacheKeys.withClass(ContestPhaseWrapper.class)
-                        .withParameter("contestId", contestId)
-                        .withParameter("active", true).build(), CacheName.MISC_REQUEST)
-                .get();
+    @GetMapping("/contests/{contestId}/activePhase")
+    ContestPhaseWrapper getActivePhase(@PathVariable("contestId") Long contestId);
+
+    @GetMapping("/contestPhaseTypes/{contestPhaseTypeId}")
+    IContestPhaseType getContestPhaseType(
+            @PathVariable("contestPhaseTypeId") Long contestPhaseTypeId);
+
+    @DeleteMapping("/contestPhases/{contestPhaseId}")
+    boolean deleteContestPhase(@PathVariable Long contestPhaseId);
+
+    @PutMapping("/contestPhases")
+    boolean updateContestPhase(@RequestBody ContestPhaseWrapper contestPhase);
+
+    @PostMapping("/contestPhases")
+    ContestPhaseWrapper createContestPhase(@RequestBody ContestPhaseWrapper contestPhase);
+
+    @GetMapping("/contestPhases")
+    List<ContestPhaseWrapper> getContestPhases(
+            @RequestParam(value = "contestId", required = false) Long contestId,
+            @RequestParam(value = "contestScheduleId", required = false) Long contestScheduleId,
+            @RequestParam(value = "contestPhaseTypeId", required = false) Long contestPhaseTypeId);
+
+    default List<ContestPhaseWrapper> getAllContestPhases(Long contestId) {
+        return getContestPhases(contestId, null, null);
     }
 
-    public IContestPhaseType getContestPhaseType(Long contestPhaseTypeId) {
-        return contestPhaseTypesResource.get(contestPhaseTypeId)
-                .withCache(CacheKeys.of(IContestPhaseType.class, contestPhaseTypeId),
-                        CacheName.MISC_MEDIUM)
-                .execute();
+    default List<ContestPhaseWrapper> getPhasesForContestScheduleIdAndContest(
+            Long contestScheduleId, Long contestId) {
+        return getContestPhases(contestId, contestScheduleId, null);
     }
 
-    public void deleteContestPhase(Long contestPhaseId) {
-        contestPhasesResource.delete(contestPhaseId).execute();
+    default List<ContestPhaseWrapper> getTemplatePhasesForContestScheduleId(
+            Long contestScheduleId) {
+        return getContestPhases(ContestPhaseWrapper.SCHEDULE_TEMPLATE_PHASE_CONTEST_ID,
+                contestScheduleId, null);
     }
 
-    public boolean updateContestPhase(ContestPhaseWrapper contestPhase) {
-        return contestPhasesResource
-                .update(new ContestPhaseWrapper(contestPhase), contestPhase.getId())
-                .execute();
+    default List<ContestPhaseWrapper> getContestPhasesByType(Long contestPhaseTypeId) {
+        return getContestPhases(null, null, contestPhaseTypeId);
     }
 
-    public ContestPhaseWrapper createContestPhase(ContestPhaseWrapper contestPhase) {
-        return contestPhasesResource.create(new ContestPhaseWrapper(contestPhase))
-                .execute();
-    }
+    @GetMapping("/contestPhases/{phaseId}")
+    ContestPhaseWrapper getContestPhase(@PathVariable("phaseId") Long phaseId);
 
-    public List<ContestPhaseWrapper> getAllContestPhases(Long contestId) {
-        return contestPhasesResource.list()
-                .queryParam("contestId", contestId)
-                .execute();
-    }
+    @RequestMapping("/contestPhaseTypes")
+    public List<IContestPhaseType> getAllContestPhaseTypes();
 
-    public List<ContestPhaseWrapper> getPhasesForContestScheduleIdAndContest(Long contestScheduleId,
-            Long contestId) {
-        return contestPhasesResource.list()
-                .queryParam("contestId", contestId)
-                .queryParam("contestScheduleId", contestScheduleId)
-                .execute();
-    }
-
-    public List<ContestPhaseWrapper> getTemplatePhasesForContestScheduleId(Long contestScheduleId) {
-        return contestPhasesResource.list()
-                .queryParam("contestId", ContestPhaseWrapper.SCHEDULE_TEMPLATE_PHASE_CONTEST_ID)
-                .queryParam("contestScheduleId", contestScheduleId)
-                .execute();
-    }
-
-    public List<ContestPhaseWrapper> getContestPhasesByType(long contestPhaseTypeId) {
-        return contestPhasesResource.list()
-                .queryParam("contestPhaseTypeId", contestPhaseTypeId)
-                .execute();
-    }
-
-    public ContestPhaseWrapper getContestPhase(Long contestPhaseId) {
-        try {
-            return contestPhasesResource.get(contestPhaseId)
-                    .execute();
-        } catch (UncheckedEntityNotFoundException e) {
-            throw new ContestPhaseNotFoundException(contestPhaseId);
-        }
-    }
-
-    public List<IContestPhaseType> getAllContestPhaseTypes() {
-        return contestPhaseTypesResource.list()
-                .execute();
-    }
-
-    public List<ContestWrapper> getContestsByContestType(Long contestTypeId) {
+    default List<ContestWrapper> getContestsByContestType(Long contestTypeId) {
         String lang = LocaleContextHolder.getLocale().getLanguage();
-        return ContestDto.toContests(contestResource.list()
-                .queryParam("contestTypeIds", contestTypeId)
-                .queryParam("lang", lang)
-                .withCache(CacheName.CONTEST_LIST)
-                .execute());
+        return getContests(null, null, null, lang, null, null, null, null, null,
+                null, null, null, null, Collections.singletonList(contestTypeId), null, null);
     }
 
-    public int countContestsByContestType(long contestTypeId) {
-        return contestResource.count()
-                .queryParam("contestTypeIds", contestTypeId)
-                .withCache(CacheName.CONTEST_LIST)
-                .execute();
+    default int countContestsByContestType(long contestTypeId) {
+        return countContests(false, false, contestTypeId);
     }
 
-    public String getContestPhaseName(ContestPhaseWrapper ck) {
+    default String getContestPhaseName(ContestPhaseWrapper ck) {
         return getContestPhaseType(ck.getContestPhaseTypeId()).getName();
     }
 
-    public IContestPhaseRibbonType getContestPhaseRibbonType(long id) {
-        return contestPhaseRibbonTypeResource.get(id)
-                .execute();
-    }
+    @GetMapping("/contestPhaseRibbonTypes/{contestPhaseRibbonTypeId}")
+    IContestPhaseRibbonType getContestPhaseRibbonType(
+            @PathVariable("contestPhaseRibbonTypeId") Long contestPhaseRibbonTypeId);
 
-    public List<IContestPhaseRibbonType> getAllContestPhaseRibbonType() {
-        return contestPhaseRibbonTypeResource.list()
-                .execute();
-    }
+    @GetMapping("/contestPhaseRibbonTypes")
+    List<IContestPhaseRibbonType> getAllContestPhaseRibbonType();
 
-    public boolean isMemberSubscribedToContest(long contestId, long userId) {
+    default boolean isMemberSubscribedToContest(long contestId, long userId) {
         return ActivitiesClientUtil.isSubscribedToActivity(userId,
                 ActivityCategory.CONTEST, contestId, "");
     }
 
-    public void subscribeMemberToContest(long contestId, long userId) {
+    default void subscribeMemberToContest(long contestId, long userId) {
         ActivitiesClientUtil.addSubscription(userId, ActivityCategory.CONTEST, contestId, "");
     }
 
-    public void unsubscribeMemberFromContest(long contestId, long userId) {
+    default void unsubscribeMemberFromContest(long contestId, long userId) {
         ActivitiesClientUtil.deleteSubscription(userId, ActivityCategory.CONTEST, contestId);
     }
 
-    public List<IContestCollectionCard> getSubContestCollectionCards(long parentCollectionCardId) {
-        return contestCollectionCardRestResource.list()
-                .queryParam("parentCollectionCardId", parentCollectionCardId)
-                .execute();
+
+    @GetMapping("/contestCollectionCards")
+    List<IContestCollectionCard> getAllContestCollectionCards(
+            @RequestParam(value = "parentCollectionCardId", required = false)
+                    Long parentCollectionCardId);
+
+    default List<IContestCollectionCard> getSubContestCollectionCards(Long parentCollectionCardId) {
+        return getAllContestCollectionCards(parentCollectionCardId);
     }
 
-    public List<IContestCollectionCard> getAllContestCollectionCards() {
-        return contestCollectionCardRestResource.list()
-                .execute();
+    default List<IContestCollectionCard> getAllContestCollectionCards() {
+        return getAllContestCollectionCards(null);
     }
 
-    public IContestCollectionCard getContestCollectionCard(long id) {
-        return contestCollectionCardRestResource.get(id)
-                .execute();
-    }
+    @GetMapping("/contestCollectionCards/{contestCollectionCardId}")
+    IContestCollectionCard getContestCollectionCard(
+            @PathVariable("contestCollectionCardId") Long contestCollectionCardId);
 
-    public boolean getMemberAgreedToTos(long contestId, Member member) {
-        return tosAgreementResource.resolveParentId(contestResource.id(contestId))
-                .get(member.getId())
-                .execute();
-    }
+    @GetMapping("/contests/{contestId}/memberAgreedToTos/{memberId}")
+    boolean getMemberAgreedToTos(@PathVariable("contestId") Long contestId,
+            @PathVariable("memberId") Long memberId);
 
-    public void setMemberAgreedToTos(long contestId, Member member, boolean agreed) {
-        tosAgreementResource.resolveParentId(contestResource.id(contestId))
-                .create(agreed)
-                .queryParam("memberId", member.getId())
-                .execute();
-    }
-
-    @Override
-    public String toString() {
-        return "ContestClient[]";
-    }
+    @PostMapping("/contests/{contestId}/memberAgreedToTos")
+    void setMemberAgreedToTos(@PathVariable("contestId") Long contestId,
+            @RequestParam("memberId") Long memberId, @RequestBody boolean agreed);
 }

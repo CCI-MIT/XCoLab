@@ -21,29 +21,30 @@ public class ContestCollectionCardDaoImpl implements ContestCollectionCardDao {
     @Autowired
     private DSLContext dslContext;
 
-
     @Override
     public IContestCollectionCard create(IContestCollectionCard contestCollectionCard) {
-
         ContestCollectionCardRecord ret = this.dslContext.insertInto(CONTEST_COLLECTION_CARD)
                 .set(CONTEST_COLLECTION_CARD.PARENT, contestCollectionCard.getParent())
-                .set(CONTEST_COLLECTION_CARD.BIG_ONTOLOGY_TERM, contestCollectionCard.getBigOntologyTerm())
-                .set(CONTEST_COLLECTION_CARD.SMALL_ONTOLOGY_TERM, contestCollectionCard.getSmallOntologyTerm())
+                .set(CONTEST_COLLECTION_CARD.BIG_ONTOLOGY_TERM,
+                        contestCollectionCard.getBigOntologyTerm())
+                .set(CONTEST_COLLECTION_CARD.SMALL_ONTOLOGY_TERM,
+                        contestCollectionCard.getSmallOntologyTerm())
                 .set(CONTEST_COLLECTION_CARD.DESCRIPTION, contestCollectionCard.getDescription())
                 .set(CONTEST_COLLECTION_CARD.SHORT_NAME, contestCollectionCard.getShortName())
                 .set(CONTEST_COLLECTION_CARD.VISIBLE, contestCollectionCard.getVisible())
                 .set(CONTEST_COLLECTION_CARD.SORT_ORDER, contestCollectionCard.getSortOrder())
-                .set(CONTEST_COLLECTION_CARD.ONTOLOGY_TERM_TO_LOAD, contestCollectionCard.getOntologyTermToLoad())
+                .set(CONTEST_COLLECTION_CARD.ONTOLOGY_TERM_TO_LOAD,
+                        contestCollectionCard.getOntologyTermToLoad())
                 .set(CONTEST_COLLECTION_CARD.ONLY_FEATURED, contestCollectionCard.getOnlyFeatured())
                 .returning(CONTEST_COLLECTION_CARD.ID)
                 .fetchOne();
+
         if (ret != null) {
             contestCollectionCard.setId(ret.getValue(CONTEST_COLLECTION_CARD.ID));
             return contestCollectionCard;
         } else {
             return null;
         }
-
     }
 
     @Override
@@ -51,13 +52,16 @@ public class ContestCollectionCardDaoImpl implements ContestCollectionCardDao {
 
         return dslContext.update(CONTEST_COLLECTION_CARD)
                 .set(CONTEST_COLLECTION_CARD.PARENT, contestCollectionCard.getParent())
-                .set(CONTEST_COLLECTION_CARD.BIG_ONTOLOGY_TERM, contestCollectionCard.getBigOntologyTerm())
-                .set(CONTEST_COLLECTION_CARD.SMALL_ONTOLOGY_TERM, contestCollectionCard.getSmallOntologyTerm())
+                .set(CONTEST_COLLECTION_CARD.BIG_ONTOLOGY_TERM,
+                        contestCollectionCard.getBigOntologyTerm())
+                .set(CONTEST_COLLECTION_CARD.SMALL_ONTOLOGY_TERM,
+                        contestCollectionCard.getSmallOntologyTerm())
                 .set(CONTEST_COLLECTION_CARD.DESCRIPTION, contestCollectionCard.getDescription())
                 .set(CONTEST_COLLECTION_CARD.SHORT_NAME, contestCollectionCard.getShortName())
                 .set(CONTEST_COLLECTION_CARD.VISIBLE, contestCollectionCard.getVisible())
                 .set(CONTEST_COLLECTION_CARD.SORT_ORDER, contestCollectionCard.getSortOrder())
-                .set(CONTEST_COLLECTION_CARD.ONTOLOGY_TERM_TO_LOAD, contestCollectionCard.getOntologyTermToLoad())
+                .set(CONTEST_COLLECTION_CARD.ONTOLOGY_TERM_TO_LOAD,
+                        contestCollectionCard.getOntologyTermToLoad())
                 .set(CONTEST_COLLECTION_CARD.ONLY_FEATURED, contestCollectionCard.getOnlyFeatured())
                 .where(CONTEST_COLLECTION_CARD.ID.eq(contestCollectionCard.getId()))
                 .execute() > 0;
@@ -70,22 +74,21 @@ public class ContestCollectionCardDaoImpl implements ContestCollectionCardDao {
                 .execute() > 0;
     }
 
-
     @Override
     public IContestCollectionCard get(Long contestCollectionCardId) throws NotFoundException {
-
         final Record record = this.dslContext.selectFrom(CONTEST_COLLECTION_CARD)
                 .where(CONTEST_COLLECTION_CARD.ID.eq(contestCollectionCardId)).fetchOne();
 
         if (record == null) {
-            throw new NotFoundException("ContestCollectionCard with id " + contestCollectionCardId + " does not exist");
+            throw new NotFoundException(
+                    "ContestCollectionCard with id " + contestCollectionCardId + " does not exist");
         }
         return record.into(ContestCollectionCard.class);
-
     }
 
     @Override
-    public List<IContestCollectionCard> findByGiven(Long parentCollectionCardId) throws NotFoundException {
+    public List<IContestCollectionCard> findByGiven(Long parentCollectionCardId)
+            throws NotFoundException {
         final SelectQuery<Record> query = dslContext.select()
                 .from(CONTEST_COLLECTION_CARD).getQuery();
 

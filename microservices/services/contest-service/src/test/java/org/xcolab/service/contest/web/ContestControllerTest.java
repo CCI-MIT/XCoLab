@@ -174,16 +174,6 @@ public class ContestControllerTest {
     }
 
     @Test
-    public void shouldUpdateContestDiscussion() throws Exception {
-        ContestDiscussion contestDisc = new ContestDiscussion();
-        contestDisc.setId(10L);
-
-        this.mockMvc.perform(put("/contestDiscussions/"+contestDisc.getId()).contentType(contentType).accept(contentType)
-                .content(objectMapper.writeValueAsString(contestDisc))).andExpect(status().isOk());
-
-        Mockito.verify(contestDiscussionDao, Mockito.times(1)).update(Mockito.anyObject());
-    }
-    @Test
     public void shouldCreateNewContestDiscussion() throws Exception {
         ContestDiscussion contest = new ContestDiscussion();
 

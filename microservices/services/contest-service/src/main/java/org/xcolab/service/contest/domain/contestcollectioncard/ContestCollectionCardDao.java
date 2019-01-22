@@ -16,5 +16,4 @@ public interface ContestCollectionCardDao {
     boolean delete(Long contestCollectionCardId) throws NotFoundException;
 
     List<IContestCollectionCard>  findByGiven(Long parentCollectionCardId) throws NotFoundException;
-
 }

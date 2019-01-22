@@ -1,16 +1,18 @@
 package org.xcolab.client.contest.exceptions;
 
-public class ContestNotFoundException extends RuntimeException {
+import org.xcolab.util.http.exceptions.RuntimeEntityNotFoundException;
+
+public class ContestNotFoundException extends RuntimeEntityNotFoundException {
 
     public ContestNotFoundException(String msg) {
-        super(msg);
+        super(msg, ContestNotFoundException.class);
     }
 
     public ContestNotFoundException(long contestId) {
-        super("Contest with id " + contestId + " not found");
+        this("Contest with id " + contestId + " not found");
     }
 
     public ContestNotFoundException(String contestUrlName, long contestYear) {
-        super("Contest " + contestUrlName + " not found in year " + contestYear);
+        this("Contest " + contestUrlName + " not found in year " + contestYear);
     }
 }
