@@ -1,64 +1,56 @@
 package org.xcolab.client.contest;
 
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import org.xcolab.client.contest.pojo.IContestTeamMember;
 import org.xcolab.client.contest.pojo.IContestTeamMemberRole;
 import org.xcolab.client.members.permissions.SystemRole;
-import org.xcolab.util.http.ServiceRequestUtils;
-import org.xcolab.util.http.caching.CacheName;
-import org.xcolab.util.http.client.RestResource;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class ContestTeamMemberClient {
+@FeignClient("xcolab-contest-service")
+public interface ContestTeamMemberClient {
 
-    private final RestResource<IContestTeamMember, Long> contestTeamMemberResource = null; // contestTeamMembers
-    private final RestResource<IContestTeamMemberRole, Long> contestTeamMemberRoleResource = null; // contestTeamMemberRoles
+    @PostMapping("/contestTeamMembers")
+    IContestTeamMember createContestTeamMember(@RequestBody IContestTeamMember contestTeamMember);
 
-    public IContestTeamMember createContestTeamMember(IContestTeamMember contestTeamMember) {
-        final IContestTeamMember result =
-                contestTeamMemberResource.create(contestTeamMember)
-                        .execute();
-        //TODO COLAB-2589: fine-grained cache removal
-        ServiceRequestUtils.clearCache(CacheName.CONTEST_DETAILS);
-        return result;
-    }
+    @DeleteMapping("/contestTeamMembers/{contestTeamUserId}")
+    boolean deleteContestTeamMember(@PathVariable("contestTeamUserId") Long contestTeamUserId);
 
-    public void deleteContestTeamMember(Long contestTeamuserId) {
-        contestTeamMemberResource.delete(contestTeamuserId).execute();
-        //TODO COLAB-2589: fine-grained cache removal
-        ServiceRequestUtils.clearCache(CacheName.CONTEST_DETAILS);
-    }
+    @GetMapping("/contestTeamMemberRoles/{contestTeamMemberRoleId}")
+    IContestTeamMemberRole getContestTeamMemberRole(
+            @PathVariable("contestTeamMemberRoleId") Long contestTeamMemberRoleId);
 
-    public IContestTeamMemberRole getContestTeamMemberRole(long id) {
-        return contestTeamMemberRoleResource.get(id)
-                .withCache(CacheName.CONTEST_DETAILS)
-                .execute();
-    }
-
-    public List<Long> getAdvisorsForContest(Long contestId) {
+    default List<Long> getAdvisorsForContest(Long contestId) {
         return getRoleForContestTeam(contestId, SystemRole.ADVISOR.getRoleId());
     }
 
-    public List<Long> getJudgesForContest(Long contestId) {
+    default List<Long> getJudgesForContest(Long contestId) {
         return getRoleForContestTeam(contestId, SystemRole.JUDGE.getRoleId());
     }
 
-    public List<Long> getFellowsForContest(Long contestId) {
+    default List<Long> getFellowsForContest(Long contestId) {
         return getRoleForContestTeam(contestId, SystemRole.FELLOW.getRoleId());
     }
 
-    public List<Long> getContestManagersForContest(Long contestId) {
+    default List<Long> getContestManagersForContest(Long contestId) {
         return getRoleForContestTeam(contestId, SystemRole.CONTEST_MANAGER.getRoleId());
     }
 
-    public List<Long> getIAFellowsForContest(Long contestId) {
+    default List<Long> getIAFellowsForContest(Long contestId) {
         return getRoleForContestTeam(contestId, SystemRole.IMPACT_ASSESSMENT_FELLOW.getRoleId());
     }
 
-    public List<Long> getRoleForContestTeam(Long contestId, Long roleId) {
+    default List<Long> getRoleForContestTeam(Long contestId, Long roleId) {
         Map<Long, List<Long>> teamRoleToUsersMap = getContestTeamMembersByRole(contestId);
         List<Long> members = teamRoleToUsersMap.get(roleId);
         if (members == null) {
@@ -68,34 +60,24 @@ public class ContestTeamMemberClient {
         }
     }
 
-    public Map<Long, List<Long>> getContestTeamMembersByRole(Long contestId) {
+    default Map<Long, List<Long>> getContestTeamMembersByRole(Long contestId) {
         Map<Long, List<Long>> teamRoleToUsersMap = new TreeMap<>();
         for (IContestTeamMember ctm : getTeamMembers(null, contestId, null)) {
             List<Long> roleUsers =
                     teamRoleToUsersMap.computeIfAbsent(ctm.getRoleId(), k -> new ArrayList<>());
-
             roleUsers.add(ctm.getUserId());
         }
         return teamRoleToUsersMap;
     }
 
-    public List<IContestTeamMember> getTeamMembers(Long userId, Long contestId, Long roleId) {
-        return contestTeamMemberResource.list()
-                .optionalQueryParam("userId", userId)
-                .optionalQueryParam("contestId", contestId)
-                .optionalQueryParam("roleId", roleId)
-                .withCache(CacheName.CONTEST_DETAILS)
-                .execute();
-    }
-    public List<IContestTeamMember> getTeamMembers(Long categoryId, Long contestYear) {
-        return null;
-//        return contestTeamMemberResource.collectionService("getByContestYear", IContestTeamMember.TYPES.getTypeReference())
-//                .optionalQueryParam("categoryId", categoryId)
-//                .optionalQueryParam("contestYear", contestYear)
-//                .getList();
-    }
+    @GetMapping("/contestTeamMembers")
+    List<IContestTeamMember> getTeamMembers(
+            @RequestParam(value = "userId", required = false) Long userId,
+            @RequestParam(value = "contestId", required = false) Long contestId,
+            @RequestParam(value = "roleId", required = false) Long roleId);
 
-
-
-
+    @GetMapping("/contestTeamMembers/getByContestYear")
+    public List<IContestTeamMember> getTeamMembers(
+            @RequestParam(value = "categoryId", required = false) Long categoryId,
+            @RequestParam(value = "contestYear", required = false) Long contestYear);
 }

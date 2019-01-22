@@ -12,19 +12,23 @@ public final class StaticContestContext {
     private static ICategoryClient categoryClient;
     private static IThreadClient threadClient;
     private static ContestClient contestClient;
+    private static ContestTeamMemberClient contestTeamMemberClient;
 
     private StaticContestContext() {}
 
     public static void setClients(ICommentClient commentClient, ICategoryClient categoryClient,
-            IThreadClient threadClient, ContestClient contestClient) {
+            IThreadClient threadClient, ContestClient contestClient,
+            ContestTeamMemberClient contestTeamMemberClient) {
         Assert.notNull(commentClient, "commentClient must not be null!");
         Assert.notNull(categoryClient, "categoryClient must not be null!");
         Assert.notNull(threadClient, "threadClient must not be null!");
         Assert.notNull(contestClient, "contestClient must not be null!");
+        Assert.notNull(contestTeamMemberClient, "contestTeamMemberClient must not be null!");
         StaticContestContext.commentClient = commentClient;
         StaticContestContext.categoryClient = categoryClient;
         StaticContestContext.threadClient = threadClient;
         StaticContestContext.contestClient = contestClient;
+        StaticContestContext.contestTeamMemberClient = contestTeamMemberClient;
     }
 
     public static ICommentClient getCommentClient() {
@@ -41,5 +45,9 @@ public final class StaticContestContext {
 
     public static ContestClient getContestClient() {
         return contestClient;
+    }
+
+    public static ContestTeamMemberClient getContestTeamMemberClient() {
+        return contestTeamMemberClient;
     }
 }

@@ -9,7 +9,6 @@ import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestTeamMemberClient;
-import org.xcolab.client.contest.ContestTeamMemberClientUtil;
 import org.xcolab.client.contest.OntologyClient;
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.ProposalTemplateClient;
@@ -80,7 +79,7 @@ public class ContestWrapper extends Contest {
 
     public ContestWrapper() {
         contestClient = StaticContestContext.getContestClient();
-        contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
+        contestTeamMemberClient = StaticContestContext.getContestTeamMemberClient();
         ontologyClient = OntologyClientUtil.getClient();
         proposalTemplateClient = ProposalTemplateClientUtil.getClient();
     }
@@ -88,7 +87,7 @@ public class ContestWrapper extends Contest {
     public ContestWrapper(Contest value) {
         super(value);
         contestClient = StaticContestContext.getContestClient();
-        contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
+        contestTeamMemberClient = StaticContestContext.getContestTeamMemberClient();
         ontologyClient = OntologyClientUtil.getClient();
         proposalTemplateClient = ProposalTemplateClientUtil.getClient();
     }

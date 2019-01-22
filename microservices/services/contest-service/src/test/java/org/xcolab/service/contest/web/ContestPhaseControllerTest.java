@@ -40,12 +40,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(PowerMockRunner.class)
 @PowerMockRunnerDelegate(SpringJUnit4ClassRunner.class)
 
-@WebMvcTest(ContestPhaseController.class)
+@WebMvcTest(ContestController.class)
 @ComponentScan("org.xcolab.service.contest")
 @ComponentScan("org.xcolab.client")
 @ComponentScan("com.netflix.discovery")
 @PrepareForTest({ContestWrapper.class,
-        org.xcolab.client.contest.ContestClient.class,
         org.xcolab.client.contest.ContestTeamMemberClient.class,
         org.xcolab.client.contest.OntologyClient.class
 })
@@ -60,9 +59,8 @@ public class ContestPhaseControllerTest {
     @Autowired
     ObjectMapper objectMapper;
 
-
     @InjectMocks
-    private ContestPhaseController controller;
+    private ContestController controller;
 
     @Mock
     private ContestPhaseRibbonTypeDao contestPhaseRibbonTypeDao;
@@ -81,7 +79,6 @@ public class ContestPhaseControllerTest {
 
     @Before
     public void before() throws Exception {
-
         ServiceRequestUtils.setInitialized(true);
 
         this.mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
