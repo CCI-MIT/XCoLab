@@ -22,14 +22,12 @@ import org.xcolab.client.contest.pojo.IContestPhaseType;
 import org.xcolab.client.contest.pojo.IContestSchedule;
 import org.xcolab.client.contest.pojo.IContestTranslation;
 import org.xcolab.client.contest.pojo.tables.pojos.ContestDiscussion;
-import org.xcolab.client.contest.pojo.wrapper.ContestDto;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.commons.IdListUtil;
 import org.xcolab.commons.spring.web.annotation.ListMapping;
 import org.xcolab.util.activities.enums.ActivityCategory;
-import org.xcolab.util.http.caching.CacheName;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -139,14 +137,11 @@ public interface ContestClient {
     }
 
     default ContestWrapper getContest(String contestUrlName, long contestYear, String lang) {
-        List<ContestDto> list = contestResource.list()
-                .queryParam("contestUrlName", contestUrlName)
-                .queryParam("contestYear", contestYear)
-                .optionalQueryParam("lang", lang)
-                .withCache(CacheName.CONTEST_DETAILS)
-                .execute();
+        List<ContestWrapper> list =
+                getContests(null, null, null, lang, contestUrlName, contestYear, null, null, null,
+                        null, null, null, null, null, null, null);
         if (list != null && !list.isEmpty()) {
-            return list.get(0).toContest();
+            return list.get(0);
         }
         throw new ContestNotFoundException(contestUrlName, contestYear);
     }
@@ -266,15 +261,10 @@ public interface ContestClient {
                 null, null, null, null, null, null, null);
     }
 
-    default List<ContestWrapper> getAllContestsInYear(Integer contestYear) {
+    default List<ContestWrapper> getAllContestsInYear(Long contestYear) {
         String lang = LocaleContextHolder.getLocale().getLanguage();
-        return ContestDto.toContests(contestResource.list()
-                .addRange(0, Integer.MAX_VALUE)
-                .queryParam("lang", lang)
-                .queryParam("contestYear", contestYear)
-                .queryParam("sort", "ContestShortName")
-                .withCache(CacheName.CONTEST_LIST)
-                .execute());
+        return getContests(0, Integer.MAX_VALUE, null, lang, null, contestYear, null, null, null,
+                null, null, null, null, null, null, "ContestShortName");
     }
 
     default Map<Long, String> getModelIdsAndNames(long contestId) {
