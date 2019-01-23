@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.activities.pojo.ActivitySubscription;
+import org.xcolab.client.activity.pojo.IActivitySubscription;
 import org.xcolab.client.comment.IThreadClient;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.ICategory;
@@ -29,7 +29,7 @@ public class ActivitySubscriptionNameGenerator {
         ActivitySubscriptionNameGenerator.threadClient = threadClient;
     }
 
-    public static String getName(ActivitySubscription subscription) {
+    public static String getName(IActivitySubscription subscription) {
         switch (subscription.getActivityCategoryEnum()) {
             case PROPOSAL:
                 return getNameForProposalSubscription(subscription);
@@ -42,7 +42,7 @@ public class ActivitySubscriptionNameGenerator {
         }
     }
 
-    private static String getNameForProposalSubscription(ActivitySubscription subscription){
+    private static String getNameForProposalSubscription(IActivitySubscription subscription){
         Long proposalId = subscription.getCategoryId();
         try {
             Proposal proposal = ProposalClientUtil.getProposal(proposalId);
@@ -57,13 +57,13 @@ public class ActivitySubscriptionNameGenerator {
         }
     }
 
-    private static String getNameForContestSubscription(ActivitySubscription subscription){
+    private static String getNameForContestSubscription(IActivitySubscription subscription){
         Contest contest = ContestClientUtil.getContest(subscription.getCategoryId());
         final String contestNameString = contest.getContestType().getContestName();
         return contest.getTitleWithEndYear() + " " + StringUtils.uncapitalize(contestNameString);
     }
 
-    private static String getNameForDiscussionSubscription(ActivitySubscription subscription) {
+    private static String getNameForDiscussionSubscription(IActivitySubscription subscription) {
         final Long categoryId = subscription.getCategoryId();
 //        final String extraData = subscription.getExtraData();
 

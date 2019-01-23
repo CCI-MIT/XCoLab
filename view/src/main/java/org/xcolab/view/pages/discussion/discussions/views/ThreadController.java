@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.client.activities.ActivitiesClientUtil;
+import org.xcolab.client.activity.IActivityClient;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.comment.ICategoryClient;
 import org.xcolab.client.comment.ICommentClient;
@@ -36,6 +35,9 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class ThreadController extends BaseDiscussionController {
+
+    @Autowired
+    private IActivityClient activityClient;
 
     @Autowired
     private IThreadClient threadClient;
@@ -119,7 +121,6 @@ public class ThreadController extends BaseDiscussionController {
             comment = commentClient.createComment(comment);
 
             if (!thread.getIsQuiet()) {
-                final ActivitiesClient activityClient = ActivitiesClientUtil.getClient();
                 activityClient.createActivityEntry(DiscussionThreadActivityType.CREATED, userId,
                         thread.getId());
             }

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.activities.ActivitiesClientUtil;
+import org.xcolab.client.activity.IActivityClient;
 import org.xcolab.client.admin.IAdminClient;
 import org.xcolab.client.admin.pojo.INotification;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -68,12 +68,6 @@ import javax.validation.Validator;
 @RequestMapping("/admin/contest/manager")
 public class AdminTabController extends AbstractTabController {
 
-    @Autowired
-    private ITrackingClient trackingClient;
-
-    @Autowired
-    private IAdminClient adminClient;
-
     private static final Logger log = LoggerFactory.getLogger(AdminTabController.class);
 
     private static final ContestManagerTabs tab = ContestManagerTabs.ADMIN;
@@ -83,14 +77,22 @@ public class AdminTabController extends AbstractTabController {
     private final ServletContext servletContext;
     private final ActivityEntryHelper activityEntryHelper;
     private final Validator validator;
+    private final ITrackingClient trackingClient;
+    private final IActivityClient activityClient;
+    private final IAdminClient adminClient;
 
     @Autowired
     public AdminTabController(LoginRegisterService loginRegisterService,
-            ServletContext servletContext, ActivityEntryHelper activityEntryHelper, Validator validator) {
+            ServletContext servletContext, ActivityEntryHelper activityEntryHelper,
+            Validator validator, ITrackingClient trackingClient, IActivityClient activityClient,
+            IAdminClient adminClient) {
         this.loginRegisterService = loginRegisterService;
         this.servletContext = servletContext;
         this.activityEntryHelper = activityEntryHelper;
         this.validator = validator;
+        this.trackingClient = trackingClient;
+        this.activityClient = activityClient;
+        this.adminClient = adminClient;
     }
 
     @ModelAttribute("currentTabWrapped")
@@ -234,7 +236,7 @@ public class AdminTabController extends AbstractTabController {
         }
 
         try (ActivityCsvWriter csvWriter = new ActivityCsvWriter(response, activityEntryHelper)) {
-            ActivitiesClientUtil.getActivityEntries(0, Integer.MAX_VALUE, null, null)
+            activityClient.getActivityEntries(0, Integer.MAX_VALUE, null, null)
                     .forEach(csvWriter::writeActivity);
         }
     }
