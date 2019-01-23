@@ -2,15 +2,15 @@ package org.xcolab.view.pages.proposals.judging;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.xcolab.client.contest.pojo.IProposalRatingType;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
+import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.contest.proposals.ProposalAttributeClientUtil;
-import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
-import org.xcolab.client.contest.pojo.IProposalRatingType;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -188,7 +188,7 @@ public class ProposalReview {
     }
 
     private String getTeamOrNull(){
-            for (ProposalAttribute attr: ProposalAttributeClientUtil
+            for (ProposalAttribute attr: StaticProposalContext.getProposalAttributeClient()
                     .getAllProposalAttributes(proposal.getId(), proposal.getCurrentVersion())) {
                 if (attr.getName().equals(ProposalAttributeKeys.TEAM) && attr.getAdditionalId() == 0) {
                     return attr.getStringValue();

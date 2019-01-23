@@ -20,7 +20,6 @@ import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
 import org.xcolab.client.contest.pojo.wrapper.ProposalUnversionedAttribute;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.ProposalAttributeClient;
-import org.xcolab.client.contest.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.contest.proposals.enums.ImpactSeriesType;
 import org.xcolab.client.contest.proposals.enums.ProposalUnversionedAttributeName;
 import org.xcolab.client.members.pojo.Member;
@@ -52,6 +51,9 @@ public class ProposalImpactJSONController {
 
     @Autowired
     private OntologyClient ontologyClient;
+
+    @Autowired
+    private ProposalAttributeClient proposalAttributeClient;
 
     @GetMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/IMPACT/proposalImpactGetRegions")
     public void proposalImpactGetRegions(HttpServletResponse response,
@@ -233,7 +235,7 @@ public class ProposalImpactJSONController {
         }
         ProposalWrapper proposal = proposalContext.getProposal();
 
-        List<ProposalUnversionedAttribute> unversionedAttributes = ProposalAttributeClientUtil
+        List<ProposalUnversionedAttribute> unversionedAttributes = proposalAttributeClient
                 .getProposalUnversionedAttributesByProposalId(proposal.getId());
 
         if (impactAuthorComment != null || impactIAFComment != null) {

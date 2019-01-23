@@ -5,7 +5,6 @@ import org.xcolab.client.contest.pojo.IProposalReference;
 import org.xcolab.client.contest.pojo.wrapper.PointTypeWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.contest.proposals.exceptions.ProposalAttributeNotFoundException;
@@ -42,8 +41,8 @@ public class PointsDistributionUtil {
         for (long subProposalId : subProposalIds) {
             try {
                 IProposalReference reference = ProposalClientUtil.getProposalReferenceByProposalIdSubProposalId(proposal.getId(), subProposalId);
-                final ProposalAttribute referenceSectionProposalAttribute = ProposalAttributeClientUtil
-
+                final ProposalAttribute referenceSectionProposalAttribute =
+                        StaticProposalContext.getProposalAttributeClient()
                         .getProposalAttribute(reference.getSectionAttributeId());
                 final long proposalTemplateSectionDefinitionId = referenceSectionProposalAttribute.getAdditionalId();
 

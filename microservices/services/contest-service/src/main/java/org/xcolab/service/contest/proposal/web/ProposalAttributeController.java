@@ -11,32 +11,40 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
-import org.xcolab.commons.spring.web.annotation.ListMapping;
+import org.xcolab.client.contest.pojo.wrapper.ProposalAttributeHelperDataDto;
+import org.xcolab.client.contest.pojo.wrapper.ProposalUnversionedAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ProposalUnversionedAttributeHelperDataDto;
+import org.xcolab.client.contest.proposals.ProposalAttributeClient;
+import org.xcolab.client.contest.proposals.exceptions.ProposalAttributeNotFoundException;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.proposal.domain.proposalattribute.ProposalAttributeDao;
-import org.xcolab.service.contest.proposal.service.proposalattribute.ProposalAttributeHelperData;
+import org.xcolab.service.contest.proposal.domain.proposalunversionedattribute.ProposalUnversionedAttributeDao;
 import org.xcolab.service.contest.proposal.service.proposalattribute.ProposalAttributeService;
-import org.xcolab.service.contest.proposal.service.proposalattribute.ProposalUnversionedAttributeHelperData;
+import org.xcolab.util.http.exceptions.EntityNotFoundException;
+import org.xcolab.util.http.exceptions.RuntimeEntityNotFoundException;
 
 import java.util.List;
 
 @RestController
-public class ProposalAttributeController {
+public class ProposalAttributeController implements ProposalAttributeClient {
 
     private final ProposalAttributeDao proposalAttributeDao;
-
     private final ProposalAttributeService proposalAttributeService;
+    private final ProposalUnversionedAttributeDao proposalUnversionedAttributeDao;
 
     @Autowired
     public ProposalAttributeController(ProposalAttributeDao proposalAttributeDao,
-            ProposalAttributeService proposalAttributeService) {
+            ProposalAttributeService proposalAttributeService,
+            ProposalUnversionedAttributeDao proposalUnversionedAttributeDao) {
         this.proposalAttributeDao = proposalAttributeDao;
         this.proposalAttributeService = proposalAttributeService;
+        this.proposalUnversionedAttributeDao = proposalUnversionedAttributeDao;
     }
 
+    @Override
     @PostMapping("/proposalAttributes/setProposalAttribute")
-    public ProposalAttribute createProposalAttribute(
-            @RequestBody ProposalAttribute proposalAttribute, @RequestParam Long authorUserId) {
+    public ProposalAttribute setProposalAttribute(@RequestBody ProposalAttribute proposalAttribute,
+            @RequestParam Long authorUserId) {
         if (proposalAttribute.getAdditionalId() == null) {
             proposalAttribute.setAdditionalId(0L);
         }
@@ -52,45 +60,48 @@ public class ProposalAttributeController {
         return this.proposalAttributeService.setAttribute(proposalAttribute, authorUserId);
     }
 
+    @Override
     @GetMapping("/proposalAttributes/{proposalAttributeId}")
-    public ProposalAttribute getProposalAttribute(
-            @PathVariable("proposalAttributeId") Long proposalAttributeId)
-            throws NotFoundException {
-        if (proposalAttributeId == null || proposalAttributeId == 0) {
-            throw new NotFoundException("No proposalAttributeId given");
-        } else {
-            return proposalAttributeDao.get(proposalAttributeId);
-        }
+    public ProposalAttribute getProposalAttribute(@PathVariable Long proposalAttributeId)
+            throws ProposalAttributeNotFoundException {
+        try {
+            if (!(proposalAttributeId == null || proposalAttributeId == 0)) {
+                return proposalAttributeDao.get(proposalAttributeId);
+            }
+        } catch (NotFoundException e) {}
+        throw new ProposalAttributeNotFoundException(proposalAttributeId);
     }
 
-    @PutMapping("/proposalAttributes/{id}")
-    public boolean updateProposalAttribute(@RequestBody ProposalAttribute proposalAttribute,
-            @PathVariable("id") Long id) throws NotFoundException {
-
-        if (id == null || id == 0 || proposalAttributeDao.get(id) == null) {
-            throw new NotFoundException("No ProposalAttribute with id " + id);
-        } else {
-            return proposalAttributeDao.update(proposalAttribute);
-        }
+    @Override
+    @PutMapping("/proposalAttributes")
+    public boolean updateProposalAttribute(@RequestBody ProposalAttribute proposalAttribute) {
+        Long id = proposalAttribute.getId();
+        try {
+            if (!(id == null || id == 0 || proposalAttributeDao.get(id) == null)) {
+                return proposalAttributeDao.update(proposalAttribute);
+            }
+        } catch (NotFoundException e) {}
+        throw new RuntimeEntityNotFoundException("ProposalAttribute not found with id " + id);
     }
 
+    @Override
     @DeleteMapping("/proposalAttributes/{id}")
-    public String deleteProposalAttribute(@PathVariable("id") Long id) throws NotFoundException {
-
+    public boolean deleteProposalAttribute(@PathVariable Long id) {
         if (id == null || id == 0) {
-            throw new NotFoundException("No ProposalAttribute with id given");
-        } else {
+            throw new RuntimeEntityNotFoundException("ProposalAttribute not found with id " + id);
+        }
+        try {
             ProposalAttribute proposalAttribute = this.proposalAttributeDao.get(id);
             if (proposalAttribute != null) {
                 this.proposalAttributeDao.delete(proposalAttribute.getId());
-                return "ProposalAttribute deleted successfully";
-            } else {
-                throw new NotFoundException("No ProposalAttribute with id given");
+                return true;
             }
-        }
+        } catch (NotFoundException e) {}
+        throw new RuntimeEntityNotFoundException("ProposalAttribute not found with id " + id);
     }
 
-    @ListMapping("/proposalAttributes")
+    @Override
+    @GetMapping("/proposalAttributes")
     public List<ProposalAttribute> getProposalAttributes(
             @RequestParam(required = false) Long proposalId,
             @RequestParam(required = false) String name,
@@ -99,15 +110,77 @@ public class ProposalAttributeController {
         return proposalAttributeDao.findByGiven(proposalId, name, additionalId, version);
     }
 
+    @Override
     @GetMapping("/proposals/{proposalId}/versions/{version}/attributeHelper")
-    public ProposalAttributeHelperData getProposalAttributeHelper(@PathVariable long proposalId,
-            @PathVariable int version) {
+    public ProposalAttributeHelperDataDto getProposalAttributeHelperData(
+            @PathVariable Long proposalId, @PathVariable Integer version) {
         return proposalAttributeService.getProposalAttributeHelperData(proposalId, version);
     }
 
     @GetMapping("/proposals/{proposalId}/attributeHelper")
-    public ProposalUnversionedAttributeHelperData getProposalUnversionedAttributeHelper(
-            @PathVariable long proposalId) {
+    public ProposalUnversionedAttributeHelperDataDto getProposalUnversionedAttributeHelperData(
+            @PathVariable Long proposalId) {
         return proposalAttributeService.getProposalUnversionedAttributeHelperData(proposalId);
+    }
+
+    @Override
+    @PostMapping("/proposalUnversionedAttributes")
+    public ProposalUnversionedAttribute createProposalUnversionedAttribute(
+            @RequestBody ProposalUnversionedAttribute proposalUnversionedAttribute) {
+        return this.proposalUnversionedAttributeDao.create(proposalUnversionedAttribute);
+    }
+
+    @Override
+    @PutMapping("/proposalUnversionedAttributes")
+    public boolean updateProposalUnversionedAttribute(
+            @RequestBody ProposalUnversionedAttribute proposalUnversionedAttribute) {
+        Long id = proposalUnversionedAttribute.getId();
+        try {
+            if (!(id == null || id == 0 || proposalUnversionedAttributeDao.get(id) == null)) {
+                return proposalUnversionedAttributeDao.update(proposalUnversionedAttribute);
+            }
+        } catch (NotFoundException e) {}
+        throw new RuntimeEntityNotFoundException(
+                "ProposalUnversionedAttribute not found with id " + id);
+    }
+
+    @Override
+    @GetMapping("/proposalUnversionedAttributes/getByProposalIdName")
+    public ProposalUnversionedAttribute getProposalUnversionedAttribute(
+            @RequestParam(required = false) Long proposalId,
+            @RequestParam(required = false) String name) throws EntityNotFoundException {
+        ProposalUnversionedAttribute rt =
+                proposalUnversionedAttributeDao.getByProposalIdName(proposalId, name);
+        if (rt != null) {
+            return rt;
+        }
+        throw new EntityNotFoundException(
+                "ProposalUnversionedAttribute not found with id " + proposalId + " and name "
+                        + name);
+    }
+
+    @GetMapping("/proposalUnversionedAttributes")
+    public List<ProposalUnversionedAttribute> getProposalUnversionedAttributesByProposalId(
+            @RequestParam(required = false) Long proposalId) {
+        return proposalUnversionedAttributeDao.findByGiven(proposalId);
+    }
+
+    @Override
+    @DeleteMapping("/proposalUnversionedAttributes/{id}")
+    public boolean deleteProposalUnversionedAttribute(@PathVariable Long id) {
+        if (id == null || id == 0) {
+            throw new RuntimeEntityNotFoundException(
+                    "ProposalUnversionedAttribute not found with id " + id);
+        }
+        try {
+            ProposalUnversionedAttribute proposalUnversionedAttribute =
+                    this.proposalUnversionedAttributeDao.get(id);
+            if (proposalUnversionedAttribute != null) {
+                this.proposalUnversionedAttributeDao.delete(proposalUnversionedAttribute.getId());
+                return true;
+            }
+        } catch (NotFoundException e) {}
+        throw new RuntimeEntityNotFoundException(
+                "ProposalUnversionedAttribute not found with id " + id);
     }
 }

@@ -14,8 +14,8 @@ import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 
@@ -49,7 +49,7 @@ public class ActivitySubscriptionNameGenerator {
             ContestWrapper contest = ProposalClientUtil.getCurrentContestForProposal(proposalId);
             return "Proposal: " + String.format(HYPERLINK,
                     proposal.getProposalLinkUrl(contest),
-                    ProposalAttributeClientUtil
+                    StaticProposalContext.getProposalAttributeClient()
                             .getProposalAttribute(proposalId, ProposalAttributeKeys.NAME, 0L)
                             .getStringValue());
         } catch (ProposalNotFoundException | ContestNotFoundException e) {

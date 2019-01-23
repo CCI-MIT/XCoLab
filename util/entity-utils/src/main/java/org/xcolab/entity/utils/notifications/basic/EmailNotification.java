@@ -13,13 +13,13 @@ import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.admin.pojo.IEmailTemplate;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
+import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
+import org.xcolab.client.contest.proposals.helpers.ProposalAttributeHelper;
 import org.xcolab.client.email.StaticEmailContext;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.contest.proposals.ProposalAttributeClientUtil;
-import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
-import org.xcolab.client.contest.proposals.helpers.ProposalAttributeHelper;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.entity.utils.notifications.EmailTemplateWrapper;
@@ -98,7 +98,7 @@ public abstract class EmailNotification {
     //TODO COLAB-2505: remove if we just use a normal proposal link
     protected String getProposalLinkForDirectVoting(ContestWrapper contest, ProposalWrapper proposal) {
         final String proposalName = new ProposalAttributeHelper(proposal,
-                ProposalAttributeClientUtil.getClient())
+                StaticProposalContext.getProposalAttributeClient())
                 .getAttributeValueString(ProposalAttributeKeys.NAME, "");
 
             final String proposalLinkUrl = baseUrl + proposal.getProposalLinkUrl(contest);
@@ -123,7 +123,7 @@ public abstract class EmailNotification {
     protected ProposalAttributeHelper getProposalAttributeHelper() {
         if (proposalAttributeHelper == null) {
             proposalAttributeHelper = new ProposalAttributeHelper(getProposal(),
-                    ProposalAttributeClientUtil.getClient());
+                    StaticProposalContext.getProposalAttributeClient());
         }
         return proposalAttributeHelper;
     }
