@@ -1,5 +1,6 @@
 package org.xcolab.client.contest;
 
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,7 @@ import org.xcolab.util.http.client.RestResource1;
 
 import java.util.List;
 
+@FeignClient("xcolab-contest-service")
 public interface ProposalTemplateClient {
 
     @GetMapping("/proposalTemplates/{proposalTemplateId}")
