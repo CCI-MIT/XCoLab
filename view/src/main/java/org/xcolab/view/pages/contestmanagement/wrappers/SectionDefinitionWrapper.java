@@ -5,7 +5,6 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import org.xcolab.client.contest.OntologyTermToFocusAreaMapper;
-import org.xcolab.client.contest.ProposalTemplateClientUtil;
 import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.IPointsDistributionConfiguration;
 import org.xcolab.client.contest.pojo.IProposalTemplateSection;
@@ -151,7 +150,8 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
         initProposalTemplateSectionDefinition(proposalTemplateSectionDefinition);
 
         List<IProposalTemplateSection> proposalTemplateSections =
-                ProposalTemplateClientUtil.getProposalTemplateSectionByProposalTemplateId(proposalTemplateId);
+                StaticContestContext.getProposalTemplateClient()
+                        .getProposalTemplateSectionsByProposalTemplateId(proposalTemplateId);
 
         for (IProposalTemplateSection proposalTemplateSection : proposalTemplateSections) {
             if (Objects.equals(
@@ -162,7 +162,6 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
         }
 
         initProposalTemplateSectionDefinition(proposalTemplateSectionDefinition);
-
     }
 
     private void initProposalTemplateSection(IProposalTemplateSection proposalTemplateSection) {
@@ -260,11 +259,12 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
 
             populateProposalTemplateSectionDefinition(psd);
 
-            psd = ProposalTemplateClientUtil.createProposalTemplateSectionDefinition(psd);
+            psd = StaticContestContext.getProposalTemplateClient()
+                    .createProposalTemplateSectionDefinition(psd);
             id = psd.getId();
         } else {
-
-            psd = ProposalTemplateClientUtil.getProposalTemplateSectionDefinition(id);
+            psd = StaticContestContext.getProposalTemplateClient()
+                    .getProposalTemplateSectionDefinition(id);
             pdc = PointsClientUtil
                     .getPointsDistributionConfigurationByTargetProposalTemplateSectionDefinitionId(id);
 
@@ -308,7 +308,8 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
             }
         }
 
-        ProposalTemplateClientUtil.updateProposalTemplateSectionDefinition(psd);
+        StaticContestContext.getProposalTemplateClient()
+                .updateProposalTemplateSectionDefinition(psd);
     }
 
     private void populateProposalTemplateSectionDefinition(
@@ -524,8 +525,8 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
     }
 
     public boolean hasUpdates() {
-        ProposalTemplateSectionDefinitionWrapper psd = ProposalTemplateClientUtil
-                .getProposalTemplateSectionDefinition(id);
+        ProposalTemplateSectionDefinitionWrapper psd = StaticContestContext
+                .getProposalTemplateClient().getProposalTemplateSectionDefinition(id);
         return !this.equals(new SectionDefinitionWrapper(psd));
     }
 

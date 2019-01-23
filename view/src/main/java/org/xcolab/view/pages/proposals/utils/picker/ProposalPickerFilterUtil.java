@@ -3,7 +3,6 @@ package org.xcolab.view.pages.proposals.utils.picker;
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.contest.ProposalTemplateClientUtil;
 import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.IProposalSupporter;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
@@ -30,9 +29,9 @@ public class ProposalPickerFilterUtil {
             new SectionFocusAreaFilter();
 
     public static List<ContestWrapper> getTextFilteredContests(long sectionId, String contestName) {
-
         ProposalTemplateSectionDefinitionWrapper proposalTemplateSectionDefinition =
-                ProposalTemplateClientUtil.getProposalTemplateSectionDefinition(sectionId);
+                StaticContestContext.getProposalTemplateClient()
+                        .getProposalTemplateSectionDefinition(sectionId);
 
         final Long focusAreaId = proposalTemplateSectionDefinition.getFocusAreaId();
         List<Long> ontologyTermIds = null;
@@ -127,7 +126,8 @@ public class ProposalPickerFilterUtil {
         ProposalClient proposalClient = clients.getProposalClient();
 
         ProposalTemplateSectionDefinitionWrapper proposalTemplateSectionDefinition =
-                ProposalTemplateClientUtil.getProposalTemplateSectionDefinition(sectionId);
+                StaticContestContext.getProposalTemplateClient()
+                        .getProposalTemplateSectionDefinition(sectionId);
         List<Long> contestTypes = new ArrayList<>(
                 IdListUtil.getIdsFromString(proposalTemplateSectionDefinition.getAllowedContestTypeIds()));
 
@@ -179,7 +179,8 @@ public class ProposalPickerFilterUtil {
         }
 
         ProposalTemplateSectionDefinitionWrapper proposalTemplateSectionDefinition =
-                ProposalTemplateClientUtil.getProposalTemplateSectionDefinition(sectionId);
+                StaticContestContext.getProposalTemplateClient()
+                        .getProposalTemplateSectionDefinition(sectionId);
 
         List<Long> filterExceptionContestIds = proposalTemplateSectionDefinition.getAdditionalIdsAsList();
 

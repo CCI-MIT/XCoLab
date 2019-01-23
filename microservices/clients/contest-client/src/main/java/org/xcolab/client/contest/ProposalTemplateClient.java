@@ -1,126 +1,92 @@
 package org.xcolab.client.contest;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import org.xcolab.client.contest.pojo.IProposalTemplate;
 import org.xcolab.client.contest.pojo.IProposalTemplateSection;
 import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
-import org.xcolab.client.contest.proposals.exceptions.ProposalTemplateNotFoundException;
-import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.List;
 
-public class ProposalTemplateClient {
+public interface ProposalTemplateClient {
 
-    private final RestResource1<IProposalTemplate, Long> proposalTemplateResource = null; // proposalTemplates
-    private final RestResource1<ProposalTemplateSectionDefinitionWrapper, Long> proposalTemplateSectionDefinitionResource = null; // proposalTemplateSectionDefinitions
-    private final RestResource1<IProposalTemplateSection, Long> proposalTemplateSectionResource = null; // proposalTemplateSections
+    @GetMapping("/proposalTemplates/{proposalTemplateId}")
+    IProposalTemplate getProposalTemplate(
+            @PathVariable("proposalTemplateId") Long proposalTemplateId);
 
-    public IProposalTemplate getProposalTemplate(long id) {
-        try {
-            return proposalTemplateResource.get(id)
-                    .executeChecked();
-        } catch (EntityNotFoundException e) {
-            throw new ProposalTemplateNotFoundException(id);
-        }
-    }
+    @GetMapping("/proposalTemplates")
+    List<IProposalTemplate> getProposalTemplates();
 
-    public List<IProposalTemplate> getProposalTemplates() {
-        return proposalTemplateResource.list()
-                .execute();
-    }
+    @DeleteMapping("/proposalTemplates/{id}")
+    boolean deleteProposalTemplate(@PathVariable("id") Long id);
 
-    public  Boolean deleteProposalTemplate(Long id) {
-        return  proposalTemplateResource.delete(id).execute();
-    }
+    @PostMapping("/proposalTemplates")
+    IProposalTemplate createProposalTemplate(@RequestBody IProposalTemplate proposalTemplate);
 
+    @PutMapping("/proposalTemplates")
+    boolean updateProposalTemplate(@RequestBody IProposalTemplate proposalTemplate);
 
-    public IProposalTemplate createProposalTemplate(IProposalTemplate proposalTemplate) {
-        return proposalTemplateResource.create(proposalTemplate)
-                .execute();
-    }
+    @GetMapping("/proposalTemplateSectionDefinitions/{proposalTemplateSectionDefinitionId}")
+    ProposalTemplateSectionDefinitionWrapper getProposalTemplateSectionDefinition(
+            @PathVariable("proposalTemplateSectionDefinitionId")
+                    Long proposalTemplateSectionDefinitionId);
 
-    public boolean updateProposalTemplate(IProposalTemplate proposalTemplate) {
-        return proposalTemplateResource.update(proposalTemplate, proposalTemplate.getId())
-                .execute();
-    }
+    @PutMapping("/proposalTemplateSectionDefinitions")
+    boolean updateProposalTemplateSectionDefinition(@RequestBody
+            ProposalTemplateSectionDefinitionWrapper proposalTemplateSectionDefinition);
 
-    public ProposalTemplateSectionDefinitionWrapper getProposalTemplateSectionDefinition(long id) {
-        return proposalTemplateSectionDefinitionResource.get(id)
-                .withCache(CacheName.MISC_REQUEST)
-                .execute();
-    }
+    @PostMapping("/proposalTemplateSectionDefinitions")
+    ProposalTemplateSectionDefinitionWrapper createProposalTemplateSectionDefinition(@RequestBody
+            ProposalTemplateSectionDefinitionWrapper proposalTemplateSectionDefinition);
 
-    public boolean updateProposalTemplateSectionDefinition(
-            ProposalTemplateSectionDefinitionWrapper proposalTemplateSectionDefinition) {
-        return proposalTemplateSectionDefinitionResource.update(
-                new ProposalTemplateSectionDefinitionWrapper(proposalTemplateSectionDefinition), proposalTemplateSectionDefinition.getId())
-                .execute();
-    }
+    @GetMapping("/proposalTemplateSectionDefinitions")
+    List<ProposalTemplateSectionDefinitionWrapper> getProposalTemplateSectionDefinitionByProposalTemplateId(
+            @RequestParam(value = "proposalTemplateId", required = false) Long proposalTemplateId,
+            @RequestParam(value = "weight", required = false, defaultValue = "false")
+                    Boolean weight);
 
-    public ProposalTemplateSectionDefinitionWrapper createProposalTemplateSectionDefinition(
-            ProposalTemplateSectionDefinitionWrapper proposalTemplateSectionDefinition) {
-        return proposalTemplateSectionDefinitionResource
-                .create(new ProposalTemplateSectionDefinitionWrapper(proposalTemplateSectionDefinition))
-                .execute();
-    }
+    @DeleteMapping("/proposalTemplateSectionDefinitions/{id}")
+    boolean deleteProposalTemplateSectionDefinition(@PathVariable("id") Long id);
 
-    public List<ProposalTemplateSectionDefinitionWrapper> getProposalTemplateSectionDefinitionByProposalTemplateId(Long proposalTemplateId,
-            Boolean weight) {
+    @DeleteMapping("/proposalTemplateSections/deleteProposalTemplateSection")
+    boolean deleteProposalTemplateSection(
+            @RequestParam("proposalTemplateId") Long proposalTemplateId,
+            @RequestParam("proposalTemplateSectionDefinitionId")
+                    Long proposalTemplateSectionDefinitionId);
 
-        return proposalTemplateSectionDefinitionResource.list()
-                .optionalQueryParam("proposalTemplateId", proposalTemplateId)
-                .optionalQueryParam("weight", ((weight == null) ? (false) : weight))
-                .execute();
-    }
-
-    public Boolean deleteProposalTemplateSectionDefinition(Long id) {
-        return proposalTemplateSectionDefinitionResource.delete(id).execute();
-    }
-
-    public Boolean deleteProposalTemplateSection(Long proposalTemplateId, Long proposalTemplateSectionDefinitionId) {
-        return proposalTemplateSectionResource.collectionService("deleteProposalTemplateSection", Boolean.class)
-                .queryParam("proposalTemplateId", proposalTemplateId)
-                .queryParam("proposalTemplateSectionDefinitionId", proposalTemplateSectionDefinitionId)
-                .delete();
-    }
-
-    public List<IProposalTemplateSection> getProposalTemplateSectionByProposalTemplateId(Long proposalTemplateId) {
-        return proposalTemplateSectionResource.list()
-                .optionalQueryParam("proposalTemplateId", proposalTemplateId)
-                .execute();
-    }
-    public IProposalTemplateSection createProposalTemplateSection(
-            IProposalTemplateSection proposalTemplateSection) {
-        return proposalTemplateSectionResource.create(proposalTemplateSection)
-                .execute();
-    }
-
-    public boolean updateProposalTemplateSection(IProposalTemplateSection proposalTemplateSection) {
-        return proposalTemplateSectionResource.collectionService("updateTemplateSection",Boolean.class)
-                .post(proposalTemplateSection);
-    }
-
-    public List<IProposalTemplateSection> getProposalTemplateSectionsByTemplateId(long proposalTemplateId) {
+    default List<IProposalTemplateSection> getProposalTemplateSectionsByProposalTemplateId(
+            Long proposalTemplateId) {
         return getProposalTemplateSections(proposalTemplateId, null);
     }
 
-    public List<IProposalTemplateSection> getProposalTemplateSectionsBySectionDefinitionId(long sectionDefinitionId) {
+    @PostMapping("/proposalTemplateSections")
+    IProposalTemplateSection createProposalTemplateSection(
+            @RequestBody IProposalTemplateSection proposalTemplateSection);
+
+    @PostMapping("/proposalTemplateSections/updateTemplateSection")
+    boolean updateProposalTemplateSection(
+            @RequestBody IProposalTemplateSection proposalTemplateSection);
+
+    default List<IProposalTemplateSection> getProposalTemplateSectionsBySectionDefinitionId(
+            long sectionDefinitionId) {
         return getProposalTemplateSections(null, sectionDefinitionId);
     }
 
-    private List<IProposalTemplateSection> getProposalTemplateSections(Long proposalTemplateId, Long sectionDefinitionId) {
-        return proposalTemplateSectionResource.list()
-                .optionalQueryParam("proposalTemplateId", proposalTemplateId)
-                .optionalQueryParam("planSectionId", sectionDefinitionId)
-                .execute();
-    }
+    @GetMapping("/proposalTemplateSections")
+    List<IProposalTemplateSection> getProposalTemplateSections(
+            @RequestParam(value = "proposalTemplateId", required = false) Long proposalTemplateId,
+            @RequestParam(value = "planSectionId", required = false) Long planSectionId);
 
-    public IProposalTemplateSection getProposalTemplateSection(long proposalTemplateId, long sectionDefinitionId) {
-        return proposalTemplateSectionResource.list()
-                .queryParam("proposalTemplateId", proposalTemplateId)
-                .queryParam("planSectionId", sectionDefinitionId)
-                .executeWithResult()
-                .getOneIfExists();
+    default IProposalTemplateSection getProposalTemplateSection(Long proposalTemplateId,
+            Long sectionDefinitionId) {
+        return getProposalTemplateSections(proposalTemplateId, sectionDefinitionId).stream()
+                .findFirst().orElseThrow(NullPointerException::new);
     }
 }

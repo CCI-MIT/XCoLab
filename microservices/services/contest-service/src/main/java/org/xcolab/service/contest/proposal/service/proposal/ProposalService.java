@@ -10,7 +10,7 @@ import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.comment.IThreadClient;
 import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.ProposalTemplateClientUtil;
+import org.xcolab.client.contest.ProposalTemplateClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.IProposal2Phase;
 import org.xcolab.client.contest.pojo.IProposalReference;
@@ -43,25 +43,22 @@ import java.util.stream.Collectors;
 public class ProposalService {
 
     private final ProposalDao proposalDao;
-
     private final ProposalReferenceDao proposalReferenceDao;
-
     private final ProposalAttributeDao proposalAttributeDao;
-
     private final Proposal2PhaseDao proposal2PhaseDao;
-
     private final ProposalVersionDao proposalVersionDao;
-
     private final ProposalTeamMemberDao proposalTeamMemberDao;
 
     private final IThreadClient threadClient;
     private final ContestClient contestClient;
+    private final ProposalTemplateClient proposalTemplateClient;
 
     @Autowired
     public ProposalService(ProposalDao proposalDao, ProposalReferenceDao proposalReferenceDao,
             ProposalAttributeDao proposalAttributeDao, Proposal2PhaseDao proposal2PhaseDao,
             ProposalVersionDao proposalVersionDao, ProposalTeamMemberDao proposalTeamMemberDao,
-            IThreadClient threadClient, ContestClient contestClient) {
+            IThreadClient threadClient, ContestClient contestClient,
+            ProposalTemplateClient proposalTemplateClient) {
         this.proposalDao = proposalDao;
         this.proposalReferenceDao = proposalReferenceDao;
         this.proposalAttributeDao = proposalAttributeDao;
@@ -70,6 +67,7 @@ public class ProposalService {
         this.proposalTeamMemberDao = proposalTeamMemberDao;
         this.threadClient = threadClient;
         this.contestClient = contestClient;
+        this.proposalTemplateClient = proposalTemplateClient;
     }
 
     public ProposalWrapper create(long authorUserId, long contestPhaseId, boolean publishActivity) {
@@ -178,7 +176,7 @@ public class ProposalService {
             try {
                 if (onlyWithContestIntegrationRelevance) {
                     ProposalAttribute attribute = proposalAttributeDao.get(proposalReference.getSectionAttributeId());
-                    ProposalTemplateSectionDefinitionWrapper psd = ProposalTemplateClientUtil.getProposalTemplateSectionDefinition(attribute.getAdditionalId());
+                    ProposalTemplateSectionDefinitionWrapper psd = proposalTemplateClient.getProposalTemplateSectionDefinition(attribute.getAdditionalId());
                     if (!psd.getContestIntegrationRelevance()) {
                         continue;
                     }

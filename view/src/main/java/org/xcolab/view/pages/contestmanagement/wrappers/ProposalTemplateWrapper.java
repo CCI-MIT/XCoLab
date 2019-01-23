@@ -2,7 +2,6 @@ package org.xcolab.view.pages.contestmanagement.wrappers;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.xcolab.client.contest.ProposalTemplateClientUtil;
 import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.IProposalTemplate;
 import org.xcolab.client.contest.pojo.IProposalTemplateSection;
@@ -32,14 +31,16 @@ public class ProposalTemplateWrapper {
     }
 
     public ProposalTemplateWrapper(Long proposalTemplateId) {
-        this.proposalTemplate = ProposalTemplateClientUtil.getProposalTemplate(proposalTemplateId);
+        this.proposalTemplate = StaticContestContext.getProposalTemplateClient()
+                .getProposalTemplate(proposalTemplateId);
         populateExistingProposalTemplateSections();
     }
 
     private void populateExistingProposalTemplateSections() {
         sections = new ArrayList<>();
         if (proposalTemplate != null) {
-            for (ProposalTemplateSectionDefinitionWrapper proposalTemplateSectionDefinition : ProposalTemplateClientUtil
+            for (ProposalTemplateSectionDefinitionWrapper proposalTemplateSectionDefinition :
+                    StaticContestContext.getProposalTemplateClient()
                     .getProposalTemplateSectionDefinitionByProposalTemplateId(proposalTemplate.getId(), null)) {
                 if (!proposalTemplateSectionDefinition.getLocked()) {
                     sections.add(new SectionDefinitionWrapper(proposalTemplateSectionDefinition,
@@ -65,7 +66,8 @@ public class ProposalTemplateWrapper {
     public static List<LabelValue> getAllProposalTemplateSelectionItems() {
         List<LabelValue> selectItems = new ArrayList<>();
 
-        for (IProposalTemplate proposalTemplateItem : ProposalTemplateClientUtil.getProposalTemplates()) {
+        for (IProposalTemplate proposalTemplateItem : StaticContestContext
+                .getProposalTemplateClient().getProposalTemplates()) {
             selectItems.add(new LabelValue(proposalTemplateItem.getId(), proposalTemplateItem.getName()));
         }
 
@@ -85,7 +87,8 @@ public class ProposalTemplateWrapper {
     }
 
     private void initProposalTemplate(Long proposalTemplateId) {
-        this.proposalTemplate = ProposalTemplateClientUtil.getProposalTemplate(proposalTemplateId);
+        this.proposalTemplate = StaticContestContext.getProposalTemplateClient()
+                .getProposalTemplate(proposalTemplateId);
     }
 
     public Boolean getUpdateExistingSections() {
@@ -171,8 +174,8 @@ public class ProposalTemplateWrapper {
             }
         }
 
-
-        List<ProposalTemplateSectionDefinitionWrapper> proposalTemplateSectionDefinitions = ProposalTemplateClientUtil
+        List<ProposalTemplateSectionDefinitionWrapper> proposalTemplateSectionDefinitions =
+                StaticContestContext.getProposalTemplateClient()
                 .getProposalTemplateSectionDefinitionByProposalTemplateId(proposalTemplate.getId(), null);
         for (ProposalTemplateSectionDefinitionWrapper proposalTemplateSectionDefinition : proposalTemplateSectionDefinitions) {
             if (!remainingProposalTemplateSectionDefinitionIds.contains(proposalTemplateSectionDefinition.getId())) {
@@ -180,17 +183,16 @@ public class ProposalTemplateWrapper {
                         .isProposalTemplateSectionDefinitionUsedInOtherTemplate(
                                 proposalTemplateSectionDefinition.getId(),
                                 proposalTemplate.getId())) {
-                    ProposalTemplateClientUtil
+                    StaticContestContext.getProposalTemplateClient()
                             .deleteProposalTemplateSectionDefinition(proposalTemplateSectionDefinition.getId());
                 }
-                ProposalTemplateClientUtil
+                StaticContestContext.getProposalTemplateClient()
                         .deleteProposalTemplateSection(proposalTemplate.getId(),
                                 proposalTemplateSectionDefinition.getId());
             }
         }
 
         sections.removeAll(removedSectionDefinitions);
-
     }
 
     private void removeTemplateSection() {
@@ -207,8 +209,8 @@ public class ProposalTemplateWrapper {
     private void duplicateExistingProposalTemplate() {
 
         proposalTemplate.setId(null);
-        IProposalTemplate newProposalTemplate = ProposalTemplateClientUtil.createProposalTemplate(
-                proposalTemplate);
+        IProposalTemplate newProposalTemplate = StaticContestContext.getProposalTemplateClient()
+                .createProposalTemplate(proposalTemplate);
         proposalTemplateId = newProposalTemplate.getId();
         proposalTemplate = newProposalTemplate;
 
@@ -230,12 +232,13 @@ public class ProposalTemplateWrapper {
         long sectionDefinitionId = sectionDefinitionWrapper.getId();
         int weight = sectionDefinitionWrapper.getWeight();
 
-        IProposalTemplateSection templateSection = ProposalTemplateClientUtil
+        IProposalTemplateSection templateSection = StaticContestContext.getProposalTemplateClient()
                 .getProposalTemplateSection(proposalTemplateId, sectionDefinitionId);
 
         if (templateSection != null) {
             templateSection.setWeight(weight);
-            ProposalTemplateClientUtil.updateProposalTemplateSection(templateSection);
+            StaticContestContext.getProposalTemplateClient()
+                    .updateProposalTemplateSection(templateSection);
 
         } else {
             IProposalTemplateSection pts = new ProposalTemplateSection();
@@ -243,7 +246,7 @@ public class ProposalTemplateWrapper {
             pts.setSectionDefinitionId(sectionDefinitionId);
             pts.setWeight(weight);
 
-            ProposalTemplateClientUtil.createProposalTemplateSection(pts);
+            StaticContestContext.getProposalTemplateClient().createProposalTemplateSection(pts);
         }
     }
 
@@ -251,7 +254,8 @@ public class ProposalTemplateWrapper {
         if (proposalTemplate != null && templateName != null) {
             proposalTemplate.setName(templateName);
 
-            ProposalTemplateClientUtil.updateProposalTemplate(proposalTemplate);
+            StaticContestContext.getProposalTemplateClient()
+                    .updateProposalTemplate(proposalTemplate);
         }
     }
 

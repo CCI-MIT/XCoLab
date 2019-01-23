@@ -17,7 +17,7 @@ import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.OntologyClient;
-import org.xcolab.client.contest.ProposalTemplateClientUtil;
+import org.xcolab.client.contest.ProposalTemplateClient;
 import org.xcolab.client.contest.pojo.IProposalTemplate;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.FocusAreaWrapper;
@@ -60,6 +60,9 @@ public class BatchCreationController {
     @Autowired
     private OntologyClient ontologyClient;
 
+    @Autowired
+    private ProposalTemplateClient proposalTemplateClient;
+
     @ModelAttribute("proposalTemplateSelectionItems")
     public List<LabelValue> populateProposalTemplateSelectionItems() {
         return getProposalTemplateSelectionItems();
@@ -71,7 +74,7 @@ public class BatchCreationController {
                 Arrays.asList(1L, 2L, 106L, 201L, 202L, 301L, 401L, 1000401L, 1000501L, 1300104L,
                         1300201L, 1300302L,
                         1300401L, 1300601L, 1300602L);
-        for (IProposalTemplate proposalTemplate : ProposalTemplateClientUtil.getProposalTemplates()) {
+        for (IProposalTemplate proposalTemplate : proposalTemplateClient.getProposalTemplates()) {
             if (!excludedList.contains(proposalTemplate.getId())) {
                 selectItems
                         .add(new LabelValue(proposalTemplate.getId(), proposalTemplate.getName()));

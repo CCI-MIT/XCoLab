@@ -7,7 +7,6 @@ import org.xcolab.client.contest.ContestTeamMemberClient;
 import org.xcolab.client.contest.ImpactClient;
 import org.xcolab.client.contest.OntologyClient;
 import org.xcolab.client.contest.ProposalTemplateClient;
-import org.xcolab.client.contest.ProposalTemplateClientUtil;
 import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.proposals.MembershipClient;
 import org.xcolab.client.contest.proposals.MembershipClientUtil;
@@ -61,7 +60,7 @@ public class ClientHelper {
         contestTeamMemberClient = StaticContestContext.getContestTeamMemberClient();
         impactClient = StaticContestContext.getImpactClient();
         ontologyClient = StaticContestContext.getOntologyClient();
-        proposalTemplateClient = ProposalTemplateClientUtil.getClient();
+        proposalTemplateClient = StaticContestContext.getProposalTemplateClient();
 
         activitiesClient = ActivitiesClientUtil.getClient();
     }

@@ -15,13 +15,14 @@ public final class StaticContestContext {
     private static ContestTeamMemberClient contestTeamMemberClient;
     private static ImpactClient impactClient;
     private static OntologyClient ontologyClient;
+    private static ProposalTemplateClient proposalTemplateClient;
 
     private StaticContestContext() {}
 
     public static void setClients(ICommentClient commentClient, ICategoryClient categoryClient,
             IThreadClient threadClient, ContestClient contestClient,
             ContestTeamMemberClient contestTeamMemberClient, ImpactClient impactClient,
-            OntologyClient ontologyClient) {
+            OntologyClient ontologyClient, ProposalTemplateClient proposalTemplateClient) {
         Assert.notNull(commentClient, "commentClient must not be null!");
         Assert.notNull(categoryClient, "categoryClient must not be null!");
         Assert.notNull(threadClient, "threadClient must not be null!");
@@ -29,6 +30,7 @@ public final class StaticContestContext {
         Assert.notNull(contestTeamMemberClient, "contestTeamMemberClient must not be null!");
         Assert.notNull(impactClient, "impactClient must not be null!");
         Assert.notNull(ontologyClient, "ontologyClient must not be null!");
+        Assert.notNull(proposalTemplateClient, "proposalTemplateClient must not be null!");
         StaticContestContext.commentClient = commentClient;
         StaticContestContext.categoryClient = categoryClient;
         StaticContestContext.threadClient = threadClient;
@@ -36,6 +38,7 @@ public final class StaticContestContext {
         StaticContestContext.contestTeamMemberClient = contestTeamMemberClient;
         StaticContestContext.impactClient = impactClient;
         StaticContestContext.ontologyClient = ontologyClient;
+        StaticContestContext.proposalTemplateClient = proposalTemplateClient;
     }
 
     public static ICommentClient getCommentClient() {
@@ -64,5 +67,9 @@ public final class StaticContestContext {
 
     public static ImpactClient getImpactClient() {
         return impactClient;
+    }
+
+    public static ProposalTemplateClient getProposalTemplateClient() {
+        return proposalTemplateClient;
     }
 }

@@ -11,7 +11,6 @@ import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestTeamMemberClient;
 import org.xcolab.client.contest.OntologyClient;
 import org.xcolab.client.contest.ProposalTemplateClient;
-import org.xcolab.client.contest.ProposalTemplateClientUtil;
 import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.enums.ContestRole;
 import org.xcolab.client.contest.enums.ContestStatus;
@@ -80,7 +79,7 @@ public class ContestWrapper extends Contest {
         contestClient = StaticContestContext.getContestClient();
         contestTeamMemberClient = StaticContestContext.getContestTeamMemberClient();
         ontologyClient = StaticContestContext.getOntologyClient();
-        proposalTemplateClient = ProposalTemplateClientUtil.getClient();
+        proposalTemplateClient = StaticContestContext.getProposalTemplateClient();
     }
 
     public ContestWrapper(Contest value) {
@@ -88,7 +87,7 @@ public class ContestWrapper extends Contest {
         contestClient = StaticContestContext.getContestClient();
         contestTeamMemberClient = StaticContestContext.getContestTeamMemberClient();
         ontologyClient = StaticContestContext.getOntologyClient();
-        proposalTemplateClient = ProposalTemplateClientUtil.getClient();
+        proposalTemplateClient = StaticContestContext.getProposalTemplateClient();
     }
 
     @JsonIgnore

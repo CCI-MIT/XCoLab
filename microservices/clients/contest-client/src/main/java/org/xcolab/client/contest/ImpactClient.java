@@ -23,8 +23,8 @@ public interface ImpactClient {
     }
 
     default IImpactTemplateFocusAreaList getContestImpactFocusAreaList(ContestWrapper contest) {
-        IProposalTemplate proposalTemplate =
-                ProposalTemplateClientUtil.getProposalTemplate(contest.getProposalTemplateId());
+        IProposalTemplate proposalTemplate = StaticContestContext.getProposalTemplateClient()
+                .getProposalTemplate(contest.getProposalTemplateId());
         return getImpactTemplateFocusAreaList(proposalTemplate.getFocusAreaListTemplateId());
     }
 
@@ -42,10 +42,9 @@ public interface ImpactClient {
     }
 
     default IImpactTemplateSeries getContestImpactTemplateSeries(ContestWrapper contest) {
-        IProposalTemplate proposalTemplate =
-                ProposalTemplateClientUtil.getProposalTemplate(contest.getProposalTemplateId());
+        IProposalTemplate proposalTemplate = StaticContestContext.getProposalTemplateClient()
+                .getProposalTemplate(contest.getProposalTemplateId());
         return getImpactTemplateSeries(proposalTemplate.getImpactSeriesTemplateId());
-
     }
 
     @GetMapping("/impactTemplateSeries/{impactTemplateSeriesId}")

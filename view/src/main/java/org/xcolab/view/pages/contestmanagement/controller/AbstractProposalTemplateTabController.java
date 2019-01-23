@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.contest.ProposalTemplateClientUtil;
 import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
 import org.xcolab.client.contest.pojo.wrapper.PointTypeWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
@@ -35,9 +34,6 @@ import javax.servlet.http.HttpServletResponse;
 public abstract class AbstractProposalTemplateTabController extends BaseTabController {
 
     public static final String TAB_VIEW = "contestmanagement/manager/proposalTemplateTab";
-
-    @Autowired
-    private IContestTypeClient contestTypeClient;
 
     protected TabWrapper tabWrapper;
 
@@ -130,7 +126,7 @@ public abstract class AbstractProposalTemplateTabController extends BaseTabContr
             throws IOException {
 
         ProposalTemplateSectionDefinitionWrapper proposalTemplateSectionDefinition =
-                ProposalTemplateClientUtil.getProposalTemplateSectionDefinition(sectionDefinitionId);
+                proposalTemplateClient.getProposalTemplateSectionDefinition(sectionDefinitionId);
         SectionDefinitionWrapper sectionDefinitionWrapper =
                 new SectionDefinitionWrapper(proposalTemplateSectionDefinition);
         ObjectMapper mapper = new ObjectMapper();

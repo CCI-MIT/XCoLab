@@ -5,7 +5,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import org.xcolab.client.contest.ProposalTemplateClientUtil;
+import org.xcolab.client.contest.ProposalTemplateClient;
 import org.xcolab.client.contest.pojo.IProposalReference;
 import org.xcolab.client.contest.pojo.tables.pojos.ProposalReference;
 import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
@@ -33,16 +33,19 @@ import java.util.stream.Stream;
 public class ProposalReferenceService {
 
     private final ProposalReferenceDao proposalReferenceDao;
-
     private final ProposalDao proposalDao;
 
     private final ProposalAttributeService proposalAttributeService;
+    private final ProposalTemplateClient proposalTemplateClient;
 
     @Autowired
-    public ProposalReferenceService(ProposalReferenceDao proposalReferenceDao, ProposalDao proposalDao, ProposalAttributeService proposalAttributeService){
+    public ProposalReferenceService(ProposalReferenceDao proposalReferenceDao,
+            ProposalDao proposalDao, ProposalAttributeService proposalAttributeService,
+            ProposalTemplateClient proposalTemplateClient){
         this.proposalReferenceDao = proposalReferenceDao;
         this.proposalDao = proposalDao;
         this.proposalAttributeService = proposalAttributeService;
+        this.proposalTemplateClient = proposalTemplateClient;
     }
 
     public void populateTableWithProposal(ProposalWrapper proposal)  {
@@ -68,7 +71,7 @@ public class ProposalReferenceService {
         final Collection<ProposalAttribute> sectionAttributes =
                 proposalAttributeHelper.getAttributes(ProposalAttributeKeys.SECTION);
         for (ProposalAttribute attribute : sectionAttributes) {
-            ProposalTemplateSectionDefinitionWrapper psd = ProposalTemplateClientUtil
+            ProposalTemplateSectionDefinitionWrapper psd = proposalTemplateClient
                     .getProposalTemplateSectionDefinition(attribute.getAdditionalId());
 
             if (StringUtils.isBlank(psd.getType())) {

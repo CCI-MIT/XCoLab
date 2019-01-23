@@ -16,7 +16,6 @@ import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestTeamMemberClient;
 import org.xcolab.client.contest.ProposalTemplateClient;
-import org.xcolab.client.contest.ProposalTemplateClientUtil;
 import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.IProposal2Phase;
@@ -1027,7 +1026,7 @@ public class ProposalWrapper extends Proposal implements Serializable {
             contestTeamMember = StaticContestContext.getContestTeamMemberClient();
             proposalMemberRating = ProposalMemberRatingClientUtil.getClient();
             membership = MembershipClientUtil.getClient();
-            proposalTemplate = ProposalTemplateClientUtil.getClient();
+            proposalTemplate = StaticContestContext.getProposalTemplateClient();
             proposalJudgeRating = ProposalJudgeRatingClientUtil.getClient();
         }
     }

@@ -17,6 +17,7 @@ import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestTeamMemberClient;
 import org.xcolab.client.contest.ImpactClient;
 import org.xcolab.client.contest.OntologyClient;
+import org.xcolab.client.contest.ProposalTemplateClient;
 import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.email.IEmailClient;
 import org.xcolab.client.email.StaticEmailContext;
@@ -44,7 +45,7 @@ public class StaticInjector {
             IContestTypeClient contestTypeClient, IEmailTemplateClient emailTemplateClient,
             IEmailClient emailClient, ContestClient contestClient,
             ContestTeamMemberClient contestTeamMemberClient, ImpactClient impactClient,
-            OntologyClient ontologyClient) {
+            OntologyClient ontologyClient, ProposalTemplateClient proposalTemplateClient) {
         // Module Internal
         ImageUploadUtils.setFileClient(fileClient);
         LoadContentArticleTag.setContentClient(contentClient);
@@ -61,7 +62,7 @@ public class StaticInjector {
         // Module External
         StaticCommentContext.setClients(commentClient, categoryClient, threadClient);
         StaticContestContext.setClients(commentClient, categoryClient, threadClient, contestClient,
-                contestTeamMemberClient, impactClient, ontologyClient);
+                contestTeamMemberClient, impactClient, ontologyClient, proposalTemplateClient);
         StaticAdminContext.setClients(adminClient, contestTypeClient, emailTemplateClient);
         StaticEmailContext.setEmailClient(emailClient);
     }

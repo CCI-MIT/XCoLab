@@ -8,7 +8,6 @@ import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.IConfigurationAttribute;
 import org.xcolab.client.admin.pojo.tables.pojos.ConfigurationAttribute;
-import org.xcolab.client.contest.ProposalTemplateClientUtil;
 import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.exceptions.ContestScheduleNotFoundException;
 import org.xcolab.client.contest.pojo.IContestSchedule;
@@ -54,7 +53,8 @@ public final class ContestCreatorUtil {
         final long defaultTemplateId = ConfigurationAttributeKey.DEFAULT_CONTEST_TEMPLATE_ID.get();
         try {
             if (defaultTemplateId > 0) {
-                return ProposalTemplateClientUtil.getProposalTemplate(defaultTemplateId);
+                return StaticContestContext.getProposalTemplateClient()
+                        .getProposalTemplate(defaultTemplateId);
             }
             final IProposalTemplate newDefaultTemplate = ProposalTemplateLifecycleUtil
                     .create(DEFAULT_TEMPLATE_NAME);
