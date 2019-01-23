@@ -3,7 +3,7 @@ package org.xcolab.client.contest.pojo.wrapper;
 import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.contest.pojo.tables.pojos.PointType;
-import org.xcolab.client.contest.proposals.PointsClientUtil;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.contest.proposals.enums.points.DistributionStrategy;
 import org.xcolab.client.contest.proposals.enums.points.ReceiverLimitationStrategy;
 import org.xcolab.util.http.client.types.TypeProvider;
@@ -57,7 +57,7 @@ public class PointTypeWrapper extends PointType {
     private void initChildren(){
         if (this.getId() != null) {
             List<PointTypeWrapper> unwrappedChildren =
-                    PointsClientUtil.getClient().getChildrenOfPointType(this.getId());
+                    StaticProposalContext.getPointsClient().getPointTypes(this.getId());
             this.children = new ArrayList<>();
             for (PointTypeWrapper child : unwrappedChildren) {
                 this.children.add(new PointTypeWrapper(child, this.percentageOfTotal));

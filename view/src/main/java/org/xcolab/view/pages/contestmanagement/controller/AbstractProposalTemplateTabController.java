@@ -1,18 +1,15 @@
 package org.xcolab.view.pages.contestmanagement.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
 import org.xcolab.client.contest.pojo.wrapper.PointTypeWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
-import org.xcolab.client.contest.proposals.PointsClientUtil;
 import org.xcolab.client.contest.proposals.enums.points.DistributionStrategy;
 import org.xcolab.commons.html.LabelStringValue;
 import org.xcolab.commons.html.LabelValue;
@@ -87,7 +84,7 @@ public abstract class AbstractProposalTemplateTabController extends BaseTabContr
     private List<LabelValue> getPointTypeSelectionItems() {
         List<LabelValue> selectItems = new ArrayList<>();
         selectItems.add(new LabelValue(0L, "Default"));
-        for (PointTypeWrapper pointType : PointsClientUtil.getAllPointTypes()) {
+        for (PointTypeWrapper pointType : pointsClient.getAllPointTypes()) {
             if (pointType.getDistributionStrategy()
                     .equalsIgnoreCase(DistributionStrategy.SECTION_DEFINED.name())) {
                 selectItems.add(new LabelValue(pointType.getId(),

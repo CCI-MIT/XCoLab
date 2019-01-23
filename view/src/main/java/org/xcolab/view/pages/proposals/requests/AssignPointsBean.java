@@ -1,13 +1,13 @@
 package org.xcolab.view.pages.proposals.requests;
 
 
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.contest.proposals.PointsClientUtil;
+import org.xcolab.client.contest.pojo.IPointsDistributionConfiguration;
+import org.xcolab.client.contest.pojo.wrapper.PointTypeWrapper;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.contest.proposals.enums.points.DistributionStrategy;
 import org.xcolab.client.contest.proposals.enums.points.ReceiverLimitationStrategy;
-import org.xcolab.client.contest.pojo.wrapper.PointTypeWrapper;
-import org.xcolab.client.contest.pojo.IPointsDistributionConfiguration;
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.exceptions.InternalException;
 
 import java.text.DecimalFormat;
@@ -42,10 +42,11 @@ public class AssignPointsBean {
     public void addAllAssignments(PointTypeWrapper pointType, List<Member> members) {
         if (pointType.getDistributionStrategyz().name().equals(DistributionStrategy.USER_DEFINED.name())) {
 
-            PointsClientUtil.verifyDistributionConfigurationsForProposalId(proposalId);
+            StaticProposalContext.getPointsClient()
+                    .verifyDistributionConfigurationsForProposalId(proposalId);
 
             List<IPointsDistributionConfiguration> existingDistributionConfigurations =
-                    PointsClientUtil
+                    StaticProposalContext.getPointsClient()
                             .getPointsDistributionByProposalIdPointTypeId(proposalId, pointType.getId());
 
             switch(pointType.getReceiverLimitationStrategyz().getType()) {

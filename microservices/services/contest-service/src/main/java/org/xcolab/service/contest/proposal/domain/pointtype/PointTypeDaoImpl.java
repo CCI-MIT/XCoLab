@@ -6,8 +6,7 @@ import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.client.contest.pojo.IPointType;
-import org.xcolab.client.contest.pojo.tables.pojos.PointType;
+import org.xcolab.client.contest.pojo.wrapper.PointTypeWrapper;
 import org.xcolab.model.tables.records.PointTypeRecord;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
@@ -26,7 +25,7 @@ public class PointTypeDaoImpl implements PointTypeDao {
     }
 
     @Override
-    public IPointType create(IPointType pointType) {
+    public PointTypeWrapper create(PointTypeWrapper pointType) {
         PointTypeRecord ret = this.dslContext.insertInto(POINT_TYPE)
                 .set(POINT_TYPE.ID, pointType.getId())
                 .set(POINT_TYPE.PARENT_POINT_TYPE_ID, pointType.getParentPointTypeId())
@@ -47,7 +46,7 @@ public class PointTypeDaoImpl implements PointTypeDao {
     }
 
     @Override
-    public IPointType get(Long id) throws NotFoundException {
+    public PointTypeWrapper get(Long id) throws NotFoundException {
         final Record record =  this.dslContext.selectFrom(POINT_TYPE)
                 .where(POINT_TYPE.ID.eq(id))
                 .fetchOne();
@@ -55,11 +54,11 @@ public class PointTypeDaoImpl implements PointTypeDao {
         if (record == null) {
             throw new NotFoundException("PointType with id " + id + " does not exist");
         }
-        return record.into(PointType.class);
+        return record.into(PointTypeWrapper.class);
     }
 
     @Override
-    public boolean update(IPointType pointType) {
+    public boolean update(PointTypeWrapper pointType) {
         return dslContext.update(POINT_TYPE)
                 .set(POINT_TYPE.ID, pointType.getId())
                 .set(POINT_TYPE.PARENT_POINT_TYPE_ID, pointType.getParentPointTypeId())
@@ -73,7 +72,7 @@ public class PointTypeDaoImpl implements PointTypeDao {
     }
 
     @Override
-    public List<IPointType> findByGiven(Long parentPointTypeId) {
+    public List<PointTypeWrapper> findByGiven(Long parentPointTypeId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(POINT_TYPE).getQuery();
 
@@ -82,6 +81,6 @@ public class PointTypeDaoImpl implements PointTypeDao {
         }
         query.addOrderBy(POINT_TYPE.SORT_ORDER.asc());
 
-        return query.fetchInto(PointType.class);
+        return query.fetchInto(PointTypeWrapper.class);
     }
 }

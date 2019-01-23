@@ -1,12 +1,12 @@
 package org.xcolab.client.contest.proposals.enums.points;
 
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
-import org.xcolab.client.contest.proposals.PointsClientUtil;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.pojo.wrapper.PointTypeWrapper;
 import org.xcolab.client.contest.pojo.IPointsDistributionConfiguration;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.PointTypeWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.util.enums.contest.ContestTier;
 
 import java.util.ArrayList;
@@ -19,7 +19,8 @@ public enum ReceiverLimitationStrategy {
         // check if there is any configuration, if there is create appropriate targets
         List<PointsTarget> targets = new ArrayList<>();
         if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
-            for (IPointsDistributionConfiguration pdc: PointsClientUtil.getPointsDistributionByProposalIdPointTypeId(proposal.getId(), pointType.getId())) {
+            for (IPointsDistributionConfiguration pdc: StaticProposalContext.getPointsClient()
+                    .getPointsDistributionByProposalIdPointTypeId(proposal.getId(), pointType.getId())) {
                 if (pdc.getTargetUserId() > 0) {
                     PointsTarget target = new PointsTarget();
                     target.setUserId(pdc.getTargetUserId());
@@ -35,7 +36,8 @@ public enum ReceiverLimitationStrategy {
         List<PointsTarget> targets = new ArrayList<>();
 
         if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
-            for (IPointsDistributionConfiguration pdc: PointsClientUtil.getPointsDistributionByProposalIdPointTypeId(proposal.getId(), pointType.getId())) {
+            for (IPointsDistributionConfiguration pdc: StaticProposalContext.getPointsClient()
+                    .getPointsDistributionByProposalIdPointTypeId(proposal.getId(), pointType.getId())) {
                 if (pdc.getTargetUserId() > 0 && !ProposalClientUtil
                         .isUserInProposalTeam(proposal.getId(), pdc.getTargetUserId())) {
                     PointsTarget target = new PointsTarget();
@@ -51,7 +53,8 @@ public enum ReceiverLimitationStrategy {
         List<PointsTarget> targets = new ArrayList<>();
 
         if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
-            for (IPointsDistributionConfiguration pdc: PointsClientUtil.getPointsDistributionByProposalIdPointTypeId(proposal.getId(), pointType.getId())) {
+            for (IPointsDistributionConfiguration pdc: StaticProposalContext.getPointsClient()
+                    .getPointsDistributionByProposalIdPointTypeId(proposal.getId(), pointType.getId())) {
                 if (pdc.getTargetUserId() > 0 && ProposalClientUtil
                         .isUserInProposalTeam(proposal.getId(), pdc.getTargetUserId())) {
                     PointsTarget target = new PointsTarget();

@@ -11,7 +11,6 @@ import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.proposals.MembershipClient;
 import org.xcolab.client.contest.proposals.MembershipClientUtil;
 import org.xcolab.client.contest.proposals.PointsClient;
-import org.xcolab.client.contest.proposals.PointsClientUtil;
 import org.xcolab.client.contest.proposals.ProposalAttributeClient;
 import org.xcolab.client.contest.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.contest.proposals.ProposalClient;
@@ -24,6 +23,7 @@ import org.xcolab.client.contest.proposals.ProposalMoveClient;
 import org.xcolab.client.contest.proposals.ProposalMoveClientUtil;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
 import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 
 public class ClientHelper {
 
@@ -49,7 +49,7 @@ public class ClientHelper {
     public ClientHelper() {
         proposalClient = ProposalClientUtil.getClient();
         membershipClient = MembershipClientUtil.getClient();
-        pointsClient = PointsClientUtil.getClient();
+        pointsClient = StaticProposalContext.getPointsClient();
         proposalPhaseClient = ProposalPhaseClientUtil.getClient();
         proposalAttributeClient = ProposalAttributeClientUtil.getClient();
         proposalMoveClient = ProposalMoveClientUtil.getClient();

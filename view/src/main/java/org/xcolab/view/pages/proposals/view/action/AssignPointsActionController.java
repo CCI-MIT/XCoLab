@@ -1,5 +1,6 @@
 package org.xcolab.view.pages.proposals.view.action;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,7 +13,7 @@ import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.PointTypeWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.PointsClientUtil;
+import org.xcolab.client.contest.proposals.PointsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.pages.proposals.requests.AssignPointsBean;
 import org.xcolab.view.pages.proposals.tabs.ProposalTab;
@@ -31,6 +32,9 @@ import javax.validation.Valid;
 public class AssignPointsActionController {
 
     private final Map<Long, Double> pointTypePercentageModifiers = new HashMap<>();
+
+    @Autowired
+    private PointsClient pointsClient;
 
     private void initializePercentageModifiers(PointTypeWrapper pointType) {
         this.pointTypePercentageModifiers.put(pointType.getId(), pointType.getPercentageOfTotal());
@@ -69,8 +73,7 @@ public class AssignPointsActionController {
                 .deletePointsDistributionConfigurationByProposalId(proposal.getId());
 
         try {
-            PointTypeWrapper contestRootPointType = PointsClientUtil
-
+            PointTypeWrapper contestRootPointType = pointsClient
                     .getPointType(contest.getDefaultParentPointType());
 
             //calculate the percentage multiplicator for each pointtype

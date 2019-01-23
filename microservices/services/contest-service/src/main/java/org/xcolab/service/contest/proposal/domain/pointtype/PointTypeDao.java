@@ -1,17 +1,18 @@
 package org.xcolab.service.contest.proposal.domain.pointtype;
 
 import org.xcolab.client.contest.pojo.IPointType;
+import org.xcolab.client.contest.pojo.wrapper.PointTypeWrapper;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.util.List;
 
 public interface PointTypeDao {
 
-    List<IPointType> findByGiven(Long parentPointTypeId);
+    List<PointTypeWrapper> findByGiven(Long parentPointTypeId);
 
-    IPointType create(IPointType pointType);
+    PointTypeWrapper create(PointTypeWrapper pointType);
 
-    IPointType get(Long id) throws NotFoundException;
+    PointTypeWrapper get(Long id) throws NotFoundException;
 
-    boolean update(IPointType pointType);
+    boolean update(PointTypeWrapper pointType);
 }

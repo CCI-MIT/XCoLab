@@ -13,7 +13,7 @@ import org.xcolab.client.contest.pojo.wrapper.FocusAreaWrapper;
 import org.xcolab.client.contest.pojo.wrapper.OntologySpaceWrapper;
 import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
-import org.xcolab.client.contest.proposals.PointsClientUtil;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.commons.IdListUtil;
 import org.xcolab.view.util.entity.enums.OntologySpaceEnum;
 
@@ -78,9 +78,8 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
                 IdListUtil.getIdsFromString(proposalTemplateSectionDefinition.getAllowedContestTypeIds());
 
 
-        IPointsDistributionConfiguration pdc =
-                PointsClientUtil
-                        .getPointsDistributionConfigurationByTargetProposalTemplateSectionDefinitionId(id);
+        IPointsDistributionConfiguration pdc = StaticProposalContext.getPointsClient()
+                .getPointsDistributionConfigurationByTargetProposalTemplateSectionDefinitionId(id);
         if (pdc != null) {
             this.pointPercentage = Double.toString(pdc.getPercentage());
             this.pointType = pdc.getPointTypeId();
@@ -265,20 +264,21 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
         } else {
             psd = StaticContestContext.getProposalTemplateClient()
                     .getProposalTemplateSectionDefinition(id);
-            pdc = PointsClientUtil
+            pdc = StaticProposalContext.getPointsClient()
                     .getPointsDistributionConfigurationByTargetProposalTemplateSectionDefinitionId(id);
 
             populateProposalTemplateSectionDefinition(psd);
 
             if (pdc != null) {
                 if (pointType == 0L) {
-                    PointsClientUtil
+                    StaticProposalContext.getPointsClient()
                             .deletePointsDistributionConfiguration(pdc.getId());
                 } else {
                     pdc.setPercentage(Double.valueOf(pointPercentage));
                     pdc.setPointTypeId(pointType);
                     pdc.setTargetProposalTemplateSectionDefinitionId(id);
-                    PointsClientUtil.updatePointsDistributionConfiguration(pdc);
+                    StaticProposalContext.getPointsClient()
+                            .updatePointsDistributionConfiguration(pdc);
             /*
                 if (pdc != null) {
                     PointsDistributionConfigurationClient
@@ -304,7 +304,8 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
                 pdc.setPercentage(Double.valueOf(pointPercentage));
                 pdc.setPointTypeId(pointType);
                 pdc.setTargetProposalTemplateSectionDefinitionId(id);
-                pdc = PointsClientUtil.createPointsDistributionConfiguration(pdc);
+                pdc = StaticProposalContext.getPointsClient()
+                        .createPointsDistributionConfiguration(pdc);
             }
         }
 

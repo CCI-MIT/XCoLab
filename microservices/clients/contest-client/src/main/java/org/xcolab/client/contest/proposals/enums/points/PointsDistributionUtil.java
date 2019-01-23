@@ -1,15 +1,15 @@
 package org.xcolab.client.contest.proposals.enums.points;
 
-import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.contest.proposals.PointsClientUtil;
-import org.xcolab.client.contest.proposals.ProposalAttributeClientUtil;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
-import org.xcolab.client.contest.proposals.exceptions.ProposalAttributeNotFoundException;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.pojo.wrapper.PointTypeWrapper;
 import org.xcolab.client.contest.pojo.IPointsDistributionConfiguration;
 import org.xcolab.client.contest.pojo.IProposalReference;
+import org.xcolab.client.contest.pojo.wrapper.PointTypeWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.ProposalAttributeClientUtil;
+import org.xcolab.client.contest.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
+import org.xcolab.client.contest.proposals.exceptions.ProposalAttributeNotFoundException;
+import org.xcolab.client.members.pojo.Member;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -47,7 +47,8 @@ public class PointsDistributionUtil {
                         .getProposalAttribute(reference.getSectionAttributeId());
                 final long proposalTemplateSectionDefinitionId = referenceSectionProposalAttribute.getAdditionalId();
 
-                IPointsDistributionConfiguration pdc = PointsClientUtil.getPointsDistributionConfigurationByTargetProposalTemplateSectionDefinitionId(proposalTemplateSectionDefinitionId);
+                IPointsDistributionConfiguration pdc = StaticProposalContext.getPointsClient()
+                        .getPointsDistributionConfigurationByTargetProposalTemplateSectionDefinitionId(proposalTemplateSectionDefinitionId);
                 //TODO COLAB-2597: do we need to do anything else if it's null?
                 if (pdc != null) {
                     targets.add(PointsTarget.forProposal(subProposalId, pdc.getPercentage()));
@@ -60,7 +61,7 @@ public class PointsDistributionUtil {
 
     public static List<PointsTarget> distributeUserDefinedAmongProposals(ProposalWrapper proposal, PointTypeWrapper pointType, Set<Long> subProposalIds)  {
         List<PointsTarget> targets = new ArrayList<>();
-        for (IPointsDistributionConfiguration pdc : PointsClientUtil
+        for (IPointsDistributionConfiguration pdc : StaticProposalContext.getPointsClient()
                 .getPointsDistributionByProposalIdPointTypeId(proposal.getId(), pointType.getId())) {
             if (pdc.getTargetSubProposalId() > 0 && subProposalIds.contains(pdc.getTargetSubProposalId()) && pdc.getTargetSubProposalId() != proposal.getId()) {
                 PointsTarget target = new PointsTarget();
