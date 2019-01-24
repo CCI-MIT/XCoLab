@@ -8,8 +8,7 @@ import org.xcolab.client.contest.ImpactClient;
 import org.xcolab.client.contest.OntologyClient;
 import org.xcolab.client.contest.ProposalTemplateClient;
 import org.xcolab.client.contest.StaticContestContext;
-import org.xcolab.client.contest.proposals.MembershipClient;
-import org.xcolab.client.contest.proposals.MembershipClientUtil;
+import org.xcolab.client.contest.proposals.IMembershipClient;
 import org.xcolab.client.contest.proposals.PointsClient;
 import org.xcolab.client.contest.proposals.ProposalAttributeClient;
 import org.xcolab.client.contest.proposals.ProposalAttributeClientUtil;
@@ -28,7 +27,7 @@ import org.xcolab.client.contest.proposals.StaticProposalContext;
 public class ClientHelper {
 
     private final ProposalClient proposalClient;
-    private final MembershipClient membershipClient;
+    private final IMembershipClient membershipClient;
     private final PointsClient pointsClient;
     private final ProposalPhaseClient proposalPhaseClient;
     private final ProposalAttributeClient proposalAttributeClient;
@@ -48,7 +47,7 @@ public class ClientHelper {
 
     public ClientHelper() {
         proposalClient = ProposalClientUtil.getClient();
-        membershipClient = MembershipClientUtil.getClient();
+        membershipClient = StaticProposalContext.getMembershipClient();
         pointsClient = StaticProposalContext.getPointsClient();
         proposalPhaseClient = ProposalPhaseClientUtil.getClient();
         proposalAttributeClient = ProposalAttributeClientUtil.getClient();
@@ -73,7 +72,7 @@ public class ClientHelper {
         return proposalClient;
     }
 
-    public MembershipClient getMembershipClient() {
+    public IMembershipClient getMembershipClient() {
         return membershipClient;
     }
 

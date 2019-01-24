@@ -22,8 +22,7 @@ import org.xcolab.client.contest.pojo.IProposal2Phase;
 import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
 import org.xcolab.client.contest.pojo.IProposalTemplate;
 import org.xcolab.client.contest.pojo.tables.pojos.Proposal;
-import org.xcolab.client.contest.proposals.MembershipClient;
-import org.xcolab.client.contest.proposals.MembershipClientUtil;
+import org.xcolab.client.contest.proposals.IMembershipClient;
 import org.xcolab.client.contest.proposals.ProposalAttributeClient;
 import org.xcolab.client.contest.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.contest.proposals.ProposalClient;
@@ -34,6 +33,7 @@ import org.xcolab.client.contest.proposals.ProposalMemberRatingClient;
 import org.xcolab.client.contest.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
 import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.contest.proposals.enums.ProposalUnversionedAttributeName;
 import org.xcolab.client.contest.proposals.exceptions.Proposal2PhaseNotFoundException;
@@ -1011,7 +1011,7 @@ public class ProposalWrapper extends Proposal implements Serializable {
         final ProposalMemberRatingClient proposalMemberRating;
         final ProposalJudgeRatingClient proposalJudgeRating;
 
-        final MembershipClient membership;
+        final IMembershipClient membership;
 
         final ProposalAttributeClient proposalAttribute;
         final ProposalPhaseClient proposalPhase;
@@ -1025,7 +1025,7 @@ public class ProposalWrapper extends Proposal implements Serializable {
             proposalPhase = ProposalPhaseClientUtil.getClient();
             contestTeamMember = StaticContestContext.getContestTeamMemberClient();
             proposalMemberRating = ProposalMemberRatingClientUtil.getClient();
-            membership = MembershipClientUtil.getClient();
+            membership = StaticProposalContext.getMembershipClient();
             proposalTemplate = StaticContestContext.getProposalTemplateClient();
             proposalJudgeRating = ProposalJudgeRatingClientUtil.getClient();
         }

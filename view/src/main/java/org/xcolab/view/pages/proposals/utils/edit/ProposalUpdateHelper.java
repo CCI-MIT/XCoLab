@@ -4,10 +4,12 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
+import org.xcolab.client.contest.proposals.IMembershipClient;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
+import org.xcolab.client.contest.proposals.exceptions.ConflictException;
 import org.xcolab.client.members.PlatformTeamsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.PlatformTeam;
-import org.xcolab.client.contest.proposals.MembershipClient;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
@@ -211,8 +213,12 @@ public class ProposalUpdateHelper {
                 List<Member> members = PlatformTeamsClient.getTeamMembers(team);
                 for (Member member : members) {
                     Long userId = member.getId();
-                    MembershipClient client = proposalContext.getClients().getMembershipClient();
-                    client.addUserToProposalTeam(userId, proposal);
+                    IMembershipClient client = StaticProposalContext.getMembershipClient();
+                    try {
+                        client.addUserToProposalTeam(userId, proposal);
+                    } catch (ConflictException e) {
+                        // User already exists in proposal team
+                    }
                 }
 
                 // Set team name

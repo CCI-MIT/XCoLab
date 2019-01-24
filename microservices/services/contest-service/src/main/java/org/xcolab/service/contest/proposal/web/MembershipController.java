@@ -1,17 +1,19 @@
 package org.xcolab.service.contest.proposal.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMembershipRequestWrapper;
-import org.xcolab.service.contest.exceptions.ConflictException;
-import org.xcolab.service.contest.exceptions.NotFoundException;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.IMembershipClient;
+import org.xcolab.client.contest.proposals.exceptions.MembershipRequestNotFoundException;
+import org.xcolab.client.contest.proposals.exceptions.ConflictException;
 import org.xcolab.service.contest.proposal.domain.membershiprequest.ProposalTeamMembershipRequestDao;
 import org.xcolab.service.contest.proposal.domain.proposalteammember.ProposalTeamMemberDao;
 
@@ -21,7 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-public class MembershipController {
+public class MembershipController implements IMembershipClient {
 
     private final ProposalTeamMembershipRequestDao proposalTeamMembershipRequestDao;
     private final ProposalTeamMemberDao proposalTeamMemberDao;
@@ -33,55 +35,54 @@ public class MembershipController {
         this.proposalTeamMemberDao = proposalTeamMemberDao;
     }
 
-    @RequestMapping(value = "/membershipRequests", method = RequestMethod.POST)
-    public ProposalTeamMembershipRequestWrapper createProposalTeamMembershipRequest(@RequestBody
-            ProposalTeamMembershipRequestWrapper proposalTeamMembershipRequest) {
-            proposalTeamMembershipRequest.setCreatedAt(new Timestamp(new Date().getTime()));
-        return this.proposalTeamMembershipRequestDao.create(proposalTeamMembershipRequest);
-    }
-
-    @RequestMapping(value = "/membershipRequests/{membershipRequestId}", method = RequestMethod.GET)
-    public ProposalTeamMembershipRequestWrapper getProposalTeamMembershipRequest(@PathVariable Long membershipRequestId) throws NotFoundException {
+    @GetMapping(value = "/membershipRequests/{membershipRequestId}")
+    public ProposalTeamMembershipRequestWrapper getMembershipRequest(
+            @PathVariable Long membershipRequestId) throws MembershipRequestNotFoundException {
         if (membershipRequestId == null || membershipRequestId == 0) {
-            throw new NotFoundException("No membershipRequestId given");
+            throw new MembershipRequestNotFoundException(membershipRequestId);
         } else {
             return proposalTeamMembershipRequestDao.get(membershipRequestId);
         }
     }
 
-    @RequestMapping(value = "/membershipRequests/{membershipRequestId}", method = RequestMethod.PUT)
-    public boolean updateProposalTeamMembershipRequest(@RequestBody
-            ProposalTeamMembershipRequestWrapper proposalTeamMembershipRequest,
-                                           @PathVariable Long membershipRequestId) throws NotFoundException {
+    @PostMapping(value = "/membershipRequests")
+    public ProposalTeamMembershipRequestWrapper createMembershipRequest(@RequestBody
+            ProposalTeamMembershipRequestWrapper membershipRequest) {
+        membershipRequest.setCreatedAt(new Timestamp(new Date().getTime()));
+        return this.proposalTeamMembershipRequestDao.create(membershipRequest);
+    }
 
-        if (membershipRequestId == null || membershipRequestId == 0 || proposalTeamMembershipRequestDao
-
-                .get(membershipRequestId) == null) {
-            throw new NotFoundException("No ProposalTeamMembershipRequest with id " + membershipRequestId);
+    @PutMapping(value = "/membershipRequests")
+    public boolean updateMembershipRequest(
+            @RequestBody ProposalTeamMembershipRequestWrapper membershipRequest)
+            throws MembershipRequestNotFoundException {
+        Long membershipRequestId = membershipRequest.getId();
+        if (membershipRequestId == null || membershipRequestId == 0
+                || proposalTeamMembershipRequestDao.get(membershipRequestId) == null) {
+            throw new MembershipRequestNotFoundException(membershipRequestId);
         } else {
-            return proposalTeamMembershipRequestDao.update(proposalTeamMembershipRequest);
+            return proposalTeamMembershipRequestDao.update(membershipRequest);
         }
     }
 
-    @RequestMapping(value = "/membershipRequests", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<ProposalTeamMembershipRequestWrapper> getActiveProposalTeamMembershipRequests(
+    @GetMapping(value = "/membershipRequests")
+    public List<ProposalTeamMembershipRequestWrapper> getMembershipRequests(
             @RequestParam(required = false) Long proposalId,
             @RequestParam(required = false) Integer statusId,
-            @RequestParam(required = false) Long userId
-    ) {
+            @RequestParam(required = false) Long userId) {
         return proposalTeamMembershipRequestDao.findByGiven(proposalId, statusId, userId)
                 .stream()
                 .filter(request -> request.getReplierUserId() == null)
                 .collect(Collectors.toList());
     }
 
-    @PostMapping("/proposals/{proposalId}/teamMembers")
-    public Long addTeamMember(@PathVariable long proposalId, @RequestBody Long userId)
-            throws ConflictException {
+    @PostMapping("/proposals/{userId}/teamMembers")
+    public void addUserToProposalTeam(@PathVariable Long userId,
+            @RequestBody ProposalWrapper proposal) throws ConflictException {
+        Long proposalId = proposal.getId();
         if (proposalTeamMemberDao.exists(proposalId, userId)) {
             throw new ConflictException();
         }
         proposalTeamMemberDao.addUserToTeam(proposalId, userId);
-        return userId;
     }
 }

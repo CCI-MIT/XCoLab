@@ -1,6 +1,7 @@
 package org.xcolab.service.contest.proposal.domain.membershiprequest;
 
 import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMembershipRequestWrapper;
+import org.xcolab.client.contest.proposals.exceptions.MembershipRequestNotFoundException;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public interface ProposalTeamMembershipRequestDao {
     ProposalTeamMembershipRequestWrapper create(
             ProposalTeamMembershipRequestWrapper ProposalTeamMembershipRequest);
 
-    ProposalTeamMembershipRequestWrapper get(Long membershipRequestId) throws NotFoundException;
+    ProposalTeamMembershipRequestWrapper get(Long membershipRequestId) throws MembershipRequestNotFoundException;
 
     boolean update(ProposalTeamMembershipRequestWrapper ProposalTeamMembershipRequest);
 }

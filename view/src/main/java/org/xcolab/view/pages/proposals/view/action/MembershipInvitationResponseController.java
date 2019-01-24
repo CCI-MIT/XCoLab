@@ -10,13 +10,14 @@ import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMembershipRequestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.MembershipClient;
-import org.xcolab.client.contest.proposals.MembershipClientUtil;
+import org.xcolab.client.contest.proposals.IMembershipClient;
 import org.xcolab.client.contest.proposals.ProposalAttributeClient;
 import org.xcolab.client.contest.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.contest.proposals.ProposalClient;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
+import org.xcolab.client.contest.proposals.exceptions.ConflictException;
+import org.xcolab.client.contest.proposals.exceptions.MembershipRequestNotFoundException;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.Member;
@@ -51,17 +52,21 @@ public class MembershipInvitationResponseController {
     @Autowired
     private ContestClient contestClient;
 
+    @Autowired
+    private IMembershipClient membershipClient;
+
     @PostMapping("/membershipRequests/reply")
     private void execute(HttpServletRequest request, HttpServletResponse response,
             @RequestParam long requestId, @RequestParam long proposalId,
-            @RequestParam long contestId, @RequestParam String action) throws IOException {
+            @RequestParam long contestId, @RequestParam String action)
+            throws IOException, MembershipRequestNotFoundException, ConflictException {
 
         ContestWrapper contest = contestClient.getContest(contestId);
-        MembershipClient membershipClient = MembershipClientUtil.getClient();
         ProposalClient proposalClient = ProposalClientUtil.getClient();
         ProposalAttributeClient proposalAttributeClient = ProposalAttributeClientUtil.getClient();
 
-        ProposalTeamMembershipRequestWrapper membershipRequest = membershipClient.getMembershipRequest(requestId);
+        ProposalTeamMembershipRequestWrapper membershipRequest =
+                membershipClient.getMembershipRequest(requestId);
 
         List<Long> recipients = new ArrayList<>();
         List<Member> contributors = proposalClient.getProposalMembers(proposalId);
