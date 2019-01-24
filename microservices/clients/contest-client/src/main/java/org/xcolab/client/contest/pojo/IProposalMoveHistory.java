@@ -1,7 +1,10 @@
 package org.xcolab.client.contest.pojo;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.tables.pojos.ProposalMoveHistory;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
@@ -13,6 +16,7 @@ import org.xcolab.util.enums.proposal.MoveType;
 
 import java.sql.Timestamp;
 
+@JsonDeserialize(as = ProposalMoveHistory.class)
 public interface IProposalMoveHistory {
 
     Long getId();

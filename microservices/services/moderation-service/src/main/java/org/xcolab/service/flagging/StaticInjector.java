@@ -7,6 +7,7 @@ import org.xcolab.client.comment.ICategoryClient;
 import org.xcolab.client.comment.ICommentClient;
 import org.xcolab.client.comment.IThreadClient;
 import org.xcolab.client.comment.StaticCommentContext;
+import org.xcolab.client.contest.StaticContestContext;
 
 @Component
 public class StaticInjector {

@@ -42,7 +42,6 @@ import java.util.List;
 public class ProposalController implements IProposalClient {
 
     private final ProposalDao proposalDao;
-
     private final ProposalRatingDao proposalRatingDao;
     private final ProposalVersionDao proposalVersionDao;
     private final ProposalContestPhaseAttributeDao proposalContestPhaseAttributeDao;
@@ -286,9 +285,9 @@ public class ProposalController implements IProposalClient {
     }
 
     @Override
-    @GetMapping("/proposalVersions")
+    @GetMapping("/proposalVersions/{proposalId}")
     public List<ProposalVersionWrapper> getAllProposalVersions(
-            @RequestParam(required = false) Long proposalId) {
+            @PathVariable(required = false) Long proposalId) {
         return proposalVersionDao.findByGiven(proposalId, null);
     }
 

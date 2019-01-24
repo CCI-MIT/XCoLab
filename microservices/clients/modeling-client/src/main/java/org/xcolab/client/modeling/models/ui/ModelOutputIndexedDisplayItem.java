@@ -8,11 +8,11 @@ import edu.mit.cci.roma.client.Variable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.modeling.IModelingClient;
+import org.xcolab.client.modeling.StaticModelingContext;
 import org.xcolab.client.modeling.pojo.IModelOutputChartOrder;
+import org.xcolab.client.modeling.pojo.tables.pojos.ModelOutputChartOrder;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 import org.xcolab.util.json.JsonUtil;
-import org.xcolab.client.modeling.pojo.tables.pojos.ModelOutputChartOrder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,7 +59,7 @@ public class ModelOutputIndexedDisplayItem extends ModelOutputDisplayItem {
         this.name = name;
 
         try {
-            chartModel = ModelUIFactory.getModelingClient().getModelOutputChartOrder(s.getId(), name);
+            chartModel = StaticModelingContext.getModelingClient().getModelOutputChartOrder(s.getId(), name);
         } catch (UncheckedEntityNotFoundException e) {
             createPersistence();
         }
@@ -70,7 +70,7 @@ public class ModelOutputIndexedDisplayItem extends ModelOutputDisplayItem {
         chartModel.setModelId(getSimulation().getId());
         chartModel.setModelOutputLabel(name);
         chartModel.setModelChartIsVisible(true);
-        chartModel = ModelUIFactory.getModelingClient().createModelOutputChartOrder(chartModel);
+        chartModel = StaticModelingContext.getModelingClient().createModelOutputChartOrder(chartModel);
     }
 
     /**
@@ -131,7 +131,7 @@ public class ModelOutputIndexedDisplayItem extends ModelOutputDisplayItem {
     public void setOrder(int o) {
         if (null != chartModel) {
             chartModel.setModelOutputChartOrder(o);
-            ModelUIFactory.getModelingClient().updateModelOutputChartOrder(chartModel);
+            StaticModelingContext.getModelingClient().updateModelOutputChartOrder(chartModel);
         }
     }
 
@@ -245,7 +245,7 @@ public class ModelOutputIndexedDisplayItem extends ModelOutputDisplayItem {
 
     public void setVisible(boolean b) {
         chartModel.setModelChartIsVisible(b);
-        ModelUIFactory.getModelingClient().updateModelOutputChartOrder(chartModel);
+        StaticModelingContext.getModelingClient().updateModelOutputChartOrder(chartModel);
     }
 
     public void setErrorBehavior(TupleStatus status, ErrorPolicy policy, String msg) {
@@ -258,6 +258,6 @@ public class ModelOutputIndexedDisplayItem extends ModelOutputDisplayItem {
 
         }
         errorBehaviors.remove(status);
-        ModelUIFactory.getModelingClient().updateModelOutputChartOrder(chartModel);
+        StaticModelingContext.getModelingClient().updateModelOutputChartOrder(chartModel);
     }
 }

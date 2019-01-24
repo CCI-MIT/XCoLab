@@ -3,9 +3,9 @@ package org.xcolab.service.contest.proposal.service.proposalattribute;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import org.xcolab.client.comment.IThreadClient;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.IThread;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
 import org.xcolab.client.contest.pojo.wrapper.ProposalUnversionedAttribute;
 import org.xcolab.client.contest.pojo.wrapper.ProposalVersionWrapper;
@@ -24,25 +24,19 @@ public class ProposalAttributeService {
     public static final int LATEST_VERSION = Integer.MAX_VALUE;
 
     private final ProposalAttributeDao proposalAttributeDao;
-
     private final ProposalUnversionedAttributeDao proposalUnversionedAttributeDao;
-
     private final ProposalDao proposalDao;
-
     private final ProposalVersionDao proposalVersionDao;
-
-    private final IThreadClient threadClient;
 
     @Autowired
     public ProposalAttributeService(ProposalDao proposalDao,
             ProposalAttributeDao proposalAttributeDao,
             ProposalUnversionedAttributeDao proposalUnversionedAttributeDao,
-            ProposalVersionDao proposalVersionDao, IThreadClient threadClient) {
+            ProposalVersionDao proposalVersionDao) {
         this.proposalAttributeDao = proposalAttributeDao;
         this.proposalDao = proposalDao;
         this.proposalUnversionedAttributeDao = proposalUnversionedAttributeDao;
         this.proposalVersionDao = proposalVersionDao;
-        this.threadClient = threadClient;
     }
 
     public ProposalAttributeHelper getProposalAttributeHelper(long proposalId, int version) {
@@ -115,12 +109,12 @@ public class ProposalAttributeService {
             // Update the proposal name in the discussion category
             if (proposalAttribute.getName().equals(ProposalAttributeKeys.NAME)) {
                 try {
-                    IThread thread = threadClient.getThread(proposal.getDiscussionId());
+                    IThread thread = StaticContestContext.getThreadClient().getThread(proposal.getDiscussionId());
 
                     thread.setTitle(
                             String.format("%s %s", getProposalNameFromOldTitle(thread.getTitle()),
                                     proposalAttribute.getStringValue()));
-                    threadClient.updateThread(thread);
+                    StaticContestContext.getThreadClient().updateThread(thread);
                 } catch (ThreadNotFoundException  ignored) {
                 }
             }

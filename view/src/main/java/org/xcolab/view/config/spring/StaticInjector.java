@@ -31,6 +31,7 @@ import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.email.IEmailClient;
 import org.xcolab.client.email.StaticEmailContext;
 import org.xcolab.client.modeling.IModelingClient;
+import org.xcolab.client.modeling.StaticModelingContext;
 import org.xcolab.client.search.ISearchClient;
 import org.xcolab.view.activityentry.discussion.DiscussionBaseActivityEntry;
 import org.xcolab.view.pages.contestmanagement.wrappers.FlaggingReportWrapper;
@@ -75,6 +76,7 @@ public class StaticInjector {
 
         // Module External
         StaticCommentContext.setClients(commentClient, categoryClient, threadClient);
+        StaticModelingContext.setClients(modelingClient);
         StaticContestContext.setClients(commentClient, categoryClient, threadClient, contestClient,
                 contestTeamMemberClient, impactClient, ontologyClient, proposalTemplateClient);
         StaticAdminContext.setClients(adminClient, contestTypeClient, emailTemplateClient);

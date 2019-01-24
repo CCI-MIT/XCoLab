@@ -1,7 +1,11 @@
 package org.xcolab.client.contest.pojo;
 
-import org.xcolab.client.contest.enums.ContestRole;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+import org.xcolab.client.contest.enums.ContestRole;
+import org.xcolab.client.contest.pojo.tables.pojos.ContestTeamMemberRole;
+
+@JsonDeserialize(as = ContestTeamMemberRole.class)
 public interface IContestTeamMemberRole extends Comparable<IContestTeamMemberRole> {
 
     Long getId();

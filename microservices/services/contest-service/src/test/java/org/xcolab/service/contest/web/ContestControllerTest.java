@@ -73,15 +73,6 @@ public class ContestControllerTest {
     private ContestDiscussionDao contestDiscussionDao;
 
     @Mock
-    private ContestCollectionCardDao contestCollectionCardDao;
-
-    @Mock
-    private ContestService contestService;
-
-    @Mock
-    private CollectionCardService collectionCardService;
-
-    @Mock
     private OntologyService ontologyService;
 
     @Before

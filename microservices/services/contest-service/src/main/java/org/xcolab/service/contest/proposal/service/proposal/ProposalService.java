@@ -7,10 +7,8 @@ import org.springframework.stereotype.Service;
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.comment.IThreadClient;
 import org.xcolab.client.comment.pojo.IThread;
-import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.ProposalTemplateClient;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.IProposal2Phase;
 import org.xcolab.client.contest.pojo.IProposalReference;
@@ -21,7 +19,7 @@ import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
 import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMemberWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.IProposalClient;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
@@ -49,27 +47,16 @@ public class ProposalService {
     private final ProposalVersionDao proposalVersionDao;
     private final ProposalTeamMemberDao proposalTeamMemberDao;
 
-    private final IThreadClient threadClient;
-    private final ContestClient contestClient;
-    private final ProposalTemplateClient proposalTemplateClient;
-    private final IProposalClient proposalClient;
-
     @Autowired
     public ProposalService(ProposalDao proposalDao, ProposalReferenceDao proposalReferenceDao,
             ProposalAttributeDao proposalAttributeDao, Proposal2PhaseDao proposal2PhaseDao,
-            ProposalVersionDao proposalVersionDao, ProposalTeamMemberDao proposalTeamMemberDao,
-            IThreadClient threadClient, ContestClient contestClient,
-            ProposalTemplateClient proposalTemplateClient, IProposalClient proposalClient) {
+            ProposalVersionDao proposalVersionDao, ProposalTeamMemberDao proposalTeamMemberDao) {
         this.proposalDao = proposalDao;
         this.proposalReferenceDao = proposalReferenceDao;
         this.proposalAttributeDao = proposalAttributeDao;
         this.proposal2PhaseDao = proposal2PhaseDao;
         this.proposalVersionDao = proposalVersionDao;
         this.proposalTeamMemberDao = proposalTeamMemberDao;
-        this.threadClient = threadClient;
-        this.contestClient = contestClient;
-        this.proposalTemplateClient = proposalTemplateClient;
-        this.proposalClient = proposalClient;
     }
 
     public ProposalWrapper create(long authorUserId, long contestPhaseId, boolean publishActivity) {
@@ -78,8 +65,10 @@ public class ProposalService {
             proposal.setVisible(true);
             proposal.setAuthorUserId(authorUserId);
 
-            ContestPhaseWrapper contestPhase = contestClient.getContestPhase(contestPhaseId);
-            final ContestWrapper contest = contestClient.getContest(contestPhase.getContestId());
+            ContestPhaseWrapper contestPhase = StaticContestContext.getContestClient()
+                    .getContestPhase(contestPhaseId);
+            final ContestWrapper contest = StaticContestContext.getContestClient()
+                    .getContest(contestPhase.getContestId());
             ContestType contestType = StaticAdminContext.getContestTypeClient()
                     .getContestType(contest.getContestTypeId());
 
@@ -137,7 +126,7 @@ public class ProposalService {
         commentThread.setCategoryId(null);
         commentThread.setTitle(title);
         commentThread.setIsQuiet(isQuiet);
-        commentThread = threadClient.createThread(commentThread);
+        commentThread = StaticContestContext.getThreadClient().createThread(commentThread);
         return commentThread;
     }
 
@@ -178,7 +167,7 @@ public class ProposalService {
             try {
                 if (onlyWithContestIntegrationRelevance) {
                     ProposalAttribute attribute = proposalAttributeDao.get(proposalReference.getSectionAttributeId());
-                    ProposalTemplateSectionDefinitionWrapper psd = proposalTemplateClient.getProposalTemplateSectionDefinition(attribute.getAdditionalId());
+                    ProposalTemplateSectionDefinitionWrapper psd = StaticContestContext.getProposalTemplateClient().getProposalTemplateSectionDefinition(attribute.getAdditionalId());
                     if (!psd.getContestIntegrationRelevance()) {
                         continue;
                     }
@@ -226,7 +215,8 @@ public class ProposalService {
     public Long getLatestContestIdForProposal(Long proposalId) {
         try {
             Long contestPhaseId = getLatestContestPhaseIdInProposal(proposalId);
-            ContestPhaseWrapper contestPhase = contestClient.getContestPhase(contestPhaseId);
+            ContestPhaseWrapper contestPhase = StaticContestContext.getContestClient()
+                    .getContestPhase(contestPhaseId);
             return contestPhase.getContestId();
         } catch (NotFoundException e) {
             return null;
@@ -238,7 +228,8 @@ public class ProposalService {
         ContestWrapper contest = null;
         try {
             //TODO COLAB-2600: this looks very shady - we're calling the client from the service!
-            contest = proposalClient.getLatestContestInProposal(proposalId);
+            contest = StaticProposalContext.getProposalClient()
+                    .getLatestContestInProposal(proposalId);
         } catch (ContestNotFoundException ignored) {
         }
         return contest;

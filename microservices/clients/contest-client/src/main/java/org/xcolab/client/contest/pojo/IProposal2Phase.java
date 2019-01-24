@@ -1,5 +1,10 @@
 package org.xcolab.client.contest.pojo;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import org.xcolab.client.contest.pojo.tables.pojos.Proposal2Phase;
+
+@JsonDeserialize(as = Proposal2Phase.class)
 public interface IProposal2Phase {
 
     Long getProposalId();

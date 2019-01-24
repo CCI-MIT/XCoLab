@@ -1,8 +1,12 @@
 package org.xcolab.client.contest.pojo;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import org.xcolab.client.contest.enums.ContestStatus;
+import org.xcolab.client.contest.pojo.tables.pojos.ContestPhaseType;
 import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
 
+@JsonDeserialize(as = ContestPhaseType.class)
 public interface IContestPhaseType {
 
     Long getId();

@@ -1,5 +1,10 @@
 package org.xcolab.client.contest.pojo;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import org.xcolab.client.contest.pojo.tables.pojos.OntologyTerm;
+
+@JsonDeserialize(as = OntologyTerm.class)
 public interface IOntologyTerm {
 
     Long getId();

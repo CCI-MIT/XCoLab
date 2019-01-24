@@ -29,8 +29,9 @@ import java.util.List;
 public class ProposalAttributeController implements ProposalAttributeClient {
 
     private final ProposalAttributeDao proposalAttributeDao;
-    private final ProposalAttributeService proposalAttributeService;
     private final ProposalUnversionedAttributeDao proposalUnversionedAttributeDao;
+
+    private final ProposalAttributeService proposalAttributeService;
 
     @Autowired
     public ProposalAttributeController(ProposalAttributeDao proposalAttributeDao,

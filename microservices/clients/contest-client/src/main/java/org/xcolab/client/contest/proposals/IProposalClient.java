@@ -268,9 +268,9 @@ public interface IProposalClient {
         return getProposalVersionByProposalIdVersion(proposalId, null);
     }
 
-    @GetMapping("/proposalVersions")
+    @GetMapping("/proposalVersions/{proposalId}")
     List<ProposalVersionWrapper> getAllProposalVersions(
-            @RequestParam(value = "proposalId", required = false) Long proposalId);
+            @PathVariable(value = "proposalId", required = false) Long proposalId);
 
     default ContestType getContestTypeFromProposalId(Long proposalId) {
         try {

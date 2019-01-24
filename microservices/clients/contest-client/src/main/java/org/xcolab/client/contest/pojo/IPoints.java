@@ -1,5 +1,10 @@
 package org.xcolab.client.contest.pojo;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import org.xcolab.client.contest.pojo.tables.pojos.Points;
+
+@JsonDeserialize(as = Points.class)
 public interface IPoints {
 
     Long getId();

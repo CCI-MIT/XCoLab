@@ -28,6 +28,7 @@ public class ProposalMemberRatingController implements IProposalMemberRatingClie
 
     private final ProposalVoteDao proposalVoteDao;
     private final ProposalSupporterDao proposalSupporterDao;
+
     private final ProposalSupportService proposalSupportService;
 
     @Autowired

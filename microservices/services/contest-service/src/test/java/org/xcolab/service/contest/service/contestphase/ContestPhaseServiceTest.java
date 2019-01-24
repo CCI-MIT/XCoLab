@@ -5,6 +5,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -18,8 +19,15 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.IMembershipClient;
 import org.xcolab.client.contest.proposals.IProposalClient;
+import org.xcolab.client.contest.proposals.IProposalJudgeRatingClient;
+import org.xcolab.client.contest.proposals.IProposalMemberRatingClient;
+import org.xcolab.client.contest.proposals.PointsClient;
+import org.xcolab.client.contest.proposals.ProposalAttributeClient;
+import org.xcolab.client.contest.proposals.ProposalMoveClient;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.util.http.ServiceRequestUtils;
 
@@ -42,22 +50,21 @@ public class ContestPhaseServiceTest {
     @Autowired
     ContestPhaseService contestPhaseService;
 
-    @Autowired
+    @Mock
     ProposalPhaseClient proposalPhaseClient;
 
-    @Autowired
-    IProposalClient proposalClient;
+    @Mock
+    private IProposalClient proposalClient;
 
     @Rule
     public final ExpectedException exception = ExpectedException.none();
 
     @Before
     public void setup() throws Exception {
-
         ServiceRequestUtils.setInitialized(true);
 
         Mockito.when(proposalPhaseClient
-                .isProposalContestPhaseAttributeSetAndTrue(anyLong(),anyLong(),anyString()))
+                .isProposalContestPhaseAttributeSetAndTrue(anyLong(), anyLong(), anyString()))
                 .thenAnswer(invocation -> false);
 
         Mockito.when(proposalClient.getProposal(anyLong()))
@@ -66,19 +73,22 @@ public class ContestPhaseServiceTest {
                     proposal.setId(1333850L);
                     return proposal;
                 });
+
+        StaticProposalContext.setClients(Mockito.mock(PointsClient.class), Mockito.mock(
+                ProposalAttributeClient.class), Mockito.mock(ProposalMoveClient.class),
+                proposalPhaseClient, proposalClient, Mockito.mock(IMembershipClient.class),
+                Mockito.mock(IProposalMemberRatingClient.class),
+                Mockito.mock(IProposalJudgeRatingClient.class));
     }
 
     @Test
     public void shouldForcePromotionOfProposalInPhase() throws Exception {
-
         contestPhaseService.forcePromotionOfProposalInPhase(1333850L, 1318613L);
     }
 
     @Test
     public void shouldFailPromotionOfProposalInPhaseOnPhaseNotFound() throws Exception {
-
         exception.expect(NotFoundException.class);
-        contestPhaseService.forcePromotionOfProposalInPhase(1333851L, 1318614L);
-
+        contestPhaseService.forcePromotionOfProposalInPhase(1333850L, 1318614L);
     }
 }

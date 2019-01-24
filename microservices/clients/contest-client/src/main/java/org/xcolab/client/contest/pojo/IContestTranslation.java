@@ -1,7 +1,12 @@
 package org.xcolab.client.contest.pojo;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import org.xcolab.client.contest.pojo.tables.pojos.ContestTranslation;
+
 import java.sql.Timestamp;
 
+@JsonDeserialize(as = ContestTranslation.class)
 public interface IContestTranslation {
 
     Long getContestId();

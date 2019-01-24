@@ -1,8 +1,12 @@
 package org.xcolab.client.contest.pojo;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import org.xcolab.client.contest.StaticContestContext;
+import org.xcolab.client.contest.pojo.tables.pojos.ContestSchedule;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 
+@JsonDeserialize(as = ContestSchedule.class)
 public interface IContestSchedule {
 
     Long getId();

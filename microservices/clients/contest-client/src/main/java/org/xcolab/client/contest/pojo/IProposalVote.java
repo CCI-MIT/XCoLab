@@ -1,7 +1,12 @@
 package org.xcolab.client.contest.pojo;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import org.xcolab.client.contest.pojo.tables.pojos.ProposalVote;
+
 import java.sql.Timestamp;
 
+@JsonDeserialize(as = ProposalVote.class)
 public interface IProposalVote {
 
     Long getProposalId();

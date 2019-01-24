@@ -28,6 +28,7 @@ public class PointsController implements PointsClient {
 
     private PointsDistributionConfigurationDao pointsDistributionConfigurationDao;
     private PointTypeDao pointTypeDao;
+
     private PointsDistributionConfigurationService pointsDistributionConfigurationService;
 
     @Autowired
