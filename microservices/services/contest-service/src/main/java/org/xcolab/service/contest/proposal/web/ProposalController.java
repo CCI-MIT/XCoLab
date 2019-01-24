@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
-import org.xcolab.client.contest.pojo.IProposalRating;
 import org.xcolab.client.contest.pojo.IProposalReference;
 import org.xcolab.client.contest.pojo.tables.pojos.ProposalContestPhaseAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalVersionWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.IProposalClient;
@@ -201,7 +201,7 @@ public class ProposalController implements IProposalClient {
                         null, null, null);
         int counter = 0;
         for (ProposalWrapper p : proposals) {
-            List<IProposalRating> ret = proposalRatingDao
+            List<ProposalRatingWrapper> ret = proposalRatingDao
                     .findByProposalIdJudgeTypeJudgeIdContestPhaseId(p.getId(), null,
                             contestPhaseId, userId);
             if (ret != null && !ret.isEmpty()) {

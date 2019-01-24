@@ -75,7 +75,7 @@ public class ActivitiesServiceTest {
                 return contest;
             });
 
-        StaticContestContext.setClients(null, null, null, contestClient);
+        StaticContestContext.setClients(null, null, null, contestClient, null, null, null, null);
     }
 
     @Test
