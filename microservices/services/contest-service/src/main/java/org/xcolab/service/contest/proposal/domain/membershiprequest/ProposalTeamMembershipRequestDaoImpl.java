@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
 import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMembershipRequestWrapper;
+import org.xcolab.client.contest.proposals.exceptions.MembershipRequestNotFoundException;
 import org.xcolab.model.tables.records.ProposalTeamMembershipRequestRecord;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
@@ -62,14 +63,14 @@ public class ProposalTeamMembershipRequestDaoImpl implements ProposalTeamMembers
     }
 
     @Override
-    public ProposalTeamMembershipRequestWrapper get(Long membershipRequestId) throws NotFoundException {
+    public ProposalTeamMembershipRequestWrapper get(Long membershipRequestId) throws MembershipRequestNotFoundException {
 
         final Record record =  this.dslContext.selectFrom(PROPOSAL_TEAM_MEMBERSHIP_REQUEST)
                 .where(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.ID.eq(membershipRequestId))
                 .fetchOne();
 
         if (record == null) {
-            throw new NotFoundException("ProposalTeamMembershipRequest with id " + membershipRequestId + " does not exist");
+            throw new MembershipRequestNotFoundException(membershipRequestId);
         }
         return record.into(ProposalTeamMembershipRequestWrapper.class);
     }

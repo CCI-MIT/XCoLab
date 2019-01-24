@@ -9,6 +9,7 @@ public class StaticProposalContext {
     private static ProposalMoveClient proposalMoveClient;
     private static ProposalPhaseClient proposalPhaseClient;
     private static IProposalClient proposalClient;
+    private static IMembershipClient membershipClient;
     private static IProposalMemberRatingClient proposalMemberRatingClient;
     private static IProposalJudgeRatingClient proposalJudgeRatingClient;
 
@@ -17,6 +18,7 @@ public class StaticProposalContext {
     public static void setClients(PointsClient pointsClient,
             ProposalAttributeClient proposalAttributeClient, ProposalMoveClient proposalMoveClient,
             ProposalPhaseClient proposalPhaseClient, IProposalClient proposalClient,
+            IMembershipClient membershipClient,
             IProposalMemberRatingClient proposalMemberRatingClient,
             IProposalJudgeRatingClient proposalJudgeRatingClient) {
         Assert.notNull(pointsClient, "pointsClient must not be null!");
@@ -24,6 +26,7 @@ public class StaticProposalContext {
         Assert.notNull(proposalMoveClient, "proposalMoveClient must not be null!");
         Assert.notNull(proposalPhaseClient, "proposalPhaseClient must not be null!");
         Assert.notNull(proposalClient, "proposalClient must not be null!");
+        Assert.notNull(membershipClient, "membershipClient must not be null!");
         Assert.notNull(proposalMemberRatingClient, "proposalMemberRatingClient must not be null!");
         Assert.notNull(proposalJudgeRatingClient, "proposalJudgeRatingClient must not be null!");
         StaticProposalContext.pointsClient = pointsClient;
@@ -31,6 +34,7 @@ public class StaticProposalContext {
         StaticProposalContext.proposalMoveClient = proposalMoveClient;
         StaticProposalContext.proposalPhaseClient = proposalPhaseClient;
         StaticProposalContext.proposalClient = proposalClient;
+        StaticProposalContext.membershipClient = membershipClient;
         StaticProposalContext.proposalMemberRatingClient = proposalMemberRatingClient;
         StaticProposalContext.proposalJudgeRatingClient = proposalJudgeRatingClient;
     }
@@ -53,6 +57,10 @@ public class StaticProposalContext {
 
     public static IProposalClient getProposalClient() {
         return proposalClient;
+    }
+
+    public static IMembershipClient getMembershipClient() {
+        return membershipClient;
     }
 
     public static IProposalMemberRatingClient getProposalMemberRatingClient() {

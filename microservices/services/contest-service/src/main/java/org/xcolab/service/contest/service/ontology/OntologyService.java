@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 public class OntologyService {
 
     private final OntologyTermDao ontologyTermDao;
-
     private final FocusAreaOntologyTermDao focusAreaOntologyTermDao;
 
     @Autowired

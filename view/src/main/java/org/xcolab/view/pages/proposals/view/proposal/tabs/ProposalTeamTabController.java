@@ -2,6 +2,7 @@ package org.xcolab.view.pages.proposals.view.proposal.tabs;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,9 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.xcolab.client.contest.proposals.IMembershipClient;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.contest.proposals.MembershipClient;
-import org.xcolab.client.contest.proposals.MembershipClientUtil;
 import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMembershipRequestWrapper;
@@ -36,6 +36,9 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 @RequestMapping("/contests/{contestYear}/{contestUrlName}")
 public class ProposalTeamTabController extends BaseProposalTabController {
+
+    @Autowired
+    private IMembershipClient membershipClient;
 
     private static final Logger _log = LoggerFactory.getLogger(ProposalTeamTabController.class);
 
@@ -69,7 +72,6 @@ public class ProposalTeamTabController extends BaseProposalTabController {
 
         long membershipRequestId = -1;
         if (loggedInMember != null) {
-            MembershipClient membershipClient = MembershipClientUtil.getClient();
             ProposalTeamMembershipRequestWrapper membershipRequest = membershipClient
                     .getActiveMembershipRequestByUser(proposalContext.getProposal(), loggedInMember.getId());
             if (membershipRequest != null && membershipRequest.getStatusId() == MembershipRequestStatus.STATUS_PENDING_INVITED) {

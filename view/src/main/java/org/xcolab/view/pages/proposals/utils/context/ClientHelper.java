@@ -8,10 +8,9 @@ import org.xcolab.client.contest.ImpactClient;
 import org.xcolab.client.contest.OntologyClient;
 import org.xcolab.client.contest.ProposalTemplateClient;
 import org.xcolab.client.contest.StaticContestContext;
+import org.xcolab.client.contest.proposals.IMembershipClient;
 import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.proposals.IProposalMemberRatingClient;
-import org.xcolab.client.contest.proposals.MembershipClient;
-import org.xcolab.client.contest.proposals.MembershipClientUtil;
 import org.xcolab.client.contest.proposals.PointsClient;
 import org.xcolab.client.contest.proposals.ProposalAttributeClient;
 import org.xcolab.client.contest.proposals.IProposalJudgeRatingClient;
@@ -21,8 +20,8 @@ import org.xcolab.client.contest.proposals.StaticProposalContext;
 
 public class ClientHelper {
 
+    private final IMembershipClient membershipClient;
     private final IProposalClient proposalClient;
-    private final MembershipClient membershipClient;
     private final PointsClient pointsClient;
     private final ProposalPhaseClient proposalPhaseClient;
     private final ProposalAttributeClient proposalAttributeClient;
@@ -41,8 +40,8 @@ public class ClientHelper {
     private final ActivitiesClient activitiesClient;
 
     public ClientHelper() {
+        membershipClient = StaticProposalContext.getMembershipClient();
         proposalClient = StaticProposalContext.getProposalClient();
-        membershipClient = MembershipClientUtil.getClient();
         pointsClient = StaticProposalContext.getPointsClient();
         proposalPhaseClient = StaticProposalContext.getProposalPhaseClient();
         proposalAttributeClient = StaticProposalContext.getProposalAttributeClient();
@@ -67,7 +66,7 @@ public class ClientHelper {
         return proposalClient;
     }
 
-    public MembershipClient getMembershipClient() {
+    public IMembershipClient getMembershipClient() {
         return membershipClient;
     }
 
@@ -114,5 +113,4 @@ public class ClientHelper {
     public ProposalTemplateClient getProposalTemplateClient() {
         return proposalTemplateClient;
     }
-
 }

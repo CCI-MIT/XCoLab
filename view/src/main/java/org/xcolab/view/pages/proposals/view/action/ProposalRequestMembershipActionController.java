@@ -1,6 +1,7 @@
 package org.xcolab.view.pages.proposals.view.action;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,11 +11,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.proposals.IMembershipClient;
+import org.xcolab.client.contest.proposals.exceptions.ConflictException;
+import org.xcolab.client.contest.proposals.exceptions.MembershipRequestNotFoundException;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.contest.proposals.MembershipClient;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMembershipRequestWrapper;
 import org.xcolab.entity.utils.notifications.proposal.ProposalMembershipInviteNotification;
@@ -48,6 +51,9 @@ public class ProposalRequestMembershipActionController {
     private static final String MSG_MEMBERSHIP_RESPONSE_CONTENT_REJECTED =
             "Your request has been rejected <br />Comments: ";
 
+    @Autowired
+    private IMembershipClient membershipClient;
+
     @PostMapping("c/{proposalUrlString}/{proposalId}/tab/TEAM/requestMembership")
     public void requestMembership(HttpServletRequest request, HttpServletResponse response,
             Model model, ProposalContext proposalContext, Member sender,
@@ -75,7 +81,6 @@ public class ProposalRequestMembershipActionController {
         final Member proposalAuthor = MembersClient.getMemberUnchecked(proposal.getAuthorUserId());
 
         final ClientHelper clients = proposalContext.getClients();
-        final MembershipClient membershipClient = clients.getMembershipClient();
 
         if (membershipClient.hasUserRequestedMembership(proposal, sender.getId())) {
             AlertMessage.danger("You have already sent a membership request")
@@ -99,7 +104,7 @@ public class ProposalRequestMembershipActionController {
     public void invite(HttpServletRequest request, HttpServletResponse response, Model model,
             ProposalContext proposalContext, Member sender,
             @Valid RequestMembershipInviteBean requestMembershipInviteBean, BindingResult result)
-            throws IOException {
+            throws IOException, ConflictException {
 
         final ProposalWrapper proposal = proposalContext.getProposal();
         final ContestWrapper contest = proposalContext.getContest();
@@ -113,7 +118,6 @@ public class ProposalRequestMembershipActionController {
         }
 
         final ClientHelper clients = proposalContext.getClients();
-        final MembershipClient membershipClient = clients.getMembershipClient();
 
         String[] inputParts = input.split(" ");
         String screenName = inputParts[0];
@@ -151,9 +155,11 @@ public class ProposalRequestMembershipActionController {
             if (StringUtils.isBlank(comment)) {
                 comment = "No message specified";
             }
-            membershipClient.addInvitedMembershipRequest(proposal.getId(), recipient.getId(), comment);
+            membershipClient
+                    .addInvitedMembershipRequest(proposal.getId(), recipient.getId(), comment);
 
-            new ProposalMembershipInviteNotification(proposal, contest, sender, recipient, comment).sendMessage();
+            new ProposalMembershipInviteNotification(proposal, contest, sender, recipient, comment)
+                    .sendMessage();
 
             AlertMessage.success("The member has been invited to join this proposal's team!")
                     .flash(request);
@@ -164,7 +170,8 @@ public class ProposalRequestMembershipActionController {
     @PostMapping("c/{proposalUrlString}/{proposalId}/tab/ADMIN/replyToMembershipRequest")
     public void respond(HttpServletRequest request, HttpServletResponse response, Model model,
             ProposalContext proposalContext, Member loggedInMember, @RequestParam String approve,
-            @RequestParam String comment, @RequestParam long requestId) throws IOException {
+            @RequestParam String comment, @RequestParam long requestId)
+            throws IOException, MembershipRequestNotFoundException, ConflictException {
 
         final ProposalWrapper proposal = proposalContext.getProposal();
         final ContestWrapper contest = proposalContext.getContest();
@@ -178,12 +185,12 @@ public class ProposalRequestMembershipActionController {
         }
 
         final ClientHelper clients = proposalContext.getClients();
-        final MembershipClient membershipClient = clients.getMembershipClient();
 
         long proposalId = proposal.getId();
 
         ProposalTeamMembershipRequestWrapper membershipRequest = null;
-        for (ProposalTeamMembershipRequestWrapper mr : membershipClient.getMembershipRequests(proposalId)) {
+        for (ProposalTeamMembershipRequestWrapper mr : membershipClient
+                .getMembershipRequests(proposalId)) {
             if (mr.getId() == requestId) {
                 membershipRequest = mr;
             }

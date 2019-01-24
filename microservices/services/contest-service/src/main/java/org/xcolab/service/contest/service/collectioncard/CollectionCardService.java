@@ -16,7 +16,6 @@ import java.util.List;
 public class CollectionCardService {
 
     private final ContestService contestService;
-
     private final ContestCollectionCardDao contestCollectionCardDao;
 
     private static final String VIEW_TYPE_GRID = "GRID";
