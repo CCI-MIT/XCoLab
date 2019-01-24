@@ -7,7 +7,7 @@ import org.xcolab.client.contest.pojo.IProposalRatingType;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalAttributeClientUtil;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.html.HtmlUtil;
@@ -51,7 +51,8 @@ public class ProposalReviewCsvExporter {
         for (Map.Entry<ProposalWrapper, List<ProposalReview>> entry : proposalToProposalReviewsMap.entrySet()) {
             final ProposalWrapper proposal = entry.getKey();
             final List<ProposalReview> proposalReviews = entry.getValue();
-            String proposalName = ProposalAttributeClientUtil.getProposalAttribute(proposal.getId(),
+            String proposalName = StaticProposalContext.getProposalAttributeClient()
+                    .getProposalAttribute(proposal.getId(),
                     ProposalAttributeKeys.NAME, 0L).getStringValue();
 
             for (ProposalReview proposalReview : proposalReviews) {

@@ -3,11 +3,11 @@ package org.xcolab.view.activityentry.contest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
+import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.util.activities.enums.ActivityType;
 import org.xcolab.util.activities.enums.ContestActivityType;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
-import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.view.activityentry.ActivityInitializationException;
 import org.xcolab.view.i18n.ResourceMessageResolver;
 
@@ -30,7 +30,8 @@ public class ProposalCreatedActivityEntry extends ContestBaseActivityEntry {
         super.initializeInternal();
 
         try {
-            proposal = ProposalClientUtil.getProposal(getActivityEntry().getAdditionalId(), true);
+            proposal = StaticProposalContext.getProposalClient()
+                    .getProposal(getActivityEntry().getAdditionalId(), true);
         } catch (ProposalNotFoundException e) {
             throw new ActivityInitializationException(getActivityEntry().getId(), e);
         }

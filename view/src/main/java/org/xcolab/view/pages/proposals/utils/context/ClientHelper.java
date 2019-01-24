@@ -11,23 +11,19 @@ import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.proposals.IMembershipClient;
 import org.xcolab.client.contest.proposals.PointsClient;
 import org.xcolab.client.contest.proposals.ProposalAttributeClient;
-import org.xcolab.client.contest.proposals.ProposalAttributeClientUtil;
-import org.xcolab.client.contest.proposals.ProposalClient;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.proposals.ProposalJudgeRatingClient;
 import org.xcolab.client.contest.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.contest.proposals.ProposalMemberRatingClient;
 import org.xcolab.client.contest.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.contest.proposals.ProposalMoveClient;
-import org.xcolab.client.contest.proposals.ProposalMoveClientUtil;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
-import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
 
 public class ClientHelper {
 
-    private final ProposalClient proposalClient;
     private final IMembershipClient membershipClient;
+    private final IProposalClient proposalClient;
     private final PointsClient pointsClient;
     private final ProposalPhaseClient proposalPhaseClient;
     private final ProposalAttributeClient proposalAttributeClient;
@@ -46,12 +42,12 @@ public class ClientHelper {
     private final ActivitiesClient activitiesClient;
 
     public ClientHelper() {
-        proposalClient = ProposalClientUtil.getClient();
         membershipClient = StaticProposalContext.getMembershipClient();
+        proposalClient = StaticProposalContext.getProposalClient();
         pointsClient = StaticProposalContext.getPointsClient();
-        proposalPhaseClient = ProposalPhaseClientUtil.getClient();
-        proposalAttributeClient = ProposalAttributeClientUtil.getClient();
-        proposalMoveClient = ProposalMoveClientUtil.getClient();
+        proposalPhaseClient = StaticProposalContext.getProposalPhaseClient();
+        proposalAttributeClient = StaticProposalContext.getProposalAttributeClient();
+        proposalMoveClient = StaticProposalContext.getProposalMoveClient();
         proposalJudgeRatingClient = ProposalJudgeRatingClientUtil.getClient();
         proposalMemberRatingClient = ProposalMemberRatingClientUtil.getClient();
 
@@ -68,7 +64,7 @@ public class ClientHelper {
         return activitiesClient;
     }
 
-    public ProposalClient getProposalClient() {
+    public IProposalClient getProposalClient() {
         return proposalClient;
     }
 

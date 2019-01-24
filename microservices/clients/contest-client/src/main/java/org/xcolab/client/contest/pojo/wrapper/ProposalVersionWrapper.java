@@ -7,7 +7,7 @@ import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.contest.pojo.tables.pojos.ProposalVersion;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
-import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.io.Serializable;
@@ -25,23 +25,23 @@ public class ProposalVersionWrapper extends ProposalVersion implements Serializa
     private final ProposalPhaseClient proposalPhaseClient;
 
     public ProposalVersionWrapper() {
-        proposalPhaseClient = ProposalPhaseClientUtil.getClient();
+        proposalPhaseClient = StaticProposalContext.getProposalPhaseClient();
     }
 
     public ProposalVersionWrapper(ProposalVersionWrapper value) {
         super(value);
-        proposalPhaseClient = ProposalPhaseClientUtil.getClient();
+        proposalPhaseClient = StaticProposalContext.getProposalPhaseClient();
     }
 
     public ProposalVersionWrapper(Long proposalid, Integer version, Long authorUserId,
             Timestamp createdAt, String updatetype, Long updateadditionalid) {
         super(proposalid, version, authorUserId, createdAt, updatetype, updateadditionalid);
-        proposalPhaseClient = ProposalPhaseClientUtil.getClient();
+        proposalPhaseClient = StaticProposalContext.getProposalPhaseClient();
     }
 
     public ProposalVersionWrapper(ProposalVersion abstractProposalVersion) {
         super(abstractProposalVersion);
-        proposalPhaseClient = ProposalPhaseClientUtil.getClient();
+        proposalPhaseClient = StaticProposalContext.getProposalPhaseClient();
     }
 
     public long getContestPhaseId() {

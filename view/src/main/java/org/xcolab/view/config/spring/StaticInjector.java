@@ -19,6 +19,12 @@ import org.xcolab.client.contest.ImpactClient;
 import org.xcolab.client.contest.OntologyClient;
 import org.xcolab.client.contest.ProposalTemplateClient;
 import org.xcolab.client.contest.StaticContestContext;
+import org.xcolab.client.contest.proposals.PointsClient;
+import org.xcolab.client.contest.proposals.ProposalAttributeClient;
+import org.xcolab.client.contest.proposals.IProposalClient;
+import org.xcolab.client.contest.proposals.ProposalMoveClient;
+import org.xcolab.client.contest.proposals.ProposalPhaseClient;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.email.IEmailClient;
 import org.xcolab.client.email.StaticEmailContext;
 import org.xcolab.client.modeling.IModelingClient;
@@ -45,7 +51,10 @@ public class StaticInjector {
             IContestTypeClient contestTypeClient, IEmailTemplateClient emailTemplateClient,
             IEmailClient emailClient, ContestClient contestClient,
             ContestTeamMemberClient contestTeamMemberClient, ImpactClient impactClient,
-            OntologyClient ontologyClient, ProposalTemplateClient proposalTemplateClient) {
+            OntologyClient ontologyClient, ProposalTemplateClient proposalTemplateClient,
+            PointsClient pointsClient, ProposalAttributeClient proposalAttributeClient,
+            ProposalMoveClient proposalMoveClient, ProposalPhaseClient proposalPhaseClient,
+            IProposalClient proposalClient) {
         // Module Internal
         ImageUploadUtils.setFileClient(fileClient);
         LoadContentArticleTag.setContentClient(contentClient);
@@ -65,5 +74,7 @@ public class StaticInjector {
                 contestTeamMemberClient, impactClient, ontologyClient, proposalTemplateClient);
         StaticAdminContext.setClients(adminClient, contestTypeClient, emailTemplateClient);
         StaticEmailContext.setEmailClient(emailClient);
+        StaticProposalContext.setClients(pointsClient, proposalAttributeClient, proposalMoveClient,
+                proposalPhaseClient, proposalClient);
     }
 }

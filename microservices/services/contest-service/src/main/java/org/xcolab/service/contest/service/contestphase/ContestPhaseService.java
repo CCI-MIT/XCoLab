@@ -10,16 +10,15 @@ import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.proposals.ProposalMemberRatingClientUtil;
-import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
+import org.xcolab.client.contest.proposals.ProposalPhaseClient;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.GroupingHelper;
 import org.xcolab.entity.utils.notifications.contest.ContestVoteQuestionNotification;
 import org.xcolab.entity.utils.notifications.proposal.ContestVoteNotification;
-import org.xcolab.service.contest.domain.contest.ContestDao;
 import org.xcolab.service.contest.domain.contestphase.ContestPhaseDao;
 import org.xcolab.service.contest.domain.contestphasetype.ContestPhaseTypeDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
@@ -51,10 +50,13 @@ public class ContestPhaseService {
     private ContestPhaseDao contestPhaseDao;
 
     @Autowired
-    private ContestDao contestDao;
+    private ProposalPhaseClient proposalPhaseClient;
 
     @Autowired
     private ContestClient contestClient;
+
+    @Autowired
+    private IProposalClient proposalClient;
 
     public ContestStatus getContestStatus(ContestPhaseWrapper contestPhase) {
         String status = contestPhaseTypeDao.get(contestPhase.getContestPhaseTypeId()).get().getStatus();
@@ -81,7 +83,7 @@ public class ContestPhaseService {
     public void transferSupportsToVote(ContestWrapper contest, ContestPhaseWrapper votingPhase) {
 
 //        TODO: this should not be calling the client!
-        final List<ProposalWrapper> proposalsInPhase = ProposalClientUtil
+        final List<ProposalWrapper> proposalsInPhase = proposalClient
                 .getProposalsInContestPhase(votingPhase.getId());
         Set<Long> proposalIdsInPhase = proposalsInPhase.stream()
                 .map(ProposalWrapper::getId)
@@ -118,7 +120,7 @@ public class ContestPhaseService {
     }
 
     private Map<Member, Set<ProposalWrapper>> getSupportedProposalsByMember(ContestWrapper contest) {
-        List<ProposalWrapper> proposalsInContest = ProposalClientUtil
+        List<ProposalWrapper> proposalsInContest = proposalClient
                 .getProposalsInContest(contest.getId());
 
         return new GroupingHelper<>(proposalsInContest).groupWithDuplicateKeysAndValues(
@@ -131,7 +133,7 @@ public class ContestPhaseService {
     public void forcePromotionOfProposalInPhase(Long proposalId, Long phaseId) throws NotFoundException {
         ContestPhaseWrapper phase = contestPhaseDao.get(phaseId).get();
         try {
-            ProposalWrapper p = ProposalClientUtil.getProposal(proposalId);
+            ProposalWrapper p = proposalClient.getProposal(proposalId);
             ContestPhaseWrapper nextPhase = getNextContestPhase(phase);
             PhasePromotionHelper phasePromotionHelper = new PhasePromotionHelper(phase);
             //skip already promoted proposal
@@ -141,7 +143,7 @@ public class ContestPhaseService {
 
             // Decide about the promotion
             if (phasePromotionHelper.didJudgeDecideToPromote(p)) {
-                ProposalPhaseClientUtil.promoteProposal(p.getId(), nextPhase.getId(), phase.getId());
+                proposalPhaseClient.promoteProposal(p.getId(), nextPhase.getId(), phase.getId());
             }
 
             // Enable this line to post promotion comment to Evaluation tab comment section

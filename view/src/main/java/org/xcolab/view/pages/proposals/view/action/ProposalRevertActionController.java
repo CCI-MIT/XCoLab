@@ -1,19 +1,20 @@
 package org.xcolab.view.pages.proposals.view.action;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.xcolab.client.contest.pojo.IProposal2Phase;
 import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.contest.proposals.ProposalAttributeClientUtil;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.ProposalAttributeClient;
+import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.pojo.IProposal2Phase;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.enums.proposal.ProposalTemplateSectionType;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
@@ -28,6 +29,12 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/contests/{contestYear}/{contestUrlName}")
 public class ProposalRevertActionController {
 
+    @Autowired
+    private ProposalAttributeClient proposalAttributeClient;
+
+    @Autowired
+    private IProposalClient proposalClient;
+    
     @PostMapping("/c/{proposalUrlString}/{proposalId}/proposalRevert")
     public void showProposalRevert(HttpServletRequest request, HttpServletResponse response,
             Model model, ProposalContext proposalContext, Member currentMember)
@@ -65,7 +72,7 @@ public class ProposalRevertActionController {
                     || sectionType == ProposalTemplateSectionType.DROPDOWN_MENU
                     || sectionType == ProposalTemplateSectionType.CHECKBOX_OPTION) {
 
-                version = ProposalAttributeClientUtil.setProposalAttribute(userId,
+                version = proposalAttributeClient.setProposalAttribute(userId,
                         oldProposalVersionToBeBecomeCurrent.getId(),
                         ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(),
                         newSectionValue, version).getVersion();
@@ -78,7 +85,7 @@ public class ProposalRevertActionController {
                 if (StringUtils.isNumeric(newSectionValue)) {
                     long newNumericVal = Long.parseLong(newSectionValue);
                     if (newNumericVal != section.getNumericValue()) {
-                        version = ProposalAttributeClientUtil.setProposalAttribute(userId,
+                        version = proposalAttributeClient.setProposalAttribute(userId,
                                 oldProposalVersionToBeBecomeCurrent.getId(),
                                 ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(),
                                 newNumericVal, version).getVersion();
@@ -90,14 +97,14 @@ public class ProposalRevertActionController {
                         .isNotBlank(newSectionValue)) {
                     final long newNumericValue = Long.parseLong(newSectionValue);
                     if (section.getNumericValue() != newNumericValue) {
-                        version = ProposalAttributeClientUtil.setProposalAttribute(userId,
+                        version = proposalAttributeClient.setProposalAttribute(userId,
                                 oldProposalVersionToBeBecomeCurrent.getId(),
                                 ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(),
                                 newNumericValue, version).getVersion();
                         updateProposalReferences = true;
                     }
                 } else if (StringUtils.isBlank(newSectionValue)) {
-                    version = ProposalAttributeClientUtil.setProposalAttribute(userId,
+                    version = proposalAttributeClient.setProposalAttribute(userId,
                             oldProposalVersionToBeBecomeCurrent.getId(),
                             ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), 0L,
                             version).getVersion();
@@ -115,7 +122,7 @@ public class ProposalRevertActionController {
                     }
                 }
                 if (!section.getStringValue().equals(cleanedReferences.toString())) {
-                    version = ProposalAttributeClientUtil.setProposalAttribute(userId,
+                    version = proposalAttributeClient.setProposalAttribute(userId,
                             oldProposalVersionToBeBecomeCurrent.getId(),
                             ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(),
                             cleanedReferences.toString(), version).getVersion();
@@ -138,34 +145,33 @@ public class ProposalRevertActionController {
             }
             // extra check to reset dependencies from the old versions
             if (updateProposalReferences) {
-                ProposalClientUtil.populateTableWithProposal(
+                proposalClient.populateTableWithProposal(
                         oldProposalVersionToBeBecomeCurrent.getId());
             }
         } catch (ProposalNotFoundException ignored) {
-
         }
     }
 
     private Integer updateProposalSpecialAttributes(long userId,
             ProposalWrapper oldProposalVersionToBeBecomeCurrent) {
         Integer version = null;
-        version = ProposalAttributeClientUtil
+        version = proposalAttributeClient
                 .setProposalAttribute(userId, oldProposalVersionToBeBecomeCurrent.getId(),
                         ProposalAttributeKeys.NAME, 0L,
                         oldProposalVersionToBeBecomeCurrent.getName(), version).getVersion();
-        version = ProposalAttributeClientUtil
+        version = proposalAttributeClient
                 .setProposalAttribute(userId, oldProposalVersionToBeBecomeCurrent.getId(),
                         ProposalAttributeKeys.PITCH, 0L,
                         oldProposalVersionToBeBecomeCurrent.getPitch(), version).getVersion();
-        version = ProposalAttributeClientUtil
+        version = proposalAttributeClient
                 .setProposalAttribute(userId, oldProposalVersionToBeBecomeCurrent.getId(),
                         ProposalAttributeKeys.DESCRIPTION, 0L,
                         oldProposalVersionToBeBecomeCurrent.getDescription(), version).getVersion();
-        version = ProposalAttributeClientUtil
+        version = proposalAttributeClient
                 .setProposalAttribute(userId, oldProposalVersionToBeBecomeCurrent.getId(),
                         ProposalAttributeKeys.TEAM, 0L,
                         oldProposalVersionToBeBecomeCurrent.getTeam(), version).getVersion();
-        version = ProposalAttributeClientUtil
+        version = proposalAttributeClient
                 .setProposalAttribute(userId, oldProposalVersionToBeBecomeCurrent.getId(),
                         ProposalAttributeKeys.IMAGE_ID, 0L,
                         oldProposalVersionToBeBecomeCurrent.getImageId(), version).getVersion();

@@ -20,7 +20,7 @@ import org.xcolab.client.contest.pojo.wrapper.ContestTypeProposal;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalClient;
+import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.proposals.ProposalMoveClient;
 import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.members.PlatformTeamsClient;
@@ -110,7 +110,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
         final ProposalWrapper proposal = proposalContext.getProposal();
 
         final ClientHelper clients = proposalContext.getClients();
-        final ProposalClient proposalClient = clients.getProposalClient();
+        final IProposalClient proposalClient = clients.getProposalClient();
         final ContestWrapper baseContest = proposalClient
                 .getCurrentContestForProposal(proposal.getId());
 
@@ -221,7 +221,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
 
     private void setLinkedProposals(Model model, ProposalContext proposalContext, ProposalWrapper proposal) {
         final ClientHelper clients = proposalContext.getClients();
-        final ProposalClient proposalClient = clients.getProposalClient();
+        final IProposalClient proposalClient = clients.getProposalClient();
         List<ProposalWrapper> linkedProposals = proposalClient
                         .getSubproposals(proposal.getId(), true);
         Map<ContestType, Set<ProposalWrapper>> proposalsByContestType =

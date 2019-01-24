@@ -4,7 +4,7 @@ import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.view.pages.contestmanagement.utils.CsvExportHelper;
 
 import java.io.IOException;
@@ -33,7 +33,8 @@ public class ReportPeopleInCurrentPhaseMassAction extends AbstractContestMassAct
             Long contestId = contest.getId();
             ContestPhaseWrapper activeContestPhase = StaticContestContext.getContestClient()
                     .getActivePhase(contestId);
-            List<ProposalWrapper> proposalsInActiveContestPhase = ProposalClientUtil
+            List<ProposalWrapper> proposalsInActiveContestPhase = StaticProposalContext
+                    .getProposalClient()
                     .getActiveProposalsInContestPhase(activeContestPhase.getId());
             csvExportHelper
                     .addProposalAndAuthorDetailsToExportData(proposalsInActiveContestPhase,

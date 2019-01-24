@@ -1,172 +1,109 @@
 package org.xcolab.client.contest.proposals;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
-import org.xcolab.client.contest.pojo.wrapper.ProposalUnversionedAttribute;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalAttributeHelperDataDto;
 import org.xcolab.client.contest.pojo.wrapper.ProposalDto;
+import org.xcolab.client.contest.pojo.wrapper.ProposalUnversionedAttribute;
 import org.xcolab.client.contest.pojo.wrapper.ProposalUnversionedAttributeHelperDataDto;
 import org.xcolab.client.contest.pojo.wrapper.ProposalVersionWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.exceptions.ProposalAttributeNotFoundException;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestResource2L;
-import org.xcolab.util.http.client.queries.ListQuery;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.List;
 
-public final class ProposalAttributeClient {
+public interface ProposalAttributeClient {
 
-    private final RestResource1<ProposalAttribute, Long> proposalAttributeResource = null; // proposalAttributes
-    private final RestResource1<ProposalUnversionedAttribute, Long>
+    RestResource1<ProposalAttribute, Long> proposalAttributeResource = null; // proposalAttributes
+    RestResource1<ProposalUnversionedAttribute, Long>
             proposalUnversionedAttributeResource = null; // proposalUnversionedAttributes
 
-    private final RestResource1<ProposalDto, Long> proposalResource = null; // proposals
-    private final RestResource2L<ProposalDto, ProposalVersionWrapper> proposalVersionResource = null; // proposals / versions
+    RestResource1<ProposalDto, Long> proposalResource = null; // proposals
+    RestResource2L<ProposalDto, ProposalVersionWrapper> proposalVersionResource = null;
+    // proposals / versions
 
-    public ProposalAttribute createProposalAttribute(ProposalAttribute proposalAttribute) {
-        return proposalAttributeResource.create(new ProposalAttribute(proposalAttribute))
-                .execute();
-    }
-
-    public ProposalAttribute getProposalAttribute(Long proposalId, String name, Long additionalId) {
-        ListQuery<ProposalAttribute> listQ =
-                proposalAttributeResource.list()
-                        .queryParam("proposalId", proposalId)
-                        .queryParam("name", name);
-        return getProposalAttributeFromListQuery(listQ, additionalId);
-    }
-
-    public ProposalAttribute getProposalAttribute(long proposalId, long version, String name,
+    default ProposalAttribute getProposalAttribute(Long proposalId, String name,
             Long additionalId) {
-        ListQuery<ProposalAttribute> listQuery =
-                proposalAttributeResource.list()
-                        .queryParam("proposalId", proposalId)
-                        .queryParam("name", name)
-                        .queryParam("version", version);
-        return getProposalAttributeFromListQuery(listQuery, additionalId);
+        return getProposalAttributes(proposalId, name, additionalId, null).stream().findFirst()
+                .orElse(null);
     }
 
-    private ProposalAttribute getProposalAttributeFromListQuery(
-            ListQuery<ProposalAttribute> listQuery, Long additionalId) {
-        if (additionalId != null && additionalId != 0) {
-            listQuery = listQuery.queryParam("additionalId", additionalId);
-        }
-        return listQuery.executeWithResult().getFirstIfExists();
-    }
-
-    public ProposalAttribute getProposalAttribute(long id)
-            throws ProposalAttributeNotFoundException {
-        return proposalAttributeResource.get(id)
-                .withCache(CacheKeys.of(ProposalAttribute.class, id), CacheName.MISC_REQUEST)
-                .execute();
-    }
-
-    public Boolean deleteProposalAttribute(Long id) {
-        return proposalAttributeResource.delete(id).execute();
-    }
-
-    public List<ProposalAttribute> getImpactProposalAttributes(ProposalWrapper proposal) {
-        return proposalAttributeResource
-                .collectionService("getImpactProposalAttributes", ProposalAttribute.TYPES.getTypeReference())
-                .queryParam("proposalId", proposal.getId())
-                .queryParam("currentVersion", proposal.getCurrentVersion())
-                .getList();
-    }
-
-    public boolean updateProposalAttribute(ProposalAttribute proposalAttribute) {
-        return proposalAttributeResource
-                .update(new ProposalAttribute(proposalAttribute), proposalAttribute.getId())
-                .cacheKey(CacheKeys.of(ProposalAttribute.class, proposalAttribute.getId()))
-                .execute();
-    }
-
-    public List<ProposalAttribute> getAllProposalAttributes(Long proposalId) {
-        return proposalAttributeResource.list()
-                .optionalQueryParam("proposalId", proposalId)
-                .withCache(CacheName.MISC_REQUEST)
-                .execute();
-    }
-
-    public List<ProposalAttribute> getAllProposalAttributes(Long proposalId, Integer version) {
-        return proposalAttributeResource.list()
-                .optionalQueryParam("proposalId", proposalId)
-                .optionalQueryParam("version", version)
-                //.withCache(CacheKeys.of(ProposalAttribute.class, proposalId),CacheName.PROPOSAL_DETAILS))
-                .withCache(CacheKeys.withClass(ProposalAttribute.class)
-                        .withParameter("proposalId", proposalId)
-                        .withParameter("version",version)
-                        .asList(), CacheName.PROPOSAL_DETAILS)
-                .execute();
-    }
-
-    public List<ProposalAttribute> getAllProposalAttributes(long proposalId, String name,
-            long additionalId) {
-        return proposalAttributeResource.list()
-                .optionalQueryParam("proposalId", proposalId)
-                .optionalQueryParam("name", name)
-                .optionalQueryParam("additionalId", additionalId)
-                .execute();
-    }
-
-    public ProposalAttributeHelperDataDto getProposalAttributeHelperData(long proposalId,
-            long version) {
-        return proposalVersionResource.resolveParentId(proposalResource.id(proposalId))
-                .<ProposalAttributeHelperDataDto, ProposalAttributeHelperDataDto>elementService(
-                        version, "attributeHelper",
-                        ProposalAttributeHelperDataDto.class)
-                .withCache(CacheKeys.withClass(ProposalAttributeHelperDataDto.class)
-                        .withParameter("proposalId", proposalId)
-                        .withParameter("version", version)
-                        .build(), CacheName.MISC_MEDIUM)
-                .get();
-    }
-
-    public ProposalUnversionedAttributeHelperDataDto getProposalUnversionedAttributeHelperData(
-            long proposalId) {
-        return proposalResource
-                .elementService(proposalId,"attributeHelper",
-                        ProposalUnversionedAttributeHelperDataDto.class)
-                .get();
-    }
-
-    private ProposalAttribute createProposalAttribute(Long userId, Long proposalId, String name,
+    default ProposalAttribute getProposalAttribute(Long proposalId, Integer version, String name,
             Long additionalId) {
+        return getProposalAttributes(proposalId, name, additionalId, version).stream().findFirst()
+                .orElse(null);
+    }
+
+    @GetMapping("/proposalAttributes/{proposalAttributeId}")
+    ProposalAttribute getProposalAttribute(
+            @PathVariable("proposalAttributeId") Long proposalAttributeId)
+            throws ProposalAttributeNotFoundException;
+
+    @DeleteMapping("/proposalAttributes/{id}")
+    boolean deleteProposalAttribute(@PathVariable("id") Long id);
+
+    @PutMapping("/proposalAttributes")
+    boolean updateProposalAttribute(@RequestBody ProposalAttribute proposalAttribute);
+
+    @GetMapping("/proposalAttributes")
+    List<ProposalAttribute> getProposalAttributes(
+            @RequestParam(value = "proposalId", required = false) Long proposalId,
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "additionalId", required = false) Long additionalId,
+            @RequestParam(value = "version", required = false) Integer version);
+
+    default List<ProposalAttribute> getAllProposalAttributes(Long proposalId) {
+        return getProposalAttributes(proposalId, null, null, null);
+    }
+
+    default List<ProposalAttribute> getAllProposalAttributes(Long proposalId, Integer version) {
+        return getProposalAttributes(proposalId, null, null, version);
+    }
+
+    default List<ProposalAttribute> getAllProposalAttributes(Long proposalId, String name,
+            Long additionalId) {
+        return getProposalAttributes(proposalId, name, additionalId, null);
+    }
+
+    @GetMapping("/proposals/{proposalId}/versions/{version}/attributeHelper")
+    ProposalAttributeHelperDataDto getProposalAttributeHelperData(
+            @PathVariable("proposalId") Long proposalId, @PathVariable("version") Integer version);
+
+    @GetMapping("/proposals/{proposalId}/attributeHelper")
+    ProposalUnversionedAttributeHelperDataDto getProposalUnversionedAttributeHelperData(
+            @PathVariable("proposalId") Long proposalId);
+
+    default void invalidateProposalAttibuteCache(ProposalWrapper proposal) {
+        ServiceRequestUtils.invalidateCache(CacheKeys.withClass(ProposalWrapper.class)
+                        .withParameter("proposalId", proposal.getId())
+                        .withParameter("version", proposal.getVersion()).asList(),
+                CacheName.PROPOSAL_DETAILS);
+    }
+
+    @PostMapping("/proposalAttributes/setProposalAttribute")
+    ProposalAttribute setProposalAttribute(@RequestBody ProposalAttribute proposalAttribute,
+            @RequestParam("authorUserId") Long authorUserId);
+
+    default ProposalAttribute setProposalAttribute(Long userId, Long proposalId, String name,
+            Long additionalId, String stringValue, Long numericValue, Double doubleValue,
+            Integer version) {
         ProposalAttribute proposalAttribute = new ProposalAttribute();
         proposalAttribute.setProposalId(proposalId);
         proposalAttribute.setName(name);
         proposalAttribute.setAdditionalId(additionalId);
-        return proposalAttribute;
-    }
-
-
-    public void invalidateProposalAttibuteCache(ProposalWrapper proposal) {
-        ServiceRequestUtils.invalidateCache(CacheKeys.withClass(ProposalWrapper.class)
-                .withParameter("proposalId", proposal.getId())
-                .withParameter("version", proposal.getVersion()).asList(), CacheName.PROPOSAL_DETAILS);
-    }
-    public ProposalAttribute setProposalAttribute(ProposalAttribute proposalAttribute,
-            Long authorUserId) {
-        //TODO COLAB-2589: replace with better cache invalidation mechanism
-
-        //.optionalQueryParam("proposalId", proposalId)
-        //        .optionalQueryParam("version", version)
-        //        .withCache(CacheName.PROPOSAL_DETAILS)
-
-        return proposalAttributeResource.collectionService("setProposalAttribute", ProposalAttribute.class)
-                .queryParam("authorUserId", authorUserId)
-                .post(proposalAttribute)
-                ;
-    }
-
-    public ProposalAttribute setProposalAttribute(Long userId, Long proposalId, String name,
-            Long additionalId, String stringValue, Long numericValue, Double doubleValue,
-            Integer version) {
-        ProposalAttribute proposalAttribute =
-                createProposalAttribute(userId, proposalId, name, additionalId);
         proposalAttribute.setStringValue(stringValue);
         proposalAttribute.setNumericValue(numericValue);
         proposalAttribute.setRealValue(doubleValue);
@@ -174,58 +111,53 @@ public final class ProposalAttributeClient {
         return setProposalAttribute(proposalAttribute, userId);
     }
 
-    public ProposalAttribute setProposalAttribute(Long userId, Long proposalId, String name,
+    default ProposalAttribute setProposalAttribute(Long userId, Long proposalId, String name,
             Long additionalId, String stringValue, Integer version) {
         return setProposalAttribute(userId, proposalId, name, additionalId, stringValue,
                 null, null, version);
     }
 
-    public ProposalAttribute setProposalAttribute(Long userId, Long proposalId, String name,
+    default ProposalAttribute setProposalAttribute(Long userId, Long proposalId, String name,
             Long additionalId, Long numericValue, Integer version) {
         return setProposalAttribute(userId, proposalId, name, additionalId, null,
                 numericValue, null, version);
     }
 
-    public Boolean deleteProposalUnversionedAttribute(Long id) {
-        return proposalUnversionedAttributeResource.delete(id).execute();
-    }
+    @DeleteMapping("/proposalUnversionedAttributes/{id}")
+    boolean deleteProposalUnversionedAttribute(@PathVariable("id") Long id);
 
-    public List<ProposalUnversionedAttribute> getProposalUnversionedAttributesByProposalId(
-            Long proposalId) {
-        return proposalUnversionedAttributeResource.list()
-                .optionalQueryParam("proposalId", proposalId)
-                .execute();
-    }
+    @GetMapping("/proposalUnversionedAttributes")
+    List<ProposalUnversionedAttribute> getProposalUnversionedAttributesByProposalId(
+            @RequestParam(value = "proposalId", required = false) Long proposalId);
 
-    public void createOrUpdateUnversionedStringAttribute(Long proposalId, String attributeName,
+    default void createOrUpdateUnversionedStringAttribute(Long proposalId, String attributeName,
             long authorUserId, String attributeValue) {
         createOrUpdateUnversionedAttribute(proposalId, attributeName, authorUserId, null,
                 attributeValue, null);
     }
 
-    public void createOrUpdateUnversionedDoubleAttribute(Long proposalId, String attributeName,
+    default void createOrUpdateUnversionedDoubleAttribute(Long proposalId, String attributeName,
             long authorUserId, double attributeValue) {
         createOrUpdateUnversionedAttribute(proposalId, attributeName, authorUserId, null,
                 null, attributeValue);
     }
 
-    public void createOrUpdateUnversionedLongAttribute(Long proposalId, String attributeName,
+    default void createOrUpdateUnversionedLongAttribute(Long proposalId, String attributeName,
             long authorUserId, long attributeValue) {
         createOrUpdateUnversionedAttribute(proposalId, attributeName, authorUserId, attributeValue,
                 null, null);
     }
 
-    public void createOrUpdateUnversionedAttribute(Long proposalId, String attributeName,
+    default void createOrUpdateUnversionedAttribute(Long proposalId, String attributeName,
             long authorUserId, Long longValue, String stringValue, Double doubleValue) {
         ProposalUnversionedAttribute pua;
         try {
-             pua =
-                    getProposalUnversionedAttribute(proposalId, attributeName);
-                pua.setFirstAuthorUserId(authorUserId);
-                pua.setNumericValue(longValue);
-                pua.setStringValue(stringValue);
-                pua.setRealValue(doubleValue);
-                updateProposalUnversionedAttribute(pua);
+            pua = getProposalUnversionedAttribute(proposalId, attributeName);
+            pua.setFirstAuthorUserId(authorUserId);
+            pua.setNumericValue(longValue);
+            pua.setStringValue(stringValue);
+            pua.setRealValue(doubleValue);
+            updateProposalUnversionedAttribute(pua);
 
         } catch (EntityNotFoundException e) {
             pua = new ProposalUnversionedAttribute();
@@ -239,28 +171,17 @@ public final class ProposalAttributeClient {
         }
     }
 
-    public ProposalUnversionedAttribute createProposalUnversionedAttribute(
-            ProposalUnversionedAttribute proposalUnversionedAttribute) {
-        return proposalUnversionedAttributeResource
-                .create(new ProposalUnversionedAttribute(proposalUnversionedAttribute))
-                .execute();
-    }
+    @PostMapping("/proposalUnversionedAttributes")
+    ProposalUnversionedAttribute createProposalUnversionedAttribute(
+            @RequestBody ProposalUnversionedAttribute proposalUnversionedAttribute);
 
-    public ProposalUnversionedAttribute getProposalUnversionedAttribute(Long proposalId,
-            String name) throws EntityNotFoundException{
-        return proposalUnversionedAttributeResource
-                .collectionService("getByProposalIdName", ProposalUnversionedAttribute.class)
-                .queryParam("proposalId", proposalId)
-                .queryParam("name", name)
-                .getChecked()
-                ;
-    }
+    @GetMapping("/proposalUnversionedAttributes/getByProposalIdName")
+    ProposalUnversionedAttribute getProposalUnversionedAttribute(
+            @RequestParam(value = "proposalId", required = false) Long proposalId,
+            @RequestParam(value = "name", required = false) String name)
+            throws EntityNotFoundException;
 
-    public boolean updateProposalUnversionedAttribute(
-            ProposalUnversionedAttribute proposalUnversionedAttribute) {
-        return proposalUnversionedAttributeResource
-                .update(new ProposalUnversionedAttribute(proposalUnversionedAttribute)
-                        , proposalUnversionedAttribute.getId())
-                .execute();
-    }
+    @PutMapping("/proposalUnversionedAttributes")
+    boolean updateProposalUnversionedAttribute(
+            @RequestBody ProposalUnversionedAttribute proposalUnversionedAttribute);
 }

@@ -22,7 +22,6 @@ import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalVersionWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.contest.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.IdListUtil;
@@ -354,7 +353,7 @@ public class ProposalsPreferencesController extends AbstractWidgetController<Pro
 
                             //first, see if a ribbon already exists
 
-                            IProposalContestPhaseAttribute attribute = ProposalPhaseClientUtil
+                            IProposalContestPhaseAttribute attribute = proposalPhaseClient
                                     .getProposalContestPhaseAttribute(proposal.getId(),
                                             moveToContestPhase.getId(),
                                             ProposalContestPhaseAttributeKeys.RIBBON);

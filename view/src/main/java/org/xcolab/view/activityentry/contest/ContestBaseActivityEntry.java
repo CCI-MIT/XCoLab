@@ -6,7 +6,7 @@ import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.util.activities.enums.ContestActivityType;
 import org.xcolab.view.activityentry.ActivityInitializationException;
 import org.xcolab.view.activityentry.provider.AbstractActivityEntryContentProvider;
@@ -24,7 +24,8 @@ public abstract class ContestBaseActivityEntry extends AbstractActivityEntryCont
         } catch (ContestNotFoundException e) {
             //TODO COLAB-2486: This won't be needed once legacy activities are fixed
             if (ContestActivityType.PROPOSAL_CREATED.equals(getActivityType())) {
-                contest = ProposalClientUtil.getProposal(getActivityEntry().getAdditionalId(), true)
+                contest = StaticProposalContext.getProposalClient()
+                        .getProposal(getActivityEntry().getAdditionalId(), true)
                         .getContest();
             } else {
                 throw new ActivityInitializationException(getActivityEntry().getId(), e);

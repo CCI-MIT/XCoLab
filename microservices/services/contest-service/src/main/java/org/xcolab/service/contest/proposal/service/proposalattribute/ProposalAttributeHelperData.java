@@ -1,21 +1,20 @@
 package org.xcolab.service.contest.proposal.service.proposalattribute;
 
 import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ProposalAttributeHelperDataDto;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ProposalAttributeHelperData {
-
-    private final Map<String, Map<Long, ProposalAttribute>> attributesByNameAndAdditionalId;
+public class ProposalAttributeHelperData extends ProposalAttributeHelperDataDto {
 
     public ProposalAttributeHelperData(List<ProposalAttribute> attributes) {
         Map<String, Map<Long, ProposalAttribute>> attributesByNameAndAdditionalId = new HashMap<>();
         for (ProposalAttribute attribute : attributes) {
             Map<Long, ProposalAttribute> currentAttributes = attributesByNameAndAdditionalId
-                    .computeIfAbsent(attribute.getName(), k-> new HashMap<>());
+                    .computeIfAbsent(attribute.getName(), k -> new HashMap<>());
 
             ProposalAttribute currentAttribute = currentAttributes.get(attribute.getAdditionalId());
 
@@ -23,8 +22,8 @@ public class ProposalAttributeHelperData {
                 currentAttributes.put(attribute.getAdditionalId(), attribute);
             }
         }
-        this.attributesByNameAndAdditionalId = Collections
-                .unmodifiableMap(attributesByNameAndAdditionalId);
+        setAttributesByNameAndAdditionalId(
+                Collections.unmodifiableMap(attributesByNameAndAdditionalId));
     }
 
     private boolean isNewRankedHigher(ProposalAttribute oldAttribute,
@@ -36,8 +35,4 @@ public class ProposalAttributeHelperData {
         return oldAttribute.getVersion() < newAttribute.getVersion();
     }
 
-    @SuppressWarnings("unused") // getter for JSON serialization
-    public Map<String, Map<Long, ProposalAttribute>> getAttributesByNameAndAdditionalId() {
-        return attributesByNameAndAdditionalId;
-    }
 }

@@ -11,7 +11,7 @@ import org.xcolab.client.contest.pojo.IContestPhaseType;
 import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
 import org.xcolab.client.contest.pojo.tables.pojos.ContestPhase;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
-import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.commons.time.DurationFormatter;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
@@ -183,7 +183,7 @@ public class ContestPhaseWrapper extends ContestPhase {
     }
 
     public Boolean getProposalVisibility(long proposalId) {
-        ProposalPhaseClient proposalPhaseClient = ProposalPhaseClientUtil.getClient();
+        ProposalPhaseClient proposalPhaseClient = StaticProposalContext.getProposalPhaseClient();
         IProposalContestPhaseAttribute attr = proposalPhaseClient
                 .getProposalContestPhaseAttribute(proposalId, this.getId(),
                         ProposalContestPhaseAttributeKeys.VISIBLE);
@@ -192,7 +192,7 @@ public class ContestPhaseWrapper extends ContestPhase {
     }
 
     public boolean setProposalVisibility(long proposalId, boolean visible) {
-        ProposalPhaseClientUtil.getClient()
+        StaticProposalContext.getProposalPhaseClient()
                 .setProposalContestPhaseAttribute(proposalId, this.getId(),
                         ProposalContestPhaseAttributeKeys.VISIBLE, 0L, visible ? 1L : 0L, "");
         return true;

@@ -3,14 +3,13 @@ package org.xcolab.view.pages.search.items;
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.contest.proposals.ProposalAttributeClientUtil;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.contest.proposals.exceptions.ProposalAttributeNotFoundException;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.contest.proposals.helpers.ProposalAttributeHelper;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
 import org.xcolab.client.search.pojo.ISearchPojo;
 
 public class ProposalSearchItem extends AbstractSearchItem {
@@ -30,11 +29,13 @@ public class ProposalSearchItem extends AbstractSearchItem {
         try {
             searchPojo = pojo;
             this.searchQuery = searchQuery;
-            proposalAttribute = ProposalAttributeClientUtil
+            proposalAttribute = StaticProposalContext.getProposalAttributeClient()
                     .getProposalAttribute(searchPojo.getClassPrimaryKey());
-            proposal = ProposalClientUtil.getProposal(proposalAttribute.getProposalId(), true);
+            proposal = StaticProposalContext.getProposalClient()
+                    .getProposal(proposalAttribute.getProposalId(), true);
             ProposalAttributeHelper proposalAttributeHelper =
-                    new ProposalAttributeHelper(proposal, ProposalAttributeClientUtil.getClient());
+                    new ProposalAttributeHelper(proposal, StaticProposalContext
+                            .getProposalAttributeClient());
 
             proposalName =
                     proposalAttributeHelper.getAttributeValueString(ProposalAttributeKeys.NAME, "");

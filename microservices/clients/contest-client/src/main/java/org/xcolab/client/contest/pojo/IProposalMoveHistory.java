@@ -5,7 +5,7 @@ import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
@@ -57,7 +57,8 @@ public interface IProposalMoveHistory {
 
     default ProposalWrapper getSourceProposal() {
         try {
-            return ProposalClientUtil.getProposal(this.getSourceProposalId());
+            return StaticProposalContext.getProposalClient()
+                    .getProposal(this.getSourceProposalId());
         } catch (ProposalNotFoundException ignored) {
             return null;
         }
@@ -77,7 +78,8 @@ public interface IProposalMoveHistory {
 
     default ProposalWrapper getTargetProposal() {
         try {
-            return ProposalClientUtil.getProposal(this.getTargetProposalId());
+            return StaticProposalContext.getProposalClient()
+                    .getProposal(this.getTargetProposalId());
         } catch (ProposalNotFoundException ignored) {
             return null;
         }

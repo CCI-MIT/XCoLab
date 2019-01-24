@@ -9,8 +9,7 @@ import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.IContestPhaseRibbonType;
 import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
-import org.xcolab.client.contest.proposals.ProposalPhaseClient;
-import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 
 import java.io.Serializable;
@@ -33,13 +32,11 @@ public class ProposalRibbonWrapper implements Serializable {
         }
 
         final ContestClient contestClient = StaticContestContext.getContestClient();
-        final ProposalPhaseClient proposalPhaseClient =
-                ProposalPhaseClientUtil.getClient();
 
         ContestPhaseWrapper contestPhase = proposal.getContestPhase();
 
         IProposalContestPhaseAttribute ribbonAttribute =
-                proposalPhaseClient.getProposalContestPhaseAttribute(
+                StaticProposalContext.getProposalPhaseClient().getProposalContestPhaseAttribute(
                         proposalId, contestPhase.getId(),
                         ProposalContestPhaseAttributeKeys.RIBBON);
         if (ribbonAttribute != null) {

@@ -11,7 +11,7 @@ import org.xcolab.client.contest.pojo.IProposal2Phase;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalClient;
+import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
 import org.xcolab.client.contest.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
@@ -130,7 +130,7 @@ public class ProposalContextHelper {
 
     public ContestPhaseWrapper getContestPhase(ContestWrapper contest, ProposalWrapper proposal) {
         final ContestClient contestClient = clientHelper.getContestClient();
-        final ProposalClient proposalClient = clientHelper.getProposalClient();
+        final IProposalClient proposalClient = clientHelper.getProposalClient();
 
         ContestPhaseWrapper contestPhase;
         if (givenPhaseId > 0) {
@@ -160,7 +160,7 @@ public class ProposalContextHelper {
     }
 
     public ProposalWrapper getProposal(ContestWrapper contest) throws InvalidProposalUrlException {
-        final ProposalClient proposalClient = clientHelper.getProposalClient();
+        final IProposalClient proposalClient = clientHelper.getProposalClient();
         ProposalWrapper proposal = null;
         if (givenProposalId > 0) {
             try {

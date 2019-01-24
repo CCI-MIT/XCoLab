@@ -13,7 +13,7 @@ import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMemberWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.contest.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
@@ -60,7 +60,7 @@ public class CsvExportHelper {
             ContestPhaseWrapper contestPhase) {
 
         try {
-            IProposal2Phase proposal2Phase = ProposalPhaseClientUtil
+            IProposal2Phase proposal2Phase = StaticProposalContext.getProposalPhaseClient()
                     .getProposal2PhaseByProposalIdContestPhaseId(proposal.getId(),
                             contestPhase.getId());
             ProposalWrapper proposalWrapper =

@@ -12,9 +12,7 @@ import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMembershipRequestWrapp
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.IMembershipClient;
 import org.xcolab.client.contest.proposals.ProposalAttributeClient;
-import org.xcolab.client.contest.proposals.ProposalAttributeClientUtil;
-import org.xcolab.client.contest.proposals.ProposalClient;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.contest.proposals.exceptions.ConflictException;
 import org.xcolab.client.contest.proposals.exceptions.MembershipRequestNotFoundException;
@@ -55,6 +53,12 @@ public class MembershipInvitationResponseController {
     @Autowired
     private IMembershipClient membershipClient;
 
+    @Autowired
+    private ProposalAttributeClient proposalAttributeClient;
+
+    @Autowired
+    private IProposalClient proposalClient;
+
     @PostMapping("/membershipRequests/reply")
     private void execute(HttpServletRequest request, HttpServletResponse response,
             @RequestParam long requestId, @RequestParam long proposalId,
@@ -62,9 +66,6 @@ public class MembershipInvitationResponseController {
             throws IOException, MembershipRequestNotFoundException, ConflictException {
 
         ContestWrapper contest = contestClient.getContest(contestId);
-        ProposalClient proposalClient = ProposalClientUtil.getClient();
-        ProposalAttributeClient proposalAttributeClient = ProposalAttributeClientUtil.getClient();
-
         ProposalTeamMembershipRequestWrapper membershipRequest =
                 membershipClient.getMembershipRequest(requestId);
 

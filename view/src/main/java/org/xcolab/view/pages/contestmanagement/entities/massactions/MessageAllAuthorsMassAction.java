@@ -6,7 +6,7 @@ import org.xcolab.client.contest.pojo.IContestPhaseType;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,7 +30,8 @@ public class MessageAllAuthorsMassAction extends MessageMassAction {
                     .getContestPhaseType(cp.getContestPhaseTypeId());
             if (cpt.getStatus().equals(ContestStatus.OPEN_FOR_SUBMISSION.name())) {
                 List<ProposalWrapper> proposals =
-                        ProposalClientUtil.getActiveProposalsInContestPhase(cp.getId());
+                        StaticProposalContext.getProposalClient()
+                                .getActiveProposalsInContestPhase(cp.getId());
                 for (ProposalWrapper p : proposals) {
                     proposalsMap.putIfAbsent(p.getId(), p);
                 }

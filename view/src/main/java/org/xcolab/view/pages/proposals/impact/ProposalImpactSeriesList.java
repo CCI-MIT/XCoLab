@@ -8,7 +8,7 @@ import org.xcolab.client.contest.pojo.wrapper.FocusAreaWrapper;
 import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.contest.proposals.enums.ImpactSeriesType;
 import org.xcolab.client.contest.proposals.helpers.ProposalAttributeHelper;
 import org.xcolab.client.members.pojo.Member;
@@ -75,7 +75,8 @@ public class ProposalImpactSeriesList {
     private final List<ProposalImpactSeries> impactSerieses;
 
     public ProposalImpactSeriesList(ProposalWrapper proposal) throws ContestNotFoundException {
-        this(ProposalClientUtil.getLatestContestInProposal(proposal.getId()), proposal);
+        this(StaticProposalContext.getProposalClient()
+                .getLatestContestInProposal(proposal.getId()), proposal);
     }
 
     public ProposalImpactSeriesList(ContestWrapper contest, ProposalWrapper proposal) {

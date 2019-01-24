@@ -1,7 +1,10 @@
 package org.xcolab.service.contest.proposal.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -11,10 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.xcolab.client.contest.pojo.IProposalRating;
 import org.xcolab.client.contest.pojo.IProposalRatingType;
 import org.xcolab.client.contest.pojo.IProposalRatingValue;
+import org.xcolab.client.contest.pojo.IProposalVote;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.proposal.domain.proposalrating.ProposalRatingDao;
 import org.xcolab.service.contest.proposal.domain.proposalratingtype.ProposalRatingTypeDao;
 import org.xcolab.service.contest.proposal.domain.proposalratingvalue.ProposalRatingValueDao;
+import org.xcolab.service.contest.proposal.domain.proposalvote.ProposalVoteDao;
 
 import java.util.List;
 
@@ -29,6 +34,9 @@ public class ProposalRatingController {
 
     @Autowired
     private ProposalRatingTypeDao proposalRatingTypeDao;
+
+    @Autowired
+    private ProposalVoteDao proposalVoteDao;
 
     @RequestMapping(value = "/proposalRatings", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<IProposalRating> getProposalRatings(
@@ -98,4 +106,55 @@ public class ProposalRatingController {
         }
     }
     // findByProposalIdJudgeTypeJudgeIdContestPhaseId
+
+
+    @GetMapping("/proposalVotes")
+    public List<IProposalVote> getProposalVotes(@RequestParam(required = false) Long contestPhaseId,
+            @RequestParam(required = false) Long proposalId,
+            @RequestParam(required = false) Long userId) {
+        return proposalVoteDao.findByGiven(proposalId, contestPhaseId, userId);
+    }
+
+    @GetMapping("/proposalVotes/count")
+    public Integer countProposalVotes(@RequestParam(required = false) Long contestPhaseId,
+            @RequestParam(required = false) Long proposalId,
+            @RequestParam(required = false) Long userId,
+            @RequestParam(required = false) Boolean isValidOverride) {
+        return proposalVoteDao.countByGiven(proposalId, contestPhaseId, userId, isValidOverride);
+    }
+
+    @GetMapping("/proposalVotes/hasUserVoted")
+    public Boolean hasUserVoted(@RequestParam(required = false) Long contestPhaseId,
+            @RequestParam(required = false) Long proposalId,
+            @RequestParam(required = false) Long userId) {
+        return proposalVoteDao.countByGiven(proposalId, contestPhaseId, userId, null) != 0;
+    }
+
+    @PostMapping("/proposalVotes")
+    public IProposalVote createProposalVote(@RequestBody IProposalVote proposalVote) {
+        return this.proposalVoteDao.create(proposalVote);
+    }
+
+    @DeleteMapping("/proposalVotes/deleteVote")
+    public boolean deleteProposalVote(@RequestParam Long proposalId,
+            @RequestParam Long contestPhaseId, @RequestParam Long userId) {
+        return proposalVoteDao.delete(proposalId, userId, contestPhaseId) > 0;
+    }
+
+    @PostMapping("/proposalVotes/updateVote")
+    public boolean updateProposalVote(@RequestBody IProposalVote proposalVote) {
+        return proposalVoteDao.update(proposalVote);
+    }
+
+    @GetMapping("/proposalVotes/getProposalVoteByProposalIdUserId")
+    public IProposalVote getProposalVoteByProposalIdUserId(
+            @RequestParam(required = false) Long proposalId,
+            @RequestParam(required = false) Long userId) throws NotFoundException {
+        List<IProposalVote> votesForUser = proposalVoteDao.findByGiven(proposalId, null, userId);
+        if (votesForUser != null && !votesForUser.isEmpty()) {
+            return votesForUser.get(0);
+        } else {
+            throw new NotFoundException();
+        }
+    }
 }

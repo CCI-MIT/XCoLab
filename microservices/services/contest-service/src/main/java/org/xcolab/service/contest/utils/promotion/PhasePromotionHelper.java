@@ -3,11 +3,10 @@ package org.xcolab.service.contest.utils.promotion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
-import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 
 import static org.xcolab.util.enums.promotion.JudgingSystemActions.AdvanceDecision;
@@ -31,7 +30,7 @@ public class PhasePromotionHelper {
             return false;
         }
 
-        IProposalContestPhaseAttribute attr = ProposalPhaseClientUtil
+        IProposalContestPhaseAttribute attr = StaticProposalContext.getProposalPhaseClient()
                 .getProposalContestPhaseAttribute(p.getId(),
                         phase.getId(), ProposalContestPhaseAttributeKeys.VISIBLE);
 
@@ -39,12 +38,14 @@ public class PhasePromotionHelper {
     }
 
     private IProposalContestPhaseAttribute getAttribute(long proposalId, String key) {
-        return ProposalPhaseClientUtil.getProposalContestPhaseAttribute(proposalId, phase.getId(), key);
+        return StaticProposalContext.getProposalPhaseClient()
+                .getProposalContestPhaseAttribute(proposalId, phase.getId(), key);
     }
 
     public boolean isAllProposalsReviewed() {
         boolean allProposalsReviewed = true;
-        for (ProposalWrapper p : ProposalClientUtil.getProposalsInContestPhase(phase.getId())) {
+        for (ProposalWrapper p : StaticProposalContext.getProposalClient()
+                .getProposalsInContestPhase(phase.getId())) {
             if (!isProposalReviewed(p)) {
                 allProposalsReviewed = false;
                 break;
@@ -55,9 +56,8 @@ public class PhasePromotionHelper {
     }
 
     public boolean isProposalPromoted(ProposalWrapper p) {
-        boolean hasProposalAlreadyBeenPromoted = ProposalPhaseClientUtil.isProposalContestPhaseAttributeSetAndTrue(
-                p.getId(),
-                phase.getId(),
+        boolean hasProposalAlreadyBeenPromoted = StaticProposalContext.getProposalPhaseClient()
+                .isProposalContestPhaseAttributeSetAndTrue(p.getId(), phase.getId(),
                 ProposalContestPhaseAttributeKeys.PROMOTE_DONE);
 
         if (hasProposalAlreadyBeenPromoted) {
@@ -116,14 +116,9 @@ public class PhasePromotionHelper {
     public static void createProposalContestPhasePromotionDoneAttribute(long proposalId, long currentPhaseId) {
         //save the information that the promotion has been done.
         if (currentPhaseId != 0) {
-            ProposalPhaseClientUtil.persistProposalContestPhaseAttribute(
-                    proposalId,
-                    currentPhaseId,
-                    ProposalContestPhaseAttributeKeys.PROMOTE_DONE,
-                    0L,
-                    0L,
-                    "true"
-            );
+            StaticProposalContext.getProposalPhaseClient().persistProposalContestPhaseAttribute(
+                    proposalId, currentPhaseId, ProposalContestPhaseAttributeKeys.PROMOTE_DONE,
+                    0L, 0L, "true");
         }
     }
 }

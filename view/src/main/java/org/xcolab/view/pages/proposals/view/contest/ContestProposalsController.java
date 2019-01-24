@@ -13,13 +13,12 @@ import org.xcolab.client.contest.pojo.IProposal2Phase;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalClient;
+import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
 import org.xcolab.client.contest.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.servlet.flash.AlertMessage;
-import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.view.pages.proposals.permissions.ContestPermissions;
@@ -76,7 +75,7 @@ public class ContestProposalsController extends BaseProposalsController {
 
     private List<ProposalWrapper> getProposals(ProposalContext proposalContext, Member loggedInMember) {
         final ClientHelper clients = proposalContext.getClients();
-        final ProposalClient proposalClient = clients.getProposalClient();
+        final IProposalClient proposalClient = clients.getProposalClient();
 
         ContestPhaseWrapper contestPhase = proposalContext.getContestPhase();
         ContestWrapper contest = proposalContext.getContest();
@@ -90,8 +89,7 @@ public class ContestProposalsController extends BaseProposalsController {
                         contestPhase.getId());
                 break;
             default:
-                activeProposals = proposalClient.getActiveProposalsInContestPhase(
-                        contestPhase.getId(), CacheName.PROPOSAL_LIST_CLOSED);
+                activeProposals = proposalClient.getActiveProposalsInContestPhase(contestPhase.getId());
         }
 
         List<ProposalWrapper> proposals = new ArrayList<>();
@@ -179,7 +177,7 @@ public class ContestProposalsController extends BaseProposalsController {
         if (proposalContext.getPermissions().getCanFellowActions()) {
 
             final ContestWrapper contest = proposalContext.getContest();
-            final ProposalClient proposalClient = proposalContext.getClients().getProposalClient();
+            final IProposalClient proposalClient = proposalContext.getClients().getProposalClient();
             long contestPhaseId = proposalContext.getContestPhase().getId();
 
             List<Long> selectedJudges = new ArrayList<>();
@@ -209,7 +207,7 @@ public class ContestProposalsController extends BaseProposalsController {
         if (proposalContext.getPermissions().getCanFellowActions()) {
 
             final ContestWrapper contest = proposalContext.getContest();
-            final ProposalClient proposalClient = proposalContext.getClients().getProposalClient();
+            final IProposalClient proposalClient = proposalContext.getClients().getProposalClient();
             long contestPhaseId = proposalContext.getContestPhase().getId();
 
             for (ProposalWrapper proposal : proposalClient.getProposalsInContest(contest.getId())) {

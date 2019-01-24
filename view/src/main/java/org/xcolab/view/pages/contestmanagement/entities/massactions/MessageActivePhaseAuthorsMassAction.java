@@ -4,7 +4,7 @@ import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public class MessageActivePhaseAuthorsMassAction extends MessageMassAction {
     @Override
     protected List<ProposalWrapper> getProposalsToBeMessaged(ContestWrapper contest) {
         ContestPhaseWrapper activeContestPhase = StaticContestContext.getContestClient().getActivePhase(contest.getId());
-        return ProposalClientUtil
+        return StaticProposalContext.getProposalClient()
                 .getActiveProposalsInContestPhase(activeContestPhase.getId());
     }
 }

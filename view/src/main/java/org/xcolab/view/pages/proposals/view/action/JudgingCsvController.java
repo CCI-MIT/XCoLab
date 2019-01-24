@@ -19,7 +19,7 @@ import org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
-import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
@@ -104,9 +104,9 @@ public class JudgingCsvController {
             }
 
             for (ProposalWrapper proposal : stillActiveProposals) {
-                IProposalContestPhaseAttribute fellowActionAttribute = ProposalPhaseClientUtil
-                        .getProposalContestPhaseAttribute(proposal.getId(),
-                                judgingPhase.getId(),
+                IProposalContestPhaseAttribute fellowActionAttribute =
+                        StaticProposalContext.getProposalPhaseClient()
+                        .getProposalContestPhaseAttribute(proposal.getId(), judgingPhase.getId(),
                                 ProposalContestPhaseAttributeKeys.FELLOW_ACTION);
 
                 if (fellowActionAttribute != null) {

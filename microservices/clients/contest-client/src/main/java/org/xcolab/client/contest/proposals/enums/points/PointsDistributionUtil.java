@@ -5,8 +5,6 @@ import org.xcolab.client.contest.pojo.IProposalReference;
 import org.xcolab.client.contest.pojo.wrapper.PointTypeWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalAttributeClientUtil;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.contest.proposals.exceptions.ProposalAttributeNotFoundException;
 import org.xcolab.client.members.pojo.Member;
@@ -21,7 +19,8 @@ public class PointsDistributionUtil {
     public static List<PointsTarget> distributeEquallyAmongContributors(long proposalId)
              {
         List<PointsTarget> targets = new ArrayList<>();
-        List<Member> members = ProposalClientUtil.getProposalMembers(proposalId);
+        List<Member> members = StaticProposalContext.getProposalClient()
+                .getProposalMembers(proposalId);
         for (Member u : members) {
             targets.add(PointsTarget.forUser(u.getId(), 1.0d / members.size()));
         }
@@ -41,9 +40,10 @@ public class PointsDistributionUtil {
         List<PointsTarget> targets = new ArrayList<>();
         for (long subProposalId : subProposalIds) {
             try {
-                IProposalReference reference = ProposalClientUtil.getProposalReferenceByProposalIdSubProposalId(proposal.getId(), subProposalId);
-                final ProposalAttribute referenceSectionProposalAttribute = ProposalAttributeClientUtil
-
+                IProposalReference reference = StaticProposalContext.getProposalClient()
+                        .getProposalReferenceByProposalIdSubProposalId(proposal.getId(), subProposalId);
+                final ProposalAttribute referenceSectionProposalAttribute =
+                        StaticProposalContext.getProposalAttributeClient()
                         .getProposalAttribute(reference.getSectionAttributeId());
                 final long proposalTemplateSectionDefinitionId = referenceSectionProposalAttribute.getAdditionalId();
 

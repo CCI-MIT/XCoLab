@@ -24,15 +24,12 @@ import org.xcolab.client.contest.pojo.IProposalTemplate;
 import org.xcolab.client.contest.pojo.tables.pojos.Proposal;
 import org.xcolab.client.contest.proposals.IMembershipClient;
 import org.xcolab.client.contest.proposals.ProposalAttributeClient;
-import org.xcolab.client.contest.proposals.ProposalAttributeClientUtil;
-import org.xcolab.client.contest.proposals.ProposalClient;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.proposals.ProposalJudgeRatingClient;
 import org.xcolab.client.contest.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.contest.proposals.ProposalMemberRatingClient;
 import org.xcolab.client.contest.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
-import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.contest.proposals.enums.ProposalUnversionedAttributeName;
@@ -703,7 +700,8 @@ public class ProposalWrapper extends Proposal implements Serializable {
 
     @JsonIgnore
     public void setModelRegion(String region, Long userId) {
-        ProposalAttributeClientUtil.setProposalAttribute(createProposalAttribute(this.getId(), ProposalAttributeKeys.REGION, region),userId);
+        StaticProposalContext.getProposalAttributeClient()
+                .setProposalAttribute(createProposalAttribute(this.getId(), ProposalAttributeKeys.REGION, region),userId);
     }
 
     private static ProposalAttribute createProposalAttribute(Long proposalId, String name, String stringValue){
@@ -728,7 +726,8 @@ public class ProposalWrapper extends Proposal implements Serializable {
         proposalAttribute.setName(ProposalAttributeKeys.SCENARIO_ID);
         proposalAttribute.setNumericValue(isConsolidatedScenario);
         proposalAttribute.setAdditionalId(scenarioId);
-        ProposalAttributeClientUtil.setProposalAttribute(proposalAttribute,userId);
+        StaticProposalContext.getProposalAttributeClient()
+                .setProposalAttribute(proposalAttribute,userId);
     }
 
     @JsonIgnore
@@ -749,7 +748,8 @@ public class ProposalWrapper extends Proposal implements Serializable {
     @JsonIgnore
     public Map<Long, List<ProposalWrapper>> getSubProposalPerModel() {
         Map<Long, List<ProposalWrapper>> subProposalPerModel = new HashMap<>();
-        List<ProposalWrapper> subProposals = ProposalClientUtil.getContestIntegrationRelevantSubproposals(this.getId());
+        List<ProposalWrapper> subProposals = StaticProposalContext.getProposalClient()
+                .getContestIntegrationRelevantSubproposals(this.getId());
 
         for (ProposalWrapper subProposal : subProposals) {
             Long modelId = subProposal.getModelIdForStoredScenario();
@@ -789,7 +789,8 @@ public class ProposalWrapper extends Proposal implements Serializable {
     @JsonIgnore
     public List<Scenario> getSubProposalScenarios() throws IOException {
         List<Scenario> subProposalScenarios = new ArrayList<>();
-        List<ProposalWrapper> subProposals = ProposalClientUtil.getContestIntegrationRelevantSubproposals(this.getId());
+        List<ProposalWrapper> subProposals = StaticProposalContext.getProposalClient()
+                .getContestIntegrationRelevantSubproposals(this.getId());
         for (ProposalWrapper subProposal : subProposals) {
             Scenario scenarioForSubProposal = getScenarioByProposalId(subProposal.getId());
             subProposalScenarios.add(scenarioForSubProposal);
@@ -1006,7 +1007,7 @@ public class ProposalWrapper extends Proposal implements Serializable {
     private static class Clients {
 
         final ContestClient contest;
-        final ProposalClient proposal;
+        final IProposalClient proposal;
 
         final ProposalMemberRatingClient proposalMemberRating;
         final ProposalJudgeRatingClient proposalJudgeRating;
@@ -1020,9 +1021,9 @@ public class ProposalWrapper extends Proposal implements Serializable {
 
         Clients() {
             contest = StaticContestContext.getContestClient();
-            proposal = ProposalClientUtil.getClient();
-            proposalAttribute = ProposalAttributeClientUtil.getClient();
-            proposalPhase = ProposalPhaseClientUtil.getClient();
+            proposal = StaticProposalContext.getProposalClient();
+            proposalAttribute = StaticProposalContext.getProposalAttributeClient();
+            proposalPhase = StaticProposalContext.getProposalPhaseClient();
             contestTeamMember = StaticContestContext.getContestTeamMemberClient();
             proposalMemberRating = ProposalMemberRatingClientUtil.getClient();
             membership = StaticProposalContext.getMembershipClient();

@@ -12,7 +12,6 @@ import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.ProposalJudgeRatingClientUtil;
-import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.entity.utils.helper.ProposalJudgingCommentHelper;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
@@ -49,11 +48,9 @@ public class ProposalScreeningTabController extends BaseProposalTabController {
                 proposalWrapper, currentMember);
 
         boolean hasAlreadyBeenPromoted =
-                ProposalPhaseClientUtil.isProposalContestPhaseAttributeSetAndTrue(
-                        proposal.getId(),
-                        contestPhase.getId(),
-                        ProposalContestPhaseAttributeKeys.PROMOTE_DONE
-                );
+                proposalPhaseClient.isProposalContestPhaseAttributeSetAndTrue(
+                        proposal.getId(), contestPhase.getId(),
+                        ProposalContestPhaseAttributeKeys.PROMOTE_DONE);
 
         FellowProposalScreeningBean bean = new FellowProposalScreeningBean(proposalFellowWrapper);
         bean.setContestPhaseId(contestPhase.getId());

@@ -7,7 +7,7 @@ import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.proposals.ProposalAttributeClient;
-import org.xcolab.client.contest.proposals.ProposalClient;
+import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.contest.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
@@ -96,7 +96,7 @@ public final class ProposalCreationUtil {
             ContestWrapper contest = contestClient
                     .getContest(contestClient.getContestPhase(contestPhase.getId()).getContestId());
 
-            final ProposalClient proposalClient =
+            final IProposalClient proposalClient =
                     proposalContext.getClients().getProposalClient();
             ProposalWrapper updatedProposal = proposalClient.getProposal(proposalWrapper.getId());
             ContestWrapper contestMicro = contestClient.getContest(contest.getId());

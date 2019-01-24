@@ -9,7 +9,7 @@ import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.IContestPhaseType;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.contest.proposals.ProposalClient;
+import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.view.pages.proposals.tabs.access.AdaptationImpactAccessAlgorithm;
 import org.xcolab.view.pages.proposals.tabs.access.ImpactAccessAlgorithm;
@@ -33,7 +33,7 @@ public class ProposalsPermissions {
 
     private final ContestPermissions contestPermissions;
 
-    private final ProposalClient proposalClient;
+    private final IProposalClient proposalClient;
     private final ContestClient contestClient;
 
 

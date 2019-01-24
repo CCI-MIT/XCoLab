@@ -6,9 +6,8 @@ import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
-import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.entity.utils.notifications.EmailTemplateWrapper;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
@@ -29,7 +28,7 @@ public class ProposalJudgingCommentHelper {
 
     public ProposalJudgingCommentHelper(ProposalWrapper proposal, ContestPhaseWrapper contestPhase) {
         this.proposal = proposal;
-        proposalPhaseClient = ProposalPhaseClientUtil.getClient();
+        proposalPhaseClient = StaticProposalContext.getProposalPhaseClient();
         this.contestPhase = contestPhase;
     }
 
@@ -58,7 +57,7 @@ public class ProposalJudgingCommentHelper {
 
     public String getSubject(){
         if(this.subject == null) {
-            String proposalName = ProposalAttributeClientUtil
+            String proposalName = StaticProposalContext.getProposalAttributeClient()
                     .getProposalAttribute(proposal.getId(), ProposalAttributeKeys.NAME, 0L)
                     .getStringValue();
 
@@ -111,7 +110,7 @@ public class ProposalJudgingCommentHelper {
      */
     public String getPromotionComment(boolean isWrapWithTemplate) {
         try {
-            String proposalName = ProposalAttributeClientUtil
+            String proposalName = StaticProposalContext.getProposalAttributeClient()
                     .getProposalAttribute(proposal.getId(), ProposalAttributeKeys.NAME, 0L)
                     .getStringValue();
             String contestName = StaticContestContext.getContestClient()

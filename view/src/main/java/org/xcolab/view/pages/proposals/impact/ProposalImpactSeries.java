@@ -13,8 +13,7 @@ import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
 import org.xcolab.client.contest.pojo.wrapper.ProposalVersionWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalAttributeClientUtil;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.contest.proposals.enums.ImpactSeriesType;
 import org.xcolab.client.contest.proposals.helpers.ProposalAttributeHelper;
 import org.xcolab.client.members.MembersClient;
@@ -131,7 +130,7 @@ public class ProposalImpactSeries {
                                 attribute.getRealValue());
 
                         // Set author and modification date
-                        this.lastModifiedVersion = ProposalClientUtil
+                        this.lastModifiedVersion = StaticProposalContext.getProposalClient()
                                 .getProposalVersionByProposalIdVersion(proposal.getId(),
                                 attribute.getVersion());
                     }
@@ -243,7 +242,7 @@ public class ProposalImpactSeries {
                     double filteredValue = ProposalImpactValueFilterAlgorithm
                             .filterValueForImpactSeriesType(
                                     seriesValues.getValueForYear(iteration.getYear()), seriesType.name());
-                    version = ProposalAttributeClientUtil
+                    version = StaticProposalContext.getProposalAttributeClient()
                             .setProposalAttribute(author.getId(), proposal.getId(),
                                     seriesType.getAttributeName(iteration.getYear()),
                                     focusArea.getId(), "", null,

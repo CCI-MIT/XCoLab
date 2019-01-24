@@ -3,8 +3,8 @@ package org.xcolab.view.seo.sitemaps.generators;
 import org.springframework.stereotype.Service;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.view.seo.sitemaps.xml.XmlUrl;
 import org.xcolab.view.seo.sitemaps.xml.XmlUrl.ChangeFrequency;
 import org.xcolab.view.seo.sitemaps.xml.XmlUrl.Priority;
@@ -23,7 +23,8 @@ public class ProposalSitemapGenerator {
 
     public XmlUrlSet generateForActiveProposals() {
         XmlUrlSet xmlUrlSet = new XmlUrlSet();
-        final List<ProposalWrapper> proposals = ProposalClientUtil.listProposalsInActiveContests();
+        final List<ProposalWrapper> proposals = StaticProposalContext.getProposalClient()
+                .listProposalsInActiveContests();
         addProposals(xmlUrlSet, proposals, ChangeFrequency.DAILY, Priority.MEDIUM);
         return xmlUrlSet;
     }
@@ -31,15 +32,16 @@ public class ProposalSitemapGenerator {
     public XmlUrlSet generateForAwardedProposals() {
         XmlUrlSet xmlUrlSet = new XmlUrlSet();
         final List<ProposalWrapper> proposals =
-                ProposalClientUtil.listProposalsInCompletedContests(Arrays.asList(1, 2, 3));
+                StaticProposalContext.getProposalClient()
+                        .listProposalsInCompletedContests(Arrays.asList(1, 2, 3));
         addProposals(xmlUrlSet, proposals, ChangeFrequency.NEVER, Priority.HIGH);
         return xmlUrlSet;
     }
 
     public XmlUrlSet generateForOtherProposals() {
         XmlUrlSet xmlUrlSet = new XmlUrlSet();
-        final List<ProposalWrapper> proposals =
-                ProposalClientUtil.listProposalsInCompletedContests(Collections.singletonList(0));
+        final List<ProposalWrapper> proposals = StaticProposalContext.getProposalClient()
+                .listProposalsInCompletedContests(Collections.singletonList(0));
         addProposals(xmlUrlSet, proposals, ChangeFrequency.NEVER, Priority.LOW);
 
         return xmlUrlSet;
