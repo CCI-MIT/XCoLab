@@ -6,7 +6,7 @@ import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
-import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.view.pages.profile.entity.Badge;
 
@@ -50,8 +50,8 @@ public class BadgeBean implements Serializable {
 
     private Optional<IProposalContestPhaseAttribute> getLatestRibbonAttribute(
             ProposalWrapper proposal) {
-        List<Long> phasesForProposal = ProposalPhaseClientUtil.getContestPhasesForProposal(
-                proposal.getId());
+        List<Long> phasesForProposal = StaticProposalContext.getProposalPhaseClient()
+                .getContestPhasesForProposal(proposal.getId());
         return phasesForProposal.stream()
                 .map(phaseId -> getRibbonAttribute(proposal.getId(), phaseId))
                 .filter(Objects::nonNull)
@@ -59,7 +59,8 @@ public class BadgeBean implements Serializable {
     }
 
     private IProposalContestPhaseAttribute getRibbonAttribute(long proposalId, long phaseId) {
-        return ProposalPhaseClientUtil.getProposalContestPhaseAttribute(proposalId, phaseId,
+        return StaticProposalContext.getProposalPhaseClient()
+                .getProposalContestPhaseAttribute(proposalId, phaseId,
                         ProposalContestPhaseAttributeKeys.RIBBON);
     }
 

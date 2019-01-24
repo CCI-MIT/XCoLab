@@ -160,11 +160,6 @@ public class ProposalUpdateHelper {
             proposalContext.getClients().getProposalAttributeClient().invalidateProposalAttibuteCache(
                     proposal);
             proposalContext.getClients().getProposalClient().invalidateProposalCache(proposal.getId());
-            if(p2p!=null) {
-                proposalContext.getClients().getProposalPhaseClient()
-                        .invalidateProposal2PhaseCache(proposal.getId(), p2p
-                                .getContestPhaseId());
-            }
         }
         doAnalytics(request, filledAll);
     }

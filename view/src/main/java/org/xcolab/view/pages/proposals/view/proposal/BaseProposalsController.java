@@ -9,6 +9,7 @@ import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ImpactClient;
 import org.xcolab.client.contest.OntologyClient;
+import org.xcolab.client.contest.proposals.ProposalPhaseClient;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.util.MetaKeys;
 
@@ -25,6 +26,9 @@ public class BaseProposalsController {
 
     @Autowired
     protected OntologyClient ontologyClient;
+
+    @Autowired
+    protected ProposalPhaseClient proposalPhaseClient;
 
     public BaseProposalsController() {
         super();

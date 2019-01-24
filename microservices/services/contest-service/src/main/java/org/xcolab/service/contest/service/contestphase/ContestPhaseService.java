@@ -12,14 +12,13 @@ import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.ProposalMemberRatingClientUtil;
-import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
+import org.xcolab.client.contest.proposals.ProposalPhaseClient;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.GroupingHelper;
 import org.xcolab.entity.utils.notifications.contest.ContestVoteQuestionNotification;
 import org.xcolab.entity.utils.notifications.proposal.ContestVoteNotification;
-import org.xcolab.service.contest.domain.contest.ContestDao;
 import org.xcolab.service.contest.domain.contestphase.ContestPhaseDao;
 import org.xcolab.service.contest.domain.contestphasetype.ContestPhaseTypeDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
@@ -51,7 +50,7 @@ public class ContestPhaseService {
     private ContestPhaseDao contestPhaseDao;
 
     @Autowired
-    private ContestDao contestDao;
+    private ProposalPhaseClient proposalPhaseClient;
 
     @Autowired
     private ContestClient contestClient;
@@ -141,7 +140,7 @@ public class ContestPhaseService {
 
             // Decide about the promotion
             if (phasePromotionHelper.didJudgeDecideToPromote(p)) {
-                ProposalPhaseClientUtil.promoteProposal(p.getId(), nextPhase.getId(), phase.getId());
+                proposalPhaseClient.promoteProposal(p.getId(), nextPhase.getId(), phase.getId());
             }
 
             // Enable this line to post promotion comment to Evaluation tab comment section

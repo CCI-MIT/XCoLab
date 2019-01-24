@@ -12,7 +12,7 @@ import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.ProposalClient;
 import org.xcolab.client.contest.proposals.ProposalMoveClient;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
-import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.contest.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
@@ -54,7 +54,7 @@ public final class ProposalMoveUtil {
                     proposalMoveClient.createProposalMoveHistory(proposal.getId(),
                             fromContest.getId(), targetContest.getId(), targetPhase.getId(),
                             userId);
-                    for (IProposal2Phase p2p : ProposalPhaseClientUtil
+                    for (IProposal2Phase p2p : StaticProposalContext.getProposalPhaseClient()
                             .getProposal2PhaseByProposalId(proposal.getId())) {
                         if (StaticContestContext.getContestClient()
                                 .getContestPhase(p2p.getContestPhaseId()).getContestId()
@@ -84,7 +84,7 @@ public final class ProposalMoveUtil {
                     proposalMoveClient.createCopyProposalMoveHistory(proposal.getId(),
                             fromContest.getId(), targetContest.getId(), targetPhase.getId(),
                             userId);
-                    for (IProposal2Phase p2p : ProposalPhaseClientUtil
+                    for (IProposal2Phase p2p : StaticProposalContext.getProposalPhaseClient()
                             .getProposal2PhaseByProposalId(proposal.getId())) {
                         if (p2p.getVersionTo() < 0) {
                             p2p.setVersionTo(proposal.getCurrentVersion());
@@ -108,9 +108,8 @@ public final class ProposalMoveUtil {
             p2p.setVersionTo(-1);
 
             proposalPhaseClient.createProposal2Phase(p2p);
-            ProposalPhaseClientUtil
-                    .setProposalContestPhaseAttribute(proposal.getId(), contestPhase
-                                    .getId(),
+            StaticProposalContext.getProposalPhaseClient()
+                    .setProposalContestPhaseAttribute(proposal.getId(), contestPhase.getId(),
                             ProposalContestPhaseAttributeKeys.VISIBLE, 0L, 1L, "");
             ServiceRequestUtils.clearCache(CacheName.PROPOSAL_LIST_CLOSED);
             ServiceRequestUtils.clearCache(CacheName.PROPOSAL_PHASE);

@@ -7,7 +7,7 @@ import org.xcolab.client.contest.pojo.IContestPhaseType;
 import org.xcolab.client.contest.pojo.IProposal2Phase;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
-import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.util.enums.contest.ContestPhaseTypeValue;
 
 import java.io.Serializable;
@@ -62,7 +62,8 @@ public class ContestPhaseBean implements Serializable {
             for (ContestPhaseWrapper contestPhase1 : contestPhases) {
                 if (Objects
                         .equals(contestPhase1.getContestPhaseTypeId(), this.contestPhaseTypeId)) {
-                    List<IProposal2Phase> proposal2PhaseList = ProposalPhaseClientUtil.
+                    List<IProposal2Phase> proposal2PhaseList = StaticProposalContext
+                            .getProposalPhaseClient().
                             getProposal2PhaseByContestPhaseId(contestPhase1.getId());
                     if (!proposal2PhaseList.isEmpty()) {
                         this.contestPhaseHasProposalAssociations = true;

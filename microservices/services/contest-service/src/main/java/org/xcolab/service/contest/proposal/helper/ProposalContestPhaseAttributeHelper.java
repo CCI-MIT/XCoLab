@@ -4,7 +4,7 @@ import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
 import org.xcolab.client.contest.pojo.tables.pojos.ProposalContestPhaseAttribute;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ public class ProposalContestPhaseAttributeHelper {
         this.proposalId = proposal.getId();
         if (contestPhase != null) {
             this.contestPhaseId = contestPhase.getId();
-                proposalContestPhaseAttributes = ProposalPhaseClientUtil
+                proposalContestPhaseAttributes = StaticProposalContext.getProposalPhaseClient()
                         .getAllProposalContestPhaseProposalAttributes(contestPhaseId, proposalId);
         }
     }
@@ -44,18 +44,19 @@ public class ProposalContestPhaseAttributeHelper {
         return null;
     }
 
-    public IProposalContestPhaseAttribute getAttributeOrCreate(
-            String attributeName, long additionalId) {
+    public IProposalContestPhaseAttribute getAttributeOrCreate(String attributeName,
+            long additionalId) {
         IProposalContestPhaseAttribute attribute = getAttributeOrNull(attributeName, additionalId);
         if (attribute != null) {
-                return attribute;
-            }
+            return attribute;
+        }
 
-            attribute = new ProposalContestPhaseAttribute();
-            attribute.setProposalId(proposalId);
-            attribute.setContestPhaseId(contestPhaseId);
-            attribute.setName(attributeName);
-            ProposalPhaseClientUtil.createProposalContestPhaseAttribute(attribute);
+        attribute = new ProposalContestPhaseAttribute();
+        attribute.setProposalId(proposalId);
+        attribute.setContestPhaseId(contestPhaseId);
+        attribute.setName(attributeName);
+        StaticProposalContext.getProposalPhaseClient()
+                .createProposalContestPhaseAttribute(attribute);
 
         return attribute;
     }

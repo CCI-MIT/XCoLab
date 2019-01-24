@@ -113,11 +113,6 @@ public class ProposalsController {
         throw new NotFoundException();
     }
 
-    @GetMapping("/proposals/{proposalId}/phaseIds")
-    public List<Long> getContestPhasesForProposal(@PathVariable long proposalId) {
-        return proposal2PhaseService.getContestPhasesForProposal(proposalId);
-    }
-
     @GetMapping("/proposals/{proposalId}/contestIntegrationRelevantSubproposal")
     public List<ProposalWrapper> listProposals(@PathVariable long proposalId) {
         return proposalService.getContestIntegrationRelevantSubproposals(proposalId);

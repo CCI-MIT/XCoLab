@@ -14,7 +14,6 @@ import org.xcolab.client.contest.pojo.wrapper.ProposalVersionWrapper;
 import org.xcolab.client.contest.proposals.ProposalClient;
 import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
-import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 
@@ -35,13 +34,16 @@ public class ProposalVersionsJsonController {
     @Autowired
     private ContestClient contestClient;
 
+    @Autowired
+    private ProposalPhaseClient proposalPhaseClient;
+
     @GetMapping("/api/phases/{phaseId}/proposals/{proposalId}/versionsFirstIndex")
     public void getProposalVersionFirstIndex(HttpServletRequest request, HttpServletResponse response,
             @PathVariable("phaseId") long contestPhaseId, @PathVariable("proposalId") long proposalId)
             throws IOException {
         IProposal2Phase p2p = null;
         if (contestPhaseId > 0) {
-            p2p = ProposalPhaseClientUtil
+            p2p = proposalPhaseClient
                     .getProposal2PhaseByProposalIdContestPhaseId(proposalId, contestPhaseId);
         }
 

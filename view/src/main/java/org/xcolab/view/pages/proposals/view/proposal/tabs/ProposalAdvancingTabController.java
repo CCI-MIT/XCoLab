@@ -18,7 +18,6 @@ import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.pojo.wrapper.UserProposalRatings;
 import org.xcolab.client.contest.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
-import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.servlet.flash.AlertMessage;
@@ -92,15 +91,13 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
         }
 
         List<ProposalRatings> judgeRatings = wrapProposalRatings(judgesRatingsUnWrapped);
-        boolean isFrozen = ProposalPhaseClientUtil.isProposalContestPhaseAttributeSetAndTrue(
-                proposal.getId(),
-                contestPhase.getId(),
+        boolean isFrozen = proposalPhaseClient.isProposalContestPhaseAttributeSetAndTrue(
+                proposal.getId(), contestPhase.getId(),
                 ProposalContestPhaseAttributeKeys.FELLOW_ADVANCEMENT_FROZEN
         );
         boolean hasAlreadyBeenPromoted =
-                ProposalPhaseClientUtil.isProposalContestPhaseAttributeSetAndTrue(
-                        proposal.getId(),
-                        contestPhase.getId(),
+                proposalPhaseClient.isProposalContestPhaseAttributeSetAndTrue(
+                        proposal.getId(), contestPhase.getId(),
                         ProposalContestPhaseAttributeKeys.PROMOTE_DONE
                 );
 
@@ -197,7 +194,7 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
 
     private IProposalContestPhaseAttribute setIsFrozen(long proposalId, ContestPhaseWrapper contestPhase,
             boolean isFrozen) {
-        return ProposalPhaseClientUtil.setProposalContestPhaseAttribute(proposalId,
+        return proposalPhaseClient.setProposalContestPhaseAttribute(proposalId,
                 contestPhase.getId(),
                 ProposalContestPhaseAttributeKeys.FELLOW_ADVANCEMENT_FROZEN, 0L, null,
                 String.valueOf(isFrozen));

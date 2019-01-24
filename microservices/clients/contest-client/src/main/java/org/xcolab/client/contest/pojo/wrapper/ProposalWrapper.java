@@ -32,7 +32,6 @@ import org.xcolab.client.contest.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.contest.proposals.ProposalMemberRatingClient;
 import org.xcolab.client.contest.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
-import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.contest.proposals.enums.ProposalUnversionedAttributeName;
@@ -1024,7 +1023,7 @@ public class ProposalWrapper extends Proposal implements Serializable {
             contest = StaticContestContext.getContestClient();
             proposal = ProposalClientUtil.getClient();
             proposalAttribute = StaticProposalContext.getProposalAttributeClient();
-            proposalPhase = ProposalPhaseClientUtil.getClient();
+            proposalPhase = StaticProposalContext.getProposalPhaseClient();
             contestTeamMember = StaticContestContext.getContestTeamMemberClient();
             proposalMemberRating = ProposalMemberRatingClientUtil.getClient();
             membership = MembershipClientUtil.getClient();
