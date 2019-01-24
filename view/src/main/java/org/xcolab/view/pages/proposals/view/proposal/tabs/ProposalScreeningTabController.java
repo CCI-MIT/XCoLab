@@ -11,7 +11,6 @@ import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.entity.utils.helper.ProposalJudgingCommentHelper;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
@@ -128,10 +127,8 @@ public class ProposalScreeningTabController extends BaseProposalTabController {
         // save fellow comment and rating
         //find existing ratings
         List<ProposalRatingWrapper> existingRatings =
-                ProposalJudgeRatingClientUtil.getFellowRatingForProposalAndUser(
-                        currentMember.getId(),
-                        proposalId,
-                        contestPhaseId);
+                proposalJudgeRatingClient.getFellowRatingForProposalAndUser(currentMember.getId(),
+                        proposalId, contestPhaseId);
 
         JudgingUtil.saveRatings(existingRatings, fellowProposalScreeningBean, proposalId,
                 contestPhaseId, currentMember.getId(), false);

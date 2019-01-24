@@ -2,8 +2,8 @@ package org.xcolab.view.pages.proposals.judging;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.xcolab.client.contest.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.view.pages.proposals.requests.RatingBean;
 
@@ -45,7 +45,8 @@ public class JudgingUtil {
                         existingRating.setOtherDataString("");
                         existingRating.setCommentEnabled(false);
                     }
-                    ProposalJudgeRatingClientUtil.updateProposalRating(existingRating);
+                    StaticProposalContext.getProposalJudgeRatingClient()
+                            .updateProposalRating(existingRating);
                 } else {
                     String comment = null;
                     String shouldAdvanceString = "";
@@ -69,7 +70,8 @@ public class JudgingUtil {
                     }
                     proposalRating.setOnlyForInternalUsage(isPublicRating);
 
-                    ProposalJudgeRatingClientUtil.createProposalRating(proposalRating);
+                    StaticProposalContext.getProposalJudgeRatingClient()
+                            .createProposalRating(proposalRating);
                 }
             }
         }

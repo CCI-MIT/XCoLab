@@ -11,7 +11,7 @@ import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.IProposalClient;
-import org.xcolab.client.contest.proposals.ProposalMemberRatingClientUtil;
+import org.xcolab.client.contest.proposals.IProposalMemberRatingClient;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.members.MembersClient;
@@ -58,6 +58,9 @@ public class ContestPhaseService {
     @Autowired
     private IProposalClient proposalClient;
 
+    @Autowired
+    private IProposalMemberRatingClient proposalMemberRatingClient;
+
     public ContestStatus getContestStatus(ContestPhaseWrapper contestPhase) {
         String status = contestPhaseTypeDao.get(contestPhase.getContestPhaseTypeId()).get().getStatus();
         return status == null ? null : ContestStatus.valueOf(status);
@@ -97,7 +100,7 @@ public class ContestPhaseService {
                     .filter(p -> proposalIdsInPhase.contains(p.getId()))
                     .collect(Collectors.toList());
 
-            final Boolean hasVoted = ProposalMemberRatingClientUtil
+            final Boolean hasVoted = proposalMemberRatingClient
                     .hasUserVoted(votingPhase.getId(), user.getId());
 
             if (hasVoted || supportedProposalsInPhase.isEmpty()) {
@@ -108,7 +111,7 @@ public class ContestPhaseService {
             ContestWrapper contestPojo = contestClient.getContest(contest.getId());
             if (supportedProposalsInPhase.size() == 1) {
                 final ProposalWrapper proposal = supportedProposalsInPhase.get(0);
-                ProposalMemberRatingClientUtil.addProposalVote(proposal.getId(),
+                proposalMemberRatingClient.addProposalVote(proposal.getId(),
                         votingPhase.getId(), user.getId(), 1);
 
                 new ContestVoteNotification(user, contestPojo, proposal, COLAB_URL).sendMessage();
@@ -124,7 +127,7 @@ public class ContestPhaseService {
                 .getProposalsInContest(contest.getId());
 
         return new GroupingHelper<>(proposalsInContest).groupWithDuplicateKeysAndValues(
-                proposal -> ProposalMemberRatingClientUtil
+                proposal -> proposalMemberRatingClient
                         .getProposalSupporters(proposal.getId()).stream()
                         .map(supporter -> MembersClient.getMemberUnchecked(supporter.getUserId()))
                         .collect(Collectors.toSet()));

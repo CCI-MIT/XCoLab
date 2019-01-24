@@ -17,7 +17,7 @@ import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.contest.proposals.ProposalMemberRatingClient;
+import org.xcolab.client.contest.proposals.IProposalMemberRatingClient;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.pojo.IProposalVote;
 import org.xcolab.commons.servlet.flash.AlertMessage;
@@ -65,7 +65,7 @@ public class VoteOnProposalActionController {
                 .get();
 
         final ClientHelper clients = proposalContext.getClients();
-        final ProposalMemberRatingClient proposalMemberRatingClient =
+        final IProposalMemberRatingClient proposalMemberRatingClient =
                 clients.getProposalMemberRatingClient();
 
         final ProposalWrapper proposal = proposalContext.getProposal();
@@ -195,7 +195,7 @@ public class VoteOnProposalActionController {
         boolean success = false;
         final ClientHelper clients = proposalContext.getClients();
         ProposalWrapper proposal = proposalContext.getProposal();
-        final ProposalMemberRatingClient proposalMemberRatingClient =
+        final IProposalMemberRatingClient proposalMemberRatingClient =
                 clients.getProposalMemberRatingClient();
 
         IProposalVote vote = proposalMemberRatingClient.getProposalVoteByProposalIdUserId(

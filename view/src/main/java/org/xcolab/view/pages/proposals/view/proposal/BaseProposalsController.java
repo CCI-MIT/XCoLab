@@ -10,6 +10,7 @@ import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ImpactClient;
 import org.xcolab.client.contest.OntologyClient;
 import org.xcolab.client.contest.proposals.IProposalClient;
+import org.xcolab.client.contest.proposals.IProposalJudgeRatingClient;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.util.MetaKeys;
@@ -33,6 +34,9 @@ public class BaseProposalsController {
 
     @Autowired
     protected IProposalClient proposalClient;
+
+    @Autowired
+    protected IProposalJudgeRatingClient proposalJudgeRatingClient;
 
     public BaseProposalsController() {
         super();

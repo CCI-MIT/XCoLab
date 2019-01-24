@@ -16,7 +16,7 @@ import org.xcolab.client.admin.IAdminClient;
 import org.xcolab.client.admin.pojo.INotification;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
-import org.xcolab.client.contest.proposals.ProposalMemberRatingClientUtil;
+import org.xcolab.client.contest.proposals.IProposalMemberRatingClient;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
@@ -72,6 +72,9 @@ public class AdminTabController extends AbstractTabController {
 
     @Autowired
     private IAdminClient adminClient;
+
+    @Autowired
+    private IProposalMemberRatingClient proposalMemberRatingClient;
 
     private static final Logger log = LoggerFactory.getLogger(AdminTabController.class);
 
@@ -169,7 +172,7 @@ public class AdminTabController extends AbstractTabController {
 
         try (VoteCsvWriter csvWriter = new VoteCsvWriter(response, trackingClient)) {
             votingReportBean.getVotingPhaseIds().stream()
-                    .map(ProposalMemberRatingClientUtil::getProposalVotesInPhase)
+                    .map(proposalMemberRatingClient::getProposalVotesInPhase)
                     .forEach(csvWriter::writeVotes);
         }
     }

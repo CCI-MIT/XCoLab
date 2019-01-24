@@ -1,14 +1,14 @@
 package org.xcolab.view.pages.proposals.wrappers;
 
-import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
-import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.contest.proposals.ProposalJudgeRatingClientUtil;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper;
 import org.xcolab.client.contest.pojo.IProposal2Phase;
 import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.pojo.wrapper.UserProposalRatings;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
 
@@ -33,14 +33,11 @@ public class ProposalJudgeWrapper extends ProposalWrapper {
     private void setProposalRatings(long proposalId, ContestPhaseWrapper contestPhase) {
 
         if(contestPhase!=null) {
-            List<ProposalRatingWrapper> list = ProposalJudgeRatingClientUtil
-                    .getJudgeRatingsForProposalAndUser(
-                            currentMember.getId(),
-                            proposalId,
+            List<ProposalRatingWrapper> list = StaticProposalContext.getProposalJudgeRatingClient()
+                    .getJudgeRatingsForProposalAndUser(currentMember.getId(), proposalId,
                             contestPhase.getId());
             this.proposalRatings = new UserProposalRatings(currentMember, list);
         }
-
     }
 
     public JudgingSystemActions.JudgeReviewStatus getJudgeReviewStatus() {

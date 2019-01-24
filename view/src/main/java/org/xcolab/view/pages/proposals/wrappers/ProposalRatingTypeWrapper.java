@@ -1,8 +1,8 @@
 package org.xcolab.view.pages.proposals.wrappers;
 
-import org.xcolab.client.contest.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.contest.pojo.IProposalRatingType;
 import org.xcolab.client.contest.pojo.IProposalRatingValue;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 
 import java.io.Serializable;
 import java.util.List;
@@ -16,7 +16,7 @@ public class ProposalRatingTypeWrapper implements Serializable {
     }
 
     public List<IProposalRatingValue> getRatingValues() {
-        return ProposalJudgeRatingClientUtil
+        return StaticProposalContext.getProposalJudgeRatingClient()
                 .getProposalRatingValuesByProposalRatingTypeId(this.proposalRatingType.getId());
     }
 

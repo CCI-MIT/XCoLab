@@ -16,7 +16,6 @@ import org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalRatings;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.pojo.wrapper.UserProposalRatings;
-import org.xcolab.client.contest.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
@@ -75,12 +74,12 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
         model.addAttribute("isFinalistPhase", isFinalistPhase);
 
         List<ProposalRatingWrapper> fellowRatingsUnWrapped =
-                ProposalJudgeRatingClientUtil.getFellowRatingsForProposal(
+                proposalJudgeRatingClient.getFellowRatingsForProposal(
                         proposal.getId(), contestPhase.getId());
         List<ProposalRatings> fellowRatings = wrapProposalRatings(fellowRatingsUnWrapped);
 
         List<ProposalRatingWrapper> judgesRatingsUnWrapped =
-                ProposalJudgeRatingClientUtil.getJudgeRatingsForProposal(
+                proposalJudgeRatingClient.getJudgeRatingsForProposal(
                         proposal.getId(), contestPhase.getId());
 
         for (Iterator i = judgesRatingsUnWrapped.iterator(); i.hasNext(); ) {
@@ -255,10 +254,8 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
 
         //find existing ratings
         List<ProposalRatingWrapper> existingRatings =
-                ProposalJudgeRatingClientUtil.getJudgeRatingsForProposalAndUser(
-                        member.getId(),
-                        proposal.getId(),
-                        contestPhase.getId());
+                proposalJudgeRatingClient.getJudgeRatingsForProposalAndUser(member.getId(),
+                        proposal.getId(), contestPhase.getId());
 
         JudgingUtil.saveRatings(existingRatings, judgeProposalFeedbackBean, proposal.getId(),
                 contestPhase.getId(), member.getId(), isPublicRating);
@@ -266,5 +263,4 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
         AlertMessage.success("Rating saved successfully.").flash(request);
         return "redirect:" + redirectUrl;
     }
-
 }

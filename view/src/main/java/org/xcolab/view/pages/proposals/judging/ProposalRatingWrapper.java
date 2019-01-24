@@ -1,11 +1,11 @@
 package org.xcolab.view.pages.proposals.judging;
 
+import org.xcolab.client.contest.pojo.IProposalRatingType;
+import org.xcolab.client.contest.pojo.IProposalRatingValue;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.contest.proposals.ProposalJudgeRatingClientUtil;
-import org.xcolab.client.contest.pojo.IProposalRatingType;
-import org.xcolab.client.contest.pojo.IProposalRatingValue;
 
 public class ProposalRatingWrapper {
     private org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper proposalRating;
@@ -47,14 +47,16 @@ public class ProposalRatingWrapper {
     public IProposalRatingType getRatingType()  {
         IProposalRatingValue ratingValue = this.getRatingValue();
             if (ratingValue != null) {
-                return ProposalJudgeRatingClientUtil.getProposalRatingType(ratingValue.getRatingTypeId());
+                return StaticProposalContext.getProposalJudgeRatingClient()
+                        .getProposalRatingType(ratingValue.getRatingTypeId());
             }
 
         return null;
     }
 
     public IProposalRatingValue getRatingValue()  {
-        return ProposalJudgeRatingClientUtil.getProposalRatingValue(this.proposalRating.getRatingValueId());
+        return StaticProposalContext.getProposalJudgeRatingClient()
+                .getProposalRatingValue(this.proposalRating.getRatingValueId());
     }
 
     public Member getUser()  {

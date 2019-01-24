@@ -1,9 +1,9 @@
 package org.xcolab.view.pages.proposals.wrappers;
 
 
-import org.xcolab.client.contest.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.contest.pojo.IProposalRatingType;
 import org.xcolab.client.contest.pojo.IProposalRatingValue;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 
 import java.text.DecimalFormat;
 
@@ -71,7 +71,8 @@ public class ProposalRatingWrapper {
         IProposalRatingValue ratingValue = this.getRatingValue();
         if (ratingValue != null) {
             if (ratingType == null)
-                ratingType = ProposalJudgeRatingClientUtil.getProposalRatingType(ratingValue.getRatingTypeId());
+                ratingType = StaticProposalContext.getProposalJudgeRatingClient()
+                        .getProposalRatingType(ratingValue.getRatingTypeId());
             return ratingType;
         }
 
@@ -83,7 +84,7 @@ public class ProposalRatingWrapper {
             if (roundFactor == null) {
                 roundFactor = 1L;
             }
-        ratingValue = ProposalJudgeRatingClientUtil
+        ratingValue = StaticProposalContext.getProposalJudgeRatingClient()
                 .getProposalRatingValue(this.proposalRating.getRatingValueId() / roundFactor);
         return ratingValue;
     }

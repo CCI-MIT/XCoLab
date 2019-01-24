@@ -18,7 +18,6 @@ import org.xcolab.client.contest.pojo.IContestPhaseType;
 import org.xcolab.client.contest.pojo.IContestTeamMember;
 import org.xcolab.client.contest.pojo.IContestTeamMemberRole;
 import org.xcolab.client.contest.pojo.tables.pojos.Contest;
-import org.xcolab.client.contest.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.contest.util.ContestScheduleChangeHelper;
 import org.xcolab.client.members.MembersClient;
@@ -431,7 +430,7 @@ public class ContestWrapper extends Contest {
     public long getVotesCount() {
         ContestPhaseWrapper phase = contestClient.getActivePhase(this.getId());
 
-        return ProposalMemberRatingClientUtil.getClient()
+        return StaticProposalContext.getProposalMemberRatingClient()
                 .countProposalVotesInContestPhase(phase.getId());
     }
 

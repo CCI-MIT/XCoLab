@@ -7,7 +7,7 @@ import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.pojo.wrapper.UserProposalRatings;
-import org.xcolab.client.contest.proposals.ProposalJudgeRatingClientUtil;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
@@ -25,7 +25,8 @@ public class ProposalFellowWrapper extends ProposalWrapper {
             ContestPhaseWrapper contestPhase = StaticContestContext.getContestClient()
                     .getActivePhase(baseContest.getId());
 
-            List<ProposalRatingWrapper> list = ProposalJudgeRatingClientUtil.getFellowRatingForProposalAndUser(
+            List<ProposalRatingWrapper> list = StaticProposalContext.getProposalJudgeRatingClient()
+                    .getFellowRatingForProposalAndUser(
                     currentMember.getId(),
                     proposal.getId(),
                     contestPhase.getId());

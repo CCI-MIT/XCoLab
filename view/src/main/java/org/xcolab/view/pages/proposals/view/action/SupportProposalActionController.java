@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.contest.proposals.ProposalMemberRatingClient;
+import org.xcolab.client.contest.proposals.IProposalMemberRatingClient;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.util.http.ServiceRequestUtils;
@@ -47,7 +47,7 @@ public class SupportProposalActionController {
         }
         long userId = currentMember.getId();
         long proposalId = proposalContext.getProposal().getId();
-        ProposalMemberRatingClient proposalMemberRatingClient =
+        IProposalMemberRatingClient proposalMemberRatingClient =
                 proposalContext.getClients().getProposalMemberRatingClient();
         if (proposalMemberRatingClient.isMemberProposalSupporter(proposalId, userId)) {
             proposalMemberRatingClient.deleteProposalSupporter(proposalId, userId);

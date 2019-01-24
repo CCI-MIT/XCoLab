@@ -17,7 +17,7 @@ import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalJudgeRatingClientUtil;
+import org.xcolab.client.contest.proposals.IProposalJudgeRatingClient;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.members.pojo.Member;
@@ -51,6 +51,9 @@ public class JudgingCsvController {
 
     @Autowired
     private ContestTeamMemberClient contestTeamMemberClient;
+
+    @Autowired
+    private IProposalJudgeRatingClient proposalJudgeRatingClient;
 
     @GetMapping({"phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/ADVANCING/getJudgingCsv",
             "c/{proposalUrlString}/{proposalId}/tab/ADVANCING/getJudgingCsv"})
@@ -126,7 +129,7 @@ public class JudgingCsvController {
                     proposalReview.setReviewers(ImmutableSet
                             .copyOf(getProposalReviewingJudges(proposal, judgingPhase,
                                     proposalContext)));
-                    List<ProposalRatingWrapper> ratings = ProposalJudgeRatingClientUtil
+                    List<ProposalRatingWrapper> ratings = proposalJudgeRatingClient
                             .getJudgeRatingsForProposal(proposal.getId(),
                                     judgingPhase.getId());
                     Map<IProposalRatingType, List<Long>> ratingsPerType = new HashMap<>();

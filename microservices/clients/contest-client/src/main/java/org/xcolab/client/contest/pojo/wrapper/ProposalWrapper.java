@@ -22,14 +22,12 @@ import org.xcolab.client.contest.pojo.IProposal2Phase;
 import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
 import org.xcolab.client.contest.pojo.IProposalTemplate;
 import org.xcolab.client.contest.pojo.tables.pojos.Proposal;
+import org.xcolab.client.contest.proposals.IProposalClient;
+import org.xcolab.client.contest.proposals.IProposalMemberRatingClient;
 import org.xcolab.client.contest.proposals.MembershipClient;
 import org.xcolab.client.contest.proposals.MembershipClientUtil;
 import org.xcolab.client.contest.proposals.ProposalAttributeClient;
-import org.xcolab.client.contest.proposals.IProposalClient;
-import org.xcolab.client.contest.proposals.ProposalJudgeRatingClient;
-import org.xcolab.client.contest.proposals.ProposalJudgeRatingClientUtil;
-import org.xcolab.client.contest.proposals.ProposalMemberRatingClient;
-import org.xcolab.client.contest.proposals.ProposalMemberRatingClientUtil;
+import org.xcolab.client.contest.proposals.IProposalJudgeRatingClient;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
@@ -299,7 +297,7 @@ public class ProposalWrapper extends Proposal implements Serializable {
 
     @JsonIgnore
     public long getSupportersCountCached() {
-        return clients.proposalMemberRating.getProposalSupportersCountCached(this.getId());
+        return clients.proposalMemberRating.getProposalSupportersCount(this.getId());
     }
 
     @JsonIgnore
@@ -640,8 +638,8 @@ public class ProposalWrapper extends Proposal implements Serializable {
         if (this.getId() > 0) {
 
             long votingPhasePK = contest.getVotingPhasePK();
-            return clients.proposalMemberRating.countProposalVotesInContestPhaseProposalId(
-                    votingPhasePK, this.getId(), cacheName);
+            return clients.proposalMemberRating.countVotesByUserInPhase(
+                    votingPhasePK, this.getId());
         }
         return 0;
     }
@@ -928,7 +926,8 @@ public class ProposalWrapper extends Proposal implements Serializable {
 
         if (!getSelectedJudges().isEmpty()) {
             for (long userId : getSelectedJudges()) {
-                List<ProposalRatingWrapper> proposalRatings = ProposalJudgeRatingClientUtil
+                List<ProposalRatingWrapper> proposalRatings = StaticProposalContext
+                        .getProposalJudgeRatingClient()
                         .getProposalRatingsByProposalUserContestPhase(this.getId(),
                                 contestPhase.getId(),userId);
                 ProposalRatings wrapper = new UserProposalRatings(userId, proposalRatings);
@@ -942,7 +941,8 @@ public class ProposalWrapper extends Proposal implements Serializable {
 
     @JsonIgnore
     public boolean getIsReviewFinishedForJudge(long judgeId) {
-        List<ProposalRatingWrapper> proposalRatings = ProposalJudgeRatingClientUtil
+        List<ProposalRatingWrapper> proposalRatings = StaticProposalContext
+                .getProposalJudgeRatingClient()
                 .getProposalRatingsByProposalUserContestPhase(
                         getId(), contestPhase.getId(), judgeId);
         ProposalRatings wrapper = new UserProposalRatings(judgeId, proposalRatings);
@@ -1010,8 +1010,8 @@ public class ProposalWrapper extends Proposal implements Serializable {
         final ContestClient contest;
         final IProposalClient proposal;
 
-        final ProposalMemberRatingClient proposalMemberRating;
-        final ProposalJudgeRatingClient proposalJudgeRating;
+        final IProposalMemberRatingClient proposalMemberRating;
+        final IProposalJudgeRatingClient proposalJudgeRating;
 
         final MembershipClient membership;
 
@@ -1026,10 +1026,10 @@ public class ProposalWrapper extends Proposal implements Serializable {
             proposalAttribute = StaticProposalContext.getProposalAttributeClient();
             proposalPhase = StaticProposalContext.getProposalPhaseClient();
             contestTeamMember = StaticContestContext.getContestTeamMemberClient();
-            proposalMemberRating = ProposalMemberRatingClientUtil.getClient();
+            proposalMemberRating = StaticProposalContext.getProposalMemberRatingClient();
             membership = MembershipClientUtil.getClient();
             proposalTemplate = StaticContestContext.getProposalTemplateClient();
-            proposalJudgeRating = ProposalJudgeRatingClientUtil.getClient();
+            proposalJudgeRating = StaticProposalContext.getProposalJudgeRatingClient();
         }
     }
 

@@ -10,7 +10,7 @@ import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.IProposalClient;
-import org.xcolab.client.contest.proposals.ProposalMemberRatingClientUtil;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.commons.IdListUtil;
 import org.xcolab.util.activities.enums.ActivityCategory;
@@ -105,12 +105,11 @@ public class ProposalPickerFilterUtil {
         List<ProposalWrapper> proposals = new ArrayList<>();
         final ClientHelper clients = proposalContext.getClients();
         final IProposalClient proposalClient = clients.getProposalClient();
-        for (IProposalSupporter ps : ProposalMemberRatingClientUtil
+        for (IProposalSupporter ps : StaticProposalContext.getProposalMemberRatingClient()
                 .getProposalSupportersByUserId(userId)) {
             try {
                 proposals.add(proposalClient.getProposal(ps.getProposalId()));
             } catch (ProposalNotFoundException ignored) {
-
             }
         }
 

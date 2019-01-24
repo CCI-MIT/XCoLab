@@ -9,7 +9,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.xcolab.client.contest.pojo.IProposalRatingType;
 import org.xcolab.client.contest.pojo.IProposalRatingValue;
 import org.xcolab.client.contest.pojo.tables.pojos.ProposalRating;
-import org.xcolab.client.contest.proposals.ProposalJudgeRatingClientUtil;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.io.Serializable;
@@ -104,7 +104,8 @@ public class ProposalRatingWrapper extends ProposalRating implements Serializabl
         IProposalRatingValue ratingValue = this.getRatingValue();
         if (ratingValue != null) {
             if (ratingType == null)
-                ratingType = ProposalJudgeRatingClientUtil.getProposalRatingType(ratingValue.getRatingTypeId());
+                ratingType = StaticProposalContext.getProposalJudgeRatingClient()
+                        .getProposalRatingType(ratingValue.getRatingTypeId());
             return ratingType;
         }
 
@@ -116,7 +117,7 @@ public class ProposalRatingWrapper extends ProposalRating implements Serializabl
             if (roundFactor == null) {
                 roundFactor = 1L;
             }
-        ratingValue = ProposalJudgeRatingClientUtil
+        ratingValue = StaticProposalContext.getProposalJudgeRatingClient()
                 .getProposalRatingValue(this.getRatingValueId() / roundFactor);
         return ratingValue;
     }

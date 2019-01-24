@@ -9,7 +9,6 @@ import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.pojo.wrapper.ContestTypeProposal;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.pojo.wrapper.SupportedProposal;
-import org.xcolab.client.contest.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
@@ -103,7 +102,8 @@ public class UserProfileWrapper implements Serializable {
 
         userSubscriptions = new UserSubscriptionsWrapper(member);
         userActivities.clear();
-        supportedProposals.addAll(ProposalMemberRatingClientUtil.getSupportedProposals(member.getId()));
+        supportedProposals.addAll(StaticProposalContext.getProposalMemberRatingClient()
+                .getSupportedProposals(member.getId()));
 
         for (ActivityEntry activity : ActivityUtil.groupActivities(ActivitiesClientUtil
                 .getActivityEntries(0, MAX_ACTIVITIES_COUNT, member.getId(), null))) {

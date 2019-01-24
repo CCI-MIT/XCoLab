@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import org.xcolab.client.contest.pojo.IProposalSupporter;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.wrapper.SupportedProposal;
 import org.xcolab.commons.GroupingHelper;
 import org.xcolab.service.contest.proposal.domain.proposal.ProposalDao;
 import org.xcolab.service.contest.proposal.domain.proposalsupporter.ProposalSupporterDao;
@@ -39,23 +40,5 @@ public class ProposalSupportService {
                 .stream().map(proposal -> new SupportedProposal(proposal,
                         supportsByProposalId.get(proposal.getId())))
                 .collect(Collectors.toList());
-    }
-
-    public static class SupportedProposal extends ProposalWrapper {
-
-        private final IProposalSupporter proposalSupporter;
-
-        public SupportedProposal(ProposalWrapper proposal, IProposalSupporter proposalSupporter) {
-            super(proposal);
-            this.proposalSupporter = proposalSupporter;
-        }
-
-        public Timestamp getSupportDate() {
-            return proposalSupporter.getCreatedAt();
-        }
-
-        public Long getSupporterUserId() {
-            return proposalSupporter.getUserId();
-        }
     }
 }

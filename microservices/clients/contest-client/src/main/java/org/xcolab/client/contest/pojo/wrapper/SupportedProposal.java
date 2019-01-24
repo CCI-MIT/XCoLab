@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 
+import org.xcolab.client.contest.pojo.IProposalSupporter;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.io.Serializable;
@@ -34,6 +35,12 @@ public class SupportedProposal extends ProposalWrapper implements Serializable {
         super(value);
         this.supportDate = value.getSupportDate();
         this.supporterUserId = value.getSupporterUserId();
+    }
+
+    public SupportedProposal(ProposalWrapper proposal, IProposalSupporter proposalSupporter) {
+        super(proposal);
+        setSupportDate(proposalSupporter.getCreatedAt());
+        setSupporterUserId(proposalSupporter.getUserId());
     }
 
     public Long getSupporterUserId() {
