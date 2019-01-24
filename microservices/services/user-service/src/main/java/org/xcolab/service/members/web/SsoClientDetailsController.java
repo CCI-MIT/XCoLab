@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.model.tables.pojos.SsoClientDetails;
+import org.xcolab.client.user.pojo.ISsoClientDetails;
 import org.xcolab.service.members.domain.ssoclientdetails.SsoClientDetailsDao;
 
 @RestController
@@ -17,7 +17,7 @@ public class SsoClientDetailsController {
     }
 
     @GetMapping("/ssoClientDetails/{clientId}")
-    public SsoClientDetails get(@PathVariable String clientId) {
+    public ISsoClientDetails get(@PathVariable String clientId) {
         return ssoClientDetailsDao.get(clientId);
     }
 }

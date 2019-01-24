@@ -15,10 +15,10 @@ import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
-import org.xcolab.client.user.MembersClient;
-import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.user.IUserClient;
+import org.xcolab.client.user.pojo.IUser;
 import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.pojos.Proposal2Phase;
 import org.xcolab.model.tables.pojos.ProposalAttribute;
@@ -55,11 +55,14 @@ public class ProposalService {
 
     private final IThreadClient threadClient;
 
+    private final IUserClient userClient;
+
     @Autowired
     public ProposalService(ProposalDao proposalDao, ProposalReferenceDao proposalReferenceDao,
             ProposalAttributeDao proposalAttributeDao, Proposal2PhaseDao proposal2PhaseDao,
             ProposalVersionDao proposalVersionDao, ProposalTeamMemberDao proposalTeamMemberDao,
-            IThreadClient threadClient) {
+            IThreadClient threadClient,
+            IUserClient userClient) {
         this.proposalDao = proposalDao;
         this.proposalReferenceDao = proposalReferenceDao;
         this.proposalAttributeDao = proposalAttributeDao;
@@ -67,6 +70,7 @@ public class ProposalService {
         this.proposalVersionDao = proposalVersionDao;
         this.proposalTeamMemberDao = proposalTeamMemberDao;
         this.threadClient = threadClient;
+        this.userClient = userClient;
     }
 
     public Proposal create(long authorUserId, long contestPhaseId, boolean publishActivity) {
@@ -242,10 +246,10 @@ public class ProposalService {
         return contest;
     }
 
-    public List<Member> getProposalMembers(Long proposalId) throws ProposalNotFoundException {
-        final List<Member> members = proposalTeamMemberDao.findByProposalId(proposalId).stream()
+    public List<IUser> getProposalMembers(Long proposalId) throws ProposalNotFoundException {
+        final List<IUser> members = proposalTeamMemberDao.findByProposalId(proposalId).stream()
                 .map(ProposalTeamMember::getUserId)
-                .map(MembersClient::getMemberUnchecked)
+                .map(userClient::getMemberUnchecked)
                 .collect(Collectors.toList());
         if (members.isEmpty()) {
             throw new ProposalNotFoundException("Proposal with id : " + proposalId + " not found");

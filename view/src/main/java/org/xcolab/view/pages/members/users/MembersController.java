@@ -77,7 +77,7 @@ public class MembersController {
             sortFilterPage.setSortAscending(false);
         }
 
-        MembersPermissions membersPermissions = new MembersPermissions(request);
+        MembersPermissions membersPermissions = new MembersPermissions();
         final String emailFilterParam = membersPermissions.getCanAdminAll() ? filterParam : null;
         List<Member> members = MembersClient.listMembers(memberCategoryParam, filterParam,
                 emailFilterParam, sortFilterPage.getSortColumn(), sortFilterPage.isSortAscending(),
@@ -155,7 +155,7 @@ public class MembersController {
             final JSONObject jsonMember = new JSONObject();
             if (member != null) {
                 /*jsonMember.put("userId", member.getId());
-                jsonMember.put("screenName", member.getScreenName());
+                jsonMember.put("screenName", member.getDisplayName());
 
                 jsonMember.put("firstName", member.getFirstName());
                 jsonMember.put("lastName", member.getLastName());*/
@@ -171,7 +171,7 @@ public class MembersController {
     public void downloadMembersList(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
 
-        MembersPermissions membersPermissions = new MembersPermissions(request);
+        MembersPermissions membersPermissions = new MembersPermissions();
 
         if (membersPermissions.getCanDownloadMemberList()) {
             try (MemberListCsvWriter csvWriter = new MemberListCsvWriter(response)) {

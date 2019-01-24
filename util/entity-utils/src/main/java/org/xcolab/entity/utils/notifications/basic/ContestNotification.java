@@ -14,6 +14,7 @@ import org.xcolab.client.admin.pojo.IEmailTemplate;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.user.pojo.IUser;
 import org.xcolab.client.user.pojo.Member;
 
 import java.text.DateFormat;
@@ -31,17 +32,17 @@ public class ContestNotification extends EmailNotification {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormat.forPattern("MMMM dd, HH:mm:ss a z");
     protected final Contest contest;
     protected final String templateName;
-    private final Member recipient;
+    private final IUser recipient;
     private ContestNotificationTemplate templateWrapper;
 
-    public ContestNotification(Contest contest, Member recipient, String templateName) {
+    public ContestNotification(Contest contest, IUser recipient, String templateName) {
         this.contest = contest;
         this.recipient = recipient;
         this.templateName = templateName;
     }
 
     @Override
-    protected Member getRecipient() {
+    protected IUser getRecipient() {
         return recipient;
     }
 

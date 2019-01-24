@@ -3,15 +3,14 @@ package org.xcolab.service.proposal.service.pointsdistributionconfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.user.pojo.IUser;
 import org.xcolab.model.tables.pojos.PointType;
 import org.xcolab.model.tables.pojos.PointsDistributionConfiguration;
-import org.xcolab.service.proposal.domain.pointsdistributionconfiguration
-        .PointsDistributionConfigurationDao;
+import org.xcolab.service.contest.exceptions.NotFoundException;
+import org.xcolab.service.proposal.domain.pointsdistributionconfiguration.PointsDistributionConfigurationDao;
 import org.xcolab.service.proposal.domain.pointtype.PointTypeDao;
 import org.xcolab.service.proposal.enums.ReceiverLimitationStrategy;
-import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.proposal.service.proposal.ProposalService;
 
 import java.sql.Timestamp;
@@ -96,7 +95,7 @@ public class PointsDistributionConfigurationService {
         try {
             Set<Long> userIds = new HashSet<>();
             Set<Long> missinguserIds = new HashSet<>();
-            for (Member user : proposalService.getProposalMembers(proposalId)) {
+            for (IUser user : proposalService.getProposalMembers(proposalId)) {
                 userIds.add(user.getId());
                 missinguserIds.add(user.getId());
             }

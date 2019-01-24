@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.model.tables.pojos.User;
-import org.xcolab.model.tables.pojos.PlatformTeam;
+import org.xcolab.client.user.pojo.IPlatformTeam;
+import org.xcolab.client.user.pojo.IUser;
 import org.xcolab.service.members.domain.platformteam.PlatformTeamDao;
 
 import java.util.List;
@@ -31,7 +31,7 @@ public class PlatformTeamsController {
     }
 
     @GetMapping
-    public List<PlatformTeam> listPlatformTeams(@RequestParam(required = false) Long userId) {
+    public List<IPlatformTeam> listPlatformTeams(@RequestParam(required = false) Long userId) {
         if (userId == null) {
             return platformTeamDao.getPlatformTeams();
         } else {
@@ -40,13 +40,13 @@ public class PlatformTeamsController {
     }
 
     @PostMapping
-    public PlatformTeam createPlatformTeam(@RequestBody PlatformTeam platformTeam) {
+    public IPlatformTeam createPlatformTeam(@RequestBody IPlatformTeam platformTeam) {
         return platformTeamDao.createPlatformTeam(platformTeam.getName());
     }
 
     @GetMapping("{teamId}")
-    public ResponseEntity<PlatformTeam> getPlatformTeam(@PathVariable Long teamId) {
-        Optional<PlatformTeam> team = platformTeamDao.getPlatformTeam(teamId);
+    public ResponseEntity<IPlatformTeam> getPlatformTeam(@PathVariable Long teamId) {
+        Optional<IPlatformTeam> team = platformTeamDao.getPlatformTeam(teamId);
         return team.map(platformTeam -> new ResponseEntity<>(platformTeam, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
@@ -58,14 +58,14 @@ public class PlatformTeamsController {
     }
 
     @PutMapping("{teamId}")
-    public PlatformTeam updatePlatformTeam(@RequestBody PlatformTeam platformTeam, @PathVariable
+    public IPlatformTeam updatePlatformTeam(@RequestBody IPlatformTeam platformTeam, @PathVariable
             Long teamId) {
         assert (platformTeam.getId().equals(teamId));
         return platformTeamDao.updateOrInsertPlatformTeam(platformTeam);
     }
 
     @GetMapping("{teamId}/members")
-    public List<User> listTeamUsers(@PathVariable Long teamId) {
+    public List<IUser> listTeamUsers(@PathVariable Long teamId) {
         return platformTeamDao.getTeamUsers(teamId);
     }
 

@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.exceptions.UncheckedMemberNotFoundException;
 import org.xcolab.client.user.pojo.IRole;
 import org.xcolab.client.user.pojo.IUser;
+import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.io.IOException;
 import java.util.List;
@@ -93,5 +95,35 @@ public interface IUserClient {
 
     default boolean updateUser(IUser member) throws MemberNotFoundException {
         return updateUser(member,0l);
+    }
+
+
+    default IUser getMember(long userId) throws MemberNotFoundException {
+        try {
+            return getMemberInternal(userId);
+        } catch (EntityNotFoundException e) {
+            throw new MemberNotFoundException("Member with id " + userId + " not found.");
+        }
+    }
+
+    default IUser getMemberOrNull(long userId) {
+        try {
+            return getMemberInternal(userId);
+        } catch (EntityNotFoundException e) {
+            return null;
+        }
+    }
+
+    default IUser getMemberUnchecked(long userId) {
+        try {
+            return getMemberInternal(userId);
+        } catch (EntityNotFoundException e) {
+            throw new UncheckedMemberNotFoundException(userId);
+        }
+    }
+
+    default IUser getMemberInternal(long userId) throws EntityNotFoundException {
+
+        return getMember(userId);
     }
 }

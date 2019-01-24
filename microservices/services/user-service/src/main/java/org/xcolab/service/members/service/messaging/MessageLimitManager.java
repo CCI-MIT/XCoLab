@@ -3,8 +3,8 @@ package org.xcolab.service.members.service.messaging;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import org.xcolab.model.tables.pojos.User;
-import org.xcolab.model.tables.pojos.MessagingUserPreference;
+import org.xcolab.client.user.pojo.IMessagingUserPreference;
+import org.xcolab.client.user.pojo.IUser;
 import org.xcolab.service.members.domain.member.UserDao;
 import org.xcolab.service.members.domain.messaging.MessageDao;
 import org.xcolab.service.members.service.role.RoleService;
@@ -73,13 +73,13 @@ public class MessageLimitManager {
             return Integer.MAX_VALUE;
         }
 
-        MessagingUserPreference messagingPreferences = messagingUserPreferencesService.getByuserId(userId);
+        IMessagingUserPreference messagingPreferences = messagingUserPreferencesService.getByuserId(userId);
 
         int messagesLimit;
         if (messagingPreferences.getDailyMessageLimit() != null) {
             messagesLimit = messagingPreferences.getDailyMessageLimit();
         } else {
-            final User member = memberDao.getUser(userId)
+            final IUser member = memberDao.getUser(userId)
                     .orElseThrow(() -> new IllegalStateException("Can't check limit for member "
                             + userId + ": member does not exist"));
 
@@ -98,7 +98,7 @@ public class MessageLimitManager {
         return messageDao.countByGiven(null, userId, null, null, yesterday);
     }
 
-    private boolean isMoreThan2DaysOld(User member) {
+    private boolean isMoreThan2DaysOld(IUser member) {
         return member.getCreatedAt().toInstant()
                 .plus(2, ChronoUnit.DAYS).isBefore(Instant.now());
     }

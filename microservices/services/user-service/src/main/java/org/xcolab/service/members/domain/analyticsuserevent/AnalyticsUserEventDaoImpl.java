@@ -4,7 +4,7 @@ import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.model.tables.pojos.AnalyticsUserEvent;
+import org.xcolab.client.user.pojo.IAnalyticsUserEvent;
 
 import static org.xcolab.model.Tables.ANALYTICS_USER_EVENT;
 
@@ -28,7 +28,7 @@ public class AnalyticsUserEventDaoImpl implements AnalyticsUserEventDao {
     }
 
     @Override
-    public AnalyticsUserEvent create(AnalyticsUserEvent analyticsUserEvent) {
+    public IAnalyticsUserEvent create(IAnalyticsUserEvent analyticsUserEvent) {
         dslContext.insertInto(ANALYTICS_USER_EVENT)
                 .set(ANALYTICS_USER_EVENT.USER_ID, analyticsUserEvent.getUserId())
                 .set(ANALYTICS_USER_EVENT.ID_STRING, analyticsUserEvent.getIdString())

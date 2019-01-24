@@ -13,10 +13,7 @@ public class SendMessageBean extends Message implements Serializable {
     public SendMessageBean() {
     }
 
-    public SendMessageBean(Message message, List<Long> recipientIds) {
-        super(message);
-        this.recipientIds = recipientIds;
-    }
+
 
     public List<Long> getRecipientIds() {
         return recipientIds;

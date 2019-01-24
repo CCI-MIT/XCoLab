@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.model.tables.pojos.User;
+import org.xcolab.client.user.pojo.IUser;
 import org.xcolab.service.members.domain.member.UserDao;
 import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.members.service.member.UserService;
@@ -34,7 +34,7 @@ public class LoginTokenController {
     @GetMapping("/loginTokens/{tokenId}/validate")
     public TokenValidity validateToken(@PathVariable String tokenId, @RequestParam String tokenKey)
             throws NotFoundException {
-        User member = memberDao.findOneByLoginTokenId(tokenId)
+        IUser member = memberDao.findOneByLoginTokenId(tokenId)
                 .orElseThrow(NotFoundException::new);
         final boolean isValid = memberService.validatePassword(tokenKey, member.getLoginTokenKey());
         if (!isValid) {
@@ -48,16 +48,16 @@ public class LoginTokenController {
 
     @PostMapping("/loginTokens/{tokenId}/invalidate")
     public void invalidateToken(@PathVariable String tokenId) {
-        final Optional<User> optionalUser = memberDao.findOneByLoginTokenId(tokenId);
+        final Optional<IUser> optionalUser = memberDao.findOneByLoginTokenId(tokenId);
         if (optionalUser.isPresent()) {
-            User member = optionalUser.get();
+            IUser member = optionalUser.get();
             member.setLoginTokenExpirationDate(Timestamp.from(Instant.now()));
             memberDao.updateUser(member);
         }
     }
 
     @GetMapping("/loginTokens/{tokenId}/member")
-    public User getUserForToken(@PathVariable String tokenId)
+    public IUser getUserForToken(@PathVariable String tokenId)
             throws NotFoundException {
         return memberDao.findOneByLoginTokenId(tokenId).orElseThrow(NotFoundException::new);
     }
@@ -69,7 +69,7 @@ public class LoginTokenController {
         final long expirationInDays = ConfigurationAttributeKey.LOGIN_LINK_EXPIRATION_IN_DAYS.get();
         Instant tokenExpirationDate = Instant.now().plus(expirationInDays, ChronoUnit.DAYS);
 
-        final User member = memberDao.getUser(userId).orElseThrow(NotFoundException::new);
+        final IUser member = memberDao.getUser(userId).orElseThrow(NotFoundException::new);
         member.setLoginTokenId(tokenId);
         member.setLoginTokenKey(memberService.hashPassword(tokenKey));
         member.setLoginTokenExpirationDate(Timestamp.from(tokenExpirationDate));

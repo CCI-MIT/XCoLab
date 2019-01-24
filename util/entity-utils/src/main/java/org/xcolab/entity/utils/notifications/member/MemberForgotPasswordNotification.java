@@ -7,7 +7,7 @@ import org.jsoup.nodes.TextNode;
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.pojo.IEmailTemplate;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.IUser;
 import org.xcolab.entity.utils.notifications.basic.MemberNotification;
 
 public class MemberForgotPasswordNotification extends MemberNotification {
@@ -22,7 +22,7 @@ public class MemberForgotPasswordNotification extends MemberNotification {
     private final String passwordResetLink;
 
     public MemberForgotPasswordNotification(String memberIp, String passwordResetLink,
-            Member recipient) {
+            IUser recipient) {
         super(recipient, TEMPLATE_NAME);
         this.memberIp = memberIp;
         this.passwordResetLink = passwordResetLink;

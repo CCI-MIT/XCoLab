@@ -17,6 +17,7 @@ public class MemberItem implements Serializable {
     private final long activityCount;
     private final Date joinDate;
     private final Long userId;
+    private final String displayName;
     private final String screenName;
     private final int points;
     private final MemberCategory memberCategory;
@@ -25,7 +26,8 @@ public class MemberItem implements Serializable {
 
         userId = member.getId();
         activityCount = ActivitiesClientUtil.countActivities(member.getId(), null);
-        screenName = member.getDisplayName();
+        displayName = member.getDisplayName();
+        screenName = member.getScreenName();
         joinDate = member.getCreatedAt();
         points = MembersClient.getMemberMaterializedPoints(userId);
 
@@ -72,7 +74,7 @@ public class MemberItem implements Serializable {
             case MEMBER_SINCE:
                 return joinDate;
             default:
-                return screenName;
+                return displayName;
         }
     }
 
@@ -80,7 +82,11 @@ public class MemberItem implements Serializable {
         return userId;
     }
     
+    public String getDisplayName() {
+    	return displayName;
+    }
+
     public String getScreenName() {
-    	return screenName;
+        return screenName;
     }
 }

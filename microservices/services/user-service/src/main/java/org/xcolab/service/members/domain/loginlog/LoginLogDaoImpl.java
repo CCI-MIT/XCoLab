@@ -6,7 +6,7 @@ import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.model.tables.pojos.LoginLog;
+import org.xcolab.client.user.pojo.ILoginLog;
 
 import java.util.Optional;
 
@@ -23,7 +23,7 @@ public class LoginLogDaoImpl implements LoginLogDao {
     }
 
     @Override
-    public Optional<LoginLog> get(long loginLogId) {
+    public Optional<ILoginLog> get(long loginLogId) {
         final Record record = dslContext.select()
                 .from(LOGIN_LOG)
                 .where(LOGIN_LOG.ID.eq(loginLogId))
@@ -31,11 +31,11 @@ public class LoginLogDaoImpl implements LoginLogDao {
         if (record == null) {
             return Optional.empty();
         }
-        return Optional.of(record.into(LoginLog.class));
+        return Optional.of(record.into(ILoginLog.class));
     }
 
     @Override
-    public LoginLog create(LoginLog loginLog) {
+    public ILoginLog create(ILoginLog loginLog) {
         final Record record = dslContext.insertInto(LOGIN_LOG)
                 .set(LOGIN_LOG.USER_ID, loginLog.getUserId())
                 .set(LOGIN_LOG.IP_ADDRESS, loginLog.getIpAddress())
@@ -48,6 +48,6 @@ public class LoginLogDaoImpl implements LoginLogDao {
         if (record == null) {
             throw new IllegalStateException("Failed to retrieve id after creating LoginLog");
         }
-        return record.into(LoginLog.class);
+        return record.into(ILoginLog.class);
     }
 }

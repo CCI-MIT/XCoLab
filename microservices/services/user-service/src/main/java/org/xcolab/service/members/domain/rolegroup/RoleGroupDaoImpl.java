@@ -4,8 +4,9 @@ import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.xcolab.model.tables.pojos.RoleGroup;
-import org.xcolab.model.tables.pojos.Role;
+
+import org.xcolab.client.user.pojo.IRole;
+import org.xcolab.client.user.pojo.IRoleGroup;
 import org.xcolab.model.tables.records.RoleGroupRecord;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public class RoleGroupDaoImpl implements RoleGroupDao {
 
     //    Create role group
     @Override
-    public RoleGroup create(RoleGroup roleGroup) {
+    public IRoleGroup create(IRoleGroup roleGroup) {
         RoleGroupRecord ret = this.dslContext.insertInto(ROLE_GROUP)
                 .set(ROLE_GROUP.NAME, roleGroup.getName())
                 .returning(ROLE_GROUP.ID)
@@ -59,12 +60,12 @@ public class RoleGroupDaoImpl implements RoleGroupDao {
 
 
     @Override
-    public List<Role> getAllRolesInGroup(Long groupId) {
+    public List<IRole> getAllRolesInGroup(Long groupId) {
         return this.dslContext.select()
                 .from(ROLE_GROUP_ROLE)
                 .innerJoin(ROLE).on(ROLE.ID.eq(ROLE_GROUP_ROLE.ROLE_ID))
                 .where(ROLE_GROUP_ROLE.ROLE_GROUP_ID.eq(groupId))
-                .fetchInto(Role.class);
+                .fetchInto(IRole.class);
     }
 
     @Override

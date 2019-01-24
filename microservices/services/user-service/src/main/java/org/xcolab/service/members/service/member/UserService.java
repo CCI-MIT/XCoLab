@@ -5,12 +5,12 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import org.xcolab.client.user.pojo.IUser;
 import org.xcolab.client.tracking.ITrackingClient;
 import org.xcolab.client.tracking.pojo.ILocation;
+import org.xcolab.client.user.pojo.ILoginLog;
+import org.xcolab.client.user.pojo.IUser;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
-import org.xcolab.model.tables.pojos.LoginLog;
-import org.xcolab.model.tables.pojos.User;
+import org.xcolab.model.tables.pojos.LoginLogImpl;
 import org.xcolab.service.members.domain.loginlog.LoginLogDao;
 import org.xcolab.service.members.domain.member.UserDao;
 import org.xcolab.service.members.domain.role.RoleDao;
@@ -103,8 +103,8 @@ public class UserService {
         return member;
     }
 
-    public LoginLog createLoginLog(long userId, String ipAddress, String redirectUrl) {
-        LoginLog loginLog = new LoginLog();
+    public ILoginLog createLoginLog(long userId, String ipAddress, String redirectUrl) {
+        ILoginLog loginLog = new LoginLogImpl();
         loginLog.setUserId(userId);
         loginLog.setIpAddress(ipAddress);
         loginLog.setEntryUrl(StringUtils.left(redirectUrl, 250));
@@ -130,7 +130,7 @@ public class UserService {
 
     public String createNewForgotPasswordToken(Long userId) {
         IUser member = memberDao.getUser(userId).orElseThrow(
-                () -> ReferenceResolutionException.toObject(User.class, userId).build());
+                () -> ReferenceResolutionException.toObject(IUser.class, userId).build());
         String confirmationToken = Long.toHexString(SecureRandomUtil.nextLong());
         member.setForgotPasswordToken(confirmationToken);
         LocalDateTime localDateTime = LocalDateTime.now().plusHours(1L);

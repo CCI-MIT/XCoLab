@@ -15,7 +15,6 @@ import org.xcolab.commons.SortColumn;
 import org.xcolab.model.tables.MemberCategoryTable;
 import org.xcolab.model.tables.UserRoleTable;
 import org.xcolab.model.tables.UserTable;
-import org.xcolab.model.tables.pojos.User;
 import org.xcolab.model.tables.records.UserRecord;
 import org.xcolab.service.utils.PaginationHelper;
 
@@ -33,9 +32,9 @@ import static org.jooq.impl.DSL.sum;
 import static org.jooq.impl.DSL.val;
 import static org.xcolab.model.Tables.ACTIVITY_ENTRY;
 import static org.xcolab.model.Tables.LOGIN_LOG;
-import static org.xcolab.model.Tables.USER;
 import static org.xcolab.model.Tables.MEMBER_CATEGORY;
 import static org.xcolab.model.Tables.POINTS;
+import static org.xcolab.model.Tables.USER;
 import static org.xcolab.model.Tables.USER_ROLE;
 
 @Repository
@@ -161,7 +160,7 @@ public class UserDaoImpl implements UserDao {
             }
         }
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
-        return query.fetchInto(User.class);
+        return query.fetchInto(IUser.class);
     }
 
     private Field<String> getDisplayName(UserTable member) {
@@ -201,7 +200,7 @@ public class UserDaoImpl implements UserDao {
                 .join(LOGIN_LOG).on(LOGIN_LOG.USER_ID.equal(USER.ID))
                 .where(LOGIN_LOG.IP_ADDRESS.eq(ip))
                 .getQuery();
-        return query.fetchInto(User.class);
+        return query.fetchInto(IUser.class);
     }
 
     @Override
@@ -213,7 +212,7 @@ public class UserDaoImpl implements UserDao {
                 .and(USER.STATUS.eq(0))
                 .orderBy(USER.SCREEN_NAME)
                 .getQuery();
-        return query.fetchInto(User.class);
+        return query.fetchInto(IUser.class);
     }
 
     @Override
@@ -247,7 +246,7 @@ public class UserDaoImpl implements UserDao {
         if (memberRecord == null) {
             return Optional.empty();
         }
-        return Optional.of(memberRecord.into(User.class));
+        return Optional.of(memberRecord.into(IUser.class));
     }
 
     @Override
@@ -288,7 +287,7 @@ public class UserDaoImpl implements UserDao {
         if (record == null) {
             return Optional.empty();
         }
-        return Optional.of(record.into(User.class));
+        return Optional.of(record.into(IUser.class));
     }
 
     @Override
@@ -312,7 +311,7 @@ public class UserDaoImpl implements UserDao {
         if (record == null) {
             return Optional.empty();
         }
-        return Optional.of(record.into(User.class));
+        return Optional.of(record.into(IUser.class));
     }
 
     @Override
@@ -328,7 +327,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public boolean updateUser(User member) {
+    public boolean updateUser(IUser member) {
 
         return this.dslContext.update(USER)
                 .set(USER.UUID, member.getUuid())
@@ -363,7 +362,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User createUser(User member) {
+    public IUser createUser(IUser member) {
         final Optional<UserRecord> memberRecord =
                 dslContext.insertInto(USER)
                         .set(USER.UUID, member.getUuid())

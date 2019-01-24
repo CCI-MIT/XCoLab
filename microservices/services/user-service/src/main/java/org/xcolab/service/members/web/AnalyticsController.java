@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.model.tables.pojos.AnalyticsUserEvent;
+import org.xcolab.client.user.pojo.IAnalyticsUserEvent;
 import org.xcolab.service.members.domain.analyticsuserevent.AnalyticsUserEventDao;
 
 @RestController
@@ -30,8 +30,8 @@ public class AnalyticsController {
     }
 
     @PostMapping
-    public AnalyticsUserEvent create(@PathVariable long userId,
-            @RequestBody AnalyticsUserEvent analyticsUserEvent) {
+    public IAnalyticsUserEvent create(@PathVariable long userId,
+            @RequestBody IAnalyticsUserEvent analyticsUserEvent) {
         return analyticsUserEventDao.create(analyticsUserEvent);
     }
 }

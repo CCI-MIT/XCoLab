@@ -10,8 +10,6 @@ import org.xcolab.view.auth.MemberAuthUtil;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
-import javax.servlet.http.HttpServletRequest;
-
 public class DiscussionPermissions {
 
     private static final int EDIT_GRACE_PERIOD_IN_MINUTES = 15;
@@ -22,8 +20,8 @@ public class DiscussionPermissions {
     private final boolean isGuest;
     protected boolean isLoggedIn;
 
-    public DiscussionPermissions(HttpServletRequest request) {
-        userId = MemberAuthUtil.getuserId(request);
+    public DiscussionPermissions() {
+        userId = MemberAuthUtil.getUserId();
         isLoggedIn = userId > 0;
         this.isGuest = PermissionsClient.isGuest(userId);
     }

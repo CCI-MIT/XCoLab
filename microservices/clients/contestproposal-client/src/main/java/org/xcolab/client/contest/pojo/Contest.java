@@ -29,14 +29,15 @@ import org.xcolab.client.contest.pojo.team.ContestTeamMember;
 import org.xcolab.client.contest.pojo.team.ContestTeamMemberRole;
 import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
 import org.xcolab.client.contest.util.ContestScheduleChangeHelper;
-import org.xcolab.client.user.MembersClient;
-import org.xcolab.client.user.exceptions.MemberNotFoundException;
-import org.xcolab.client.user.permissions.SystemRole;
-import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.permissions.SystemRole;
+import org.xcolab.client.user.pojo.IUser;
+import org.xcolab.client.user.pojo.Member;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.commons.time.DateUtil;
 import org.xcolab.util.http.ServiceRequestUtils;
@@ -85,7 +86,7 @@ public class Contest extends AbstractContest implements Serializable {
 
     protected List<ContestPhase> phases;
     protected ContestType contestType;
-    protected Map<ContestTeamMemberRole, List<Member>> contestTeamMembersByRole;
+    protected Map<ContestTeamMemberRole, List<IUser>> contestTeamMembersByRole;
 
     protected ContestPhase activePhase;
 
@@ -309,7 +310,7 @@ public class Contest extends AbstractContest implements Serializable {
     }
 
     @JsonIgnore
-    public Map<ContestTeamMemberRole, List<Member>> getContestTeamMembersByRole() {
+    public Map<ContestTeamMemberRole, List<IUser>> getContestTeamMembersByRole() {
         if (contestTeamMembersByRole == null) {
             contestTeamMembersByRole = new TreeMap<>();
             final List<ContestTeamMember> teamMembers =
@@ -318,9 +319,9 @@ public class Contest extends AbstractContest implements Serializable {
                 try {
                     ContestTeamMemberRole role = contestTeamMemberClient
                             .getContestTeamMemberRole(teamMember.getRoleId());
-                    List<Member> roleUsers = contestTeamMembersByRole
+                    List<IUser> roleUsers = contestTeamMembersByRole
                             .computeIfAbsent(role, k -> new ArrayList<>());
-                    roleUsers.add(MembersClient.getMember(teamMember.getUserId()));
+                    roleUsers.add(StaticUserContext.getUserClient().getMember(teamMember.getUserId()));
                 } catch (MemberNotFoundException e) {
                     //_log.warn("Contest team member " + teamMember.getUserId() + " does not have an account");
                 }
@@ -331,10 +332,10 @@ public class Contest extends AbstractContest implements Serializable {
 
     @JsonIgnore
     public boolean getHasUserRoleInContest(long userId, long roleId) {
-        for (Entry<ContestTeamMemberRole, List<Member>> entry
+        for (Entry<ContestTeamMemberRole, List<IUser>> entry
                 : getContestTeamMembersByRole().entrySet()) {
             final ContestTeamMemberRole role = entry.getKey();
-            final List<Member> members = entry.getValue();
+            final List<IUser> members = entry.getValue();
             if (role.getId() == roleId) {
                 return members.stream()
                         .anyMatch(p -> p.getId() == userId);
@@ -361,26 +362,26 @@ public class Contest extends AbstractContest implements Serializable {
     }
 
     @JsonIgnore
-    public List<Member> getContestImpactAssessmentFellows() {
+    public List<IUser> getContestImpactAssessmentFellows() {
         return getMembersWithRole(ContestRole.IAF);
     }
 
     @JsonIgnore
-    public List<Member> getContestJudges() {
+    public List<IUser> getContestJudges() {
         return getMembersWithRole(ContestRole.JUDGE);
     }
 
     @JsonIgnore
-    public List<Member> getContestFellows() {
+    public List<IUser> getContestFellows() {
         return getMembersWithRole(ContestRole.FELLOW);
     }
 
     @JsonIgnore
-    public List<Member> getContestAdvisors() {
+    public List<IUser> getContestAdvisors() {
         return getMembersWithRole(ContestRole.ADVISOR);
     }
 
-    private List<Member> getMembersWithRole(ContestRole contestRole) {
+    private List<IUser> getMembersWithRole(ContestRole contestRole) {
         return getContestTeamMembersByRole().entrySet().stream()
                 .filter(e -> e.getKey().getContestRole() == contestRole)
                 .map(Entry::getValue)
@@ -580,7 +581,7 @@ public class Contest extends AbstractContest implements Serializable {
 
     @JsonIgnore
     public boolean isUserAmongAdvisors(long userId) {
-        for (Member judge : getContestAdvisors()) {
+        for (IUser judge : getContestAdvisors()) {
             if (judge.getId() == userId) {
                 return true;
             }

@@ -5,9 +5,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
+import org.xcolab.client.user.IPermissionClient;
 import org.xcolab.client.user.MembersClient;
 import org.xcolab.client.user.MessagingClient;
 import org.xcolab.client.user.PermissionsClient;
+import org.xcolab.client.user.StaticPermissionContext;
 import org.xcolab.client.user.StaticUserContext;
 import org.xcolab.client.user.exceptions.MemberNotFoundException;
 
@@ -198,7 +200,7 @@ public interface IUser {
 
     @JsonIgnore
     default boolean getIsAdmin() {
-        return PermissionsClient.canAdminAll(this);
+        return StaticPermissionContext.getPermissionClient().canAdminAll(this);
     }
 
     @JsonIgnore

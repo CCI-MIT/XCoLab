@@ -1,8 +1,7 @@
 package org.xcolab.service.members.domain.messaging;
 
-import org.xcolab.model.tables.pojos.User;
-import org.xcolab.model.tables.pojos.Message;
-
+import org.xcolab.client.user.pojo.IMessage;
+import org.xcolab.client.user.pojo.IUser;
 import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
 
@@ -12,16 +11,16 @@ import java.util.Optional;
 
 public interface MessageDao {
 
-    Message getMessage(long messageId) throws NotFoundException;
+    IMessage getMessage(long messageId) throws NotFoundException;
 
-    List<Message> getFullConversation(long messageId, String threadId) throws NotFoundException;
+    List<IMessage> getFullConversation(long messageId, String threadId) throws NotFoundException;
 
     int countByGiven(Long senderId, Long recipientId, Boolean isArchived, Boolean isOpened, Timestamp sinceDate);
 
-    List<Message> findByGiven(PaginationHelper paginationHelper, Long senderId, Long recipientId,
+    List<IMessage> findByGiven(PaginationHelper paginationHelper, Long senderId, Long recipientId,
             Boolean isArchived, Boolean isOpened, Timestamp sinceDate);
 
-    List<User> getRecipients(long messageId);
+    List<IUser> getRecipients(long messageId);
 
     List<String> getThreads(long messageId);
 
@@ -29,7 +28,7 @@ public interface MessageDao {
 
     boolean setOpened(long messageId, long userId, boolean isOpened);
 
-    Optional<Message> createMessage(Message message);
+    Optional<IMessage> createMessage(IMessage message);
     
     void createMessageRecipient(long messageId, long recipientId, String threadId);
 

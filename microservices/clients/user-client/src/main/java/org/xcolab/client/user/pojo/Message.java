@@ -13,7 +13,7 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_NULL)
-public class Message implements Serializable {
+public class Message implements IMessage, Serializable {
 
     private static final long serialVersionUID = 1208926668;
 

@@ -42,24 +42,16 @@ public class AuthenticationService {
         return authenticationContext.isLoggedIn();
     }
 
-    public boolean isImpersonating(HttpServletRequest request) {
-        return authenticationContext.isImpersonating(request);
+    public boolean isImpersonating() {
+        return authenticationContext.isImpersonating();
     }
 
     public Member getMemberOrNull(HttpServletRequest request) {
-        return authenticationContext.getMemberOrNull(request);
+        return authenticationContext.getMemberOrNull();
     }
 
     public Member getRealMemberOrNull() {
         return authenticationContext.getRealMemberOrNull();
-    }
-
-    public Member getRealMemberOrNull(Authentication authentication) {
-        return authenticationContext.getRealMemberOrNull(authentication);
-    }
-
-    public Member getMemberOrThrow(HttpServletRequest request) {
-        return authenticationContext.getMemberOrThrow(request);
     }
 
     public Authentication authenticate(HttpServletRequest request, HttpServletResponse response,

@@ -29,7 +29,7 @@ public class AuthenticationVariables {
             SsoServices ssoServices, HttpServletRequest request) {
         this.isLoggedIn = authenticationService.isLoggedIn();
 
-        this.isImpersonating = authenticationService.isImpersonating(request);
+        this.isImpersonating = authenticationService.isImpersonating();
         this.realMember = authenticationService.getRealMemberOrNull();
 
         this.member = authenticationService.getMemberOrNull(request);

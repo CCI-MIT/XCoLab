@@ -10,21 +10,21 @@ import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.model.tables.pojos.User;
-import org.xcolab.model.tables.pojos.Message;
+import org.xcolab.client.user.pojo.IMessage;
+import org.xcolab.client.user.pojo.IUser;
+import org.xcolab.commons.SortColumn;
 import org.xcolab.model.tables.records.MessageRecord;
 import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.members.wrappers.MessageReceived;
 import org.xcolab.service.utils.PaginationHelper;
-import org.xcolab.commons.SortColumn;
 
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
-import static org.xcolab.model.Tables.USER;
 import static org.xcolab.model.Tables.MESSAGE;
 import static org.xcolab.model.Tables.MESSAGE_RECIPIENT_STATUS;
+import static org.xcolab.model.Tables.USER;
 
 @Repository
 public class MessageDaoImpl implements MessageDao {
@@ -37,7 +37,7 @@ public class MessageDaoImpl implements MessageDao {
     }
 
     @Override
-    public Message getMessage(long messageId) throws NotFoundException {
+    public IMessage getMessage(long messageId) throws NotFoundException {
         final Record record = dslContext.select()
                 .from(MESSAGE)
                 .where(MESSAGE.ID.eq(messageId))
@@ -45,12 +45,12 @@ public class MessageDaoImpl implements MessageDao {
         if (record == null) {
             throw new NotFoundException("Message with id " + messageId + "does not exist");
         }
-        return record.into(Message.class);
+        return record.into(IMessage.class);
     }
 
     @Override
-    public List<Message> getFullConversation(long messageId, String threadId) throws NotFoundException {
-        List<Message> messageList;
+    public List<IMessage> getFullConversation(long messageId, String threadId) throws NotFoundException {
+        List<IMessage> messageList;
         if (threadId != null) {
             // There is thread info, get all the thread
             messageList = dslContext.select(MESSAGE.fields())
@@ -61,7 +61,7 @@ public class MessageDaoImpl implements MessageDao {
                         MESSAGE_RECIPIENT_STATUS.THREAD_ID.eq(threadId)
                     )
                     .orderBy(MESSAGE.CREATED_AT.desc())
-                    .fetchInto(Message.class);
+                    .fetchInto(IMessage.class);
 
             if (messageList.isEmpty()) {
                 throw new NotFoundException("Thread " + threadId + "does not exist or does not contain messages with id <= "+messageId);
@@ -70,7 +70,7 @@ public class MessageDaoImpl implements MessageDao {
             messageList = dslContext.select()
                     .from(MESSAGE)
                     .where(MESSAGE.ID.eq(messageId))
-                    .fetchInto(Message.class);
+                    .fetchInto(IMessage.class);
             if (messageList.isEmpty()) {
                 throw new NotFoundException("Message with id " + messageId + "does not exist");
             }
@@ -109,7 +109,7 @@ public class MessageDaoImpl implements MessageDao {
     }
 
     @Override
-    public List<Message> findByGiven(PaginationHelper paginationHelper,
+    public List<IMessage> findByGiven(PaginationHelper paginationHelper,
             Long senderId, Long recipientId, Boolean isArchived, Boolean isOpened, Timestamp sinceDate) {
         final Field<?>[] fields = ArrayUtils.addAll(MESSAGE.fields(),
                 MESSAGE_RECIPIENT_STATUS.OPENED, MESSAGE_RECIPIENT_STATUS.ARCHIVED,
@@ -169,16 +169,16 @@ public class MessageDaoImpl implements MessageDao {
         query.addOrderBy(MESSAGE.CREATED_AT.desc());
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
 
-        return query.fetchInto(recipientId != null ? MessageReceived.class : Message.class);
+        return query.fetchInto(recipientId != null ? MessageReceived.class : IMessage.class);
     }
 
     @Override
-    public List<User> getRecipients(long messageId) {
+    public List<IUser> getRecipients(long messageId) {
         return dslContext.select(USER.fields())
                 .from(MESSAGE_RECIPIENT_STATUS)
                 .join(USER).on(MESSAGE_RECIPIENT_STATUS.USER_ID.eq(USER.ID))
                 .where(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID.eq(messageId))
-                .fetchInto(User.class);
+                .fetchInto(IUser.class);
     }
 
     @Override
@@ -209,7 +209,7 @@ public class MessageDaoImpl implements MessageDao {
     }
 
     @Override
-    public Optional<Message> createMessage(Message message) {
+    public Optional<IMessage> createMessage(IMessage message) {
         final MessageRecord record = dslContext.insertInto(MESSAGE)
                 .set(MESSAGE.FROM_ID, message.getFromId())
                 .set(MESSAGE.REPLIES_TO, message.getRepliesTo())

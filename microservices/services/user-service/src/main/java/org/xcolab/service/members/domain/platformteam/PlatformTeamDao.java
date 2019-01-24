@@ -1,24 +1,24 @@
 package org.xcolab.service.members.domain.platformteam;
 
-import org.xcolab.model.tables.pojos.User;
-import org.xcolab.model.tables.pojos.PlatformTeam;
+import org.xcolab.client.user.pojo.IPlatformTeam;
+import org.xcolab.client.user.pojo.IUser;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface PlatformTeamDao {
 
-    List<PlatformTeam> getPlatformTeams();
+    List<IPlatformTeam> getPlatformTeams();
 
-    Optional<PlatformTeam> getPlatformTeam(long teamId);
+    Optional<IPlatformTeam> getPlatformTeam(long teamId);
 
-    PlatformTeam updateOrInsertPlatformTeam(PlatformTeam team);
+    IPlatformTeam updateOrInsertPlatformTeam(IPlatformTeam team);
 
-    PlatformTeam createPlatformTeam(String name);
+    IPlatformTeam createPlatformTeam(String name);
 
-    List<PlatformTeam> getUserTeams(long userId);
+    List<IPlatformTeam> getUserTeams(long userId);
 
-    List<User> getTeamUsers(long teamId);
+    List<IUser> getTeamUsers(long teamId);
 
     int delete(long teamId);
 

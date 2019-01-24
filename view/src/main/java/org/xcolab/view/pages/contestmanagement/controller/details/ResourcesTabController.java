@@ -61,7 +61,7 @@ public class ResourcesTabController extends AbstractTabController {
         boolean enabled = contest.getResourceArticleId() != 0;
 
         if (enabled) {
-            long userId = MemberAuthUtil.getuserId(request);
+            long userId = MemberAuthUtil.getUserId();
             wikiPageWrapper = new WikiPageWrapper(contentClient, contest, userId);
             model.addAttribute("contestResourcesBean", wikiPageWrapper.getContestResourcesBean());
         }

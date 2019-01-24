@@ -38,8 +38,6 @@ public class ProposalContextHelper {
     private static final String CONTEST_PHASE_ID_PARAM = "phaseId";
     private static final String VERSION_PARAM = "version";
 
-    private final HttpServletRequest request;
-
     private final String givenContestUrlName;
     private final long givenContestYear;
     private final long givenContestId;
@@ -51,7 +49,6 @@ public class ProposalContextHelper {
     private final ClientHelper clientHelper;
 
     public ProposalContextHelper(HttpServletRequest request) {
-        this.request = request;
         final long proposalIdParam =
                 RequestParamUtil.getLong(request, PROPOSAL_ID_PARAM);
         givenProposalId = (proposalIdParam == 0)
@@ -111,7 +108,7 @@ public class ProposalContextHelper {
     }
 
     public Member getMember() {
-        return MemberAuthUtil.getMemberOrNull(request);
+        return MemberAuthUtil.getMemberOrNull();
     }
 
     public Contest getContest() throws InvalidContestUrlException {

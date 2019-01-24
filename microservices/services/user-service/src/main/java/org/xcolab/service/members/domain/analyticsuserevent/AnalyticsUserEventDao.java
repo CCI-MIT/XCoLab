@@ -1,10 +1,10 @@
 package org.xcolab.service.members.domain.analyticsuserevent;
 
-import org.xcolab.model.tables.pojos.AnalyticsUserEvent;
+import org.xcolab.client.user.pojo.IAnalyticsUserEvent;
 
 public interface AnalyticsUserEventDao {
 
     boolean exists(long userId, String idString);
 
-    AnalyticsUserEvent create(AnalyticsUserEvent analyticsUserEvent);
+    IAnalyticsUserEvent create(IAnalyticsUserEvent analyticsUserEvent);
 }

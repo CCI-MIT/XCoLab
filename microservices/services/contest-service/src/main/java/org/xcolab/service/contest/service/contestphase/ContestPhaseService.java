@@ -7,7 +7,10 @@ import org.springframework.stereotype.Service;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.user.IUserClient;
 import org.xcolab.client.user.MembersClient;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.pojo.IUser;
 import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
@@ -54,6 +57,9 @@ public class ContestPhaseService {
     @Autowired
     private ContestDao contestDao;
 
+    @Autowired
+    private IUserClient userClient;
+
 
     public ContestStatus getContestStatus(ContestPhase contestPhase) {
         String status = contestPhaseTypeDao.get(contestPhase.getContestPhaseTypeId()).get().getStatus();
@@ -86,9 +92,9 @@ public class ContestPhaseService {
                 .map(Proposal::getId)
                 .collect(Collectors.toSet());
 
-        Map<Member, Set<Proposal>> supportedProposalsByMember =
+        Map<IUser, Set<Proposal>> supportedProposalsByMember =
                 getSupportedProposalsByMember(contest);
-        for (Member user : supportedProposalsByMember.keySet()) {
+        for (IUser user : supportedProposalsByMember.keySet()) {
 
             List<Proposal> supportedProposalsInPhase = supportedProposalsByMember.get(user).stream()
                     .filter(p -> proposalIdsInPhase.contains(p.getId()))
@@ -117,14 +123,14 @@ public class ContestPhaseService {
         }
     }
 
-    private Map<Member, Set<Proposal>> getSupportedProposalsByMember(Contest contest) {
+    private Map<IUser, Set<Proposal>> getSupportedProposalsByMember(Contest contest) {
         List<Proposal> proposalsInContest = ProposalClientUtil
                 .getProposalsInContest(contest.getId());
 
         return new GroupingHelper<>(proposalsInContest).groupWithDuplicateKeysAndValues(
                 proposal -> ProposalMemberRatingClientUtil
                         .getProposalSupporters(proposal.getId()).stream()
-                        .map(supporter -> MembersClient.getMemberUnchecked(supporter.getUserId()))
+                        .map(supporter -> userClient.getMemberUnchecked(supporter.getUserId()))
                         .collect(Collectors.toSet()));
     }
 

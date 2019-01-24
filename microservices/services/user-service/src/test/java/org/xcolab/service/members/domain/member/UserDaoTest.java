@@ -10,7 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import org.xcolab.model.tables.pojos.User;
+import org.xcolab.client.user.pojo.IUser;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.util.List;
@@ -30,7 +30,7 @@ public class UserDaoTest {
 
     @Test
     public void testFindByGiven__shouldReturnRightCount() {
-        final List<User> members =
+        final List<IUser> members =
                 memberDao.findByGiven(PaginationHelper.EVERYTHING, null, null,
                         null, null, null, null, null, null, null, null);
         assertEquals("Wrong number of members", 2, members.size());
@@ -38,7 +38,7 @@ public class UserDaoTest {
 
     @Test
     public void testFindByNameGiven() {
-        final List<User> members =
+        final List<IUser> members =
                 memberDao.findByGiven(PaginationHelper.EVERYTHING, "admin", null,
                         null, null, null, null, null, null, null, null);
         assertEquals("Wrong number of members with name:admin", 1, members.size());
@@ -46,7 +46,7 @@ public class UserDaoTest {
 
     @Test
     public void testFindByNameGiven_with_roles() {
-        final List<User> members =
+        final List<IUser> members =
                 memberDao.findByGiven(PaginationHelper.EVERYTHING, null, null,
                         "Member", null, null, null, null, null, null, null);
         assertEquals("Wrong number of members with role:User", 2, members.size());

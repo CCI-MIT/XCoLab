@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.xcolab.client.user.pojo.IUser;
 import org.xcolab.commons.exceptions.InternalException;
-import org.xcolab.model.tables.pojos.User;
 import org.xcolab.service.members.domain.member.UserDao;
 import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.members.service.member.UserService;
@@ -76,7 +76,7 @@ public class UserLoginRegisterController {
         }
 
         if (userId != null) {
-            final User member = memberDao.getUser(userId).orElseThrow(NotFoundException::new);
+            final IUser member = memberDao.getUser(userId).orElseThrow(NotFoundException::new);
             return memberService.validatePassword(password, member.getHashedPassword());
         }
         throw new NotFoundException("The endpoint you requested is not available for the given attributes");

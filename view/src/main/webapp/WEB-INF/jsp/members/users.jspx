@@ -134,7 +134,7 @@
                     <tr>
                         <td>
                             <a href="/members/profile/${user.userId}">
-                                ${user.screenName}
+                                ${user.displayName}
                             </a>
                             <c:if test="${permissions.canAdminAll}">
                                 <div class="float-right">
@@ -142,12 +142,9 @@
                                         <collab:image src="/images/icons/activity/edit.png"
                                                       height="15" alt="edit" />
                                     </a>
-                                    <button type="button" class="btn btn-link btn-sm js-EnhancedLink"
-                                            data-method="post"
-                                            data-url="/impersonate?userId=${user.userId}">
-                                        <collab:image src="/images/icon-request-membership.png"
-                                                      height="15" alt="impersonate" />
-                                    </button>
+                                    <a class="btn btn-link btn-sm" href="/impersonate?username=${user.screenName}">
+                                        <collab:image src="/images/icon-request-membership.png" height="15" alt="impersonate" />
+                                    </a>
                                 </div>
                             </c:if>
                         </td>
