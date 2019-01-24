@@ -3,9 +3,9 @@ package org.xcolab.view.activityentry.proposal;
 import org.springframework.context.i18n.LocaleContextHolder;
 
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
-import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
+import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.view.activityentry.ActivityInitializationException;
 import org.xcolab.view.activityentry.provider.AbstractActivityEntryContentProvider;
 import org.xcolab.view.i18n.ResourceMessageResolver;
@@ -27,7 +27,8 @@ public abstract class ProposalBaseActivityEntry extends AbstractActivityEntryCon
     @Override
     public void initializeInternal() throws ActivityInitializationException {
         try {
-            proposal = ProposalClientUtil.getProposal(getActivityEntry().getCategoryId());
+            proposal = StaticProposalContext.getProposalClient()
+                    .getProposal(getActivityEntry().getCategoryId());
         } catch (ProposalNotFoundException e) {
             throw new ActivityInitializationException(getActivityEntry().getId(), e);
         }

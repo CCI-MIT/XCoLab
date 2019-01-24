@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.MembershipClient;
 import org.xcolab.client.contest.proposals.MembershipClientUtil;
-import org.xcolab.client.contest.proposals.ProposalClient;
+import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMembershipRequestWrapper;
 import org.xcolab.commons.servlet.flash.AlertMessage;
@@ -48,7 +48,7 @@ public class ProposalTeamTabController extends BaseProposalTabController {
             return new AccessDeniedPage(loggedInMember).toViewName(response);
         }
 
-        final ProposalClient proposalClient = getProposalClient(proposalContext);
+        final IProposalClient proposalClient = getProposalClient(proposalContext);
         final long proposalId = getProposalId(proposalContext);
 
         setCommonModelAndPageAttributes(request, model, proposalContext, ProposalTab.TEAM);
@@ -88,7 +88,7 @@ public class ProposalTeamTabController extends BaseProposalTabController {
         checkHasManagePermissions(proposalContext, actingMember);
         checkIsRemovingOwner(proposalContext.getProposal(), userId);
 
-        final ProposalClient proposalClient = getProposalClient(proposalContext);
+        final IProposalClient proposalClient = getProposalClient(proposalContext);
         final long proposalId = getProposalId(proposalContext);
 
         proposalClient.removeMemberFromProposalTeam(proposalId, userId);
@@ -103,7 +103,7 @@ public class ProposalTeamTabController extends BaseProposalTabController {
             @RequestParam long userId) throws ProposalsAuthorizationException, IOException {
         checkHasManagePermissions(proposalContext, actingMember);
 
-        final ProposalClient proposalClient = getProposalClient(proposalContext);
+        final IProposalClient proposalClient = getProposalClient(proposalContext);
         final long proposalId = getProposalId(proposalContext);
 
         proposalClient.promoteMemberToProposalOwner(proposalId, userId);
@@ -112,7 +112,7 @@ public class ProposalTeamTabController extends BaseProposalTabController {
         sendRedirect(proposalContext, response);
     }
 
-    private ProposalClient getProposalClient(ProposalContext proposalContext) {
+    private IProposalClient getProposalClient(ProposalContext proposalContext) {
         return proposalContext.getClients().getProposalClient();
     }
 

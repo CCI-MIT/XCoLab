@@ -12,7 +12,7 @@ import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 
 import java.io.IOException;
@@ -26,6 +26,9 @@ public class LegacyRedirectController {
 
     @Autowired
     private ContestClient contestClient;
+
+    @Autowired
+    private IProposalClient proposalClient;
 
     @GetMapping("{contestId}")
     public void redirectOldContestProposalsUrl(HttpServletRequest request, HttpServletResponse response, Model model,
@@ -63,7 +66,7 @@ public class LegacyRedirectController {
 
         try {
             ContestWrapper contest = contestClient.getContest(contestId);
-            ProposalWrapper proposal = ProposalClientUtil.getProposal(proposalId);
+            ProposalWrapper proposal = proposalClient.getProposal(proposalId);
 
             String redirectUrl;
             if (phaseId != null) {

@@ -8,21 +8,23 @@ public class StaticProposalContext {
     private static ProposalAttributeClient proposalAttributeClient;
     private static ProposalMoveClient proposalMoveClient;
     private static ProposalPhaseClient proposalPhaseClient;
+    private static IProposalClient proposalClient;
 
     private StaticProposalContext() {}
 
     public static void setClients(PointsClient pointsClient,
-            ProposalAttributeClient proposalAttributeClient,
-            ProposalMoveClient proposalMoveClient,
-            ProposalPhaseClient proposalPhaseClient) {
+            ProposalAttributeClient proposalAttributeClient, ProposalMoveClient proposalMoveClient,
+            ProposalPhaseClient proposalPhaseClient, IProposalClient proposalClient) {
         Assert.notNull(pointsClient, "pointsClient must not be null!");
         Assert.notNull(proposalAttributeClient, "proposalAttributeClient must not be null!");
         Assert.notNull(proposalMoveClient, "proposalMoveClient must not be null!");
         Assert.notNull(proposalPhaseClient, "proposalPhaseClient must not be null!");
+        Assert.notNull(proposalClient, "proposalClient must not be null!");
         StaticProposalContext.pointsClient = pointsClient;
         StaticProposalContext.proposalAttributeClient = proposalAttributeClient;
         StaticProposalContext.proposalMoveClient = proposalMoveClient;
         StaticProposalContext.proposalPhaseClient = proposalPhaseClient;
+        StaticProposalContext.proposalClient = proposalClient;
     }
 
     public static PointsClient getPointsClient() {
@@ -39,5 +41,9 @@ public class StaticProposalContext {
 
     public static ProposalPhaseClient getProposalPhaseClient() {
         return proposalPhaseClient;
+    }
+
+    public static IProposalClient getProposalClient() {
+        return proposalClient;
     }
 }

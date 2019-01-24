@@ -1,11 +1,11 @@
 package org.xcolab.view.taglibs.xcolab.jspTags.discussion;
 
+import org.xcolab.client.contest.proposals.IProposalClient;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MemberCategory;
-import org.xcolab.client.contest.proposals.ProposalClient;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
 
 import java.util.List;
@@ -35,7 +35,7 @@ public class GetRoleCategoryStartTag extends BodyTagSupport {
         this.proposalId = proposalId;
     }
 
-    private ProposalClient proposalClient = ProposalClientUtil.getClient();
+    private IProposalClient proposalClient = StaticProposalContext.getProposalClient();
 
     @Override
     public int doStartTag() throws JspException {

@@ -23,8 +23,6 @@ import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalClient;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.entity.utils.LinkUtils;
@@ -108,7 +106,6 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
                     activityClient.createActivityEntry(DiscussionThreadActivityType.COMMENT_ADDED,
                             userId, commentThread.getId(), comment.getId());
                 } else {
-                    final ProposalClient proposalClient = ProposalClientUtil.getClient();
                     final ProposalWrapper proposal = getProposal(proposalClient, commentThread);
                     if (proposal != null) {
                         //proposal

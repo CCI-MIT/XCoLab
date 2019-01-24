@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.contest.proposals.ProposalClient;
+import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
@@ -32,7 +32,7 @@ public class SubscribeProposalActionController {
             final ProposalWrapper proposal = proposalContext.getProposal();
             long proposalId = proposal.getId();
             long userId = currentMember.getId();
-            final ProposalClient proposalClient = proposalContext.getClients().getProposalClient();
+            final IProposalClient proposalClient = proposalContext.getClients().getProposalClient();
             if (proposalClient.isMemberSubscribedToProposal(proposalId, userId)) {
                 proposalClient.unsubscribeMemberFromProposal(proposalId, userId);
             } else {

@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +18,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
-import org.xcolab.client.contest.proposals.ProposalPhaseClientUtil;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.util.http.ServiceRequestUtils;
 
@@ -33,7 +31,6 @@ import static org.mockito.Matchers.anyString;
 @OverrideAutoConfiguration(enabled = false)
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @PrepareForTest({
-        ProposalClientUtil.class,
         ProposalWrapper.class,
         ContestWrapper.class
 })
@@ -48,6 +45,9 @@ public class ContestPhaseServiceTest {
     @Autowired
     ProposalPhaseClient proposalPhaseClient;
 
+    @Autowired
+    IProposalClient proposalClient;
+
     @Rule
     public final ExpectedException exception = ExpectedException.none();
 
@@ -56,12 +56,11 @@ public class ContestPhaseServiceTest {
 
         ServiceRequestUtils.setInitialized(true);
 
-        PowerMockito.mockStatic(ProposalClientUtil.class);
         Mockito.when(proposalPhaseClient
                 .isProposalContestPhaseAttributeSetAndTrue(anyLong(),anyLong(),anyString()))
                 .thenAnswer(invocation -> false);
 
-        Mockito.when(ProposalClientUtil.getProposal(anyLong()))
+        Mockito.when(proposalClient.getProposal(anyLong()))
                 .thenAnswer(invocation -> {
                     ProposalWrapper proposal = Mockito.mock(ProposalWrapper.class);
                     proposal.setId(1333850L);

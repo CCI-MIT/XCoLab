@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service;
 import org.xcolab.client.comment.ICommentClient;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.pojo.IComment;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
-import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.IProposalClient;
+import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.model.tables.pojos.Report;
 import org.xcolab.model.tables.pojos.ReportTarget;
 import org.xcolab.service.flagging.domain.report.ReportDao;
@@ -27,13 +27,15 @@ public class FlaggingService {
     private final ReportDao reportDao;
     private final ReportTargetDao reportTargetDao;
     private final ICommentClient commentClient;
+    private final IProposalClient proposalClient;
 
     @Autowired
     public FlaggingService(ReportDao reportDao, ReportTargetDao reportTargetDao,
-            ICommentClient commentClient) {
+            ICommentClient commentClient, IProposalClient proposalClient) {
         this.reportDao = reportDao;
         this.reportTargetDao = reportTargetDao;
         this.commentClient = commentClient;
+        this.proposalClient = proposalClient;
     }
 
     public Report createReport(Report report) {
@@ -106,10 +108,10 @@ public class FlaggingService {
     }
 
     private void approveProposal(long proposalId) throws ProposalNotFoundException {
-        final ProposalWrapper proposal = ProposalClientUtil.getProposal(proposalId, true);
+        final ProposalWrapper proposal = proposalClient.getProposal(proposalId, true);
         if (!proposal.getVisible()) {
             proposal.setVisible(true);
-            ProposalClientUtil.updateProposal(proposal);
+            proposalClient.updateProposal(proposal);
         }
     }
 
@@ -119,7 +121,7 @@ public class FlaggingService {
     }
 
     private void removeProposal(long proposalId) {
-        ProposalClientUtil.deleteProposal(proposalId);
+        proposalClient.deleteProposal(proposalId);
     }
 
     private void approveComment(long commentId) throws CommentNotFoundException {

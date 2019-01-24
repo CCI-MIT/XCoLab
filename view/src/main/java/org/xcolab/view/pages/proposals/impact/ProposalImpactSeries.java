@@ -13,7 +13,6 @@ import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
 import org.xcolab.client.contest.pojo.wrapper.ProposalVersionWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.contest.proposals.enums.ImpactSeriesType;
 import org.xcolab.client.contest.proposals.helpers.ProposalAttributeHelper;
@@ -131,7 +130,7 @@ public class ProposalImpactSeries {
                                 attribute.getRealValue());
 
                         // Set author and modification date
-                        this.lastModifiedVersion = ProposalClientUtil
+                        this.lastModifiedVersion = StaticProposalContext.getProposalClient()
                                 .getProposalVersionByProposalIdVersion(proposal.getId(),
                                 attribute.getVersion());
                     }

@@ -25,8 +25,7 @@ import org.xcolab.client.contest.pojo.tables.pojos.Proposal;
 import org.xcolab.client.contest.proposals.MembershipClient;
 import org.xcolab.client.contest.proposals.MembershipClientUtil;
 import org.xcolab.client.contest.proposals.ProposalAttributeClient;
-import org.xcolab.client.contest.proposals.ProposalClient;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.proposals.ProposalJudgeRatingClient;
 import org.xcolab.client.contest.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.contest.proposals.ProposalMemberRatingClient;
@@ -750,7 +749,8 @@ public class ProposalWrapper extends Proposal implements Serializable {
     @JsonIgnore
     public Map<Long, List<ProposalWrapper>> getSubProposalPerModel() {
         Map<Long, List<ProposalWrapper>> subProposalPerModel = new HashMap<>();
-        List<ProposalWrapper> subProposals = ProposalClientUtil.getContestIntegrationRelevantSubproposals(this.getId());
+        List<ProposalWrapper> subProposals = StaticProposalContext.getProposalClient()
+                .getContestIntegrationRelevantSubproposals(this.getId());
 
         for (ProposalWrapper subProposal : subProposals) {
             Long modelId = subProposal.getModelIdForStoredScenario();
@@ -790,7 +790,8 @@ public class ProposalWrapper extends Proposal implements Serializable {
     @JsonIgnore
     public List<Scenario> getSubProposalScenarios() throws IOException {
         List<Scenario> subProposalScenarios = new ArrayList<>();
-        List<ProposalWrapper> subProposals = ProposalClientUtil.getContestIntegrationRelevantSubproposals(this.getId());
+        List<ProposalWrapper> subProposals = StaticProposalContext.getProposalClient()
+                .getContestIntegrationRelevantSubproposals(this.getId());
         for (ProposalWrapper subProposal : subProposals) {
             Scenario scenarioForSubProposal = getScenarioByProposalId(subProposal.getId());
             subProposalScenarios.add(scenarioForSubProposal);
@@ -1007,7 +1008,7 @@ public class ProposalWrapper extends Proposal implements Serializable {
     private static class Clients {
 
         final ContestClient contest;
-        final ProposalClient proposal;
+        final IProposalClient proposal;
 
         final ProposalMemberRatingClient proposalMemberRating;
         final ProposalJudgeRatingClient proposalJudgeRating;
@@ -1021,7 +1022,7 @@ public class ProposalWrapper extends Proposal implements Serializable {
 
         Clients() {
             contest = StaticContestContext.getContestClient();
-            proposal = ProposalClientUtil.getClient();
+            proposal = StaticProposalContext.getProposalClient();
             proposalAttribute = StaticProposalContext.getProposalAttributeClient();
             proposalPhase = StaticProposalContext.getProposalPhaseClient();
             contestTeamMember = StaticContestContext.getContestTeamMemberClient();

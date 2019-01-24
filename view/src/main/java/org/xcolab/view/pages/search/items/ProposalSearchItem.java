@@ -5,7 +5,6 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.contest.proposals.exceptions.ProposalAttributeNotFoundException;
@@ -32,7 +31,8 @@ public class ProposalSearchItem extends AbstractSearchItem {
             this.searchQuery = searchQuery;
             proposalAttribute = StaticProposalContext.getProposalAttributeClient()
                     .getProposalAttribute(searchPojo.getClassPrimaryKey());
-            proposal = ProposalClientUtil.getProposal(proposalAttribute.getProposalId(), true);
+            proposal = StaticProposalContext.getProposalClient()
+                    .getProposal(proposalAttribute.getProposalId(), true);
             ProposalAttributeHelper proposalAttributeHelper =
                     new ProposalAttributeHelper(proposal, StaticProposalContext
                             .getProposalAttributeClient());

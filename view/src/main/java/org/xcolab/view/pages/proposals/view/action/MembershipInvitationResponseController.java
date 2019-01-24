@@ -13,8 +13,7 @@ import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.MembershipClient;
 import org.xcolab.client.contest.proposals.MembershipClientUtil;
 import org.xcolab.client.contest.proposals.ProposalAttributeClient;
-import org.xcolab.client.contest.proposals.ProposalClient;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
@@ -53,6 +52,9 @@ public class MembershipInvitationResponseController {
     @Autowired
     private ProposalAttributeClient proposalAttributeClient;
 
+    @Autowired
+    private IProposalClient proposalClient;
+
     @PostMapping("/membershipRequests/reply")
     private void execute(HttpServletRequest request, HttpServletResponse response,
             @RequestParam long requestId, @RequestParam long proposalId,
@@ -60,7 +62,6 @@ public class MembershipInvitationResponseController {
 
         ContestWrapper contest = contestClient.getContest(contestId);
         MembershipClient membershipClient = MembershipClientUtil.getClient();
-        ProposalClient proposalClient = ProposalClientUtil.getClient();
 
         ProposalTeamMembershipRequestWrapper membershipRequest = membershipClient.getMembershipRequest(requestId);
 

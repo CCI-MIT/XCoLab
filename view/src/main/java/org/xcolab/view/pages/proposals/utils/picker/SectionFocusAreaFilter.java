@@ -10,7 +10,7 @@ import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.FocusAreaWrapper;
 import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -57,7 +57,8 @@ public class SectionFocusAreaFilter {
                 }
             }
             proposals.removeIf(proposal -> !contests.contains(
-                    ProposalClientUtil.getCurrentContestForProposal(proposal.getId())));
+                    StaticProposalContext.getProposalClient()
+                            .getCurrentContestForProposal(proposal.getId())));
         }
     }
 

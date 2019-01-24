@@ -9,7 +9,7 @@ import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalClient;
+import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.commons.IdListUtil;
@@ -79,7 +79,7 @@ public class ProposalPickerFilterUtil {
                 ActivitiesClientUtil.getActivitySubscriptions(null, null, userId);
 
         final ClientHelper clients = proposalContext.getClients();
-        final ProposalClient proposalClient = clients.getProposalClient();
+        final IProposalClient proposalClient = clients.getProposalClient();
 
         for (ActivitySubscription subscription : activitySubscriptions) {
 
@@ -104,7 +104,7 @@ public class ProposalPickerFilterUtil {
             ProposalContext proposalContext, long userId, String filterKey, long sectionId) {
         List<ProposalWrapper> proposals = new ArrayList<>();
         final ClientHelper clients = proposalContext.getClients();
-        final ProposalClient proposalClient = clients.getProposalClient();
+        final IProposalClient proposalClient = clients.getProposalClient();
         for (IProposalSupporter ps : ProposalMemberRatingClientUtil
                 .getProposalSupportersByUserId(userId)) {
             try {
@@ -123,7 +123,7 @@ public class ProposalPickerFilterUtil {
             String filterText, String filterKey, long sectionId, Long contestId) {
 
         ClientHelper clients = proposalContext.getClients();
-        ProposalClient proposalClient = clients.getProposalClient();
+        IProposalClient proposalClient = clients.getProposalClient();
 
         ProposalTemplateSectionDefinitionWrapper proposalTemplateSectionDefinition =
                 StaticContestContext.getProposalTemplateClient()

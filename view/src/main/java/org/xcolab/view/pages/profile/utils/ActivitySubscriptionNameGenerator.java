@@ -14,7 +14,6 @@ import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
@@ -45,8 +44,10 @@ public class ActivitySubscriptionNameGenerator {
     private static String getNameForProposalSubscription(ActivitySubscription subscription){
         Long proposalId = subscription.getCategoryId();
         try {
-            ProposalWrapper proposal = ProposalClientUtil.getProposal(proposalId);
-            ContestWrapper contest = ProposalClientUtil.getCurrentContestForProposal(proposalId);
+            ProposalWrapper proposal = StaticProposalContext.getProposalClient()
+                    .getProposal(proposalId);
+            ContestWrapper contest = StaticProposalContext.getProposalClient()
+                    .getCurrentContestForProposal(proposalId);
             return "Proposal: " + String.format(HYPERLINK,
                     proposal.getProposalLinkUrl(contest),
                     StaticProposalContext.getProposalAttributeClient()

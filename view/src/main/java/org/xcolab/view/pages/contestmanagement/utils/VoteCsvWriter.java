@@ -11,7 +11,7 @@ import org.xcolab.client.contest.pojo.IProposalVote;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
@@ -148,7 +148,7 @@ public class VoteCsvWriter extends CsvResponseWriter {
     private ProposalWrapper getProposalOrNull(Map<Long, ProposalWrapper> proposals, IProposalVote vote) {
         try {
             return proposals.computeIfAbsent(vote.getProposalId(),
-                    ProposalClientUtil::getProposal);
+                    StaticProposalContext.getProposalClient()::getProposal);
         } catch (ProposalNotFoundException e) {
             log.warn("Proposal {} not found when generating report", vote.getProposalId());
             return null;

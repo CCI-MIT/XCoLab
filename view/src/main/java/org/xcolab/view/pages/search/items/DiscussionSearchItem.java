@@ -14,7 +14,7 @@ import org.xcolab.client.comment.pojo.tables.pojos.Comment;
 import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.search.pojo.ISearchPojo;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
@@ -80,7 +80,7 @@ public class DiscussionSearchItem extends AbstractSearchItem {
 
     private String getProposalDiscussionUrl() {
         try {
-            return ProposalClientUtil.getProposalByThreadId(thread.getId())
+            return StaticProposalContext.getProposalClient().getProposalByThreadId(thread.getId())
                     .getProposalDiscussionUrl();
         } catch (ProposalNotFoundException e) {
             return null;

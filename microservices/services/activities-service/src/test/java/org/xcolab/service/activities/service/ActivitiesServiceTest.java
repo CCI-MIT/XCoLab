@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.model.tables.pojos.ActivitySubscription;
 import org.xcolab.service.activities.domain.activitySubscription.ActivitySubscriptionDao;
 import org.xcolab.util.activities.enums.ActivityCategory;
@@ -35,7 +34,6 @@ import static org.mockito.Matchers.anyLong;
 @OverrideAutoConfiguration(enabled = false)
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @PrepareForTest({
-    ProposalClientUtil.class,
     ContestClient.class,
     ProposalWrapper.class,
     ContestWrapper.class
@@ -54,20 +52,20 @@ public class ActivitiesServiceTest {
     @Autowired
     ContestClient contestClient;
 
+    @Autowired
+    IProposalClient proposalClient;
+
     @Before
     public void setup() throws Exception {
         ServiceRequestUtils.setInitialized(true);
 
-        PowerMockito.mockStatic(ProposalClientUtil.class);
-
         Mockito.mock(ProposalWrapper.class);
 
-        Mockito.when(ProposalClientUtil.getProposal(anyLong()))
+        Mockito.when(proposalClient.getProposal(anyLong()))
             .thenAnswer(invocation -> {
                 ProposalWrapper proposal = Mockito.mock(ProposalWrapper.class);
                 proposal.setDiscussionId(123456L);
                 return proposal;
-
             });
 
         Mockito.when(contestClient.getContest(anyLong()))

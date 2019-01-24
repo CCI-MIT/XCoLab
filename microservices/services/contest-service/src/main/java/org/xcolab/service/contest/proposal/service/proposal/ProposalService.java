@@ -21,7 +21,7 @@ import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
 import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMemberWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
@@ -52,13 +52,14 @@ public class ProposalService {
     private final IThreadClient threadClient;
     private final ContestClient contestClient;
     private final ProposalTemplateClient proposalTemplateClient;
+    private final IProposalClient proposalClient;
 
     @Autowired
     public ProposalService(ProposalDao proposalDao, ProposalReferenceDao proposalReferenceDao,
             ProposalAttributeDao proposalAttributeDao, Proposal2PhaseDao proposal2PhaseDao,
             ProposalVersionDao proposalVersionDao, ProposalTeamMemberDao proposalTeamMemberDao,
             IThreadClient threadClient, ContestClient contestClient,
-            ProposalTemplateClient proposalTemplateClient) {
+            ProposalTemplateClient proposalTemplateClient, IProposalClient proposalClient) {
         this.proposalDao = proposalDao;
         this.proposalReferenceDao = proposalReferenceDao;
         this.proposalAttributeDao = proposalAttributeDao;
@@ -68,6 +69,7 @@ public class ProposalService {
         this.threadClient = threadClient;
         this.contestClient = contestClient;
         this.proposalTemplateClient = proposalTemplateClient;
+        this.proposalClient = proposalClient;
     }
 
     public ProposalWrapper create(long authorUserId, long contestPhaseId, boolean publishActivity) {
@@ -236,7 +238,7 @@ public class ProposalService {
         ContestWrapper contest = null;
         try {
             //TODO COLAB-2600: this looks very shady - we're calling the client from the service!
-            contest = ProposalClientUtil.getLatestContestInProposal(proposalId);
+            contest = proposalClient.getLatestContestInProposal(proposalId);
         } catch (ContestNotFoundException ignored) {
         }
         return contest;

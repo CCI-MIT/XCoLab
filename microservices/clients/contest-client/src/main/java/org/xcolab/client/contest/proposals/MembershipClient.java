@@ -29,7 +29,7 @@ public class MembershipClient {
     private final RestResource1<ProposalTeamMembershipRequestWrapper, Long> membershipRequestResource = null; // membershipRequests
     private final RestResource2<ProposalDto, Long, Long, Long> proposalTeamMemberResource = null; // proposals / teamMembers
 
-    private final ProposalClient proposalClient = null;
+    private final IProposalClient proposalClient = null;
 
     public void denyMembershipRequest(ProposalWrapper proposal, long userId, long membershipRequestId,
             String reply, long updateauthorUserId) {

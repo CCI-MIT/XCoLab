@@ -11,8 +11,7 @@ import org.xcolab.client.contest.pojo.IProposal2Phase;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalVersionWrapper;
-import org.xcolab.client.contest.proposals.ProposalClient;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
@@ -37,6 +36,9 @@ public class ProposalVersionsJsonController {
     @Autowired
     private ProposalPhaseClient proposalPhaseClient;
 
+    @Autowired
+    private IProposalClient proposalClient;
+
     @GetMapping("/api/phases/{phaseId}/proposals/{proposalId}/versionsFirstIndex")
     public void getProposalVersionFirstIndex(HttpServletRequest request, HttpServletResponse response,
             @PathVariable("phaseId") long contestPhaseId, @PathVariable("proposalId") long proposalId)
@@ -49,7 +51,7 @@ public class ProposalVersionsJsonController {
 
         int index = 0;
         Date oldDate = new Date();
-        for (ProposalVersionWrapper proposalVersion : ProposalClientUtil.getAllProposalVersions(proposalId)) {
+        for (ProposalVersionWrapper proposalVersion : proposalClient.getAllProposalVersions(proposalId)) {
             if (p2p == null || p2p.getVersionTo() == -1
                     || (proposalVersion.getVersion() >= p2p.getVersionFrom() && (proposalVersion.getVersion() < p2p.getVersionTo() ))
                     ) {
@@ -74,7 +76,7 @@ public class ProposalVersionsJsonController {
             @PathVariable("version") Integer version, @PathVariable("proposalId") Long proposalId) throws IOException {
 
 
-        ContestWrapper c = ProposalClientUtil.getCurrentContestForProposal(proposalId);
+        ContestWrapper c = proposalClient.getCurrentContestForProposal(proposalId);
 
         ClientHelper clientHelper = new ClientHelper();
         int index = clientHelper.getProposalClient()
@@ -96,7 +98,7 @@ public class ProposalVersionsJsonController {
         ContestWrapper contest = contestClient.getContest(contestId);
         ClientHelper clientHelper = new ClientHelper();
         ProposalPhaseClient proposalPhaseClient = clientHelper.getProposalPhaseClient();
-        ProposalClient proposalClient = clientHelper.getProposalClient();
+        IProposalClient proposalClient = clientHelper.getProposalClient();
         ContestClient contestClient = clientHelper.getContestClient();
 
         final JsonArrayBuilder proposalVersionsArray = Json.createArrayBuilder();

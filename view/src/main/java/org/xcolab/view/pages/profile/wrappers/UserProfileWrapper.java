@@ -6,6 +6,11 @@ import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.pojo.ContestType;
+import org.xcolab.client.contest.pojo.wrapper.ContestTypeProposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.wrapper.SupportedProposal;
+import org.xcolab.client.contest.proposals.ProposalMemberRatingClientUtil;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.PermissionsClient;
@@ -15,11 +20,6 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MemberCategory;
 import org.xcolab.client.members.pojo.Message;
 import org.xcolab.client.members.pojo.Role;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
-import org.xcolab.client.contest.proposals.ProposalMemberRatingClientUtil;
-import org.xcolab.client.contest.pojo.wrapper.ContestTypeProposal;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.pojo.wrapper.SupportedProposal;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
 import org.xcolab.view.pages.profile.beans.BadgeBean;
 import org.xcolab.view.pages.profile.beans.MessageBean;
@@ -114,7 +114,8 @@ public class UserProfileWrapper implements Serializable {
             }
         }
 
-        List<ProposalWrapper> proposals = ProposalClientUtil.getMemberProposals(member.getId());
+        List<ProposalWrapper> proposals = StaticProposalContext.getProposalClient()
+                .getMemberProposals(member.getId());
         Map<ContestType, Set<ProposalWrapper>> proposalsByContestType = EntityGroupingUtil
                 .groupByContestType(proposals);
         for (ContestType contestType : StaticAdminContext.getContestTypeClient()
@@ -317,7 +318,8 @@ public class UserProfileWrapper implements Serializable {
     public List<ProposalWrapper> getLinkingProposals() {
         if (linkingProposals == null) {
             linkingProposals = new ArrayList<>();
-            List<ProposalWrapper> proposals = ProposalClientUtil.getLinkingProposalsForUser(getUserId());
+            List<ProposalWrapper> proposals = StaticProposalContext.getProposalClient()
+                    .getLinkingProposalsForUser(getUserId());
 
             linkingProposals.addAll(proposals);
         }

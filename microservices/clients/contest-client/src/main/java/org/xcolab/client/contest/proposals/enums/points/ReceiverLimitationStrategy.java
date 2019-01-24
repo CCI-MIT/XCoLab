@@ -5,7 +5,6 @@ import org.xcolab.client.contest.pojo.IPointsDistributionConfiguration;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.PointTypeWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.util.enums.contest.ContestTier;
 
@@ -38,7 +37,7 @@ public enum ReceiverLimitationStrategy {
         if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
             for (IPointsDistributionConfiguration pdc: StaticProposalContext.getPointsClient()
                     .getPointsDistributionByProposalIdPointTypeId(proposal.getId(), pointType.getId())) {
-                if (pdc.getTargetUserId() > 0 && !ProposalClientUtil
+                if (pdc.getTargetUserId() > 0 && !StaticProposalContext.getProposalClient()
                         .isUserInProposalTeam(proposal.getId(), pdc.getTargetUserId())) {
                     PointsTarget target = new PointsTarget();
                     target.setUserId(pdc.getTargetUserId());
@@ -55,7 +54,7 @@ public enum ReceiverLimitationStrategy {
         if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
             for (IPointsDistributionConfiguration pdc: StaticProposalContext.getPointsClient()
                     .getPointsDistributionByProposalIdPointTypeId(proposal.getId(), pointType.getId())) {
-                if (pdc.getTargetUserId() > 0 && ProposalClientUtil
+                if (pdc.getTargetUserId() > 0 && StaticProposalContext.getProposalClient()
                         .isUserInProposalTeam(proposal.getId(), pdc.getTargetUserId())) {
                     PointsTarget target = new PointsTarget();
                     target.setUserId(pdc.getTargetUserId());
@@ -72,7 +71,7 @@ public enum ReceiverLimitationStrategy {
         return targets;
     }),
     SUBPROPOSALS(Type.SUB_PROPOSAL, (proposal, pointType, distributionStrategy) -> {
-        List<ProposalWrapper> subProposals = ProposalClientUtil
+        List<ProposalWrapper> subProposals = StaticProposalContext.getProposalClient()
                 .getSubproposals(proposal.getId(), false);
         Set<Long> subProposalIds = new HashSet<>();
         for (ProposalWrapper subProposal : subProposals) {
@@ -82,11 +81,12 @@ public enum ReceiverLimitationStrategy {
     }),
     REGIONAL_SUBPROPOSALS(Type.SUB_PROPOSAL, (proposal, pointType, distributionStrategy) -> {
         try {
-            List<ProposalWrapper> subProposals = ProposalClientUtil
+            List<ProposalWrapper> subProposals = StaticProposalContext.getProposalClient()
                     .getSubproposals(proposal.getId(), false);
             Set<Long> subProposalIds = new HashSet<>();
             for (ProposalWrapper subProposal : subProposals) {
-                final ContestWrapper latestProposalContest = ProposalClientUtil.getCurrentContestForProposal(subProposal.getId());
+                final ContestWrapper latestProposalContest = StaticProposalContext.getProposalClient()
+                        .getCurrentContestForProposal(subProposal.getId());
                 final ContestTier contestTier = ContestTier.getContestTierByTierType(latestProposalContest.getContestTier());
                 if (contestTier == ContestTier.REGION_AGGREGATE) {
                     subProposalIds.add(subProposal.getId());
@@ -100,12 +100,13 @@ public enum ReceiverLimitationStrategy {
         return null;
     }),
     BASIC_SUBPROPOSALS(Type.SUB_PROPOSAL, (proposal, pointType, distributionStrategy) -> {
-        List<ProposalWrapper> subProposals = ProposalClientUtil
+        List<ProposalWrapper> subProposals = StaticProposalContext.getProposalClient()
                 .getSubproposals(proposal.getId(), false);
         Set<Long> subProposalIds = new HashSet<>();
         for (ProposalWrapper subProposal : subProposals) {
             try {
-                final ContestWrapper latestProposalContest = ProposalClientUtil.getCurrentContestForProposal(subProposal.getId());
+                final ContestWrapper latestProposalContest = StaticProposalContext.getProposalClient()
+                        .getCurrentContestForProposal(subProposal.getId());
                 final ContestTier contestTier = ContestTier.getContestTierByTierType(latestProposalContest.getContestTier());
                 if (contestTier == ContestTier.BASIC || contestTier == ContestTier.NONE) {
                     subProposalIds.add(subProposal.getId());

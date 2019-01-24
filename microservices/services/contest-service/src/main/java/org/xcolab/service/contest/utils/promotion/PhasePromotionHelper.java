@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 
@@ -45,7 +44,8 @@ public class PhasePromotionHelper {
 
     public boolean isAllProposalsReviewed() {
         boolean allProposalsReviewed = true;
-        for (ProposalWrapper p : ProposalClientUtil.getProposalsInContestPhase(phase.getId())) {
+        for (ProposalWrapper p : StaticProposalContext.getProposalClient()
+                .getProposalsInContestPhase(phase.getId())) {
             if (!isProposalReviewed(p)) {
                 allProposalsReviewed = false;
                 break;

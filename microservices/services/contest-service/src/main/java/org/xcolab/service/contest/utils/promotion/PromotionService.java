@@ -13,7 +13,7 @@ import org.xcolab.client.contest.pojo.tables.pojos.Proposal2Phase;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
 import org.xcolab.client.contest.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.email.IEmailClient;
@@ -57,6 +57,7 @@ public class PromotionService {
     private final IEmailClient emailClient;
     private final ContestClient contestClient;
     private final ProposalPhaseClient proposalPhaseClient;
+    private final IProposalClient proposalClient;
 
     private Date now;
 
@@ -64,7 +65,7 @@ public class PromotionService {
     public PromotionService(ContestPhaseDao contestPhaseDao, ContestDao contestDao,
             ContestPhaseService contestPhaseService, ContestPhaseTypeDao contestPhaseTypeDao,
             ContestService contestService, IEmailClient emailClient, ContestClient contestClient,
-            ProposalPhaseClient proposalPhaseClient) {
+            ProposalPhaseClient proposalPhaseClient, IProposalClient proposalClient) {
         this.contestPhaseDao = contestPhaseDao;
         this.contestDao = contestDao;
         this.contestPhaseTypeDao = contestPhaseTypeDao;
@@ -73,6 +74,7 @@ public class PromotionService {
         this.emailClient = emailClient;
         this.contestClient = contestClient;
         this.proposalPhaseClient = proposalPhaseClient;
+        this.proposalClient = proposalClient;
     }
 
     public synchronized int doPromotion(Date now) {
@@ -108,7 +110,7 @@ public class PromotionService {
                     log.info("promoting contest {}", contest.getId());
                     ContestPhaseWrapper nextPhase = contestPhaseService.getNextContestPhase(phase);
                     //TODO: this should not be calling the client
-                    final List<ProposalWrapper> proposalsInPhase = ProposalClientUtil
+                    final List<ProposalWrapper> proposalsInPhase = proposalClient
                             .getProposalsInContestPhase(phase.getId());
                     for (ProposalWrapper p : proposalsInPhase) {
                         if (phasePromotionHelper.isProposalPromoted(p)) {
@@ -168,7 +170,7 @@ public class PromotionService {
                         ContestWrapper contest = contestDao.get(phase.getContestId());
                         log.info("promoting contest {} (judging) ", contest.getId());
                         ContestPhaseWrapper nextPhase = contestPhaseService.getNextContestPhase(phase);
-                        for (ProposalWrapper p : ProposalClientUtil
+                        for (ProposalWrapper p : proposalClient
                                 .getProposalsInContestPhase(phase.getId())) {
                             try {
                                 // check if proposal isn't already associated with requested phase
@@ -282,7 +284,7 @@ public class PromotionService {
                     Set<ProposalWrapper> allProposals = new HashSet<>();
                     if (!proposalCreationPhases.isEmpty()) {
                         for (ContestPhaseWrapper creationPhase : proposalCreationPhases) {
-                            final List<ProposalWrapper> proposalsInContestPhase = ProposalClientUtil
+                            final List<ProposalWrapper> proposalsInContestPhase = proposalClient
                                     .getProposalsInContestPhase(creationPhase.getId());
                             addAllVisibleProposalsToCollection(proposalsInContestPhase,
                                     allProposals, creationPhase);
@@ -297,15 +299,14 @@ public class PromotionService {
                     if (finalistSelection != null) {
                         ContestPhaseWrapper finalsPhase =
                                 contestPhaseService.getNextContestPhase(finalistSelection);
-                        finalists = ProposalClientUtil
-                                .getProposalsInContestPhase(finalsPhase.getId());
+                        finalists = proposalClient.getProposalsInContestPhase(finalsPhase.getId());
                         //make sure all finalists are in the set
                         addAllVisibleProposalsToCollection(finalists, allProposals, finalsPhase);
 
                         if (semifinalistSelection != null) {
                             ContestPhaseWrapper semifinalsPhase =
                                     contestPhaseService.getNextContestPhase(semifinalistSelection);
-                            semifinalists = ProposalClientUtil.getProposalsInContestPhase(
+                            semifinalists = proposalClient.getProposalsInContestPhase(
                                     semifinalsPhase.getId());
                             semifinalists.removeAll(finalists);
                             //make sure all semifinalists are in the set
@@ -379,7 +380,7 @@ public class PromotionService {
         for (ProposalWrapper proposal : proposals) {
             //update the last phase association - set the end version to the current version
             final long proposalId = proposal.getId();
-            Integer currentProposalVersion = ProposalClientUtil.countProposalVersions(proposalId);
+            Integer currentProposalVersion = proposalClient.countProposalVersions(proposalId);
             if (currentProposalVersion <= 0) {
                 log.error("Proposal {} not found: version was {}", proposalId,
                         currentProposalVersion);

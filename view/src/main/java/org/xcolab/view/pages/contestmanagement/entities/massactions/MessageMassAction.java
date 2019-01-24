@@ -2,11 +2,11 @@ package org.xcolab.view.pages.contestmanagement.entities.massactions;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.email.StaticEmailContext;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.view.pages.contestmanagement.beans.MassMessageBean;
 
@@ -46,7 +46,8 @@ public abstract class MessageMassAction extends AbstractContestMassAction {
 
             for (ProposalWrapper proposal : proposals) {
                 List<Member> proposalMember =
-                        ProposalClientUtil.getProposalMembers(proposal.getId());
+                        StaticProposalContext.getProposalClient()
+                                .getProposalMembers(proposal.getId());
                 for (Member member : proposalMember) {
                     recipientIds.add(member.getId());
                 }

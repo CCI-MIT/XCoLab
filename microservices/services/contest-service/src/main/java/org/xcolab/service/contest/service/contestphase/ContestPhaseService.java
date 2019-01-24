@@ -10,7 +10,7 @@ import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
@@ -55,6 +55,9 @@ public class ContestPhaseService {
     @Autowired
     private ContestClient contestClient;
 
+    @Autowired
+    private IProposalClient proposalClient;
+
     public ContestStatus getContestStatus(ContestPhaseWrapper contestPhase) {
         String status = contestPhaseTypeDao.get(contestPhase.getContestPhaseTypeId()).get().getStatus();
         return status == null ? null : ContestStatus.valueOf(status);
@@ -80,7 +83,7 @@ public class ContestPhaseService {
     public void transferSupportsToVote(ContestWrapper contest, ContestPhaseWrapper votingPhase) {
 
 //        TODO: this should not be calling the client!
-        final List<ProposalWrapper> proposalsInPhase = ProposalClientUtil
+        final List<ProposalWrapper> proposalsInPhase = proposalClient
                 .getProposalsInContestPhase(votingPhase.getId());
         Set<Long> proposalIdsInPhase = proposalsInPhase.stream()
                 .map(ProposalWrapper::getId)
@@ -117,7 +120,7 @@ public class ContestPhaseService {
     }
 
     private Map<Member, Set<ProposalWrapper>> getSupportedProposalsByMember(ContestWrapper contest) {
-        List<ProposalWrapper> proposalsInContest = ProposalClientUtil
+        List<ProposalWrapper> proposalsInContest = proposalClient
                 .getProposalsInContest(contest.getId());
 
         return new GroupingHelper<>(proposalsInContest).groupWithDuplicateKeysAndValues(
@@ -130,7 +133,7 @@ public class ContestPhaseService {
     public void forcePromotionOfProposalInPhase(Long proposalId, Long phaseId) throws NotFoundException {
         ContestPhaseWrapper phase = contestPhaseDao.get(phaseId).get();
         try {
-            ProposalWrapper p = ProposalClientUtil.getProposal(proposalId);
+            ProposalWrapper p = proposalClient.getProposal(proposalId);
             ContestPhaseWrapper nextPhase = getNextContestPhase(phase);
             PhasePromotionHelper phasePromotionHelper = new PhasePromotionHelper(phase);
             //skip already promoted proposal

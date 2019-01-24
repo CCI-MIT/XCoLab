@@ -5,7 +5,6 @@ import org.xcolab.client.contest.pojo.IContestPhaseRibbonType;
 import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.view.pages.profile.entity.Badge;
@@ -29,7 +28,8 @@ public class BadgeBean implements Serializable {
 
     private List<Badge> getBadges(long userId) {
         final List<Badge> badges = new ArrayList<>();
-        for (ProposalWrapper proposal : ProposalClientUtil.getMemberProposals(userId)) {
+        for (ProposalWrapper proposal : StaticProposalContext.getProposalClient()
+                .getMemberProposals(userId)) {
             final Optional<IProposalContestPhaseAttribute> ribbonAttributeOpt =
                     getLatestRibbonAttribute(proposal);
             if (ribbonAttributeOpt.isPresent()) {

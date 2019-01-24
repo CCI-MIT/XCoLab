@@ -1,8 +1,8 @@
 package org.xcolab.view.util.entity;
 
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.commons.GroupingHelper;
 
 import java.util.List;
@@ -16,8 +16,10 @@ public final class EntityGroupingUtil {
 
     private EntityGroupingUtil() { }
 
-    public static Map<ContestType, Set<ProposalWrapper>> groupByContestType(List<ProposalWrapper> proposals) {
-        return new GroupingHelper<>(proposals).groupWithDuplicateValues(proposal -> ProposalClientUtil
+    public static Map<ContestType, Set<ProposalWrapper>> groupByContestType(
+            List<ProposalWrapper> proposals) {
+        return new GroupingHelper<>(proposals).groupWithDuplicateValues(proposal ->
+                StaticProposalContext.getProposalClient()
                 .getLatestContestInProposal(proposal.getId()).getContestType());
     }
 }

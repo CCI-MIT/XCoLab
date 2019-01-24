@@ -9,7 +9,7 @@ import org.xcolab.client.contest.pojo.tables.pojos.Proposal2Phase;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalClient;
+import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.proposals.ProposalMoveClient;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
@@ -32,7 +32,7 @@ public final class ProposalMoveUtil {
             ContestPhaseWrapper contestPhase, ContestWrapper targetContest, long userId) {
         try {
             final ClientHelper clients = proposalContext.getClients();
-            final ProposalClient proposalClient = clients.getProposalClient();
+            final IProposalClient proposalClient = clients.getProposalClient();
             final ProposalPhaseClient proposalPhaseClient = clients.getProposalPhaseClient();
             final ProposalMoveClient proposalMoveClient = clients.getProposalMoveClient();
 

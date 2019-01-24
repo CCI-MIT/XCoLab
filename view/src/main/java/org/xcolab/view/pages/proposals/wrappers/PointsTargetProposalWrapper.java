@@ -1,9 +1,9 @@
 package org.xcolab.view.pages.proposals.wrappers;
 
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.contest.proposals.enums.points.PointsTarget;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 
 public class PointsTargetProposalWrapper {
 
@@ -18,7 +18,7 @@ public class PointsTargetProposalWrapper {
 
     public ProposalWrapper getProposal() {
         try {
-            return ProposalClientUtil.getProposal(target.getProposalId());
+            return StaticProposalContext.getProposalClient().getProposal(target.getProposalId());
         } catch (ProposalNotFoundException ignored) {
             return null;
         }

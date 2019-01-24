@@ -11,7 +11,7 @@ import org.xcolab.client.contest.pojo.IProposal2Phase;
 import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.ProposalAttributeClient;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.members.pojo.Member;
@@ -31,6 +31,9 @@ public class ProposalRevertActionController {
 
     @Autowired
     private ProposalAttributeClient proposalAttributeClient;
+
+    @Autowired
+    private IProposalClient proposalClient;
     
     @PostMapping("/c/{proposalUrlString}/{proposalId}/proposalRevert")
     public void showProposalRevert(HttpServletRequest request, HttpServletResponse response,
@@ -142,11 +145,10 @@ public class ProposalRevertActionController {
             }
             // extra check to reset dependencies from the old versions
             if (updateProposalReferences) {
-                ProposalClientUtil.populateTableWithProposal(
+                proposalClient.populateTableWithProposal(
                         oldProposalVersionToBeBecomeCurrent.getId());
             }
         } catch (ProposalNotFoundException ignored) {
-
         }
     }
 

@@ -18,7 +18,7 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.tables.pojos.ProposalTemplateSectionDefinition;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.contest.proposals.helpers.ProposalAttributeHelper;
@@ -169,7 +169,8 @@ public class ProposalTemplateSectionDefinitionWrapper extends ProposalTemplateSe
                 // If a match is found create a new <a> tag
                 if (matcher.find()) {
                     final String link = word.substring(matcher.start(), matcher.end());
-                    final ProposalWrapper linkedProposal = ProposalClientUtil.getProposalFromLinkUrl(link);
+                    final ProposalWrapper linkedProposal = StaticProposalContext.getProposalClient()
+                            .getProposalFromLinkUrl(link);
 
                     String elementName;
                     if (linkedProposal != null) {
@@ -232,7 +233,7 @@ public class ProposalTemplateSectionDefinitionWrapper extends ProposalTemplateSe
         if (attr == null || attr.getNumericValue() <= 0) {
             return null;
         }
-        return (ProposalClientUtil.getProposal(attr.getNumericValue()));
+        return (StaticProposalContext.getProposalClient().getProposal(attr.getNumericValue()));
     }
 
     public List<ProposalWrapper> getStringValueAsProposalArray() {
@@ -246,7 +247,8 @@ public class ProposalTemplateSectionDefinitionWrapper extends ProposalTemplateSe
 
         for (Long proposalId : proposalIds) {
             try {
-                proposals.add(new ProposalWrapper(ProposalClientUtil.getProposal(proposalId)));
+                proposals.add(new ProposalWrapper(StaticProposalContext.getProposalClient()
+                        .getProposal(proposalId)));
             } catch (ProposalNotFoundException e) {
                 log.warn(String.format("Section %d contains invalid proposal reference %d",
                         getSectionDefinitionId(), proposalId));

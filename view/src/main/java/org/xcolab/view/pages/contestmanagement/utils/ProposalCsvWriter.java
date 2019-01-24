@@ -2,10 +2,10 @@ package org.xcolab.view.pages.contestmanagement.utils;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
-import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMemberWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.commons.CsvResponseWriter;
 
 import java.io.IOException;
@@ -45,7 +45,8 @@ public class ProposalCsvWriter extends CsvResponseWriter {
     public void writeProposalsInContest(ContestWrapper contest) {
         final String colabUrl = PlatformAttributeKey.COLAB_URL.get();
 
-        List<ProposalWrapper> proposals = ProposalClientUtil.listProposals(contest.getId());
+        List<ProposalWrapper> proposals = StaticProposalContext.getProposalClient()
+                .listProposals(contest.getId());
 
         for (ProposalWrapper proposal : proposals) {
             List<String> row = new ArrayList<>();

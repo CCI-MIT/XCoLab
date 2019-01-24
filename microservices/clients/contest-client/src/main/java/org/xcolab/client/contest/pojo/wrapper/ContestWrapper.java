@@ -18,7 +18,6 @@ import org.xcolab.client.contest.pojo.IContestPhaseType;
 import org.xcolab.client.contest.pojo.IContestTeamMember;
 import org.xcolab.client.contest.pojo.IContestTeamMemberRole;
 import org.xcolab.client.contest.pojo.tables.pojos.Contest;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.client.contest.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.contest.util.ContestScheduleChangeHelper;
@@ -379,7 +378,7 @@ public class ContestWrapper extends Contest {
 
         List<ContestPhaseWrapper> contestPhases = contestClient.getAllContestPhases(this.getId());
         for (ContestPhaseWrapper contestPhase : contestPhases) {
-            List<ProposalWrapper> proposals = ProposalClientUtil.getClient()
+            List<ProposalWrapper> proposals = StaticProposalContext.getProposalClient()
                     .getActiveProposalsInContestPhase(contestPhase.getId());
             proposalList.addAll(proposals);
 

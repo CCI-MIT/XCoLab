@@ -16,7 +16,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalClientUtil;
 import org.xcolab.service.contest.utils.promotion.PromotionService;
 import org.xcolab.util.http.ServiceRequestUtils;
 
@@ -28,7 +27,6 @@ import java.util.Date;
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @PrepareForTest({
         ServiceRequestUtils.class,
-        ProposalClientUtil.class,
         ProposalWrapper.class,
         ContestWrapper.class
 })
