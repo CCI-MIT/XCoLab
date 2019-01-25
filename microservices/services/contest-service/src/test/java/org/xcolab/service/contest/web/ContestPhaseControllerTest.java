@@ -105,7 +105,7 @@ public class ContestPhaseControllerTest {
         ContestPhaseWrapper contestPhase = new ContestPhaseWrapper();
         contestPhase.setId(123L);
 
-        this.mockMvc.perform(put("/contestPhases/" + contestPhase.getId()).contentType(contentType)
+        this.mockMvc.perform(put("/contestPhases").contentType(contentType)
                 .accept(contentType).content(objectMapper.writeValueAsString(contestPhase)))
                 .andExpect(status().isOk());
 
