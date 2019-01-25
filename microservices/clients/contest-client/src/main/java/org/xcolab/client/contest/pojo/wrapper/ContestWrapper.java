@@ -508,7 +508,7 @@ public class ContestWrapper extends Contest {
     public List<ContestWrapper> getSubContests() {
         List <ContestWrapper> subContests = contestClient
                 .getSubContestsByOntologySpaceId(this.getId(), ONTOLOGY_SPACE_ID_WHERE);
-        subContests.sort(Comparator.comparingInt(Contest::getWeight));
+        subContests.sort(Comparator.comparingInt(ContestWrapper::getWeight));
         return subContests;
     }
 

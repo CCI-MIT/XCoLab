@@ -48,10 +48,10 @@ import static org.mockito.Matchers.anyString;
 public class ContestPhaseServiceTest {
 
     @Autowired
-    ContestPhaseService contestPhaseService;
+    private ContestPhaseService contestPhaseService;
 
     @Mock
-    ProposalPhaseClient proposalPhaseClient;
+    private ProposalPhaseClient proposalPhaseClient;
 
     @Mock
     private IProposalClient proposalClient;

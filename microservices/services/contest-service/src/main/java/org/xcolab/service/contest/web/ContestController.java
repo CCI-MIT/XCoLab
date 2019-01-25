@@ -194,8 +194,10 @@ public class ContestController implements ContestClient {
 
     @Override
     @GetMapping("/count/contests")
-    public int countContests(@RequestParam Boolean contestActive,
-            @RequestParam Boolean contestPrivate, @RequestParam Long contestTypeId) {
+    public int countContests(
+            @RequestParam(required = false) Boolean contestActive,
+            @RequestParam(required = false) Boolean contestPrivate,
+            @RequestParam(required = false) Long contestTypeId) {
         return contestDao.countByGiven(null, null, contestActive, null,
                 null, null, null, null,
                 Collections.singletonList(contestTypeId), contestPrivate, null);

@@ -85,7 +85,6 @@ public class AdminControllerTest {
             } else {
                 return Optional.empty();
             }
-
         };
         Mockito.when(configurationAttributeDao.getConfigurationAttribute(anyString(), anyString()))
                 .thenAnswer(answer);

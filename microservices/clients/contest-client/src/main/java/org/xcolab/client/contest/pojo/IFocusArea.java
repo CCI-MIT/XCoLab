@@ -2,9 +2,9 @@ package org.xcolab.client.contest.pojo;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import org.xcolab.client.contest.pojo.tables.pojos.FocusArea;
+import org.xcolab.client.contest.pojo.wrapper.FocusAreaWrapper;
 
-@JsonDeserialize(as = FocusArea.class)
+@JsonDeserialize(as = FocusAreaWrapper.class)
 public interface IFocusArea {
 
     Long getId();

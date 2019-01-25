@@ -93,7 +93,8 @@ public interface IProposalClient {
     }
 
     @GetMapping("/proposalIds")
-    List<Long> listProposalIds(@RequestParam(required = false) Integer startRecord,
+    List<Long> listProposalIds(
+            @RequestParam(value = "startRecord", required = false) Integer startRecord,
             @RequestParam(value = "limitRecord", required = false) Integer limitRecord,
             @RequestParam(value = "contestId", required = false) Long contestId,
             @RequestParam(value = "visible", required = false) Boolean visible,

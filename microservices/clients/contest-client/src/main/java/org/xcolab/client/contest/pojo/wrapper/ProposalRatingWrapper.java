@@ -1,8 +1,5 @@
 package org.xcolab.client.contest.pojo.wrapper;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.ParameterizedTypeReference;
 
@@ -12,13 +9,10 @@ import org.xcolab.client.contest.pojo.tables.pojos.ProposalRating;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.util.http.client.types.TypeProvider;
 
-import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.List;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-@JsonInclude(Include.NON_NULL)
-public class ProposalRatingWrapper extends ProposalRating implements Serializable {
+public class ProposalRatingWrapper extends ProposalRating {
 
     public static final TypeProvider<ProposalRatingWrapper> TYPES =
             new TypeProvider<>(ProposalRatingWrapper.class,

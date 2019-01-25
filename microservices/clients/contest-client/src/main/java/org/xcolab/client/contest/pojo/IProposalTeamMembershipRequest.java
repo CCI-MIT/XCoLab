@@ -2,11 +2,11 @@ package org.xcolab.client.contest.pojo;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import org.xcolab.client.contest.pojo.tables.pojos.ProposalTeamMembershipRequest;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMembershipRequestWrapper;
 
 import java.sql.Timestamp;
 
-@JsonDeserialize(as = ProposalTeamMembershipRequest.class)
+@JsonDeserialize(as = ProposalTeamMembershipRequestWrapper.class)
 public interface IProposalTeamMembershipRequest {
 
     Long getId();

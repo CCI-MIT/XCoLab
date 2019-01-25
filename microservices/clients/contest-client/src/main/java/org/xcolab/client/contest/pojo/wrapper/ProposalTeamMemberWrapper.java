@@ -11,8 +11,6 @@ import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.util.List;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-@JsonInclude(Include.NON_NULL)
 public class ProposalTeamMemberWrapper extends ProposalTeamMember {
 
     public static final TypeProvider<ProposalTeamMemberWrapper> TYPES =

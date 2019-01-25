@@ -2,9 +2,9 @@ package org.xcolab.client.contest.pojo;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import org.xcolab.client.contest.pojo.tables.pojos.ProposalTemplateSectionDefinition;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
 
-@JsonDeserialize(as = ProposalTemplateSectionDefinition.class)
+@JsonDeserialize(as = ProposalTemplateSectionDefinitionWrapper.class)
 public interface IProposalTemplateSectionDefinition {
 
     Long getId();

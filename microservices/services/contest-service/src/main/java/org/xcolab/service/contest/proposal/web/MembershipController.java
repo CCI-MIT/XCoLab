@@ -35,7 +35,7 @@ public class MembershipController implements IMembershipClient {
         this.proposalTeamMemberDao = proposalTeamMemberDao;
     }
 
-    @GetMapping(value = "/membershipRequests/{membershipRequestId}")
+    @GetMapping("/membershipRequests/{membershipRequestId}")
     public ProposalTeamMembershipRequestWrapper getMembershipRequest(
             @PathVariable Long membershipRequestId) throws MembershipRequestNotFoundException {
         if (membershipRequestId == null || membershipRequestId == 0) {
@@ -45,14 +45,14 @@ public class MembershipController implements IMembershipClient {
         }
     }
 
-    @PostMapping(value = "/membershipRequests")
+    @PostMapping("/membershipRequests")
     public ProposalTeamMembershipRequestWrapper createMembershipRequest(@RequestBody
             ProposalTeamMembershipRequestWrapper membershipRequest) {
         membershipRequest.setCreatedAt(new Timestamp(new Date().getTime()));
         return this.proposalTeamMembershipRequestDao.create(membershipRequest);
     }
 
-    @PutMapping(value = "/membershipRequests")
+    @PutMapping("/membershipRequests")
     public boolean updateMembershipRequest(
             @RequestBody ProposalTeamMembershipRequestWrapper membershipRequest)
             throws MembershipRequestNotFoundException {
@@ -65,7 +65,7 @@ public class MembershipController implements IMembershipClient {
         }
     }
 
-    @GetMapping(value = "/membershipRequests")
+    @GetMapping("/membershipRequests")
     public List<ProposalTeamMembershipRequestWrapper> getMembershipRequests(
             @RequestParam(required = false) Long proposalId,
             @RequestParam(required = false) Integer statusId,

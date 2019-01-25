@@ -8,5 +8,4 @@ public class MembershipRequestNotFoundException extends EntityNotFoundException 
         super("MembershipRequest with id " + proposalAttributeId + " does not exist",
                 MembershipRequestNotFoundException.class);
     }
-
 }

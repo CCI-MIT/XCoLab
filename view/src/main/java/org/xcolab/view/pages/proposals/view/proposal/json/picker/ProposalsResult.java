@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.pojo.wrapper.ProposalRibbonWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalRibbon;
 
 import java.util.Date;
 import java.util.List;
@@ -69,7 +69,7 @@ public class ProposalsResult {
             this.supportersCount = proposal.getSupportersCount();
             this.votesCount = proposal.getVotesCountFromCache();
             this.pitch = proposal.getPitch();
-            final ProposalRibbonWrapper ribbonWrapper = proposal.getRibbonWrapper();
+            final ProposalRibbon ribbonWrapper = proposal.getRibbonWrapper();
             this.ribbon = ribbonWrapper.getRibbon();
             this.ribbonText = ribbonWrapper.getRibbonText();
             this.featured = proposal.isFeatured();

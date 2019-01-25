@@ -23,15 +23,16 @@ import java.util.List;
 @FeignClient("xcolab-contest-service")
 public interface IMembershipClient {
 
-    @GetMapping(value = "/membershipRequests/{membershipRequestId}")
+    @GetMapping("/membershipRequests/{membershipRequestId}")
     ProposalTeamMembershipRequestWrapper getMembershipRequest(
-            @PathVariable Long membershipRequestId) throws MembershipRequestNotFoundException;
+            @PathVariable("membershipRequestId") Long membershipRequestId)
+            throws MembershipRequestNotFoundException;
 
-    @GetMapping(value = "/membershipRequests")
+    @GetMapping("/membershipRequests")
     List<ProposalTeamMembershipRequestWrapper> getMembershipRequests(
-            @RequestParam(required = false) Long proposalId,
-            @RequestParam(required = false) Integer statusId,
-            @RequestParam(required = false) Long userId);
+            @RequestParam(value = "proposalId", required = false) Long proposalId,
+            @RequestParam(value = "statusId", required = false) Integer statusId,
+            @RequestParam(value = "userId", required = false) Long userId);
 
     default List<ProposalTeamMembershipRequestWrapper> getMembershipRequests(Long proposalId) {
         List<ProposalTeamMembershipRequestWrapper> invited =
@@ -75,9 +76,9 @@ public interface IMembershipClient {
         return userRequest != null;
     }
 
-    @PostMapping(value = "/membershipRequests")
+    @PostMapping("/membershipRequests")
     ProposalTeamMembershipRequestWrapper createMembershipRequest(
-            ProposalTeamMembershipRequestWrapper membershipRequest);
+            @RequestBody ProposalTeamMembershipRequestWrapper membershipRequest);
 
     default ProposalTeamMembershipRequestWrapper createMembershipRequest(Long proposalId,
             Long userId, String comment,
@@ -109,8 +110,9 @@ public interface IMembershipClient {
                 MembershipRequestStatus.STATUS_PENDING_REQUESTED);
     }
 
-    @PutMapping(value = "/membershipRequests")
-    boolean updateMembershipRequest(ProposalTeamMembershipRequestWrapper membershipRequest)
+    @PutMapping("/membershipRequests")
+    boolean updateMembershipRequest(
+            @RequestBody ProposalTeamMembershipRequestWrapper membershipRequest)
             throws MembershipRequestNotFoundException;
 
     default void approveMembershipRequest(ProposalWrapper proposal, Long userId,
@@ -144,7 +146,6 @@ public interface IMembershipClient {
     }
 
     @PostMapping("/proposals/{userId}/teamMembers")
-    void addUserToProposalTeam(@PathVariable Long userId, @RequestBody ProposalWrapper proposal)
-            throws ConflictException;
-
+    void addUserToProposalTeam(@PathVariable("userId") Long userId,
+            @RequestBody ProposalWrapper proposal) throws ConflictException;
 }

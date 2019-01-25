@@ -26,7 +26,6 @@ import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.commons.IdListUtil;
-import org.xcolab.commons.spring.web.annotation.ListMapping;
 import org.xcolab.util.activities.enums.ActivityCategory;
 
 import java.io.IOException;
@@ -115,11 +114,11 @@ public interface ContestClient {
 
     @GetMapping("/contestDiscussions")
     public List<IContestDiscussion> getContestDiscussions(
-            @RequestParam(required = false) Integer startRecord,
-            @RequestParam(required = false) Integer limitRecord,
-            @RequestParam(required = false) String sort,
-            @RequestParam(required = false) Long contestId,
-            @RequestParam(required = false) String tab);
+            @RequestParam(value = "startRecord", required = false) Integer startRecord,
+            @RequestParam(value = "limitRecord", required = false) Integer limitRecord,
+            @RequestParam(value = "sort", required = false) String sort,
+            @RequestParam(value = "contestId", required = false) Long contestId,
+            @RequestParam(value = "tab", required = false) String tab);
 
     default IContestDiscussion getContestDiscussion(Long contestId, String tab) {
         List<IContestDiscussion> contestDiscussions =
@@ -192,12 +191,13 @@ public interface ContestClient {
             @RequestParam(value = "focusAreaOntologyTerms", required = false)
                     List<Long> focusAreaOntologyTerms);
 
-    @ListMapping("/contestyears")
+    @GetMapping("/contestyears")
     List<Long> getContestYears();
 
 
     @GetMapping("/contests/getContestByThreadId")
-    ContestWrapper getContestByThreadId(@RequestParam(value = "", required = false) Long threadId);
+    ContestWrapper getContestByThreadId(
+            @RequestParam(value = "threadId", required = false) Long threadId);
 
     @GetMapping("/contests/getContestByResourceArticleId")
     ContestWrapper getContestByResourceArticleId(
@@ -321,22 +321,22 @@ public interface ContestClient {
 
     @GetMapping("/contests")
     List<ContestWrapper> getContests(
-            @RequestParam(value = "", required = false) Integer startRecord,
-            @RequestParam(value = "", required = false) Integer limitRecord,
-            @RequestParam(value = "", required = false) String sort,
-            @RequestParam(value = "", required = false) String lang,
-            @RequestParam(value = "", required = false) String contestUrlName,
-            @RequestParam(value = "", required = false) Long contestYear,
-            @RequestParam(value = "", required = false) Boolean active,
-            @RequestParam(value = "", required = false) Boolean featured,
-            @RequestParam(value = "", required = false) List<Long> contestTiers,
-            @RequestParam(value = "", required = false) Long contestScheduleId,
-            @RequestParam(value = "", required = false) Long proposalTemplateId,
-            @RequestParam(value = "", required = false) List<Long> focusAreaIds,
-            @RequestParam(value = "", required = false) List<Long> ontologyTermIds,
-            @RequestParam(value = "", required = false) List<Long> contestTypeIds,
-            @RequestParam(value = "", required = false) Boolean contestPrivate,
-            @RequestParam(value = "", required = false) String searchTerm);
+            @RequestParam(value = "startRecord", required = false) Integer startRecord,
+            @RequestParam(value = "limitRecord", required = false) Integer limitRecord,
+            @RequestParam(value = "sort", required = false) String sort,
+            @RequestParam(value = "lang", required = false) String lang,
+            @RequestParam(value = "contestUrlName", required = false) String contestUrlName,
+            @RequestParam(value = "contestYear", required = false) Long contestYear,
+            @RequestParam(value = "active", required = false) Boolean active,
+            @RequestParam(value = "featured", required = false) Boolean featured,
+            @RequestParam(value = "contestTiers", required = false) List<Long> contestTiers,
+            @RequestParam(value = "contestScheduleId", required = false) Long contestScheduleId,
+            @RequestParam(value = "proposalTemplateId", required = false) Long proposalTemplateId,
+            @RequestParam(value = "focusAreaIds", required = false) List<Long> focusAreaIds,
+            @RequestParam(value = "ontologyTermIds", required = false) List<Long> ontologyTermIds,
+            @RequestParam(value = "contestTypeIds", required = false) List<Long> contestTypeIds,
+            @RequestParam(value = "contestPrivate", required = false) Boolean contestPrivate,
+            @RequestParam(value = "searchTerm", required = false) String searchTerm);
 
     default List<ContestWrapper> getContests(Boolean contestActive, Boolean contestPrivate,
             Long contestTypeId) {
@@ -347,9 +347,9 @@ public interface ContestClient {
     }
 
     @GetMapping("/count/contests")
-    int countContests(@RequestParam("contestActive") Boolean contestActive,
-            @RequestParam("contestPrivate") Boolean contestPrivate,
-            @RequestParam("contestTypeId") Long contestTypeId);
+    int countContests(@RequestParam(value = "contestActive", required = false) Boolean contestActive,
+            @RequestParam(value = "contestPrivate", required = false) Boolean contestPrivate,
+            @RequestParam(value = "contestTypeId", required = false) Long contestTypeId);
 
     default List<ContestWrapper> getContestsByContestTypeId(Long contestTypeId) {
         String lang = LocaleContextHolder.getLocale().getLanguage();
@@ -401,7 +401,7 @@ public interface ContestClient {
             @PathVariable("contestPhaseTypeId") Long contestPhaseTypeId);
 
     @DeleteMapping("/contestPhases/{contestPhaseId}")
-    boolean deleteContestPhase(@PathVariable Long contestPhaseId);
+    boolean deleteContestPhase(@PathVariable("contestPhaseId") Long contestPhaseId);
 
     @PutMapping("/contestPhases")
     boolean updateContestPhase(@RequestBody ContestPhaseWrapper contestPhase);
@@ -473,7 +473,6 @@ public interface ContestClient {
     default void unsubscribeMemberFromContest(long contestId, long userId) {
         ActivitiesClientUtil.deleteSubscription(userId, ActivityCategory.CONTEST, contestId);
     }
-
 
     @GetMapping("/contestCollectionCards")
     List<IContestCollectionCard> getAllContestCollectionCards(

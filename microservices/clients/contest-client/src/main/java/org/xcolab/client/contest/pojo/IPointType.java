@@ -2,9 +2,9 @@ package org.xcolab.client.contest.pojo;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import org.xcolab.client.contest.pojo.tables.pojos.PointType;
+import org.xcolab.client.contest.pojo.wrapper.PointTypeWrapper;
 
-@JsonDeserialize(as = PointType.class)
+@JsonDeserialize(as = PointTypeWrapper.class)
 public interface IPointType {
 
     Long getId();

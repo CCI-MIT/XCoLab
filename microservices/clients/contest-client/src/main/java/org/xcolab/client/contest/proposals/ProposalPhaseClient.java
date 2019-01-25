@@ -12,23 +12,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.contest.pojo.IProposal2Phase;
 import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
 import org.xcolab.client.contest.pojo.tables.pojos.ProposalContestPhaseAttribute;
-import org.xcolab.client.contest.pojo.wrapper.ProposalDto;
 import org.xcolab.client.contest.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
-import org.xcolab.util.http.client.RestResource;
-import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.RestResource2L;
 
 import java.util.List;
 
 @FeignClient("xcolab-contest-service")
 public interface ProposalPhaseClient {
-
-    RestResource<IProposal2Phase, Long> proposal2PhaseResource = null; // proposal2Phases
-    RestResource<IProposalContestPhaseAttribute, Long>
-            proposalContestPhaseAttributeResource = null; // proposalContestPhaseAttributes
-    RestResource1<ProposalDto, Long> proposalResource = null; // proposal
-    RestResource2L<ProposalDto, Long> proposalPhaseIdResource = null; // proposal / phaseIds
 
     @GetMapping("/proposal2Phases")
     List<IProposal2Phase> getProposal2Phases(

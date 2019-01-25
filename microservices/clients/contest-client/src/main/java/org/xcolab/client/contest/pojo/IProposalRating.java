@@ -2,9 +2,9 @@ package org.xcolab.client.contest.pojo;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import org.xcolab.client.contest.pojo.tables.pojos.ProposalRating;
+import org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper;
 
-@JsonDeserialize(as = ProposalRating.class)
+@JsonDeserialize(as = ProposalRatingWrapper.class)
 public interface IProposalRating {
 
     Long getId();

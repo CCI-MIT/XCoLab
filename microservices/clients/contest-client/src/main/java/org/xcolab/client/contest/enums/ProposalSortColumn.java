@@ -1,7 +1,7 @@
 package org.xcolab.client.contest.enums;
 
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.pojo.wrapper.ProposalRibbonWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalRibbon;
 
 import java.util.Comparator;
 
@@ -28,8 +28,8 @@ public enum ProposalSortColumn {
         }
     }),
     RIBBONS((o1, o2) -> {
-        final ProposalRibbonWrapper ribbon1 = o1.getRibbonWrapper();
-        final ProposalRibbonWrapper ribbon2 = o2.getRibbonWrapper();
+        final ProposalRibbon ribbon1 = o1.getRibbonWrapper();
+        final ProposalRibbon ribbon2 = o2.getRibbonWrapper();
 
         int sortOrderDiff = ribbon1.getSortOrder() - ribbon2.getSortOrder();
         if (sortOrderDiff != 0) {

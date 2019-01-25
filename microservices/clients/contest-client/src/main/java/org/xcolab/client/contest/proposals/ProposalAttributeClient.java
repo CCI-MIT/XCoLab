@@ -1,5 +1,6 @@
 package org.xcolab.client.contest.proposals;
 
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,30 +11,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
 import org.xcolab.client.contest.pojo.wrapper.ProposalAttributeHelperDataDto;
-import org.xcolab.client.contest.pojo.wrapper.ProposalDto;
 import org.xcolab.client.contest.pojo.wrapper.ProposalUnversionedAttribute;
 import org.xcolab.client.contest.pojo.wrapper.ProposalUnversionedAttributeHelperDataDto;
-import org.xcolab.client.contest.pojo.wrapper.ProposalVersionWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.exceptions.ProposalAttributeNotFoundException;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
-import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.RestResource2L;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.List;
 
+@FeignClient("xcolab-contest-service")
 public interface ProposalAttributeClient {
-
-    RestResource1<ProposalAttribute, Long> proposalAttributeResource = null; // proposalAttributes
-    RestResource1<ProposalUnversionedAttribute, Long>
-            proposalUnversionedAttributeResource = null; // proposalUnversionedAttributes
-
-    RestResource1<ProposalDto, Long> proposalResource = null; // proposals
-    RestResource2L<ProposalDto, ProposalVersionWrapper> proposalVersionResource = null;
-    // proposals / versions
 
     default ProposalAttribute getProposalAttribute(Long proposalId, String name,
             Long additionalId) {

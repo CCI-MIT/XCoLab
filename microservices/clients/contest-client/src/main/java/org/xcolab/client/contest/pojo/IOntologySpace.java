@@ -2,9 +2,9 @@ package org.xcolab.client.contest.pojo;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import org.xcolab.client.contest.pojo.tables.pojos.OntologySpace;
+import org.xcolab.client.contest.pojo.wrapper.OntologySpaceWrapper;
 
-@JsonDeserialize(as = OntologySpace.class)
+@JsonDeserialize(as = OntologySpaceWrapper.class)
 public interface IOntologySpace {
 
     Long getId();
