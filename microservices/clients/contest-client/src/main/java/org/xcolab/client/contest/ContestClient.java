@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.activities.ActivitiesClientUtil;
+import org.xcolab.client.activity.StaticActivityContext;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.IContestCollectionCard;
 import org.xcolab.client.contest.pojo.IContestDiscussion;
@@ -462,16 +462,17 @@ public interface ContestClient {
     List<IContestPhaseRibbonType> getAllContestPhaseRibbonType();
 
     default boolean isMemberSubscribedToContest(long contestId, long userId) {
-        return ActivitiesClientUtil.isSubscribedToActivity(userId,
-                ActivityCategory.CONTEST, contestId, "");
+        return StaticActivityContext.getActivityClient().isSubscribed(userId,
+                ActivityCategory.CONTEST, contestId);
     }
 
     default void subscribeMemberToContest(long contestId, long userId) {
-        ActivitiesClientUtil.addSubscription(userId, ActivityCategory.CONTEST, contestId, "");
+        StaticActivityContext.getActivityClient().addSubscription(userId, ActivityCategory.CONTEST, contestId, "");
     }
 
     default void unsubscribeMemberFromContest(long contestId, long userId) {
-        ActivitiesClientUtil.deleteSubscription(userId, ActivityCategory.CONTEST, contestId);
+        StaticActivityContext
+                .getActivityClient().deleteSubscription(userId, ActivityCategory.CONTEST, contestId);
     }
 
     @GetMapping("/contestCollectionCards")

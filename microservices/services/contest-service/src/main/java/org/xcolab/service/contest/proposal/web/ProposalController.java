@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.client.activities.ActivitiesClientUtil;
+import org.xcolab.client.activity.IActivityClient;
+import org.xcolab.client.activity.StaticActivityContext;
 import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
 import org.xcolab.client.contest.pojo.IProposalReference;
 import org.xcolab.client.contest.pojo.tables.pojos.ProposalContestPhaseAttribute;
@@ -263,7 +263,7 @@ public class ProposalController implements IProposalClient {
             @RequestParam Long userId) {
         proposalService.removeProposalTeamMember(proposalId, userId);
 
-        ActivitiesClient activityClient = ActivitiesClientUtil.getClient();
+        IActivityClient activityClient = StaticActivityContext.getActivityClient();
         activityClient.createActivityEntry(ProposalActivityType.MEMBER_REMOVED, userId, proposalId);
         return true;
     }

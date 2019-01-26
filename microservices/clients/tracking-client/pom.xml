@@ -19,7 +19,6 @@
             <artifactId>spring-cloud-starter-openfeign</artifactId>
             <version>${spring-cloud.feign}</version>
         </dependency>
-
         <dependency>
             <groupId>org.xcolab</groupId>
             <artifactId>xcolab-utils</artifactId>

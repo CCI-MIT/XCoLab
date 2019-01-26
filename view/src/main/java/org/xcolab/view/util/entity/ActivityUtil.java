@@ -1,7 +1,7 @@
 package org.xcolab.view.util.entity;
 
-import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.activities.pojo.ActivityEntry;
+import org.xcolab.client.activity.StaticActivityContext;
+import org.xcolab.client.activity.pojo.IActivityEntry;
 import org.xcolab.commons.GroupingHelper;
 
 import java.time.Duration;
@@ -17,35 +17,35 @@ public class ActivityUtil {
 
     private static final long AGGREGATION_TIME_WINDOW = Duration.ofHours(1).getSeconds() * 1000;
 
-    public static List<ActivityEntry> retrieveAllActivities(int pagestart, int next) {
-        return ActivitiesClientUtil.getActivityEntries(pagestart, next, null, null);
+    public static List<IActivityEntry> retrieveAllActivities(int pagestart, int next) {
+        return StaticActivityContext.getActivityClient().getActivityEntries(pagestart, next, null, null);
     }
 
-    public static List<ActivityEntry> groupActivities(List<ActivityEntry> activities) {
-        Map<String, Set<ActivityEntry>> activitiesMap = new GroupingHelper<>(activities)
+    public static List<IActivityEntry> groupActivities(List<IActivityEntry> activities) {
+        Map<String, Set<IActivityEntry>> activitiesMap = new GroupingHelper<>(activities)
                 .groupWithDuplicateValues(ActivityUtil::getSocialActivityKey);
         return clusterActivities(activitiesMap);
     }
 
     public static int getAllActivitiesCount() {
-        return ActivitiesClientUtil.countActivities(null, null);
+        return StaticActivityContext.getActivityClient().countActivities(null, null);
     }
 
     public static int getActivitiesCount(long userId) {
-        return ActivitiesClientUtil.countActivities(userId, null);
+        return StaticActivityContext.getActivityClient().countActivities(userId, null);
     }
 
-    private static List<ActivityEntry> clusterActivities(
-            Map<String, Set<ActivityEntry>> activitiesMap) {
-        List<ActivityEntry> aggregatedActivities = new LinkedList<>();
-        Comparator<ActivityEntry> sorter =
+    private static List<IActivityEntry> clusterActivities(
+            Map<String, Set<IActivityEntry>> activitiesMap) {
+        List<IActivityEntry> aggregatedActivities = new LinkedList<>();
+        Comparator<IActivityEntry> sorter =
                 Comparator.comparingLong(o -> o.getCreatedAt().getTime());
-        for (Set<ActivityEntry> activitiesMapValue : activitiesMap.values()) {
-            List<ActivityEntry> sortedActivities = new ArrayList<>(activitiesMapValue);
+        for (Set<IActivityEntry> activitiesMapValue : activitiesMap.values()) {
+            List<IActivityEntry> sortedActivities = new ArrayList<>(activitiesMapValue);
             sortedActivities.sort(sorter);
 
-            ActivityEntry curMin = null;
-            for (ActivityEntry socialActivity : sortedActivities) {
+            IActivityEntry curMin = null;
+            for (IActivityEntry socialActivity : sortedActivities) {
                 if (curMin == null ||
                         socialActivity.getCreatedAt().getTime() - curMin.getCreatedAt().getTime()
                                 < AGGREGATION_TIME_WINDOW) {
@@ -64,7 +64,7 @@ public class ActivityUtil {
         return aggregatedActivities;
     }
 
-    private static String getSocialActivityKey(ActivityEntry sa) {
+    private static String getSocialActivityKey(IActivityEntry sa) {
         return sa.getActivityCategory() + "_" + sa.getCategoryId() + "_" + sa.getActivityType()
                 + "_" + sa.getUserId();
     }

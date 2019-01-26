@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.activity.IActivityClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
@@ -47,11 +47,14 @@ public class VoteOnProposalActionController {
     private static final String VOTE_ANALYTICS_LABEL = "";
 
     private final ProposalDescriptionTabController proposalDescriptionTabController;
+    private final IActivityClient activityClient;
 
     @Autowired
     public VoteOnProposalActionController(
-            ProposalDescriptionTabController proposalDescriptionTabController) {
+            ProposalDescriptionTabController proposalDescriptionTabController,
+            IActivityClient activityClient) {
         this.proposalDescriptionTabController = proposalDescriptionTabController;
+        this.activityClient = activityClient;
     }
 
     @PostMapping("vote")
@@ -153,7 +156,6 @@ public class VoteOnProposalActionController {
             GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.CONTEST_ENTRY_VOTE);
         }
 
-        final ActivitiesClient activityClient = clients.getActivitiesClient();
         activityClient.createActivityEntry(activitySubType, userId, proposalId);
 
         // Redirect to prevent page-refreshing from influencing the vote

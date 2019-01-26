@@ -11,11 +11,12 @@ import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.ICategory;
 import org.xcolab.client.comment.pojo.ICategoryGroup;
 import org.xcolab.client.comment.pojo.IThread;
-import org.xcolab.client.flagging.FlaggingClient;
-import org.xcolab.client.flagging.pojo.ReportTarget;
+import org.xcolab.client.moderation.IModerationClient;
+import org.xcolab.client.moderation.pojo.IReportTarget;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
-import org.xcolab.util.enums.flagging.TargetType;
+import org.xcolab.util.enums.moderation.TargetType;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.wrappers.NewMessageWrapper;
+import org.xcolab.client.comment.pojo.tables.pojos.CategoryGroup;
 
 import java.util.List;
 
@@ -25,6 +26,12 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
 public class LoadThreadStartTag extends BodyTagSupport {
 
     private static final Logger _log = LoggerFactory.getLogger(LoadThreadStartTag.class);
+
+    private static IModerationClient moderationClient;
+
+    public static void setModerationClient(IModerationClient moderationClient) {
+        LoadThreadStartTag.moderationClient = moderationClient;
+    }
 
     private static IThreadClient threadClient;
 
@@ -68,7 +75,7 @@ public class LoadThreadStartTag extends BodyTagSupport {
                     }
                 } catch (CategoryGroupNotFoundException e) {
                     throw ReferenceResolutionException
-                            .toObject(org.xcolab.client.comment.pojo.tables.pojos.CategoryGroup.class, categoryGroupId)
+                            .toObject(CategoryGroup.class, categoryGroupId)
                             .fromObject(LoadThreadStartTag.class, "for thread " + threadId);
                 }
             }
@@ -88,8 +95,8 @@ public class LoadThreadStartTag extends BodyTagSupport {
             pageContext.setAttribute("shareTitle", shareTitle);
             pageContext.setAttribute("newMessage", new NewMessageWrapper());
             pageContext.setAttribute("discussionPermissions", discussionPermissions);
-            final List<ReportTarget> reportTargets =
-                    FlaggingClient.listReportTargets(TargetType.COMMENT);
+            final List<IReportTarget> reportTargets =
+                    moderationClient.listReportTargets(TargetType.COMMENT);
             pageContext.setAttribute("reportTargets", reportTargets);
 
         } catch (ThreadNotFoundException e) {

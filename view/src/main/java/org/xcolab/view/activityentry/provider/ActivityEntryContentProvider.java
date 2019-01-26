@@ -1,7 +1,7 @@
 package org.xcolab.view.activityentry.provider;
 
+import org.xcolab.client.activity.pojo.IActivityEntry;
 import org.xcolab.util.activities.enums.ActivityType;
-import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.view.activityentry.ActivityInitializationException;
 
 public interface ActivityEntryContentProvider {
@@ -13,5 +13,5 @@ public interface ActivityEntryContentProvider {
     String getTitle();
 
     //TODO COLAB-2496: this method should return a new object that holds the state
-    void initialize(ActivityEntry activityEntry) throws ActivityInitializationException;
+    void initialize(IActivityEntry activityEntry) throws ActivityInitializationException;
 }

@@ -1,8 +1,10 @@
 package org.xcolab.view.pages.proposals.view.proposal;
 
-import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.client.activities.pojo.ActivitySubscription;
+
 import org.xcolab.client.contest.StaticContestContext;
+import org.xcolab.client.activity.IActivityClient;
+import org.xcolab.client.activity.StaticActivityContext;
+import org.xcolab.client.activity.pojo.IActivitySubscription;
 import org.xcolab.client.contest.enums.ContestStatus;
 import org.xcolab.client.contest.pojo.IProposal2Phase;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
@@ -66,7 +68,7 @@ public final class AddUpdateProposalControllerUtil {
                 proposalContext, updateProposalSectionsBean, proposal, p2p, userId);
         proposalUpdateHelper.updateProposal();
 
-        final ActivitiesClient activitiesClient = clients.getActivitiesClient();
+        final IActivityClient activityClient = StaticActivityContext.getActivityClient();
         if (createNew) {
             boolean isAdmin = PermissionsClient.canAdminAll(userId);
             boolean isClosed = isProposalListClosed(contestPhase);
@@ -74,23 +76,23 @@ public final class AddUpdateProposalControllerUtil {
                 ServiceRequestUtils.clearCache(CacheName.PROPOSAL_LIST_CLOSED);
             }
 
-            final List<ActivitySubscription> activitySubscriptions = activitiesClient
+            final List<IActivitySubscription> activitySubscriptions = activityClient
                     .getActivitySubscriptions(ActivityCategory.CONTEST,
                             contest.getId(), null);
-            for (ActivitySubscription activitySubscription : activitySubscriptions) {
+            for (IActivitySubscription activitySubscription : activitySubscriptions) {
                 final Long receiverId = activitySubscription.getReceiverUserId();
-                activitiesClient.addSubscription(receiverId, ActivityCategory.PROPOSAL,
-                        proposal.getId(), "");
+                activityClient.addSubscription(receiverId, ActivityCategory.PROPOSAL,
+                        proposal.getId());
 
             }
 
-            activitiesClient.createActivityEntry(ContestActivityType.PROPOSAL_CREATED, userId,
+            activityClient.createActivityEntry(ContestActivityType.PROPOSAL_CREATED, userId,
                     contest.getId(), proposal.getId());
 
             GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.CONTEST_ENTRY_CREATION);
 
         } else {
-            activitiesClient.createActivityEntry(ProposalActivityType.UPDATED, userId,
+            activityClient.createActivityEntry(ProposalActivityType.UPDATED, userId,
                     proposal.getId());
         }
 

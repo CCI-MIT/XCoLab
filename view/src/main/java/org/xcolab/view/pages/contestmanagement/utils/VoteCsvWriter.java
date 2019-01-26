@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.activities.ActivitiesClientUtil;
+import org.xcolab.client.activity.StaticActivityContext;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.IProposalVote;
@@ -105,8 +105,8 @@ public class VoteCsvWriter extends CsvResponseWriter {
             addValue(row, member != null ? member.getScreenName() : "Member not found");
             addValue(row, member != null ? member.getFirstName() : "Member not found");
             addValue(row, member != null ? member.getLastName() : "Member not found");
-            addValue(row, member != null ? ActivitiesClientUtil.countActivities(
-                    member.getId(),null) : "Member not found");
+            addValue(row, member != null ? StaticActivityContext.getActivityClient()
+                    .countActivities(member.getId(), null) : "Member not found");
             addValue(row, member != null ? member.getLoginIP() : "Member not found");
             addLocationForIp(row, member != null ? member.getLoginIP() : null);
 

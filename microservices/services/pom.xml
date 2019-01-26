@@ -14,7 +14,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>activities-service</module>
+        <module>activity-service</module>
         <module>admin-service</module>
         <module>comment-service</module>
         <module>content-service</module>

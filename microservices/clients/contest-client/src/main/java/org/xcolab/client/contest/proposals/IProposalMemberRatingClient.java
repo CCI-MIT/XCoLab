@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.client.activities.ActivitiesClientUtil;
+import org.xcolab.client.activity.IActivityClient;
+import org.xcolab.client.activity.StaticActivityContext;
 import org.xcolab.client.contest.pojo.IProposalSupporter;
 import org.xcolab.client.contest.pojo.IProposalVote;
 import org.xcolab.client.contest.pojo.tables.pojos.ProposalSupporter;
@@ -59,7 +59,7 @@ public interface IProposalMemberRatingClient {
         supporter.setCreatedAt(new Timestamp(new Date().getTime()));
         createProposalSupporter(supporter);
 
-        ActivitiesClient activityClient = ActivitiesClientUtil.getClient();
+        IActivityClient activityClient = StaticActivityContext.getActivityClient();
 
         if (publishActivity) {
             activityClient.createActivityEntry(ProposalActivityType.SUPPORT_ADDED, userId,
