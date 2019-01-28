@@ -15,7 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import org.xcolab.client.activity.pojo.IActivitySubscription;
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.IContestClient;
 import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
@@ -35,7 +35,7 @@ import static org.mockito.Matchers.anyLong;
 @OverrideAutoConfiguration(enabled = false)
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @PrepareForTest({
-    ContestClient.class,
+    IContestClient.class,
     ProposalWrapper.class,
     ContestWrapper.class
 })
@@ -51,7 +51,7 @@ public class ActivitiesServiceTest {
     ActivitySubscriptionDao ActivitySubscriptionDao;
 
     @Autowired
-    ContestClient contestClient;
+    IContestClient contestClient;
 
     @Autowired
     IProposalClient proposalClient;

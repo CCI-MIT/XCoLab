@@ -15,7 +15,7 @@ import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import java.util.List;
 
 @FeignClient("xcolab-contest-service")
-public interface ImpactClient {
+public interface IImpactClient {
 
     default List<IImpactTemplateMaxFocusArea> getContestImpactFocusAreas(ContestWrapper contest) {
         IImpactTemplateFocusAreaList focusAreaList = getContestImpactFocusAreaList(contest);

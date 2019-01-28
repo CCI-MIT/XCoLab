@@ -1,7 +1,7 @@
 package org.xcolab.view.pages.proposals.permissions;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.IContestClient;
 import org.xcolab.client.contest.enums.ContestStatus;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
@@ -34,7 +34,7 @@ public class ProposalsPermissions {
     private final ContestPermissions contestPermissions;
 
     private final IProposalClient proposalClient;
-    private final ContestClient contestClient;
+    private final IContestClient contestClient;
 
 
     public ProposalsPermissions(ClientHelper clientHelper, Member member, ProposalWrapper proposal,

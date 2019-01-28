@@ -21,13 +21,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import org.xcolab.client.contest.IContestClient;
+import org.xcolab.client.contest.IContestTeamMemberClient;
+import org.xcolab.client.contest.IOntologyClient;
 import org.xcolab.client.contest.pojo.tables.pojos.ContestDiscussion;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.service.contest.domain.contest.ContestDao;
-import org.xcolab.service.contest.domain.contestcollectioncard.ContestCollectionCardDao;
 import org.xcolab.service.contest.domain.contestdiscussion.ContestDiscussionDao;
-import org.xcolab.service.contest.service.collectioncard.CollectionCardService;
-import org.xcolab.service.contest.service.contest.ContestService;
 import org.xcolab.service.contest.service.ontology.OntologyService;
 import org.xcolab.util.http.ServiceRequestUtils;
 
@@ -48,9 +48,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ComponentScan("org.xcolab.client")
 @ComponentScan("com.netflix.discovery")
 @PrepareForTest({ContestWrapper.class,
-        org.xcolab.client.contest.ContestClient.class,
-        org.xcolab.client.contest.ContestTeamMemberClient.class,
-        org.xcolab.client.contest.OntologyClient.class
+        IContestClient.class,
+        IContestTeamMemberClient.class,
+        IOntologyClient.class
 })
 @ActiveProfiles("test")
 public class ContestControllerTest {

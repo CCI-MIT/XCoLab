@@ -17,7 +17,7 @@ import java.util.List;
 
 @Component
 @Profile("test")
-public class ContestClientMockImpl implements ContestClient {
+public class ContestClientMockImpl implements IContestClient {
 
     @Override
     public ContestWrapper getContest(Long contestId, String lang) {

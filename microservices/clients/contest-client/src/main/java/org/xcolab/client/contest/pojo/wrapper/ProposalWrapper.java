@@ -10,9 +10,9 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.comment.pojo.IThread;
-import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.ContestTeamMemberClient;
-import org.xcolab.client.contest.ProposalTemplateClient;
+import org.xcolab.client.contest.IContestClient;
+import org.xcolab.client.contest.IContestTeamMemberClient;
+import org.xcolab.client.contest.IProposalTemplateClient;
 import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.IProposal2Phase;
@@ -1000,7 +1000,7 @@ public class ProposalWrapper extends Proposal {
 
     private static class Clients {
 
-        final ContestClient contest;
+        final IContestClient contest;
         final IProposalClient proposal;
 
         final IProposalMemberRatingClient proposalMemberRating;
@@ -1010,8 +1010,8 @@ public class ProposalWrapper extends Proposal {
 
         final ProposalAttributeClient proposalAttribute;
         final ProposalPhaseClient proposalPhase;
-        final ContestTeamMemberClient contestTeamMember;
-        final ProposalTemplateClient proposalTemplate;
+        final IContestTeamMemberClient contestTeamMember;
+        final IProposalTemplateClient proposalTemplate;
 
         Clients() {
             contest = StaticContestContext.getContestClient();

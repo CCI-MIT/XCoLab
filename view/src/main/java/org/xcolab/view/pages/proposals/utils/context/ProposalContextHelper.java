@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.IContestClient;
 import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.IProposal2Phase;
@@ -80,7 +80,7 @@ public class ProposalContextHelper {
 
     private ContestWrapper setupContestFromTheRightClient(long contestId) {
 
-        final ContestClient contestClient = clientHelper.getContestClient();
+        final IContestClient contestClient = clientHelper.getContestClient();
         log.debug("Setting up contest {} from client {}", contestId, contestClient);
 
         try {
@@ -129,7 +129,7 @@ public class ProposalContextHelper {
     }
 
     public ContestPhaseWrapper getContestPhase(ContestWrapper contest, ProposalWrapper proposal) {
-        final ContestClient contestClient = clientHelper.getContestClient();
+        final IContestClient contestClient = clientHelper.getContestClient();
         final IProposalClient proposalClient = clientHelper.getProposalClient();
 
         ContestPhaseWrapper contestPhase;

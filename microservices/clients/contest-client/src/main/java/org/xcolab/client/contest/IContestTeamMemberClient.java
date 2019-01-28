@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 @FeignClient("xcolab-contest-service")
-public interface ContestTeamMemberClient {
+public interface IContestTeamMemberClient {
 
     @PostMapping("/contestTeamMembers")
     IContestTeamMember createContestTeamMember(@RequestBody IContestTeamMember contestTeamMember);

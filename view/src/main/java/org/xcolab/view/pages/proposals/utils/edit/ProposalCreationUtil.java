@@ -1,7 +1,7 @@
 package org.xcolab.view.pages.proposals.utils.edit;
 
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.IContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
@@ -92,7 +92,7 @@ public final class ProposalCreationUtil {
             ProposalWrapper proposalWrapper,
             ContestPhaseWrapper contestPhase) {
         try {
-            ContestClient contestClient = proposalContext.getClients().getContestClient();
+            IContestClient contestClient = proposalContext.getClients().getContestClient();
             ContestWrapper contest = contestClient
                     .getContest(contestClient.getContestPhase(contestPhase.getId()).getContestId());
 

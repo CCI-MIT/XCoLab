@@ -18,7 +18,7 @@ import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.IComment;
 import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.comment.pojo.tables.pojos.Comment;
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.IContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
@@ -61,7 +61,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
     private ICommentClient commentClient;
 
     @Autowired
-    private ContestClient contestClient;
+    private IContestClient contestClient;
 
     @PostMapping("/discussions/addDiscussionMessage")
     public String handleAction(HttpServletRequest request, HttpServletResponse response,

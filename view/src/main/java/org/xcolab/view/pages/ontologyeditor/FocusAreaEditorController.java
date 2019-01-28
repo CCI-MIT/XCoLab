@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.contest.OntologyClient;
+import org.xcolab.client.contest.IOntologyClient;
 import org.xcolab.client.contest.pojo.wrapper.FocusAreaWrapper;
 import org.xcolab.client.contest.pojo.wrapper.OntologySpaceWrapper;
 import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 public class FocusAreaEditorController {
 
     @Autowired
-    private OntologyClient ontologyClient;
+    private IOntologyClient ontologyClient;
 
     @ModelAttribute("allFocusAreas")
     public List<FocusAreaWrapper> getAllFocusAreas() {

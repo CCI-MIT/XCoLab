@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.content.IContentClient;
 import org.xcolab.client.content.exceptions.ContentNotFoundException;
 import org.xcolab.client.content.pojo.IContentArticleVersion;
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.IContestClient;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
@@ -34,7 +34,7 @@ public class ContentEditorResourceController extends BaseContentEditor {
     private IContentClient contentClient;
 
     @Autowired
-    private ContestClient contestClient;
+    private IContestClient contestClient;
 
     @GetMapping("/content-editor/resourcePagesEditor")
     public String handleRenderRequest(HttpServletRequest request, HttpServletResponse response,

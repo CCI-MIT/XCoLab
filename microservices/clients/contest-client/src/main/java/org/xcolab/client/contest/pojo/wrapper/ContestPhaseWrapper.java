@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.IContestClient;
 import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.enums.ContestStatus;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
@@ -33,7 +33,7 @@ public class ContestPhaseWrapper extends ContestPhase {
 
     public static final long SCHEDULE_TEMPLATE_PHASE_CONTEST_ID = 0L;
 
-    private final ContestClient contestClient;
+    private final IContestClient contestClient;
 
     protected ContestStatus status;
 

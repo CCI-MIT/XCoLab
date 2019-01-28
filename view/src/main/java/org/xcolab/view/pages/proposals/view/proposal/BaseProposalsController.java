@@ -6,9 +6,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.ImpactClient;
-import org.xcolab.client.contest.OntologyClient;
+import org.xcolab.client.contest.IContestClient;
+import org.xcolab.client.contest.IImpactClient;
+import org.xcolab.client.contest.IOntologyClient;
 import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.proposals.IProposalJudgeRatingClient;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
@@ -21,13 +21,13 @@ import javax.servlet.http.HttpServletRequest;
 public class BaseProposalsController {
 
     @Autowired
-    protected ContestClient contestClient;
+    protected IContestClient contestClient;
 
     @Autowired
-    protected ImpactClient impactClient;
+    protected IImpactClient impactClient;
 
     @Autowired
-    protected OntologyClient ontologyClient;
+    protected IOntologyClient ontologyClient;
 
     @Autowired
     protected ProposalPhaseClient proposalPhaseClient;

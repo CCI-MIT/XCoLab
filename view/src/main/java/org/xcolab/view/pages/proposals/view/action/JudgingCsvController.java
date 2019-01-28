@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.contest.ContestTeamMemberClient;
+import org.xcolab.client.contest.IContestTeamMemberClient;
 import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
 import org.xcolab.client.contest.pojo.IProposalRatingType;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
@@ -50,7 +50,7 @@ import static org.xcolab.view.util.entity.EntityIdListUtil.MEMBERS;
 public class JudgingCsvController {
 
     @Autowired
-    private ContestTeamMemberClient contestTeamMemberClient;
+    private IContestTeamMemberClient contestTeamMemberClient;
 
     @Autowired
     private IProposalJudgeRatingClient proposalJudgeRatingClient;

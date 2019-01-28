@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.client.contest.ProposalTemplateClient;
+import org.xcolab.client.contest.IProposalTemplateClient;
 import org.xcolab.client.contest.pojo.IProposalTemplate;
 import org.xcolab.client.contest.pojo.IProposalTemplateSection;
 import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
@@ -24,7 +24,7 @@ import org.xcolab.util.http.exceptions.RuntimeEntityNotFoundException;
 import java.util.List;
 
 @RestController
-public class ProposalTemplateController implements ProposalTemplateClient {
+public class ProposalTemplateController implements IProposalTemplateClient {
 
     private final ProposalTemplateSectionDefinitionDao proposalTemplateSectionDefinitionDao;
     private final ProposalTemplateDao proposalTemplateDao;

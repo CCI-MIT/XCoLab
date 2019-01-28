@@ -11,7 +11,7 @@ import java.util.List;
 
 @Component
 @Profile("test")
-public class ContestTeamMemberClientMockImpl implements ContestTeamMemberClient {
+public class ContestTeamMemberClientMockImpl implements IContestTeamMemberClient {
 
     @Override
     public IContestTeamMember createContestTeamMember(IContestTeamMember contestTeamMember) {

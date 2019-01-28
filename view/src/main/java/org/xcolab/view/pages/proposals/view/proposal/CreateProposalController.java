@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.IContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
@@ -66,7 +66,7 @@ public class CreateProposalController extends BaseProposalsController {
         long userId = loggedInMember.getId();
 
         final ClientHelper clients = proposalContext.getClients();
-        final ContestClient contestClient = clients.getContestClient();
+        final IContestClient contestClient = clients.getContestClient();
         final IProposalClient proposalClient = clients.getProposalClient();
 
         final ContestWrapper contest = proposalContext.getContest();

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.IContestClient;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMembershipRequestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
@@ -48,7 +48,7 @@ public class MembershipInvitationResponseController {
             "Your invitation of %s to join the <proposal/> %s has been rejected.";
 
     @Autowired
-    private ContestClient contestClient;
+    private IContestClient contestClient;
 
     @Autowired
     private IMembershipClient membershipClient;

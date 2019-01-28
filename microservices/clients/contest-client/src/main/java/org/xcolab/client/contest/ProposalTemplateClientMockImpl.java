@@ -12,7 +12,7 @@ import java.util.List;
 
 @Component
 @Profile("test")
-public class ProposalTemplateClientMockImpl implements ProposalTemplateClient {
+public class ProposalTemplateClientMockImpl implements IProposalTemplateClient {
 
     @Override
     public IProposalTemplate getProposalTemplate(Long proposalTemplateId) {

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.IContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.exceptions.ContestPhaseNotFoundException;
 import org.xcolab.client.contest.exceptions.ContestScheduleNotFoundException;
@@ -48,7 +48,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-public class ContestController implements ContestClient {
+public class ContestController implements IContestClient {
 
     private final ContestDao contestDao;
     private final ContestTranslationDao contestTranslationDao;

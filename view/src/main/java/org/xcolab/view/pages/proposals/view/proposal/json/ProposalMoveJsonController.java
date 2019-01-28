@@ -6,7 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.IContestClient;
 import org.xcolab.client.contest.enums.ContestStatus;
 import org.xcolab.client.contest.pojo.IProposalTemplate;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
@@ -33,7 +33,7 @@ public class ProposalMoveJsonController {
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Autowired
-    private ContestClient contestClient;
+    private IContestClient contestClient;
 
     @GetMapping("/api/contestsOpenForProposals")
     public void getContestsOpenForProposals(HttpServletRequest request, HttpServletResponse response)

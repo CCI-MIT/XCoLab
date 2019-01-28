@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.client.contest.ImpactClient;
+import org.xcolab.client.contest.IImpactClient;
 import org.xcolab.client.contest.pojo.IImpactIteration;
 import org.xcolab.client.contest.pojo.IImpactTemplateFocusAreaList;
 import org.xcolab.client.contest.pojo.IImpactTemplateMaxFocusArea;
@@ -21,7 +21,7 @@ import org.xcolab.util.http.exceptions.RuntimeEntityNotFoundException;
 import java.util.List;
 
 @RestController
-public class ImpactTemplateController implements ImpactClient {
+public class ImpactTemplateController implements IImpactClient {
 
     private final ImpactTemplateSeriesDao impactTemplateSeriesDao;
     private final ImpactIterationDao impactIterationDao;

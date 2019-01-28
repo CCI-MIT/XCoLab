@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.contest.ImpactClient;
-import org.xcolab.client.contest.OntologyClient;
+import org.xcolab.client.contest.IImpactClient;
+import org.xcolab.client.contest.IOntologyClient;
 import org.xcolab.client.contest.pojo.IImpactIteration;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.FocusAreaWrapper;
@@ -47,10 +47,10 @@ public class ProposalImpactJSONController {
     private static final Logger _log = LoggerFactory.getLogger(ProposalImpactJSONController.class);
 
     @Autowired
-    private ImpactClient impactClient;
+    private IImpactClient impactClient;
 
     @Autowired
-    private OntologyClient ontologyClient;
+    private IOntologyClient ontologyClient;
 
     @Autowired
     private ProposalAttributeClient proposalAttributeClient;

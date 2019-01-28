@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.IContestClient;
 import org.xcolab.client.contest.pojo.IProposal2Phase;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
@@ -31,7 +31,7 @@ public class ProposalVersionsJsonController {
     private static final long MILLISECONDS_TO_GROUP_VERSIONS = 1000 * 60;
 
     @Autowired
-    private ContestClient contestClient;
+    private IContestClient contestClient;
 
     @Autowired
     private ProposalPhaseClient proposalPhaseClient;
@@ -99,7 +99,7 @@ public class ProposalVersionsJsonController {
         ClientHelper clientHelper = new ClientHelper();
         ProposalPhaseClient proposalPhaseClient = clientHelper.getProposalPhaseClient();
         IProposalClient proposalClient = clientHelper.getProposalClient();
-        ContestClient contestClient = clientHelper.getContestClient();
+        IContestClient contestClient = clientHelper.getContestClient();
 
         final JsonArrayBuilder proposalVersionsArray = Json.createArrayBuilder();
         int counter = 0;
