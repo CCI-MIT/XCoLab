@@ -1,15 +1,21 @@
 package org.xcolab.client.contest.pojo.wrapper;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import org.xcolab.client.contest.pojo.IProposalSupporter;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 // TODO COLAB-2356: rethink inheritance structure
 // the inheritance structure between this SupportedProposal(Dto) and Proposal(Dto) is limited
 // by single inheritance as they both (should) inherit from abstract classes
-public class SupportedProposal extends ProposalWrapper {
+@JsonInclude(Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class SupportedProposal extends ProposalWrapper implements Serializable {
 
     private Timestamp supportDate;
     private Long supporterUserId;

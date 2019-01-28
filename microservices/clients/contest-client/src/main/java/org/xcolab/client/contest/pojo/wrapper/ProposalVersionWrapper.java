@@ -1,12 +1,19 @@
 package org.xcolab.client.contest.pojo.wrapper;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 import org.xcolab.client.contest.pojo.tables.pojos.ProposalVersion;
 import org.xcolab.client.contest.proposals.IProposalPhaseClient;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class ProposalVersionWrapper extends ProposalVersion {
+@JsonInclude(Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class ProposalVersionWrapper extends ProposalVersion implements Serializable {
 
     private final IProposalPhaseClient proposalPhaseClient;
 

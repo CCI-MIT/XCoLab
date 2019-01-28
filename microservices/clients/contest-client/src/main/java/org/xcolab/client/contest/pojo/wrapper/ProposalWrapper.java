@@ -1,6 +1,9 @@
 package org.xcolab.client.contest.pojo.wrapper;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import edu.mit.cci.roma.client.Scenario;
 import edu.mit.cci.roma.client.Simulation;
 import org.apache.commons.lang3.StringUtils;
@@ -46,6 +49,7 @@ import org.xcolab.util.enums.promotion.JudgingSystemActions;
 import org.xcolab.util.http.caching.CacheName;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -55,7 +59,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class ProposalWrapper extends Proposal {
+@JsonInclude(Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class ProposalWrapper extends Proposal implements Serializable {
 
     private static final Long LONG_DEFAULT_VAL = -1L;
     private static final String STRING_DEFAULT_VAL = "";

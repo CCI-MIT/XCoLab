@@ -1,18 +1,18 @@
 package org.xcolab.client.contest.pojo.wrapper;
 
-import org.springframework.core.ParameterizedTypeReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import org.xcolab.client.contest.pojo.tables.pojos.OntologyTerm;
-import org.xcolab.util.http.client.types.TypeProvider;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OntologyTermWrapper extends OntologyTerm {
-
-    public static final TypeProvider<OntologyTermWrapper> TYPES = new TypeProvider<>(
-            OntologyTermWrapper.class,
-            new ParameterizedTypeReference<List<OntologyTermWrapper>>() {});
+@JsonInclude(Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class OntologyTermWrapper extends OntologyTerm implements Serializable {
 
     private final List<OntologyTermWrapper> children = new ArrayList<>();
     private OntologyTermWrapper parent;

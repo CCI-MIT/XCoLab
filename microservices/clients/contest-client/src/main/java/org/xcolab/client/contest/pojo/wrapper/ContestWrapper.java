@@ -1,6 +1,9 @@
 package org.xcolab.client.contest.pojo.wrapper;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.admin.StaticAdminContext;
@@ -30,6 +33,7 @@ import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -41,9 +45,9 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
-public class ContestWrapper extends Contest {
-
-    private static final long serialVersionUID = 1L;
+@JsonInclude(Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class ContestWrapper extends Contest implements Serializable {
 
     private final IContestClient contestClient;
     private final IContestTeamMemberClient contestTeamMemberClient;

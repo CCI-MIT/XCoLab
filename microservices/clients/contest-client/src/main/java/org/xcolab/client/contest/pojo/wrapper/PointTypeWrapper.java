@@ -1,21 +1,21 @@
 package org.xcolab.client.contest.pojo.wrapper;
 
-import org.springframework.core.ParameterizedTypeReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import org.xcolab.client.contest.pojo.tables.pojos.PointType;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.contest.proposals.enums.points.DistributionStrategy;
 import org.xcolab.client.contest.proposals.enums.points.ReceiverLimitationStrategy;
-import org.xcolab.util.http.client.types.TypeProvider;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PointTypeWrapper extends PointType {
-
-    public static final TypeProvider<PointTypeWrapper> TYPES =
-            new TypeProvider<>(PointTypeWrapper.class,
-                    new ParameterizedTypeReference<List<PointTypeWrapper>>() {});
+@JsonInclude(Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class PointTypeWrapper extends PointType implements Serializable {
 
     private List<PointTypeWrapper> children;
 

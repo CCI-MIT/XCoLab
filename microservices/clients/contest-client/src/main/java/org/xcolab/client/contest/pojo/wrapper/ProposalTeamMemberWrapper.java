@@ -1,9 +1,17 @@
 package org.xcolab.client.contest.pojo.wrapper;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 import org.xcolab.client.contest.pojo.tables.pojos.ProposalTeamMember;
 import org.xcolab.client.members.pojo.Member;
 
-public class ProposalTeamMemberWrapper extends ProposalTeamMember {
+import java.io.Serializable;
+
+@JsonInclude(Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class ProposalTeamMemberWrapper extends ProposalTeamMember implements Serializable {
 
     private final ProposalWrapper proposal;
     private final Member member;

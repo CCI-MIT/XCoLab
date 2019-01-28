@@ -1,19 +1,18 @@
 package org.xcolab.client.contest.pojo.wrapper;
 
-import org.springframework.core.ParameterizedTypeReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import org.xcolab.client.contest.pojo.tables.pojos.FocusArea;
-import org.xcolab.util.http.client.types.TypeProvider;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FocusAreaWrapper extends FocusArea {
-
-    public static final TypeProvider<FocusAreaWrapper> TYPES = new TypeProvider<>(FocusAreaWrapper.class,
-            new ParameterizedTypeReference<List<FocusAreaWrapper>>() {});
-
-    private static final long serialVersionUID = 1L;
+@JsonInclude(Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class FocusAreaWrapper extends FocusArea implements Serializable {
 
     private final List<OntologyTermWrapper> ontologyTerms = new ArrayList<>();
     private final List<Long> ontologyTermsIds = new ArrayList<>();

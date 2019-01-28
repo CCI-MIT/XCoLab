@@ -1,8 +1,10 @@
 package org.xcolab.client.contest.pojo.wrapper;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.contest.IContestClient;
 import org.xcolab.client.contest.StaticContestContext;
@@ -16,8 +18,8 @@ import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.commons.time.DurationFormatter;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
-import org.xcolab.util.http.client.types.TypeProvider;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Calendar;
@@ -25,11 +27,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class ContestPhaseWrapper extends ContestPhase {
-
-    public static final TypeProvider<ContestPhaseWrapper> TYPES = new TypeProvider<>(
-            ContestPhaseWrapper.class,
-            new ParameterizedTypeReference<List<ContestPhaseWrapper>>() {});
+@JsonInclude(Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class ContestPhaseWrapper extends ContestPhase implements Serializable {
 
     public static final long SCHEDULE_TEMPLATE_PHASE_CONTEST_ID = 0L;
 
