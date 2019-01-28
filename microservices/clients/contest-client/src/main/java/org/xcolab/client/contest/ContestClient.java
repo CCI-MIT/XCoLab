@@ -499,5 +499,5 @@ public interface ContestClient {
 
     @PostMapping("/contests/{contestId}/memberAgreedToTos")
     void setMemberAgreedToTos(@PathVariable("contestId") Long contestId,
-            @RequestParam("memberId") Long memberId, @RequestBody boolean agreed);
+            @RequestParam(value = "memberId") Long memberId, @RequestBody boolean agreed);
 }

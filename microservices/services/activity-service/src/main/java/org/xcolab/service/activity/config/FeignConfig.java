@@ -1,4 +1,4 @@
-package org.xcolab.service.activities.config;
+package org.xcolab.service.activity.config;
 
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Profile;
@@ -8,6 +8,6 @@ import org.xcolab.util.autoconfigure.AbstractFeignConfig;
 
 @Component
 @Profile("!test")
-@EnableFeignClients(basePackages = {"org.xcolab.client.contest"})
+@EnableFeignClients(basePackages = {"org.xcolab.client"})
 public class FeignConfig extends AbstractFeignConfig {
 }
