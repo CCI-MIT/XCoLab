@@ -14,13 +14,13 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>activities-client</module>
+        <module>activity-client</module>
         <module>admin-client</module>
         <module>content-client</module>
         <module>contest-client</module>
         <module>comment-client</module>
+        <module>moderation-client</module>
         <module>email-client</module>
-        <module>flagging-client</module>
         <module>members-client</module>
         <module>modeling-client</module>
         <module>search-client</module>

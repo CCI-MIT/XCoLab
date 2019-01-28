@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.activities.ActivitiesClientUtil;
+import org.xcolab.client.activity.StaticActivityContext;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.IContestCollectionCard;
 import org.xcolab.client.contest.pojo.IContestDiscussion;
@@ -206,21 +206,21 @@ public interface ContestClient {
 
     @GetMapping("contests/getNumberOfAllContestsInCollectionCard")
     int getNumberOfAllContestsInCollectionCard(
-            @RequestParam("collectionCardId") Long collectionCardId,
-            @RequestParam("viewType") String viewType,
-            @RequestParam("onlyFeatured") Boolean onlyFeatured);
+            @RequestParam(value = "collectionCardId") Long collectionCardId,
+            @RequestParam(value = "viewType", required = false) String viewType,
+            @RequestParam(value = "onlyFeatured", required = false) Boolean onlyFeatured);
 
     @GetMapping("contests/getNumberOfActiveContestsInCollectionCard")
     int getNumberOfActiveContestsInCollectionCard(
-            @RequestParam("collectionCardId") Long collectionCardId,
-            @RequestParam("viewType") String viewType,
-            @RequestParam("onlyFeatured") Boolean onlyFeatured);
+            @RequestParam(value = "collectionCardId") Long collectionCardId,
+            @RequestParam(value = "viewType", required = false) String viewType,
+            @RequestParam(value = "onlyFeatured", required = false) Boolean onlyFeatured);
 
     @GetMapping("contests/getNumberOfPriorContestsInCollectionCard")
     int getNumberOfPriorContestsInCollectionCard(
-            @RequestParam("collectionCardId") Long collectionCardId,
-            @RequestParam("viewType") String viewType,
-            @RequestParam("onlyFeatured") Boolean onlyFeatured);
+            @RequestParam(value = "collectionCardId") Long collectionCardId,
+            @RequestParam(value = "viewType", required = false) String viewType,
+            @RequestParam(value = "onlyFeatured", required = false) Boolean onlyFeatured);
 
     @PutMapping("/contestCollectionCards")
     boolean updateContestCollectionCard(@RequestBody IContestCollectionCard contestCollectionCard);
@@ -235,25 +235,23 @@ public interface ContestClient {
 
     @GetMapping("/contests/getContestsByOntologyTerm")
     List<ContestWrapper> getContestByOntologyTerm(
-            @RequestParam(value = "focusAreaOntologyTerm", required = false)
-                    Long focusAreaOntologyTerm,
+            @RequestParam(value = "focusAreaOntologyTerm") Long focusAreaOntologyTerm,
             @RequestParam(value = "getActive", required = false) Boolean getActive);
 
     @GetMapping("/contests/getNumberOfContestsByOntologyTerm")
     int getNumberOfContestsByOntologyTerm(
-            @RequestParam(value = "focusAreaOntologyTerm", required = false)
-                    Long focusAreaOntologyTerm);
+            @RequestParam(value = "focusAreaOntologyTerm") Long focusAreaOntologyTerm);
 
     @GetMapping("/contests/{contestId}/subContestsByOntologySpaceId")
     List<ContestWrapper> getSubContestsByOntologySpaceId(@PathVariable("contestId") Long contestId,
-            @RequestParam("ontologySpaceId") Long ontologySpaceId);
+            @RequestParam(value = "ontologySpaceId") Long ontologySpaceId);
 
     @GetMapping("/contestPhases/autoPromoteProposals")
     int autoPromoteProposals();
 
     @PutMapping("/contestPhases/{contestPhaseId}/forcePromotionOfProposalInContestPhaseId")
     boolean forcePromotionOfProposalInPhase(@PathVariable("contestPhaseId") Long contestPhaseId,
-            @RequestParam("proposalId") Long proposalId);
+            @RequestParam(value = "proposalId") Long proposalId);
 
     default List<ContestWrapper> getAllContests() {
         String lang = LocaleContextHolder.getLocale().getLanguage();
@@ -347,7 +345,8 @@ public interface ContestClient {
     }
 
     @GetMapping("/count/contests")
-    int countContests(@RequestParam(value = "contestActive", required = false) Boolean contestActive,
+    int countContests(
+            @RequestParam(value = "contestActive", required = false) Boolean contestActive,
             @RequestParam(value = "contestPrivate", required = false) Boolean contestPrivate,
             @RequestParam(value = "contestTypeId", required = false) Long contestTypeId);
 
@@ -462,16 +461,19 @@ public interface ContestClient {
     List<IContestPhaseRibbonType> getAllContestPhaseRibbonType();
 
     default boolean isMemberSubscribedToContest(long contestId, long userId) {
-        return ActivitiesClientUtil.isSubscribedToActivity(userId,
-                ActivityCategory.CONTEST, contestId, "");
+        return StaticActivityContext.getActivityClient().isSubscribed(userId,
+                ActivityCategory.CONTEST, contestId);
     }
 
     default void subscribeMemberToContest(long contestId, long userId) {
-        ActivitiesClientUtil.addSubscription(userId, ActivityCategory.CONTEST, contestId, "");
+        StaticActivityContext.getActivityClient()
+                .addSubscription(userId, ActivityCategory.CONTEST, contestId, "");
     }
 
     default void unsubscribeMemberFromContest(long contestId, long userId) {
-        ActivitiesClientUtil.deleteSubscription(userId, ActivityCategory.CONTEST, contestId);
+        StaticActivityContext
+                .getActivityClient()
+                .deleteSubscription(userId, ActivityCategory.CONTEST, contestId);
     }
 
     @GetMapping("/contestCollectionCards")
@@ -497,5 +499,5 @@ public interface ContestClient {
 
     @PostMapping("/contests/{contestId}/memberAgreedToTos")
     void setMemberAgreedToTos(@PathVariable("contestId") Long contestId,
-            @RequestParam("memberId") Long memberId, @RequestBody boolean agreed);
+            @RequestParam(value = "memberId") Long memberId, @RequestBody boolean agreed);
 }

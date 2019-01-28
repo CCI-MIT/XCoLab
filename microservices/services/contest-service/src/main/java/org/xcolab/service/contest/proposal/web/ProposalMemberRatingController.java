@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.client.activities.ActivitiesClientUtil;
+import org.xcolab.client.activity.IActivityClient;
+import org.xcolab.client.activity.StaticActivityContext;
 import org.xcolab.client.contest.pojo.IProposalSupporter;
 import org.xcolab.client.contest.pojo.IProposalVote;
 import org.xcolab.client.contest.pojo.wrapper.SupportedProposal;
@@ -138,7 +138,7 @@ public class ProposalMemberRatingController implements IProposalMemberRatingClie
     public boolean deleteProposalSupporter(@RequestParam Long proposalId,
             @RequestParam Long userId) {
         this.proposalSupporterDao.delete(proposalId, userId);
-        final ActivitiesClient activitiesClient = ActivitiesClientUtil.getClient();
+        final IActivityClient activitiesClient = StaticActivityContext.getActivityClient();
         activitiesClient
                 .createActivityEntry(ProposalActivityType.SUPPORT_REMOVED, userId, proposalId);
         return true;

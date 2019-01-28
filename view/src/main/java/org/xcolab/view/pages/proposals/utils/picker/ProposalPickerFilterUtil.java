@@ -1,7 +1,7 @@
 package org.xcolab.view.pages.proposals.utils.picker;
 
-import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.activities.pojo.ActivitySubscription;
+import org.xcolab.client.activity.StaticActivityContext;
+import org.xcolab.client.activity.pojo.IActivitySubscription;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.IProposalSupporter;
@@ -75,13 +75,13 @@ public class ProposalPickerFilterUtil {
     public static List<ProposalWrapper> getFilteredSubscribedProposalsForUser(
             ProposalContext proposalContext, long userId, String filterKey, long sectionId) {
         List<ProposalWrapper> proposals = new ArrayList<>();
-        List<ActivitySubscription> activitySubscriptions =
-                ActivitiesClientUtil.getActivitySubscriptions(null, null, userId);
+        List<IActivitySubscription> activitySubscriptions = StaticActivityContext
+                .getActivityClient().getActivitySubscriptions(null, null, userId);
 
         final ClientHelper clients = proposalContext.getClients();
         final IProposalClient proposalClient = clients.getProposalClient();
 
-        for (ActivitySubscription subscription : activitySubscriptions) {
+        for (IActivitySubscription subscription : activitySubscriptions) {
 
             try {
                 if (subscription.getActivityCategoryEnum() == ActivityCategory.PROPOSAL) {

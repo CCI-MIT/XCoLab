@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.activities.ActivitiesClientUtil;
+import org.xcolab.client.activity.StaticActivityContext;
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.StaticContestContext;
@@ -311,16 +311,18 @@ public interface IProposalClient {
     void populateTableWithProposal(@RequestParam("proposalId") Long proposalId);
 
     default boolean isMemberSubscribedToProposal(Long proposalId, Long userId) {
-        return ActivitiesClientUtil
-                .isSubscribedToActivity(userId, ActivityCategory.PROPOSAL, proposalId);
+        return StaticActivityContext.getActivityClient()
+                .isSubscribed(userId, ActivityCategory.PROPOSAL, proposalId);
     }
 
     default void subscribeMemberToProposal(long proposalId, long userId) {
-        ActivitiesClientUtil.addSubscription(userId, ActivityCategory.PROPOSAL, proposalId, null);
+        StaticActivityContext.getActivityClient()
+                .addSubscription(userId, ActivityCategory.PROPOSAL, proposalId, null);
     }
 
     default void unsubscribeMemberFromProposal(long proposalId, long userId) {
-        ActivitiesClientUtil.deleteSubscription(userId, ActivityCategory.PROPOSAL, proposalId);
+        StaticActivityContext.getActivityClient()
+                .deleteSubscription(userId, ActivityCategory.PROPOSAL, proposalId);
     }
 
     default ProposalWrapper getProposalFromLinkUrl(String linkUrl) {

@@ -42,11 +42,16 @@
         <dependency>
             <groupId>org.xcolab</groupId>
             <artifactId>tracking-client</artifactId>
-			<version>${project.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.xcolab</groupId>
             <artifactId>contest-client</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.xcolab</groupId>
+            <artifactId>activity-client</artifactId>
             <version>${project.version}</version>
         </dependency>
 

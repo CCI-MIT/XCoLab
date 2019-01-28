@@ -3,10 +3,10 @@ package org.xcolab.view.pages.contestmanagement.wrappers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.IContestTeamMember;
 import org.xcolab.client.contest.pojo.tables.pojos.ContestTeamMember;
+import org.xcolab.client.activity.StaticActivityContext;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.permissions.SystemRole;
 import org.xcolab.util.activities.enums.ActivityCategory;
@@ -64,7 +64,8 @@ public class ContestTeamWrapper {
 
     private void subscribeUsersToContest(List<Long> userIds) {
         for (Long userId : userIds) {
-            ActivitiesClientUtil.addSubscription(userId, ActivityCategory.CONTEST, contestId, "");
+            StaticActivityContext.getActivityClient()
+                    .addSubscription(userId, ActivityCategory.CONTEST, contestId);
         }
     }
 
