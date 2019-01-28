@@ -12,7 +12,7 @@ import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalVersionWrapper;
 import org.xcolab.client.contest.proposals.IProposalClient;
-import org.xcolab.client.contest.proposals.ProposalPhaseClient;
+import org.xcolab.client.contest.proposals.IProposalPhaseClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 
@@ -34,7 +34,7 @@ public class ProposalVersionsJsonController {
     private IContestClient contestClient;
 
     @Autowired
-    private ProposalPhaseClient proposalPhaseClient;
+    private IProposalPhaseClient proposalPhaseClient;
 
     @Autowired
     private IProposalClient proposalClient;
@@ -97,7 +97,7 @@ public class ProposalVersionsJsonController {
         IProposal2Phase p2p = null;
         ContestWrapper contest = contestClient.getContest(contestId);
         ClientHelper clientHelper = new ClientHelper();
-        ProposalPhaseClient proposalPhaseClient = clientHelper.getProposalPhaseClient();
+        IProposalPhaseClient proposalPhaseClient = clientHelper.getProposalPhaseClient();
         IProposalClient proposalClient = clientHelper.getProposalClient();
         IContestClient contestClient = clientHelper.getContestClient();
 

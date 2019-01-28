@@ -12,7 +12,7 @@ import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalRatings;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalPhaseClient;
+import org.xcolab.client.contest.proposals.IProposalPhaseClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.entity.utils.helper.ProposalJudgingCommentHelper;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
@@ -169,7 +169,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
     }
 
     private Boolean wasProposalPromotedInContestPhase(ProposalContext proposalContext, ProposalWrapper proposal, ContestPhaseWrapper contestPhase) {
-        final ProposalPhaseClient proposalPhaseClient =
+        final IProposalPhaseClient proposalPhaseClient =
                 proposalContext.getClients().getProposalPhaseClient();
         IProposalContestPhaseAttribute judgingDecisionAttr =
                 proposalPhaseClient.getProposalContestPhaseAttribute(

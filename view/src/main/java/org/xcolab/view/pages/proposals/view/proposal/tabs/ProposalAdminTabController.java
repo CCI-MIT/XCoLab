@@ -11,9 +11,9 @@ import org.xcolab.client.contest.IContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.proposals.IProposalPhaseClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.IProposalClient;
-import org.xcolab.client.contest.proposals.ProposalPhaseClient;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.commons.servlet.flash.AlertMessage;
@@ -88,7 +88,7 @@ public class ProposalAdminTabController extends BaseProposalTabController {
         if (proposalsPermissions.getCanPromoteProposalToNextPhase(contestPhase)) {
             try {
                 final IProposalClient proposalClient = clients.getProposalClient();
-                final ProposalPhaseClient proposalPhaseClient = clients.getProposalPhaseClient();
+                final IProposalPhaseClient proposalPhaseClient = clients.getProposalPhaseClient();
 
                 ContestWrapper latestProposalContest =
                         proposalClient.getLatestContestInProposal(proposalId);

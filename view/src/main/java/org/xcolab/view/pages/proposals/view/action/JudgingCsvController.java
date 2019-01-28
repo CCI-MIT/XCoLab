@@ -18,7 +18,7 @@ import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.IProposalJudgeRatingClient;
-import org.xcolab.client.contest.proposals.ProposalPhaseClient;
+import org.xcolab.client.contest.proposals.IProposalPhaseClient;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.exceptions.InternalException;
@@ -185,7 +185,7 @@ public class JudgingCsvController {
             ProposalContext proposalContext) {
 
         final ClientHelper clients = proposalContext.getClients();
-        final ProposalPhaseClient proposalPhaseClient = clients.getProposalPhaseClient();
+        final IProposalPhaseClient proposalPhaseClient = clients.getProposalPhaseClient();
 
 
         if (judgingPhase.getFellowScreeningActive()) {

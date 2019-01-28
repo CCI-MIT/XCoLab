@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.client.contest.pojo.IProposal2Phase;
 import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
-import org.xcolab.client.contest.proposals.ProposalPhaseClient;
+import org.xcolab.client.contest.proposals.IProposalPhaseClient;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.proposal.domain.proposal2phase.Proposal2PhaseDao;
 import org.xcolab.service.contest.proposal.domain.proposalcontestphaseattribute.ProposalContestPhaseAttributeDao;
@@ -22,7 +22,7 @@ import org.xcolab.util.http.exceptions.RuntimeEntityNotFoundException;
 import java.util.List;
 
 @RestController
-public class ProposalPhaseController implements ProposalPhaseClient {
+public class ProposalPhaseController implements IProposalPhaseClient {
 
     private final Proposal2PhaseDao proposal2PhaseDao;
     private final ProposalContestPhaseAttributeDao proposalContestPhaseAttributeDao;

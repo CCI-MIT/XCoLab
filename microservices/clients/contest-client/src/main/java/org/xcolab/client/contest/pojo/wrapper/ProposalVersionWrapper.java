@@ -1,14 +1,14 @@
 package org.xcolab.client.contest.pojo.wrapper;
 
 import org.xcolab.client.contest.pojo.tables.pojos.ProposalVersion;
-import org.xcolab.client.contest.proposals.ProposalPhaseClient;
+import org.xcolab.client.contest.proposals.IProposalPhaseClient;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
 
 import java.sql.Timestamp;
 
 public class ProposalVersionWrapper extends ProposalVersion {
 
-    private final ProposalPhaseClient proposalPhaseClient;
+    private final IProposalPhaseClient proposalPhaseClient;
 
     public ProposalVersionWrapper() {
         proposalPhaseClient = StaticProposalContext.getProposalPhaseClient();

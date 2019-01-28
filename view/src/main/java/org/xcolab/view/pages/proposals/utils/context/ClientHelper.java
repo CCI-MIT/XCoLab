@@ -15,7 +15,7 @@ import org.xcolab.client.contest.proposals.IPointsClient;
 import org.xcolab.client.contest.proposals.IProposalAttributeClient;
 import org.xcolab.client.contest.proposals.IProposalJudgeRatingClient;
 import org.xcolab.client.contest.proposals.IProposalMoveClient;
-import org.xcolab.client.contest.proposals.ProposalPhaseClient;
+import org.xcolab.client.contest.proposals.IProposalPhaseClient;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
 
 public class ClientHelper {
@@ -23,7 +23,7 @@ public class ClientHelper {
     private final IMembershipClient membershipClient;
     private final IProposalClient proposalClient;
     private final IPointsClient pointsClient;
-    private final ProposalPhaseClient proposalPhaseClient;
+    private final IProposalPhaseClient proposalPhaseClient;
     private final IProposalAttributeClient proposalAttributeClient;
     private final IProposalMoveClient proposalMoveClient;
     private final IProposalJudgeRatingClient proposalJudgeRatingClient;
@@ -73,7 +73,7 @@ public class ClientHelper {
         return pointsClient;
     }
 
-    public ProposalPhaseClient getProposalPhaseClient() {
+    public IProposalPhaseClient getProposalPhaseClient() {
         return proposalPhaseClient;
     }
 

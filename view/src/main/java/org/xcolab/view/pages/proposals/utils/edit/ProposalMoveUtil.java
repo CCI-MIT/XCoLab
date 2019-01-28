@@ -11,7 +11,7 @@ import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.proposals.IProposalMoveClient;
-import org.xcolab.client.contest.proposals.ProposalPhaseClient;
+import org.xcolab.client.contest.proposals.IProposalPhaseClient;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.contest.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.commons.exceptions.InternalException;
@@ -33,7 +33,7 @@ public final class ProposalMoveUtil {
         try {
             final ClientHelper clients = proposalContext.getClients();
             final IProposalClient proposalClient = clients.getProposalClient();
-            final ProposalPhaseClient proposalPhaseClient = clients.getProposalPhaseClient();
+            final IProposalPhaseClient proposalPhaseClient = clients.getProposalPhaseClient();
             final IProposalMoveClient proposalMoveClient = clients.getProposalMoveClient();
 
             final ContestWrapper fromContest = proposalClient.getCurrentContestForProposal(proposal.getId());

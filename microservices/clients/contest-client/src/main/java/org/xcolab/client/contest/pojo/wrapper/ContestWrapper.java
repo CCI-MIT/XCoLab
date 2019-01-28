@@ -644,7 +644,7 @@ public class ContestWrapper extends Contest {
 //            ContestPhase contestPhase = contestClient.getActivePhase(this.getId());
 //            for (Proposal proposal : ProposalClient.fromNamespace(serviceNamespace)
 //                    .getProposalsInContestPhase(contestPhase.getId())) {
-//                Proposal2Phase p2p = ProposalPhaseClient.fromNamespace(serviceNamespace)
+//                Proposal2Phase p2p = IProposalPhaseClient.fromNamespace(serviceNamespace)
 //                        .getProposal2PhaseByProposalIdContestPhaseId(proposal.getId(),
 //                                contestPhase.getId());
 //                /*
@@ -675,7 +675,7 @@ public class ContestWrapper extends Contest {
 //
 //            for (Proposal proposal : ProposalClient.fromNamespace(serviceNamespace)
 //                    .getProposalsInContestPhase(contestPhase.getId())) {
-//                Proposal2Phase p2p = ProposalPhaseClient.fromNamespace(serviceNamespace)
+//                Proposal2Phase p2p = IProposalPhaseClient.fromNamespace(serviceNamespace)
 //                        .getProposal2PhaseByProposalIdContestPhaseId(proposal.getId(), contestPhase.getId());
 //                /*
 //                if ((new ProposalWrapper(proposal, proposal.getCurrentVersion(), this, contestPhase, p2p)).getScreeningStatus() == GenericJudgingStatus.STATUS_UNKNOWN) {

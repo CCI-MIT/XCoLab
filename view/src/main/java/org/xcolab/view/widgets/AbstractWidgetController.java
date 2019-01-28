@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 
 import org.xcolab.client.contest.IContestClient;
 import org.xcolab.client.contest.IContestTeamMemberClient;
-import org.xcolab.client.contest.proposals.ProposalPhaseClient;
+import org.xcolab.client.contest.proposals.IProposalPhaseClient;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.errors.AccessDeniedPage;
@@ -32,7 +32,7 @@ public abstract class AbstractWidgetController<WidgetPreferenceT extends WidgetP
     protected IContestTeamMemberClient contestTeamMemberClient;
 
     @Autowired
-    protected ProposalPhaseClient proposalPhaseClient;
+    protected IProposalPhaseClient proposalPhaseClient;
 
     protected AbstractWidgetController(String baseUrl,
             WidgetPreference.Supplier<WidgetPreferenceT> preferenceSupplier) {

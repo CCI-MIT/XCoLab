@@ -7,7 +7,7 @@ public class StaticProposalContext {
     private static IPointsClient pointsClient;
     private static IProposalAttributeClient proposalAttributeClient;
     private static IProposalMoveClient proposalMoveClient;
-    private static ProposalPhaseClient proposalPhaseClient;
+    private static IProposalPhaseClient proposalPhaseClient;
     private static IProposalClient proposalClient;
     private static IMembershipClient membershipClient;
     private static IProposalMemberRatingClient proposalMemberRatingClient;
@@ -17,7 +17,7 @@ public class StaticProposalContext {
 
     public static void setClients(IPointsClient pointsClient,
             IProposalAttributeClient proposalAttributeClient, IProposalMoveClient proposalMoveClient,
-            ProposalPhaseClient proposalPhaseClient, IProposalClient proposalClient,
+            IProposalPhaseClient proposalPhaseClient, IProposalClient proposalClient,
             IMembershipClient membershipClient,
             IProposalMemberRatingClient proposalMemberRatingClient,
             IProposalJudgeRatingClient proposalJudgeRatingClient) {
@@ -51,7 +51,7 @@ public class StaticProposalContext {
         return proposalMoveClient;
     }
 
-    public static ProposalPhaseClient getProposalPhaseClient() {
+    public static IProposalPhaseClient getProposalPhaseClient() {
         return proposalPhaseClient;
     }
 

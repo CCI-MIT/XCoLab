@@ -11,7 +11,7 @@ import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.IContestPhaseType;
 import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
 import org.xcolab.client.contest.pojo.tables.pojos.ContestPhase;
-import org.xcolab.client.contest.proposals.ProposalPhaseClient;
+import org.xcolab.client.contest.proposals.IProposalPhaseClient;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.commons.time.DurationFormatter;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
@@ -204,7 +204,7 @@ public class ContestPhaseWrapper extends ContestPhase {
 
     @JsonIgnore
     public Boolean getProposalVisibility(long proposalId) {
-        ProposalPhaseClient proposalPhaseClient = StaticProposalContext.getProposalPhaseClient();
+        IProposalPhaseClient proposalPhaseClient = StaticProposalContext.getProposalPhaseClient();
         IProposalContestPhaseAttribute attr = proposalPhaseClient
                 .getProposalContestPhaseAttribute(proposalId, this.getId(),
                         ProposalContestPhaseAttributeKeys.VISIBLE);

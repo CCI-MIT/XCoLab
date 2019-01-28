@@ -12,7 +12,7 @@ import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.IProposalClient;
-import org.xcolab.client.contest.proposals.ProposalPhaseClient;
+import org.xcolab.client.contest.proposals.IProposalPhaseClient;
 import org.xcolab.client.contest.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.members.PermissionsClient;
@@ -150,7 +150,7 @@ public class ProposalContextHelper {
     }
 
     public IProposal2Phase getProposal2Phase(ContestPhaseWrapper contestPhase) {
-        final ProposalPhaseClient proposalPhaseClient = clientHelper.getProposalPhaseClient();
+        final IProposalPhaseClient proposalPhaseClient = clientHelper.getProposalPhaseClient();
         try {
             return proposalPhaseClient.getProposal2PhaseByProposalIdContestPhaseId(givenProposalId,
                             contestPhase.getId());

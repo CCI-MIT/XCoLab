@@ -11,7 +11,7 @@ import org.xcolab.client.contest.IImpactClient;
 import org.xcolab.client.contest.IOntologyClient;
 import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.proposals.IProposalJudgeRatingClient;
-import org.xcolab.client.contest.proposals.ProposalPhaseClient;
+import org.xcolab.client.contest.proposals.IProposalPhaseClient;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.util.MetaKeys;
 
@@ -30,7 +30,7 @@ public class BaseProposalsController {
     protected IOntologyClient ontologyClient;
 
     @Autowired
-    protected ProposalPhaseClient proposalPhaseClient;
+    protected IProposalPhaseClient proposalPhaseClient;
 
     @Autowired
     protected IProposalClient proposalClient;
