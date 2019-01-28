@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.Map;
 
 @FeignClient("xcolab-contest-service")
-public interface ContestClient {
+public interface IContestClient {
 
     default ContestWrapper getContest(long contestId) {
         final String lang = LocaleContextHolder.getLocale().getLanguage();

@@ -4,14 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.IContestClient;
 import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.enums.ContestStatus;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.IContestPhaseType;
 import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
 import org.xcolab.client.contest.pojo.tables.pojos.ContestPhase;
-import org.xcolab.client.contest.proposals.ProposalPhaseClient;
+import org.xcolab.client.contest.proposals.IProposalPhaseClient;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.commons.time.DurationFormatter;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
@@ -33,7 +33,7 @@ public class ContestPhaseWrapper extends ContestPhase {
 
     public static final long SCHEDULE_TEMPLATE_PHASE_CONTEST_ID = 0L;
 
-    private final ContestClient contestClient;
+    private final IContestClient contestClient;
 
     protected ContestStatus status;
 
@@ -204,7 +204,7 @@ public class ContestPhaseWrapper extends ContestPhase {
 
     @JsonIgnore
     public Boolean getProposalVisibility(long proposalId) {
-        ProposalPhaseClient proposalPhaseClient = StaticProposalContext.getProposalPhaseClient();
+        IProposalPhaseClient proposalPhaseClient = StaticProposalContext.getProposalPhaseClient();
         IProposalContestPhaseAttribute attr = proposalPhaseClient
                 .getProposalContestPhaseAttribute(proposalId, this.getId(),
                         ProposalContestPhaseAttributeKeys.VISIBLE);

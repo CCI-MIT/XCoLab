@@ -11,7 +11,7 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.PointTypeWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.PointsClient;
+import org.xcolab.client.contest.proposals.IPointsClient;
 import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.proposals.enums.points.DistributionStrategy;
 import org.xcolab.client.contest.proposals.enums.points.PointsTarget;
@@ -46,7 +46,7 @@ public class ProposalPointsTabController extends BaseProposalTabController {
         }
 
         final ClientHelper clients = proposalContext.getClients();
-        final PointsClient pointsClient = clients.getPointsClient();
+        final IPointsClient pointsClient = clients.getPointsClient();
         final IProposalClient proposalClient = clients.getProposalClient();
 
         ProposalWrapper proposal = proposalContext.getProposal();

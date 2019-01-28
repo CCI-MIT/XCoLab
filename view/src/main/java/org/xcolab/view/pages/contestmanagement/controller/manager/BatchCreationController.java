@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.OntologyClient;
-import org.xcolab.client.contest.ProposalTemplateClient;
+import org.xcolab.client.contest.IContestClient;
+import org.xcolab.client.contest.IOntologyClient;
+import org.xcolab.client.contest.IProposalTemplateClient;
 import org.xcolab.client.contest.pojo.IProposalTemplate;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.FocusAreaWrapper;
@@ -55,13 +55,13 @@ public class BatchCreationController {
     private IContestTypeClient contestTypeClient;
 
     @Autowired
-    private ContestClient contestClient;
+    private IContestClient contestClient;
 
     @Autowired
-    private OntologyClient ontologyClient;
+    private IOntologyClient ontologyClient;
 
     @Autowired
-    private ProposalTemplateClient proposalTemplateClient;
+    private IProposalTemplateClient proposalTemplateClient;
 
     @ModelAttribute("proposalTemplateSelectionItems")
     public List<LabelValue> populateProposalTemplateSelectionItems() {

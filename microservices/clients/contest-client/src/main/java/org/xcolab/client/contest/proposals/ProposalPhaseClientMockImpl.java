@@ -11,7 +11,7 @@ import java.util.List;
 
 @Component
 @Profile("test")
-public class ProposalPhaseClientMockImpl implements ProposalPhaseClient {
+public class ProposalPhaseClientMockImpl implements IProposalPhaseClient {
 
     @Override
     public List<IProposal2Phase> getProposal2Phases(Long proposalId, Long contestPhaseId,

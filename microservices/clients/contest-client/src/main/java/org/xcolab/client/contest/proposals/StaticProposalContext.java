@@ -4,10 +4,10 @@ import org.springframework.util.Assert;
 
 public class StaticProposalContext {
 
-    private static PointsClient pointsClient;
-    private static ProposalAttributeClient proposalAttributeClient;
-    private static ProposalMoveClient proposalMoveClient;
-    private static ProposalPhaseClient proposalPhaseClient;
+    private static IPointsClient pointsClient;
+    private static IProposalAttributeClient proposalAttributeClient;
+    private static IProposalMoveClient proposalMoveClient;
+    private static IProposalPhaseClient proposalPhaseClient;
     private static IProposalClient proposalClient;
     private static IMembershipClient membershipClient;
     private static IProposalMemberRatingClient proposalMemberRatingClient;
@@ -15,9 +15,9 @@ public class StaticProposalContext {
 
     private StaticProposalContext() {}
 
-    public static void setClients(PointsClient pointsClient,
-            ProposalAttributeClient proposalAttributeClient, ProposalMoveClient proposalMoveClient,
-            ProposalPhaseClient proposalPhaseClient, IProposalClient proposalClient,
+    public static void setClients(IPointsClient pointsClient,
+            IProposalAttributeClient proposalAttributeClient, IProposalMoveClient proposalMoveClient,
+            IProposalPhaseClient proposalPhaseClient, IProposalClient proposalClient,
             IMembershipClient membershipClient,
             IProposalMemberRatingClient proposalMemberRatingClient,
             IProposalJudgeRatingClient proposalJudgeRatingClient) {
@@ -39,19 +39,19 @@ public class StaticProposalContext {
         StaticProposalContext.proposalJudgeRatingClient = proposalJudgeRatingClient;
     }
 
-    public static PointsClient getPointsClient() {
+    public static IPointsClient getPointsClient() {
         return pointsClient;
     }
 
-    public static ProposalAttributeClient getProposalAttributeClient() {
+    public static IProposalAttributeClient getProposalAttributeClient() {
         return proposalAttributeClient;
     }
 
-    public static ProposalMoveClient getProposalMoveClient() {
+    public static IProposalMoveClient getProposalMoveClient() {
         return proposalMoveClient;
     }
 
-    public static ProposalPhaseClient getProposalPhaseClient() {
+    public static IProposalPhaseClient getProposalPhaseClient() {
         return proposalPhaseClient;
     }
 

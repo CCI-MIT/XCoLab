@@ -11,18 +11,18 @@ public final class StaticContestContext {
     private static ICommentClient commentClient;
     private static ICategoryClient categoryClient;
     private static IThreadClient threadClient;
-    private static ContestClient contestClient;
-    private static ContestTeamMemberClient contestTeamMemberClient;
-    private static ImpactClient impactClient;
-    private static OntologyClient ontologyClient;
-    private static ProposalTemplateClient proposalTemplateClient;
+    private static IContestClient contestClient;
+    private static IContestTeamMemberClient contestTeamMemberClient;
+    private static IImpactClient impactClient;
+    private static IOntologyClient ontologyClient;
+    private static IProposalTemplateClient proposalTemplateClient;
 
     private StaticContestContext() {}
 
     public static void setClients(ICommentClient commentClient, ICategoryClient categoryClient,
-            IThreadClient threadClient, ContestClient contestClient,
-            ContestTeamMemberClient contestTeamMemberClient, ImpactClient impactClient,
-            OntologyClient ontologyClient, ProposalTemplateClient proposalTemplateClient) {
+            IThreadClient threadClient, IContestClient contestClient,
+            IContestTeamMemberClient contestTeamMemberClient, IImpactClient impactClient,
+            IOntologyClient ontologyClient, IProposalTemplateClient proposalTemplateClient) {
         Assert.notNull(commentClient, "commentClient must not be null!");
         Assert.notNull(categoryClient, "categoryClient must not be null!");
         Assert.notNull(threadClient, "threadClient must not be null!");
@@ -53,23 +53,23 @@ public final class StaticContestContext {
         return threadClient;
     }
 
-    public static ContestClient getContestClient() {
+    public static IContestClient getContestClient() {
         return contestClient;
     }
 
-    public static ContestTeamMemberClient getContestTeamMemberClient() {
+    public static IContestTeamMemberClient getContestTeamMemberClient() {
         return contestTeamMemberClient;
     }
 
-    public static OntologyClient getOntologyClient() {
+    public static IOntologyClient getOntologyClient() {
         return ontologyClient;
     }
 
-    public static ImpactClient getImpactClient() {
+    public static IImpactClient getImpactClient() {
         return impactClient;
     }
 
-    public static ProposalTemplateClient getProposalTemplateClient() {
+    public static IProposalTemplateClient getProposalTemplateClient() {
         return proposalTemplateClient;
     }
 }

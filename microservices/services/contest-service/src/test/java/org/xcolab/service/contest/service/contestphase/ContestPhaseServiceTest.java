@@ -23,10 +23,10 @@ import org.xcolab.client.contest.proposals.IMembershipClient;
 import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.proposals.IProposalJudgeRatingClient;
 import org.xcolab.client.contest.proposals.IProposalMemberRatingClient;
-import org.xcolab.client.contest.proposals.PointsClient;
-import org.xcolab.client.contest.proposals.ProposalAttributeClient;
-import org.xcolab.client.contest.proposals.ProposalMoveClient;
-import org.xcolab.client.contest.proposals.ProposalPhaseClient;
+import org.xcolab.client.contest.proposals.IPointsClient;
+import org.xcolab.client.contest.proposals.IProposalAttributeClient;
+import org.xcolab.client.contest.proposals.IProposalMoveClient;
+import org.xcolab.client.contest.proposals.IProposalPhaseClient;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.util.http.ServiceRequestUtils;
@@ -51,7 +51,7 @@ public class ContestPhaseServiceTest {
     private ContestPhaseService contestPhaseService;
 
     @Mock
-    private ProposalPhaseClient proposalPhaseClient;
+    private IProposalPhaseClient proposalPhaseClient;
 
     @Mock
     private IProposalClient proposalClient;
@@ -74,8 +74,8 @@ public class ContestPhaseServiceTest {
                     return proposal;
                 });
 
-        StaticProposalContext.setClients(Mockito.mock(PointsClient.class), Mockito.mock(
-                ProposalAttributeClient.class), Mockito.mock(ProposalMoveClient.class),
+        StaticProposalContext.setClients(Mockito.mock(IPointsClient.class), Mockito.mock(
+                IProposalAttributeClient.class), Mockito.mock(IProposalMoveClient.class),
                 proposalPhaseClient, proposalClient, Mockito.mock(IMembershipClient.class),
                 Mockito.mock(IProposalMemberRatingClient.class),
                 Mockito.mock(IProposalJudgeRatingClient.class));

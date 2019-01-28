@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.client.contest.pojo.IProposal2Phase;
 import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalAttributeClient;
+import org.xcolab.client.contest.proposals.IProposalAttributeClient;
 import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ProposalRevertActionController {
 
     @Autowired
-    private ProposalAttributeClient proposalAttributeClient;
+    private IProposalAttributeClient proposalAttributeClient;
 
     @Autowired
     private IProposalClient proposalClient;

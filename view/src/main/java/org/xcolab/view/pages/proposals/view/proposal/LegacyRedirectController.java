@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.IContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 public class LegacyRedirectController {
 
     @Autowired
-    private ContestClient contestClient;
+    private IContestClient contestClient;
 
     @Autowired
     private IProposalClient proposalClient;

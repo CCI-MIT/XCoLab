@@ -21,7 +21,7 @@ import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.IProposalClient;
-import org.xcolab.client.contest.proposals.ProposalMoveClient;
+import org.xcolab.client.contest.proposals.IProposalMoveClient;
 import org.xcolab.client.moderation.IModerationClient;
 import org.xcolab.client.members.PlatformTeamsClient;
 import org.xcolab.client.members.pojo.Member;
@@ -208,7 +208,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
             ProposalWrapper proposal, ContestWrapper contest) {
 
         final ClientHelper clients = proposalContext.getClients();
-        final ProposalMoveClient proposalMoveClient = clients.getProposalMoveClient();
+        final IProposalMoveClient proposalMoveClient = clients.getProposalMoveClient();
         List<IProposalMoveHistory> sourceMoveHistories = proposalMoveClient
                         .getBySourceProposalIdContestId(proposal.getId(),
                                 contest.getId());

@@ -6,7 +6,7 @@ import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalPhaseClient;
+import org.xcolab.client.contest.proposals.IProposalPhaseClient;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.entity.utils.notifications.EmailTemplateWrapper;
@@ -23,7 +23,7 @@ public class ProposalJudgingCommentHelper {
 
     private final ProposalWrapper proposal;
     private final ContestPhaseWrapper contestPhase;
-    private final ProposalPhaseClient proposalPhaseClient;
+    private final IProposalPhaseClient proposalPhaseClient;
     private String subject;
 
     public ProposalJudgingCommentHelper(ProposalWrapper proposal, ContestPhaseWrapper contestPhase) {

@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Set;
 
 @FeignClient("xcolab-contest-service")
-public interface OntologyClient {
+public interface IOntologyClient {
 
     @GetMapping("/ontologySpaces")
     List<OntologySpaceWrapper> getAllOntologySpaces();

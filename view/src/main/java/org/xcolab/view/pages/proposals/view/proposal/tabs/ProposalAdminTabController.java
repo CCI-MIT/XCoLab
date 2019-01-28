@@ -7,13 +7,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.IContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.proposals.IProposalPhaseClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.contest.proposals.IProposalClient;
-import org.xcolab.client.contest.proposals.ProposalPhaseClient;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.commons.servlet.flash.AlertMessage;
@@ -42,7 +42,7 @@ public class ProposalAdminTabController extends BaseProposalTabController {
             return new AccessDeniedPage(currentMember).toViewName(response);
         }
 
-        ContestClient contestClient = proposalContext.getClients().getContestClient();
+        IContestClient contestClient = proposalContext.getClients().getContestClient();
         setCommonModelAndPageAttributes(request, model, proposalContext, ProposalTab.ADMIN);
         model.addAttribute("availableRibbons", contestClient.getAllContestPhaseRibbonType());
 
@@ -81,14 +81,14 @@ public class ProposalAdminTabController extends BaseProposalTabController {
 
         ProposalsPermissions proposalsPermissions = proposalContext.getPermissions();
         final ClientHelper clients = proposalContext.getClients();
-        final ContestClient contestClient = clients.getContestClient();
+        final IContestClient contestClient = clients.getContestClient();
         ContestPhaseWrapper contestPhase = contestClient.getContestPhase(contestPhaseId);
         final ProposalWrapper proposal = proposalContext.getProposal();
         final ContestWrapper contest = proposalContext.getContest();
         if (proposalsPermissions.getCanPromoteProposalToNextPhase(contestPhase)) {
             try {
                 final IProposalClient proposalClient = clients.getProposalClient();
-                final ProposalPhaseClient proposalPhaseClient = clients.getProposalPhaseClient();
+                final IProposalPhaseClient proposalPhaseClient = clients.getProposalPhaseClient();
 
                 ContestWrapper latestProposalContest =
                         proposalClient.getLatestContestInProposal(proposalId);

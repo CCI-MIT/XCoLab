@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.IContestClient;
 import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.IProposal2Phase;
@@ -12,7 +12,7 @@ import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.IProposalClient;
-import org.xcolab.client.contest.proposals.ProposalPhaseClient;
+import org.xcolab.client.contest.proposals.IProposalPhaseClient;
 import org.xcolab.client.contest.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.members.PermissionsClient;
@@ -80,7 +80,7 @@ public class ProposalContextHelper {
 
     private ContestWrapper setupContestFromTheRightClient(long contestId) {
 
-        final ContestClient contestClient = clientHelper.getContestClient();
+        final IContestClient contestClient = clientHelper.getContestClient();
         log.debug("Setting up contest {} from client {}", contestId, contestClient);
 
         try {
@@ -129,7 +129,7 @@ public class ProposalContextHelper {
     }
 
     public ContestPhaseWrapper getContestPhase(ContestWrapper contest, ProposalWrapper proposal) {
-        final ContestClient contestClient = clientHelper.getContestClient();
+        final IContestClient contestClient = clientHelper.getContestClient();
         final IProposalClient proposalClient = clientHelper.getProposalClient();
 
         ContestPhaseWrapper contestPhase;
@@ -150,7 +150,7 @@ public class ProposalContextHelper {
     }
 
     public IProposal2Phase getProposal2Phase(ContestPhaseWrapper contestPhase) {
-        final ProposalPhaseClient proposalPhaseClient = clientHelper.getProposalPhaseClient();
+        final IProposalPhaseClient proposalPhaseClient = clientHelper.getProposalPhaseClient();
         try {
             return proposalPhaseClient.getProposal2PhaseByProposalIdContestPhaseId(givenProposalId,
                             contestPhase.getId());

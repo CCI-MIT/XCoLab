@@ -13,7 +13,7 @@ import org.xcolab.client.content.IContentClient;
 import org.xcolab.client.content.exceptions.ContentNotFoundException;
 import org.xcolab.client.content.pojo.IContentArticle;
 import org.xcolab.client.content.pojo.IContentArticleVersion;
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.IContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.members.PermissionsClient;
@@ -34,7 +34,7 @@ public class WikiController {
     private IContentClient contentClient;
 
     @Autowired
-    private ContestClient contestClient;
+    private IContestClient contestClient;
 
     @GetMapping("/wiki")
     public String home(HttpServletRequest request, HttpServletResponse response, Model model,

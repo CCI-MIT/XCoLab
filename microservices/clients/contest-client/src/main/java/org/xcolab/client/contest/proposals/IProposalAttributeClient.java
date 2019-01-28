@@ -23,7 +23,7 @@ import org.xcolab.util.http.exceptions.EntityNotFoundException;
 import java.util.List;
 
 @FeignClient("xcolab-contest-service")
-public interface ProposalAttributeClient {
+public interface IProposalAttributeClient {
 
     default ProposalAttribute getProposalAttribute(Long proposalId, String name,
             Long additionalId) {

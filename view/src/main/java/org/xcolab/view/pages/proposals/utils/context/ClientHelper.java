@@ -2,39 +2,39 @@ package org.xcolab.view.pages.proposals.utils.context;
 
 import org.xcolab.client.activity.IActivityClient;
 import org.xcolab.client.activity.StaticActivityContext;
-import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.ContestTeamMemberClient;
-import org.xcolab.client.contest.ImpactClient;
-import org.xcolab.client.contest.OntologyClient;
-import org.xcolab.client.contest.ProposalTemplateClient;
+import org.xcolab.client.contest.IContestClient;
+import org.xcolab.client.contest.IContestTeamMemberClient;
+import org.xcolab.client.contest.IImpactClient;
+import org.xcolab.client.contest.IOntologyClient;
+import org.xcolab.client.contest.IProposalTemplateClient;
 import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.proposals.IMembershipClient;
 import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.proposals.IProposalMemberRatingClient;
-import org.xcolab.client.contest.proposals.PointsClient;
-import org.xcolab.client.contest.proposals.ProposalAttributeClient;
+import org.xcolab.client.contest.proposals.IPointsClient;
+import org.xcolab.client.contest.proposals.IProposalAttributeClient;
 import org.xcolab.client.contest.proposals.IProposalJudgeRatingClient;
-import org.xcolab.client.contest.proposals.ProposalMoveClient;
-import org.xcolab.client.contest.proposals.ProposalPhaseClient;
+import org.xcolab.client.contest.proposals.IProposalMoveClient;
+import org.xcolab.client.contest.proposals.IProposalPhaseClient;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
 
 public class ClientHelper {
 
     private final IMembershipClient membershipClient;
     private final IProposalClient proposalClient;
-    private final PointsClient pointsClient;
-    private final ProposalPhaseClient proposalPhaseClient;
-    private final ProposalAttributeClient proposalAttributeClient;
-    private final ProposalMoveClient proposalMoveClient;
+    private final IPointsClient pointsClient;
+    private final IProposalPhaseClient proposalPhaseClient;
+    private final IProposalAttributeClient proposalAttributeClient;
+    private final IProposalMoveClient proposalMoveClient;
     private final IProposalJudgeRatingClient proposalJudgeRatingClient;
     private final IProposalMemberRatingClient proposalMemberRatingClient;
 
     // Contest
-    private final ContestClient contestClient;
-    private final ContestTeamMemberClient contestTeamMemberClient;
-    private final ImpactClient impactClient;
-    private final OntologyClient ontologyClient;
-    private final ProposalTemplateClient proposalTemplateClient;
+    private final IContestClient contestClient;
+    private final IContestTeamMemberClient contestTeamMemberClient;
+    private final IImpactClient impactClient;
+    private final IOntologyClient ontologyClient;
+    private final IProposalTemplateClient proposalTemplateClient;
 
     private final IActivityClient activityClient;
 
@@ -69,19 +69,19 @@ public class ClientHelper {
         return membershipClient;
     }
 
-    public PointsClient getPointsClient() {
+    public IPointsClient getPointsClient() {
         return pointsClient;
     }
 
-    public ProposalPhaseClient getProposalPhaseClient() {
+    public IProposalPhaseClient getProposalPhaseClient() {
         return proposalPhaseClient;
     }
 
-    public ProposalAttributeClient getProposalAttributeClient() {
+    public IProposalAttributeClient getProposalAttributeClient() {
         return proposalAttributeClient;
     }
 
-    public ProposalMoveClient getProposalMoveClient() {
+    public IProposalMoveClient getProposalMoveClient() {
         return proposalMoveClient;
     }
 
@@ -93,23 +93,23 @@ public class ClientHelper {
         return proposalMemberRatingClient;
     }
 
-    public ContestClient getContestClient() {
+    public IContestClient getContestClient() {
         return contestClient;
     }
 
-    public ContestTeamMemberClient getContestTeamMemberClient() {
+    public IContestTeamMemberClient getContestTeamMemberClient() {
         return contestTeamMemberClient;
     }
 
-    public ImpactClient getImpactClient() {
+    public IImpactClient getImpactClient() {
         return impactClient;
     }
 
-    public OntologyClient getOntologyClient() {
+    public IOntologyClient getOntologyClient() {
         return ontologyClient;
     }
 
-    public ProposalTemplateClient getProposalTemplateClient() {
+    public IProposalTemplateClient getProposalTemplateClient() {
         return proposalTemplateClient;
     }
 }

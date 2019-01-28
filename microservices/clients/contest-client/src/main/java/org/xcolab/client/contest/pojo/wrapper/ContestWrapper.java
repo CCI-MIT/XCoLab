@@ -7,10 +7,10 @@ import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.comment.pojo.IThread;
-import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.ContestTeamMemberClient;
-import org.xcolab.client.contest.OntologyClient;
-import org.xcolab.client.contest.ProposalTemplateClient;
+import org.xcolab.client.contest.IContestClient;
+import org.xcolab.client.contest.IContestTeamMemberClient;
+import org.xcolab.client.contest.IOntologyClient;
+import org.xcolab.client.contest.IProposalTemplateClient;
 import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.enums.ContestRole;
 import org.xcolab.client.contest.enums.ContestStatus;
@@ -45,10 +45,10 @@ public class ContestWrapper extends Contest {
 
     private static final long serialVersionUID = 1L;
 
-    private final ContestClient contestClient;
-    private final ContestTeamMemberClient contestTeamMemberClient;
-    private final OntologyClient ontologyClient;
-    private final ProposalTemplateClient proposalTemplateClient;
+    private final IContestClient contestClient;
+    private final IContestTeamMemberClient contestTeamMemberClient;
+    private final IOntologyClient ontologyClient;
+    private final IProposalTemplateClient proposalTemplateClient;
 
     private static final Map<Long, FocusAreaWrapper> faCache = new HashMap<>();
     private final Map<String, List<OntologyTermWrapper>> ontologySpaceCache = new HashMap<>();
@@ -644,7 +644,7 @@ public class ContestWrapper extends Contest {
 //            ContestPhase contestPhase = contestClient.getActivePhase(this.getId());
 //            for (Proposal proposal : ProposalClient.fromNamespace(serviceNamespace)
 //                    .getProposalsInContestPhase(contestPhase.getId())) {
-//                Proposal2Phase p2p = ProposalPhaseClient.fromNamespace(serviceNamespace)
+//                Proposal2Phase p2p = IProposalPhaseClient.fromNamespace(serviceNamespace)
 //                        .getProposal2PhaseByProposalIdContestPhaseId(proposal.getId(),
 //                                contestPhase.getId());
 //                /*
@@ -675,7 +675,7 @@ public class ContestWrapper extends Contest {
 //
 //            for (Proposal proposal : ProposalClient.fromNamespace(serviceNamespace)
 //                    .getProposalsInContestPhase(contestPhase.getId())) {
-//                Proposal2Phase p2p = ProposalPhaseClient.fromNamespace(serviceNamespace)
+//                Proposal2Phase p2p = IProposalPhaseClient.fromNamespace(serviceNamespace)
 //                        .getProposal2PhaseByProposalIdContestPhaseId(proposal.getId(), contestPhase.getId());
 //                /*
 //                if ((new ProposalWrapper(proposal, proposal.getCurrentVersion(), this, contestPhase, p2p)).getScreeningStatus() == GenericJudgingStatus.STATUS_UNKNOWN) {

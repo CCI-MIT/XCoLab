@@ -15,7 +15,7 @@ import java.util.List;
 
 @Component
 @Profile("test")
-public class OntologyClientMockImpl implements OntologyClient {
+public class OntologyClientMockImpl implements IOntologyClient {
 
     @Override
     public List<OntologySpaceWrapper> getAllOntologySpaces() {

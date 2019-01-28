@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.client.contest.OntologyClient;
+import org.xcolab.client.contest.IOntologyClient;
 import org.xcolab.client.contest.pojo.IFocusAreaOntologyTerm;
 import org.xcolab.client.contest.pojo.IImpactDefaultSeries;
 import org.xcolab.client.contest.pojo.IImpactDefaultSeriesData;
@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-public class OntologyController implements OntologyClient {
+public class OntologyController implements IOntologyClient {
 
     private final OntologyTermDao ontologyTermDao;
     private final OntologySpaceDao ontologySpaceDao;

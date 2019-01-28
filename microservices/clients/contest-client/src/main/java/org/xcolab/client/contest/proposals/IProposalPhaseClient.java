@@ -18,7 +18,7 @@ import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import java.util.List;
 
 @FeignClient("xcolab-contest-service")
-public interface ProposalPhaseClient {
+public interface IProposalPhaseClient {
 
     @GetMapping("/proposal2Phases")
     List<IProposal2Phase> getProposal2Phases(

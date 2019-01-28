@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.contest.OntologyClient;
+import org.xcolab.client.contest.IOntologyClient;
 import org.xcolab.client.contest.pojo.wrapper.OntologySpaceWrapper;
 import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
 import org.xcolab.client.members.PermissionsClient;
@@ -29,7 +29,7 @@ public class OntologyEditorController {
     private static final Integer THRESHOLD_TO_AVOID_NODE_COLLISION = 1000;
 
     @Autowired
-    private OntologyClient ontologyClient;
+    private IOntologyClient ontologyClient;
 
     @GetMapping("/ontology-editor")
     public String handleRenderRequest(HttpServletRequest request, HttpServletResponse response,

@@ -13,7 +13,7 @@ import java.util.List;
 
 @Component
 @Profile("test")
-public class ImpactClientMockImpl implements ImpactClient {
+public class ImpactClientMockImpl implements IImpactClient {
 
     @Override
     public IImpactTemplateFocusAreaList getImpactTemplateFocusAreaList(

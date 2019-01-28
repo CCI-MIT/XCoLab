@@ -14,7 +14,7 @@ import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.IProposalClient;
-import org.xcolab.client.contest.proposals.ProposalPhaseClient;
+import org.xcolab.client.contest.proposals.IProposalPhaseClient;
 import org.xcolab.client.contest.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
@@ -96,7 +96,7 @@ public class ContestProposalsController extends BaseProposalsController {
         for (ProposalWrapper proposal : activeProposals) {
 
             try {
-                final ProposalPhaseClient proposalPhaseClient = clients.getProposalPhaseClient();
+                final IProposalPhaseClient proposalPhaseClient = clients.getProposalPhaseClient();
                 IProposal2Phase p2p = proposalPhaseClient.getProposal2PhaseByProposalIdContestPhaseId(proposal.getId(), contestPhase.getId());
                 ProposalWrapper proposalWrapper;
 

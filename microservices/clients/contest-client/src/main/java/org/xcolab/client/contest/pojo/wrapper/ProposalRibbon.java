@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.springframework.util.Assert;
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.IContestClient;
 import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.IContestPhaseRibbonType;
 import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
@@ -31,7 +31,7 @@ public class ProposalRibbon implements Serializable {
             return null;
         }
 
-        final ContestClient contestClient = StaticContestContext.getContestClient();
+        final IContestClient contestClient = StaticContestContext.getContestClient();
 
         ContestPhaseWrapper contestPhase = proposal.getContestPhase();
 

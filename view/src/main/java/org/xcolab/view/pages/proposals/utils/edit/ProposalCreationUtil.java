@@ -1,12 +1,12 @@
 package org.xcolab.view.pages.proposals.utils.edit;
 
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.IContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
-import org.xcolab.client.contest.proposals.ProposalAttributeClient;
+import org.xcolab.client.contest.proposals.IProposalAttributeClient;
 import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.contest.proposals.exceptions.Proposal2PhaseNotFoundException;
@@ -54,7 +54,7 @@ public final class ProposalCreationUtil {
             final long baseProposalId = updateProposalSectionsBean.getBaseProposalId();
 
             if (baseProposalId > 0) {
-                final ProposalAttributeClient proposalAttributeClient =
+                final IProposalAttributeClient proposalAttributeClient =
                         clientHelper.getProposalAttributeClient();
                 Integer proposalAttributeVersion = proposalAttributeClient.setProposalAttribute(
                         userId, proposalWrapper.getId(), ProposalAttributeKeys.BASE_PROPOSAL_ID,
@@ -92,7 +92,7 @@ public final class ProposalCreationUtil {
             ProposalWrapper proposalWrapper,
             ContestPhaseWrapper contestPhase) {
         try {
-            ContestClient contestClient = proposalContext.getClients().getContestClient();
+            IContestClient contestClient = proposalContext.getClients().getContestClient();
             ContestWrapper contest = contestClient
                     .getContest(contestClient.getContestPhase(contestPhase.getId()).getContestId());
 

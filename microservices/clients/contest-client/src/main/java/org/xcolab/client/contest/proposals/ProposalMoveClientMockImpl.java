@@ -10,7 +10,7 @@ import java.util.List;
 
 @Component
 @Profile("test")
-public class ProposalMoveClientMockImpl implements ProposalMoveClient {
+public class ProposalMoveClientMockImpl implements IProposalMoveClient {
 
     @Override
     public List<IProposalMoveHistory> getProposalMoveHistories(Long sourceProposalId,

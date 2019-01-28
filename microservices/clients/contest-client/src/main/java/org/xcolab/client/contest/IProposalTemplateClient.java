@@ -17,7 +17,7 @@ import org.xcolab.util.http.client.RestResource1;
 import java.util.List;
 
 @FeignClient("xcolab-contest-service")
-public interface ProposalTemplateClient {
+public interface IProposalTemplateClient {
 
     @GetMapping("/proposalTemplates/{proposalTemplateId}")
     IProposalTemplate getProposalTemplate(

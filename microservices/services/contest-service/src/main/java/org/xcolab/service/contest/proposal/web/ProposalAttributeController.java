@@ -14,7 +14,7 @@ import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
 import org.xcolab.client.contest.pojo.wrapper.ProposalAttributeHelperDataDto;
 import org.xcolab.client.contest.pojo.wrapper.ProposalUnversionedAttribute;
 import org.xcolab.client.contest.pojo.wrapper.ProposalUnversionedAttributeHelperDataDto;
-import org.xcolab.client.contest.proposals.ProposalAttributeClient;
+import org.xcolab.client.contest.proposals.IProposalAttributeClient;
 import org.xcolab.client.contest.proposals.exceptions.ProposalAttributeNotFoundException;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.proposal.domain.proposalattribute.ProposalAttributeDao;
@@ -26,7 +26,7 @@ import org.xcolab.util.http.exceptions.RuntimeEntityNotFoundException;
 import java.util.List;
 
 @RestController
-public class ProposalAttributeController implements ProposalAttributeClient {
+public class ProposalAttributeController implements IProposalAttributeClient {
 
     private final ProposalAttributeDao proposalAttributeDao;
     private final ProposalUnversionedAttributeDao proposalUnversionedAttributeDao;

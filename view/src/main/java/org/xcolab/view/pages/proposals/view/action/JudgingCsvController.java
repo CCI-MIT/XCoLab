@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.contest.ContestTeamMemberClient;
+import org.xcolab.client.contest.IContestTeamMemberClient;
 import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
 import org.xcolab.client.contest.pojo.IProposalRatingType;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
@@ -18,7 +18,7 @@ import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.IProposalJudgeRatingClient;
-import org.xcolab.client.contest.proposals.ProposalPhaseClient;
+import org.xcolab.client.contest.proposals.IProposalPhaseClient;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.exceptions.InternalException;
@@ -50,7 +50,7 @@ import static org.xcolab.view.util.entity.EntityIdListUtil.MEMBERS;
 public class JudgingCsvController {
 
     @Autowired
-    private ContestTeamMemberClient contestTeamMemberClient;
+    private IContestTeamMemberClient contestTeamMemberClient;
 
     @Autowired
     private IProposalJudgeRatingClient proposalJudgeRatingClient;
@@ -185,7 +185,7 @@ public class JudgingCsvController {
             ProposalContext proposalContext) {
 
         final ClientHelper clients = proposalContext.getClients();
-        final ProposalPhaseClient proposalPhaseClient = clients.getProposalPhaseClient();
+        final IProposalPhaseClient proposalPhaseClient = clients.getProposalPhaseClient();
 
 
         if (judgingPhase.getFellowScreeningActive()) {

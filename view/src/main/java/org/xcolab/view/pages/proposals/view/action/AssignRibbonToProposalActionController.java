@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.contest.proposals.ProposalPhaseClient;
+import org.xcolab.client.contest.proposals.IProposalPhaseClient;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 public class AssignRibbonToProposalActionController {
 
     @Autowired
-    private ProposalPhaseClient proposalPhaseClient;
+    private IProposalPhaseClient proposalPhaseClient;
 
     @PostMapping("c/{proposalUrlString}/{proposalId}/tab/ADMIN/assignRibbon")
     public void handleAction(HttpServletRequest request, HttpServletResponse response, Model model,

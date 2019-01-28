@@ -16,7 +16,7 @@ import org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalRatings;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.pojo.wrapper.UserProposalRatings;
-import org.xcolab.client.contest.proposals.ProposalPhaseClient;
+import org.xcolab.client.contest.proposals.IProposalPhaseClient;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.servlet.flash.AlertMessage;
@@ -141,7 +141,7 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
         ProposalsPermissions permissions = proposalContext.getPermissions();
 
         final ClientHelper clients = proposalContext.getClients();
-        final ProposalPhaseClient proposalPhaseClient = clients.getProposalPhaseClient();
+        final IProposalPhaseClient proposalPhaseClient = clients.getProposalPhaseClient();
 
         final Long phaseId = contestPhase.getId();
         boolean isFrozen = proposalPhaseClient.isProposalContestPhaseAttributeSetAndTrue(proposalId,
