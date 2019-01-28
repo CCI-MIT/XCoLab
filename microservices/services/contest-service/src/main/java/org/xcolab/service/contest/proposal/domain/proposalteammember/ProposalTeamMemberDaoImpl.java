@@ -5,7 +5,7 @@ import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMemberWrapper;
+import org.xcolab.client.contest.pojo.tables.pojos.ProposalTeamMember;
 
 import java.util.List;
 
@@ -30,17 +30,17 @@ public class ProposalTeamMemberDaoImpl implements ProposalTeamMemberDao {
     }
 
     @Override
-    public List<ProposalTeamMemberWrapper> findByProposalId(long proposalId) {
+    public List<ProposalTeamMember> findByProposalId(long proposalId) {
         return dslContext.select().from(PROPOSAL_TEAM_MEMBER)
                 .where(PROPOSAL_TEAM_MEMBER.PROPOSAL_ID.eq(proposalId))
-                .fetch().into(ProposalTeamMemberWrapper.class);
+                .fetch().into(ProposalTeamMember.class);
     }
 
     @Override
-    public List<ProposalTeamMemberWrapper> findByUserId(long userId) {
+    public List<ProposalTeamMember> findByUserId(long userId) {
         return dslContext.select().from(PROPOSAL_TEAM_MEMBER)
                 .where(PROPOSAL_TEAM_MEMBER.USER_ID.eq(userId))
-                .fetch().into(ProposalTeamMemberWrapper.class);
+                .fetch().into(ProposalTeamMember.class);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class ProposalTeamMemberDaoImpl implements ProposalTeamMemberDao {
     public boolean delete(long proposalId, long userId) {
         return dslContext.deleteFrom(PROPOSAL_TEAM_MEMBER)
                 .where(PROPOSAL_TEAM_MEMBER.PROPOSAL_ID.eq(proposalId)
-                    .and(PROPOSAL_TEAM_MEMBER.USER_ID.eq(userId)))
+                        .and(PROPOSAL_TEAM_MEMBER.USER_ID.eq(userId)))
                 .execute() > 0;
     }
 

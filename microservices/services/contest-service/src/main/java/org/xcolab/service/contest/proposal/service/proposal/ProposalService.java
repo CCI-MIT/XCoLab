@@ -1,6 +1,5 @@
 package org.xcolab.service.contest.proposal.service.proposal;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +12,10 @@ import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.IProposal2Phase;
 import org.xcolab.client.contest.pojo.IProposalReference;
 import org.xcolab.client.contest.pojo.tables.pojos.Proposal2Phase;
+import org.xcolab.client.contest.pojo.tables.pojos.ProposalTeamMember;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
-import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMemberWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
@@ -238,7 +237,7 @@ public class ProposalService {
 
     public List<Member> getProposalMembers(Long proposalId) throws ProposalNotFoundException {
         final List<Member> members = proposalTeamMemberDao.findByProposalId(proposalId).stream()
-                .map(ProposalTeamMemberWrapper::getUserId)
+                .map(ProposalTeamMember::getUserId)
                 .map(MembersClient::getMemberUnchecked)
                 .collect(Collectors.toList());
         if (members.isEmpty()) {
@@ -265,9 +264,9 @@ public class ProposalService {
     }
 
     public List<ProposalWrapper> getMemberProposals(Long userId) {
-        final List<ProposalTeamMemberWrapper> proposalTeamMembers = proposalTeamMemberDao.findByUserId(userId);
+        final List<ProposalTeamMember> proposalTeamMembers = proposalTeamMemberDao.findByUserId(userId);
         return proposalTeamMembers.stream()
-                .map(ProposalTeamMemberWrapper::getProposalId)
+                .map(ProposalTeamMember::getProposalId)
                 .map(proposalDao::getOpt)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
