@@ -11,7 +11,7 @@ import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMembershipRequestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.IMembershipClient;
-import org.xcolab.client.contest.proposals.ProposalAttributeClient;
+import org.xcolab.client.contest.proposals.IProposalAttributeClient;
 import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.contest.proposals.exceptions.ConflictException;
@@ -54,7 +54,7 @@ public class MembershipInvitationResponseController {
     private IMembershipClient membershipClient;
 
     @Autowired
-    private ProposalAttributeClient proposalAttributeClient;
+    private IProposalAttributeClient proposalAttributeClient;
 
     @Autowired
     private IProposalClient proposalClient;

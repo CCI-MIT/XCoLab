@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.client.contest.pojo.IProposalMoveHistory;
-import org.xcolab.client.contest.proposals.ProposalMoveClient;
+import org.xcolab.client.contest.proposals.IProposalMoveClient;
 import org.xcolab.service.contest.proposal.domain.proposalmovehistory.ProposalMoveHistoryDao;
 
 import java.util.List;
 
 @RestController
-public class ProposalMoveHistoryController implements ProposalMoveClient {
+public class ProposalMoveHistoryController implements IProposalMoveClient {
 
     private final ProposalMoveHistoryDao proposalMoveHistoryDao;
 

@@ -1,7 +1,7 @@
 package org.xcolab.client.contest.proposals.helpers;
 
 import org.xcolab.client.contest.pojo.wrapper.ProposalUnversionedAttribute;
-import org.xcolab.client.contest.proposals.ProposalAttributeClient;
+import org.xcolab.client.contest.proposals.IProposalAttributeClient;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalUnversionedAttributeHelperDataDto;
 
@@ -10,10 +10,10 @@ import java.util.Map;
 public class ProposalUnversionedAttributeHelper extends AttributeHelper<ProposalUnversionedAttribute> {
 
     private final ProposalWrapper proposal;
-    private final ProposalAttributeClient proposalAttributeClient;
+    private final IProposalAttributeClient proposalAttributeClient;
 
     public ProposalUnversionedAttributeHelper(ProposalWrapper proposal,
-            ProposalAttributeClient proposalAttributeClient) {
+            IProposalAttributeClient proposalAttributeClient) {
         this.proposal = proposal;
         this.proposalAttributeClient = proposalAttributeClient;
     }

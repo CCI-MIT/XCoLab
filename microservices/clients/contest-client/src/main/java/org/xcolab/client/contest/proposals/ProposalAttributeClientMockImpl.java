@@ -15,7 +15,7 @@ import java.util.List;
 
 @Component
 @Profile("test")
-public class ProposalAttributeClientMockImpl implements ProposalAttributeClient {
+public class ProposalAttributeClientMockImpl implements IProposalAttributeClient {
 
     @Override
     public ProposalAttribute getProposalAttribute(Long proposalAttributeId)

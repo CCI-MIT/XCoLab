@@ -23,7 +23,7 @@ import org.xcolab.client.contest.proposals.IMembershipClient;
 import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.proposals.IProposalJudgeRatingClient;
 import org.xcolab.client.contest.proposals.IProposalMemberRatingClient;
-import org.xcolab.client.contest.proposals.ProposalAttributeClient;
+import org.xcolab.client.contest.proposals.IProposalAttributeClient;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
@@ -1008,7 +1008,7 @@ public class ProposalWrapper extends Proposal {
 
         final IMembershipClient membership;
 
-        final ProposalAttributeClient proposalAttribute;
+        final IProposalAttributeClient proposalAttribute;
         final ProposalPhaseClient proposalPhase;
         final IContestTeamMemberClient contestTeamMember;
         final IProposalTemplateClient proposalTemplate;

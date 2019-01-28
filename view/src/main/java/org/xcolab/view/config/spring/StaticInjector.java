@@ -30,9 +30,9 @@ import org.xcolab.client.contest.proposals.IMembershipClient;
 import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.proposals.IProposalJudgeRatingClient;
 import org.xcolab.client.contest.proposals.IProposalMemberRatingClient;
-import org.xcolab.client.contest.proposals.PointsClient;
-import org.xcolab.client.contest.proposals.ProposalAttributeClient;
-import org.xcolab.client.contest.proposals.ProposalMoveClient;
+import org.xcolab.client.contest.proposals.IPointsClient;
+import org.xcolab.client.contest.proposals.IProposalAttributeClient;
+import org.xcolab.client.contest.proposals.IProposalMoveClient;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
 
@@ -71,8 +71,8 @@ public class StaticInjector {
             IEmailClient emailClient, IContestClient contestClient,
             IContestTeamMemberClient contestTeamMemberClient, IImpactClient impactClient,
             IOntologyClient ontologyClient, IProposalTemplateClient proposalTemplateClient,
-            PointsClient pointsClient, ProposalAttributeClient proposalAttributeClient,
-            ProposalMoveClient proposalMoveClient, ProposalPhaseClient proposalPhaseClient,
+            IPointsClient pointsClient, IProposalAttributeClient proposalAttributeClient,
+            IProposalMoveClient proposalMoveClient, ProposalPhaseClient proposalPhaseClient,
             IProposalClient proposalClient, IMembershipClient membershipClient,
             IProposalMemberRatingClient proposalMemberRatingClient,
             IProposalJudgeRatingClient proposalJudgeRatingClient,

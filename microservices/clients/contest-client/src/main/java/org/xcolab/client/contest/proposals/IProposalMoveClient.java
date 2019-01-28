@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 @FeignClient("xcolab-contest-service")
-public interface ProposalMoveClient {
+public interface IProposalMoveClient {
 
     @GetMapping("/proposalMoveHistories")
     List<IProposalMoveHistory> getProposalMoveHistories(

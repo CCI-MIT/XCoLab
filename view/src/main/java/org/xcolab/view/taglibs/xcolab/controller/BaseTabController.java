@@ -9,7 +9,7 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.contest.IContestClient;
 import org.xcolab.client.contest.IOntologyClient;
 import org.xcolab.client.contest.IProposalTemplateClient;
-import org.xcolab.client.contest.proposals.PointsClient;
+import org.xcolab.client.contest.proposals.IPointsClient;
 import org.xcolab.view.taglibs.xcolab.interfaces.TabContext;
 import org.xcolab.view.taglibs.xcolab.interfaces.TabEnum;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
@@ -37,7 +37,7 @@ public abstract class BaseTabController {
     protected IProposalTemplateClient proposalTemplateClient;
 
     @Autowired
-    protected PointsClient pointsClient;
+    protected IPointsClient pointsClient;
 
     @ModelAttribute("tabContext")
     public TabContext getTabContext() {

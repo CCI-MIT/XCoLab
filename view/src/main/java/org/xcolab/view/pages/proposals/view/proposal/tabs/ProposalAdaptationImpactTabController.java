@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.contest.proposals.ProposalAttributeClient;
+import org.xcolab.client.contest.proposals.IProposalAttributeClient;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.proposals.impact.adaptation.AdaptationCategory;
@@ -48,7 +48,7 @@ public class ProposalAdaptationImpactTabController extends BaseProposalTabContro
         }
 
         final ClientHelper clients = proposalContext.getClients();
-        final ProposalAttributeClient attributeClient = clients.getProposalAttributeClient();
+        final IProposalAttributeClient attributeClient = clients.getProposalAttributeClient();
         final Long proposalId = proposalContext.getProposal().getId();
 
         setCommonModelAndPageAttributes(request, model, proposalContext,
@@ -76,7 +76,7 @@ public class ProposalAdaptationImpactTabController extends BaseProposalTabContro
         }
 
         final ClientHelper clients = proposalContext.getClients();
-        final ProposalAttributeClient attributeClient = clients.getProposalAttributeClient();
+        final IProposalAttributeClient attributeClient = clients.getProposalAttributeClient();
 
         // make sure the proposal and author ids are set correctly
         adaptationImpactBean.setProposalId(proposalId);

@@ -15,7 +15,7 @@ import org.xcolab.client.contest.pojo.wrapper.PointTypeWrapper;
 import java.util.List;
 
 @FeignClient("xcolab-contest-service")
-public interface PointsClient {
+public interface IPointsClient {
 
     @PostMapping("/pointsDistributionConfigurations")
     IPointsDistributionConfiguration createPointsDistributionConfiguration(@RequestBody

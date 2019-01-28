@@ -4,9 +4,9 @@ import org.springframework.util.Assert;
 
 public class StaticProposalContext {
 
-    private static PointsClient pointsClient;
-    private static ProposalAttributeClient proposalAttributeClient;
-    private static ProposalMoveClient proposalMoveClient;
+    private static IPointsClient pointsClient;
+    private static IProposalAttributeClient proposalAttributeClient;
+    private static IProposalMoveClient proposalMoveClient;
     private static ProposalPhaseClient proposalPhaseClient;
     private static IProposalClient proposalClient;
     private static IMembershipClient membershipClient;
@@ -15,8 +15,8 @@ public class StaticProposalContext {
 
     private StaticProposalContext() {}
 
-    public static void setClients(PointsClient pointsClient,
-            ProposalAttributeClient proposalAttributeClient, ProposalMoveClient proposalMoveClient,
+    public static void setClients(IPointsClient pointsClient,
+            IProposalAttributeClient proposalAttributeClient, IProposalMoveClient proposalMoveClient,
             ProposalPhaseClient proposalPhaseClient, IProposalClient proposalClient,
             IMembershipClient membershipClient,
             IProposalMemberRatingClient proposalMemberRatingClient,
@@ -39,15 +39,15 @@ public class StaticProposalContext {
         StaticProposalContext.proposalJudgeRatingClient = proposalJudgeRatingClient;
     }
 
-    public static PointsClient getPointsClient() {
+    public static IPointsClient getPointsClient() {
         return pointsClient;
     }
 
-    public static ProposalAttributeClient getProposalAttributeClient() {
+    public static IProposalAttributeClient getProposalAttributeClient() {
         return proposalAttributeClient;
     }
 
-    public static ProposalMoveClient getProposalMoveClient() {
+    public static IProposalMoveClient getProposalMoveClient() {
         return proposalMoveClient;
     }
 

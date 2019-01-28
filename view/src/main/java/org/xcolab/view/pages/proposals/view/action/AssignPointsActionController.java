@@ -13,7 +13,7 @@ import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.PointTypeWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.PointsClient;
+import org.xcolab.client.contest.proposals.IPointsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.pages.proposals.requests.AssignPointsBean;
 import org.xcolab.view.pages.proposals.tabs.ProposalTab;
@@ -34,7 +34,7 @@ public class AssignPointsActionController {
     private final Map<Long, Double> pointTypePercentageModifiers = new HashMap<>();
 
     @Autowired
-    private PointsClient pointsClient;
+    private IPointsClient pointsClient;
 
     private void initializePercentageModifiers(PointTypeWrapper pointType) {
         this.pointTypePercentageModifiers.put(pointType.getId(), pointType.getPercentageOfTotal());

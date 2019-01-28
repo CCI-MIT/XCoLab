@@ -11,10 +11,10 @@ import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.proposals.IMembershipClient;
 import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.proposals.IProposalMemberRatingClient;
-import org.xcolab.client.contest.proposals.PointsClient;
-import org.xcolab.client.contest.proposals.ProposalAttributeClient;
+import org.xcolab.client.contest.proposals.IPointsClient;
+import org.xcolab.client.contest.proposals.IProposalAttributeClient;
 import org.xcolab.client.contest.proposals.IProposalJudgeRatingClient;
-import org.xcolab.client.contest.proposals.ProposalMoveClient;
+import org.xcolab.client.contest.proposals.IProposalMoveClient;
 import org.xcolab.client.contest.proposals.ProposalPhaseClient;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
 
@@ -22,10 +22,10 @@ public class ClientHelper {
 
     private final IMembershipClient membershipClient;
     private final IProposalClient proposalClient;
-    private final PointsClient pointsClient;
+    private final IPointsClient pointsClient;
     private final ProposalPhaseClient proposalPhaseClient;
-    private final ProposalAttributeClient proposalAttributeClient;
-    private final ProposalMoveClient proposalMoveClient;
+    private final IProposalAttributeClient proposalAttributeClient;
+    private final IProposalMoveClient proposalMoveClient;
     private final IProposalJudgeRatingClient proposalJudgeRatingClient;
     private final IProposalMemberRatingClient proposalMemberRatingClient;
 
@@ -69,7 +69,7 @@ public class ClientHelper {
         return membershipClient;
     }
 
-    public PointsClient getPointsClient() {
+    public IPointsClient getPointsClient() {
         return pointsClient;
     }
 
@@ -77,11 +77,11 @@ public class ClientHelper {
         return proposalPhaseClient;
     }
 
-    public ProposalAttributeClient getProposalAttributeClient() {
+    public IProposalAttributeClient getProposalAttributeClient() {
         return proposalAttributeClient;
     }
 
-    public ProposalMoveClient getProposalMoveClient() {
+    public IProposalMoveClient getProposalMoveClient() {
         return proposalMoveClient;
     }
 

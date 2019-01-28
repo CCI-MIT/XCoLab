@@ -18,7 +18,7 @@ import org.xcolab.client.contest.pojo.IImpactIteration;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalAttributeClient;
+import org.xcolab.client.contest.proposals.IProposalAttributeClient;
 import org.xcolab.client.contest.proposals.enums.ProposalUnversionedAttributeName;
 import org.xcolab.client.contest.proposals.helpers.ProposalUnversionedAttributeHelper;
 import org.xcolab.client.members.pojo.Member;
@@ -350,7 +350,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             proposal.setModelRegion(region, currentMember.getId());
         }
 
-        ProposalAttributeClient proposalAttributeClient = proposalContext.getClients()
+        IProposalAttributeClient proposalAttributeClient = proposalContext.getClients()
                 .getProposalAttributeClient();
 
         if (impactAuthorComment != null || impactIAFComment != null) {

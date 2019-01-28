@@ -11,7 +11,7 @@ import java.util.List;
 
 @Component
 @Profile("test")
-public class PointsClientMockImpl implements PointsClient {
+public class PointsClientMockImpl implements IPointsClient {
 
     @Override
     public IPointsDistributionConfiguration createPointsDistributionConfiguration(

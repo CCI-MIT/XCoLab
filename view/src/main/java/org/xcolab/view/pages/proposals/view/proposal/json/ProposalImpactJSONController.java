@@ -19,7 +19,7 @@ import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
 import org.xcolab.client.contest.pojo.wrapper.ProposalUnversionedAttribute;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.ProposalAttributeClient;
+import org.xcolab.client.contest.proposals.IProposalAttributeClient;
 import org.xcolab.client.contest.proposals.enums.ImpactSeriesType;
 import org.xcolab.client.contest.proposals.enums.ProposalUnversionedAttributeName;
 import org.xcolab.client.members.pojo.Member;
@@ -53,7 +53,7 @@ public class ProposalImpactJSONController {
     private IOntologyClient ontologyClient;
 
     @Autowired
-    private ProposalAttributeClient proposalAttributeClient;
+    private IProposalAttributeClient proposalAttributeClient;
 
     @GetMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/IMPACT/proposalImpactGetRegions")
     public void proposalImpactGetRegions(HttpServletResponse response,
@@ -144,7 +144,7 @@ public class ProposalImpactJSONController {
             @RequestParam(value = "focusAreaId") long focusAreaId) throws IOException {
 
         final ClientHelper clients = proposalContext.getClients();
-        final ProposalAttributeClient proposalAttributeClient =
+        final IProposalAttributeClient proposalAttributeClient =
                 clients.getProposalAttributeClient();
 
         JSONObject responseJSON = new JSONObject();

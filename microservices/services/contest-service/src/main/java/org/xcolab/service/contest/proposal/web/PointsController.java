@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.client.contest.pojo.IPointsDistributionConfiguration;
 import org.xcolab.client.contest.pojo.wrapper.PointTypeWrapper;
-import org.xcolab.client.contest.proposals.PointsClient;
+import org.xcolab.client.contest.proposals.IPointsClient;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.proposal.domain.pointsdistributionconfiguration.PointsDistributionConfigurationDao;
 import org.xcolab.service.contest.proposal.domain.pointtype.PointTypeDao;
@@ -24,7 +24,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-public class PointsController implements PointsClient {
+public class PointsController implements IPointsClient {
 
     private PointsDistributionConfigurationDao pointsDistributionConfigurationDao;
     private PointTypeDao pointTypeDao;
