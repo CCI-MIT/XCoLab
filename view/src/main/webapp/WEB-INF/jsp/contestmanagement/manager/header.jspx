@@ -5,7 +5,7 @@
     
 	<!--@elvariable id="tabs" type="java.util.List<java.util.List<org.xcolab.wrapper.TabWrapper>"-->
 	<!--@elvariable id="currentTabWrapped" type="org.xcolab.wrapper.TabWrapper"-->
-	<!--@elvariable id="contestWrapper" type="org.xcolab.client.contest.pojo.Contest"-->
+    <!--@elvariable id="contestWrapper" type="org.xcolab.client.contest.pojo.wrapper.ContestWrapper"-->
 
     <div class="proposal-head align-items-center">
         <div class="c-Headline">

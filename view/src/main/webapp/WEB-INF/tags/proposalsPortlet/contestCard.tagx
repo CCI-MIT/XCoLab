@@ -4,7 +4,7 @@
 
     <!--@elvariable id="contestType" type="org.xcolab.client.admin.pojo.ContestType"-->
 
-	<jsp:directive.attribute name="contest" type="org.xcolab.client.contest.pojo.Contest" required="true" rtexprvalue="true" description="Contest" />
+	<jsp:directive.attribute name="contest" type="org.xcolab.client.contest.pojo.wrapper.ContestWrapper" required="true" rtexprvalue="true" description="Contest" />
     <jsp:directive.attribute name="index" required="true" rtexprvalue="true" description="loopIndex" />
     <a href="${contest.contestUrl}">
         <div class="c-ContestCard">

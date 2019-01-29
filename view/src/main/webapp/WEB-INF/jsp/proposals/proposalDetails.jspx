@@ -9,7 +9,7 @@
           xmlns:form="http://www.springframework.org/tags/form">
 
 <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
-<!--@elvariable id="proposal" type="org.xcolab.client.proposals.pojo.Proposal"-->
+    <!--@elvariable id="proposal" type="org.xcolab.client.contest.pojo.wrapper.ProposalWrapper"-->
 
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 
@@ -29,8 +29,8 @@
 >
     <!--@elvariable id="voted" type="java.lang.Boolean"-->
     <!--@elvariable id="votingDeadline" type="java.lang.String"-->
-    <!--@elvariable id="targetMoveHistory" type="org.xcolab.client.proposals.pojo.phases.ProposalMoveHistory"-->
-    <!--@elvariable id="sourceMoveHistories" type="java.util.List<org.xcolab.client.proposals.pojo.phases.ProposalMoveHistory>"-->
+    <!--@elvariable id="targetMoveHistory" type="org.xcolab.client.contest.pojo.IProposalMoveHistory"-->
+    <!--@elvariable id="sourceMoveHistories" type="java.util.List<org.xcolab.client.contest.pojo.IProposalMoveHistory>"-->
 
     <jsp:directive.include file="./init_proposal_tab.jspx" />
     <jsp:directive.include file="./proposalDetails/header.jspx"/>

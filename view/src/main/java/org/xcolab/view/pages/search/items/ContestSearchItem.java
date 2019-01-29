@@ -3,8 +3,8 @@ package org.xcolab.view.pages.search.items;
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.StaticContestContext;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.search.pojo.ISearchPojo;
 
 public class ContestSearchItem extends AbstractSearchItem {
@@ -12,13 +12,14 @@ public class ContestSearchItem extends AbstractSearchItem {
     private ISearchPojo searchPojo;
     private String searchQuery;
 
-    private Contest contest;
+    private ContestWrapper contest;
 
     @Override
     public void init(ISearchPojo pojo, String searchQuery) {
         this.searchPojo = pojo;
         this.searchQuery = searchQuery;
-        contest = ContestClientUtil.getContest(searchPojo.getClassPrimaryKey());
+        contest = StaticContestContext.getContestClient()
+                .getContest(searchPojo.getClassPrimaryKey());
     }
 
     @Override
@@ -39,10 +40,8 @@ public class ContestSearchItem extends AbstractSearchItem {
         return contest.getContestLinkUrl();
     }
 
-
     @Override
     public String getContent() {
         return super.getContent(contest.getDescription(), searchQuery);
     }
-
 }

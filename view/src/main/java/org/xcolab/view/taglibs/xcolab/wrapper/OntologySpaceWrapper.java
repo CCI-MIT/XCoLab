@@ -1,17 +1,15 @@
 package org.xcolab.view.taglibs.xcolab.wrapper;
 
-import org.xcolab.client.contest.pojo.ontology.OntologySpace;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class OntologySpaceWrapper {
 
-    private final OntologySpace wrapped;
+    private final org.xcolab.client.contest.pojo.wrapper.OntologySpaceWrapper wrapped;
     private final List<OntologyTermWrapper> terms = new ArrayList<>();
     private final List<OntologyTermWrapper> rootTerms = new ArrayList<>();
 
-    public OntologySpaceWrapper(OntologySpace wrapped) {
+    public OntologySpaceWrapper(org.xcolab.client.contest.pojo.wrapper.OntologySpaceWrapper wrapped) {
         super();
         this.wrapped = wrapped;
     }

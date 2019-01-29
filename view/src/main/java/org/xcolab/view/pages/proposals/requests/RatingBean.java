@@ -2,9 +2,9 @@ package org.xcolab.view.pages.proposals.requests;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
-import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingType;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper;
+import org.xcolab.client.contest.pojo.IProposalRatingType;
 import org.xcolab.view.pages.proposals.wrappers.ProposalRatingTypeWrapper;
 import org.xcolab.view.util.validation.NoBlankValues;
 
@@ -33,19 +33,19 @@ public class RatingBean implements Serializable {
 
     private Long screeningUserId;
 
-    public RatingBean(Proposal wrapper, List<ProposalRatingType> presetRatingTypes) {
+    public RatingBean(ProposalWrapper wrapper, List<IProposalRatingType> presetRatingTypes) {
         this.ratingValues = new HashMap<>();
         this.ratingTypes = new ArrayList<>();
 
         //initialize ratingValues and types
-        for (ProposalRatingType type : presetRatingTypes) {
+        for (IProposalRatingType type : presetRatingTypes) {
             ratingValues.put(type.getId(), "");
             ratingTypes.add(new ProposalRatingTypeWrapper(type));
         }
 
         if (wrapper != null) {
             //get the existing ratings from the wrapper
-            for (ProposalRating ratingWrapper : wrapper.getRatings()) {
+            for (ProposalRatingWrapper ratingWrapper : wrapper.getRatings()) {
                 ratingValues.put(ratingWrapper.getRatingTypeId(),
                         String.valueOf(ratingWrapper.getRatingValueId()));
             }
@@ -54,7 +54,7 @@ public class RatingBean implements Serializable {
         }
     }
 
-    public RatingBean(List<ProposalRatingType> presetRatingTypes) {
+    public RatingBean(List<IProposalRatingType> presetRatingTypes) {
         this(null, presetRatingTypes);
     }
 

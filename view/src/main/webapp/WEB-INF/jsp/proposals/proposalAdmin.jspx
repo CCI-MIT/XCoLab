@@ -9,7 +9,7 @@
     <xcolab:layout title="${proposal.name} - Admin">
         <collab:script src="/js/proposals/copyProposalWidget.js"/>
 
-        <!--@elvariable id="availableRibbons" type="java.util.List<org.xcolab.client.contest.pojo.phases.ContestPhaseRibbonType>"-->
+        <!--@elvariable id="availableRibbons" type="java.util.List<org.xcolab.client.contest.pojo.IContestPhaseRibbonType>"-->
 
         <jsp:directive.include file="./init_proposal_tab.jspx"/>
 

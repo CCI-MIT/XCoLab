@@ -9,7 +9,7 @@
 
     <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
 
-    <!--@elvariable id="contestWrapper" type="org.xcolab.client.contest.pojo.Contest"-->
+    <!--@elvariable id="contestWrapper" type="org.xcolab.client.contest.pojo.wrapper.ContestWrapper"-->
     <!--@elvariable id="scheduleTemplateSelectionItems" type="java.util.List<org.xcolab.commons.html.LabelValue>"-->
     <!--@elvariable id="proposalTemplateSelectionItems" type="java.util.List<org.xcolab.commons.html.LabelValue>"-->
 

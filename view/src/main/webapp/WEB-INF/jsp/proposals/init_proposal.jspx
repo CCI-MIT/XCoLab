@@ -3,7 +3,7 @@
 	<jsp:directive.include file="./init_contest.jspx" />
 
 	<!--PopulateContextInterceptor-->
-	<jsp:useBean id="proposal" scope="request" type="org.xcolab.client.proposals.pojo.Proposal"/>
+	<jsp:useBean id="proposal" scope="request" type="org.xcolab.client.contest.pojo.wrapper.ProposalWrapper"/>
 
     <script>
         var currentProposal = {

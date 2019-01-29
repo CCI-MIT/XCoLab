@@ -1,19 +1,20 @@
 package org.xcolab.service.contest.domain.proposaltemplatesectiondefinition;
 
-import org.xcolab.model.tables.pojos.ProposalTemplateSectionDefinition;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.util.List;
 
 public interface ProposalTemplateSectionDefinitionDao {
 
-    List<ProposalTemplateSectionDefinition> findByGiven(Long proposalTemplateId, Boolean weight);
+    List<ProposalTemplateSectionDefinitionWrapper> findByGiven(Long proposalTemplateId, Boolean weight);
 
-    ProposalTemplateSectionDefinition get(Long id) throws NotFoundException;
+    ProposalTemplateSectionDefinitionWrapper get(Long id) throws NotFoundException;
 
-    ProposalTemplateSectionDefinition create(ProposalTemplateSectionDefinition proposalTemplateSectionDefinition);
+    ProposalTemplateSectionDefinitionWrapper create(
+            ProposalTemplateSectionDefinitionWrapper proposalTemplateSectionDefinition);
 
-    boolean update(ProposalTemplateSectionDefinition proposalTemplateSectionDefinition);
+    boolean update(ProposalTemplateSectionDefinitionWrapper proposalTemplateSectionDefinition);
 
     int delete(Long id);
 }

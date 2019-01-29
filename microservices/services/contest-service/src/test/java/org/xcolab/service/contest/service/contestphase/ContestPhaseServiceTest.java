@@ -5,8 +5,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +17,17 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.client.proposals.ProposalPhaseClientUtil;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.IMembershipClient;
+import org.xcolab.client.contest.proposals.IProposalClient;
+import org.xcolab.client.contest.proposals.IProposalJudgeRatingClient;
+import org.xcolab.client.contest.proposals.IProposalMemberRatingClient;
+import org.xcolab.client.contest.proposals.IPointsClient;
+import org.xcolab.client.contest.proposals.IProposalAttributeClient;
+import org.xcolab.client.contest.proposals.IProposalMoveClient;
+import org.xcolab.client.contest.proposals.IProposalPhaseClient;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.util.http.ServiceRequestUtils;
 
@@ -31,10 +39,8 @@ import static org.mockito.Matchers.anyString;
 @OverrideAutoConfiguration(enabled = false)
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @PrepareForTest({
-        org.xcolab.client.proposals.ProposalClientUtil.class,
-        org.xcolab.client.proposals.ProposalPhaseClientUtil.class,
-        org.xcolab.client.proposals.pojo.Proposal.class,
-        org.xcolab.client.contest.pojo.Contest.class
+        ProposalWrapper.class,
+        ContestWrapper.class
 })
 @ComponentScan("org.xcolab.service.contest")
 @ComponentScan("org.xcolab.client")
@@ -42,41 +48,47 @@ import static org.mockito.Matchers.anyString;
 public class ContestPhaseServiceTest {
 
     @Autowired
-    ContestPhaseService contestPhaseService;
+    private ContestPhaseService contestPhaseService;
+
+    @Mock
+    private IProposalPhaseClient proposalPhaseClient;
+
+    @Mock
+    private IProposalClient proposalClient;
 
     @Rule
     public final ExpectedException exception = ExpectedException.none();
 
     @Before
     public void setup() throws Exception {
-
         ServiceRequestUtils.setInitialized(true);
 
-        PowerMockito.mockStatic(ProposalClientUtil.class);
-        PowerMockito.mockStatic(ProposalPhaseClientUtil.class);
-        Mockito.when(ProposalPhaseClientUtil
-                .isProposalContestPhaseAttributeSetAndTrue(anyLong(),anyLong(),anyString()))
+        Mockito.when(proposalPhaseClient
+                .isProposalContestPhaseAttributeSetAndTrue(anyLong(), anyLong(), anyString()))
                 .thenAnswer(invocation -> false);
 
-        Mockito.when(ProposalClientUtil.getProposal(anyLong()))
+        Mockito.when(proposalClient.getProposal(anyLong()))
                 .thenAnswer(invocation -> {
-                    Proposal proposal = Mockito.mock(Proposal.class);
+                    ProposalWrapper proposal = Mockito.mock(ProposalWrapper.class);
                     proposal.setId(1333850L);
                     return proposal;
                 });
+
+        StaticProposalContext.setClients(Mockito.mock(IPointsClient.class), Mockito.mock(
+                IProposalAttributeClient.class), Mockito.mock(IProposalMoveClient.class),
+                proposalPhaseClient, proposalClient, Mockito.mock(IMembershipClient.class),
+                Mockito.mock(IProposalMemberRatingClient.class),
+                Mockito.mock(IProposalJudgeRatingClient.class));
     }
 
     @Test
     public void shouldForcePromotionOfProposalInPhase() throws Exception {
-
         contestPhaseService.forcePromotionOfProposalInPhase(1333850L, 1318613L);
     }
 
     @Test
     public void shouldFailPromotionOfProposalInPhaseOnPhaseNotFound() throws Exception {
-
         exception.expect(NotFoundException.class);
-        contestPhaseService.forcePromotionOfProposalInPhase(1333851L, 1318614L);
-
+        contestPhaseService.forcePromotionOfProposalInPhase(1333850L, 1318614L);
     }
 }

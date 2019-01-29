@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import org.xcolab.client.activities.ActivitiesClientUtil;
+import org.xcolab.client.activity.IActivityClient;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.tracking.IBalloonClient;
 import org.xcolab.client.tracking.exceptions.BalloonUserTrackingNotFoundException;
@@ -44,18 +44,20 @@ public class LoginRegisterService {
 
     private final AuthenticationService authenticationService;
     private final IBalloonClient balloonClient;
+    private final IActivityClient activityClient;
     private final IUserClient userClient;
     private final IUserLoginRegister userLoginRegister;
     private final ILoginTokenClient loginTokenClient;
 
     @Autowired
     public LoginRegisterService(AuthenticationService authenticationService,
-            IBalloonClient balloonClient,
-            IUserClient userClient,
-            IUserLoginRegister userLoginRegister,
-            ILoginTokenClient loginTokenClient) {
+                                IBalloonClient balloonClient, IActivityClient activityClient,,
+                                IUserClient userClient,
+                                IUserLoginRegister userLoginRegister,
+                                ILoginTokenClient loginTokenClient) {
         this.authenticationService = authenticationService;
         this.balloonClient = balloonClient;
+        this.activityClient = activityClient;
         this.userClient = userClient;
         this.userLoginRegister = userLoginRegister;
         this.loginTokenClient = loginTokenClient;
@@ -130,7 +132,7 @@ public class LoginRegisterService {
     }
 
     public void recordRegistrationEvent(UserWrapper member) {
-        ActivitiesClientUtil.createActivityEntry(MemberActivityType.REGISTERED, member.getId(),
+        activityClient.createActivityEntry(MemberActivityType.REGISTERED, member.getId(),
                 member.getId());
 
         if (member.getFacebookId() != null) {

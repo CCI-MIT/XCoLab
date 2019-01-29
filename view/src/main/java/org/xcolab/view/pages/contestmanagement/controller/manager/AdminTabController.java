@@ -11,13 +11,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.activities.ActivitiesClientUtil;
+import org.xcolab.client.activity.IActivityClient;
 import org.xcolab.client.admin.IAdminClient;
 import org.xcolab.client.admin.pojo.INotification;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.proposals.IProposalMemberRatingClient;
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.PermissionsClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.members.permissions.SystemRole;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.tracking.ITrackingClient;
 import org.xcolab.client.user.IPermissionClient;
 import org.xcolab.client.user.IUserClient;
@@ -76,11 +80,16 @@ public class AdminTabController extends AbstractTabController {
     private IAdminClient adminClient;
 
     @Autowired
-    private IUserClient userClient;
+    private IProposalMemberRatingClient proposalMemberRatingClient;
 
     @Autowired
+    private IActivityClient activityClient;
+    
+    @Autowired
+    private IUserClient userClient;
+    
+    @Autowired
     private IPermissionClient permissionClient;
-
 
     private static final Logger log = LoggerFactory.getLogger(AdminTabController.class);
 
@@ -92,13 +101,19 @@ public class AdminTabController extends AbstractTabController {
     private final ActivityEntryHelper activityEntryHelper;
     private final Validator validator;
 
+
     @Autowired
     public AdminTabController(LoginRegisterService loginRegisterService,
-            ServletContext servletContext, ActivityEntryHelper activityEntryHelper, Validator validator) {
+            ServletContext servletContext, ActivityEntryHelper activityEntryHelper,
+            Validator validator, ITrackingClient trackingClient, IActivityClient activityClient,
+            IAdminClient adminClient) {
         this.loginRegisterService = loginRegisterService;
         this.servletContext = servletContext;
         this.activityEntryHelper = activityEntryHelper;
         this.validator = validator;
+        this.trackingClient = trackingClient;
+        this.activityClient = activityClient;
+        this.adminClient = adminClient;
     }
 
     @ModelAttribute("currentTabWrapped")
@@ -110,17 +125,17 @@ public class AdminTabController extends AbstractTabController {
 
     @ModelAttribute("votingPhaseSelectionItems")
     public List<LabelValue> votingPhaseSelectionItems() {
-        final List<ContestPhase> contestPhasesByType = new ArrayList<>(ContestClientUtil
+        final List<ContestPhaseWrapper> contestPhasesByType = new ArrayList<>(contestClient
                 .getContestPhasesByType(ContestPhaseTypeValue.VOTING_PHASE_SOLVE.getTypeId()));
         //TODO COLAB-2613: don't hard code phase types
-        contestPhasesByType.addAll(ContestClientUtil.getContestPhasesByType(20L));
+        contestPhasesByType.addAll(contestClient.getContestPhasesByType(20L));
 
         final Date now = new Date();
         return contestPhasesByType
                 .stream()
                 .filter(p -> p.getContestId() != 0L)
                 .filter(p -> p.getPhaseStartDateDt().before(now))
-                .sorted(Comparator.comparing(ContestPhase::getPhaseStartDate).reversed())
+                .sorted(Comparator.comparing(ContestPhaseWrapper::getPhaseStartDate).reversed())
                 .map(contestPhase -> {
                     final String contestName = contestPhase.getContest().getTitle();
                     final Long phaseId = contestPhase.getId();
@@ -131,9 +146,9 @@ public class AdminTabController extends AbstractTabController {
 
     @ModelAttribute("contestSelectionItems")
     public List<LabelValue> contestSelectionItems() {
-        return ContestClientUtil.getAllContests()
+        return contestClient.getAllContests()
                 .stream()
-                .sorted(Comparator.comparing(Contest::getId).reversed())
+                .sorted(Comparator.comparing(ContestWrapper::getId).reversed())
                 .map(contest -> {
                     final String contestName = contest.getTitle();
                     final Long contestId = contest.getId();
@@ -178,7 +193,7 @@ public class AdminTabController extends AbstractTabController {
 
         try (VoteCsvWriter csvWriter = new VoteCsvWriter(response, trackingClient)) {
             votingReportBean.getVotingPhaseIds().stream()
-                    .map(ProposalMemberRatingClientUtil::getProposalVotesInPhase)
+                    .map(proposalMemberRatingClient::getProposalVotesInPhase)
                     .forEach(csvWriter::writeVotes);
         }
     }
@@ -191,7 +206,7 @@ public class AdminTabController extends AbstractTabController {
             return;
         }
 
-        final List<Contest> contests =
+        final List<ContestWrapper> contests =
                 EntityIdListUtil.CONTESTS.fromIdList(proposalReportBean.getContestIds());
 
         switch (proposalReportBean.getProposalExportType()) {
@@ -229,7 +244,7 @@ public class AdminTabController extends AbstractTabController {
         }
 
         try (ContestCsvWriter csvWriter = new ContestCsvWriter(response)) {
-            csvWriter.writeContests(ContestClientUtil.getAllContests());
+            csvWriter.writeContests(contestClient.getAllContests());
         }
     }
 
@@ -242,7 +257,7 @@ public class AdminTabController extends AbstractTabController {
         }
 
         try (ActivityCsvWriter csvWriter = new ActivityCsvWriter(response, activityEntryHelper)) {
-            ActivitiesClientUtil.getActivityEntries(0, Integer.MAX_VALUE, null, null)
+            activityClient.getActivityEntries(0, Integer.MAX_VALUE, null, null)
                     .forEach(csvWriter::writeActivity);
         }
     }

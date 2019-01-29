@@ -2,14 +2,14 @@ package org.xcolab.view.pages.proposals.judging;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
+import org.xcolab.client.contest.StaticContestContext;
+import org.xcolab.client.contest.pojo.IProposalRatingType;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
+import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
-import org.xcolab.client.proposals.ProposalAttributeClientUtil;
-import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
-import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingType;
 import org.xcolab.commons.html.HtmlUtil;
 
 import java.text.DecimalFormat;
@@ -26,17 +26,17 @@ public class ProposalReviewCsvExporter {
 
     private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.##");
 
-    private final Contest contest;
+    private final ContestWrapper contest;
     /*
         * Cluster all proposal reviews (from multiple Contest phases) by proposal since we
         * have multiple reviews for each proposal (multiple judging phases)
         */
-    private final Map<Proposal, List<ProposalReview>> proposalToProposalReviewsMap;
-    private final List<ProposalRatingType> ratingTypes;
+    private final Map<ProposalWrapper, List<ProposalReview>> proposalToProposalReviewsMap;
+    private final List<IProposalRatingType> ratingTypes;
 
-    public ProposalReviewCsvExporter(Contest contest,
-            Map<Proposal, List<ProposalReview>> proposalToProposalReviewsMap,
-            List<ProposalRatingType> ratingTypes) {
+    public ProposalReviewCsvExporter(ContestWrapper contest,
+            Map<ProposalWrapper, List<ProposalReview>> proposalToProposalReviewsMap,
+            List<IProposalRatingType> ratingTypes) {
         this.contest = contest;
         this.proposalToProposalReviewsMap = proposalToProposalReviewsMap;
         this.ratingTypes = ratingTypes;
@@ -48,10 +48,11 @@ public class ProposalReviewCsvExporter {
         }
 
         StringBuilder tableBody = new StringBuilder();
-        for (Map.Entry<Proposal, List<ProposalReview>> entry : proposalToProposalReviewsMap.entrySet()) {
-            final Proposal proposal = entry.getKey();
+        for (Map.Entry<ProposalWrapper, List<ProposalReview>> entry : proposalToProposalReviewsMap.entrySet()) {
+            final ProposalWrapper proposal = entry.getKey();
             final List<ProposalReview> proposalReviews = entry.getValue();
-            String proposalName = ProposalAttributeClientUtil.getProposalAttribute(proposal.getId(),
+            String proposalName = StaticProposalContext.getProposalAttributeClient()
+                    .getProposalAttribute(proposal.getId(),
                     ProposalAttributeKeys.NAME, 0L).getStringValue();
 
             for (ProposalReview proposalReview : proposalReviews) {
@@ -70,7 +71,7 @@ public class ProposalReviewCsvExporter {
                         commentString.append(String.format("%s\"%s%s\"", delimiter, DECIMAL_FORMAT.format(ratingAverage), TQF));
                     }
 
-                    for (ProposalRatingType ratingType : ratingTypes) {
+                    for (IProposalRatingType ratingType : ratingTypes) {
                         Double rating = proposalReview.getUserRating(reviewer, ratingType);
                         if (rating == null) {
                             if (proposalReview.getReviewers().contains(reviewer)) {
@@ -114,7 +115,7 @@ public class ProposalReviewCsvExporter {
         StringBuilder averageRating = new StringBuilder();
         averageRating.append(String.format("\"Average\"%s\"%s%s\"", delimiter, DECIMAL_FORMAT.format(proposalReview.getRatingAverage()), TQF));
 
-        for (ProposalRatingType ratingType : ratingTypes) {
+        for (IProposalRatingType ratingType : ratingTypes) {
             Double average = proposalReview.getRatingAverage(ratingType);
             if (average == null) {
                 averageRating.append(delimiter + "\"\"");
@@ -127,11 +128,11 @@ public class ProposalReviewCsvExporter {
     }
 
     private String getRowHeader(String proposalName, ProposalReview proposalReview) {
-        String contestPhaseName = ContestClientUtil
+        String contestPhaseName = StaticContestContext.getContestClient()
                 .getContestPhaseType(proposalReview.getContestPhase().getContestPhaseTypeId())
                 .getName();
 
-        Proposal proposal = proposalReview.getProposal();
+        ProposalWrapper proposal = proposalReview.getProposal();
 
         final String dataFields = getDataFields(proposal);
 
@@ -143,9 +144,9 @@ public class ProposalReviewCsvExporter {
                 + "\"" + escapeQuote(contestPhaseName) + "\"" + delimiter;
     }
 
-    private String getDataFields(Proposal proposal) {
+    private String getDataFields(ProposalWrapper proposal) {
         StringBuilder dataFields = new StringBuilder(TQF);
-        for (ProposalTemplateSectionDefinition sectionDefinition : proposal.getSections()) {
+        for (ProposalTemplateSectionDefinitionWrapper sectionDefinition : proposal.getSections()) {
             if (sectionDefinition.getIncludeInJudgingReport()) {
                 dataFields.append("\"")
                         .append(escapeQuote(HtmlUtil.cleanAll(sectionDefinition.getContent())))
@@ -176,7 +177,7 @@ public class ProposalReviewCsvExporter {
 
     private String getRatingSubHeader() {
         StringBuilder ratingSubHeader = new StringBuilder(TQF);
-        for (ProposalRatingType ratingType : ratingTypes) {
+        for (IProposalRatingType ratingType : ratingTypes) {
             String ratingTitle = ratingType.getLabel();
             ratingSubHeader.append(String.format("\"%s\"%s", ratingTitle, delimiter));
         }
@@ -185,7 +186,7 @@ public class ProposalReviewCsvExporter {
 
     private String getDataFieldHeaders() {
         StringBuilder dataFieldHeaders = new StringBuilder(TQF);
-        for (ProposalTemplateSectionDefinition sectionDefinition : contest.getSections()) {
+        for (ProposalTemplateSectionDefinitionWrapper sectionDefinition : contest.getSections()) {
             if (sectionDefinition.getIncludeInJudgingReport()) {
                 dataFieldHeaders.append(
                         String.format("\"%s\"%s", sectionDefinition.getTitle(), delimiter));

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.activities.ActivitiesClientUtil;
+import org.xcolab.client.activity.IActivityClient;
 import org.xcolab.client.comment.ICategoryClient;
 import org.xcolab.client.comment.IThreadClient;
 import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
@@ -31,6 +31,9 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class CategoryController extends BaseDiscussionController {
+
+    @Autowired
+    private IActivityClient activityClient;
 
     @Autowired
     private ICategoryClient categoryClient;
@@ -62,8 +65,8 @@ public class CategoryController extends BaseDiscussionController {
         model.addAttribute("sortColumn", threadSortColumn);
         model.addAttribute("sortAscending", sortAscending);
 
-        model.addAttribute("isSubscribed", ActivitiesClientUtil.isSubscribedToActivity(
-                userId, ActivityCategory.DISCUSSION, categoryGroup.getId(), ""));
+        model.addAttribute("isSubscribed", activityClient.isSubscribed(
+                userId, ActivityCategory.DISCUSSION, categoryGroup.getId()));
 
         DiscussionPermissions discussionPermissions = new DiscussionPermissions();
         model.addAttribute("discussionPermissions", discussionPermissions);
@@ -101,7 +104,7 @@ public class CategoryController extends BaseDiscussionController {
         model.addAttribute("sortColumn", threadSortColumn.name());
         model.addAttribute("sortAscending", sortAscending);
 
-        model.addAttribute("isSubscribed", ActivitiesClientUtil.isSubscribedToActivity(userId,
+        model.addAttribute("isSubscribed", activityClient.isSubscribed(userId,
                 ActivityCategory.DISCUSSION, currentCategory.getId()));
 
 
@@ -180,12 +183,12 @@ public class CategoryController extends BaseDiscussionController {
 
         if (userId > 0) {
             if (categoryId > 0) {
-                ActivitiesClientUtil.addSubscription(userId,
-                        ActivityCategory.DISCUSSION, categoryId, Long.toString(categoryId));
+                activityClient.addSubscription(userId,
+                        ActivityCategory.DISCUSSION, categoryId);
                 return "redirect:/discussion/category/"+categoryId;
             } else {
-                ActivitiesClientUtil.addSubscription(userId,
-                        ActivityCategory.DISCUSSION, categoryGroup.getId(), "");
+                activityClient.addSubscription(userId,
+                        ActivityCategory.DISCUSSION, categoryGroup.getId());
                 return "redirect:/discussion";
             }
         }
@@ -199,7 +202,7 @@ public class CategoryController extends BaseDiscussionController {
             throws DiscussionAuthorizationException, IOException {
 
         long userId = MemberAuthUtil.getUserId();
-        CategoryGroup categoryGroup = getCategoryGroup(request);
+        ICategoryGroup categoryGroup = getCategoryGroup(request);
 
         DiscussionPermissions discussionPermissions = new DiscussionPermissions();
         if (!getCanView(discussionPermissions, categoryGroup, 0L)) {
@@ -208,12 +211,12 @@ public class CategoryController extends BaseDiscussionController {
 
         if (userId > 0) {
             if (categoryId > 0) {
-                ActivitiesClientUtil.deleteSubscription(userId,
+                activityClient.deleteSubscription(userId,
                         ActivityCategory.DISCUSSION,categoryId);
                 return "redirect:/discussion/category/"+categoryId;
 
             } else {
-                ActivitiesClientUtil.deleteSubscription(userId,
+                activityClient.deleteSubscription(userId,
                         ActivityCategory.DISCUSSION, categoryGroup.getId());
                 return "redirect:/discussion";
             }

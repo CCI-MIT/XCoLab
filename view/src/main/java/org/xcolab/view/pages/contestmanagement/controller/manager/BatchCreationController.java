@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.OntologyClientUtil;
-import org.xcolab.client.contest.ProposalTemplateClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ontology.FocusArea;
-import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
-import org.xcolab.client.contest.pojo.templates.ProposalTemplate;
+import org.xcolab.client.contest.IContestClient;
+import org.xcolab.client.contest.IOntologyClient;
+import org.xcolab.client.contest.IProposalTemplateClient;
+import org.xcolab.client.contest.pojo.IProposalTemplate;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.FocusAreaWrapper;
+import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
 import org.xcolab.client.user.IPermissionClient;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.IdListUtil;
@@ -55,6 +55,15 @@ public class BatchCreationController {
     private IContestTypeClient contestTypeClient;
 
     @Autowired
+    private IContestClient contestClient;
+
+    @Autowired
+    private IOntologyClient ontologyClient;
+
+    @Autowired
+    private IProposalTemplateClient proposalTemplateClient;
+    
+    @Autowired
     private IPermissionClient permissionClient;
 
     @ModelAttribute("proposalTemplateSelectionItems")
@@ -68,7 +77,7 @@ public class BatchCreationController {
                 Arrays.asList(1L, 2L, 106L, 201L, 202L, 301L, 401L, 1000401L, 1000501L, 1300104L,
                         1300201L, 1300302L,
                         1300401L, 1300601L, 1300602L);
-        for (ProposalTemplate proposalTemplate : ProposalTemplateClientUtil.getProposalTemplates()) {
+        for (IProposalTemplate proposalTemplate : proposalTemplateClient.getProposalTemplates()) {
             if (!excludedList.contains(proposalTemplate.getId())) {
                 selectItems
                         .add(new LabelValue(proposalTemplate.getId(), proposalTemplate.getName()));
@@ -145,7 +154,7 @@ public class BatchCreationController {
         if (contestsToBeCreated != null && !contestsToBeCreated.isEmpty()) {
             for (ContestCSVBean contestCSVBean : contestsToBeCreated) {
 
-                Contest contest = createContest(contestCSVBean.getContestShortName(),
+                ContestWrapper contest = createContest(contestCSVBean.getContestShortName(),
                         contestBatchBean.getContestDescription(),
                         contestCSVBean.getContestQuestion(),
                         ((contestBatchBean.getContestLogoId() == null) ? (1259173)
@@ -171,14 +180,14 @@ public class BatchCreationController {
         return "contestmanagement/batch/newContestsCreated";
     }
 
-    private void processOntologyTerms(ContestCSVBean contestCSVBean, Contest contest) {
+    private void processOntologyTerms(ContestCSVBean contestCSVBean, ContestWrapper contest) {
 
         if (contestCSVBean.getOntologyTerms() != null) {
             List<Long> inputOntologyTerms =
                     IdListUtil.getIdsFromString(contestCSVBean.getOntologyTerms());
             Map<Long, Integer> uniqueSelectedOntologyTerms = new HashMap<>();
             for (Long termId : inputOntologyTerms) {
-                OntologyTerm ontologyTerm = OntologyClientUtil.getOntologyTerm(termId);
+                OntologyTermWrapper ontologyTerm = ontologyClient.getOntologyTerm(termId);
                 if (ontologyTerm != null) {
                     uniqueSelectedOntologyTerms.put(ontologyTerm.getId(), 1);
                 }
@@ -186,15 +195,13 @@ public class BatchCreationController {
 
             Long focusAreaId = checkForExistingFocusArea(uniqueSelectedOntologyTerms);
             if (focusAreaId == 0L) {
-                FocusArea focusArea = new FocusArea();
-                focusArea = OntologyClientUtil.createFocusArea(focusArea);
+                FocusAreaWrapper focusArea = new FocusAreaWrapper();
+                focusArea = ontologyClient.createFocusArea(focusArea);
                 focusAreaId = focusArea.getId();
 
-                for (Map.Entry<Long, Integer> ontologyTerm : uniqueSelectedOntologyTerms
-                        .entrySet()) {
-                    OntologyClientUtil.addOntologyTermsToFocusAreaByOntologyTermId(focusAreaId,
+                for (Map.Entry<Long, Integer> ontologyTerm : uniqueSelectedOntologyTerms.entrySet()) {
+                    ontologyClient.addOntologyTermsToFocusAreaByOntologyTermId(focusAreaId,
                             ontologyTerm.getKey());
-
                 }
                 if (!reusableFocusArea.containsKey(focusAreaId)) {
                     reusableFocusArea.put(focusAreaId, uniqueSelectedOntologyTerms);
@@ -230,7 +237,7 @@ public class BatchCreationController {
         return false;
     }
 
-    private Contest createContest(String contestShortName,
+    private ContestWrapper createContest(String contestShortName,
             String contestDescription,
             String contestQuestion,
             Long contestLogoId,
@@ -242,7 +249,7 @@ public class BatchCreationController {
             Long contestTypeId,
             long authorUserId) {
 
-        Contest contest = ContestCreatorUtil.createNewContest(contestShortName, authorUserId);
+        ContestWrapper contest = ContestCreatorUtil.createNewContest(contestShortName, authorUserId);
         contest.setDescription(contestDescription);
         contest.setQuestion(contestQuestion);
         contest.setContestLogoId(contestLogoId);
@@ -257,7 +264,7 @@ public class BatchCreationController {
         contest.setContestScheduleId(contestScheduleId);
         contest.setContestTier(contestTierId);
         contest.setContestTypeId(contestTypeId);
-        ContestClientUtil.updateContest(contest);
+        contestClient.updateContest(contest);
 
         contest.changeScheduleTo(contestScheduleId);
         return contest;
@@ -273,7 +280,7 @@ public class BatchCreationController {
 
         List<Long> inputOntologyTerms = IdListUtil.getIdsFromString(ontologyTerms);
         for (Long termId : inputOntologyTerms) {
-            OntologyTerm ontologyTerm = OntologyClientUtil.getOntologyTerm(termId);
+            OntologyTermWrapper ontologyTerm = ontologyClient.getOntologyTerm(termId);
             if (ontologyTerm != null) {
                 JSONObject ontItem = new JSONObject();
                 ontItem.put("termId", ontologyTerm.getId());

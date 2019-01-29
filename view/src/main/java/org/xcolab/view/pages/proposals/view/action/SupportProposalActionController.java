@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
-import org.xcolab.client.proposals.ProposalMemberRatingClient;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.proposals.IProposalMemberRatingClient;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheName;
@@ -47,7 +47,7 @@ public class SupportProposalActionController {
         }
         long userId = currentMember.getId();
         long proposalId = proposalContext.getProposal().getId();
-        ProposalMemberRatingClient proposalMemberRatingClient =
+        IProposalMemberRatingClient proposalMemberRatingClient =
                 proposalContext.getClients().getProposalMemberRatingClient();
         if (proposalMemberRatingClient.isMemberProposalSupporter(proposalId, userId)) {
             proposalMemberRatingClient.deleteProposalSupporter(proposalId, userId);
@@ -80,8 +80,8 @@ public class SupportProposalActionController {
         AlertMessage.warning(
                 "Your support hasn't been recorded, please make sure to click the button only once.")
                 .flash(request);
-        final Contest contest = proposalContext.getContest();
-        final Proposal proposal = proposalContext.getProposal();
+        final ContestWrapper contest = proposalContext.getContest();
+        final ProposalWrapper proposal = proposalContext.getProposal();
         return "redirect:" + proposal.getProposalLinkUrl(contest);
     }
 }

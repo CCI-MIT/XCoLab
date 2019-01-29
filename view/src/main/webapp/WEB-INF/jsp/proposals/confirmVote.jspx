@@ -12,7 +12,7 @@
     <div id="content">
         <c:choose>
             <c:when test="${success}">
-                <jsp:useBean id="proposal" type="org.xcolab.client.proposals.pojo.Proposal" scope="request"/>
+                <jsp:useBean id="proposal" type="org.xcolab.client.contest.pojo.wrapper.ProposalWrapper" scope="request"/>
                 <div class="alert alert-success">
                     Thank you for confirming your vote for the ${contestType.proposalName} ${proposal.name}. Your vote has been counted.
                 </div>

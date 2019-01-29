@@ -11,8 +11,8 @@ import org.xcolab.client.comment.IThreadClient;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.content.IContentClient;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.StaticContestContext;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.view.pages.contestmanagement.wrappers.WikiPageWrapper;
 
 import java.io.Serializable;
@@ -69,7 +69,7 @@ public class ContestDescriptionBean implements Serializable {
     public ContestDescriptionBean() {
     }
 
-    public ContestDescriptionBean(Contest contest) {
+    public ContestDescriptionBean(ContestWrapper contest) {
 
         if (contest != null) {
             contestId = contest.getId();
@@ -86,7 +86,7 @@ public class ContestDescriptionBean implements Serializable {
         }
     }
 
-    public void persist(Contest contest) {
+    public void persist(ContestWrapper contest) {
         String oldContestName = contest.getTitle();
         updateContestDescription(contest);
 
@@ -104,13 +104,13 @@ public class ContestDescriptionBean implements Serializable {
 
         if (shouldUpdateContestUrlName && !contest.getTitle().equals(oldContestName)) {
             contest.setContestUrlName((contest).generateContestUrlName());
-            ContestClientUtil.updateContest(contest);
+            StaticContestContext.getContestClient().updateContest(contest);
         }
         WikiPageWrapper.updateContestWiki(contentClient, contest);
         updateContestSchedule(contest, scheduleTemplateId);
     }
 
-    private void updateContestDescription(Contest contest) {
+    private void updateContestDescription(ContestWrapper contest) {
         contest.setQuestion(question);
         contest.setTitle(title);
         contest.setDescription(description);
@@ -119,10 +119,10 @@ public class ContestDescriptionBean implements Serializable {
         contest.setSponsorLogoId(sponsorLogoId);
         contest.setSponsorLink(sponsorLink);
         contest.setDefaultProposalLogoId(defaultProposalLogoId);
-        ContestClientUtil.updateContest(contest);
+        StaticContestContext.getContestClient().updateContest(contest);
     }
 
-    private static void updateContestSchedule(Contest contest, Long contestScheduleId) {
+    private static void updateContestSchedule(ContestWrapper contest, Long contestScheduleId) {
         Long oldScheduleTemplateId = contest.getContestScheduleId();
         boolean noScheduleSelected = contestScheduleId.equals(0L);
 

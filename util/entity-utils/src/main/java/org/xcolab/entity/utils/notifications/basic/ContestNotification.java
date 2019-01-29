@@ -11,9 +11,8 @@ import org.jsoup.nodes.TextNode;
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.IEmailTemplate;
-import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.StaticContestContext;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 
 import java.text.DateFormat;
@@ -29,12 +28,12 @@ public class ContestNotification extends EmailNotification {
     private static final String OTHER_CONTESTS_PLACEHOLDER = "other-contests-link";
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormat.forPattern("MMMM dd, HH:mm:ss a z");
-    protected final Contest contest;
+    protected final ContestWrapper contest;
     protected final String templateName;
     private final UserWrapper recipient;
     private ContestNotificationTemplate templateWrapper;
 
-    public ContestNotification(Contest contest, UserWrapper recipient, String templateName) {
+    public ContestNotification(ContestWrapper contest, UserWrapper recipient, String templateName) {
         this.contest = contest;
         this.recipient = recipient;
         this.templateName = templateName;
@@ -46,7 +45,7 @@ public class ContestNotification extends EmailNotification {
     }
 
     @Override
-    protected Contest getContest() {
+    protected ContestWrapper getContest() {
         return contest;
     }
 
@@ -69,8 +68,8 @@ public class ContestNotification extends EmailNotification {
         return this.contest.getId();
     }
     private Date getActivePhaseDeadline() {
-        ContestClient contestClient = ContestClientUtil.getClient();
-        return contestClient.getActivePhase(contest.getId()).getPhaseEndDate();
+        return StaticContestContext.getContestClient().getActivePhase(contest.getId())
+                .getPhaseEndDate();
     }
 
     private String getOtherContestLink(String linkText) {

@@ -6,17 +6,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.proposals.MembershipClient;
-import org.xcolab.client.proposals.MembershipClientUtil;
-import org.xcolab.client.proposals.ProposalAttributeClient;
-import org.xcolab.client.proposals.ProposalAttributeClientUtil;
-import org.xcolab.client.proposals.ProposalClient;
-import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
-import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.team.ProposalTeamMembershipRequest;
+import org.xcolab.client.contest.IContestClient;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMembershipRequestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.IMembershipClient;
+import org.xcolab.client.contest.proposals.IProposalAttributeClient;
+import org.xcolab.client.contest.proposals.IProposalClient;
+import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
+import org.xcolab.client.contest.proposals.exceptions.ConflictException;
+import org.xcolab.client.contest.proposals.exceptions.MembershipRequestNotFoundException;
 import org.xcolab.client.user.IMessagingClient;
 import org.xcolab.client.user.IUserClient;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
@@ -49,22 +48,33 @@ public class MembershipInvitationResponseController {
             "Your invitation of %s to join the <proposal/> %s has been rejected.";
 
     @Autowired
-    private IUserClient userClient;
+    private IContestClient contestClient;
 
     @Autowired
+    private IMembershipClient membershipClient;
+
+    @Autowired
+    private IProposalAttributeClient proposalAttributeClient;
+
+    @Autowired
+    private IProposalClient proposalClient;
+    
+    @Autowired
+    private IUserClient userClient;
+    
+    @Autowired
     private IMessagingClient messagingClient;
+
 
     @PostMapping("/membershipRequests/reply")
     private void execute(HttpServletRequest request, HttpServletResponse response,
             @RequestParam long requestId, @RequestParam long proposalId,
-            @RequestParam long contestId, @RequestParam String action) throws IOException {
+            @RequestParam long contestId, @RequestParam String action)
+            throws IOException, MembershipRequestNotFoundException, ConflictException {
 
-        Contest contest = ContestClientUtil.getContest(contestId);
-        MembershipClient membershipClient = MembershipClientUtil.getClient();
-        ProposalClient proposalClient = ProposalClientUtil.getClient();
-        ProposalAttributeClient proposalAttributeClient = ProposalAttributeClientUtil.getClient();
-
-        ProposalTeamMembershipRequest membershipRequest = membershipClient.getMembershipRequest(requestId);
+        ContestWrapper contest = contestClient.getContest(contestId);
+        ProposalTeamMembershipRequestWrapper membershipRequest =
+                membershipClient.getMembershipRequest(requestId);
 
         List<Long> recipients = new ArrayList<>();
         List<UserWrapper> contributors = proposalClient.getProposalMembers(proposalId);
@@ -73,7 +83,7 @@ public class MembershipInvitationResponseController {
             recipients.add(user.getId());
         }
 
-        Proposal proposal = proposalClient.getProposal(proposalId);
+        ProposalWrapper proposal = proposalClient.getProposal(proposalId);
         ContestType contestType = proposal.getContest().getContestType();
 
         String proposalName = proposalAttributeClient

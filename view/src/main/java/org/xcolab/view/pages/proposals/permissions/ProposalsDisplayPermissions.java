@@ -1,10 +1,11 @@
 package org.xcolab.view.pages.proposals.permissions;
 
 
-import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.team.ProposalTeamMembershipRequest;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.activity.StaticActivityContext;
 import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMembershipRequestWrapper;
 import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 
@@ -15,14 +16,14 @@ public class ProposalsDisplayPermissions {
 
     private final ProposalsPermissions proposalsPermissions;
     private final ClientHelper clientHelper;
-    private final Proposal proposal;
-    private final ContestPhase contestPhase;
+    private final ProposalWrapper proposal;
+    private final ContestPhaseWrapper contestPhase;
     private final long userId;
     private final boolean isGuest;
     private final boolean isLoggedIn;
 
-    public ProposalsDisplayPermissions(ProposalsPermissions proposalsPermissions, Proposal proposal,
-            ContestPhase contestPhase, ClientHelper clientHelper, long userId) {
+    public ProposalsDisplayPermissions(ProposalsPermissions proposalsPermissions, ProposalWrapper proposal,
+            ContestPhaseWrapper contestPhase, ClientHelper clientHelper, long userId) {
         this.proposalsPermissions = proposalsPermissions;
         this.proposal = proposal;
         this.contestPhase = contestPhase;
@@ -44,7 +45,7 @@ public class ProposalsDisplayPermissions {
     }
 
     public boolean getUserHasOpenMembershipRequest() {
-        for (ProposalTeamMembershipRequest mr : clientHelper.getMembershipClient()
+        for (ProposalTeamMembershipRequestWrapper mr : clientHelper.getMembershipClient()
                 .getMembershipRequests(proposal.getId())) {
             if (mr.getUserId() == userId && (
                     (mr.getStatusId() == MembershipRequestStatus.STATUS_PENDING)
@@ -82,7 +83,7 @@ public class ProposalsDisplayPermissions {
 
     private boolean isSubscribedToContest() {
         return contestPhase != null
-                && clientHelper.getActivitiesClient().isSubscribedToActivity(userId,
+                && StaticActivityContext.getActivityClient().isSubscribed(userId,
                         ActivityCategory.CONTEST, contestPhase.getContestId());
     }
 

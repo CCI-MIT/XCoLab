@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.AccessDeniedPage;
@@ -98,7 +98,7 @@ public class OverviewTabController extends AbstractTabController {
         if (!tabWrapper.getCanEdit()) {
             response.sendError(403);
         }
-        List<Contest> contests =
+        List<ContestWrapper> contests =
                 new ArrayList<>(updateContestOverviewWrapper.getContests().values());
         OrderMassAction orderMassAction = (OrderMassAction) ContestMassActions.ORDER.getAction();
         orderMassAction.execute(contests);
@@ -134,7 +134,7 @@ public class OverviewTabController extends AbstractTabController {
 
         ContestMassAction action = contestOverviewWrapper.getSelectedMassAction().getAction();
         List<Long> contestIds = contestOverviewWrapper.getSelectedContestIds();
-        List<Contest> contests = EntityIdListUtil.CONTESTS.fromIdList(contestIds);
+        List<ContestWrapper> contests = EntityIdListUtil.CONTESTS.fromIdList(contestIds);
 
         action.execute(contests, false, contestOverviewWrapper, response);
     }

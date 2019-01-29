@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.content.IContentClient;
 import org.xcolab.client.content.exceptions.ContentNotFoundException;
 import org.xcolab.client.content.pojo.IContentArticleVersion;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.IContestClient;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.user.IPermissionClient;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.errors.AccessDeniedPage;
@@ -33,6 +33,9 @@ public class ContentEditorResourceController extends BaseContentEditor {
     @Autowired
     private IContentClient contentClient;
 
+    @Autowired
+    private IContestClient contestClient;
+    
     @Autowired
     private IPermissionClient permissionClient;
 
@@ -57,7 +60,7 @@ public class ContentEditorResourceController extends BaseContentEditor {
             contentArticleVersion = null;
         }
 
-        Contest contest = ContestClientUtil.getContestByResourceArticleId(articleId);
+        ContestWrapper contest = contestClient.getContestByResourceArticleId(articleId);
 
 
         JSONObject articleVersion =
@@ -103,24 +106,23 @@ public class ContentEditorResourceController extends BaseContentEditor {
         JSONArray responseArray = new JSONArray();
 
         if (node == null || node.isEmpty()) {//root
-            List<Contest> allContests = ContestClientUtil.getAllContests();
+            List<ContestWrapper> allContests = contestClient.getAllContests();
             Map<String, String> yearFolders = new LinkedHashMap<>();
-            for (Contest c : allContests) {
+            for (ContestWrapper c : allContests) {
                 yearFolders.put(c.getContestYear().toString(), "");
 
             }
             List<String> yearsList = new ArrayList<>(yearFolders.keySet());
             Collections.sort(yearsList);
 
-
             for (int i = yearsList.size() - 1; i >= 0; i--) {
                 String year = yearsList.get(i);
                 responseArray.put(folderNode(year, year));
             }
         } else {//year
-            Integer year = Integer.parseInt(node);//should be the year
-            List<Contest> contestsInYear = ContestClientUtil.getAllContestsInYear(year);
-            for (Contest c : contestsInYear) {
+            Long year = Long.parseLong(node); //should be the year
+            List<ContestWrapper> contestsInYear = contestClient.getAllContestsInYear(year);
+            for (ContestWrapper c : contestsInYear) {
                 if (c.getResourceArticleId() != null && c.getResourceArticleId() != 0L) {
                     responseArray
                             .put(articleNode(c.getTitle(), c.getResourceArticleId()));

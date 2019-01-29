@@ -5,10 +5,10 @@ import org.jsoup.nodes.Node;
 
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.pojo.IEmailTemplate;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
-import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.entity.utils.notifications.basic.ProposalNotification;
 
 public class ProposalVoteValidityConfirmation extends ProposalNotification {
@@ -16,12 +16,12 @@ public class ProposalVoteValidityConfirmation extends ProposalNotification {
     private static final String DEFAULT_TEMPLATE_STRING = "PROPOSAL_VOTE_CONFIRMATION_DEFAULT";
     private static final String CONFIRMATION_LINK_PLACEHOLDER = "confirmation-link";
 
-    private final Proposal votedProposal;
+    private final ProposalWrapper votedProposal;
     private final String confirmationToken;
     private final UserWrapper recipient;
     private ProposalVoteConfirmationTemplate templateWrapper;
 
-    public ProposalVoteValidityConfirmation(Proposal votedProposal, Contest contest,
+    public ProposalVoteValidityConfirmation(ProposalWrapper votedProposal, ContestWrapper contest,
             UserWrapper recipient, String confirmationToken) {
         super(votedProposal, contest, recipient, null);
         this.confirmationToken = confirmationToken;

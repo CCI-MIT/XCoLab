@@ -6,9 +6,9 @@ import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.view.pages.proposals.permissions.ProposalsDisplayPermissions;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
@@ -42,9 +42,9 @@ public class PopulateProposalModelInterceptor extends HandlerInterceptorAdapter 
 
         if (modelAndView != null) {
             ProposalContext proposalContext = new ProposalContextImpl(request, localeResolver);
-            Contest contest = proposalContext.getContest();
-            ContestPhase contestPhase = proposalContext.getContestPhase();
-            Proposal proposal = proposalContext.getProposal();
+            ContestWrapper contest = proposalContext.getContest();
+            ContestPhaseWrapper contestPhase = proposalContext.getContestPhase();
+            ProposalWrapper proposal = proposalContext.getProposal();
             ProposalsPermissions permissions = proposalContext.getPermissions();
             ProposalsDisplayPermissions displayPermissions =
                     proposalContext.getDisplayPermissions();

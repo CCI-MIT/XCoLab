@@ -1,10 +1,15 @@
 package org.xcolab.view.widgets;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.ui.Model;
 
+import org.xcolab.client.contest.IContestClient;
+import org.xcolab.client.contest.IContestTeamMemberClient;
+import org.xcolab.client.contest.proposals.IProposalPhaseClient;
 import org.xcolab.client.user.StaticUserContext;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
+import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.widgets.WidgetPreference.Supplier;
@@ -20,6 +25,15 @@ public abstract class AbstractWidgetController<WidgetPreferenceT extends WidgetP
 
     private final String baseUrl;
     private final Supplier<WidgetPreferenceT> preferenceSupplier;
+
+    @Autowired
+    protected IContestClient contestClient;
+
+    @Autowired
+    protected IContestTeamMemberClient contestTeamMemberClient;
+
+    @Autowired
+    protected IProposalPhaseClient proposalPhaseClient;
 
     protected AbstractWidgetController(String baseUrl,
             WidgetPreference.Supplier<WidgetPreferenceT> preferenceSupplier) {

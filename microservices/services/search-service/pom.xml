@@ -26,16 +26,19 @@
             <artifactId>search-client</artifactId>
             <version>${project.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.xcolab</groupId>
             <artifactId>content-client</artifactId>
             <version>${project.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.xcolab</groupId>
             <artifactId>comment-client</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.xcolab</groupId>
+            <artifactId>contest-client</artifactId>
             <version>${project.version}</version>
         </dependency>
 

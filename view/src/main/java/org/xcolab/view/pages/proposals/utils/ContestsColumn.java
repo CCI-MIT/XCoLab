@@ -1,7 +1,6 @@
 package org.xcolab.view.pages.proposals.utils;
 
-import org.xcolab.client.contest.pojo.AbstractContest;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 
 import java.util.Comparator;
 
@@ -41,19 +40,19 @@ public enum ContestsColumn {
         return 0;
     }),
 
-    DEFAULT(Comparator.comparingInt(Contest::getWeight).reversed());
+    DEFAULT(Comparator.comparingInt(ContestWrapper::getWeight).reversed());
     
-    private final Comparator<Contest> columnComparator;
+    private final Comparator<ContestWrapper> columnComparator;
 
-    ContestsColumn(Comparator<Contest> columnComparator) {
+    ContestsColumn(Comparator<ContestWrapper> columnComparator) {
         this.columnComparator = columnComparator;
     }
     
-    public Comparator<Contest> getColumnComparator() {
+    public Comparator<ContestWrapper> getColumnComparator() {
         return columnComparator;
     }
 
-    private static int compareContestsByStringValues(Contest c1, String s1, Contest c2, String s2) {
+    private static int compareContestsByStringValues(ContestWrapper c1, String s1, ContestWrapper c2, String s2) {
         if (s1.isEmpty()) {
             if (s2.isEmpty()) {
                 return (int) (c1.getId() - c2.getId());

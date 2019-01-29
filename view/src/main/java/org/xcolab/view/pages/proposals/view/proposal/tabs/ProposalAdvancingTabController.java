@@ -10,17 +10,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
-import org.xcolab.client.proposals.ProposalPhaseClient;
-import org.xcolab.client.proposals.ProposalPhaseClientUtil;
-import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
-import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
-import org.xcolab.client.proposals.pojo.proposals.ProposalRatings;
-import org.xcolab.client.proposals.pojo.proposals.UserProposalRatings;
+import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalRatings;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.wrapper.UserProposalRatings;
+import org.xcolab.client.contest.proposals.IProposalPhaseClient;
 import org.xcolab.client.user.IUserClient;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.servlet.flash.AlertMessage;
@@ -65,9 +62,9 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
-        Proposal proposal = proposalContext.getProposal();
-        ContestPhase contestPhase = proposalContext.getContestPhase();
-        Proposal proposalWrapper = new Proposal(proposal, contestPhase);
+        ProposalWrapper proposal = proposalContext.getProposal();
+        ContestPhaseWrapper contestPhase = proposalContext.getContestPhase();
+        ProposalWrapper proposalWrapper = new ProposalWrapper(proposal, contestPhase);
         ProposalAdvancingBean advancingBean = new ProposalAdvancingBean(proposalWrapper);
 
         final boolean isFinalistPhase = contestPhase.isFinalistPhase();
@@ -80,32 +77,30 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
         model.addAttribute("advanceOptions", JudgingSystemActions.AdvanceDecision.values());
         model.addAttribute("isFinalistPhase", isFinalistPhase);
 
-        List<ProposalRating> fellowRatingsUnWrapped =
-                ProposalJudgeRatingClientUtil.getFellowRatingsForProposal(
+        List<ProposalRatingWrapper> fellowRatingsUnWrapped =
+                proposalJudgeRatingClient.getFellowRatingsForProposal(
                         proposal.getId(), contestPhase.getId());
         List<ProposalRatings> fellowRatings = wrapProposalRatings(fellowRatingsUnWrapped);
 
-        List<ProposalRating> judgesRatingsUnWrapped =
-                ProposalJudgeRatingClientUtil.getJudgeRatingsForProposal(
+        List<ProposalRatingWrapper> judgesRatingsUnWrapped =
+                proposalJudgeRatingClient.getJudgeRatingsForProposal(
                         proposal.getId(), contestPhase.getId());
 
         for (Iterator i = judgesRatingsUnWrapped.iterator(); i.hasNext(); ) {
-            ProposalRating judgesRatingUnWrapped = (ProposalRating) i.next();
+            ProposalRatingWrapper judgesRatingUnWrapped = (ProposalRatingWrapper) i.next();
             if (judgesRatingUnWrapped.getOnlyForInternalUsage()) {
                 i.remove();
             }
         }
 
         List<ProposalRatings> judgeRatings = wrapProposalRatings(judgesRatingsUnWrapped);
-        boolean isFrozen = ProposalPhaseClientUtil.isProposalContestPhaseAttributeSetAndTrue(
-                proposal.getId(),
-                contestPhase.getId(),
+        boolean isFrozen = proposalPhaseClient.isProposalContestPhaseAttributeSetAndTrue(
+                proposal.getId(), contestPhase.getId(),
                 ProposalContestPhaseAttributeKeys.FELLOW_ADVANCEMENT_FROZEN
         );
         boolean hasAlreadyBeenPromoted =
-                ProposalPhaseClientUtil.isProposalContestPhaseAttributeSetAndTrue(
-                        proposal.getId(),
-                        contestPhase.getId(),
+                proposalPhaseClient.isProposalContestPhaseAttributeSetAndTrue(
+                        proposal.getId(), contestPhase.getId(),
                         ProposalContestPhaseAttributeKeys.PROMOTE_DONE
                 );
 
@@ -118,17 +113,17 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
         return "proposals/proposalAdvancing";
     }
 
-    private static List<ProposalRatings> wrapProposalRatings(List<ProposalRating> ratings) {
-        Map<Long, List<ProposalRating>> ratingsByUserId = new HashMap<>();
+    private static List<ProposalRatings> wrapProposalRatings(List<ProposalRatingWrapper> ratings) {
+        Map<Long, List<ProposalRatingWrapper>> ratingsByUserId = new HashMap<>();
 
-        for (ProposalRating r : ratings) {
+        for (ProposalRatingWrapper r : ratings) {
             ratingsByUserId.computeIfAbsent(r.getUserId(), k -> new ArrayList<>());
             ratingsByUserId.get(r.getUserId()).add(r);
         }
 
         List<ProposalRatings> wrappers = new ArrayList<>();
-        for (Map.Entry<Long, List<ProposalRating>> entry : ratingsByUserId.entrySet()) {
-            List<ProposalRating> userRatings = entry.getValue();
+        for (Map.Entry<Long, List<ProposalRatingWrapper>> entry : ratingsByUserId.entrySet()) {
+            List<ProposalRatingWrapper> userRatings = entry.getValue();
             ProposalRatings wrapper = new UserProposalRatings(entry.getKey(), userRatings);
             wrappers.add(wrapper);
         }
@@ -143,14 +138,14 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
             @RequestParam(defaultValue = "false") boolean isUnfreeze,
             @Valid ProposalAdvancingBean proposalAdvancingBean, BindingResult result) {
 
-        Proposal proposal = proposalContext.getProposal();
-        final Contest contest = proposalContext.getContest();
+        ProposalWrapper proposal = proposalContext.getProposal();
+        final ContestWrapper contest = proposalContext.getContest();
         long proposalId = proposal.getId();
-        ContestPhase contestPhase = proposalContext.getContestPhase();
+        ContestPhaseWrapper contestPhase = proposalContext.getContestPhase();
         ProposalsPermissions permissions = proposalContext.getPermissions();
 
         final ClientHelper clients = proposalContext.getClients();
-        final ProposalPhaseClient proposalPhaseClient = clients.getProposalPhaseClient();
+        final IProposalPhaseClient proposalPhaseClient = clients.getProposalPhaseClient();
 
         final Long phaseId = contestPhase.getId();
         boolean isFrozen = proposalPhaseClient.isProposalContestPhaseAttributeSetAndTrue(proposalId,
@@ -192,8 +187,7 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
 
         final String proposalUrl = proposal.getProposalLinkUrl(contest, phaseId);
         if (permissions.getCanAdminAll() && !isUndecided && isForcePromotion) {
-            ContestClientUtil.forcePromotionOfProposalInPhase(proposal.getId(),
-                    phaseId);
+            contestClient.forcePromotionOfProposalInPhase(proposal.getId(), phaseId);
             return "redirect:" + proposalUrl;
         } else {
             final String advancingTab = proposalUrl + "/tab/ADVANCING";
@@ -201,9 +195,9 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
         }
     }
 
-    private ProposalContestPhaseAttribute setIsFrozen(long proposalId, ContestPhase contestPhase,
+    private IProposalContestPhaseAttribute setIsFrozen(long proposalId, ContestPhaseWrapper contestPhase,
             boolean isFrozen) {
-        return ProposalPhaseClientUtil.setProposalContestPhaseAttribute(proposalId,
+        return proposalPhaseClient.setProposalContestPhaseAttribute(proposalId,
                 contestPhase.getId(),
                 ProposalContestPhaseAttributeKeys.FELLOW_ADVANCEMENT_FROZEN, 0L, null,
                 String.valueOf(isFrozen));
@@ -212,8 +206,8 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
     @GetMapping("c/{proposalUrlString}/{proposalId}/tab/ADVANCING/saveJudgingFeedback")
     public String saveJudgingFeedback(HttpServletRequest request, HttpServletResponse response,
             ProposalContext proposalContext) {
-        final Contest contest = proposalContext.getContest();
-        final Proposal proposal = proposalContext.getProposal();
+        final ContestWrapper contest = proposalContext.getContest();
+        final ProposalWrapper proposal = proposalContext.getProposal();
         final String redirectUrl = proposal.getProposalLinkUrl(contest,
                 proposalContext.getContestPhase().getId());
         AlertMessage.danger(
@@ -229,10 +223,10 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
             BindingResult result, RedirectAttributes redirectAttributes)
             throws IOException {
 
-        final Contest contest = proposalContext.getContest();
-        Proposal proposal = proposalContext.getProposal();
-        ContestPhase contestPhase =
-                ContestClientUtil.getContestPhase(judgeProposalFeedbackBean.getContestPhaseId());
+        final ContestWrapper contest = proposalContext.getContest();
+        ProposalWrapper proposal = proposalContext.getProposal();
+        ContestPhaseWrapper contestPhase =
+                contestClient.getContestPhase(judgeProposalFeedbackBean.getContestPhaseId());
         ProposalsPermissions permissions = proposalContext.getPermissions();
         boolean isPublicRating = permissions.getCanPublicRating();
 
@@ -263,11 +257,9 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
         }
 
         //find existing ratings
-        List<ProposalRating> existingRatings =
-                ProposalJudgeRatingClientUtil.getJudgeRatingsForProposalAndUser(
-                        member.getId(),
-                        proposal.getId(),
-                        contestPhase.getId());
+        List<ProposalRatingWrapper> existingRatings =
+                proposalJudgeRatingClient.getJudgeRatingsForProposalAndUser(member.getId(),
+                        proposal.getId(), contestPhase.getId());
 
         JudgingUtil.saveRatings(existingRatings, judgeProposalFeedbackBean, proposal.getId(),
                 contestPhase.getId(), member.getId(), isPublicRating);
@@ -275,5 +267,4 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
         AlertMessage.success("Rating saved successfully.").flash(request);
         return "redirect:" + redirectUrl;
     }
-
 }

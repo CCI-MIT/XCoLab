@@ -6,10 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.user.IPermissionClient;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
-import org.xcolab.commons.servlet.flash.InfoPage;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.utils.ContestCreatorUtil;
 
@@ -30,7 +29,7 @@ public class CreationController {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
-        Contest contest = ContestCreatorUtil.createNewContest("created contest "
+        ContestWrapper contest = ContestCreatorUtil.createNewContest("created contest "
                 + DateTime.now().toString("yyyy.MM.dd HH.mm.ss"), member.getId());
         String newContestLink = "/admin/contest/details/contestId/"
                 + contest.getId();

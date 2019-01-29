@@ -9,9 +9,9 @@ import org.joda.time.format.DateTimeFormatter;
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.client.contest.StaticContestContext;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.view.pages.contestmanagement.utils.ContestResourcesHtmlParserUtil;
 import org.xcolab.view.pages.contestmanagement.wrappers.SectionDefinitionWrapper;
@@ -282,11 +282,11 @@ public class ContestResourcesBean implements Serializable {
         }
     }
 
-    public void fillOverviewSectionContent(Contest contest) {
-        List<ContestPhase> contestPhaseList =
-                ContestClientUtil.getAllContestPhases(contest.getId());
+    public void fillOverviewSectionContent(ContestWrapper contest) {
+        List<ContestPhaseWrapper> contestPhaseList = StaticContestContext.getContestClient()
+                .getAllContestPhases(contest.getId());
         String proposalSubmissionEndDate = "";
-        for (ContestPhase contestPhase : contestPhaseList) {
+        for (ContestPhaseWrapper contestPhase : contestPhaseList) {
             Long contestPhaseType = contestPhase.getContestPhaseTypeId();
             if (contestPhaseType == 1L) {
                 final DateTimeFormatter dateTimeFormatterWithTimeZone = DATE_TIME_FORMAT

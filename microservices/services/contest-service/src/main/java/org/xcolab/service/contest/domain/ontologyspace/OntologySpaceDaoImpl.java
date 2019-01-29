@@ -5,10 +5,10 @@ import org.jooq.Record;
 import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.xcolab.model.tables.pojos.OntologySpace;
+
+import org.xcolab.client.contest.pojo.wrapper.OntologySpaceWrapper;
 import org.xcolab.model.tables.records.OntologySpaceRecord;
 import org.xcolab.service.contest.exceptions.NotFoundException;
-
 
 import java.util.List;
 
@@ -25,8 +25,7 @@ public class OntologySpaceDaoImpl implements OntologySpaceDao {
     }
 
     @Override
-    public OntologySpace create(OntologySpace ontologySpace) {
-
+    public OntologySpaceWrapper create(OntologySpaceWrapper ontologySpace) {
         OntologySpaceRecord ret = this.dslContext.insertInto(ONTOLOGY_SPACE)
                 .set(ONTOLOGY_SPACE.ID, ontologySpace.getId())
                 .set(ONTOLOGY_SPACE.NAME, ontologySpace.getName())
@@ -40,12 +39,10 @@ public class OntologySpaceDaoImpl implements OntologySpaceDao {
         } else {
             return null;
         }
-
     }
 
     @Override
-    public OntologySpace get(Long id) throws NotFoundException {
-
+    public OntologySpaceWrapper get(Long id) throws NotFoundException {
         final Record record =  this.dslContext.selectFrom(ONTOLOGY_SPACE)
                 .where(ONTOLOGY_SPACE.ID.eq(id))
                 .fetchOne();
@@ -53,12 +50,11 @@ public class OntologySpaceDaoImpl implements OntologySpaceDao {
         if (record == null) {
             throw new NotFoundException("OntologySpace with id " + id + " does not exist");
         }
-        return record.into(OntologySpace.class);
-
+        return record.into(OntologySpaceWrapper.class);
     }
 
     @Override
-    public boolean update(OntologySpace ontologySpace) {
+    public boolean update(OntologySpaceWrapper ontologySpace) {
         return dslContext.update(ONTOLOGY_SPACE)
                 .set(ONTOLOGY_SPACE.ID, ontologySpace.getId())
                 .set(ONTOLOGY_SPACE.NAME, ontologySpace.getName())
@@ -69,12 +65,11 @@ public class OntologySpaceDaoImpl implements OntologySpaceDao {
     }
 
     @Override
-    public List<OntologySpace> findByGiven() {
+    public List<OntologySpaceWrapper> findByGiven() {
         final SelectQuery<Record> query = dslContext.select()
                 .from(ONTOLOGY_SPACE).getQuery();
 
-
-        return query.fetchInto(OntologySpace.class);
+        return query.fetchInto(OntologySpaceWrapper.class);
     }
 
     @Override

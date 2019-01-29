@@ -1,6 +1,6 @@
 package org.xcolab.service.contest.domain.contest;
 
-import org.xcolab.model.tables.pojos.Contest;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.util.ArrayList;
@@ -99,7 +99,7 @@ public class ContestDaoQuery {
         return this;
     }
 
-    public List<Contest> execute() {
+    public List<ContestWrapper> execute() {
         return contestDao.findByGiven(paginationHelper, contestUrlName, contestYear, active,
             featured, contestTiers, focusAreaIds, contestScheduleId, proposalTemplateId,
             contestTypeIds, contestPrivate, searchTerm);

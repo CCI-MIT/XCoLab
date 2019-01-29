@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.proposals.impact;
 
-import org.xcolab.client.proposals.enums.ImpactSeriesType;
+import org.xcolab.client.contest.proposals.enums.ImpactSeriesType;
 
 import java.util.HashMap;
 import java.util.Map;

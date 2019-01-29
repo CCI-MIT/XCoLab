@@ -11,11 +11,11 @@ import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.IComment;
 import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.comment.pojo.tables.pojos.Comment;
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
+import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.search.pojo.ISearchPojo;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
 
@@ -80,7 +80,7 @@ public class DiscussionSearchItem extends AbstractSearchItem {
 
     private String getProposalDiscussionUrl() {
         try {
-            return ProposalClientUtil.getProposalByThreadId(thread.getId())
+            return StaticProposalContext.getProposalClient().getProposalByThreadId(thread.getId())
                     .getProposalDiscussionUrl();
         } catch (ProposalNotFoundException e) {
             return null;
@@ -89,7 +89,8 @@ public class DiscussionSearchItem extends AbstractSearchItem {
 
     private String getContestDiscussionUrl() {
         try {
-            Contest contest = ContestClientUtil.getContestByThreadId(thread.getId());
+            ContestWrapper contest = StaticContestContext.getContestClient()
+                    .getContestByThreadId(thread.getId());
             return contest.getContestDiscussionLinkUrl();
         } catch (ContestNotFoundException e1) {
             return null;

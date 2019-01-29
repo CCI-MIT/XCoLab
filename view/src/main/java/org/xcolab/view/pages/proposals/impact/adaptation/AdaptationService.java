@@ -2,8 +2,8 @@ package org.xcolab.view.pages.proposals.impact.adaptation;
 
 import org.springframework.stereotype.Service;
 
-import org.xcolab.client.proposals.ProposalAttributeClient;
-import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ProposalUnversionedAttribute;
+import org.xcolab.client.contest.proposals.IProposalAttributeClient;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.HashMap;
@@ -18,7 +18,7 @@ public class AdaptationService {
     private static final String MIN_PERCENT_REDUCTION = "MIN_PERCENT_REDUCTION";
     private static final String MAX_PERCENT_REDUCTION = "MAX_PERCENT_REDUCTION";
 
-    public AdaptationImpactBean getAdaptationImpactBean(ProposalAttributeClient attributeClient,
+    public AdaptationImpactBean getAdaptationImpactBean(IProposalAttributeClient attributeClient,
             long proposalId) {
 
         final AttributeHelper attributeHelper = new AttributeHelper(attributeClient, proposalId, 0);
@@ -53,7 +53,7 @@ public class AdaptationService {
     }
 
     public void save(AdaptationImpactBean adaptationImpactBean,
-            ProposalAttributeClient attributeClient) {
+            IProposalAttributeClient attributeClient) {
         AttributeHelper attributeHelper = new AttributeHelper(attributeClient,
                 adaptationImpactBean.getProposalId(), adaptationImpactBean.getAuthorUserId());
 
@@ -72,11 +72,11 @@ public class AdaptationService {
 
     private static class AttributeHelper {
 
-        private final ProposalAttributeClient attributeClient;
+        private final IProposalAttributeClient attributeClient;
         private final long proposalId;
         private final long authorUserId;
 
-        AttributeHelper(ProposalAttributeClient attributeClient, long proposalId, long authorUserId) {
+        AttributeHelper(IProposalAttributeClient attributeClient, long proposalId, long authorUserId) {
             this.attributeClient = attributeClient;
             this.proposalId = proposalId;
             this.authorUserId = authorUserId;

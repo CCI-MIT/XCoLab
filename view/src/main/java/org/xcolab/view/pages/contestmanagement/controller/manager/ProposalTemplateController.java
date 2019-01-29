@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.contest.ProposalTemplateClientUtil;
-import org.xcolab.client.contest.pojo.templates.ProposalTemplate;
+import org.xcolab.client.contest.pojo.IProposalTemplate;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
+import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.controller.AbstractProposalTemplateTabController;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
@@ -20,7 +20,6 @@ import org.xcolab.view.pages.contestmanagement.utils.ProposalTemplateLifecycleUt
 import org.xcolab.view.pages.contestmanagement.wrappers.ElementSelectIdWrapper;
 import org.xcolab.view.pages.contestmanagement.wrappers.ProposalTemplateWrapper;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
-import org.xcolab.commons.servlet.flash.AlertMessage;
 
 import java.io.IOException;
 import java.util.List;
@@ -70,7 +69,7 @@ public class ProposalTemplateController extends AbstractProposalTemplateTabContr
 
     private Long getFirstProposalTemplateId() {
 
-        final List<ProposalTemplate> proposalTemplates = ProposalTemplateClientUtil
+        final List<IProposalTemplate> proposalTemplates = proposalTemplateClient
                 .getProposalTemplates();
         if (!proposalTemplates.isEmpty()) {
             return proposalTemplates.get(0).getId();
@@ -88,7 +87,7 @@ public class ProposalTemplateController extends AbstractProposalTemplateTabContr
             return new AccessDeniedPage(member).toViewName(response);
         }
 
-        ProposalTemplate newTemplate = ProposalTemplateLifecycleUtil.create();
+        IProposalTemplate newTemplate = ProposalTemplateLifecycleUtil.create();
         return "redirect:" + tab.getTabUrl(newTemplate.getId());
     }
 

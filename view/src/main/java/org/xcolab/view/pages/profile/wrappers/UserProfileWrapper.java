@@ -2,15 +2,14 @@ package org.xcolab.view.pages.profile.wrappers;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.activities.pojo.ActivityEntry;
+import org.xcolab.client.activity.StaticActivityContext;
+import org.xcolab.client.activity.pojo.IActivityEntry;
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
-import org.xcolab.client.proposals.pojo.ContestTypeProposal;
-import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.SupportedProposal;
+import org.xcolab.client.contest.pojo.wrapper.ContestTypeProposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.wrapper.SupportedProposal;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.user.StaticUserContext;
 import org.xcolab.client.user.exceptions.MemberNotFoundException;
 import org.xcolab.client.user.legacy.enums.MessageType;
@@ -55,7 +54,7 @@ public class UserProfileWrapper implements Serializable {
     private List<MessageBean> messages;
     private final List<SupportedProposal> supportedProposals = new ArrayList<>();
     private final Map<Long, ContestTypeProposal> contestTypeProposalWrappersByContestTypeId = new HashMap<>();
-    private List<Proposal> linkingProposals;
+    private List<ProposalWrapper> linkingProposals;
     private final ArrayList<UserActivityWrapper> userActivities = new ArrayList<>();
     private List<UserActivityWrapper> subscribedActivities;
     private UserSubscriptionsWrapper userSubscriptions;
@@ -101,10 +100,12 @@ public class UserProfileWrapper implements Serializable {
 
         userSubscriptions = new UserSubscriptionsWrapper(member);
         userActivities.clear();
-        supportedProposals.addAll(ProposalMemberRatingClientUtil.getSupportedProposals(member.getId()));
+        supportedProposals.addAll(StaticProposalContext.getProposalMemberRatingClient()
+                .getSupportedProposals(member.getId()));
 
-        for (ActivityEntry activity : ActivityUtil.groupActivities(ActivitiesClientUtil
-                .getActivityEntries(0, MAX_ACTIVITIES_COUNT, member.getId(), null))) {
+        for (IActivityEntry activity : ActivityUtil
+                .groupActivities(StaticActivityContext.getActivityClient()
+                        .getActivityEntries(0, MAX_ACTIVITIES_COUNT, member.getId(), null))) {
 
             UserActivityWrapper a = new UserActivityWrapper(activity, activityEntryHelper);
             if (StringUtils.isNotBlank(a.getBody())) {
@@ -112,17 +113,18 @@ public class UserProfileWrapper implements Serializable {
             }
         }
 
-        List<Proposal> proposals = ProposalClientUtil.getMemberProposals(member.getId());
-        Map<ContestType, Set<Proposal>> proposalsByContestType = EntityGroupingUtil
+        List<ProposalWrapper> proposals = StaticProposalContext.getProposalClient()
+                .getMemberProposals(member.getId());
+        Map<ContestType, Set<ProposalWrapper>> proposalsByContestType = EntityGroupingUtil
                 .groupByContestType(proposals);
         for (ContestType contestType : StaticAdminContext.getContestTypeClient()
                 .getActiveContestTypes()) {
             contestTypeProposalWrappersByContestTypeId
                     .put(contestType.getId(), new ContestTypeProposal(contestType));
-            final Set<Proposal> proposalsInContestType = proposalsByContestType
+            final Set<ProposalWrapper> proposalsInContestType = proposalsByContestType
                     .get(contestType);
             if (proposalsInContestType != null) {
-                for (Proposal p : proposalsInContestType) {
+                for (ProposalWrapper p : proposalsInContestType) {
                     contestTypeProposalWrappersByContestTypeId.get(contestType.getId())
                             .getProposals().add(p);
                 }
@@ -253,11 +255,12 @@ public class UserProfileWrapper implements Serializable {
         if (subscribedActivities == null) {
             subscribedActivities = new ArrayList<>();
 
-            for (ActivitySubscriptionWrapper subscription: userSubscriptions.getSubscriptions()) {
+            for (ActivitySubscriptionWrapper subscription : userSubscriptions.getSubscriptions()) {
                 Long categoryId = subscription.getSubscription().getCategoryId();
                 String activityCategory = subscription.getSubscription().getActivityCategory();
-                List<ActivityEntry> activities = ActivitiesClientUtil.getActivitiesByCategoryId(activityCategory, categoryId);
-                for (ActivityEntry activity: activities) {
+                List<IActivityEntry> activities = StaticActivityContext.getActivityClient()
+                        .getActivitiesByCategoryId(activityCategory, categoryId);
+                for (IActivityEntry activity : activities) {
                     UserActivityWrapper a = new UserActivityWrapper(activity, activityEntryHelper);
                     if (StringUtils.isNotBlank(a.getBody())) {
                         subscribedActivities.add(a);
@@ -289,7 +292,7 @@ public class UserProfileWrapper implements Serializable {
     }
 
     public long getUserActivityCount() {
-            return ActivitiesClientUtil.countActivities(getUserId(),null);
+            return StaticActivityContext.getActivityClient().countActivities(getUserId(),null);
     }
 
     public Long getUserId() {
@@ -312,10 +315,11 @@ public class UserProfileWrapper implements Serializable {
         return StaticUserContext.getUserClient().getMemberHypotheticalPoints(getUserId());
     }
 
-    public List<Proposal> getLinkingProposals() {
+    public List<ProposalWrapper> getLinkingProposals() {
         if (linkingProposals == null) {
             linkingProposals = new ArrayList<>();
-            List<Proposal> proposals = ProposalClientUtil.getLinkingProposalsForUser(getUserId());
+            List<ProposalWrapper> proposals = StaticProposalContext.getProposalClient()
+                    .getLinkingProposalsForUser(getUserId());
 
             linkingProposals.addAll(proposals);
         }

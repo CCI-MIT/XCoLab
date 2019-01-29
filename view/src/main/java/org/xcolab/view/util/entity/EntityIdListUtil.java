@@ -2,10 +2,10 @@ package org.xcolab.view.util.entity;
 
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.StaticContestContext;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.user.StaticUserContext;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.IdListUtil;
@@ -25,15 +25,17 @@ public final class EntityIdListUtil {
      * Utility class to convert between lists of Contests, their ids, and comma separated id
      * strings
      */
-    public final static IdListObjectConverter<Contest> CONTESTS =
-            new IdListObjectConverter<>(ContestClientUtil::getContest, Contest::getId);
+    public final static IdListObjectConverter<ContestWrapper> CONTESTS =
+            new IdListObjectConverter<>(StaticContestContext.getContestClient()::getContest,
+                    ContestWrapper::getId);
 
     /**
      * Utility class to convert between lists of Proposals, their ids, and comma separated id
      * strings
      */
-    public final static IdListObjectConverter<Proposal> PROPOSALS =
-            new IdListObjectConverter<>(ProposalClientUtil::getProposal, Proposal::getId);
+    public final static IdListObjectConverter<ProposalWrapper> PROPOSALS =
+            new IdListObjectConverter<>(StaticProposalContext.getProposalClient()::getProposal,
+                    ProposalWrapper::getId);
 
     /**
      * Utility class to convert between lists of ContestTypes, their ids, and comma separated id

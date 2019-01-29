@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.proposals.judging;
 
-import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
@@ -30,10 +30,10 @@ public class JudgeAssignedProposalCountTag extends BodyTagSupport {
     @Override
     public int doStartTag() throws JspException {
 
-        int judgeAssignedProposalCount = ProposalClientUtil
+        int judgeAssignedProposalCount = StaticProposalContext.getProposalClient()
                 .getNumberOfProposalsForJudge(userId, contestPhaseId);
 
-        int judgeJudgedProposalCount = ProposalClientUtil
+        int judgeJudgedProposalCount = StaticProposalContext.getProposalClient()
                 .getNumberOfProposalsAlreadyJudgedForJudge(userId, contestPhaseId);
 
         pageContext.setAttribute("proposalCount", judgeAssignedProposalCount);

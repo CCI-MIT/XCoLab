@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.profile;
 
-import org.xcolab.client.activities.pojo.ActivitySubscription;
+import org.xcolab.client.activity.pojo.IActivitySubscription;
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
@@ -17,7 +17,7 @@ public enum SubscriptionType {
         this.activityCategory = activityCategory;
     }
 
-    public static SubscriptionType getSubscriptionType(ActivitySubscription subscription) {
+    public static SubscriptionType getSubscriptionType(IActivitySubscription subscription) {
         for (SubscriptionType type : SubscriptionType.values()) {
             if (type.activityCategory == subscription.getActivityCategoryEnum()) {
                 return type;

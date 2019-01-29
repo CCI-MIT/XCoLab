@@ -6,14 +6,14 @@
           xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
           xmlns:spring="http://www.springframework.org/tags">
 
-    <!--@elvariable id="pointType" type="org.xcolab.client.proposals.pojo.points.PointType"-->
+    <!--@elvariable id="pointType" type="org.xcolab.client.contest.pojo.wrapper.PointTypeWrapper"-->
     <!--@elvariable id="percentageOfTotalPoints" type="java.lang.Double"-->
     <!--@elvariable id="assignPointsBean" type="org.xcolab.view.pages.proposals.requests.AssignPointsBean"-->
     <!--@elvariable id="pointsToDistribute" type="java.lang.Double"-->
     <!--@elvariable id="recursionLevel" type="java.lang.Integer"-->
     <!--@elvariable id="currentTabWrapped" type="org.xcolab.view.pages.proposals.tabs.ProposalTabWrapper"-->
     <!--@elvariable id="contestType" type="org.xcolab.client.admin.pojo.ContestType"-->
-    <!--@elvariable id="subProposals" type="java.util.List<org.xcolab.client.proposals.pojo.Proposal>"-->
+    <!--@elvariable id="subProposals" type="java.util.List<org.xcolab.client.contest.pojo.wrapper.ProposalWrapper>"-->
 
         <fmt:setLocale value = "en_US"/>
     <c:set var="childrenSize" value="${pointType.children.size()}" scope="request"/>

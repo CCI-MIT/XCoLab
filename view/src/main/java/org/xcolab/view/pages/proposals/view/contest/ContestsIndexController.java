@@ -10,14 +10,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.OntologyClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestCollectionCard;
-import org.xcolab.client.contest.pojo.ontology.FocusArea;
-import org.xcolab.client.contest.pojo.ontology.FocusAreaOntologyTerm;
-import org.xcolab.client.contest.pojo.ontology.OntologySpace;
-import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
+import org.xcolab.client.contest.pojo.IContestCollectionCard;
+import org.xcolab.client.contest.pojo.IFocusAreaOntologyTerm;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.FocusAreaWrapper;
+import org.xcolab.client.contest.pojo.wrapper.OntologySpaceWrapper;
+import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
 import org.xcolab.client.user.StaticUserContext;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.http.servlet.RequestUtil;
@@ -94,11 +92,10 @@ public class ContestsIndexController extends BaseProposalsController {
             return new AccessDeniedPage(loggedInMember).toViewName(response);
         }
 
-        final int totalContestCount = ContestClientUtil
-                .countContests(null, false, contestType.getId());
+        final int totalContestCount = contestClient.countContests(null, false, contestType.getId());
 
         if (contestType.isSuggestionsActive()) {
-            Contest c = ContestClientUtil.getContest(contestType.getSuggestionContestId());
+            ContestWrapper c = contestClient.getContest(contestType.getSuggestionContestId());
             String link = c.getContestLinkUrl();
             model.addAttribute("suggestionContestLink", link);
         }
@@ -142,25 +139,25 @@ public class ContestsIndexController extends BaseProposalsController {
                 showOnlyFeatured = true;  // filter with JSP  -> TODO COLAB-2627: increase performance
                 ontologyTermToLoad = null; //get all
             } else {
-                ontologyTermToLoad = ContestClientUtil.getContestCollectionCard(currentCollectionCardId)
-                        .getOntology_term_to_load();
+                ontologyTermToLoad = contestClient.getContestCollectionCard(currentCollectionCardId)
+                        .getOntologyTermToLoad();
             }
 
             List<CollectionCardWrapper> collectionCards = new ArrayList<>();
             LinkedList<CollectionCardWrapper> collectionHierarchy = new LinkedList<>();
             if(showCollectionCards) { //don't display collectioncards if search results shown
-                for (ContestCollectionCard card: ContestClientUtil.getSubContestCollectionCards(currentCollectionCardId)) {
+                for (IContestCollectionCard card: contestClient.getSubContestCollectionCards(currentCollectionCardId)) {
                     collectionCards.add(new CollectionCardWrapper(card, viewType));
                 }
                 collectionCards.sort((o1, o2) ->
                         o1.getOrder() < o2.getOrder() ? -1
                                 : o1.getOrder() == o2.getOrder() ? 0 : 1);
                 long tempId = currentCollectionCardId;
-                while(ContestClientUtil.getContestCollectionCard(tempId).getParent() != null) {
-                    collectionHierarchy.addFirst(new CollectionCardWrapper(ContestClientUtil.getContestCollectionCard(tempId), viewType));
-                    tempId = ContestClientUtil.getContestCollectionCard(tempId).getParent();
+                while(contestClient.getContestCollectionCard(tempId).getParent() != null) {
+                    collectionHierarchy.addFirst(new CollectionCardWrapper(contestClient.getContestCollectionCard(tempId), viewType));
+                    tempId = contestClient.getContestCollectionCard(tempId).getParent();
                 }
-                collectionHierarchy.addFirst(new CollectionCardWrapper(ContestClientUtil.getContestCollectionCard(tempId), viewType));
+                collectionHierarchy.addFirst(new CollectionCardWrapper(contestClient.getContestCollectionCard(tempId), viewType));
                 if(collectionHierarchy.size() == 1) {
                     collectionHierarchy.clear();
                 }
@@ -174,8 +171,8 @@ public class ContestsIndexController extends BaseProposalsController {
             model.addAttribute("showOnlyFeatured", showOnlyFeatured);
 
             //if only featured
-            if(ContestClientUtil.getContestCollectionCard(currentCollectionCardId).getOntology_term_to_load() != null) {
-                model.addAttribute("ontologySpaceId", OntologyClientUtil.getOntologyTerm(ContestClientUtil.getContestCollectionCard(currentCollectionCardId).getOntology_term_to_load()).getOntologySpaceId());
+            if(contestClient.getContestCollectionCard(currentCollectionCardId).getOntologyTermToLoad() != null) {
+                model.addAttribute("ontologySpaceId", ontologyClient.getOntologyTerm(contestClient.getContestCollectionCard(currentCollectionCardId).getOntologyTermToLoad()).getOntologySpaceId());
             } else {
                 model.addAttribute("ontologySpaceId", 0);
             }
@@ -185,20 +182,20 @@ public class ContestsIndexController extends BaseProposalsController {
         //For other views
         /*--------------------------------*/
 
-        List<Contest> contests = new ArrayList<>();
+        List<ContestWrapper> contests = new ArrayList<>();
 
         if (viewType.equals(VIEW_TYPE_OUTLINE)) {
 
-            List<Contest> allContests = ContestClientUtil.getContests(
+            List<ContestWrapper> allContests = contestClient.getContests(
                     null, false, contestType.getId()).stream()
-                    .filter(Contest::getShowInOutlineView)
+                    .filter(ContestWrapper::getShowInOutlineView)
                     .collect(Collectors.toList());
 
-            final List<Contest> activeContests = allContests.stream()
-                    .filter(Contest::isContestActive)
+            final List<ContestWrapper> activeContests = allContests.stream()
+                    .filter(ContestWrapper::isContestActive)
                     .collect(Collectors.toList());
 
-            List<Contest> otherContests;
+            List<ContestWrapper> otherContests;
             if (showAllContests) {
                 contests = allContests;
                 otherContests = activeContests;
@@ -207,26 +204,26 @@ public class ContestsIndexController extends BaseProposalsController {
                 otherContests = allContests;
             }
 
-        	List<OntologySpace> ontologySpacesRaw = OntologyClientUtil.getAllOntologySpaces();
-        	List<OntologyTerm> ontologyTermsRaw = OntologyClientUtil.getAllOntologyTerms();
-        	List<FocusArea> focusAreasRaw = OntologyClientUtil.getAllFocusAreas();
-        	List<FocusAreaOntologyTerm> focusAreasOntologyTermsRaw = OntologyClientUtil.getAllFocusAreaOntologyTerms();
-        	Map<Long, FocusArea> focusAreas = new TreeMap<>();
+        	List<OntologySpaceWrapper> ontologySpacesRaw = ontologyClient.getAllOntologySpaces();
+        	List<OntologyTermWrapper> ontologyTermsRaw = ontologyClient.getAllOntologyTerms();
+        	List<FocusAreaWrapper> focusAreasRaw = ontologyClient.getAllFocusAreas();
+        	List<IFocusAreaOntologyTerm> focusAreasOntologyTermsRaw = ontologyClient.getAllFocusAreaOntologyTerms();
+        	Map<Long, FocusAreaWrapper> focusAreas = new TreeMap<>();
 
-            for (FocusArea area: focusAreasRaw) {
-        		focusAreas.put(area.getId(), new FocusArea(area));
+            for (FocusAreaWrapper area: focusAreasRaw) {
+        		focusAreas.put(area.getId(), new FocusAreaWrapper(area));
         	}
 
-            Map<Long, OntologySpace> ontologySpaces = new HashMap<>();
-            for (OntologySpace space: ontologySpacesRaw) {
-        		ontologySpaces.put(space.getId(), new OntologySpace(space));
+            Map<Long, OntologySpaceWrapper> ontologySpaces = new HashMap<>();
+            for (OntologySpaceWrapper space: ontologySpacesRaw) {
+        		ontologySpaces.put(space.getId(), new OntologySpaceWrapper(space));
         	}
 
-            Map<Long, OntologyTerm> ontologyTerms = new TreeMap<>();
-            for (OntologyTerm term: ontologyTermsRaw) {
-        		OntologyTerm termWrapped = new OntologyTerm(term);
+            Map<Long, OntologyTermWrapper> ontologyTerms = new TreeMap<>();
+            for (OntologyTermWrapper term: ontologyTermsRaw) {
+        		OntologyTermWrapper termWrapped = new OntologyTermWrapper(term);
                 final long ontologySpaceId = term.getOntologySpaceId();
-                final OntologySpace ontologySpace = ontologySpaces.get(ontologySpaceId);
+                final OntologySpaceWrapper ontologySpace = ontologySpaces.get(ontologySpaceId);
                 if (ontologySpace == null) {
                     throw new IllegalStateException(String.format(
                             "Ontology space %d referenced by ontology term %d doesn't exist.",
@@ -236,25 +233,25 @@ public class ContestsIndexController extends BaseProposalsController {
         		ontologyTerms.put(term.getId(), termWrapped);
         	}
 
-        	for (OntologyTerm term: ontologyTermsRaw) {
+        	for (OntologyTermWrapper term: ontologyTermsRaw) {
         		if (term.getParentId() > 0) {
         			ontologyTerms.get(term.getId()).setParent(ontologyTerms.get(term.getParentId()));
         		}
         	}
         	
-        	for (FocusAreaOntologyTerm faTerm: focusAreasOntologyTermsRaw) {
+        	for (IFocusAreaOntologyTerm faTerm: focusAreasOntologyTermsRaw) {
         		focusAreas.get(faTerm.getFocusAreaId()).addOntologyTerm(ontologyTerms.get(faTerm.getOntologyTermId()));
         	}
 
-        	List<OntologySpace> sortedSpaces = new ArrayList<>(ontologySpaces.values());
-        	sortedSpaces.sort(Comparator.comparingInt(OntologySpace::getOrder));
+        	List<OntologySpaceWrapper> sortedSpaces = new ArrayList<>(ontologySpaces.values());
+        	sortedSpaces.sort(Comparator.comparingInt(OntologySpaceWrapper::getOrder));
         	model.addAttribute("focusAreas", focusAreas.values());
         	model.addAttribute("ontologyTerms", ontologyTerms.values());
         	model.addAttribute("ontologySpaces", sortedSpaces);
         	model.addAttribute("otherContests", otherContests);
         	model.addAttribute("contestType", contestType);
         } else if (!ConfigurationAttributeKey.COLAB_USES_CARDS.get()) {
-            contests = ContestClientUtil.getContests(
+            contests = contestClient.getContests(
                     showAllContests ? null : true, false, contestType.getId());
         }
 
@@ -289,7 +286,7 @@ public class ContestsIndexController extends BaseProposalsController {
         return "/proposals/contestsIndex";
     }
 
-    private Comparator<Contest> getComparator(SortFilterPage sortFilterPage) {
+    private Comparator<ContestWrapper> getComparator(SortFilterPage sortFilterPage) {
         ContestsColumn sortColumn;
         if (StringUtils.isNotBlank(sortFilterPage.getSortColumn())) {
             sortColumn = ContestsColumn.valueOf(sortFilterPage.getSortColumn());
@@ -310,7 +307,7 @@ public class ContestsIndexController extends BaseProposalsController {
         };
     }
 
-    private Predicate<Contest> getFilter(SortFilterPage sortFilterPage) {
+    private Predicate<ContestWrapper> getFilter(SortFilterPage sortFilterPage) {
         String filterString = sortFilterPage.getFilter().toLowerCase();
 
         return contest -> {
@@ -322,8 +319,8 @@ public class ContestsIndexController extends BaseProposalsController {
         };
     }
 
-    private List<Contest> wrapContests(List<Contest> contests){
-        List<Contest> contestsToReturn = new ArrayList<>(contests);
+    private List<ContestWrapper> wrapContests(List<ContestWrapper> contests){
+        List<ContestWrapper> contestsToReturn = new ArrayList<>(contests);
         return contestsToReturn;
     }
 }

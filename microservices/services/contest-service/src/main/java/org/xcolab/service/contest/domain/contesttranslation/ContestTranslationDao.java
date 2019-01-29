@@ -1,19 +1,19 @@
 package org.xcolab.service.contest.domain.contesttranslation;
 
-import org.xcolab.model.tables.pojos.ContestTranslation;
+import org.xcolab.client.contest.pojo.IContestTranslation;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface ContestTranslationDao {
 
-    ContestTranslation create(ContestTranslation translation);
+    IContestTranslation create(IContestTranslation translation);
 
-    boolean update(ContestTranslation translation);
+    boolean update(IContestTranslation translation);
 
     boolean exists(long contestId, String lang);
 
-    Optional<ContestTranslation> get(long contestId, String lang);
+    Optional<IContestTranslation> get(long contestId, String lang);
 
-    List<ContestTranslation> listByContestId(long contestId);
+    List<IContestTranslation> listByContestId(long contestId);
 }

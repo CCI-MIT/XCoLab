@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.contestmanagement.entities.massactions;
 
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.view.pages.contestmanagement.beans.ContestFlagTextToolTipBean;
 
 import java.util.List;
@@ -14,7 +14,7 @@ public class FlagMassAction extends AbstractContestMassAction {
     }
 
     @Override
-    public void execute(List<Contest> contests, boolean actionConfirmed,
+    public void execute(List<ContestWrapper> contests, boolean actionConfirmed,
             MassActionDataWrapper dataWrapper, HttpServletResponse response)
             throws IllegalArgumentException {
         ContestFlagTextToolTipBean contestFlagTextToolTipBean =
@@ -23,7 +23,7 @@ public class FlagMassAction extends AbstractContestMassAction {
             throw new IllegalArgumentException("No contest flag text tool tip bean provided.");
         }
 
-        for (Contest contest : contests) {
+        for (ContestWrapper contest : contests) {
             contestFlagTextToolTipBean.persist(contest);
         }
     }

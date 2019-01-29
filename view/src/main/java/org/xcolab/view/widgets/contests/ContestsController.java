@@ -13,9 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.widgets.AbstractWidgetController;
 
@@ -68,13 +67,13 @@ public class ContestsController extends AbstractWidgetController<ContestPreferen
         ContestPreferences contestPreferences =
                 new ContestPreferences(preferenceId, locale.getLanguage());
 
-        List<Contest> contestWrappers = new ArrayList<>();
+        List<ContestWrapper> contestWrappers = new ArrayList<>();
         final List<Long> selectedContests = contestPreferences.getSelectedContests();
         if (selectedContests.isEmpty()) {
 
-            List<Contest> contests = ContestClientUtil.findContestsByActiveFeatured(true, true);
+            List<ContestWrapper> contests = contestClient.findContestsByActiveFeatured(true, true);
             Collections.shuffle(contests);
-            for (Contest contest : contests) {
+            for (ContestWrapper contest : contests) {
                 if (contestWrappers.size() >= contestPreferences.getFeedSize()) {
                     break;
                 }
@@ -89,7 +88,7 @@ public class ContestsController extends AbstractWidgetController<ContestPreferen
                     break;
                 }
                 try {
-                    Contest c = ContestClientUtil.getContest(contestId);
+                    ContestWrapper c = contestClient.getContest(contestId);
                     contestWrappers.add(c);
                 } catch (ContestNotFoundException e) {
                     _log.error("Could not find contest {}", contestId);

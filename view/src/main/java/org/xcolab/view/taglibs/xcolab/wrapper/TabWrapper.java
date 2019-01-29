@@ -1,7 +1,7 @@
 package org.xcolab.view.taglibs.xcolab.wrapper;
 
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.StaticContestContext;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.commons.http.servlet.RequestUtil;
 import org.xcolab.view.taglibs.xcolab.interfaces.TabContext;
 import org.xcolab.view.taglibs.xcolab.interfaces.TabEnum;
@@ -72,8 +72,8 @@ public class TabWrapper implements Serializable {
     }
 
     public long getDiscussionId() {
-        Contest contest = context.getContest(request);
-        return ContestClientUtil.getContestDiscussion(contest.getId(), getName())
-                .getDiscussionId();
+        ContestWrapper contest = context.getContest(request);
+        return StaticContestContext.getContestClient()
+                .getContestDiscussion(contest.getId(), getName()).getId();
     }
 }

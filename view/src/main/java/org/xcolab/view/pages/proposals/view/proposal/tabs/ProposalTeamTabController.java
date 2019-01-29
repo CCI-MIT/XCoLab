@@ -2,6 +2,7 @@ package org.xcolab.view.pages.proposals.view.proposal.tabs;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,12 +10,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.xcolab.client.contest.proposals.IMembershipClient;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
-import org.xcolab.client.proposals.MembershipClient;
-import org.xcolab.client.proposals.MembershipClientUtil;
-import org.xcolab.client.proposals.ProposalClient;
-import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.team.ProposalTeamMembershipRequest;
+import org.xcolab.client.contest.proposals.IProposalClient;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMembershipRequestWrapper;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.util.enums.membershiprequest.MembershipRequestStatus;
 import org.xcolab.view.errors.AccessDeniedPage;
@@ -37,6 +37,9 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/contests/{contestYear}/{contestUrlName}")
 public class ProposalTeamTabController extends BaseProposalTabController {
 
+    @Autowired
+    private IMembershipClient membershipClient;
+
     private static final Logger _log = LoggerFactory.getLogger(ProposalTeamTabController.class);
 
     @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=TEAM")
@@ -48,7 +51,7 @@ public class ProposalTeamTabController extends BaseProposalTabController {
             return new AccessDeniedPage(loggedInMember).toViewName(response);
         }
 
-        final ProposalClient proposalClient = getProposalClient(proposalContext);
+        final IProposalClient proposalClient = getProposalClient(proposalContext);
         final long proposalId = getProposalId(proposalContext);
 
         setCommonModelAndPageAttributes(request, model, proposalContext, ProposalTab.TEAM);
@@ -56,21 +59,20 @@ public class ProposalTeamTabController extends BaseProposalTabController {
         model.addAttribute("requestMembershipBean", new RequestMembershipBean());
         model.addAttribute("requestMembershipInviteBean", new RequestMembershipInviteBean());
 
-        List<Proposal> listOfSubProposals = proposalClient
+        List<ProposalWrapper> listOfSubProposals = proposalClient
                 .getLinkingProposalsForProposalId(proposalId);
         model.addAttribute("listOfSubProposals", listOfSubProposals);
 
-        Map<Proposal, List<UserWrapper>> mapOfSubProposalContributors = new HashMap<>();
-        for (Proposal temp : listOfSubProposals) {
-            List<UserWrapper> contributors = proposalClient.getProposalMembers(temp.getId());
+        Map<ProposalWrapper, List<Member>> mapOfSubProposalContributors = new HashMap<>();
+        for (ProposalWrapper temp : listOfSubProposals) {
+            List<Member> contributors = proposalClient.getProposalMembers(temp.getId());
             mapOfSubProposalContributors.put(temp, contributors);
         }
         model.addAttribute("mapOfSubProposalContributors", mapOfSubProposalContributors);
 
         long membershipRequestId = -1;
         if (loggedInMember != null) {
-            MembershipClient membershipClient = MembershipClientUtil.getClient();
-            ProposalTeamMembershipRequest membershipRequest = membershipClient
+            ProposalTeamMembershipRequestWrapper membershipRequest = membershipClient
                     .getActiveMembershipRequestByUser(proposalContext.getProposal(), loggedInMember.getId());
             if (membershipRequest != null && membershipRequest.getStatusId() == MembershipRequestStatus.STATUS_PENDING_INVITED) {
                 membershipRequestId = membershipRequest.getId();
@@ -88,7 +90,7 @@ public class ProposalTeamTabController extends BaseProposalTabController {
         checkHasManagePermissions(proposalContext, actingMember);
         checkIsRemovingOwner(proposalContext.getProposal(), userId);
 
-        final ProposalClient proposalClient = getProposalClient(proposalContext);
+        final IProposalClient proposalClient = getProposalClient(proposalContext);
         final long proposalId = getProposalId(proposalContext);
 
         proposalClient.removeMemberFromProposalTeam(proposalId, userId);
@@ -103,7 +105,7 @@ public class ProposalTeamTabController extends BaseProposalTabController {
             @RequestParam long userId) throws ProposalsAuthorizationException, IOException {
         checkHasManagePermissions(proposalContext, actingMember);
 
-        final ProposalClient proposalClient = getProposalClient(proposalContext);
+        final IProposalClient proposalClient = getProposalClient(proposalContext);
         final long proposalId = getProposalId(proposalContext);
 
         proposalClient.promoteMemberToProposalOwner(proposalId, userId);
@@ -112,7 +114,7 @@ public class ProposalTeamTabController extends BaseProposalTabController {
         sendRedirect(proposalContext, response);
     }
 
-    private ProposalClient getProposalClient(ProposalContext proposalContext) {
+    private IProposalClient getProposalClient(ProposalContext proposalContext) {
         return proposalContext.getClients().getProposalClient();
     }
 
@@ -122,14 +124,14 @@ public class ProposalTeamTabController extends BaseProposalTabController {
 
     private void sendRedirect(ProposalContext proposalContext, HttpServletResponse response)
             throws IOException {
-        final Proposal proposal = proposalContext.getProposal();
+        final ProposalWrapper proposal = proposalContext.getProposal();
         response.sendRedirect(
                 proposal.getProposalLinkUrl(proposalContext.getContest()) + "/tab/TEAM");
     }
 
     private void checkHasManagePermissions(ProposalContext proposalContext, UserWrapper actingMember)
             throws ProposalsAuthorizationException {
-        final Proposal proposal = proposalContext.getProposal();
+        final ProposalWrapper proposal = proposalContext.getProposal();
         final long proposalId = proposal.getId();
         final long actingUserId = actingMember.getId();
 
@@ -141,7 +143,7 @@ public class ProposalTeamTabController extends BaseProposalTabController {
         }
     }
 
-    private void checkIsRemovingOwner(Proposal proposal, long removeduserId)
+    private void checkIsRemovingOwner(ProposalWrapper proposal, long removeduserId)
             throws ProposalsAuthorizationException {
         if (removeduserId == proposal.getAuthorUserId()) {
             generateAuthorizationError(

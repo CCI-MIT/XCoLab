@@ -5,17 +5,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
+import org.xcolab.client.contest.pojo.wrapper.AverageProposalRating;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalRatings;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.IProposalPhaseClient;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
-import org.xcolab.client.proposals.ProposalPhaseClient;
-import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
-import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
-import org.xcolab.client.proposals.pojo.proposals.AverageProposalRating;
-import org.xcolab.client.proposals.pojo.proposals.ProposalRatings;
 import org.xcolab.entity.utils.helper.ProposalJudgingCommentHelper;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
@@ -66,8 +64,8 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
         }
 
         if (showEvaluationRatings) {
-            Proposal proposal = proposalContext.getProposal();
-            Contest contest = proposalContext.getContest();
+            ProposalWrapper proposal = proposalContext.getProposal();
+            ContestWrapper contest = proposalContext.getContest();
 
             long discussionId = proposal.getResultsDiscussionIdOrCreate();
 
@@ -92,7 +90,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
     private JudgeProposalFeedbackBean getProposalRatingBean(UserWrapper currentMember,
             ProposalContext proposalContext) {
 
-        Proposal proposal = proposalContext.getProposal();
+        ProposalWrapper proposal = proposalContext.getProposal();
         ProposalJudgeWrapper proposalJudgeWrapper =
                 new ProposalJudgeWrapper(proposal, currentMember);
         JudgeProposalFeedbackBean proposalRatingBean =
@@ -107,12 +105,11 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
     private boolean hasContestPassedAnyScreeningPhaseAlready(ProposalContext proposalContext) {
         boolean hasContestPassedScreeningPhaseAlready = false;
 
-        Contest contest = proposalContext.getContest();
-        final ContestClient contestClient = ContestClientUtil.getClient();
-        ContestPhase activeContestPhase = contestClient.getActivePhase(contest.getId());
-        List<ContestPhase> allContestPhasesForCurrentContest = contestClient.getAllContestPhases(contest.getId());
+        ContestWrapper contest = proposalContext.getContest();
+        ContestPhaseWrapper activeContestPhase = contestClient.getActivePhase(contest.getId());
+        List<ContestPhaseWrapper> allContestPhasesForCurrentContest = contestClient.getAllContestPhases(contest.getId());
 
-        for (ContestPhase contestPhase : allContestPhasesForCurrentContest) {
+        for (ContestPhaseWrapper contestPhase : allContestPhasesForCurrentContest) {
             boolean isLastContestPhase = activeContestPhase.getPhaseEndDate() == null;
             boolean isPastContestPhase = !isLastContestPhase && contestPhase.getPhaseEndDate() != null &&
                     contestPhase.getPhaseEndDate().before(activeContestPhase.getPhaseEndDate());
@@ -126,23 +123,23 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
         return hasContestPassedScreeningPhaseAlready;
     }
 
-    private boolean isActiveContestPhaseOpenForEdit(ProposalContext proposalContext, Contest contest) {
-        ContestPhase activeContestPhase = proposalContext.getClients().getContestClient().getActivePhase(contest.getId());
+    private boolean isActiveContestPhaseOpenForEdit(ProposalContext proposalContext, ContestWrapper contest) {
+        ContestPhaseWrapper activeContestPhase = proposalContext.getClients().getContestClient().getActivePhase(contest.getId());
         Long contestPhaseTypeId = activeContestPhase.getContestPhaseTypeId();
         return proposalContext.getClients().getContestClient().getContestPhaseType(contestPhaseTypeId).getStatus().equalsIgnoreCase("OPEN_FOR_EDIT");
     }
 
     private List<ProposalRatings> getAverageRatingsForPastPhases(ProposalContext proposalContext,
-            Contest contest, Proposal proposal) {
+            ContestWrapper contest, ProposalWrapper proposal) {
         List<ProposalRatings> proposalRatings = new ArrayList<>();
-        List<ContestPhase> contestPhases = proposalContext.getClients().getContestClient().getAllContestPhases(contest.getId());
+        List<ContestPhaseWrapper> contestPhases = proposalContext.getClients().getContestClient().getAllContestPhases(contest.getId());
 
-        for (ContestPhase contestPhase : contestPhases) {
+        for (ContestPhaseWrapper contestPhase : contestPhases) {
             boolean isPhasePastScreeningPhase =
                     contestPhase.getFellowScreeningActive() && contestPhase.isEnded();
             if (isPhasePastScreeningPhase) {
                 String contestPhaseName = proposalContext.getClients().getContestClient().getContestPhaseName(contestPhase);
-                List<ProposalRating> judgeRatingsForProposal =
+                List<ProposalRatingWrapper> judgeRatingsForProposal =
                         proposalContext.getClients().getProposalJudgeRatingClient()
                         .getJudgeRatingsForProposal(proposal.getId(), contestPhase.getId());
 
@@ -171,10 +168,10 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
         return proposalRatings;
     }
 
-    private Boolean wasProposalPromotedInContestPhase(ProposalContext proposalContext, Proposal proposal, ContestPhase contestPhase) {
-        final ProposalPhaseClient proposalPhaseClient =
+    private Boolean wasProposalPromotedInContestPhase(ProposalContext proposalContext, ProposalWrapper proposal, ContestPhaseWrapper contestPhase) {
+        final IProposalPhaseClient proposalPhaseClient =
                 proposalContext.getClients().getProposalPhaseClient();
-        ProposalContestPhaseAttribute judgingDecisionAttr =
+        IProposalContestPhaseAttribute judgingDecisionAttr =
                 proposalPhaseClient.getProposalContestPhaseAttribute(
                         proposal.getId(), contestPhase.getId(),
                         ProposalContestPhaseAttributeKeys.JUDGE_DECISION);
@@ -186,7 +183,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
         }
     }
 
-    private ProposalRatings getProposalPromotionCommentRating(Proposal proposal, ContestPhase contestPhase, String contestPhaseName) {
+    private ProposalRatings getProposalPromotionCommentRating(ProposalWrapper proposal, ContestPhaseWrapper contestPhase, String contestPhaseName) {
         ProposalRatings proposalRating = new AverageProposalRating();
         ProposalJudgingCommentHelper reviewContentHelper = new ProposalJudgingCommentHelper(
                 proposal, contestPhase);
@@ -203,12 +200,12 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
         }
     }
 
-    private ProposalRatings calculateAverageRating(List<ProposalRating> judgeRatingsForProposal) {
-        List<ProposalRating> userRatings = new ArrayList<>();
+    private ProposalRatings calculateAverageRating(List<ProposalRatingWrapper> judgeRatingsForProposal) {
+        List<ProposalRatingWrapper> userRatings = new ArrayList<>();
 
         Map<Long, List<Long>> averageRatingList = new HashMap<>();
         List<Long> judgeIds = new ArrayList<>();
-        for (ProposalRating judgeRating : judgeRatingsForProposal) {
+        for (ProposalRatingWrapper judgeRating : judgeRatingsForProposal) {
             if (judgeRating.getOnlyForInternalUsage()) {
                 continue;
             }
@@ -230,7 +227,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
             }
             Double averageRating = (double) sumRating / (double) entry.getValue().size();
             int proposalIndex = new ArrayList<>(averageRatingList.keySet()).indexOf(entry.getKey());
-            ProposalRating proposalRating = judgeRatingsForProposal.get(proposalIndex);
+            ProposalRatingWrapper proposalRating = judgeRatingsForProposal.get(proposalIndex);
             proposalRating.setRatingValueId(averageRating.longValue());
             userRatings.add(proposalRating);
         }

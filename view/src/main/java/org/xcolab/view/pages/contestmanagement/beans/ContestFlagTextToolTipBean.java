@@ -1,7 +1,7 @@
 package org.xcolab.view.pages.contestmanagement.beans;
 
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.StaticContestContext;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.commons.html.LabelValue;
 
 import java.io.Serializable;
@@ -38,7 +38,7 @@ public class ContestFlagTextToolTipBean implements Serializable {
         this.flagTooltip = flagTooltip;
     }
 
-    public ContestFlagTextToolTipBean(Contest contest) {
+    public ContestFlagTextToolTipBean(ContestWrapper contest) {
         this.flagNumber = contest.getFlag();
         this.flagText = contest.getFlagText();
     }
@@ -47,12 +47,11 @@ public class ContestFlagTextToolTipBean implements Serializable {
         return FLAG_OPTIONS;
     }
 
-    public void persist(Contest contest) {
+    public void persist(ContestWrapper contest) {
         contest.setFlag(flagNumber);
         contest.setFlagText(flagText);
         contest.setFlagTooltip(flagTooltip);
-        ContestClientUtil.updateContest(contest);
-
+        StaticContestContext.getContestClient().updateContest(contest);
     }
 
     public int getFlagNumber() {

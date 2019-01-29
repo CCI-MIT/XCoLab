@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.contestmanagement.entities.massactions;
 
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 
 public class FeaturedMassAction extends SetContestPropertyMassAction {
 
@@ -9,7 +9,7 @@ public class FeaturedMassAction extends SetContestPropertyMassAction {
     }
 
     @Override
-    protected void setProperty(Contest contest, boolean setTrue) {
+    protected void setProperty(ContestWrapper contest, boolean setTrue) {
         contest.setFeatured(setTrue);
     }
 }

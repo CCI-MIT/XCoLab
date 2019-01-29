@@ -2,8 +2,8 @@ package org.xcolab.view.pages.proposals.judging;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
-import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
+import org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.view.pages.proposals.requests.RatingBean;
 
@@ -13,11 +13,11 @@ import java.util.Map;
 
 public class JudgingUtil {
 
-    public static void saveRatings(List<ProposalRating> existingRatings, RatingBean ratingBean,
+    public static void saveRatings(List<ProposalRatingWrapper> existingRatings, RatingBean ratingBean,
             long proposalId, long contestPhaseId, long currentUserId, boolean isPublicRating) {
         //initialize a map of existing ratings
-        Map<Long, ProposalRating> typeToRatingMap = new HashMap<>();
-        for (ProposalRating r : existingRatings) {
+        Map<Long, ProposalRatingWrapper> typeToRatingMap = new HashMap<>();
+        for (ProposalRatingWrapper r : existingRatings) {
             typeToRatingMap.put(r.getRatingTypeId(), r);
         }
 
@@ -26,7 +26,7 @@ public class JudgingUtil {
         if (ratingsFromForm != null) {
             boolean commentAndAdvanceAdded = false;
             for (Map.Entry<Long, String> entry : ratingsFromForm.entrySet()) {
-                ProposalRating existingRating = typeToRatingMap.get(entry.getKey());
+                ProposalRatingWrapper existingRating = typeToRatingMap.get(entry.getKey());
                 long newRatingValueId = Long.parseLong(entry.getValue());
 
                 final Boolean shouldAdvance = ratingBean.getShouldAdvanceProposal();
@@ -45,7 +45,8 @@ public class JudgingUtil {
                         existingRating.setOtherDataString("");
                         existingRating.setCommentEnabled(false);
                     }
-                    ProposalJudgeRatingClientUtil.updateProposalRating(existingRating);
+                    StaticProposalContext.getProposalJudgeRatingClient()
+                            .updateProposalRating(existingRating);
                 } else {
                     String comment = null;
                     String shouldAdvanceString = "";
@@ -55,7 +56,7 @@ public class JudgingUtil {
                         commentAndAdvanceAdded = true;
                     }
                     //create a new rating
-                    ProposalRating proposalRating = new ProposalRating();
+                    ProposalRatingWrapper proposalRating = new ProposalRatingWrapper();
                     proposalRating.setProposalId(proposalId);
                     proposalRating.setContestPhaseId(contestPhaseId);
                     proposalRating.setUserId(currentUserId);
@@ -69,7 +70,8 @@ public class JudgingUtil {
                     }
                     proposalRating.setOnlyForInternalUsage(isPublicRating);
 
-                    ProposalJudgeRatingClientUtil.createProposalRating(proposalRating);
+                    StaticProposalContext.getProposalJudgeRatingClient()
+                            .createProposalRating(proposalRating);
                 }
             }
         }

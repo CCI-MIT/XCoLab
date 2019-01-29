@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.IContestClient;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.html.LabelStringValue;
 import org.xcolab.commons.html.LabelValue;
@@ -37,6 +37,9 @@ public class ContestAdminTabController extends AbstractTabController {
 
     @Autowired
     private IContestTypeClient contestTypeClient;
+
+    @Autowired
+    private IContestClient contestClient;
 
     @ModelAttribute("contestLevelSelectionItems")
     public List<LabelValue> populateContestLevelSelectionItems() {
@@ -93,7 +96,7 @@ public class ContestAdminTabController extends AbstractTabController {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
-        model.addAttribute("contestAdminBean", new ContestAdminBean(ContestClientUtil.getContest(contestId)));
+        model.addAttribute("contestAdminBean", new ContestAdminBean(contestClient.getContest(contestId)));
         return TAB_VIEW;
     }
 
@@ -106,7 +109,7 @@ public class ContestAdminTabController extends AbstractTabController {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
-        updateContestAdminBean.persist(ContestClientUtil.getContest(contestId));
+        updateContestAdminBean.persist(contestClient.getContest(contestId));
         return "redirect:" + tab.getTabUrl(contestId);
     }
 }

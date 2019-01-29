@@ -1,18 +1,18 @@
 package org.xcolab.view.pages.proposals.utils.edit;
 
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.IContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.proposals.ProposalAttributeClient;
-import org.xcolab.client.proposals.ProposalClient;
-import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
-import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
-import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
-import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
+import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.proposals.IProposalAttributeClient;
+import org.xcolab.client.contest.proposals.IProposalClient;
+import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
+import org.xcolab.client.contest.proposals.exceptions.Proposal2PhaseNotFoundException;
+import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.IProposal2Phase;
 import org.xcolab.entity.utils.notifications.proposal.ProposalCreationNotification;
 import org.xcolab.view.pages.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
@@ -38,22 +38,23 @@ public final class ProposalCreationUtil {
     private ProposalCreationUtil() {
     }
 
-    public static Proposal createProposal(long userId,
+    public static ProposalWrapper createProposal(long userId,
             @Valid UpdateProposalDetailsBean updateProposalSectionsBean,
-            Contest contest, ContestPhase contestPhase) {
+            ContestWrapper contest, ContestPhaseWrapper contestPhase) {
         final ClientHelper clientHelper = new ClientHelper();
         try {
-            Proposal newProposal = clientHelper.getProposalClient()
+            ProposalWrapper newProposal = clientHelper.getProposalClient()
                     .createProposal(userId, contestPhase.getId(), true);
-            Proposal2Phase newProposal2Phase = clientHelper.getProposalPhaseClient().getProposal2PhaseByProposalIdContestPhaseId(
+            IProposal2Phase newProposal2Phase = clientHelper.getProposalPhaseClient().getProposal2PhaseByProposalIdContestPhaseId(
                     newProposal.getId(), contestPhase.getId());
 
-            Proposal proposalWrapper = new Proposal(newProposal, 0, contest, contestPhase, newProposal2Phase);
+            ProposalWrapper
+                    proposalWrapper = new ProposalWrapper(newProposal, 0, contest, contestPhase, newProposal2Phase);
 
             final long baseProposalId = updateProposalSectionsBean.getBaseProposalId();
 
             if (baseProposalId > 0) {
-                final ProposalAttributeClient proposalAttributeClient =
+                final IProposalAttributeClient proposalAttributeClient =
                         clientHelper.getProposalAttributeClient();
                 Integer proposalAttributeVersion = proposalAttributeClient.setProposalAttribute(
                         userId, proposalWrapper.getId(), ProposalAttributeKeys.BASE_PROPOSAL_ID,
@@ -88,17 +89,17 @@ public final class ProposalCreationUtil {
     }
 
     public static void sendAuthorNotification(ProposalContext proposalContext, String baseUrl,
-            Proposal proposalWrapper,
-            ContestPhase contestPhase) {
+            ProposalWrapper proposalWrapper,
+            ContestPhaseWrapper contestPhase) {
         try {
-            ContestClient contestClient = proposalContext.getClients().getContestClient();
-            Contest contest = contestClient
+            IContestClient contestClient = proposalContext.getClients().getContestClient();
+            ContestWrapper contest = contestClient
                     .getContest(contestClient.getContestPhase(contestPhase.getId()).getContestId());
 
-            final ProposalClient proposalClient =
+            final IProposalClient proposalClient =
                     proposalContext.getClients().getProposalClient();
-            Proposal updatedProposal = proposalClient.getProposal(proposalWrapper.getId());
-            Contest contestMicro = contestClient.getContest(contest.getId());
+            ProposalWrapper updatedProposal = proposalClient.getProposal(proposalWrapper.getId());
+            ContestWrapper contestMicro = contestClient.getContest(contest.getId());
             new ProposalCreationNotification(updatedProposal, contestMicro).sendMessage();
         } catch (ContestNotFoundException | ProposalNotFoundException ignored) {
 

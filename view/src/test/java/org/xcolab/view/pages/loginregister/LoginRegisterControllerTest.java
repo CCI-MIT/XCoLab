@@ -3,6 +3,7 @@ package org.xcolab.view.pages.loginregister;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -16,13 +17,12 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.client.activities.ActivitiesClientUtil;
+import org.xcolab.client.activity.IActivityClient;
+import org.xcolab.client.activity.StaticActivityContext;
 import org.xcolab.client.admin.IAdminClient;
 import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.IEmailTemplateClient;
 import org.xcolab.client.admin.StaticAdminContext;
-import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.util.http.ServiceRequestUtils;
@@ -54,7 +54,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ComponentScan("org.xcolab.view.i18n")
 @ComponentScan("org.xcolab.client")
 
-
 @TestPropertySource(
         properties = {
                 "cache.enabled=false"
@@ -62,9 +61,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 )
 
 @PrepareForTest({
-        ActivitiesClient.class,
-        ActivitiesClientUtil.class,
-        ContestClientUtil.class,
         MembersClient.class,
         MessagingClient.class,
 })
@@ -79,12 +75,12 @@ public class LoginRegisterControllerTest {
     public void setup() throws Exception {
         ServiceRequestUtils.setInitialized(true);
 
-        PowerMockito.mockStatic(ActivitiesClient.class);
-        PowerMockito.mockStatic(ActivitiesClientUtil.class);
-        PowerMockito.mockStatic(ContestClientUtil.class);
         PowerMockito.mockStatic(MessagingClient.class);
 
+        StaticActivityContext.setActivityClient(Mockito.mock(IActivityClient.class));
+
         MembersClientMockerHelper.mockMembersClient();
+
         IAdminClient adminClient = AdminClientMockerHelper.mockAdminClient();
         IEmailTemplateClient emailTemplateClient =
                 EmailTemplateClientMockerHelper.mockEmailTemplateClient();

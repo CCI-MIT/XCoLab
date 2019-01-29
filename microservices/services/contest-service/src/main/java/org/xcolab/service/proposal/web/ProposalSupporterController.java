@@ -7,13 +7,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.client.activities.ActivitiesClientUtil;
+import org.xcolab.client.activity.IActivityClient;
+import org.xcolab.client.contest.pojo.IProposalSupporter;
+import org.xcolab.client.contest.pojo.wrapper.SupportedProposal;
+import org.xcolab.service.contest.proposal.domain.proposalsupporter.ProposalSupporterDao;
+import org.xcolab.service.contest.proposal.service.ProposalSupportService;
 import org.xcolab.util.activities.enums.ProposalActivityType;
-import org.xcolab.model.tables.pojos.ProposalSupporter;
-import org.xcolab.service.proposal.domain.proposalsupporter.ProposalSupporterDao;
-import org.xcolab.service.proposal.service.ProposalSupportService;
-import org.xcolab.service.proposal.service.ProposalSupportService.SupportedProposal;
+import org.xcolab.client.contest.pojo.tables.pojos.ProposalSupporter;
 
 import java.util.List;
 
@@ -22,16 +22,18 @@ public class ProposalSupporterController {
 
     private final ProposalSupporterDao proposalSupporterDao;
     private final ProposalSupportService proposalSupportService;
+    private final IActivityClient activityClient;
 
     @Autowired
     private ProposalSupporterController(ProposalSupporterDao proposalSupporterDao,
-            ProposalSupportService proposalSupportService) {
+            ProposalSupportService proposalSupportService, IActivityClient activityClient) {
         this.proposalSupporterDao = proposalSupporterDao;
         this.proposalSupportService = proposalSupportService;
+        this.activityClient = activityClient;
     }
 
     @RequestMapping(value = "/proposalSupporters", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<ProposalSupporter> getProposalSupporters(
+    public List<IProposalSupporter> getProposalSupporters(
             @RequestParam(required = false) Long proposalId,
             @RequestParam(required = false) Long userId
     ) {
@@ -56,7 +58,7 @@ public class ProposalSupporterController {
     }
 
     @RequestMapping(value = "/proposalSupporters", method = RequestMethod.POST)
-    public ProposalSupporter createProposalSupporter(@RequestBody ProposalSupporter proposalSupporter) {
+    public IProposalSupporter createProposalSupporter(@RequestBody ProposalSupporter proposalSupporter) {
         return this.proposalSupporterDao.create(proposalSupporter);
 
     }
@@ -66,7 +68,7 @@ public class ProposalSupporterController {
             @RequestParam Long proposalId,
             @RequestParam Long userId
     ) {
-        List<ProposalSupporter> ret = proposalSupporterDao.findByGiven(proposalId, userId);
+        List<IProposalSupporter> ret = proposalSupporterDao.findByGiven(proposalId, userId);
 
         if (ret != null && ret.size() == 1) {
             return true;
@@ -79,8 +81,7 @@ public class ProposalSupporterController {
     public Boolean deleteProposalSupporter(@RequestParam("proposalId") Long proposalId,
                                            @RequestParam("userId") Long userId) {
         this.proposalSupporterDao.delete(proposalId, userId);
-        final ActivitiesClient activitiesClient = ActivitiesClientUtil.getClient();
-        activitiesClient.createActivityEntry(ProposalActivityType.SUPPORT_REMOVED, userId,
+        activityClient.createActivityEntry(ProposalActivityType.SUPPORT_REMOVED, userId,
                 proposalId);
         return true;
     }

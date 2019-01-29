@@ -3,8 +3,8 @@ package org.xcolab.view.pages.contestmanagement.beans;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.xcolab.client.content.IContentClient;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.StaticContestContext;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.view.pages.contestmanagement.wrappers.WikiPageWrapper;
 
 import java.io.Serializable;
@@ -38,7 +38,7 @@ public class ContestAdminBean implements Serializable {
 
     public ContestAdminBean() { }
 
-    public ContestAdminBean(Contest contest) {
+    public ContestAdminBean(ContestWrapper contest) {
         if (contest != null) {
             contestUrlName = contest.getContestUrlName();
             contestYear = contest.getContestYear();
@@ -51,13 +51,13 @@ public class ContestAdminBean implements Serializable {
         }
     }
 
-    public void persist(Contest contest) {
+    public void persist(ContestWrapper contest) {
 
         updateContest(contest);
         WikiPageWrapper.updateContestWiki(contentClient, contest);
     }
 
-    private void updateContest(Contest contest) {
+    private void updateContest(ContestWrapper contest) {
         contest.setContestUrlName(contestUrlName);
         contest.setContestYear(contestYear);
         contest.setEmailTemplateUrl(emailTemplateUrl);
@@ -66,7 +66,7 @@ public class ContestAdminBean implements Serializable {
         contest.setHideRibbons(hideRibbons);
         contest.setReadOnlyComments(readOnlyComments);
 
-        ContestClientUtil.updateContest(contest);
+        StaticContestContext.getContestClient().updateContest(contest);
 
         contestModelSettings.persist(contest);
     }

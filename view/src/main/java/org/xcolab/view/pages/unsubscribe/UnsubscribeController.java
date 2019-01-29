@@ -1,14 +1,15 @@
 package org.xcolab.view.pages.unsubscribe;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.activities.exceptions.ActivitySubscriptionNotFoundException;
-import org.xcolab.client.activities.pojo.ActivitySubscription;
+import org.xcolab.client.activity.IActivityClient;
+import org.xcolab.client.activity.exceptions.ActivitySubscriptionNotFoundException;
+import org.xcolab.client.activity.pojo.IActivitySubscription;
 import org.xcolab.client.user.IUserClient;
 import org.xcolab.client.user.exceptions.MemberNotFoundException;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
@@ -33,12 +34,13 @@ public class UnsubscribeController {
                     + "profile”, and select the “Manage” "
                     + "button underneath “Subscribed Activity” on the right-hand side.";
 
+    @Autowired
+    private IActivityClient activityClient;
 
     @GetMapping("member/{userId}/subscription/{subscriptionId}/token/{token}/type/{typeId}")
     public String unsubscribe(HttpServletRequest request, HttpServletResponse response, Model model,
             @PathVariable long userId, @PathVariable long subscriptionId,
             @PathVariable String token, @PathVariable long typeId) {
-
         UserWrapper member = null;
         boolean error = false;
         if (userId > 0) {
@@ -52,10 +54,10 @@ public class UnsubscribeController {
                         .flashAndReturnView(request);
             }
         }
-        ActivitySubscription subscription = null;
+        IActivitySubscription subscription = null;
         if (subscriptionId > 0) {
             try {
-                subscription = ActivitiesClientUtil.getActivitySubscription(subscriptionId);
+                subscription = activityClient.getActivitySubscription(subscriptionId);
                 //ActivitySubscriptionLocalServiceUtil.getActivitySubscription(subscriptionId);
                 error = !NotificationUnregisterUtils.isTokenValid(token, subscription);
             } catch (ActivitySubscriptionNotFoundException e) {
@@ -72,7 +74,7 @@ public class UnsubscribeController {
         String responseText = null;
         // unregister user
         if (subscription != null) {
-            ActivitiesClientUtil.deleteSubscriptionById(subscription.getId());
+            activityClient.deleteActivitySubscription(subscription.getId());
             responseText = UNSUBSCRIBE_INDIVIDUAL_SUBSCRIPTION_RESPONSE_TEXT;
         }
 

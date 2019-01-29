@@ -124,7 +124,7 @@ public class UserDaoImpl implements UserDao {
                             ? displayName.asc() :  displayName.desc());
                     break;
                 case "activityCount":
-                    //TODO COLAB-2608: this property is owned by the activities-service
+                    //TODO COLAB-2608: this property is owned by the activity-service
                     Field<Object> activityCount = this.dslContext.selectCount()
                             .from(ACTIVITY_ENTRY)
                             .where(ACTIVITY_ENTRY.USER_ID.equal(member.ID))

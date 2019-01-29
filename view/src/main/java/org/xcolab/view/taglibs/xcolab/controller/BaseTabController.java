@@ -4,7 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
+import org.xcolab.client.contest.IContestClient;
+import org.xcolab.client.contest.IOntologyClient;
+import org.xcolab.client.contest.IProposalTemplateClient;
+import org.xcolab.client.contest.proposals.IPointsClient;
 import org.xcolab.view.taglibs.xcolab.interfaces.TabContext;
 import org.xcolab.view.taglibs.xcolab.interfaces.TabEnum;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
@@ -18,6 +23,21 @@ public abstract class BaseTabController {
 
     @Autowired
     protected TabContext tabContext;
+
+    @Autowired
+    protected IContestTypeClient contestTypeClient;
+
+    @Autowired
+    protected IContestClient contestClient;
+
+    @Autowired
+    protected IOntologyClient ontologyClient;
+
+    @Autowired
+    protected IProposalTemplateClient proposalTemplateClient;
+
+    @Autowired
+    protected IPointsClient pointsClient;
 
     @ModelAttribute("tabContext")
     public TabContext getTabContext() {

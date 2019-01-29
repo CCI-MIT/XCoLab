@@ -1,8 +1,7 @@
 package org.xcolab.view.pages.contestmanagement.wrappers;
 
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.AbstractContest;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.StaticContestContext;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.html.LabelValue;
 import org.xcolab.view.pages.contestmanagement.beans.ContestFlagTextToolTipBean;
@@ -21,7 +20,7 @@ import java.util.stream.Collectors;
 
 public class ContestOverviewWrapper implements MassActionDataWrapper {
 
-    private final Map<Long, Contest> contests = new LinkedHashMap<>();
+    private final Map<Long, ContestWrapper> contests = new LinkedHashMap<>();
     private final Map<Long, Boolean> selectedContests = new HashMap<>();
     private final Map<Long, Boolean> subscribedToContest = new HashMap<>();
     private final MassMessageBean massMessageBean = new MassMessageBean();
@@ -43,25 +42,25 @@ public class ContestOverviewWrapper implements MassActionDataWrapper {
     }
 
     private void populateContestsAndSelectedList() {
-        List<Contest> allContests = ContestClientUtil.getAllContests();
+        List<ContestWrapper> allContests = StaticContestContext.getContestClient().getAllContests();
         // LinkedHashMap will maintain insertion order
-        allContests.sort(Comparator.comparing(AbstractContest::getWeight));
-        for (Contest contest : allContests) {
+        allContests.sort(Comparator.comparing(ContestWrapper::getWeight));
+        for (ContestWrapper contest : allContests) {
             contests.put(contest.getId(), contest);
             selectedContests.put(contest.getId(), false);
         }
     }
 
     private void populateSubscribedToContestList(UserWrapper member) {
-        for (Entry<Long, Contest> contestEntry : contests.entrySet()) {
+        for (Entry<Long, ContestWrapper> contestEntry : contests.entrySet()) {
             final Long contestId = contestEntry.getKey();
-            Boolean isUserSubscribedToContest = ContestClientUtil
+            Boolean isUserSubscribedToContest = StaticContestContext.getContestClient()
                     .isMemberSubscribedToContest(contestId, member.getId());
             subscribedToContest.put(contestId, isUserSubscribedToContest);
         }
     }
 
-    public Map<Long, Contest> getContests() {
+    public Map<Long, ContestWrapper> getContests() {
         return contests;
     }
 

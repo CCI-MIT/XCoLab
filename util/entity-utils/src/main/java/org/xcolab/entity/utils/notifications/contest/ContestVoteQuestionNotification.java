@@ -5,11 +5,11 @@ import org.jsoup.nodes.Node;
 
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.pojo.IEmailTemplate;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.user.StaticUserContext;
 import org.xcolab.client.user.exceptions.MemberNotFoundException;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.entity.utils.notifications.basic.ContestNotification;
 
 import java.util.List;
@@ -20,11 +20,11 @@ public class ContestVoteQuestionNotification extends ContestNotification {
 
     private static final String SUPPORTED_PROPOSALS_PLACEHOLDER = "supported-proposals";
 
-    private final List<Proposal> supportedProposals;
+    private final List<ProposalWrapper> supportedProposals;
     private ContestVoteQuestionTemplate templateWrapper;
 
-    public ContestVoteQuestionNotification(UserWrapper recipient, Contest contest,
-            List<Proposal> supportedProposals, String baseUrl) {
+    public ContestVoteQuestionNotification(UserWrapper recipient, ContestWrapper contest,
+            List<ProposalWrapper> supportedProposals, String baseUrl) {
         super(contest, recipient, null);
         this.supportedProposals = supportedProposals;
     }
@@ -63,8 +63,8 @@ public class ContestVoteQuestionNotification extends ContestNotification {
                 case SUPPORTED_PROPOSALS_PLACEHOLDER:
                     StringBuilder supportedProposalsLinks = new StringBuilder();
                     supportedProposalsLinks.append("<span>");
-                    for (Proposal proposal : supportedProposals) {
-                        UserWrapper member;
+                    for (ProposalWrapper proposal : supportedProposals) {
+                        Member member;
                         try {
                             member = StaticUserContext.getUserClient().getMember(proposal.getAuthorUserId());
                         } catch (MemberNotFoundException e) {

@@ -1,7 +1,7 @@
 package org.xcolab.view.pages.proposals.utils.picker;
 
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 
 import java.util.Comparator;
 import java.util.List;
@@ -12,31 +12,31 @@ import java.util.List;
 public class ProposalPickerSortingUtil {
 
     public static void sortContestsList(String sortOrder, String sortColumn,
-            List<Contest> contests) {
+            List<ContestWrapper> contests) {
         if (sortColumn != null) {
 
-            Comparator<Contest> comparator;
+            Comparator<ContestWrapper> comparator;
             switch (sortColumn.toLowerCase()) {
                 case "name":
-                    comparator = Comparator.comparing(Contest::getTitleWithEndYear);
+                    comparator = Comparator.comparing(ContestWrapper::getTitleWithEndYear);
                     break;
                 case "comments":
-                    comparator = Comparator.comparing(Contest::getTotalCommentsCount);
+                    comparator = Comparator.comparing(ContestWrapper::getTotalCommentsCount);
                     break;
                 case "what":
-                    comparator = Comparator.comparing(Contest::getWhatName);
+                    comparator = Comparator.comparing(ContestWrapper::getWhatName);
                     break;
                 case "where":
-                    comparator = Comparator.comparing(Contest::getWhereName);
+                    comparator = Comparator.comparing(ContestWrapper::getWhereName);
                     break;
                 case "who":
-                    comparator = Comparator.comparing(Contest::getWhoName);
+                    comparator = Comparator.comparing(ContestWrapper::getWhoName);
                     break;
                 case "how":
-                    comparator = Comparator.comparing(Contest::getHowName);
+                    comparator = Comparator.comparing(ContestWrapper::getHowName);
                     break;
                 default:
-                    comparator = Comparator.comparing(Contest::getProposalsCount);
+                    comparator = Comparator.comparing(ContestWrapper::getProposalsCount);
             }
             if (sortOrder != null && sortOrder.toLowerCase().equals("desc")) {
                 comparator = comparator.reversed();
@@ -46,29 +46,29 @@ public class ProposalPickerSortingUtil {
     }
 
     public static void sortProposalsList(String sortOrder, String sortColumn,
-            List<Proposal> proposals) {
+            List<ProposalWrapper> proposals) {
 
         if (sortColumn != null) {
 
-            Comparator<Proposal> comparator;
+            Comparator<ProposalWrapper> comparator;
             switch (sortColumn.toLowerCase()) {
                 case "contest":
                     comparator = Comparator.comparing(o -> o.getContest().getQuestion());
                     break;
                 case "proposal":
-                    comparator = Comparator.comparing(Proposal::getName);
+                    comparator = Comparator.comparing(ProposalWrapper::getName);
                     break;
                 case "author":
-                    comparator = Comparator.comparing(Proposal::getAuthorName);
+                    comparator = Comparator.comparing(ProposalWrapper::getAuthorName);
                     break;
                 case "date":
-                    comparator = Comparator.comparing(Proposal::getCreatedAt);
+                    comparator = Comparator.comparing(ProposalWrapper::getCreatedAt);
                     break;
                 case "supporters":
-                    comparator = Comparator.comparing(Proposal::getSupportersCountCached);
+                    comparator = Comparator.comparing(ProposalWrapper::getSupportersCountCached);
                     break;
                 case "comments":
-                    comparator = Comparator.comparing(Proposal::getCommentsCount);
+                    comparator = Comparator.comparing(ProposalWrapper::getCommentsCount);
                     break;
                 default:
                     throw new UnsupportedOperationException("Unknown sort column");

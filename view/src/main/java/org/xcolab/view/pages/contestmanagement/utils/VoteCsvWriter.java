@@ -4,15 +4,18 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.activities.ActivitiesClientUtil;
+import org.xcolab.client.activity.StaticActivityContext;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
+import org.xcolab.client.contest.StaticContestContext;
+import org.xcolab.client.contest.pojo.IProposalVote;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
+import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.client.tracking.ITrackingClient;
 import org.xcolab.client.tracking.pojo.ILocation;
 import org.xcolab.client.user.StaticUserContext;
@@ -72,22 +75,22 @@ public class VoteCsvWriter extends CsvResponseWriter {
         this.trackingClient = trackingClient;
     }
 
-    public void writeVotes(List<ProposalVote> proposalVotes) {
+    public void writeVotes(List<IProposalVote> proposalVotes) {
         final String colabUrl = PlatformAttributeKey.COLAB_URL.get();
 
         //local caches, since many votes will likely be in the same contest
-        Map<Long, Contest> contests  = new HashMap<>();
-        Map<Long, ContestPhase> phases  = new HashMap<>();
-        Map<Long, Proposal> proposals  = new HashMap<>();
+        Map<Long, ContestWrapper> contests  = new HashMap<>();
+        Map<Long, ContestPhaseWrapper> phases  = new HashMap<>();
+        Map<Long, ProposalWrapper> proposals  = new HashMap<>();
 
-        for (ProposalVote vote : proposalVotes) {
-            ContestPhase contestPhase = phases.computeIfAbsent(vote.getContestPhaseId(),
-                    ContestClientUtil::getContestPhase);
-            Contest contest = contests.computeIfAbsent(contestPhase.getContestId(),
-                    ContestClientUtil::getContest);
+        for (IProposalVote vote : proposalVotes) {
+            ContestPhaseWrapper contestPhase = phases.computeIfAbsent(vote.getContestPhaseId(),
+                    StaticContestContext.getContestClient()::getContestPhase);
+            ContestWrapper contest = contests.computeIfAbsent(contestPhase.getContestId(),
+                    StaticContestContext.getContestClient()::getContest);
 
             UserWrapper member = getMemberOrNull(vote);
-            Proposal proposal = getProposalOrNull(proposals, vote);
+            ProposalWrapper proposal = getProposalOrNull(proposals, vote);
 
             List<String> row = new ArrayList<>();
             addValue(row, vote.getProposalId());
@@ -105,8 +108,8 @@ public class VoteCsvWriter extends CsvResponseWriter {
             addValue(row, member != null ? member.getScreenName() : "Member not found");
             addValue(row, member != null ? member.getFirstName() : "Member not found");
             addValue(row, member != null ? member.getLastName() : "Member not found");
-            addValue(row, member != null ? ActivitiesClientUtil.countActivities(
-                    member.getId(),null) : "Member not found");
+            addValue(row, member != null ? StaticActivityContext.getActivityClient()
+                    .countActivities(member.getId(), null) : "Member not found");
             addValue(row, member != null ? member.getLoginIp() : "Member not found");
             addLocationForIp(row, member != null ? member.getLoginIp() : null);
 
@@ -145,17 +148,17 @@ public class VoteCsvWriter extends CsvResponseWriter {
         }
     }
 
-    private Proposal getProposalOrNull(Map<Long, Proposal> proposals, ProposalVote vote) {
+    private ProposalWrapper getProposalOrNull(Map<Long, ProposalWrapper> proposals, IProposalVote vote) {
         try {
             return proposals.computeIfAbsent(vote.getProposalId(),
-                    ProposalClientUtil::getProposal);
+                    StaticProposalContext.getProposalClient()::getProposal);
         } catch (ProposalNotFoundException e) {
             log.warn("Proposal {} not found when generating report", vote.getProposalId());
             return null;
         }
     }
 
-    private UserWrapper getMemberOrNull(ProposalVote vote) {
+    private UserWrapper getMemberOrNull(IProposalVote vote) {
         try {
             return StaticUserContext.getUserClient().getMember(vote.getUserId());
         } catch (MemberNotFoundException e) {

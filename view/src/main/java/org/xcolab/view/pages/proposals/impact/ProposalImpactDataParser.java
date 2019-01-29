@@ -5,12 +5,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.contest.OntologyClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ontology.FocusArea;
-import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
-import org.xcolab.client.proposals.enums.ImpactSeriesType;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.StaticContestContext;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.FocusAreaWrapper;
+import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.enums.ImpactSeriesType;
 import org.xcolab.view.pages.proposals.exceptions.ProposalImpactDataParserException;
 
 import java.util.ArrayList;
@@ -64,15 +64,15 @@ public class ProposalImpactDataParser {
     }
 
     private final String tabSeparatedString;
-    private final Proposal proposal;
-    private final Contest contest;
+    private final ProposalWrapper proposal;
+    private final ContestWrapper contest;
 
 
     /**
      * Creates a new ProposalImpactDataParser object with the input String (tab-separated string
      * copy-pasted from Excel) and the Contest of the proposal in question.
      */
-    public ProposalImpactDataParser(String tabSeparatedString, Proposal proposal, Contest contest) {
+    public ProposalImpactDataParser(String tabSeparatedString, ProposalWrapper proposal, ContestWrapper contest) {
         this.tabSeparatedString = tabSeparatedString;
         this.proposal = proposal;
         this.contest = contest;
@@ -164,7 +164,7 @@ public class ProposalImpactDataParser {
                 new ProposalImpactSeriesList(this.contest, this.proposal);
         ProposalImpactUtil proposalImpactUtil = new ProposalImpactUtil(contest);
 
-        OntologyTerm regionTerm = null;
+        OntologyTermWrapper regionTerm = null;
         int inputLineNumber = 2;
         for (String inputLine : inputLines) {
             String[] dataStrings = getTabbedStrings(inputLine);
@@ -172,7 +172,7 @@ public class ProposalImpactDataParser {
             // We need at least the region+sector and one full iteration of years
             if (ArrayUtils.isNotEmpty(dataStrings) && dataStrings.length >= 2 + iterationYears
                     .size()) {
-                OntologyTerm sectorTerm;
+                OntologyTermWrapper sectorTerm;
                 try {
                     // Some of the first columns are empty - use old region term instead
                     if (dataStrings[0] != null) {
@@ -185,7 +185,7 @@ public class ProposalImpactDataParser {
                     throw new ProposalImpactDataParserException(e);
                 }
 
-                FocusArea focusArea =
+                FocusAreaWrapper focusArea =
                         proposalImpactUtil.getFocusAreaAssociatedWithTerms(sectorTerm, regionTerm);
                 ProposalImpactSeries newProposalImpactSeries =
                         new ProposalImpactSeries(contest, proposal, focusArea);
@@ -273,14 +273,15 @@ public class ProposalImpactDataParser {
         }
     }
 
-    private OntologyTerm getOntologyTermByName(String name)
+    private OntologyTermWrapper getOntologyTermByName(String name)
             throws ProposalImpactDataParserException {
         // Use mapped name value if it exists
         if (excelTermToOntologyTermNameMap.get(name) != null) {
             name = excelTermToOntologyTermNameMap.get(name);
         }
 
-        List<OntologyTerm> ontologyTerms = OntologyClientUtil.getOntologyTermsByName(name);
+        List<OntologyTermWrapper> ontologyTerms = StaticContestContext.getOntologyClient()
+                .getOntologyTermsByName(name);
         if (ontologyTerms == null || ontologyTerms.isEmpty()) {
             throw new ProposalImpactDataParserException(
                     "Could not match ontology term with name '" + name + "'");

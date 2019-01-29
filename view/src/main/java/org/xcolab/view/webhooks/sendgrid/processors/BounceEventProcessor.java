@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.user.IUserClient;
 import org.xcolab.client.user.exceptions.MemberNotFoundException;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
@@ -38,7 +38,8 @@ public class BounceEventProcessor implements SendGridEventProcessor {
             if (isHardBounce && !member.getIsEmailBounced()) {
                 member.setIsEmailBounced(true);
                 userClient.updateUser(member);
-                ProposalMemberRatingClientUtil.invalidateVotesForMember(member.getId(),
+                StaticProposalContext.getProposalMemberRatingClient()
+                        .invalidateVotesForMember(member.getId(),
                         ValidationResult.INVALID_BOUNCED_EMAIL.name());
                 log.debug("Marked {}'s email {} as bounced ({}).", member.getScreenName(), email,
                         event.getReason());

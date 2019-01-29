@@ -7,7 +7,7 @@
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout>
 
-	<!--@elvariable id="contestWrapper" type="org.xcolab.client.contest.pojo.Contest"-->
+    <!--@elvariable id="contestWrapper" type="org.xcolab.client.contest.pojo.wrapper.ContestWrapper"-->
 	<!--@elvariable id="contestLevelSelectionItems" type="java.util.List<org.xcolab.commons.html.LabelValue>"-->
 	<!--@elvariable id="modelIdsSelectionItems" type="java.util.List<org.xcolab.commons.html.LabelValue>"-->
 	<!--@elvariable id="contestTypeSelectionItems" type="java.util.List<org.xcolab.commons.html.LabelValue>"-->

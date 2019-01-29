@@ -6,19 +6,19 @@ import org.xcolab.client.content.IContentClient;
 import org.xcolab.client.content.exceptions.ContentNotFoundException;
 import org.xcolab.client.content.pojo.IContentArticle;
 import org.xcolab.client.content.pojo.IContentArticleVersion;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
 import org.xcolab.view.pages.contestmanagement.beans.ContestResourcesBean;
 
 public class WikiPageWrapper {
 
     private final IContentClient contentClient;
-    private final Contest contest;
+    private final ContestWrapper contest;
     private final Long loggedInUserId;
     private final IContentArticle contentArticle;
     private final IContentArticleVersion contentArticleVersion;
 
-    public WikiPageWrapper(IContentClient contentClient, Contest contest, Long loggedInUserId) {
+    public WikiPageWrapper(IContentClient contentClient, ContestWrapper contest, Long loggedInUserId) {
         this.contentClient = contentClient;
         this.contest = contest;
         this.loggedInUserId = loggedInUserId;
@@ -26,7 +26,7 @@ public class WikiPageWrapper {
         if (contest.getResourceArticleId() == null || contest.getResourceArticleId() <= 0) {
             throw ReferenceResolutionException
                     .toObject(IContentArticle.class, contest.getResourceArticleId())
-                    .fromObject(Contest.class, contest.getId());
+                    .fromObject(ContestWrapper.class, contest.getId());
         }
         try {
             contentArticle = contentClient.getContentArticle(contest.getResourceArticleId());
@@ -34,11 +34,11 @@ public class WikiPageWrapper {
         } catch (ContentNotFoundException e) {
             throw ReferenceResolutionException
                     .toObject(IContentArticle.class, contest.getResourceArticleId())
-                    .fromObject(Contest.class, contest.getId());
+                    .fromObject(ContestWrapper.class, contest.getId());
         }
     }
 
-    public static void updateContestWiki(IContentClient contentClient, Contest contest) {
+    public static void updateContestWiki(IContentClient contentClient, ContestWrapper contest) {
         try {
             if (contest.getResourceArticleId() != null) {
                 final IContentArticleVersion resourceArticleVersion = contentClient

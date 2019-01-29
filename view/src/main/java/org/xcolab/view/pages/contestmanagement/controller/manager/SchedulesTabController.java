@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.ContestSchedule;
+import org.xcolab.client.contest.pojo.IContestSchedule;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.html.LabelStringValue;
 import org.xcolab.commons.html.LabelValue;
@@ -53,7 +52,7 @@ public class SchedulesTabController extends AbstractTabController {
 
     @ModelAttribute("contestPhaseTypesSelectionItems")
     public List<LabelValue> populateContestPhaseTypesSelectionItems() {
-        return ContestClientUtil.getAllContestPhaseTypes().stream()
+        return contestClient.getAllContestPhaseTypes().stream()
                 .filter(phaseType -> !phaseType.getIsDeprecated())
                 .map(phaseType -> new LabelValue(phaseType.getId(), phaseType.getName()))
                 .collect(Collectors.toList());
@@ -61,7 +60,7 @@ public class SchedulesTabController extends AbstractTabController {
 
     @ModelAttribute("contestPhaseTypesSelectionItemsDeprecated")
     public List<LabelValue> populateContestPhaseTypesSelectionItemsDeprecated() {
-        return ContestClientUtil.getAllContestPhaseTypes().stream()
+        return contestClient.getAllContestPhaseTypes().stream()
                 .filter(phaseType -> phaseType.getIsDeprecated())
                 .map(phaseType -> new LabelValue(phaseType.getId(), phaseType.getName() + " (Deprecated)"))
                 .collect(Collectors.toList());
@@ -100,8 +99,8 @@ public class SchedulesTabController extends AbstractTabController {
     }
 
     private Long getFirstScheduleId() {
-        final List<ContestSchedule> contestSchedules =
-                ContestClientUtil.getAllContestSchedules();
+        final List<IContestSchedule> contestSchedules =
+                contestClient.getAllContestSchedules();
         if (!contestSchedules.isEmpty()) {
             return contestSchedules.get(0).getId();
         }
@@ -136,7 +135,7 @@ public class SchedulesTabController extends AbstractTabController {
 
     private String createSchedule(HttpServletRequest request, HttpServletResponse response,
             Model model, UserWrapper member) {
-        ContestSchedule newContestSchedule = ContestScheduleLifecycleUtil.createNewSchedule();
+        IContestSchedule newContestSchedule = ContestScheduleLifecycleUtil.createNewSchedule();
 
         AlertMessage.CREATED.flash(request);
         model.asMap().remove(CONTEST_SCHEDULE_BEAN_ATTRIBUTE_KEY);

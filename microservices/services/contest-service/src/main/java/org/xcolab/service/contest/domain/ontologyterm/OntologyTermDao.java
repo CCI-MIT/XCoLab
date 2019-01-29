@@ -1,22 +1,22 @@
 package org.xcolab.service.contest.domain.ontologyterm;
 
-import org.xcolab.model.tables.pojos.OntologyTerm;
+import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.util.List;
 
 public interface OntologyTermDao {
 
-    OntologyTerm get(Long id) throws NotFoundException;
+    OntologyTermWrapper get(Long id) throws NotFoundException;
 
-    List<OntologyTerm> findByGiven(String name, Long parentId, Long ontologySpaceId);
+    List<OntologyTermWrapper> findByGiven(String name, Long parentId, Long ontologySpaceId);
 
-    boolean update(OntologyTerm ontologyTerm);
+    boolean update(OntologyTermWrapper ontologyTerm);
 
-    OntologyTerm create(OntologyTerm ontologyTerm);
+    OntologyTermWrapper create(OntologyTermWrapper ontologyTerm);
 
     int delete(Long id);
 
-    List<OntologyTerm> getOntologyTermByFocusAreaAndOntologySpaceName(Long focusArea,
+    List<OntologyTermWrapper> getOntologyTermByFocusAreaAndOntologySpaceName(Long focusArea,
             String ontologySpaceName);
 }

@@ -3,10 +3,10 @@ package org.xcolab.client.modeling.models.ui;
 import edu.mit.cci.roma.client.MetaData;
 import edu.mit.cci.roma.client.Simulation;
 import edu.mit.cci.roma.client.Variable;
-import org.xcolab.client.modeling.pojo.tables.pojos.ModelInputItem;
 
-import org.xcolab.client.modeling.IModelingClient;
+import org.xcolab.client.modeling.StaticModelingContext;
 import org.xcolab.client.modeling.pojo.IModelInputItem;
+import org.xcolab.client.modeling.pojo.tables.pojos.ModelInputItem;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -23,8 +23,8 @@ public class ModelInputIndividualDisplayItem extends ModelInputDisplayItem imple
 
 
     public ModelInputIndividualDisplayItem(IModelInputItem item) throws IOException {
-        super(ModelUIFactory.getModelingClient().getModel(item),
-                ModelUIFactory.getModelingClient().getMetaData(item));
+        super(StaticModelingContext.getModelingClient().getModel(item),
+                StaticModelingContext.getModelingClient().getMetaData(item));
         this.item = item;
     }
 
@@ -39,7 +39,7 @@ public class ModelInputIndividualDisplayItem extends ModelInputDisplayItem imple
         item.setModelId(sim.getId());
         item.setModelInputItemId(md.getId());
         item.setType(type.name());
-        ModelUIFactory.getModelingClient().createModelInputItem(item);
+        StaticModelingContext.getModelingClient().createModelInputItem(item);
         return new ModelInputIndividualDisplayItem(item);
     }
 
@@ -58,7 +58,7 @@ public class ModelInputIndividualDisplayItem extends ModelInputDisplayItem imple
     @Override
     public void setOrder(int order) {
         item.setDisplayItemOrder(order);
-        ModelUIFactory.getModelingClient().updateModelInputItem(item);
+        StaticModelingContext.getModelingClient().updateModelInputItem(item);
     }
 
     @Override
@@ -121,7 +121,7 @@ public class ModelInputIndividualDisplayItem extends ModelInputDisplayItem imple
     @Override
     public void setType(ModelInputWidgetType type) {
         item.setType(type.name());
-        ModelUIFactory.getModelingClient().updateModelInputItem(item);
+        StaticModelingContext.getModelingClient().updateModelInputItem(item);
     }
 
     /**
@@ -139,10 +139,10 @@ public class ModelInputIndividualDisplayItem extends ModelInputDisplayItem imple
             modelGroupId = 0L;
         }
         item.setModelGroupId(modelGroupId);
-        ModelUIFactory.getModelingClient().updateModelInputItem(item);
+        StaticModelingContext.getModelingClient().updateModelInputItem(item);
     }
 
     public String getProperty(ModelWidgetProperty prop) {
-        return ModelUIFactory.getModelingClient().getPropertyMap(item).get(prop.toString());
+        return StaticModelingContext.getModelingClient().getPropertyMap(item).get(prop.toString());
     }
 }

@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.client.activities.ActivitiesClientUtil;
+import org.xcolab.client.activity.IActivityClient;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.comment.ICommentClient;
 import org.xcolab.client.comment.IThreadClient;
@@ -19,12 +18,10 @@ import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.IComment;
 import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.comment.pojo.tables.pojos.Comment;
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.IContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.proposals.ProposalClient;
-import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.entity.utils.LinkUtils;
@@ -55,10 +52,16 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
     private static final String COMMENT_ANALYTICS_LABEL = "";
 
     @Autowired
+    private IActivityClient activityClient;
+
+    @Autowired
     private IThreadClient threadClient;
 
     @Autowired
     private ICommentClient commentClient;
+
+    @Autowired
+    private IContestClient contestClient;
 
     @PostMapping("/discussions/addDiscussionMessage")
     public String handleAction(HttpServletRequest request, HttpServletResponse response,
@@ -77,8 +80,6 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
         long userId = MemberAuthUtil.getUserId();
 
         try {
-            final ActivitiesClient activityClient = ActivitiesClientUtil.getClient();
-
             long threadId = Long.parseLong(newMessage.getThreadId());
             IThread commentThread = threadClient.getThread(threadId);
 
@@ -105,15 +106,14 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
                     activityClient.createActivityEntry(DiscussionThreadActivityType.COMMENT_ADDED,
                             userId, commentThread.getId(), comment.getId());
                 } else {
-                    final ProposalClient proposalClient = ProposalClientUtil.getClient();
-                    final Proposal proposal = getProposal(proposalClient, commentThread);
+                    final ProposalWrapper proposal = getProposal(proposalClient, commentThread);
                     if (proposal != null) {
                         //proposal
                         activityClient
                                 .createActivityEntry(ProposalActivityType.COMMENT_ADDED, userId,
                                         proposal.getId(), comment.getId());
                     } else {
-                        final Contest contest = getContest(commentThread);
+                        final ContestWrapper contest = getContest(commentThread);
                         if (contest != null) {
                             //contest
                             activityClient.createActivityEntry(ContestActivityType.COMMENT_ADDED,
@@ -156,9 +156,9 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
         return "redirect:/discussions";
     }
 
-    private Contest getContest(IThread commentThread) {
+    private ContestWrapper getContest(IThread commentThread) {
         try {
-            return ContestClientUtil.getContestByThreadId(commentThread.getId());
+            return contestClient.getContestByThreadId(commentThread.getId());
         } catch (ContestNotFoundException e) {
             return null;
         }

@@ -1,7 +1,7 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-    <jsp:directive.attribute name="contest" type="org.xcolab.client.contest.pojo.Contest" required="true" rtexprvalue="true" description="Contest url" />
+    <jsp:directive.attribute name="contest" type="org.xcolab.client.contest.pojo.wrapper.ContestWrapper" required="true" rtexprvalue="true" description="Contest url" />
     <jsp:directive.attribute name="text" type="java.lang.String" required="false" rtexprvalue="true" description="Link text" />
     <jsp:directive.attribute name="hashString" type="java.lang.String" required="false" rtexprvalue="true" description="hash string" />
     <jsp:directive.attribute name="escape" type="java.lang.Boolean" required="false" rtexprvalue="true" description="escape string" />

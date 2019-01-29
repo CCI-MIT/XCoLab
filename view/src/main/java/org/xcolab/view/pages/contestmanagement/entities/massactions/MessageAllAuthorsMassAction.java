@@ -1,12 +1,12 @@
 package org.xcolab.view.pages.contestmanagement.entities.massactions;
 
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.enums.ContestStatus;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
-import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.pojo.IContestPhaseType;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,22 +20,25 @@ public class MessageAllAuthorsMassAction extends MessageMassAction {
     }
 
     @Override
-    protected List<Proposal> getProposalsToBeMessaged(Contest contest) {
+    protected List<ProposalWrapper> getProposalsToBeMessaged(ContestWrapper contest) {
         Long contestId = contest.getId();
-        List<ContestPhase> allPhases = ContestClientUtil.getAllContestPhases(contestId);
-        Map<Long, Proposal> proposalsMap = new HashMap<>();
-        for (ContestPhase cp : allPhases) {
-            ContestPhaseType cpt = ContestClientUtil.getContestPhaseType(cp.getContestPhaseTypeId());
+        List<ContestPhaseWrapper> allPhases = StaticContestContext.getContestClient()
+                .getAllContestPhases(contestId);
+        Map<Long, ProposalWrapper> proposalsMap = new HashMap<>();
+        for (ContestPhaseWrapper cp : allPhases) {
+            IContestPhaseType cpt = StaticContestContext.getContestClient()
+                    .getContestPhaseType(cp.getContestPhaseTypeId());
             if (cpt.getStatus().equals(ContestStatus.OPEN_FOR_SUBMISSION.name())) {
-                List<Proposal> proposals =
-                        ProposalClientUtil.getActiveProposalsInContestPhase(cp.getId());
-                for (Proposal p : proposals) {
+                List<ProposalWrapper> proposals =
+                        StaticProposalContext.getProposalClient()
+                                .getActiveProposalsInContestPhase(cp.getId());
+                for (ProposalWrapper p : proposals) {
                     proposalsMap.putIfAbsent(p.getId(), p);
                 }
             }
         }
 
-        List<Proposal> ret = new ArrayList<>();
+        List<ProposalWrapper> ret = new ArrayList<>();
         ret.addAll(proposalsMap.values());
         return ret;
     }

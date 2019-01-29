@@ -2,10 +2,10 @@ package org.xcolab.view.pages.contestmanagement.beans;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestTranslation;
+import org.xcolab.client.contest.StaticContestContext;
+import org.xcolab.client.contest.pojo.IContestTranslation;
+import org.xcolab.client.contest.pojo.tables.pojos.ContestTranslation;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.util.i18n.I18nUtils;
 
 import java.io.Serializable;
@@ -18,21 +18,20 @@ public class ContestTranslationBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private List<ContestTranslation> translations;
+    private List<IContestTranslation> translations;
 
     public ContestTranslationBean() {
     }
 
-    public ContestTranslationBean(Contest contest) {
-        ContestClient contestClient = ContestClientUtil.getClient();
-        final Map<String, ContestTranslation> translations =
-                contestClient.getTranslationsForContestId(contest.getId())
+    public ContestTranslationBean(ContestWrapper contest) {
+        final Map<String, IContestTranslation> translations =
+                StaticContestContext.getContestClient().getTranslationsForContestId(contest.getId())
                 .stream()
-                .collect(Collectors.toMap(ContestTranslation::getLang, t -> t));
+                .collect(Collectors.toMap(IContestTranslation::getLang, t -> t));
 
         for (String lang : I18nUtils.getAllLanguages()) {
             translations.computeIfAbsent(lang, k -> {
-                ContestTranslation translation = new ContestTranslation();
+                IContestTranslation translation = new ContestTranslation();
                 translation.setLang(lang);
                 translation.setContestId(contest.getId());
                 return translation;
@@ -41,16 +40,15 @@ public class ContestTranslationBean implements Serializable {
         this.translations = new ArrayList<>(translations.values());
     }
 
-    public List<ContestTranslation> getTranslations() {
+    public List<IContestTranslation> getTranslations() {
         return translations;
     }
 
-    public void setTranslations(List<ContestTranslation> translations) {
+    public void setTranslations(List<IContestTranslation> translations) {
         this.translations = translations;
     }
 
-    public void persist(Contest contest) {
-        ContestClient contestClient = ContestClientUtil.getClient();
+    public void persist(ContestWrapper contest) {
         translations.stream()
                 .filter(translation -> !StringUtils.isAllEmpty(translation.getQuestion(),
                         translation.getTitle(), translation.getDescription()))
@@ -58,6 +56,6 @@ public class ContestTranslationBean implements Serializable {
                     translation.setContestId(contest.getId());
                     return translation;
                 })
-                .forEach(contestClient::saveTranslation);
+                .forEach(StaticContestContext.getContestClient()::saveTranslation);
     }
 }

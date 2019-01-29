@@ -4,7 +4,9 @@ import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.xcolab.model.tables.pojos.ImpactTemplateSeries;
+
+import org.xcolab.client.contest.pojo.IImpactTemplateSeries;
+import org.xcolab.client.contest.pojo.tables.pojos.ImpactTemplateSeries;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import static org.xcolab.model.Tables.IMPACT_TEMPLATE_SERIES;
@@ -18,7 +20,7 @@ public class ImpactTemplateSeriesDaoImpl implements ImpactTemplateSeriesDao {
     public ImpactTemplateSeriesDaoImpl(DSLContext dslContext) {this.dslContext = dslContext;}
 
     @Override
-    public ImpactTemplateSeries get(Long seriesId) throws NotFoundException {
+    public IImpactTemplateSeries get(Long seriesId) throws NotFoundException {
 
         final Record record =  this.dslContext.selectFrom(IMPACT_TEMPLATE_SERIES)
                 .where(IMPACT_TEMPLATE_SERIES.SERIES_ID.eq(seriesId))

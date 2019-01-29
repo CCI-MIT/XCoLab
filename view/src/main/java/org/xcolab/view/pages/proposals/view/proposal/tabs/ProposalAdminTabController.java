@@ -7,15 +7,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.IContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.proposals.IProposalPhaseClient;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
-import org.xcolab.client.proposals.ProposalClient;
-import org.xcolab.client.proposals.ProposalPhaseClient;
-import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.proposals.IProposalClient;
+import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
@@ -42,7 +42,7 @@ public class ProposalAdminTabController extends BaseProposalTabController {
             return new AccessDeniedPage(currentMember).toViewName(response);
         }
 
-        ContestClient contestClient = proposalContext.getClients().getContestClient();
+        IContestClient contestClient = proposalContext.getClients().getContestClient();
         setCommonModelAndPageAttributes(request, model, proposalContext, ProposalTab.ADMIN);
         model.addAttribute("availableRibbons", contestClient.getAllContestPhaseRibbonType());
 
@@ -55,9 +55,9 @@ public class ProposalAdminTabController extends BaseProposalTabController {
             throws ProposalsAuthorizationException, IOException {
 
         if (proposalContext.getPermissions().getCanDelete()) {
-            ContestPhase contestPhase = proposalContext.getContestPhase();
-            Proposal proposal = proposalContext.getProposal();
-            Contest contest = proposalContext.getContest();
+            ContestPhaseWrapper contestPhase = proposalContext.getContestPhase();
+            ProposalWrapper proposal = proposalContext.getProposal();
+            ContestWrapper contest = proposalContext.getContest();
 
 
             proposal.setVisible(!delete);
@@ -81,20 +81,20 @@ public class ProposalAdminTabController extends BaseProposalTabController {
 
         ProposalsPermissions proposalsPermissions = proposalContext.getPermissions();
         final ClientHelper clients = proposalContext.getClients();
-        final ContestClient contestClient = clients.getContestClient();
-        ContestPhase contestPhase = contestClient.getContestPhase(contestPhaseId);
-        final Proposal proposal = proposalContext.getProposal();
-        final Contest contest = proposalContext.getContest();
+        final IContestClient contestClient = clients.getContestClient();
+        ContestPhaseWrapper contestPhase = contestClient.getContestPhase(contestPhaseId);
+        final ProposalWrapper proposal = proposalContext.getProposal();
+        final ContestWrapper contest = proposalContext.getContest();
         if (proposalsPermissions.getCanPromoteProposalToNextPhase(contestPhase)) {
             try {
-                final ProposalClient proposalClient = clients.getProposalClient();
-                final ProposalPhaseClient proposalPhaseClient = clients.getProposalPhaseClient();
+                final IProposalClient proposalClient = clients.getProposalClient();
+                final IProposalPhaseClient proposalPhaseClient = clients.getProposalPhaseClient();
 
-                Contest latestProposalContest =
+                ContestWrapper latestProposalContest =
                         proposalClient.getLatestContestInProposal(proposalId);
-                ContestPhase currentProposalContestPhase =
+                ContestPhaseWrapper currentProposalContestPhase =
                         contestClient.getContestPhase(contestPhaseId);
-                ContestPhase activePhaseForContest =
+                ContestPhaseWrapper activePhaseForContest =
                         contestClient.getActivePhase(latestProposalContest.getId());
 
                 proposalPhaseClient.promoteProposal(proposalId,

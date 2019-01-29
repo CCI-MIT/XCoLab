@@ -1,6 +1,6 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page">
 
-	<jsp:directive.attribute name="contestPhase" type="org.xcolab.client.contest.pojo.phases.ContestPhase" required="true" rtexprvalue="true" description="Contest Phase" />
+	<jsp:directive.attribute name="contestPhase" type="org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper" required="true" rtexprvalue="true" description="Contest Phase" />
 	<jsp:directive.attribute name="text" type="java.lang.String" required="false" rtexprvalue="true" description="Link text" />
 	
 	<a href="${contestPhase.contestPhaseUrl }">${empty text ? contestPhase.name : text }</a>

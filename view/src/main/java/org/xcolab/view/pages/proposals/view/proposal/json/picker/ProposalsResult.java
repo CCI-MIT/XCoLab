@@ -3,8 +3,8 @@ package org.xcolab.view.pages.proposals.view.proposal.json.picker;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 
-import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.proposals.ProposalRibbon;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalRibbon;
 
 import java.util.Date;
 import java.util.List;
@@ -17,7 +17,7 @@ public class ProposalsResult {
     private final List<SimpleProposal> proposals;
     private final int totalCount;
 
-    public ProposalsResult(List<Proposal> proposals, int totalCount) {
+    public ProposalsResult(List<ProposalWrapper> proposals, int totalCount) {
         this.proposals = proposals.stream()
                 .map(SimpleProposal::new)
                 .collect(Collectors.toList());
@@ -51,7 +51,7 @@ public class ProposalsResult {
         private final String ribbonText;
         private final boolean featured;
 
-        public SimpleProposal(Proposal proposal) {
+        public SimpleProposal(ProposalWrapper proposal) {
 
             this.id = proposal.getId();
             this.proposalName = StringUtils.abbreviate(

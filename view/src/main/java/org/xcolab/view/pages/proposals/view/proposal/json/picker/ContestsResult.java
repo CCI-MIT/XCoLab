@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.proposals.view.proposal.json.picker;
 
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,7 +10,7 @@ public class ContestsResult {
     private final List<SimpleContest> contests;
     private final int totalNumberOfContests;
 
-    public ContestsResult(List<Contest> contests, int totalNumberOfContests) {
+    public ContestsResult(List<ContestWrapper> contests, int totalNumberOfContests) {
         this.contests = contests.stream()
             .map(SimpleContest::new)
             .collect(Collectors.toList());
@@ -40,7 +40,7 @@ public class ContestsResult {
         private final String where;
         private final long date;
 
-        private SimpleContest(Contest contest) {
+        private SimpleContest(ContestWrapper contest) {
             this.id = contest.getId();
             this.title = contest.getTitleWithEndYear();
             this.question = contest.getQuestion();

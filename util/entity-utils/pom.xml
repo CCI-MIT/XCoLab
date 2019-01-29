@@ -58,12 +58,12 @@
         </dependency>
         <dependency>
             <groupId>org.xcolab</groupId>
-            <artifactId>contestproposal-client</artifactId>
+            <artifactId>contest-client</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.xcolab</groupId>
-            <artifactId>activities-client</artifactId>
+            <artifactId>activity-client</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

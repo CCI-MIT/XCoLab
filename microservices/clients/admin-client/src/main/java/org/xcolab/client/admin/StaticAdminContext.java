@@ -13,8 +13,8 @@ public class StaticAdminContext {
     public static void setClients(IAdminClient adminClient, IContestTypeClient contestTypeClient,
             IEmailTemplateClient emailTemplateClient) {
         Assert.notNull(adminClient, "commentClient must not be null!");
-        Assert.notNull(contestTypeClient, "categoryClient must not be null!");
-        Assert.notNull(emailTemplateClient, "threadClient must not be null!");
+        Assert.notNull(contestTypeClient, "contestTypeClient must not be null!");
+        Assert.notNull(emailTemplateClient, "emailTemplateClient must not be null!");
         StaticAdminContext.adminClient = adminClient;
         StaticAdminContext.contestTypeClient = contestTypeClient;
         StaticAdminContext.emailTemplateClient = emailTemplateClient;

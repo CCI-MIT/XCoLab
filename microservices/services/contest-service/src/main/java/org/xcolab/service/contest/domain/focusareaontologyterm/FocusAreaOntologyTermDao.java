@@ -1,16 +1,16 @@
 package org.xcolab.service.contest.domain.focusareaontologyterm;
 
-import org.xcolab.model.tables.pojos.FocusAreaOntologyTerm;
+import org.xcolab.client.contest.pojo.IFocusAreaOntologyTerm;
 
 import java.util.List;
 
 public interface FocusAreaOntologyTermDao {
 
-    List<FocusAreaOntologyTerm> findByGiven(Long focusAreaId, Long ontologyTermId);
+    List<IFocusAreaOntologyTerm> findByGiven(Long focusAreaId, Long ontologyTermId);
 
-    FocusAreaOntologyTerm create(FocusAreaOntologyTerm focusAreaOntologyTerm);
+    IFocusAreaOntologyTerm create(IFocusAreaOntologyTerm focusAreaOntologyTerm);
 
-    List<FocusAreaOntologyTerm> findByOntologyTermIds(List<Long> ontologyTermId);
+    List<IFocusAreaOntologyTerm> findByOntologyTermIds(List<Long> ontologyTermId);
 
     int deleteAllFocusAreasOntologyTerms(Long focusAreaId, Long ontologyTermId);
 }

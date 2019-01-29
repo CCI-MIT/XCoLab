@@ -1,11 +1,11 @@
 package org.xcolab.view.pages.proposals.requests;
 
 
-import org.xcolab.client.proposals.PointsClientUtil;
-import org.xcolab.client.proposals.enums.points.DistributionStrategy;
-import org.xcolab.client.proposals.enums.points.ReceiverLimitationStrategy;
-import org.xcolab.client.proposals.pojo.points.PointType;
-import org.xcolab.client.proposals.pojo.points.PointsDistributionConfiguration;
+import org.xcolab.client.contest.pojo.IPointsDistributionConfiguration;
+import org.xcolab.client.contest.pojo.wrapper.PointTypeWrapper;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
+import org.xcolab.client.contest.proposals.enums.points.DistributionStrategy;
+import org.xcolab.client.contest.proposals.enums.points.ReceiverLimitationStrategy;
 import org.xcolab.client.user.StaticUserContext;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.exceptions.InternalException;
@@ -39,13 +39,14 @@ public class AssignPointsBean {
         assignmentsByUserIdByPointTypeId = new HashMap<>();
     }
 
-    public void addAllAssignments(PointType pointType, List<UserWrapper> members) {
+    public void addAllAssignments(PointTypeWrapper pointType, List<UserWrapper> members) {
         if (pointType.getDistributionStrategyz().name().equals(DistributionStrategy.USER_DEFINED.name())) {
 
-            PointsClientUtil.verifyDistributionConfigurationsForProposalId(proposalId);
+            StaticProposalContext.getPointsClient()
+                    .verifyDistributionConfigurationsForProposalId(proposalId);
 
-            List<PointsDistributionConfiguration> existingDistributionConfigurations =
-                    PointsClientUtil
+            List<IPointsDistributionConfiguration> existingDistributionConfigurations =
+                    StaticProposalContext.getPointsClient()
                             .getPointsDistributionByProposalIdPointTypeId(proposalId, pointType.getId());
 
             switch(pointType.getReceiverLimitationStrategyz().getType()) {
@@ -66,9 +67,9 @@ public class AssignPointsBean {
             }
         }
         //follow down the pointType tree
-        List<PointType> list = pointType.getChildren();
+        List<PointTypeWrapper> list = pointType.getChildren();
         if(list!=null) {
-            for (PointType p : list) {
+            for (PointTypeWrapper p : list) {
                 addAllAssignments(p, members);
             }
         }
@@ -77,8 +78,8 @@ public class AssignPointsBean {
 
 
 
-    public void addAssignment(PointType pointType, List<UserWrapper> users,
-                              List<PointsDistributionConfiguration> existingDistributionConfigurations) {
+    public void addAssignment(PointTypeWrapper pointType, List<Member> users,
+                              List<IPointsDistributionConfiguration> existingDistributionConfigurations) {
 
         final double percentMultiplicationFactor = pointType.getPercentageOfTotal() * 100;
 
@@ -86,8 +87,8 @@ public class AssignPointsBean {
         if (users != null) {
             for (UserWrapper u : users) {
                 double percentage = (1.0/users.size()) * percentMultiplicationFactor;
-                PointsDistributionConfiguration foundElement = null;
-                for (PointsDistributionConfiguration distribution : existingDistributionConfigurations) {
+                IPointsDistributionConfiguration foundElement = null;
+                for (IPointsDistributionConfiguration distribution : existingDistributionConfigurations) {
                     if (distribution.getTargetUserId() == u.getId()) {
                         percentage = distribution.getPercentage() * percentMultiplicationFactor;
                         foundElement = distribution;
@@ -102,7 +103,7 @@ public class AssignPointsBean {
         }
 
         //add all remaining distributions that were not in users
-        for (PointsDistributionConfiguration distribution: existingDistributionConfigurations) {
+        for (IPointsDistributionConfiguration distribution: existingDistributionConfigurations) {
             entityPercentages.put(distribution.getTargetUserId(), distribution.getPercentage() * percentMultiplicationFactor);
         }
 

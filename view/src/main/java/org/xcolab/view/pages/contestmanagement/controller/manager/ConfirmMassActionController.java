@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.pages.contestmanagement.entities.ContestMassAction;
 import org.xcolab.view.pages.contestmanagement.entities.ContestMassActions;
@@ -34,7 +34,7 @@ public class ConfirmMassActionController {
         massActionConfirmationWrapper.setuserId(member.getId());
 
         List<Long> contestIds = massActionConfirmationWrapper.getSelectedContestIds();
-        List<Contest> contests = EntityIdListUtil.CONTESTS.fromIdList(contestIds);
+        List<ContestWrapper> contests = EntityIdListUtil.CONTESTS.fromIdList(contestIds);
 
         ContestMassActions actionWrapper = massActionConfirmationWrapper.getSelectedMassAction();
         ContestMassAction action = actionWrapper.getAction();

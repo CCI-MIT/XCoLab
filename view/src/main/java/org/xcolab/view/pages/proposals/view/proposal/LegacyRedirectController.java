@@ -1,5 +1,6 @@
 package org.xcolab.view.pages.proposals.view.proposal;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,12 +8,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.IContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.IProposalClient;
+import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 
 import java.io.IOException;
 
@@ -23,6 +24,12 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/contests/legacy/contest")
 public class LegacyRedirectController {
 
+    @Autowired
+    private IContestClient contestClient;
+
+    @Autowired
+    private IProposalClient proposalClient;
+
     @GetMapping("{contestId}")
     public void redirectOldContestProposalsUrl(HttpServletRequest request, HttpServletResponse response, Model model,
             @PathVariable Long contestId, @RequestParam(required = false) Long phaseId) throws IOException {
@@ -30,9 +37,9 @@ public class LegacyRedirectController {
         try {
             String redirectUrl;
             if (phaseId != null) {
-                redirectUrl = ContestClientUtil.getContest(contestId).getContestLinkUrl(phaseId);
+                redirectUrl = contestClient.getContest(contestId).getContestLinkUrl(phaseId);
             } else {
-                redirectUrl = ContestClientUtil.getContest(contestId).getContestLinkUrl();
+                redirectUrl = contestClient.getContest(contestId).getContestLinkUrl();
             }
             response.sendRedirect(redirectUrl);
         } catch (ContestNotFoundException e) {
@@ -44,7 +51,7 @@ public class LegacyRedirectController {
     public void redirectOldContestDiscussionUrl(HttpServletRequest request, HttpServletResponse response, Model model,
             @PathVariable Long contestId) throws IOException {
         try {
-            String contestUrl = ContestClientUtil.getContest(contestId).getContestLinkUrl();
+            String contestUrl = contestClient.getContest(contestId).getContestLinkUrl();
             response.sendRedirect(contestUrl + "/discussion");
         } catch (ContestNotFoundException e) {
             response.sendError(404, "Content has moved but can't be found");
@@ -58,8 +65,8 @@ public class LegacyRedirectController {
             throws IOException {
 
         try {
-            Contest contest = ContestClientUtil.getContest(contestId);
-            Proposal proposal = ProposalClientUtil.getProposal(proposalId);
+            ContestWrapper contest = contestClient.getContest(contestId);
+            ProposalWrapper proposal = proposalClient.getProposal(proposalId);
 
             String redirectUrl;
             if (phaseId != null) {

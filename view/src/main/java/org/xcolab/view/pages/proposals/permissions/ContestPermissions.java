@@ -24,7 +24,7 @@ public class ContestPermissions {
         return StaticUserContext.getPermissionClient().hasRoleGroup(userId, contestType.getRoleGroup());
     }
 
-    public boolean getCanAccessContest(Contest contest) {
+    public boolean getCanAccessContest(ContestWrapper contest) {
         ContestType contestType = contest.getContestType();
         if (!contestType.isRestrictedAccess()) {
             return true;

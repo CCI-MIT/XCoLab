@@ -1,9 +1,9 @@
 package org.xcolab.view.pages.proposals.wrappers;
 
-import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.client.proposals.enums.points.PointsTarget;
-import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
+import org.xcolab.client.contest.proposals.enums.points.PointsTarget;
+import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 
 public class PointsTargetProposalWrapper {
 
@@ -16,9 +16,9 @@ public class PointsTargetProposalWrapper {
         this.percentageIn = percentageIn;
     }
 
-    public Proposal getProposal() {
+    public ProposalWrapper getProposal() {
         try {
-            return ProposalClientUtil.getProposal(target.getProposalId());
+            return StaticProposalContext.getProposalClient().getProposal(target.getProposalId());
         } catch (ProposalNotFoundException ignored) {
             return null;
         }

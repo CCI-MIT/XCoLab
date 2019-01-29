@@ -2,25 +2,25 @@ package org.xcolab.entity.utils.notifications.basic;
 
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.pojo.IEmailTemplate;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
+import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 
 public class ProposalNotification extends ContestNotification {
 
-    protected final Proposal proposal;
+    protected final ProposalWrapper proposal;
 
     private ProposalNotificationTemplate templateWrapper;
 
-    public ProposalNotification(Proposal proposal, Contest contest, UserWrapper recipient,
+    public ProposalNotification(ProposalWrapper proposal, ContestWrapper contest, UserWrapper recipient,
             String templateName) {
         super(contest, recipient, templateName);
         this.proposal = proposal;
     }
 
     @Override
-    protected Proposal getProposal() {
+    protected ProposalWrapper getProposal() {
         return proposal;
     }
 

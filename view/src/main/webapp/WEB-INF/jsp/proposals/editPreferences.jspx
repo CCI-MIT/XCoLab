@@ -7,11 +7,11 @@
 
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout>
-    <!--@elvariable id="contests" type="java.util.List<org.xcolab.client.contest.pojo.Contest>"-->
-    <!--@elvariable id="availableRibbons" type="java.util.List<org.xcolab.client.contest.pojo.phases.ContestPhaseRibbonType>"-->
+    <!--@elvariable id="contests" type="java.util.List<org.xcolab.client.contest.pojo.wrapper.ContestWrapper>"-->
+    <!--@elvariable id="availableRibbons" type="java.util.List<org.xcolab.client.contest.pojo.IContestPhaseRibbonType>"-->
     <!--@elvariable id="message" type="java.lang.String"-->
     <!--@elvariable id="contestTypes" type="java.util.List<org.xcolab.client.admin.pojo.ContestType>"-->
-    <!--@elvariable id="proposal" type="org.xcolab.client.proposals.pojo.Proposal"-->
+    <!--@elvariable id="proposal" type="org.xcolab.client.contest.pojo.wrapper.ProposalWrapper"-->
 
     <div>
         <div id="portlet-preferences">

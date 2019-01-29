@@ -5,7 +5,9 @@ import org.jooq.Record;
 import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.xcolab.model.tables.pojos.ImpactDefaultSeries;
+
+import org.xcolab.client.contest.pojo.IImpactDefaultSeries;
+import org.xcolab.client.contest.pojo.tables.pojos.ImpactDefaultSeries;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.util.List;
@@ -18,7 +20,7 @@ public class ImpactDefaultSeriesDaoImpl implements ImpactDefaultSeriesDao {
     @Autowired
     private DSLContext dslContext;
 
-    public ImpactDefaultSeries get(Long seriesId) throws NotFoundException {
+    public IImpactDefaultSeries get(Long seriesId) throws NotFoundException {
 
         final Record record =  this.dslContext.selectFrom(IMPACT_DEFAULT_SERIES)
                 .where(IMPACT_DEFAULT_SERIES.SERIES_ID.eq(seriesId))
@@ -31,7 +33,7 @@ public class ImpactDefaultSeriesDaoImpl implements ImpactDefaultSeriesDao {
 
     }
     @Override
-    public List<ImpactDefaultSeries> findByGiven(Long focusAreaId, String name) {
+    public List<IImpactDefaultSeries> findByGiven(Long focusAreaId, String name) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(IMPACT_DEFAULT_SERIES).getQuery();
 

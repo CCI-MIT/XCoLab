@@ -3,7 +3,7 @@ package org.xcolab.view.pages.contestmanagement.utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.activities.pojo.ActivityEntry;
+import org.xcolab.client.activity.pojo.IActivityEntry;
 import org.xcolab.client.user.StaticUserContext;
 import org.xcolab.client.user.exceptions.MemberNotFoundException;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
@@ -48,11 +48,11 @@ public class ActivityCsvWriter extends CsvResponseWriter {
         this.activityEntryHelper = activityEntryHelper;
     }
 
-    public void writeActivities(Collection<ActivityEntry> activityEntries) {
+    public void writeActivities(Collection<IActivityEntry> activityEntries) {
         activityEntries.forEach(this::writeActivity);
     }
 
-    public void writeActivity(ActivityEntry activityEntry) {
+    public void writeActivity(IActivityEntry activityEntry) {
 
         final ActivityType activityType = activityEntry.getActivityTypeEnum();
         if (activityType != null) {
@@ -75,7 +75,7 @@ public class ActivityCsvWriter extends CsvResponseWriter {
         }
     }
 
-    private UserWrapper getMemberOrNull(ActivityEntry activityEntry) {
+    private Member getMemberOrNull(IActivityEntry activityEntry) {
         try {
             return StaticUserContext.getUserClient().getMember(activityEntry.getUserId());
         } catch (MemberNotFoundException e) {
