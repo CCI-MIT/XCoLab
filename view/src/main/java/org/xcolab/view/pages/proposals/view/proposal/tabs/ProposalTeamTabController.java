@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.client.proposals.MembershipClient;
 import org.xcolab.client.proposals.MembershipClientUtil;
 import org.xcolab.client.proposals.ProposalClient;
@@ -41,7 +41,7 @@ public class ProposalTeamTabController extends BaseProposalTabController {
 
     @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=TEAM")
     public String show(HttpServletRequest request, HttpServletResponse response, Model model,
-            ProposalContext proposalContext, Member loggedInMember) {
+            ProposalContext proposalContext, UserWrapper loggedInMember) {
 
         final ProposalsPermissions permissions = proposalContext.getPermissions();
         if (!permissions.getCanView()) {
@@ -60,9 +60,9 @@ public class ProposalTeamTabController extends BaseProposalTabController {
                 .getLinkingProposalsForProposalId(proposalId);
         model.addAttribute("listOfSubProposals", listOfSubProposals);
 
-        Map<Proposal, List<Member>> mapOfSubProposalContributors = new HashMap<>();
+        Map<Proposal, List<UserWrapper>> mapOfSubProposalContributors = new HashMap<>();
         for (Proposal temp : listOfSubProposals) {
-            List<Member> contributors = proposalClient.getProposalMembers(temp.getId());
+            List<UserWrapper> contributors = proposalClient.getProposalMembers(temp.getId());
             mapOfSubProposalContributors.put(temp, contributors);
         }
         model.addAttribute("mapOfSubProposalContributors", mapOfSubProposalContributors);
@@ -83,7 +83,7 @@ public class ProposalTeamTabController extends BaseProposalTabController {
 
     @PostMapping("c/{proposalUrlString}/{proposalId}/tab/TEAM/removeMemberFromTeam")
     public void handleAction(HttpServletRequest request, HttpServletResponse response, Model model,
-            ProposalContext proposalContext, Member actingMember, @RequestParam long userId)
+            ProposalContext proposalContext, UserWrapper actingMember, @RequestParam long userId)
             throws ProposalsAuthorizationException, IOException {
         checkHasManagePermissions(proposalContext, actingMember);
         checkIsRemovingOwner(proposalContext.getProposal(), userId);
@@ -99,7 +99,7 @@ public class ProposalTeamTabController extends BaseProposalTabController {
 
     @PostMapping("c/{proposalUrlString}/{proposalId}/tab/TEAM/promoteMemberToOwner")
     public void promoteMemberToOwner(HttpServletRequest request, HttpServletResponse response,
-            Model model, ProposalContext proposalContext, Member actingMember,
+            Model model, ProposalContext proposalContext, UserWrapper actingMember,
             @RequestParam long userId) throws ProposalsAuthorizationException, IOException {
         checkHasManagePermissions(proposalContext, actingMember);
 
@@ -127,7 +127,7 @@ public class ProposalTeamTabController extends BaseProposalTabController {
                 proposal.getProposalLinkUrl(proposalContext.getContest()) + "/tab/TEAM");
     }
 
-    private void checkHasManagePermissions(ProposalContext proposalContext, Member actingMember)
+    private void checkHasManagePermissions(ProposalContext proposalContext, UserWrapper actingMember)
             throws ProposalsAuthorizationException {
         final Proposal proposal = proposalContext.getProposal();
         final long proposalId = proposal.getId();

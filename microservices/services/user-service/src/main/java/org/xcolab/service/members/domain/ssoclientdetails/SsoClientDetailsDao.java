@@ -1,8 +1,8 @@
 package org.xcolab.service.members.domain.ssoclientdetails;
 
-import org.xcolab.client.user.pojo.ISsoClientDetails;
+import org.xcolab.client.user.pojo.SsoClientDetails;
 
 public interface SsoClientDetailsDao {
 
-    ISsoClientDetails get(String id);
+    SsoClientDetails get(String id);
 }

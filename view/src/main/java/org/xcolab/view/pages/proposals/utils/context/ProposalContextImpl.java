@@ -11,7 +11,7 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.commons.exceptions.InternalException;
@@ -53,7 +53,7 @@ public class ProposalContextImpl implements ProposalContext {
         ProposalContextHelper contextHelper = new ProposalContextHelper(request);
         final String language = localeResolver.resolveLocale(request).getLanguage();
 
-        final Member member = contextHelper.getMember();
+        final UserWrapper member = contextHelper.getMember();
 
         final String currentUrl = request.getRequestURL().toString();
         final String referrerUrl = request.getHeader(HttpHeaders.REFERER);
@@ -103,7 +103,7 @@ public class ProposalContextImpl implements ProposalContext {
 
     //TODO COLAB-2624: report to table rather than email (or external service)
     @SuppressWarnings("UnusedParameters")
-    private void reportAccessOfInvalidUrl(Member member, String currentUrl,
+    private void reportAccessOfInvalidUrl(UserWrapper member, String currentUrl,
             String referralUrl, String userAgent, InvalidAccessException exception) {
 
         log.warn("Invalid URL {} accessed from {} by {}: {}", currentUrl, referralUrl,

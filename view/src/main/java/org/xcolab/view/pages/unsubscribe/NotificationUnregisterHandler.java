@@ -1,10 +1,10 @@
 package org.xcolab.view.pages.unsubscribe;
 
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 
 interface NotificationUnregisterHandler {
 
-    void unregister(Member user);
+    void unregister(UserWrapper user);
 
     String getSuccessResponse();
 }

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
@@ -28,7 +28,7 @@ public class ProposalPickerJSONController {
 
     @GetMapping("proposals/proposalPicker")
     public ProposalsResult proposalPicker(HttpServletRequest request, HttpServletResponse response,
-            Member user, ProposalContext proposalContext, @PathVariable String contestYear,
+            UserWrapper user, ProposalContext proposalContext, @PathVariable String contestYear,
             @PathVariable String contestUrlName, @RequestParam(required = false) Tab tab,
             @RequestParam(value = "filterKey", required = false) String filterType,
             @RequestParam(required = false) String filterText,
@@ -112,7 +112,7 @@ public class ProposalPickerJSONController {
      */
     @GetMapping("proposals/proposalPickerCounter")
     public int proposalPickerCounter(HttpServletRequest request, HttpServletResponse response,
-            Member user, ProposalContext proposalContext, @PathVariable String contestYear,
+            UserWrapper user, ProposalContext proposalContext, @PathVariable String contestYear,
             @PathVariable String contestUrlName, @RequestParam String filterKey,
             @RequestParam long sectionId, @RequestParam Tab tab) throws IOException {
         long userId = user.getId();

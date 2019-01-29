@@ -2,7 +2,7 @@ package org.xcolab.view.pages.proposals.wrappers;
 
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
@@ -15,16 +15,16 @@ import org.xcolab.util.enums.promotion.JudgingSystemActions;
 import java.util.List;
 
 public class ProposalJudgeWrapper extends Proposal {
-    private final Member currentMember;
+    private final UserWrapper currentMember;
 
-    public ProposalJudgeWrapper(Proposal proposal, Member currentMember) {
+    public ProposalJudgeWrapper(Proposal proposal, UserWrapper currentMember) {
         super(proposal, proposal.getContestPhase());
         this.currentMember = currentMember;
         setProposalRatings(proposal.getId(), contestPhase);
     }
 
     public ProposalJudgeWrapper(Proposal proposal, int version, Contest contest,
-            ContestPhase contestPhase, Proposal2Phase proposal2Phase, Member currentMember) {
+            ContestPhase contestPhase, Proposal2Phase proposal2Phase, UserWrapper currentMember) {
         super(proposal, version, contest, contestPhase, proposal2Phase);
         this.currentMember = currentMember;
         setProposalRatings(proposal.getId(), contestPhase);

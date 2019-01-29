@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.client.flagging.FlaggingClient;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.util.enums.flagging.TargetType;
 
 import java.io.UnsupportedEncodingException;
@@ -20,7 +20,7 @@ public class FlaggingController {
     public ResponseJson report(HttpServletRequest request, HttpServletResponse response,
             @RequestParam TargetType targetType, @RequestParam long targetAdditionalId,
             @RequestParam String reason, @RequestParam String comment, @RequestParam long targetId,
-            Member loggedInMember) throws UnsupportedEncodingException {
+            UserWrapper loggedInMember) throws UnsupportedEncodingException {
 
         request.setCharacterEncoding("UTF-8");
 

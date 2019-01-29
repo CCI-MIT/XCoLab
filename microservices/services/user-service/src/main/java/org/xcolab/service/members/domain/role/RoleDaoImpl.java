@@ -4,7 +4,7 @@ import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.client.user.pojo.IRole;
+import org.xcolab.client.user.pojo.Role;
 
 import java.util.List;
 
@@ -23,21 +23,21 @@ public class RoleDaoImpl implements RoleDao {
     }
 
     @Override
-    public List<IRole> getUserRoles(Long userId) {
+    public List<Role> getUserRoles(Long userId) {
         return this.dslContext.select(ROLE.fields())
                 .from(USER_ROLE)
                 .join(ROLE).on(ROLE.ID.eq(USER_ROLE.ROLE_ID))
-                .where(USER_ROLE.USER_ID.equal(userId)).fetchInto(IRole.class);
+                .where(USER_ROLE.USER_ID.equal(userId)).fetchInto(Role.class);
     }
 
     @Override
-    public List<IRole> getUserRolesInContest(Long userId, Long contestId) {
+    public List<Role> getUserRolesInContest(Long userId, Long contestId) {
         return this.dslContext.select(ROLE.fields())
                 .from(ROLE)
                 .join(CONTEST_TEAM_MEMBER).on(CONTEST_TEAM_MEMBER.ROLE_ID.equal(ROLE.ID))
                 .where(CONTEST_TEAM_MEMBER.CONTEST_ID.equal(contestId))
                 .and(CONTEST_TEAM_MEMBER.USER_ID.equal(userId))
-                .fetchInto(IRole.class);
+                .fetchInto(Role.class);
     }
 
     @Override

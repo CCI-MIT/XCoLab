@@ -9,7 +9,7 @@ import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.tables.pojos.Comment;
 import org.xcolab.client.user.StaticUserContext;
 import org.xcolab.client.user.exceptions.MemberNotFoundException;
-import org.xcolab.client.user.pojo.IUser;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.html.HtmlUtil;
 
 import java.sql.Timestamp;
@@ -57,7 +57,7 @@ public interface IComment {
     }
 
     @JsonIgnore
-    default IUser getAuthor() {
+    default UserWrapper getAuthor() {
         try {
             return StaticUserContext.getUserClient().getUser(getAuthorUserId());
         } catch (MemberNotFoundException e) {

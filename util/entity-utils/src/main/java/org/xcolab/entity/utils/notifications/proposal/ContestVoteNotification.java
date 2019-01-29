@@ -1,9 +1,8 @@
 package org.xcolab.entity.utils.notifications.proposal;
 
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.user.pojo.IUser;
-import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.user.pojo.IUser;
 import org.xcolab.entity.utils.LinkUtils;
 import org.xcolab.entity.utils.notifications.basic.ProposalNotification;
 

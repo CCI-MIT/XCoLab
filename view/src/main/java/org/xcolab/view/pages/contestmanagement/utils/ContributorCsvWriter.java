@@ -2,7 +2,7 @@ package org.xcolab.view.pages.contestmanagement.utils;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalTeamMember;
@@ -65,7 +65,7 @@ public class ContributorCsvWriter extends CsvResponseWriter {
                 addValue(row, ribbonWrapper.getRibbon());
                 addValue(row, ribbonWrapper.getRibbonTitle());
 
-                final Member member = teamMember.getMember();
+                final UserWrapper member = teamMember.getMember();
                 addValue(row, member.getId());
                 addValue(row, member.getScreenName());
                 addValue(row, member.getFirstName());

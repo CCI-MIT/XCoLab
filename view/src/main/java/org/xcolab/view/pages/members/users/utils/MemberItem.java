@@ -3,10 +3,10 @@ package org.xcolab.view.pages.members.users.utils;
 import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.user.MembersClient;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.StaticUserContext;
 import org.xcolab.client.user.pojo.MemberCategory;
 import org.xcolab.client.user.pojo.Role;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -22,20 +22,20 @@ public class MemberItem implements Serializable {
     private final int points;
     private final MemberCategory memberCategory;
 
-    public MemberItem(Member member, String memberCategoryParam) {
+    public MemberItem(UserWrapper member, String memberCategoryParam) {
 
         userId = member.getId();
         activityCount = ActivitiesClientUtil.countActivities(member.getId(), null);
         displayName = member.getDisplayName();
         screenName = member.getScreenName();
         joinDate = member.getCreatedAt();
-        points = MembersClient.getMemberMaterializedPoints(userId);
+        points = StaticUserContext.getUserClient().getMemberMaterializedPoints(userId);
 
         if (StringUtils.isNotEmpty(memberCategoryParam)) {
-            memberCategory = MembersClient.getMemberCategory(memberCategoryParam);
+            memberCategory = StaticUserContext.getUserCategoryClient().getMemberCategory(memberCategoryParam);
         } else {
-            List<Role> roles = MembersClient.getMemberRoles(userId);
-            memberCategory = MembersClient.getHighestCategory(roles);
+            List<Role> roles = StaticUserContext.getUserClient().getUserRoles(userId,null);
+            memberCategory = StaticUserContext.getUserClient().getHighestCategory(roles);
         }
     }
 

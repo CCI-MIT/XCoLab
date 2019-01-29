@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.io.Serializable;
@@ -20,10 +20,10 @@ public class ProposalTeamMember implements Serializable {
                     new ParameterizedTypeReference<List<ProposalTeamMember>>() {});
 
     private final Proposal proposal;
-    private final Member member;
+    private final UserWrapper member;
     private ProposalMemberType memberType;
 
-    public ProposalTeamMember(Proposal proposal, Member member) {
+    public ProposalTeamMember(Proposal proposal, UserWrapper member) {
         super();
         this.proposal = proposal;
         this.member = member;
@@ -41,7 +41,7 @@ public class ProposalTeamMember implements Serializable {
         return member.getId();
     }
 
-    public Member getMember() {
+    public UserWrapper getMember() {
         return member;
     }
 

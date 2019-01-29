@@ -18,7 +18,7 @@ import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinitio
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.user.IUserClient;
-import org.xcolab.client.user.pojo.IUser;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.pojos.Proposal2Phase;
 import org.xcolab.model.tables.pojos.ProposalAttribute;
@@ -246,8 +246,8 @@ public class ProposalService {
         return contest;
     }
 
-    public List<IUser> getProposalMembers(Long proposalId) throws ProposalNotFoundException {
-        final List<IUser> members = proposalTeamMemberDao.findByProposalId(proposalId).stream()
+    public List<UserWrapper> getProposalMembers(Long proposalId) throws ProposalNotFoundException {
+        final List<UserWrapper> members = proposalTeamMemberDao.findByProposalId(proposalId).stream()
                 .map(ProposalTeamMember::getUserId)
                 .map(userClient::getMemberUnchecked)
                 .collect(Collectors.toList());

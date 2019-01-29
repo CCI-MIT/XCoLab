@@ -3,6 +3,7 @@ package org.xcolab.view.pages.ontologyeditor;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.ontology.OntologySpace;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
-import org.xcolab.client.user.PermissionsClient;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.IPermissionClient;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.errors.AccessDeniedPage;
 
 import java.io.IOException;
@@ -27,11 +28,14 @@ public class OntologyEditorController {
 
     private static final Integer THRESHOLD_TO_AVOID_NODE_COLLISION = 1000;
 
+    @Autowired
+    private IPermissionClient permissionClient;
+
     @GetMapping("/ontology-editor")
     public String handleRenderRequest(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member) {
+            Model model, UserWrapper member) {
 
-        if (!PermissionsClient.canAdminAll(member)) {
+        if (!permissionClient.canAdminAll(member)) {
             return new AccessDeniedPage(member).toViewName(response);
         }
         return "/ontology-editor/ontologyEditor";

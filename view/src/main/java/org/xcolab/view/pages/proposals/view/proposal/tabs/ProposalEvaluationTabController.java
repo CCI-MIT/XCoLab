@@ -9,7 +9,7 @@ import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
@@ -46,7 +46,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
 
     @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=EVALUATION")
     public String showEvaluation(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member currentMember, ProposalContext proposalContext) {
+            Model model, UserWrapper currentMember, ProposalContext proposalContext) {
 
         final ProposalsPermissions permissions = proposalContext.getPermissions();
         if (!permissions.getCanView()) {
@@ -89,7 +89,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
         return EVALUATION_TAB_VIEW_NAME;
     }
 
-    private JudgeProposalFeedbackBean getProposalRatingBean(Member currentMember,
+    private JudgeProposalFeedbackBean getProposalRatingBean(UserWrapper currentMember,
             ProposalContext proposalContext) {
 
         Proposal proposal = proposalContext.getProposal();

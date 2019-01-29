@@ -14,7 +14,7 @@ import org.xcolab.client.content.IContentClient;
 import org.xcolab.client.content.exceptions.ContentNotFoundException;
 import org.xcolab.client.content.pojo.IContentArticle;
 import org.xcolab.client.content.pojo.IContentPage;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.errors.ErrorText;
 
@@ -32,7 +32,7 @@ public class ContentController {
 
     @GetMapping("/page/{pageTitle}")
     public String showContentPage(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member, @PathVariable String pageTitle) throws IOException {
+            Model model, UserWrapper member, @PathVariable String pageTitle) throws IOException {
 
         try {
             final IContentPage contentPage = contentClient.getContentPage(pageTitle);

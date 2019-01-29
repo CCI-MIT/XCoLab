@@ -10,8 +10,9 @@ import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.util.TemplateReplacementUtilPlaceholder;
 import org.xcolab.client.email.IEmailClient;
 import org.xcolab.client.user.messaging.MessageLimitExceededException;
-import org.xcolab.client.user.pojo.IMessage;
 import org.xcolab.client.user.pojo.IUser;
+import org.xcolab.client.user.pojo.Message;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
 import org.xcolab.service.members.domain.member.UserDao;
@@ -46,7 +47,7 @@ public class MessagingService {
         this.emailClient = emailClient;
     }
 
-    public IMessage sendMessage(IMessage message, Collection<Long> recipientIds, boolean checkLimit, String threadId)
+    public Message sendMessage(Message message, Collection<Long> recipientIds, boolean checkLimit, String threadId)
             throws MessageLimitExceededException {
         if (checkLimit) {
             Long fromId = message.getFromId();
@@ -59,7 +60,7 @@ public class MessagingService {
                         final List<String> reportRecipients =
                                 ConfigurationAttributeKey.MESSAGING_SPAM_ALERT_EMAILS.get();
                         if (!reportRecipients.isEmpty()) {
-                            IUser from = memberDao.getUser(fromId)
+                            UserWrapper from = memberDao.getUser(fromId)
                                     .orElseThrow(() -> new InternalException(
                                             "Sender does not exist: " + fromId));
                             final String subject = String.format("[%s] User %s exceeded message limit",
@@ -85,11 +86,11 @@ public class MessagingService {
         }
     }
 
-    private IMessage sendMessage(IMessage messageBean, Collection<Long> recipientIds, String threadId) {
+    private Message sendMessage(Message messageBean, Collection<Long> recipientIds, String threadId) {
         if (messageBean.getSubject().isEmpty()) {
             messageBean.setSubject("(No Subject)");
         }
-        final IMessage message = messageDao.createMessage(messageBean).orElseThrow(
+        final Message message = messageDao.createMessage(messageBean).orElseThrow(
                 () -> new InternalException("Could not retrieve id of created message"));
 
         final Long messageId = message.getId();
@@ -123,11 +124,11 @@ public class MessagingService {
         return message;
     }
 
-    private void copyRecipient(IUser recipient, IMessage m) {
-        IUser from = memberDao.getUser(m.getFromId())
+    private void copyRecipient(UserWrapper recipient, Message m) {
+        UserWrapper from = memberDao.getUser(m.getFromId())
                 .orElseThrow(() -> ReferenceResolutionException
                         .toObject(IUser.class, m.getFromId())
-                        .fromObject(IMessage.class, m.getId()));
+                        .fromObject(Message.class, m.getId()));
 
         String subject = m.getSubject();
         if (subject.length() < 3) {
@@ -150,12 +151,12 @@ public class MessagingService {
                 fromEmail, ConfigurationAttributeKey.COLAB_NAME.get(), m.getId());
     }
 
-    private static String createMessageURL(IMessage m) {
+    private static String createMessageURL(Message m) {
         String home = PlatformAttributeKey.COLAB_URL.get();
         return home + MessageConstants.EMAIL_MESSAGE_URL_TEMPLATE + m.getId();
     }
 
-    private static String createProfileEditUrl(IUser member) {
+    private static String createProfileEditUrl(UserWrapper member) {
         String home = PlatformAttributeKey.COLAB_URL.get();
         return home + "/members/profile/" + member.getId() + "/edit";
     }

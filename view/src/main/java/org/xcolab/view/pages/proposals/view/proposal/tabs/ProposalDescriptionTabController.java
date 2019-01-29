@@ -19,13 +19,13 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
 import org.xcolab.client.flagging.FlaggingClient;
-import org.xcolab.client.user.PlatformTeamsClient;
-import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalMoveClient;
 import org.xcolab.client.proposals.pojo.ContestTypeProposal;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.ProposalMoveHistory;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.util.enums.contest.ContestPhaseTypeValue;
 import org.xcolab.util.enums.flagging.TargetType;
@@ -69,7 +69,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
 
     @GetMapping("c/{proposalUrlString}/{proposalId}")
     public String showProposalDetails(HttpServletRequest request, HttpServletResponse response,
-            Model model, ProposalContext proposalContext, Member currentMember,
+            Model model, ProposalContext proposalContext, UserWrapper currentMember,
             @PathVariable Long contestYear,
             @PathVariable String contestUrlName, @PathVariable Long proposalId,
             @RequestParam(defaultValue = "false") boolean edit,
@@ -83,7 +83,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
     }
 
     public String showProposalDetails(HttpServletRequest request, HttpServletResponse response,
-            Model model, ProposalContext proposalContext, Member currentMember,
+            Model model, ProposalContext proposalContext, UserWrapper currentMember,
             boolean voted, boolean edit, Long moveFromContestPhaseId, String moveType) {
 
         final ProposalsPermissions permissions = proposalContext.getPermissions();
@@ -166,7 +166,8 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
                     ConfigurationAttributeKey.PROPOSALS_SAVE_HELP_TEXT.get());
             model.addAttribute("proposalPickerDefaultTabIsContests",
                     ConfigurationAttributeKey.PROPOSALS_PICKER_DEFAULT_TAB_CONTESTS.get());
-            model.addAttribute("userTeams", PlatformTeamsClient.getTeams(currentMember));
+            model.addAttribute("userTeams", StaticUserContext.getPlatformTeamClient()
+                    .listPlatformTeams(currentMember.getId()));
 
             return "proposals/proposalDetails_edit";
         }
@@ -244,7 +245,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
                 contestTypeProposalWrappersByContestTypeId);
     }
 
-    private void setJudgeProposalBean(Model model, ProposalContext proposalContext, Member member) {
+    private void setJudgeProposalBean(Model model, ProposalContext proposalContext, UserWrapper member) {
         final JudgeProposalFeedbackBean judgeProposalFeedbackBean =
                 (JudgeProposalFeedbackBean) model.asMap().get("judgeProposalFeedbackBean");
         if (judgeProposalFeedbackBean == null
@@ -300,7 +301,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
 
     @PostMapping("c/{proposalUrlString}/{proposalId}")
     public String updateProposal(HttpServletRequest request, HttpServletResponse response,
-            Model model, ProposalContext proposalContext, Member currentMember,
+            Model model, ProposalContext proposalContext, UserWrapper currentMember,
             @PathVariable String contestYear, @PathVariable String contestUrlName,
             @PathVariable String proposalUrlString, @PathVariable String proposalId,
             @Valid UpdateProposalDetailsBean updateProposalDetailsBean, BindingResult result)

@@ -9,7 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.WebUtils;
 
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.client.tracking.pojo.ITrackedVisit;
 import org.xcolab.commons.http.servlet.RequestUtil;
 import org.xcolab.view.auth.AuthenticationContext;
@@ -55,7 +55,7 @@ public class UserTrackingFilter extends OncePerRequestFilter {
             return;
         }
 
-        final Member realMemberOrNull = new AuthenticationContext().getRealMemberOrNull();
+        final UserWrapper realMemberOrNull = new AuthenticationContext().getRealMemberOrNull();
         Cookie userTrackingCookie = WebUtils.getCookie(request, COOKIE_NAME);
         String uuid = userTrackingCookie != null ? userTrackingCookie.getValue() : null;
 

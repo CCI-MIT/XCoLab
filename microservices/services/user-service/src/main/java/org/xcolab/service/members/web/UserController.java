@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.xcolab.client.user.IUserClient;
 import org.xcolab.client.user.exceptions.MemberNotFoundException;
 import org.xcolab.client.user.pojo.IRole;
-import org.xcolab.client.user.pojo.IUser;
+import org.xcolab.client.user.pojo.Role;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.service.members.domain.member.UserDao;
 import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.members.service.member.UserService;
@@ -48,7 +49,7 @@ public class UserController implements IUserClient {
 
     @Override
     @GetMapping
-    public List<IUser> listUsers(HttpServletResponse response,
+    public List<UserWrapper> listUsers(
             @RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
             @RequestParam(required = false) String sort,
@@ -64,8 +65,8 @@ public class UserController implements IUserClient {
             @RequestParam(required = false) String climateXId) {
         PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
 
-        response.setHeader(ControllerUtils.COUNT_HEADER_NAME,
-                Integer.toString(memberDao.countByGiven(partialName, partialEmail, roleName)));
+//        response.setHeader(ControllerUtils.COUNT_HEADER_NAME,
+//                Integer.toString(memberDao.countByGiven(partialName, partialEmail, roleName)));
 
         return memberDao.findByGiven(paginationHelper, partialName, partialEmail,
                 roleName, email, screenName, facebookId, googleId, colabSsoId, climateXId, roleIds);
@@ -73,19 +74,19 @@ public class UserController implements IUserClient {
 
     @Override
     @GetMapping("findByIp")
-    public List<IUser> getUserByIp(@RequestParam String ip) {
+    public List<UserWrapper> getUserByIp(@RequestParam String ip) {
         return memberDao.findByIp(ip);
     }
 
     @Override
     @GetMapping("findByScreenNameOrName")
-    public List<IUser> getUserByScreenNameName(@RequestParam String name) {
+    public List<UserWrapper> getUserByScreenNameName(@RequestParam String name) {
         return memberDao.findByScreenNameName(name);
     }
 
     @Override
     @GetMapping("findByScreenName")
-    public IUser getUserByScreenNameNoRole(@RequestParam String screenName)
+    public UserWrapper getUserByScreenNameNoRole(@RequestParam String screenName)
             throws MemberNotFoundException {
         if (screenName == null) {
             throw new MemberNotFoundException("No message id given");
@@ -97,7 +98,7 @@ public class UserController implements IUserClient {
 
     @Override
     @GetMapping("{userId}")
-    public IUser getUser(@PathVariable long userId) throws MemberNotFoundException {
+    public UserWrapper getUser(@PathVariable long userId) throws MemberNotFoundException {
         if (userId == 0) {
             throw new MemberNotFoundException("No member id given");
         } else {
@@ -107,7 +108,7 @@ public class UserController implements IUserClient {
 
     @Override
     @PutMapping(value = "{userId}")
-    public boolean updateUser(@RequestBody IUser member, @PathVariable Long userId)
+    public boolean updateUser(@RequestBody UserWrapper member, @PathVariable Long userId)
             throws MemberNotFoundException {
         if (userId == 0 || memberDao.getUser(userId) == null) {
             throw new MemberNotFoundException("No member with id " + userId);
@@ -121,7 +122,7 @@ public class UserController implements IUserClient {
         if (userId == 0) {
             throw new MemberNotFoundException("No message id given");
         } else {
-            final IUser member =
+            final UserWrapper member =
                     memberDao.getUser(userId).orElseThrow(MemberNotFoundException::new);
             member.setStatus(5);
             return memberDao.updateUser(member);
@@ -130,7 +131,7 @@ public class UserController implements IUserClient {
 
     @Override
     @GetMapping("{userId}/roles")
-    public List<IRole> getUserRoles(@PathVariable long userId,
+    public List<Role> getUserRoles(@PathVariable long userId,
             @RequestParam(required = false) Long contestId) {
         if (contestId == null) {
             return this.roleService.getUserRoles(userId);
@@ -163,7 +164,7 @@ public class UserController implements IUserClient {
 
     @Override
     @PostMapping
-    public IUser register(@RequestBody IUser member) {
+    public UserWrapper register(@RequestBody UserWrapper member) {
         return memberService.register(member);
     }
 
@@ -186,7 +187,7 @@ public class UserController implements IUserClient {
 
     @Override
     @PutMapping("{userId}/subscribe")
-    public boolean subscribe(@PathVariable long userId) throws MemberNotFoundException {
+    public boolean subscribeToNewsletter(@PathVariable long userId) throws MemberNotFoundException {
         try {
             return memberService.subscribeToNewsletter(userId);
         } catch (NotFoundException e) {
@@ -196,7 +197,7 @@ public class UserController implements IUserClient {
 
     @Override
     @PutMapping("{userId}/unsubscribe")
-    public boolean unsubscribe(@PathVariable long userId) throws MemberNotFoundException {
+    public boolean unsubscribeToNewsletter(@PathVariable long userId) throws MemberNotFoundException {
         try {
             return memberService.unsubscribeFromNewsletter(userId);
         } catch (NotFoundException e) {
@@ -206,11 +207,11 @@ public class UserController implements IUserClient {
 
     @Override
     @GetMapping("{userId}/isSubscribed")
-    public boolean isSubscribed(@PathVariable long userId)
+    public boolean isSubscribedToNewsletter(@PathVariable long userId)
             throws IOException, MemberNotFoundException {
         try {
             return memberService.isSubscribedToNewsletter(userId);
-        } catch (NotFoundException e) {
+        } catch (NotFoundException  e) {
             throw new MemberNotFoundException("User with id " + userId + "does not exist");
         }
     }

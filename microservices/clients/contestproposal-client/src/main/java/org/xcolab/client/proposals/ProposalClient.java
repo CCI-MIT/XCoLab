@@ -10,7 +10,7 @@ import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.resources.ProposalResource;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalDto;
@@ -160,8 +160,8 @@ public final class ProposalClient {
     }
 
     //TODO: move to proposals/{proposalId}/teamMembers endpoint
-    public List<Member> getProposalMembers(Long proposalId) {
-        return proposalResource.elementService(proposalId, "allMembers", Member.TYPES.getTypeReference())
+    public List<UserWrapper> getProposalMembers(Long proposalId) {
+        return proposalResource.elementService(proposalId, "allMembers", UserWrapper.TYPES.getTypeReference())
                 .getList();
     }
 

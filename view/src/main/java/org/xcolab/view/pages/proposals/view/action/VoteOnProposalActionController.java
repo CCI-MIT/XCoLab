@@ -15,11 +15,12 @@ import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.user.MembersClient;
-import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.proposals.ProposalMemberRatingClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
+import org.xcolab.client.user.IUserClient;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.entity.utils.notifications.proposal.ProposalVoteNotification;
 import org.xcolab.util.activities.enums.ProposalActivityType;
@@ -48,15 +49,19 @@ public class VoteOnProposalActionController {
 
     private final ProposalDescriptionTabController proposalDescriptionTabController;
 
+    private final IUserClient userClient;
+
     @Autowired
     public VoteOnProposalActionController(
-            ProposalDescriptionTabController proposalDescriptionTabController) {
+            ProposalDescriptionTabController proposalDescriptionTabController,
+            IUserClient userClient) {
         this.proposalDescriptionTabController = proposalDescriptionTabController;
+        this.userClient = userClient;
     }
 
     @PostMapping("vote")
     public String handleAction(HttpServletRequest request, HttpServletResponse response,
-            Model model, ProposalContext proposalContext, Member member,
+            Model model, ProposalContext proposalContext, UserWrapper member,
             @RequestParam(defaultValue = "1") int voteValue)
             throws ProposalsAuthorizationException {
 
@@ -168,7 +173,7 @@ public class VoteOnProposalActionController {
     @GetMapping("vote")
     public String handleInvalidGetRequestToVotePage(HttpServletRequest request,
             HttpServletResponse response, Model model, ProposalContext proposalContext,
-            Member member) {
+            UserWrapper member) {
 
         AlertMessage.warning(
                 "Your vote hasn't been recorded, please make sure to click the button only once.")
@@ -180,7 +185,7 @@ public class VoteOnProposalActionController {
 
     @GetMapping("voted")
     public String showVoteSuccess(HttpServletRequest request, HttpServletResponse response,
-            Model model, ProposalContext proposalContext, Member currentMember,
+            Model model, ProposalContext proposalContext, UserWrapper currentMember,
             @PathVariable Long contestYear,
             @PathVariable String contestUrlName, @PathVariable Long proposalId) {
         return proposalDescriptionTabController.showProposalDetails(request, response, model,
@@ -202,9 +207,13 @@ public class VoteOnProposalActionController {
                         proposal.getId(), userId);
 
         if (vote != null && isValidToken(confirmationToken, vote)) {
-            final Member member = MembersClient.getMemberUnchecked(vote.getUserId());
+            final UserWrapper member = userClient.getMemberUnchecked(vote.getUserId());
             member.setIsEmailConfirmed(true);
-            MembersClient.updateMember(member);
+            try {
+                userClient.updateUser(member);
+            }catch (MemberNotFoundException e){
+
+            }
 
             vote.setIsValid(true);
             vote.setLastValidationResult("USER_CONFIRMED_VOTE");

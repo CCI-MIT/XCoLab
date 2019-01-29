@@ -9,13 +9,13 @@ import java.io.Serializable;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class StaffMember implements Serializable {
+public class StaffUserWrapper implements Serializable {
 
     private static final long serialVersionUID = 533221781;
 
-    public static final TypeProvider<StaffMember> TYPES =
-            new TypeProvider<>(StaffMember.class,
-                    new ParameterizedTypeReference<List<StaffMember>>() {
+    public static final TypeProvider<StaffUserWrapper> TYPES =
+            new TypeProvider<>(StaffUserWrapper.class,
+                    new ParameterizedTypeReference<List<StaffUserWrapper>>() {
                     });
 
     private Long id;
@@ -29,10 +29,10 @@ public class StaffMember implements Serializable {
     private String organization;
     private Integer sort;
 
-    public StaffMember() {
+    public StaffUserWrapper() {
     }
 
-    public StaffMember(StaffMember value) {
+    public StaffUserWrapper(StaffUserWrapper value) {
         this.id = value.id;
         this.userId = value.userId;
         this.categoryId = value.categoryId;
@@ -45,7 +45,7 @@ public class StaffMember implements Serializable {
         this.sort = value.sort;
     }
 
-    public StaffMember(Long id, Long userId, Long categoryId, String firstNames,
+    public StaffUserWrapper(Long id, Long userId, Long categoryId, String firstNames,
             String lastName, String url, String photoUrl, String role, String organization,
             Integer sort) {
         this.id = id;
@@ -151,7 +151,7 @@ public class StaffMember implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final StaffMember other = (StaffMember) obj;
+        final StaffUserWrapper other = (StaffUserWrapper) obj;
         if (id == null) {
             if (other.id != null) {
                 return false;

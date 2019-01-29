@@ -8,7 +8,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.client.tracking.ITrackingClient;
 import org.xcolab.client.tracking.pojo.ITrackedVisit;
 
@@ -33,7 +33,7 @@ public class UserTrackingService {
 
 
     @Async
-    public Future<ITrackedVisit> trackVisitor(HttpServletRequest request, String uuid, Member loggedInMember,
+    public Future<ITrackedVisit> trackVisitor(HttpServletRequest request, String uuid, UserWrapper loggedInMember,
             String url, String referer) {
 
         String browser = request.getHeader(HttpHeaders.USER_AGENT);

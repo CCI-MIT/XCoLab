@@ -16,7 +16,7 @@ import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -68,7 +68,7 @@ public class ProposalsPreferencesController extends AbstractWidgetController<Pro
 
     @GetMapping(PREFERENCES_URL_PATH)
     public String showPreferences(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member, ProposalContext proposalContext,
+            Model model, UserWrapper member, ProposalContext proposalContext,
             @RequestParam(required = false) String preferenceId,
             @RequestParam(required = false) String language) {
 
@@ -123,7 +123,7 @@ public class ProposalsPreferencesController extends AbstractWidgetController<Pro
 
     @PostMapping(PREFERENCES_URL_PATH)
     public String savePreferences(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member, ProposalContext proposalContext, ProposalsPreferencesWrapper preferences) {
+            Model model, UserWrapper member, ProposalContext proposalContext, ProposalsPreferencesWrapper preferences) {
 
         //care about moving proposals
         Long moveToContestPhaseId = preferences.getMoveToContestId();
@@ -160,9 +160,9 @@ public class ProposalsPreferencesController extends AbstractWidgetController<Pro
                 //author id check
                 Long authorUserId = p.getAuthorUserId();
 
-                List<Member> members = proposalContext.getClients().getProposalClient().getProposalMembers(p.getId());
+                List<UserWrapper> members = proposalContext.getClients().getProposalClient().getProposalMembers(p.getId());
                 boolean foundAuthor = false;
-                for (Member u: members) {
+                for (UserWrapper u: members) {
                     if (u.getId() == authorUserId) {
                         foundAuthor = true;
                     }
@@ -175,7 +175,7 @@ public class ProposalsPreferencesController extends AbstractWidgetController<Pro
                 boolean warningIssued = false;
                 for (ProposalVersion pv: proposalContext.getClients().getProposalClient().getAllProposalVersions(p.getId())) {
                     boolean foundVersionAuthor = false;
-                    for (Member u: members) {
+                    for (UserWrapper u: members) {
                         if (u.getId() == pv.getAuthorUserId()) {
                             foundVersionAuthor = true;
                         }

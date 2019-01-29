@@ -5,13 +5,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.switchuser.SwitchUserFilter;
 import org.springframework.security.web.authentication.switchuser.SwitchUserGrantedAuthority;
 
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.auth.login.spring.MemberDetails;
 
 import java.util.Objects;
 
 public class AuthenticationContext {
-q
+
     public boolean isLoggedIn() {
         return getMemberOrNull() != null;
     }
@@ -20,15 +20,15 @@ q
         return !Objects.equals(getRealMemberOrNull(), getMemberOrNull());
     }
 
-    public Member getRealMemberOrNull() {
-        Member impersonatedUser = getImpersonatedUser();
+    public UserWrapper getRealMemberOrNull() {
+        UserWrapper impersonatedUser = getImpersonatedUser();
         if (impersonatedUser != null) {
             return impersonatedUser;
         }
         return getMemberOrNull();
     }
 
-    private Member getImpersonatedUser() {
+    private UserWrapper getImpersonatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
             return authentication.getAuthorities().stream()
@@ -46,7 +46,7 @@ q
         return null;
     }
 
-    public Member getMemberOrNull() {
+    public UserWrapper getMemberOrNull() {
         final Authentication authentication =
                 SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated() && authentication

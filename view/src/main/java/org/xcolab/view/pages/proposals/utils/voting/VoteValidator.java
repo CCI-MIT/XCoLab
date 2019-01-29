@@ -4,12 +4,12 @@ import org.joda.time.DateTime;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.user.MembersClient;
-import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
-import org.xcolab.entity.utils.notifications.proposal.ProposalVoteValidityConfirmation;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.exceptions.InternalException;
+import org.xcolab.entity.utils.notifications.proposal.ProposalVoteValidityConfirmation;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 
 import java.sql.Timestamp;
@@ -25,13 +25,13 @@ public class VoteValidator {
     private static final int SHARED_IP_VOTE_SUSPICION_THRESHOLD = 7;
     private static final int SHARED_IP_CONFIRMATION_THRESHOLD = 3;
 
-    private final Member member;
+    private final UserWrapper member;
     private final Proposal proposal;
     private final Contest contest;
     private final String remoteIp;
     private final ClientHelper clients;
 
-    public VoteValidator(Member member, Proposal proposal, Contest contest,
+    public VoteValidator(UserWrapper member, Proposal proposal, Contest contest,
             String remoteIp, ClientHelper clients) {
         this.member = member;
         this.proposal = proposal;
@@ -72,17 +72,17 @@ public class VoteValidator {
             return ValidationResult.VALID;
         }
 
-        List<Member> usersWithSharedIP = MembersClient.findMembersByIp(remoteIp);
+        List<UserWrapper> usersWithSharedIP = StaticUserContext.getUserClient().getUserByIp(remoteIp);
         usersWithSharedIP.remove(member);
 
-        for (Member otherMember : usersWithSharedIP) {
+        for (UserWrapper otherMember : usersWithSharedIP) {
             if (member.hasSameName(otherMember)) {
                 return ValidationResult.INVALID_DUPLICATE;
             }
         }
 
         List<ProposalVote> recentVotesFromSharedIp = new ArrayList<>();
-        for (Member otherMember : usersWithSharedIP) {
+        for (UserWrapper otherMember : usersWithSharedIP) {
             final ProposalVote otherVote = getVote(otherMember);
             if (otherVote != null) {
                 if (isRecentVote(otherVote)) {
@@ -121,12 +121,12 @@ public class VoteValidator {
         vote.setIsValid(false);
         clients.getProposalMemberRatingClient().updateProposalVote(vote);
 
-        Member member = MembersClient.getMemberUnchecked(vote.getUserId());
+        UserWrapper member = StaticUserContext.getUserClient().getMemberUnchecked(vote.getUserId());
         new ProposalVoteValidityConfirmation(proposal, contest, member, confirmationToken)
                 .sendEmailNotification();
     }
 
-    private ProposalVote getVote(Member votingMember) {
+    private ProposalVote getVote(UserWrapper votingMember) {
         return clients.getProposalMemberRatingClient()
                 .getProposalVoteByProposalIdUserId(proposal.getId(),
                         votingMember.getId());

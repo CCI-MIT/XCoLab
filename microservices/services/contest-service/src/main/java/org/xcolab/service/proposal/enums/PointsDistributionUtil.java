@@ -1,7 +1,7 @@
 package org.xcolab.service.proposal.enums;
 
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.user.pojo.IUser;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.model.tables.pojos.PointType;
 import org.xcolab.model.tables.pojos.PointsDistributionConfiguration;
 import org.xcolab.model.tables.pojos.Proposal;
@@ -24,8 +24,8 @@ public class PointsDistributionUtil {
     public static List<PointsTarget> distributeEquallyAmongContributors(long proposalId) {
         List<PointsTarget> targets = new ArrayList<>();
         try{
-            List<IUser> members = proposalService.getProposalMembers(proposalId);
-            for (IUser u : members) {
+            List<UserWrapper> members = proposalService.getProposalMembers(proposalId);
+            for (UserWrapper u : members) {
                 targets.add(PointsTarget.forUser(u.getId(), 1.0d / members.size()));
             }
         } catch(ProposalNotFoundException ignored)  {}

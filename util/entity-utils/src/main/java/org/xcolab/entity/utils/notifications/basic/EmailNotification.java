@@ -18,8 +18,8 @@ import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.helpers.ProposalAttributeHelper;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.user.MessagingClient;
-import org.xcolab.client.user.pojo.IUser;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.entity.utils.notifications.EmailTemplateWrapper;
@@ -204,7 +204,7 @@ public abstract class EmailNotification {
 
     protected abstract Long getReferenceId();
 
-    protected abstract IUser getRecipient();
+    protected abstract UserWrapper getRecipient();
 
     protected abstract EmailTemplateWrapper getTemplateWrapper();
 
@@ -234,7 +234,7 @@ public abstract class EmailNotification {
         }
     }
 
-    private void sendEmail(String subject, String body, IUser recipient) {
+    private void sendEmail(String subject, String body, UserWrapper recipient) {
         try {
             InternetAddress fromEmail = TemplateReplacementUtil.getAdminFromEmailAddress();
             InternetAddress toEmail = new InternetAddress(recipient.getEmailAddress(), recipient.getFullName());
@@ -259,7 +259,7 @@ public abstract class EmailNotification {
             EmailTemplateWrapper template = getTemplateWrapper();
             String content = template.getHeader() + template.getFooter();
             content = content.replace("\n", " ").replace("\r", " ");
-            MessagingClient
+            StaticUserContext.getMessagingClient()
                     .sendMessage(template.getSubject(), content, ADMINISTRATOR_USER_ID, null,
                                 recipients);
         }

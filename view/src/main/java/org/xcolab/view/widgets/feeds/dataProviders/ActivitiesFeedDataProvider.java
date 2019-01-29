@@ -6,10 +6,11 @@ import org.springframework.ui.Model;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivityEntry;
-import org.xcolab.client.user.MembersClient;
+import org.xcolab.client.user.IUserCategoryClient;
+import org.xcolab.client.user.IUserClient;
 import org.xcolab.client.user.permissions.SystemRole;
-import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.user.pojo.MemberCategory;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
 import org.xcolab.view.util.entity.ActivityUtil;
 import org.xcolab.view.util.pagination.SortFilterPage;
@@ -31,9 +32,16 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
 
     private final ActivityEntryHelper activityEntryHelper;
 
+    private final IUserClient userClient;
+
+    private final IUserCategoryClient userCategoryClient;
+
     @Autowired
-    public ActivitiesFeedDataProvider(ActivityEntryHelper activityEntryHelper) {
+    public ActivitiesFeedDataProvider(ActivityEntryHelper activityEntryHelper, IUserClient userClient,
+            IUserCategoryClient userCategoryClient) {
         this.activityEntryHelper = activityEntryHelper;
+        this.userClient = userClient;
+        this.userCategoryClient = userCategoryClient;
     }
 
     @Override
@@ -52,7 +60,7 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
         if (userIdStr != null) {
             try {
                 filterUserId = Long.parseLong(userIdStr);
-                Member filterUser = MembersClient.getMember(filterUserId);
+                UserWrapper filterUser = userClient.getMember(filterUserId);
                 model.addAttribute("filterUserId", filterUserId);
                 model.addAttribute("filterUser", filterUser);
             } catch (Throwable ignored) {
@@ -61,24 +69,24 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
         HashMap<Long, Long> idsToExclude = new HashMap<>();
         if (feedsPreferences.getRemoveAdmin()) {//STAFF
             final MemberCategory memberCategory =
-                    MembersClient.getMemberCategory(SystemRole.ADMINISTRATOR.getRoleId());
+                    userCategoryClient.getMemberCategory(SystemRole.ADMINISTRATOR.getRoleId());
 
-            List<Member> adminList = MembersClient.listMembers(memberCategory.getCategoryName(),
+            List<UserWrapper> adminList = userClient.listMembers(memberCategory.getCategoryName(),
                     null, null, null, true,
                     0, Integer.MAX_VALUE);
-            for (Member m : adminList) {
+            for (UserWrapper m : adminList) {
                 idsToExclude.put(m.getId(), m.getId());
             }
         }
 
         final MemberCategory memberCategory =
-                MembersClient.getMemberCategory(SystemRole.STAFF.getRoleId());
+                userCategoryClient.getMemberCategory(SystemRole.STAFF.getRoleId());
 
-        List<Member> staffList = MembersClient
+        List<UserWrapper> staffList = userClient
                 .listMembers(memberCategory.getCategoryName(), null, null, null, true,
                         0, Integer.MAX_VALUE);
         if (staffList != null && !staffList.isEmpty()) {
-            for (Member m : staffList) {
+            for (UserWrapper m : staffList) {
                 idsToExclude.put(m.getId(), m.getId());
             }
         }

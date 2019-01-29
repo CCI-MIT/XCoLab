@@ -3,7 +3,7 @@ package org.xcolab.service.members.service.role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import org.xcolab.client.user.pojo.IRole;
+import org.xcolab.client.user.pojo.Role;
 import org.xcolab.service.members.domain.role.RoleDao;
 
 import java.util.List;
@@ -18,11 +18,11 @@ public class RoleService {
         this.roleDao = roleDao;
     }
 
-    public List<IRole> getUserRoles(Long userId) {
+    public List<Role> getUserRoles(Long userId) {
         return this.roleDao.getUserRoles(userId);
     }
 
-    public List<IRole> getUserRolesInContest(Long userId, Long contestId) {
+    public List<Role> getUserRolesInContest(Long userId, Long contestId) {
         return this.roleDao.getUserRolesInContest(userId, contestId);
     }
 

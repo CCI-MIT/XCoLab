@@ -15,7 +15,7 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.impact.ImpactIteration;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.client.proposals.ProposalAttributeClient;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.enums.ImpactSeriesType;
@@ -104,7 +104,7 @@ public class ProposalImpactJSONController {
 
     @PostMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/IMPACT/proposalImpactSaveDataSeries")
     public void proposalImpactSaveDataSeries(HttpServletRequest request,
-            HttpServletResponse response, ProposalContext proposalContext, Member member,
+            HttpServletResponse response, ProposalContext proposalContext, UserWrapper member,
             @RequestParam(value = "focusAreaId") Long focusAreaId) throws IOException {
 
         JSONObject responseJSON = new JSONObject();
@@ -175,7 +175,7 @@ public class ProposalImpactJSONController {
 
     @PostMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/IMPACT/proposalImpactUpdateAllSeries")
     public void proposalImpactUpdateAllDataSeries(HttpServletRequest request,
-            HttpServletResponse response, ProposalContext proposalContext, Member member)
+            HttpServletResponse response, ProposalContext proposalContext, UserWrapper member)
             throws IOException {
 
         JSONObject responseJSON = new JSONObject();
@@ -211,7 +211,7 @@ public class ProposalImpactJSONController {
 
     @PostMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/IMPACT/proposalImpactSaveBasicProposalComment")
     public void proposalImpactSaveBasicProposalComment(HttpServletRequest request,
-            HttpServletResponse response, ProposalContext proposalContext, Member currentMember,
+            HttpServletResponse response, ProposalContext proposalContext, UserWrapper currentMember,
             @RequestParam(required = false) String impactAuthorComment,
             @RequestParam(required = false) String impactIAFComment)
             throws IOException {

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.ContestSchedule;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.html.LabelStringValue;
 import org.xcolab.commons.html.LabelValue;
 import org.xcolab.commons.servlet.flash.AlertMessage;
@@ -84,7 +84,7 @@ public class SchedulesTabController extends AbstractTabController {
 
     @GetMapping("tab/SCHEDULES")
     public String showScheduleTabController(HttpServletRequest request,
-            HttpServletResponse response, Model model, Member member,
+            HttpServletResponse response, Model model, UserWrapper member,
             @RequestParam(value = "elementId", required = false) Long elementId) {
         if (!tabWrapper.getCanView()) {
             return new AccessDeniedPage(member).toViewName(response);
@@ -110,7 +110,7 @@ public class SchedulesTabController extends AbstractTabController {
 
     @PostMapping("tab/SCHEDULES")
     public String performAction(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member, Action action,
+            Model model, UserWrapper member, Action action,
             @RequestParam(required = false) Long elementId,
             @ModelAttribute ContestScheduleBean contestScheduleBean, BindingResult result) {
 
@@ -135,7 +135,7 @@ public class SchedulesTabController extends AbstractTabController {
     }
 
     private String createSchedule(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member) {
+            Model model, UserWrapper member) {
         ContestSchedule newContestSchedule = ContestScheduleLifecycleUtil.createNewSchedule();
 
         AlertMessage.CREATED.flash(request);
@@ -144,7 +144,7 @@ public class SchedulesTabController extends AbstractTabController {
     }
 
     private String updateSchedule(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member, ContestScheduleBean contestScheduleBean, BindingResult result) {
+            Model model, UserWrapper member, ContestScheduleBean contestScheduleBean, BindingResult result) {
 
         contestScheduleBean.setPhaseEndDates();
 
@@ -171,7 +171,7 @@ public class SchedulesTabController extends AbstractTabController {
     }
 
     private String deleteSchedule(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member, Long scheduleId) {
+            Model model, UserWrapper member, Long scheduleId) {
 
         ContestScheduleLifecycleUtil.deleteContestSchedule(scheduleId);
 

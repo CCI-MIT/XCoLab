@@ -6,25 +6,25 @@ import org.jsoup.nodes.TextNode;
 
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.pojo.IEmailTemplate;
-import org.xcolab.client.user.pojo.IUser;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 
 public class MemberNotification extends EmailNotification {
 
     protected final String templateName;
-    protected final IUser recipient;
+    protected final UserWrapper recipient;
     protected EmailNotificationTemplate templateWrapper;
 
     private static final String SENDER_NAME_PLACEHOLDER = "sender-name";
     private static final String SENDER_LASTNAME_PLACEHOLDER = "sender-lastname";
     private static final String SENDER_SCREENNAME_PLACEHOLDER = "sender-screenname";
 
-    public MemberNotification(IUser recipient, String templateName) {
+    public MemberNotification(UserWrapper recipient, String templateName) {
         this.recipient = recipient;
         this.templateName = templateName;
     }
 
     @Override
-    protected IUser getRecipient() {
+    protected UserWrapper getRecipient() {
         return recipient;
     }
 

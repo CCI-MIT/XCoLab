@@ -11,7 +11,7 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
 import org.xcolab.client.contest.pojo.templates.ProposalTemplate;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.client.user.pojo.Role;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
@@ -37,7 +37,7 @@ public class ProposalMoveJsonController {
             throws IOException {
 
         boolean admin = false;
-        Member member = MemberAuthUtil.getMemberOrNull();
+        UserWrapper member = MemberAuthUtil.getMemberOrNull();
         if (member != null) {
             List<Role> roles = member.getRoles();
 

@@ -1,9 +1,9 @@
 package org.xcolab.view.pages.messaging.paging;
 
-import org.xcolab.client.user.MessagingClient;
+import org.xcolab.client.user.StaticUserContext;
 import org.xcolab.client.user.legacy.enums.MessageType;
-import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.user.pojo.Message;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.pages.messaging.beans.MessageBean;
 
 import java.util.ArrayList;
@@ -11,18 +11,18 @@ import java.util.List;
 
 public class MessageDataPage {
 
-    private Member member;
+    private UserWrapper member;
     private List<MessageBean> messages;
 
     @SuppressWarnings("unused")
     public MessageDataPage() { }
 
-    public MessageDataPage(Member member, MessageType messageType, int pageSize, int pageNumber) {
+    public MessageDataPage(UserWrapper member, MessageType messageType, int pageSize, int pageNumber) {
         this.member = member;
 
         final int firstMessage = pageSize * (pageNumber - 1);
         final int lastMessage = pageSize * pageNumber;
-        List<Message> messagesRaw = MessagingClient
+        List<Message> messagesRaw = StaticUserContext.getMessagingClient()
                 .getMessages(member.getId(), firstMessage, lastMessage, messageType);
 
         this.messages = new ArrayList<>();
@@ -35,11 +35,11 @@ public class MessageDataPage {
         }
     }
 
-    public Member getUser() {
+    public UserWrapper getUser() {
         return member;
     }
 
-    public void setUser(Member user) {
+    public void setUser(UserWrapper user) {
         this.member = user;
     }
 

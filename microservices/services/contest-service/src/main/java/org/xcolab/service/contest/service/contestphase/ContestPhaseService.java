@@ -7,16 +7,14 @@ import org.springframework.stereotype.Service;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.user.IUserClient;
-import org.xcolab.client.user.MembersClient;
-import org.xcolab.client.user.StaticUserContext;
-import org.xcolab.client.user.pojo.IUser;
-import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.user.IUserClient;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
+import org.xcolab.commons.GroupingHelper;
 import org.xcolab.entity.utils.notifications.contest.ContestVoteQuestionNotification;
 import org.xcolab.entity.utils.notifications.proposal.ContestVoteNotification;
 import org.xcolab.model.tables.pojos.Contest;
@@ -28,7 +26,6 @@ import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.service.contest.ContestService;
 import org.xcolab.service.contest.utils.promotion.PhasePromotionHelper;
 import org.xcolab.service.contest.utils.promotion.enums.ContestStatus;
-import org.xcolab.commons.GroupingHelper;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -92,9 +89,9 @@ public class ContestPhaseService {
                 .map(Proposal::getId)
                 .collect(Collectors.toSet());
 
-        Map<IUser, Set<Proposal>> supportedProposalsByMember =
+        Map<UserWrapper, Set<Proposal>> supportedProposalsByMember =
                 getSupportedProposalsByMember(contest);
-        for (IUser user : supportedProposalsByMember.keySet()) {
+        for (UserWrapper user : supportedProposalsByMember.keySet()) {
 
             List<Proposal> supportedProposalsInPhase = supportedProposalsByMember.get(user).stream()
                     .filter(p -> proposalIdsInPhase.contains(p.getId()))
@@ -123,7 +120,7 @@ public class ContestPhaseService {
         }
     }
 
-    private Map<IUser, Set<Proposal>> getSupportedProposalsByMember(Contest contest) {
+    private Map<UserWrapper, Set<Proposal>> getSupportedProposalsByMember(Contest contest) {
         List<Proposal> proposalsInContest = ProposalClientUtil
                 .getProposalsInContest(contest.getId());
 

@@ -16,8 +16,8 @@ import org.xcolab.client.content.pojo.IContentArticleVersion;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.user.PermissionsClient;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.IPermissionClient;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.errors.ErrorText;
 
@@ -33,12 +33,15 @@ public class WikiController {
     @Autowired
     private IContentClient contentClient;
 
+    @Autowired
+    private IPermissionClient permissionClient;
+
     @GetMapping("/wiki")
     public String home(HttpServletRequest request, HttpServletResponse response, Model model,
-            Member member) {
+            UserWrapper member) {
         final long folderId = ConfigurationAttributeKey.WIKI_CONTENT_FOLDER_ID.get();
 
-        if (folderId > 0 && PermissionsClient.canAdminAll(member)) {
+        if (folderId > 0 && permissionClient.canAdminAll(member)) {
             final List<IContentArticleVersion> contentArticleVersions = contentClient
                     .getContentArticleVersions(0, Integer.MAX_VALUE, folderId,
                             null, null, null, null);
@@ -49,7 +52,7 @@ public class WikiController {
 
     @GetMapping("/wiki/{pageTitle:.*}")
     public String showWikiPage(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member, @PathVariable String pageTitle) throws IOException {
+            Model model, UserWrapper member, @PathVariable String pageTitle) throws IOException {
         final long folderId = ConfigurationAttributeKey.WIKI_CONTENT_FOLDER_ID.get();
 
         if (folderId > 0 && StringUtils.isNotBlank(pageTitle)) {

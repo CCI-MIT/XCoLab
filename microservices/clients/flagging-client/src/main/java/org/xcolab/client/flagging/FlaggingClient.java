@@ -5,7 +5,7 @@ import org.xcolab.client.flagging.exceptions.ReportTargetNotFoundException;
 import org.xcolab.client.flagging.pojo.AggregatedReport;
 import org.xcolab.client.flagging.pojo.Report;
 import org.xcolab.client.flagging.pojo.ReportTarget;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.util.enums.flagging.ManagerAction;
 import org.xcolab.util.enums.flagging.TargetType;
 import org.xcolab.util.http.caching.CacheKeys;
@@ -140,17 +140,17 @@ public final class FlaggingClient {
         return reportTargetResource.create(reportTarget).execute();
     }
 
-    public static Report reportProposal(Member reporter, long proposalId, long proposalVersion,
+    public static Report reportProposal(UserWrapper reporter, long proposalId, long proposalVersion,
             String reason, String comment) {
         return report(reporter, proposalId, proposalVersion, TargetType.PROPOSAL, reason, comment);
     }
 
-    public static Report reportComment(Member reporter, long commentId,
+    public static Report reportComment(UserWrapper reporter, long commentId,
             String reason, String comment) {
         return report(reporter, commentId, 0L, TargetType.COMMENT, reason, comment);
     }
 
-    public static Report report(Member reporter, long targetId, Long targetAdditionalId,
+    public static Report report(UserWrapper reporter, long targetId, Long targetAdditionalId,
             TargetType targetType, String reason, String comment) {
         Report report = new Report();
         report.setReporteruserId(reporter.getId());

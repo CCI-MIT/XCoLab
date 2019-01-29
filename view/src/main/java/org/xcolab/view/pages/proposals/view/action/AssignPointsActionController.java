@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.client.proposals.PointsClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.points.PointType;
@@ -41,7 +41,7 @@ public class AssignPointsActionController {
     @PostMapping({"c/{proposalUrlString}/{proposalId}/tab/POINTS/savePointAssignments",
             "phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/POINTS/savePointAssignments"})
     public void savePointAssignments(HttpServletRequest request, HttpServletResponse response,
-            Model model, ProposalContext proposalContext, Member currentMember,
+            Model model, ProposalContext proposalContext, UserWrapper currentMember,
             @Valid AssignPointsBean assignPointsBean, BindingResult result)
             throws IOException {
 

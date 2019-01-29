@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
@@ -30,7 +30,7 @@ public class ProposalRevertActionController {
 
     @PostMapping("/c/{proposalUrlString}/{proposalId}/proposalRevert")
     public void showProposalRevert(HttpServletRequest request, HttpServletResponse response,
-            Model model, ProposalContext proposalContext, Member currentMember)
+            Model model, ProposalContext proposalContext, UserWrapper currentMember)
             throws ProposalsAuthorizationException, IOException {
 
         if (proposalContext.getProposal() != null && !proposalContext.getPermissions()

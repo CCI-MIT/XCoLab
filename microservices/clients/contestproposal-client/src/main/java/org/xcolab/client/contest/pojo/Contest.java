@@ -36,8 +36,7 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.user.StaticUserContext;
 import org.xcolab.client.user.exceptions.MemberNotFoundException;
 import org.xcolab.client.user.permissions.SystemRole;
-import org.xcolab.client.user.pojo.IUser;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.commons.time.DateUtil;
 import org.xcolab.util.http.ServiceRequestUtils;
@@ -86,7 +85,7 @@ public class Contest extends AbstractContest implements Serializable {
 
     protected List<ContestPhase> phases;
     protected ContestType contestType;
-    protected Map<ContestTeamMemberRole, List<IUser>> contestTeamMembersByRole;
+    protected Map<ContestTeamMemberRole, List<UserWrapper>> contestTeamMembersByRole;
 
     protected ContestPhase activePhase;
 
@@ -310,7 +309,7 @@ public class Contest extends AbstractContest implements Serializable {
     }
 
     @JsonIgnore
-    public Map<ContestTeamMemberRole, List<IUser>> getContestTeamMembersByRole() {
+    public Map<ContestTeamMemberRole, List<UserWrapper>> getContestTeamMembersByRole() {
         if (contestTeamMembersByRole == null) {
             contestTeamMembersByRole = new TreeMap<>();
             final List<ContestTeamMember> teamMembers =
@@ -319,7 +318,7 @@ public class Contest extends AbstractContest implements Serializable {
                 try {
                     ContestTeamMemberRole role = contestTeamMemberClient
                             .getContestTeamMemberRole(teamMember.getRoleId());
-                    List<IUser> roleUsers = contestTeamMembersByRole
+                    List<UserWrapper> roleUsers = contestTeamMembersByRole
                             .computeIfAbsent(role, k -> new ArrayList<>());
                     roleUsers.add(StaticUserContext.getUserClient().getMember(teamMember.getUserId()));
                 } catch (MemberNotFoundException e) {
@@ -332,10 +331,10 @@ public class Contest extends AbstractContest implements Serializable {
 
     @JsonIgnore
     public boolean getHasUserRoleInContest(long userId, long roleId) {
-        for (Entry<ContestTeamMemberRole, List<IUser>> entry
+        for (Entry<ContestTeamMemberRole, List<UserWrapper>> entry
                 : getContestTeamMembersByRole().entrySet()) {
             final ContestTeamMemberRole role = entry.getKey();
-            final List<IUser> members = entry.getValue();
+            final List<UserWrapper> members = entry.getValue();
             if (role.getId() == roleId) {
                 return members.stream()
                         .anyMatch(p -> p.getId() == userId);
@@ -362,26 +361,26 @@ public class Contest extends AbstractContest implements Serializable {
     }
 
     @JsonIgnore
-    public List<IUser> getContestImpactAssessmentFellows() {
+    public List<UserWrapper> getContestImpactAssessmentFellows() {
         return getMembersWithRole(ContestRole.IAF);
     }
 
     @JsonIgnore
-    public List<IUser> getContestJudges() {
+    public List<UserWrapper> getContestJudges() {
         return getMembersWithRole(ContestRole.JUDGE);
     }
 
     @JsonIgnore
-    public List<IUser> getContestFellows() {
+    public List<UserWrapper> getContestFellows() {
         return getMembersWithRole(ContestRole.FELLOW);
     }
 
     @JsonIgnore
-    public List<IUser> getContestAdvisors() {
+    public List<UserWrapper> getContestAdvisors() {
         return getMembersWithRole(ContestRole.ADVISOR);
     }
 
-    private List<IUser> getMembersWithRole(ContestRole contestRole) {
+    private List<UserWrapper> getMembersWithRole(ContestRole contestRole) {
         return getContestTeamMembersByRole().entrySet().stream()
                 .filter(e -> e.getKey().getContestRole() == contestRole)
                 .map(Entry::getValue)
@@ -581,7 +580,7 @@ public class Contest extends AbstractContest implements Serializable {
 
     @JsonIgnore
     public boolean isUserAmongAdvisors(long userId) {
-        for (IUser judge : getContestAdvisors()) {
+        for (UserWrapper judge : getContestAdvisors()) {
             if (judge.getId() == userId) {
                 return true;
             }
@@ -729,12 +728,12 @@ public class Contest extends AbstractContest implements Serializable {
     }
 
     @JsonIgnore
-    public boolean getMemberAgreedToTos(Member member) {
+    public boolean getMemberAgreedToTos(UserWrapper member) {
         return contestClient.getMemberAgreedToTos(getId(), member);
     }
 
     @JsonIgnore
-    public void setMemberAgreedToTos(Member member, boolean agreed) {
+    public void setMemberAgreedToTos(UserWrapper member, boolean agreed) {
         contestClient.setMemberAgreedToTos(getId(), member, agreed);
     }
 

@@ -17,13 +17,14 @@ import org.xcolab.client.admin.pojo.INotification;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.user.MembersClient;
-import org.xcolab.client.user.PermissionsClient;
-import org.xcolab.client.user.exceptions.MemberNotFoundException;
-import org.xcolab.client.user.permissions.SystemRole;
-import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.tracking.ITrackingClient;
+import org.xcolab.client.user.IPermissionClient;
+import org.xcolab.client.user.IUserClient;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.permissions.SystemRole;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.html.LabelStringValue;
 import org.xcolab.commons.html.LabelValue;
 import org.xcolab.commons.servlet.ManifestUtil;
@@ -73,6 +74,13 @@ public class AdminTabController extends AbstractTabController {
 
     @Autowired
     private IAdminClient adminClient;
+
+    @Autowired
+    private IUserClient userClient;
+
+    @Autowired
+    private IPermissionClient permissionClient;
+
 
     private static final Logger log = LoggerFactory.getLogger(AdminTabController.class);
 
@@ -144,7 +152,7 @@ public class AdminTabController extends AbstractTabController {
 
     @GetMapping("tab/ADMIN")
     public String showAdminTabController(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member) {
+            Model model, UserWrapper member) {
         if (!tabWrapper.getCanView()) {
             return new AccessDeniedPage(member).toViewName(response);
         }
@@ -270,7 +278,7 @@ public class AdminTabController extends AbstractTabController {
             }
 
             try {
-                MembersClient.findMemberByEmailAddress(registerLineBean.getEmail());
+                StaticUserContext.getUserClient().findMemberByEmailAddress(registerLineBean.getEmail());
                 // If member is found there is no exception and we continue.
                 AlertMessage.danger("Batch registration: Email address already used.").flash(request);
                 return TAB_VIEW;
@@ -280,11 +288,11 @@ public class AdminTabController extends AbstractTabController {
         }
 
         for (BatchRegisterLineBean registerLineBean : registerLineBeans) {
-            Member member = loginRegisterService.autoRegister(registerLineBean.getEmail(),
+            UserWrapper member = loginRegisterService.autoRegister(registerLineBean.getEmail(),
                     registerLineBean.getFirstName(), registerLineBean.getLastName());
             if (batchRegisterBean.getAsGuests()) {
-                MembersClient.assignMemberRole(member.getId(), SystemRole.GUEST.getRoleId());
-                MembersClient.removeMemberRole(member.getId(), SystemRole.MEMBER.getRoleId());
+                userClient.assignMemberRole(member.getId(), SystemRole.GUEST.getRoleId());
+                userClient.removeMemberRole(member.getId(), SystemRole.MEMBER.getRoleId());
             }
         }
 
@@ -294,10 +302,10 @@ public class AdminTabController extends AbstractTabController {
 
     @PostMapping("tab/ADMIN/notificationMessageDelete")
     public String saveNotification(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam String notificationId, Member loggedInMember)
+            @RequestParam String notificationId, UserWrapper loggedInMember)
             throws IOException {
 
-        if (!PermissionsClient.canAdminAll(loggedInMember)) {
+        if (!permissionClient.canAdminAll(loggedInMember)) {
             return new AccessDeniedPage(loggedInMember).toViewName(response);
         }
 
@@ -309,11 +317,11 @@ public class AdminTabController extends AbstractTabController {
 
     @PostMapping("tab/ADMIN/notificationMessageCreate")
     public String saveNotification(HttpServletRequest request,
-            HttpServletResponse response, Member member, @RequestParam String notificationText,
+            HttpServletResponse response, UserWrapper member, @RequestParam String notificationText,
             @RequestParam String expiretime)
             throws IOException, ParseException {
 
-        if (!PermissionsClient.canAdminAll(member)) {
+        if (!permissionClient.canAdminAll(member)) {
             return new AccessDeniedPage(member).toViewName(response);
         }
 

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.view.pages.contestmanagement.wrappers.CollectionCardWrapper;
@@ -48,7 +48,7 @@ public class CollectionCardTabController extends AbstractTabController {
 
     @GetMapping("tab/COLLECTION_CARDS")
     public String showCollectionCardTabController(HttpServletRequest request,
-            HttpServletResponse response, Model model, Member member,
+            HttpServletResponse response, Model model, UserWrapper member,
             @RequestParam(required = false) String elementId) {
         if (!tabWrapper.getCanView()) {
             return new AccessDeniedPage(member).toViewName(response);
@@ -75,7 +75,7 @@ public class CollectionCardTabController extends AbstractTabController {
 
     @PostMapping("tab/COLLECTION_CARDS/update")
     public String updateCollectionCardController(HttpServletRequest request, Model model,
-            Member member, @ModelAttribute CollectionCardWrapper collectionCardWrapper,
+            UserWrapper member, @ModelAttribute CollectionCardWrapper collectionCardWrapper,
             BindingResult result, HttpServletResponse response) {
         if (!tabWrapper.getCanEdit()) {
             return new AccessDeniedPage(member).toViewName(response);
@@ -90,7 +90,7 @@ public class CollectionCardTabController extends AbstractTabController {
     }
 
     @PostMapping("tab/COLLECTION_CARDS/delete")
-    public String deleteCollectionCardController(HttpServletRequest request, Member member,
+    public String deleteCollectionCardController(HttpServletRequest request, UserWrapper member,
             @RequestParam long collectionCardId, HttpServletResponse response) {
         if (!tabWrapper.getCanEdit()) {
             return new AccessDeniedPage(member).toViewName(response);

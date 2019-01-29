@@ -1,11 +1,10 @@
 package org.xcolab.service.members.domain.loginlog;
 
-import org.xcolab.client.user.pojo.ILoginLog;
-
 import java.util.Optional;
+import org.xcolab.client.user.pojo.tables.pojos.LoginLog;
 
 public interface LoginLogDao {
 
-    Optional<ILoginLog> get(long loginLogId);
-    ILoginLog create(ILoginLog loginLog);
+    Optional<LoginLog> get(long loginLogId);
+    LoginLog create(LoginLog loginLog);
 }

@@ -4,18 +4,18 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
-import org.xcolab.client.user.PlatformTeamsClient;
-import org.xcolab.client.user.pojo.Member;
-import org.xcolab.client.user.pojo.PlatformTeam;
 import org.xcolab.client.proposals.MembershipClient;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.pojo.PlatformTeam;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.IdListUtil;
-import org.xcolab.util.enums.proposal.ProposalTemplateSectionType;
 import org.xcolab.commons.html.HtmlUtil;
+import org.xcolab.util.enums.proposal.ProposalTemplateSectionType;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 import org.xcolab.view.pages.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
@@ -206,9 +206,9 @@ public class ProposalUpdateHelper {
         if (updateProposalSectionsBean.getSelectedTeam() != null) {
             try {
                 // Setup team stuff
-                PlatformTeam team = PlatformTeamsClient.getPlatformTeam(updateProposalSectionsBean.getSelectedTeam());
-                List<Member> members = PlatformTeamsClient.getTeamMembers(team);
-                for (Member member : members) {
+                PlatformTeam team = StaticUserContext.getPlatformTeamClient().getPlatformTeam(updateProposalSectionsBean.getSelectedTeam());
+                List<UserWrapper> members = StaticUserContext.getPlatformTeamClient().listTeamUsers(team.getId());
+                for (UserWrapper member : members) {
                     Long userId = member.getId();
                     MembershipClient client = proposalContext.getClients().getMembershipClient();
                     client.addUserToProposalTeam(userId, proposal);

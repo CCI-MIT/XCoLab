@@ -11,8 +11,6 @@ import org.xcolab.client.contest.pojo.impact.ImpactDefaultSeriesData;
 import org.xcolab.client.contest.pojo.impact.ImpactIteration;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
-import org.xcolab.client.user.MembersClient;
-import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.enums.ImpactSeriesType;
@@ -20,6 +18,8 @@ import org.xcolab.client.proposals.helpers.ProposalAttributeHelper;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalVersion;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -232,7 +232,7 @@ public class ProposalImpactSeries {
         return seriesTypeToEditableMap.get(seriesType);
     }
 
-    public void persistWithAuthor(Member author) {
+    public void persistWithAuthor(UserWrapper author) {
         // Persist all editable attributes
         Integer version = null;
         for (Map.Entry<ImpactSeriesType, Boolean> entry : seriesTypeToEditableMap.entrySet()) {
@@ -323,9 +323,10 @@ public class ProposalImpactSeries {
         return focusArea;
     }
 
-    private Member getSeriesAuthor() {
+    private UserWrapper getSeriesAuthor() {
         if (lastModifiedVersion != null) {
-            return MembersClient.getMemberUnchecked(lastModifiedVersion.getAuthorUserId());
+            return StaticUserContext.getUserClient().
+                    getMemberUnchecked(lastModifiedVersion.getAuthorUserId());
         }
         return null;
     }

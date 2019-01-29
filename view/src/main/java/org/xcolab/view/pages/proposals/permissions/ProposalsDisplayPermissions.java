@@ -2,9 +2,9 @@ package org.xcolab.view.pages.proposals.permissions;
 
 
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.user.PermissionsClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.team.ProposalTeamMembershipRequest;
+import org.xcolab.client.user.StaticUserContext;
 import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 
@@ -28,7 +28,7 @@ public class ProposalsDisplayPermissions {
         this.contestPhase = contestPhase;
         this.userId = userId;
         this.isLoggedIn = userId > 0;
-        this.isGuest = PermissionsClient.isGuest(userId);
+        this.isGuest = StaticUserContext.getPermissionClient().isGuest(userId);
         this.clientHelper = clientHelper;
     }
 

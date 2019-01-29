@@ -11,7 +11,7 @@ import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
@@ -35,7 +35,7 @@ public class ProposalAdminTabController extends BaseProposalTabController {
 
     @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=ADMIN")
     public String showProposalDetails(HttpServletRequest request, HttpServletResponse response,
-            Model model, ProposalContext proposalContext, Member currentMember) {
+            Model model, ProposalContext proposalContext, UserWrapper currentMember) {
 
         final ProposalsPermissions permissions = proposalContext.getPermissions();
         if (!permissions.getCanAdminProposal()) {
@@ -114,7 +114,7 @@ public class ProposalAdminTabController extends BaseProposalTabController {
 
     @PostMapping("c/{proposalUrlString}/{proposalId}/tab/ADMIN/toggleProposalOpen")
     public void toggleOpen(HttpServletRequest request, HttpServletResponse response, Model model,
-            Member currentMember, ProposalContext proposalContext, @RequestParam boolean planOpen)
+            UserWrapper currentMember, ProposalContext proposalContext, @RequestParam boolean planOpen)
             throws IOException {
 
         final ProposalsPermissions permissions = proposalContext.getPermissions();

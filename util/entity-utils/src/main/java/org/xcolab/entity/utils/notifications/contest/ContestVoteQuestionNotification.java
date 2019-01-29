@@ -7,10 +7,9 @@ import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.pojo.IEmailTemplate;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.user.MembersClient;
+import org.xcolab.client.user.StaticUserContext;
 import org.xcolab.client.user.exceptions.MemberNotFoundException;
-import org.xcolab.client.user.pojo.IUser;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.entity.utils.notifications.basic.ContestNotification;
 
 import java.util.List;
@@ -24,7 +23,7 @@ public class ContestVoteQuestionNotification extends ContestNotification {
     private final List<Proposal> supportedProposals;
     private ContestVoteQuestionTemplate templateWrapper;
 
-    public ContestVoteQuestionNotification(IUser recipient, Contest contest,
+    public ContestVoteQuestionNotification(UserWrapper recipient, Contest contest,
             List<Proposal> supportedProposals, String baseUrl) {
         super(contest, recipient, null);
         this.supportedProposals = supportedProposals;
@@ -65,9 +64,9 @@ public class ContestVoteQuestionNotification extends ContestNotification {
                     StringBuilder supportedProposalsLinks = new StringBuilder();
                     supportedProposalsLinks.append("<span>");
                     for (Proposal proposal : supportedProposals) {
-                        Member member;
+                        UserWrapper member;
                         try {
-                            member = MembersClient.getMember(proposal.getAuthorUserId());
+                            member = StaticUserContext.getUserClient().getMember(proposal.getAuthorUserId());
                         } catch (MemberNotFoundException e) {
                             _log.error("Author {} of proposal {} does not exist",
                                     proposal.getAuthorUserId(), proposal.getId());

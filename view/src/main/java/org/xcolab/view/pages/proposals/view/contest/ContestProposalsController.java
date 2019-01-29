@@ -12,13 +12,13 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.enums.ContestStatus;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.user.PermissionsClient;
-import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.view.errors.AccessDeniedPage;
@@ -44,7 +44,7 @@ public class ContestProposalsController extends BaseProposalsController {
 
     @GetMapping("/contests/{contestYear}/{contestUrlName}/phase/{phaseId}")
     public String showContestProposalsWithContestPhaseId(HttpServletRequest request,
-            HttpServletResponse response, Model model, Member loggedInMember,
+            HttpServletResponse response, Model model, UserWrapper loggedInMember,
             ProposalContext proposalContext, @PathVariable String contestYear,
             @PathVariable String contestUrlName, @PathVariable String phaseId,
             final SortFilterPage sortFilterPage) {
@@ -55,7 +55,7 @@ public class ContestProposalsController extends BaseProposalsController {
 
     @GetMapping("/contests/{contestYear}/{contestUrlName}/judgeFilter/{judgeId}")
     public String showContestProposalsWithJudgeFilter(HttpServletRequest request,
-            HttpServletResponse response, Model model, Member loggedInMember,
+            HttpServletResponse response, Model model, UserWrapper loggedInMember,
             ProposalContext proposalContext, @PathVariable String contestYear,
             @PathVariable String contestUrlName, @PathVariable Long judgeId,
             final SortFilterPage sortFilterPage) {
@@ -67,7 +67,7 @@ public class ContestProposalsController extends BaseProposalsController {
 
     @GetMapping("/contests/{contestYear}/{contestUrlName}")
     public String showContestProposals(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member loggedInMember, ProposalContext proposalContext,
+            Model model, UserWrapper loggedInMember, ProposalContext proposalContext,
             @PathVariable String contestYear, @PathVariable String contestUrlName,
             final SortFilterPage sortFilterPage) {
         setBasePageAttributes(proposalContext, model);
@@ -75,7 +75,7 @@ public class ContestProposalsController extends BaseProposalsController {
                 loggedInMember);
     }
 
-    private List<Proposal> getProposals(ProposalContext proposalContext, Member loggedInMember) {
+    private List<Proposal> getProposals(ProposalContext proposalContext, UserWrapper loggedInMember) {
         final ClientHelper clients = proposalContext.getClients();
         final ProposalClient proposalClient = clients.getProposalClient();
 
@@ -103,7 +103,8 @@ public class ContestProposalsController extends BaseProposalsController {
                 Proposal2Phase p2p = proposalPhaseClient.getProposal2PhaseByProposalIdContestPhaseId(proposal.getId(), contestPhase.getId());
                 Proposal proposalWrapper;
 
-                if (loggedInMember != null && PermissionsClient.canJudge(loggedInMember.getId(), contest.getId())) {
+                if (loggedInMember != null && StaticUserContext.getPermissionClient()
+                        .canJudge(loggedInMember.getId(), contest.getId())) {
                     proposalWrapper = new ProposalJudgeWrapper(proposal, p2p.getVersionTo() == -1 ? proposal.getCurrentVersion() : p2p.getVersionTo(), contest, contestPhase, p2p, loggedInMember);
                 } else {
                     proposalWrapper = new Proposal(proposal, p2p.getVersionTo() == -1 ? proposal.getCurrentVersion() : p2p.getVersionTo(), contest, contestPhase, p2p);
@@ -119,7 +120,7 @@ public class ContestProposalsController extends BaseProposalsController {
     }
 
     private String showContestProposalsPage(HttpServletResponse response, Model model, ProposalContext proposalContext,
-            final SortFilterPage sortFilterPage, Member loggedInMember) {
+            final SortFilterPage sortFilterPage, UserWrapper loggedInMember) {
 
         Contest contest = proposalContext.getContest();
         ContestPhase contestPhase = proposalContext.getContestPhase();
@@ -154,7 +155,7 @@ public class ContestProposalsController extends BaseProposalsController {
 
     @PostMapping("/contests/subscribeContest")
     public void handleAction(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member currentMember, ProposalContext proposalContext)
+            Model model, UserWrapper currentMember, ProposalContext proposalContext)
             throws ProposalsAuthorizationException, IOException {
 
         if (proposalContext.getPermissions().getCanSubscribeContest()) {
@@ -175,7 +176,7 @@ public class ContestProposalsController extends BaseProposalsController {
 
     @PostMapping("/contests/{contestYear}/{contestUrlName}/assignAllJudges")
     public String assignAllJudges(HttpServletRequest request, HttpServletResponse response,
-            Member currentMember, ProposalContext proposalContext)
+            UserWrapper currentMember, ProposalContext proposalContext)
             throws ProposalsAuthorizationException, IOException {
 
         if (proposalContext.getPermissions().getCanFellowActions()) {
@@ -185,7 +186,7 @@ public class ContestProposalsController extends BaseProposalsController {
             long contestPhaseId = proposalContext.getContestPhase().getId();
 
             List<Long> selectedJudges = new ArrayList<>();
-            for (Member judge : contest.getContestJudges()) {
+            for (UserWrapper judge : contest.getContestJudges()) {
                 selectedJudges.add(judge.getId());
             }
 
@@ -205,7 +206,7 @@ public class ContestProposalsController extends BaseProposalsController {
 
     @PostMapping("/contests/{contestYear}/{contestUrlName}/removeUnfinishedJudges")
     public String removeUnfinishedJudges(HttpServletRequest request, HttpServletResponse response,
-            Member currentMember, ProposalContext proposalContext)
+            UserWrapper currentMember, ProposalContext proposalContext)
             throws ProposalsAuthorizationException, IOException {
 
         if (proposalContext.getPermissions().getCanFellowActions()) {
@@ -234,7 +235,7 @@ public class ContestProposalsController extends BaseProposalsController {
 
     @GetMapping("/contests/{contestYear}/{contestUrlName}/downloadContestProposalsList")
     public void downloadContestProposalsList(HttpServletRequest request, HttpServletResponse response,
-            Member loggedInMember, ProposalContext proposalContext)
+            UserWrapper loggedInMember, ProposalContext proposalContext)
             throws IOException {
 
         try (ContestProposalsCsvWriter csvWriter = new ContestProposalsCsvWriter(response)) {

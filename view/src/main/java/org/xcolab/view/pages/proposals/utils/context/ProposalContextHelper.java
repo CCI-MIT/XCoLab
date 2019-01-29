@@ -9,14 +9,14 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.user.PermissionsClient;
-import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
 import org.xcolab.commons.servlet.RequestParamUtil;
 import org.xcolab.view.auth.MemberAuthUtil;
@@ -107,7 +107,7 @@ public class ProposalContextHelper {
         return localContest;
     }
 
-    public Member getMember() {
+    public UserWrapper getMember() {
         return MemberAuthUtil.getMemberOrNull();
     }
 
@@ -175,10 +175,10 @@ public class ProposalContextHelper {
     }
 
     public Proposal getProposalWrapper(Proposal proposal, Proposal2Phase proposal2Phase,
-            ContestPhase contestPhase, Contest contest, Member member) {
+            ContestPhase contestPhase, Contest contest, UserWrapper member) {
         Proposal proposalWrapper;
         if (givenVersion > 0) {
-            if (member != null && PermissionsClient
+            if (member != null && StaticUserContext.getPermissionClient()
                     .canJudge(member.getId(), contest.getId())) {
                 proposalWrapper = new ProposalJudgeWrapper(proposal, givenVersion,
                         contest, contestPhase, proposal2Phase, member);
@@ -194,7 +194,7 @@ public class ProposalContextHelper {
                     hasVersionTo ? proposal2Phase.getVersionTo()
                             : proposal.getCurrentVersion();
 
-            if (member != null && PermissionsClient
+            if (member != null && StaticUserContext.getPermissionClient()
                     .canJudge(member.getId(), contest.getId())) {
                 proposalWrapper = new ProposalJudgeWrapper(proposal,
                         localVersion,

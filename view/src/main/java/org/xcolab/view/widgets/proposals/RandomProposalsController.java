@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -36,7 +36,7 @@ public class RandomProposalsController
     }
 
     @GetMapping(AbstractWidgetController.PREFERENCES_URL_PATH)
-    public String showPreferences(HttpServletResponse response, Model model, Member member,
+    public String showPreferences(HttpServletResponse response, Model model, UserWrapper member,
             @RequestParam(required = false) String preferenceId,
             @RequestParam(required = false) String language) {
         return showPreferencesInternal(response, model, member, preferenceId, language,
@@ -46,7 +46,7 @@ public class RandomProposalsController
 
     @PostMapping(AbstractWidgetController.PREFERENCES_URL_PATH)
     public String savePreferences(HttpServletRequest request, HttpServletResponse response,
-            Member member, RandomProposalsPreferences preferences) {
+            UserWrapper member, RandomProposalsPreferences preferences) {
         return savePreferencesInternal(request, response, member, preferences);
     }
 

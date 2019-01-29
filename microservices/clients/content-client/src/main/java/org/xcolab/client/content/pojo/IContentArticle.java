@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import org.xcolab.client.content.pojo.tables.pojos.ContentArticle;
-import org.xcolab.client.user.PermissionsClient;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 
 import java.sql.Timestamp;
 
@@ -45,8 +45,8 @@ public interface IContentArticle {
     void setVisible(Boolean visible);
 
     @JsonIgnore
-    default boolean canView(Member member) {
-        return getViewRoleGroupId() == null || (member != null && PermissionsClient
+    default boolean canView(UserWrapper member) {
+        return getViewRoleGroupId() == null || (member != null && StaticUserContext.getPermissionClient()
                 .hasRoleGroup(member.getId(), getViewRoleGroupId()));
     }
 }

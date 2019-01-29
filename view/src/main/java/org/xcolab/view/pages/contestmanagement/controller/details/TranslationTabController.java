@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.beans.ContestTranslationBean;
@@ -39,7 +39,7 @@ public class TranslationTabController extends AbstractTabController {
 
     @GetMapping("tab/TRANSLATIONS")
     public String showTranslationTab(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member, @PathVariable long contestId) {
+            Model model, UserWrapper member, @PathVariable long contestId) {
 
         if (!tabWrapper.getCanView()) {
             return new AccessDeniedPage(member).toViewName(response);
@@ -54,7 +54,7 @@ public class TranslationTabController extends AbstractTabController {
 
     @PostMapping("tab/TRANSLATIONS")
     public String update(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member, @PathVariable long contestId,
+            Model model, UserWrapper member, @PathVariable long contestId,
             @Valid ContestTranslationBean contestTranslationBean, BindingResult result) {
 
         if (!tabWrapper.getCanEdit()) {

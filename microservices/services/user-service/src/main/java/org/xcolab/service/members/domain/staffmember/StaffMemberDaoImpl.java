@@ -6,7 +6,7 @@ import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.client.user.pojo.IStaffMember;
+import org.xcolab.client.user.pojo.StaffUserWrapper;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.util.List;
@@ -24,7 +24,7 @@ public class StaffMemberDaoImpl implements StaffMemberDao {
     }
 
     @Override
-    public List<IStaffMember> findByGiven(PaginationHelper paginationHelper, Long categoryId) {
+    public List<StaffUserWrapper> findByGiven(PaginationHelper paginationHelper, Long categoryId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(STAFF_MEMBER)
                 .getQuery();
@@ -34,6 +34,6 @@ public class StaffMemberDaoImpl implements StaffMemberDao {
         }
 
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
-        return query.fetchInto(IStaffMember.class);
+        return query.fetchInto(StaffUserWrapper.class);
     }
 }

@@ -1,7 +1,7 @@
 package org.xcolab.entity.utils.notifications.contest;
 
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.user.MembersClient;
+import org.xcolab.client.user.StaticUserContext;
 import org.xcolab.client.user.exceptions.MemberNotFoundException;
 import org.xcolab.entity.utils.notifications.basic.ContestNotification;
 
@@ -11,6 +11,6 @@ public class ContestCreationNotification extends ContestNotification {
 
     public ContestCreationNotification(Contest contest)
             throws MemberNotFoundException {
-        super(contest, MembersClient.getMember(contest.getAuthorUserId()), TEMPLATE_NAME);
+        super(contest, StaticUserContext.getUserClient().getMember(contest.getAuthorUserId()), TEMPLATE_NAME);
     }
 }

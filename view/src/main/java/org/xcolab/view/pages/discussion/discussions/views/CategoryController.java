@@ -15,7 +15,7 @@ import org.xcolab.client.comment.pojo.ICategory;
 import org.xcolab.client.comment.pojo.ICategoryGroup;
 import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.comment.util.ThreadSortColumn;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.AccessDeniedPage;
@@ -135,7 +135,7 @@ public class CategoryController extends BaseDiscussionController {
 
     // @RenderMapping(params = "action=createCategory")
     public String createCategory(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member, @RequestParam long categoryId)
+            Model model, UserWrapper member, @RequestParam long categoryId)
             throws DiscussionAuthorizationException {
 
         ICategoryGroup categoryGroup = getCategoryGroup(request);
@@ -151,7 +151,7 @@ public class CategoryController extends BaseDiscussionController {
 
     // @ActionMapping(params = "action=createCategory")
     public String createCategoryAction(HttpServletRequest request, HttpServletResponse response,
-            Member member, @RequestParam String title, @RequestParam String description)
+            UserWrapper member, @RequestParam String title, @RequestParam String description)
             throws IOException, DiscussionAuthorizationException, OperationNotSupportedException {
 
         ICategoryGroup categoryGroup = getCategoryGroup(request);
@@ -167,7 +167,7 @@ public class CategoryController extends BaseDiscussionController {
 
     @GetMapping("/discussion/subscribeCategory")
     public String subscribeCategory(HttpServletRequest request, HttpServletResponse response,
-            Member member, @RequestParam long categoryId)
+            UserWrapper member, @RequestParam long categoryId)
             throws DiscussionAuthorizationException, IOException {
 
         long userId = MemberAuthUtil.getUserId();
@@ -195,7 +195,7 @@ public class CategoryController extends BaseDiscussionController {
 
     @GetMapping("/discussion/unsubscribeCategory")
     public String unsubscribeCategory(HttpServletRequest request, HttpServletResponse response,
-            Member member, @RequestParam long categoryId)
+            UserWrapper member, @RequestParam long categoryId)
             throws DiscussionAuthorizationException, IOException {
 
         long userId = MemberAuthUtil.getUserId();

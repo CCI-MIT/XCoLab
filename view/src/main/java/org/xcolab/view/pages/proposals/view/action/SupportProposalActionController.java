@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.client.proposals.ProposalMemberRatingClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.commons.servlet.flash.AlertMessage;
@@ -38,7 +38,7 @@ public class SupportProposalActionController {
 
     @PostMapping("supportProposalAction")
     public String handleAction(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member currentMember, ProposalContext proposalContext,
+            Model model, UserWrapper currentMember, ProposalContext proposalContext,
             @RequestParam(required = false) String forwardToTab)
             throws ProposalsAuthorizationException, IOException {
 
@@ -75,7 +75,7 @@ public class SupportProposalActionController {
     @GetMapping("supportProposalAction")
     public String handleInvalidGetRequest(HttpServletRequest request,
             HttpServletResponse response, Model model, ProposalContext proposalContext,
-            Member member) {
+            UserWrapper member) {
 
         AlertMessage.warning(
                 "Your support hasn't been recorded, please make sure to click the button only once.")

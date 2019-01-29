@@ -14,7 +14,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.client.tracking.IBalloonClient;
 import org.xcolab.client.tracking.exceptions.BalloonLinkNotFoundException;
 import org.xcolab.client.tracking.exceptions.BalloonTextNotFoundException;
@@ -55,7 +55,7 @@ public class BalloonController {
 
     @GetMapping("/snp/socialnetworkprize")
     public String showBalloon(HttpServletRequest request, HttpServletResponse response, Model model,
-            Member member) {
+            UserWrapper member) {
 
         IBalloonUserTracking but =
                 balloonService.getOrCreateBalloonUserTracking(request, response, null, null);
@@ -92,7 +92,7 @@ public class BalloonController {
 
     @PostMapping("/snp/socialnetworkprize")
     public String requestLink(HttpServletRequest request, HttpServletResponse response, Model model,
-            Member member, @RequestParam(required = false) String redirect,
+            UserWrapper member, @RequestParam(required = false) String redirect,
             @Valid UserEmailBean userEmailBean, BindingResult bindingResult)
             throws BalloonTextNotFoundException {
 
@@ -126,7 +126,7 @@ public class BalloonController {
 
     @GetMapping(BalloonService.SNP_LINK_URL)
     public String showLink(HttpServletRequest request, HttpServletResponse response, Model model,
-            Member member, @PathVariable String linkUuid) throws ParserConfigurationException {
+            UserWrapper member, @PathVariable String linkUuid) throws ParserConfigurationException {
 
         populateModelWithModalTexts(model);
 

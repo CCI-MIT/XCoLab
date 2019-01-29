@@ -16,7 +16,7 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.widgets.AbstractWidgetController;
 
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ public class ContestsController extends AbstractWidgetController<ContestPreferen
     }
 
     @GetMapping(AbstractWidgetController.PREFERENCES_URL_PATH)
-    public String showPreferences(HttpServletResponse response, Model model, Member member,
+    public String showPreferences(HttpServletResponse response, Model model, UserWrapper member,
             @RequestParam(required = false) String preferenceId,
             @RequestParam(required = false) String language) {
         return showPreferencesInternal(response, model, member, preferenceId, language,
@@ -55,7 +55,7 @@ public class ContestsController extends AbstractWidgetController<ContestPreferen
 
     @PostMapping(AbstractWidgetController.PREFERENCES_URL_PATH)
     public String savePreferences(HttpServletRequest request, HttpServletResponse response,
-            Member member, ContestPreferences preferences) {
+            UserWrapper member, ContestPreferences preferences) {
         return savePreferencesInternal(request, response, member, preferences);
     }
 

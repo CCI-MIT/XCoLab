@@ -15,8 +15,8 @@ import org.xcolab.client.content.pojo.IContentArticleVersion;
 import org.xcolab.client.content.pojo.IContentFolder;
 import org.xcolab.client.content.pojo.IContentPage;
 import org.xcolab.client.content.pojo.tables.pojos.ContentPage;
-import org.xcolab.client.user.PermissionsClient;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.IPermissionClient;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.errors.AccessDeniedPage;
 
 import java.io.IOException;
@@ -33,10 +33,13 @@ public class PageEditorController extends BaseContentEditor {
     @Autowired
     private IContentClient contentClient;
 
+    @Autowired
+    private IPermissionClient permissionClient;
+
     @GetMapping("/content-editor/pageEditor")
     public String handleRenderRequest(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member) {
-        if (!PermissionsClient.canAdminAll(member)) {
+            Model model, UserWrapper member) {
+        if (!permissionClient.canAdminAll(member)) {
             return new AccessDeniedPage(member).toViewName(response);
         }
         Map<String, String> map = new LinkedHashMap<>();
@@ -52,10 +55,10 @@ public class PageEditorController extends BaseContentEditor {
 
     @GetMapping("/content-editor/previewContentPage")
     public String previewContentPage(HttpServletRequest request, HttpServletResponse response,
-            Member member, @RequestParam(required = false) Long mainContentArticleId,
+            UserWrapper member, @RequestParam(required = false) Long mainContentArticleId,
             @RequestParam(required = false) Long menuArticleId, Model model) throws IOException {
 
-        if (!PermissionsClient.canAdminAll(member)) {
+        if (!permissionClient.canAdminAll(member)) {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
@@ -69,13 +72,13 @@ public class PageEditorController extends BaseContentEditor {
 
     @PostMapping("/content-editor/saveContentPage")
     public void saveContentArticleVersion(HttpServletRequest request, HttpServletResponse response,
-            Member member, @RequestParam(required = false) Long pageId,
+            UserWrapper member, @RequestParam(required = false) Long pageId,
             @RequestParam(required = false) String pageTitle,
             @RequestParam(required = false) Long mainContentArticleId,
             @RequestParam(required = false) Long menuArticleId,
             @RequestParam(required = false) String metaDescription) throws IOException {
 
-        if (!PermissionsClient.canAdminAll(member)) {
+        if (!permissionClient.canAdminAll(member)) {
             defaultOperationReturnMessage(false, "Not allowed to save page", "", response);
         }
 

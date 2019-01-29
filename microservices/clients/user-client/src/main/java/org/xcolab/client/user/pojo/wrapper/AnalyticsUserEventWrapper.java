@@ -1,19 +1,20 @@
-package org.xcolab.client.user.pojo;
+package org.xcolab.client.user.pojo.wrapper;
 
 import org.springframework.core.ParameterizedTypeReference;
 
+import org.xcolab.client.user.pojo.IAnalyticsUserEvent;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
-public class AnalyticsUserEvent implements Serializable {
+public class AnalyticsUserEventWrapper implements IAnalyticsUserEvent, Serializable {
 
     private static final long serialVersionUID = 899448763;
 
-    public static final TypeProvider<AnalyticsUserEvent> TYPES = new TypeProvider<>(
-            AnalyticsUserEvent.class, new ParameterizedTypeReference<List<AnalyticsUserEvent>>() {});
+    public static final TypeProvider<AnalyticsUserEventWrapper> TYPES = new TypeProvider<>(
+            AnalyticsUserEventWrapper.class, new ParameterizedTypeReference<List<AnalyticsUserEventWrapper>>() {});
 
     private Long userId;
     private String idString;
@@ -23,10 +24,10 @@ public class AnalyticsUserEvent implements Serializable {
     private Integer value;
     private Timestamp createdAt;
 
-    public AnalyticsUserEvent() {
+    public AnalyticsUserEventWrapper() {
     }
 
-    public AnalyticsUserEvent(AnalyticsUserEvent value) {
+    public AnalyticsUserEventWrapper(AnalyticsUserEventWrapper value) {
         this.userId = value.userId;
         this.idString = value.idString;
         this.category = value.category;
@@ -36,7 +37,7 @@ public class AnalyticsUserEvent implements Serializable {
         this.createdAt = value.createdAt;
     }
 
-    public AnalyticsUserEvent(Long userId, String idString, String category, String action,
+    public AnalyticsUserEventWrapper(Long userId, String idString, String category, String action,
             String label, Integer value, Timestamp createdAt) {
         this.userId = userId;
         this.idString = idString;
@@ -114,7 +115,7 @@ public class AnalyticsUserEvent implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final AnalyticsUserEvent other = (AnalyticsUserEvent) obj;
+        final AnalyticsUserEventWrapper other = (AnalyticsUserEventWrapper) obj;
         if (userId == null) {
             if (other.userId != null) {
                 return false;

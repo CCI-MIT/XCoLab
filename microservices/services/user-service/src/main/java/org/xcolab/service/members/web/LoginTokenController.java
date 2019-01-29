@@ -8,9 +8,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.user.pojo.IUser;
+import org.xcolab.client.user.ILoginTokenClient;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.pojo.LoginToken;
+import org.xcolab.client.user.pojo.TokenValidity;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.service.members.domain.member.UserDao;
-import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.members.service.member.UserService;
 import org.xcolab.service.members.util.SecureRandomUtil;
 
@@ -20,7 +23,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 @RestController
-public class LoginTokenController {
+public class LoginTokenController implements ILoginTokenClient {
 
     private final UserDao memberDao;
     private final UserService memberService;
@@ -33,9 +36,9 @@ public class LoginTokenController {
 
     @GetMapping("/loginTokens/{tokenId}/validate")
     public TokenValidity validateToken(@PathVariable String tokenId, @RequestParam String tokenKey)
-            throws NotFoundException {
-        IUser member = memberDao.findOneByLoginTokenId(tokenId)
-                .orElseThrow(NotFoundException::new);
+            throws MemberNotFoundException {
+        UserWrapper member = memberDao.findOneByLoginTokenId(tokenId)
+                .orElseThrow(MemberNotFoundException::new);
         final boolean isValid = memberService.validatePassword(tokenKey, member.getLoginTokenKey());
         if (!isValid) {
             return TokenValidity.INVALID;
@@ -48,28 +51,29 @@ public class LoginTokenController {
 
     @PostMapping("/loginTokens/{tokenId}/invalidate")
     public void invalidateToken(@PathVariable String tokenId) {
-        final Optional<IUser> optionalUser = memberDao.findOneByLoginTokenId(tokenId);
+        final Optional<UserWrapper> optionalUser = memberDao.findOneByLoginTokenId(tokenId);
         if (optionalUser.isPresent()) {
-            IUser member = optionalUser.get();
+            UserWrapper member = optionalUser.get();
             member.setLoginTokenExpirationDate(Timestamp.from(Instant.now()));
             memberDao.updateUser(member);
         }
     }
 
     @GetMapping("/loginTokens/{tokenId}/member")
-    public IUser getUserForToken(@PathVariable String tokenId)
-            throws NotFoundException {
-        return memberDao.findOneByLoginTokenId(tokenId).orElseThrow(NotFoundException::new);
+    public UserWrapper getUserForToken(@PathVariable String tokenId)
+            throws MemberNotFoundException {
+        return memberDao.findOneByLoginTokenId(tokenId).orElseThrow(MemberNotFoundException::new);
     }
 
     @PostMapping("/members/{userId}/loginToken")
-    public LoginToken generateToken(@PathVariable long userId) throws NotFoundException {
+    public org.xcolab.client.user.pojo.LoginToken generateToken(@PathVariable long userId)
+            throws MemberNotFoundException {
         String tokenId = Long.toHexString(SecureRandomUtil.nextLong());
         String tokenKey = Long.toHexString(SecureRandomUtil.nextLong());
         final long expirationInDays = ConfigurationAttributeKey.LOGIN_LINK_EXPIRATION_IN_DAYS.get();
         Instant tokenExpirationDate = Instant.now().plus(expirationInDays, ChronoUnit.DAYS);
 
-        final IUser member = memberDao.getUser(userId).orElseThrow(NotFoundException::new);
+        final UserWrapper member = memberDao.getUser(userId).orElseThrow(MemberNotFoundException::new);
         member.setLoginTokenId(tokenId);
         member.setLoginTokenKey(memberService.hashPassword(tokenKey));
         member.setLoginTokenExpirationDate(Timestamp.from(tokenExpirationDate));
@@ -78,31 +82,4 @@ public class LoginTokenController {
         return new LoginToken(tokenId, tokenKey, tokenExpirationDate);
     }
 
-    public static class LoginToken {
-        private final String tokenId;
-        private final String tokenKey;
-        private final Instant tokenExpirationDate;
-
-        public LoginToken(String tokenId, String tokenKey, Instant tokenExpirationDate) {
-            this.tokenId = tokenId;
-            this.tokenKey = tokenKey;
-            this.tokenExpirationDate = tokenExpirationDate;
-        }
-
-        public String getTokenId() {
-            return tokenId;
-        }
-
-        public String getTokenKey() {
-            return tokenKey;
-        }
-
-        public Instant getTokenExpirationDate() {
-            return tokenExpirationDate;
-        }
-    }
-
-    public enum TokenValidity {
-        VALID, INVALID, EXPIRED
-    }
 }

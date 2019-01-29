@@ -19,7 +19,7 @@ import org.xcolab.client.content.pojo.IContentFolder;
 import org.xcolab.client.content.pojo.tables.pojos.ContentArticleVersion;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.AccessDeniedPage;
@@ -52,7 +52,7 @@ public class ResourcesTabController extends AbstractTabController {
 
     @GetMapping
     public String showResourcesTabController(HttpServletRequest request,
-            HttpServletResponse response, Model model, Member member, @PathVariable long contestId) {
+            HttpServletResponse response, Model model, UserWrapper member, @PathVariable long contestId) {
         if (!tabWrapper.getCanView()) {
             return new AccessDeniedPage(member).toViewName(response);
         }
@@ -72,7 +72,7 @@ public class ResourcesTabController extends AbstractTabController {
 
     @PostMapping("toggle")
     public String createResourcesTabController(HttpServletRequest request,
-            HttpServletResponse response, Model model, Member member, @RequestParam boolean enable,
+            HttpServletResponse response, Model model, UserWrapper member, @RequestParam boolean enable,
             @PathVariable long contestId) {
 
         if (!tabWrapper.getCanView()) {
@@ -107,7 +107,7 @@ public class ResourcesTabController extends AbstractTabController {
 
     @PostMapping("update")
     public String updateResourcesTabController(HttpServletRequest request,
-            HttpServletResponse response, Model model, Member member,
+            HttpServletResponse response, Model model, UserWrapper member,
             @PathVariable long contestId,
             @ModelAttribute ContestResourcesBean updatedContestResourcesBean,
             BindingResult result) {

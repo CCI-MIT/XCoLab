@@ -1,6 +1,7 @@
 package org.xcolab.view.pages.proposals.view.action;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,22 +11,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.user.MembersClient;
-import org.xcolab.client.user.MessagingClient;
-import org.xcolab.client.user.exceptions.MemberNotFoundException;
-import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.proposals.MembershipClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.team.ProposalTeamMembershipRequest;
+import org.xcolab.client.user.IMessagingClient;
+import org.xcolab.client.user.IUserClient;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
+import org.xcolab.commons.html.HtmlUtil;
+import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.entity.utils.notifications.proposal.ProposalMembershipInviteNotification;
 import org.xcolab.entity.utils.notifications.proposal.ProposalUserActionNotification;
-import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.requests.RequestMembershipBean;
 import org.xcolab.view.pages.proposals.requests.RequestMembershipInviteBean;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
-import org.xcolab.commons.servlet.flash.AlertMessage;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,9 +49,15 @@ public class ProposalRequestMembershipActionController {
     private static final String MSG_MEMBERSHIP_RESPONSE_CONTENT_REJECTED =
             "Your request has been rejected <br />Comments: ";
 
+    @Autowired
+    private IUserClient userClient;
+
+    @Autowired
+    private IMessagingClient messagingClient;
+
     @PostMapping("c/{proposalUrlString}/{proposalId}/tab/TEAM/requestMembership")
     public void requestMembership(HttpServletRequest request, HttpServletResponse response,
-            Model model, ProposalContext proposalContext, Member sender,
+            Model model, ProposalContext proposalContext, UserWrapper sender,
             @Valid RequestMembershipBean requestMembershipBean, BindingResult result,
             @RequestParam("requestComment") String comment) throws IOException {
 
@@ -72,7 +79,7 @@ public class ProposalRequestMembershipActionController {
             return;
         }
 
-        final Member proposalAuthor = MembersClient.getMemberUnchecked(proposal.getAuthorUserId());
+        final UserWrapper proposalAuthor = userClient.getMemberUnchecked(proposal.getAuthorUserId());
 
         final ClientHelper clients = proposalContext.getClients();
         final MembershipClient membershipClient = clients.getMembershipClient();
@@ -97,7 +104,7 @@ public class ProposalRequestMembershipActionController {
 
     @PostMapping("c/{proposalUrlString}/{proposalId}/tab/TEAM/inviteMember")
     public void invite(HttpServletRequest request, HttpServletResponse response, Model model,
-            ProposalContext proposalContext, Member sender,
+            ProposalContext proposalContext, UserWrapper sender,
             @Valid RequestMembershipInviteBean requestMembershipInviteBean, BindingResult result)
             throws IOException {
 
@@ -117,9 +124,9 @@ public class ProposalRequestMembershipActionController {
 
         String[] inputParts = input.split(" ");
         String screenName = inputParts[0];
-        Member recipient = null;
+        UserWrapper recipient = null;
         try {
-            recipient = MembersClient.findMemberByScreenName(screenName);
+            recipient = userClient.findMemberByScreenName(screenName);
         } catch (MemberNotFoundException e) {
             AlertMessage.danger("Member " + screenName + " could not be found.").flash(request);
             response.sendRedirect(tabUrl);
@@ -163,7 +170,7 @@ public class ProposalRequestMembershipActionController {
 
     @PostMapping("c/{proposalUrlString}/{proposalId}/tab/ADMIN/replyToMembershipRequest")
     public void respond(HttpServletRequest request, HttpServletResponse response, Model model,
-            ProposalContext proposalContext, Member loggedInMember, @RequestParam String approve,
+            ProposalContext proposalContext, UserWrapper loggedInMember, @RequestParam String approve,
             @RequestParam String comment, @RequestParam long requestId) throws IOException {
 
         final Proposal proposal = proposalContext.getProposal();
@@ -221,6 +228,6 @@ public class ProposalRequestMembershipActionController {
     private void sendMessage(long sender, long recipient, String subject, String content) {
         List<Long> recipients = new ArrayList<>();
         recipients.add(recipient);
-        MessagingClient.sendMessage(subject, content, sender, null, recipients);
+        messagingClient.sendMessage(subject, content, sender, null, recipients);
     }
 }

@@ -9,7 +9,7 @@ import org.xcolab.client.comment.exceptions.KeyReferenceException;
 import org.xcolab.client.comment.pojo.tables.pojos.Thread;
 import org.xcolab.client.user.StaticUserContext;
 import org.xcolab.client.user.exceptions.MemberNotFoundException;
-import org.xcolab.client.user.pojo.IUser;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.time.DurationFormatter;
 
 import java.sql.Timestamp;
@@ -62,7 +62,7 @@ public interface IThread {
     }
 
     @JsonIgnore
-    default IUser getLastActivityAuthor() {
+    default UserWrapper getLastActivityAuthor() {
         try {
             return StaticUserContext.getUserClient().getUser(getLastActivityAuthorUserId());
         } catch (MemberNotFoundException e) {
@@ -81,7 +81,7 @@ public interface IThread {
     }
 
     @JsonIgnore
-    default IUser getAuthor() {
+    default UserWrapper getAuthor() {
         try {
             return StaticUserContext.getUserClient().getUser(getAuthorUserId());
         } catch (MemberNotFoundException e) {

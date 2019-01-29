@@ -5,7 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -55,7 +55,7 @@ public class ProposalReviewCsvExporter {
                     ProposalAttributeKeys.NAME, 0L).getStringValue();
 
             for (ProposalReview proposalReview : proposalReviews) {
-                for (Member reviewer : proposalReview.getReviewers()) {
+                for (UserWrapper reviewer : proposalReview.getReviewers()) {
 
                     tableBody.append(getRowHeader(proposalName, proposalReview));
                     tableBody.append(String.format("\"%s %s\"", reviewer.getFirstName(), reviewer.getLastName()));

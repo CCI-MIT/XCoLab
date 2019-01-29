@@ -9,10 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.client.user.pojo.IUser;
+import org.xcolab.client.user.IUserLoginRegister;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.service.members.domain.member.UserDao;
-import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.members.service.member.UserService;
 
 import java.io.UnsupportedEncodingException;
@@ -20,7 +21,7 @@ import java.net.URLDecoder;
 
 @RestController
 @RequestMapping("/members")
-public class UserLoginRegisterController {
+public class UserLoginRegisterController implements IUserLoginRegister {
 
     private final UserService memberService;
 
@@ -65,7 +66,7 @@ public class UserLoginRegisterController {
             @RequestParam String password,
             @RequestParam(required = false) String hash,
             @RequestParam(required = false) Long userId)
-            throws NotFoundException {
+            throws MemberNotFoundException {
         if (hash != null) {
             hash = decode(hash);
         }
@@ -76,27 +77,27 @@ public class UserLoginRegisterController {
         }
 
         if (userId != null) {
-            final IUser member = memberDao.getUser(userId).orElseThrow(NotFoundException::new);
+            final UserWrapper member = memberDao.getUser(userId).orElseThrow(MemberNotFoundException::new);
             return memberService.validatePassword(password, member.getHashedPassword());
         }
-        throw new NotFoundException("The endpoint you requested is not available for the given attributes");
+        throw new MemberNotFoundException("The endpoint you requested is not available for the given attributes");
     }
 
     @PostMapping("{userId}/updatePassword")
     public boolean updateForgottenPasswordByToken(@PathVariable long userId,
             @RequestParam String newPassword)
-            throws NotFoundException {
+            throws MemberNotFoundException {
         newPassword = decode(newPassword);
         return memberService.updatePassword(userId, newPassword);
     }
 
     @GetMapping("createForgotPasswordToken")
     public String createForgotPasswordToken(
-            @RequestParam(required = false) Long userId) throws NotFoundException {
+            @RequestParam(required = false) Long userId) throws MemberNotFoundException {
         if (userId != null) {
             return memberService.createNewForgotPasswordToken(userId);
         }
-        throw new NotFoundException(
+        throw new MemberNotFoundException(
                 "The endpoint you requested is not available for the given attributes");
     }
 
@@ -104,7 +105,7 @@ public class UserLoginRegisterController {
     public Long updateForgottenPasswordByToken(
             @RequestParam String forgotPasswordToken,
             @RequestParam String password)
-            throws NotFoundException {
+            throws MemberNotFoundException {
         password = decode(password);
         return memberService.updateUserPasswordWithToken(forgotPasswordToken, password);
     }
@@ -112,7 +113,7 @@ public class UserLoginRegisterController {
     @GetMapping("validateForgotPasswordToken")
     public boolean validateForgotPasswordToken(
             @RequestParam String passwordToken)
-            throws NotFoundException {
+            throws MemberNotFoundException {
         return memberService.validateForgotPasswordToken(passwordToken);
     }
 

@@ -13,8 +13,8 @@ import org.xcolab.client.content.exceptions.ContentNotFoundException;
 import org.xcolab.client.content.pojo.IContentArticleVersion;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.user.PermissionsClient;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.IPermissionClient;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.errors.AccessDeniedPage;
 
 import java.io.IOException;
@@ -33,10 +33,13 @@ public class ContentEditorResourceController extends BaseContentEditor {
     @Autowired
     private IContentClient contentClient;
 
+    @Autowired
+    private IPermissionClient permissionClient;
+
     @GetMapping("/content-editor/resourcePagesEditor")
     public String handleRenderRequest(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member) {
-        if (!PermissionsClient.canAdminAll(member)) {
+            Model model, UserWrapper member) {
+        if (!permissionClient.canAdminAll(member)) {
             return new AccessDeniedPage(member).toViewName(response);
         }
         return "contenteditor/resourcePagesEditor";

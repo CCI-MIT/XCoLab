@@ -1,5 +1,7 @@
 package org.xcolab.client.user;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,23 +13,26 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.user.exceptions.MessageNotFoundException;
+import org.xcolab.client.user.exceptions.MessageOrThreadNotFoundException;
+import org.xcolab.client.user.exceptions.ReplyingToManyException;
+import org.xcolab.client.user.legacy.enums.MessageType;
 import org.xcolab.client.user.messaging.MessageLimitExceededException;
-import org.xcolab.client.user.pojo.IMessage;
-import org.xcolab.client.user.pojo.IMessagingUserPreference;
-import org.xcolab.client.user.pojo.IUser;
+import org.xcolab.client.user.pojo.Message;
+import org.xcolab.client.user.pojo.MessagingUserPreference;
 import org.xcolab.client.user.pojo.SendMessageBean;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.spring.web.annotation.ListMapping;
+import org.xcolab.util.http.exceptions.Http429TooManyRequestsException;
 
 import java.sql.Timestamp;
+import java.util.Collections;
 import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
 
 @FeignClient("xcolab-messaging-service")
 public interface IMessagingClient {
+
     @ListMapping("/messages")
-    List<IMessage> getUserMessages(HttpServletResponse response,
-            @RequestParam(required = false) Integer startRecord,
+    List<Message> getUserMessages(@RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
             @RequestParam(required = false) Long recipientId,
             @RequestParam(required = false) Long senderId,
@@ -35,20 +40,32 @@ public interface IMessagingClient {
             @RequestParam(required = false) Boolean isOpened,
             @RequestParam(required = false) Timestamp sinceDate,
             @RequestParam(required = false) String sort,
-            @RequestParam(required = false, defaultValue = "true") boolean includeCount,
             @RequestParam(required = false) Long messageId,
             @RequestParam(required = false) String threadId) throws MessageNotFoundException;
+
+    @RequestMapping("/messages/count")
+    Integer countUserMessages(@RequestParam(required = false) Integer startRecord,
+            @RequestParam(required = false) Integer limitRecord,
+            @RequestParam(required = false) Long recipientId,
+            @RequestParam(required = false) Long senderId,
+            @RequestParam(required = false) Boolean isArchived,
+            @RequestParam(required = false) Boolean isOpened,
+            @RequestParam(required = false) Timestamp sinceDate,
+            @RequestParam(required = false) String sort,
+            @RequestParam(required = false) Long messageId,
+            @RequestParam(required = false) String threadId);
+
     @RequestMapping(value = "/messages/{messageId}", method = RequestMethod.GET)
-    IMessage getMessage(@PathVariable long messageId) throws MessageNotFoundException;
+    Message getMessage(@PathVariable long messageId) throws MessageNotFoundException;
 
     @RequestMapping(value = "/messages/{messageId}/recipients", method = RequestMethod.GET)
-    List<IUser> getMessageRecipients(@PathVariable long messageId);
+    List<UserWrapper> getMessageRecipients(@PathVariable long messageId);
 
     @RequestMapping(value = "/messages/{messageId}/threads", method = RequestMethod.GET)
     List<String> getMessageThreads(@PathVariable long messageId);
 
     @RequestMapping(value = "/messages", method = RequestMethod.POST)
-    IMessage createMessage(@RequestBody SendMessageBean sendMessageBean,
+    Message createMessage(@RequestBody SendMessageBean sendMessageBean,
             @RequestParam(required = false, defaultValue = "true") boolean checkLimit,
             @RequestParam(required = false) String threadId)
             throws MessageLimitExceededException;
@@ -57,17 +74,18 @@ public interface IMessagingClient {
     boolean updateRecipientStatus(@PathVariable long messageId, @PathVariable long userId,
             @RequestParam(required = false) Boolean isArchived,
             @RequestParam(required = false) Boolean isOpened);
+
     @GetMapping("/members/{userId}/messagingPreferences")
-    IMessagingUserPreference getMessagingPreferences(@PathVariable long userId);
+    MessagingUserPreference getMessagingPreferences(@PathVariable long userId);
 
     @PutMapping("/members/{userId}/messagingPreferences/{messagingPreferencesId}")
     boolean updateMessagingPreferences(@PathVariable long userId,
             @PathVariable long messagingPreferencesId,
-            @RequestBody IMessagingUserPreference messagingUserPreferences);
+            @RequestBody MessagingUserPreference messagingUserPreferences);
 
     @PostMapping("/members/{userId}/messagingPreferences")
-    IMessagingUserPreference createMessagingPreferences(@PathVariable long userId,
-            @RequestBody IMessagingUserPreference messagingUserPreferences);
+    MessagingUserPreference createMessagingPreferences(@PathVariable long userId,
+            @RequestBody MessagingUserPreference messagingUserPreferences);
 
     @RequestMapping(value = "/members/{userId}/canSendMessage", method = RequestMethod.GET)
     boolean canUserSendMessage(@PathVariable long userId,
@@ -75,4 +93,153 @@ public interface IMessagingClient {
 
     @RequestMapping(value = "/members/{userId}/numberOfMessagesLeft", method = RequestMethod.GET)
     int getNumberOfMessagesLeft(@PathVariable long userId);
+
+
+    default void checkLimitAndSendMessage(String subject, String content,
+            long fromId, List<Long> recipientIds) throws MessageLimitExceededException {
+        try {
+            sendMessage(subject, content, fromId, null, recipientIds, true);
+        } catch (Http429TooManyRequestsException e) {
+            throw new MessageLimitExceededException(fromId);
+        }
+    }
+
+    //Overload this method to accept optionally the threadId
+    default void checkLimitAndSendMessage(String subject, String content,
+            long fromId, String threadId, List<Long> recipientsIds)
+            throws MessageLimitExceededException {
+        try {
+            sendMessage(subject, content, fromId, threadId, recipientsIds, true);
+        } catch (Http429TooManyRequestsException e) {
+            throw new MessageLimitExceededException(fromId);
+        }
+    }
+
+    default void sendMessage(String subject, String content, Long fromId,
+            String threadId, List<Long> recipientIds) {
+        sendMessage(subject, content, fromId, threadId, recipientIds, false);
+    }
+
+    default void sendMessage(String subject, String content, long fromId, String threadId,
+            List<Long> recipientIds, boolean checkLimit) {
+        SendMessageBean sendMessageBean = new SendMessageBean();
+        sendMessageBean.setSubject(StringEscapeUtils.unescapeXml(subject));
+        sendMessageBean.setContent(content.replaceAll("\n", ""));
+        sendMessageBean.setFromId(fromId);
+        sendMessageBean.setRecipientIds(recipientIds);
+
+        if (StringUtils.isNotEmpty(threadId)) {
+            if (sendMessageBean.getRecipientIds().size() == 1) {
+                try {
+                    createMessage(sendMessageBean, checkLimit, threadId);
+                } catch (MessageLimitExceededException mlee) {
+                    throw new ReplyingToManyException(recipientIds, threadId);
+                }
+
+            } else {
+                //You are trying to reply to many, which is not permitted. Throw an exception
+                throw new ReplyingToManyException(recipientIds, threadId);
+            }
+        } else {
+            try {
+                createMessage(sendMessageBean, checkLimit, null);
+            } catch (MessageLimitExceededException mlee) {
+                throw new ReplyingToManyException(recipientIds, threadId);
+            }
+
+        }
+    }
+
+    default int countUnreadMessagesForUser(long userId) {
+        return countUserMessages(0, Integer.MAX_VALUE,
+                userId, null, false, false,
+                null, null, null, null);
+    }
+
+    default void setOpened(long messageId, long userId, boolean isOpened) {
+        updateRecipientStatus(messageId, userId, null, isOpened);
+
+    }
+
+    default int countMessages(long userId, MessageType type) {
+
+        switch (type) {
+            case INBOX:
+                return countMessagesForUser(userId, false);
+            case ARCHIVED:
+                return countMessagesForUser(userId, true);
+            case SENT:
+                return countSentMessagesForUser(userId);
+            default:
+                return 0;
+        }
+    }
+
+    default int countMessagesForUser(long userId, boolean isArchived) {
+        return countUserMessages(0, Integer.MAX_VALUE,
+                userId, null, isArchived, false,
+                null, null, null, null);
+
+    }
+
+    default int countSentMessagesForUser(long userId) {
+        return countUserMessages(0, Integer.MAX_VALUE,
+                null, userId, null, false,
+                null, null, null, null);
+    }
+
+    default List<Message> getMessages(long userId, int pagerStart, int pagerNext,
+            MessageType type) {
+        switch (type) {
+            case INBOX:
+                return getMessagesForUser(pagerStart, pagerNext, userId, false);
+            case ARCHIVED:
+                return getMessagesForUser(pagerStart, pagerNext, userId, true);
+            case SENT:
+                return getSentMessagesForUser(pagerStart, pagerNext, userId);
+            default:
+                return Collections.emptyList();
+        }
+    }
+
+    default List<Message> getMessagesForUser(int firstMessage, int lastMessage, long userId,
+            boolean isArchived) {
+        try {
+            return getUserMessages(firstMessage,
+                    lastMessage, userId, null, isArchived, null,
+                    null, null, null, null);
+        } catch (MessageNotFoundException e) {
+            return Collections.emptyList();
+        }
+    }
+
+    default List<Message> getSentMessagesForUser(int firstMessage, int lastMessage,
+            long userId) {
+        try {
+            return getUserMessages(firstMessage,
+                    lastMessage, null, userId, null, null,
+                    null, null, null, null);
+        } catch (MessageNotFoundException e) {
+            return Collections.emptyList();
+        }
+    }
+
+    default List<Message> getFullConversation(long messageId, String threadId) throws MessageOrThreadNotFoundException {
+        try {
+            return getUserMessages(0,
+                    Integer.MAX_VALUE, null, null, null, null,
+                    null, null, messageId, threadId);
+        } catch (MessageNotFoundException e) {
+            return Collections.emptyList();
+        }
+    }
+
+    default void setArchived(long messageId, long userId, boolean isArchived) {
+        updateRecipientStatus(messageId,userId,isArchived,null);
+
+    }
+
+
+
+
 }

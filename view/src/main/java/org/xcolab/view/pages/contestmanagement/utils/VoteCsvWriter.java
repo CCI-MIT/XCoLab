@@ -9,15 +9,15 @@ import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.user.MembersClient;
-import org.xcolab.client.user.exceptions.MemberNotFoundException;
-import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
 import org.xcolab.client.tracking.ITrackingClient;
 import org.xcolab.client.tracking.pojo.ILocation;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.CsvResponseWriter;
 
 import java.io.IOException;
@@ -86,7 +86,7 @@ public class VoteCsvWriter extends CsvResponseWriter {
             Contest contest = contests.computeIfAbsent(contestPhase.getContestId(),
                     ContestClientUtil::getContest);
 
-            Member member = getMemberOrNull(vote);
+            UserWrapper member = getMemberOrNull(vote);
             Proposal proposal = getProposalOrNull(proposals, vote);
 
             List<String> row = new ArrayList<>();
@@ -107,8 +107,8 @@ public class VoteCsvWriter extends CsvResponseWriter {
             addValue(row, member != null ? member.getLastName() : "Member not found");
             addValue(row, member != null ? ActivitiesClientUtil.countActivities(
                     member.getId(),null) : "Member not found");
-            addValue(row, member != null ? member.getLoginIP() : "Member not found");
-            addLocationForIp(row, member != null ? member.getLoginIP() : null);
+            addValue(row, member != null ? member.getLoginIp() : "Member not found");
+            addLocationForIp(row, member != null ? member.getLoginIp() : null);
 
             addValue(row, member != null ? member.getCreatedAt() : "Member not found");
             addValue(row, member != null ? member.hasLinkedSocialAccount() : "Member not found");
@@ -155,9 +155,9 @@ public class VoteCsvWriter extends CsvResponseWriter {
         }
     }
 
-    private Member getMemberOrNull(ProposalVote vote) {
+    private UserWrapper getMemberOrNull(ProposalVote vote) {
         try {
-            return MembersClient.getMember(vote.getUserId());
+            return StaticUserContext.getUserClient().getMember(vote.getUserId());
         } catch (MemberNotFoundException e) {
             log.warn("Member {} not found when generating report", vote.getUserId());
             return null;

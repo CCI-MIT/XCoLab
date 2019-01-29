@@ -3,10 +3,10 @@ package org.xcolab.entity.utils.email;
 import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.user.MessagingClient;
-import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.entity.utils.helper.ProposalJudgingCommentHelper;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class ContestPhasePromotionEmail {
         String messageBody = reviewContentHelper.getPromotionComment(true);
         String subject =  reviewContentHelper.getSubject();
         if (StringUtils.isNotEmpty(messageBody)) {
-            MessagingClient
+            StaticUserContext.getMessagingClient()
                     .sendMessage(subject, messageBody, ADMINISTRATOR_USER_ID, null, getMemberUserIds(proposal));
         }
     }
@@ -30,7 +30,7 @@ public class ContestPhasePromotionEmail {
     private static  List<Long> getMemberUserIds(Proposal proposal) {
         List<Long> recipientIds = new ArrayList<>();
 
-        for (Member contributor : ProposalClientUtil.getProposalMembers(proposal.getId())) {
+        for (UserWrapper contributor : ProposalClientUtil.getProposalMembers(proposal.getId())) {
             recipientIds.add(contributor.getId());
         }
 

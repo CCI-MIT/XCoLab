@@ -9,12 +9,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.xcolab.client.user.IAnalyticsClient;
 import org.xcolab.client.user.pojo.IAnalyticsUserEvent;
 import org.xcolab.service.members.domain.analyticsuserevent.AnalyticsUserEventDao;
 
 @RestController
 @RequestMapping("/members/{userId}/analyticsEvents")
-public class AnalyticsController {
+public class AnalyticsController  implements IAnalyticsClient {
 
     private final AnalyticsUserEventDao analyticsUserEventDao;
 
@@ -24,11 +25,13 @@ public class AnalyticsController {
         this.analyticsUserEventDao = analyticsUserEventDao;
     }
 
+    @Override
     @GetMapping("/{idString}/exists")
     public boolean exists(@PathVariable long userId, @PathVariable String idString) {
         return analyticsUserEventDao.exists(userId, idString);
     }
 
+    @Override
     @PostMapping
     public IAnalyticsUserEvent create(@PathVariable long userId,
             @RequestBody IAnalyticsUserEvent analyticsUserEvent) {

@@ -5,9 +5,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.client.user.MembersClient;
+import org.xcolab.client.user.StaticUserContext;
 import org.xcolab.client.user.exceptions.MemberNotFoundException;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
 import org.xcolab.util.http.client.types.TypeProvider;
 
@@ -23,7 +23,7 @@ public class ProposalTeamMembershipRequest extends AbstractProposalTeamMembershi
             new TypeProvider<>(ProposalTeamMembershipRequest.class,
                     new ParameterizedTypeReference<List<ProposalTeamMembershipRequest>>() {});
 
-    private Member requestUser;
+    private UserWrapper requestUser;
 
     public ProposalTeamMembershipRequest() {
     }
@@ -38,14 +38,14 @@ public class ProposalTeamMembershipRequest extends AbstractProposalTeamMembershi
 
     }
 
-    public Member getRequestUser(){
+    public UserWrapper getRequestUser(){
         if(this.requestUser == null){
             if(this.getUserId() != null) {
                 try {
-                    this.requestUser = MembersClient.getMember(this.getUserId());
+                    this.requestUser = StaticUserContext.getUserClient().getMember(this.getUserId());
                 } catch (MemberNotFoundException e) {
                     throw ReferenceResolutionException
-                            .toObject(Member.class, this.getUserId())
+                            .toObject(UserWrapper.class, this.getUserId())
                             .fromObject(ProposalTeamMembershipRequest.class,
                                     this.getId());
                 }

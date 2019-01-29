@@ -14,26 +14,22 @@ import org.springframework.web.bind.annotation.RestController;
 import org.xcolab.client.user.IMessagingClient;
 import org.xcolab.client.user.exceptions.MessageNotFoundException;
 import org.xcolab.client.user.messaging.MessageLimitExceededException;
-import org.xcolab.client.user.pojo.IMessage;
-import org.xcolab.client.user.pojo.IMessagingUserPreference;
-import org.xcolab.client.user.pojo.IUser;
+import org.xcolab.client.user.pojo.MessagingUserPreference;
+import org.xcolab.client.user.pojo.Message;
 import org.xcolab.client.user.pojo.SendMessageBean;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.commons.spring.web.annotation.ListMapping;
 import org.xcolab.service.members.domain.messaging.MessageDao;
 import org.xcolab.service.members.domain.messaginguserpreferences.MessagingUserPreferenceDao;
-
 import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.members.service.messaging.MessageLimitManager;
 import org.xcolab.service.members.service.messaging.MessagingService;
 import org.xcolab.service.members.service.messaging.MessagingUserPreferenceService;
-import org.xcolab.service.utils.ControllerUtils;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.sql.Timestamp;
 import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
 
 @RestController
 public class MessagingController implements IMessagingClient {
@@ -62,8 +58,7 @@ public class MessagingController implements IMessagingClient {
 
     @Override
     @ListMapping("/messages")
-    public List<IMessage> getUserMessages(HttpServletResponse response,
-            @RequestParam(required = false) Integer startRecord,
+    public List<Message> getUserMessages(@RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
             @RequestParam(required = false) Long recipientId,
             @RequestParam(required = false) Long senderId,
@@ -71,7 +66,6 @@ public class MessagingController implements IMessagingClient {
             @RequestParam(required = false) Boolean isOpened,
             @RequestParam(required = false) Timestamp sinceDate,
             @RequestParam(required = false) String sort,
-            @RequestParam(required = false, defaultValue = "true") boolean includeCount,
             @RequestParam(required = false) Long messageId,
             @RequestParam(required = false) String threadId) throws MessageNotFoundException {
 
@@ -85,21 +79,34 @@ public class MessagingController implements IMessagingClient {
             final PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord,
                     sort);
 
-            if (includeCount) {
-                response.setHeader(ControllerUtils.COUNT_HEADER_NAME,
-                        Integer.toString(messageDao
-                                .countByGiven(senderId, recipientId, isArchived, isOpened,
-                                        sinceDate)));
-            }
+
             return messageDao
                     .findByGiven(paginationHelper, senderId, recipientId, isArchived, isOpened,
                             sinceDate);
         }
     }
 
+    @RequestMapping("/messages/count")
+    public Integer countUserMessages(@RequestParam(required = false) Integer startRecord,
+            @RequestParam(required = false) Integer limitRecord,
+            @RequestParam(required = false) Long recipientId,
+            @RequestParam(required = false) Long senderId,
+            @RequestParam(required = false) Boolean isArchived,
+            @RequestParam(required = false) Boolean isOpened,
+            @RequestParam(required = false) Timestamp sinceDate,
+            @RequestParam(required = false) String sort,
+            @RequestParam(required = false) Long messageId,
+            @RequestParam(required = false) String threadId) {
+
+
+        return messageDao.countByGiven(senderId, recipientId, isArchived, isOpened,
+                sinceDate);
+
+    }
+
     @Override
     @RequestMapping(value = "/messages/{messageId}", method = RequestMethod.GET)
-    public IMessage getMessage(@PathVariable long messageId) throws MessageNotFoundException {
+    public Message getMessage(@PathVariable long messageId) throws MessageNotFoundException {
         try {
             return messageDao.getMessage(messageId);
         } catch (NotFoundException e) {
@@ -109,7 +116,7 @@ public class MessagingController implements IMessagingClient {
 
     @Override
     @RequestMapping(value = "/messages/{messageId}/recipients", method = RequestMethod.GET)
-    public List<IUser> getMessageRecipients(@PathVariable long messageId) {
+    public List<UserWrapper> getMessageRecipients(@PathVariable long messageId) {
         return messageDao.getRecipients(messageId);
     }
 
@@ -121,7 +128,7 @@ public class MessagingController implements IMessagingClient {
 
     @Override
     @RequestMapping(value = "/messages", method = RequestMethod.POST)
-    public IMessage createMessage(@RequestBody SendMessageBean sendMessageBean,
+    public Message createMessage(@RequestBody SendMessageBean sendMessageBean,
             @RequestParam(required = false, defaultValue = "true") boolean checkLimit,
             @RequestParam(required = false) String threadId)
             throws MessageLimitExceededException {
@@ -147,7 +154,7 @@ public class MessagingController implements IMessagingClient {
 
     @Override
     @GetMapping("/members/{userId}/messagingPreferences")
-    public IMessagingUserPreference getMessagingPreferences(@PathVariable long userId) {
+    public MessagingUserPreference getMessagingPreferences(@PathVariable long userId) {
         return messagingUserPreferencesService.getByuserId(userId);
     }
 
@@ -155,14 +162,14 @@ public class MessagingController implements IMessagingClient {
     @PutMapping("/members/{userId}/messagingPreferences/{messagingPreferencesId}")
     public boolean updateMessagingPreferences(@PathVariable long userId,
             @PathVariable long messagingPreferencesId,
-            @RequestBody IMessagingUserPreference messagingUserPreferences) {
+            @RequestBody MessagingUserPreference messagingUserPreferences) {
         return messagingUserPreferencesDao.update(messagingUserPreferences);
     }
 
     @Override
     @PostMapping("/members/{userId}/messagingPreferences")
-    public IMessagingUserPreference createMessagingPreferences(@PathVariable long userId,
-            @RequestBody IMessagingUserPreference messagingUserPreferences) {
+    public MessagingUserPreference createMessagingPreferences(@PathVariable long userId,
+            @RequestBody MessagingUserPreference messagingUserPreferences) {
         return messagingUserPreferencesDao.create(messagingUserPreferences)
                 .orElseThrow(() -> new InternalException(
                         "Could not retrieve id of created messagingPreferences: "

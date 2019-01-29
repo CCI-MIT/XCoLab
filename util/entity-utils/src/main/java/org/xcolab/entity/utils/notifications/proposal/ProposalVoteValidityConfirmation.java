@@ -6,7 +6,7 @@ import org.jsoup.nodes.Node;
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.pojo.IEmailTemplate;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.entity.utils.notifications.basic.ProposalNotification;
@@ -18,11 +18,11 @@ public class ProposalVoteValidityConfirmation extends ProposalNotification {
 
     private final Proposal votedProposal;
     private final String confirmationToken;
-    private final Member recipient;
+    private final UserWrapper recipient;
     private ProposalVoteConfirmationTemplate templateWrapper;
 
     public ProposalVoteValidityConfirmation(Proposal votedProposal, Contest contest,
-            Member recipient, String confirmationToken) {
+            UserWrapper recipient, String confirmationToken) {
         super(votedProposal, contest, recipient, null);
         this.confirmationToken = confirmationToken;
         this.votedProposal = votedProposal;

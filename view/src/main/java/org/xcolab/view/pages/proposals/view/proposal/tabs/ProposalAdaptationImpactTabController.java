@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.client.proposals.ProposalAttributeClient;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.view.errors.AccessDeniedPage;
@@ -40,7 +40,7 @@ public class ProposalAdaptationImpactTabController extends BaseProposalTabContro
 
     @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=ADAPTATION_IMPACT")
     public String show(HttpServletRequest request, HttpServletResponse response,
-            Model model, ProposalContext proposalContext, Member currentMember) {
+            Model model, ProposalContext proposalContext, UserWrapper currentMember) {
 
         final ProposalsPermissions permissions = proposalContext.getPermissions();
         if (!permissions.getCanView()) {
@@ -66,7 +66,7 @@ public class ProposalAdaptationImpactTabController extends BaseProposalTabContro
 
     @PostMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=ADAPTATION_IMPACT")
     public String save(HttpServletRequest request, HttpServletResponse response,
-            Model model, ProposalContext proposalContext, Member currentMember,
+            Model model, ProposalContext proposalContext, UserWrapper currentMember,
             @PathVariable long proposalId,
             @ModelAttribute AdaptationImpactBean adaptationImpactBean,
             BindingResult bindingResult) {

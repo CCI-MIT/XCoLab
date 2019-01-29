@@ -1,5 +1,6 @@
 package org.xcolab.view.pages.proposals.view.action;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -7,9 +8,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.user.MembersClient;
-import org.xcolab.client.user.MessagingClient;
-import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.proposals.MembershipClient;
 import org.xcolab.client.proposals.MembershipClientUtil;
 import org.xcolab.client.proposals.ProposalAttributeClient;
@@ -19,6 +17,9 @@ import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.team.ProposalTeamMembershipRequest;
+import org.xcolab.client.user.IMessagingClient;
+import org.xcolab.client.user.IUserClient;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
 
@@ -47,6 +48,12 @@ public class MembershipInvitationResponseController {
     private static final String MSG_MEMBERSHIP_INVITE_RESPONSE_CONTENT_REJECTED =
             "Your invitation of %s to join the <proposal/> %s has been rejected.";
 
+    @Autowired
+    private IUserClient userClient;
+
+    @Autowired
+    private IMessagingClient messagingClient;
+
     @PostMapping("/membershipRequests/reply")
     private void execute(HttpServletRequest request, HttpServletResponse response,
             @RequestParam long requestId, @RequestParam long proposalId,
@@ -60,9 +67,9 @@ public class MembershipInvitationResponseController {
         ProposalTeamMembershipRequest membershipRequest = membershipClient.getMembershipRequest(requestId);
 
         List<Long> recipients = new ArrayList<>();
-        List<Member> contributors = proposalClient.getProposalMembers(proposalId);
+        List<UserWrapper> contributors = proposalClient.getProposalMembers(proposalId);
 
-        for (Member user : contributors) {
+        for (UserWrapper user : contributors) {
             recipients.add(user.getId());
         }
 
@@ -75,7 +82,7 @@ public class MembershipInvitationResponseController {
                 proposal.getProposalLinkUrl(proposal.getContest()), proposalName);
 
         if (membershipRequest != null) {
-            Member invitee = MembersClient.getMemberUnchecked(membershipRequest.getUserId());
+            UserWrapper invitee = userClient.getMemberUnchecked(membershipRequest.getUserId());
 
             if (action.equalsIgnoreCase("ACCEPT")) {
                 membershipClient.approveMembershipRequest(proposal, membershipRequest.getUserId(),
@@ -110,6 +117,6 @@ public class MembershipInvitationResponseController {
     }
 
     private void sendMessage(long sender, List<Long> recipients, String subject, String content) {
-        MessagingClient.sendMessage(subject, content, sender, null, recipients);
+        messagingClient.sendMessage(subject, content, sender, null, recipients);
     }
 }

@@ -1,5 +1,6 @@
 package org.xcolab.view.pages.proposals.view.proposal.tabs;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,8 +13,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.user.MembersClient;
-import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
@@ -22,6 +21,8 @@ import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.client.proposals.pojo.proposals.ProposalRatings;
 import org.xcolab.client.proposals.pojo.proposals.UserProposalRatings;
+import org.xcolab.client.user.IUserClient;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.entity.utils.helper.ProposalJudgingCommentHelper;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
@@ -50,9 +51,12 @@ import javax.validation.Valid;
 @RequestMapping("/contests/{contestYear}/{contestUrlName}")
 public class ProposalAdvancingTabController extends BaseProposalTabController {
 
+    @Autowired
+    private IUserClient userClient;
+
     @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=ADVANCING")
     public String showAdvancingTab(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member, ProposalContext proposalContext) {
+            Model model, UserWrapper member, ProposalContext proposalContext) {
 
         final ProposalTab tab = ProposalTab.ADVANCING;
         setCommonModelAndPageAttributes(request, model, proposalContext, tab);
@@ -133,7 +137,7 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
 
     @PostMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=ADVANCING")
     public String saveAdvanceDetails(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member, ProposalContext proposalContext,
+            Model model, UserWrapper member, ProposalContext proposalContext,
             @RequestParam(defaultValue = "false") boolean isForcePromotion,
             @RequestParam(defaultValue = "false") boolean isFreeze,
             @RequestParam(defaultValue = "false") boolean isUnfreeze,
@@ -220,7 +224,7 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
 
     @PostMapping("c/{proposalUrlString}/{proposalId}/tab/ADVANCING/saveJudgingFeedback")
     public String saveJudgingFeedback(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member, ProposalContext proposalContext,
+            Model model, UserWrapper member, ProposalContext proposalContext,
             @Valid JudgeProposalFeedbackBean judgeProposalFeedbackBean,
             BindingResult result, RedirectAttributes redirectAttributes)
             throws IOException {
@@ -234,7 +238,7 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
 
         if (judgeProposalFeedbackBean.getScreeningUserId() != null && permissions
                 .getCanAdminAll()) {
-            member = MembersClient
+            member = userClient
                     .getMemberUnchecked(judgeProposalFeedbackBean.getScreeningUserId());
         }
 

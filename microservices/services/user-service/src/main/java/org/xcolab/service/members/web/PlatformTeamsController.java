@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.client.user.pojo.IPlatformTeam;
-import org.xcolab.client.user.pojo.IUser;
+import org.xcolab.client.user.IPlatformTeamClient;
+import org.xcolab.client.user.exceptions.PlatformTeamNotFoundException;
+import org.xcolab.client.user.pojo.PlatformTeam;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.service.members.domain.platformteam.PlatformTeamDao;
 
 import java.util.List;
@@ -22,7 +24,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/platformteams")
-public class PlatformTeamsController {
+public class PlatformTeamsController implements IPlatformTeamClient {
     private final PlatformTeamDao platformTeamDao;
 
     @Autowired
@@ -31,7 +33,7 @@ public class PlatformTeamsController {
     }
 
     @GetMapping
-    public List<IPlatformTeam> listPlatformTeams(@RequestParam(required = false) Long userId) {
+    public List<PlatformTeam> listPlatformTeams(@RequestParam(required = false) Long userId) {
         if (userId == null) {
             return platformTeamDao.getPlatformTeams();
         } else {
@@ -40,15 +42,15 @@ public class PlatformTeamsController {
     }
 
     @PostMapping
-    public IPlatformTeam createPlatformTeam(@RequestBody IPlatformTeam platformTeam) {
+    public PlatformTeam createPlatformTeam(@RequestBody PlatformTeam platformTeam) {
         return platformTeamDao.createPlatformTeam(platformTeam.getName());
     }
 
     @GetMapping("{teamId}")
-    public ResponseEntity<IPlatformTeam> getPlatformTeam(@PathVariable Long teamId) {
-        Optional<IPlatformTeam> team = platformTeamDao.getPlatformTeam(teamId);
-        return team.map(platformTeam -> new ResponseEntity<>(platformTeam, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public PlatformTeam getPlatformTeam(@PathVariable Long teamId) throws PlatformTeamNotFoundException {
+        Optional<PlatformTeam> team = platformTeamDao.getPlatformTeam(teamId);
+        return team
+                .orElseThrow(PlatformTeamNotFoundException::new);
     }
 
     @DeleteMapping("{teamId}")
@@ -58,14 +60,14 @@ public class PlatformTeamsController {
     }
 
     @PutMapping("{teamId}")
-    public IPlatformTeam updatePlatformTeam(@RequestBody IPlatformTeam platformTeam, @PathVariable
+    public PlatformTeam updatePlatformTeam(@RequestBody PlatformTeam platformTeam, @PathVariable
             Long teamId) {
         assert (platformTeam.getId().equals(teamId));
         return platformTeamDao.updateOrInsertPlatformTeam(platformTeam);
     }
 
     @GetMapping("{teamId}/members")
-    public List<IUser> listTeamUsers(@PathVariable Long teamId) {
+    public List<UserWrapper> listTeamUsers(@PathVariable Long teamId) {
         return platformTeamDao.getTeamUsers(teamId);
     }
 

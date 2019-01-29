@@ -3,14 +3,14 @@ package org.xcolab.view.pages.proposals.judging;
 import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.user.MembersClient;
-import org.xcolab.client.user.exceptions.MemberNotFoundException;
-import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingType;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -23,10 +23,10 @@ public class ProposalReview {
     private String proposalUrl;
 
     private Map<ProposalRatingType, Double> ratingAverages;
-    private Map<Member, String> reviews;
-    private final Map<Member, Boolean> shouldAdvanceDecisions;
-    private Set<Member> reviewers;
-    private final Map<Member, Map<ProposalRatingType, Double> > userRatings;
+    private Map<UserWrapper, String> reviews;
+    private final Map<UserWrapper, Boolean> shouldAdvanceDecisions;
+    private Set<UserWrapper> reviewers;
+    private final Map<UserWrapper, Map<ProposalRatingType, Double> > userRatings;
 
     public ProposalReview(Proposal proposal, ContestPhase contestPhase, String proposalUrl) {
         this.proposal = proposal;
@@ -39,19 +39,19 @@ public class ProposalReview {
         this.ratingAverages = new HashMap<>();
     }
 
-    public void addReview(Member judge, String comment) {
+    public void addReview(UserWrapper judge, String comment) {
         this.reviews.put(judge, comment);
     }
 
-    public String getReview(Member user) {
+    public String getReview(UserWrapper user) {
         return reviews.get(user);
     }
 
-    public void addShouldAdvanceDecision(Member judge, Boolean decision) {
+    public void addShouldAdvanceDecision(UserWrapper judge, Boolean decision) {
         shouldAdvanceDecisions.put(judge, decision);
     }
 
-    public Boolean getShouldAdvanceDecision(Member judge) {
+    public Boolean getShouldAdvanceDecision(UserWrapper judge) {
         return shouldAdvanceDecisions.get(judge);
     }
 
@@ -87,7 +87,7 @@ public class ProposalReview {
         return avg;
     }
 
-    public void addUserRating(Member user, final ProposalRatingType ratingType, final double rating) {
+    public void addUserRating(UserWrapper user, final ProposalRatingType ratingType, final double rating) {
         Map<ProposalRatingType, Double> ratings;
         if (this.userRatings.get(user) == null) {
             ratings = new HashMap<>();
@@ -98,11 +98,11 @@ public class ProposalReview {
         ratings.put(ratingType, rating);
     }
 
-    public Map<ProposalRatingType, Double> getUserRatings(Member user) {
+    public Map<ProposalRatingType, Double> getUserRatings(UserWrapper user) {
         return this.userRatings.get(user);
     }
 
-    public Double getUserRating(Member user, ProposalRatingType ratingType) {
+    public Double getUserRating(UserWrapper user, ProposalRatingType ratingType) {
         if(this.userRatings.get(user) != null) {
             return this.userRatings.get(user).get(ratingType);
         }
@@ -111,7 +111,7 @@ public class ProposalReview {
         }
     }
 
-    public Double getUserRatingAverage(Member user){
+    public Double getUserRatingAverage(UserWrapper user){
 
         if(userRatings.get(user) != null) {
             double sum = 0;
@@ -134,19 +134,19 @@ public class ProposalReview {
     }
 
 
-    public Map<Member, String> getReviews() {
+    public Map<UserWrapper, String> getReviews() {
         return reviews;
     }
 
-    public void setReviewers(Set<Member> reviewers){
+    public void setReviewers(Set<UserWrapper> reviewers){
         this.reviewers = reviewers;
     }
 
-    public Set<Member> getReviewers(){
+    public Set<UserWrapper> getReviewers(){
         return reviewers;
     }
 
-    public void setReviews(Map<Member, String> reviews) {
+    public void setReviews(Map<UserWrapper, String> reviews) {
         this.reviews = reviews;
     }
 
@@ -178,7 +178,7 @@ public class ProposalReview {
         String authorName = getTeamOrNull();
         if (StringUtils.isBlank(authorName)) {
             try {
-                final Member member = MembersClient.getMember(proposal.getAuthorUserId());
+                final UserWrapper member = StaticUserContext.getUserClient().getMember(proposal.getAuthorUserId());
                 authorName = member.getFirstName() + " " + member.getLastName();
             } catch (MemberNotFoundException e) {
                 authorName = "";

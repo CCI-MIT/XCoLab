@@ -6,7 +6,7 @@ import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalVersion;
@@ -66,7 +66,7 @@ public final class ProposalClientUtil {
         return client.getProposalsInContest(contestId);
     }
 
-    public static List<Member> getProposalMembers(Long proposalId) {
+    public static List<UserWrapper> getProposalMembers(Long proposalId) {
         return client.getProposalMembers(proposalId);
     }
 

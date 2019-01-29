@@ -13,7 +13,7 @@ import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.contest.pojo.ontology.FocusAreaOntologyTerm;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.IdListUtil;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.entities.ContestDetailsTabs;
@@ -52,7 +52,7 @@ public class OntologyTabController extends AbstractTabController {
 
     @GetMapping
     public String showOntologyTabController(HttpServletRequest request,
-            HttpServletResponse response, Model model, Member member, @PathVariable long contestId) {
+            HttpServletResponse response, Model model, UserWrapper member, @PathVariable long contestId) {
 
         if (!tabWrapper.getCanView()) {
             return new AccessDeniedPage(member).toViewName(response);
@@ -68,7 +68,7 @@ public class OntologyTabController extends AbstractTabController {
 
     @PostMapping("update")
     public String updateOntologyTabController(HttpServletRequest request,
-            HttpServletResponse response, Model model, Member member,
+            HttpServletResponse response, Model model, UserWrapper member,
             @PathVariable long contestId) {
 
         if (!tabWrapper.getCanEdit()) {

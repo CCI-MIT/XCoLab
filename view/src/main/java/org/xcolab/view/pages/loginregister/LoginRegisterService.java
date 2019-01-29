@@ -9,13 +9,15 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.user.MembersClient;
-import org.xcolab.client.user.exceptions.MemberNotFoundException;
-import org.xcolab.client.user.pojo.LoginToken;
-import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.tracking.IBalloonClient;
 import org.xcolab.client.tracking.exceptions.BalloonUserTrackingNotFoundException;
 import org.xcolab.client.tracking.pojo.IBalloonUserTracking;
+import org.xcolab.client.user.ILoginTokenClient;
+import org.xcolab.client.user.IUserClient;
+import org.xcolab.client.user.IUserLoginRegister;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.pojo.LoginToken;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.entity.utils.LinkUtils;
 import org.xcolab.entity.utils.notifications.member.MemberBatchRegistrationNotification;
@@ -42,11 +44,21 @@ public class LoginRegisterService {
 
     private final AuthenticationService authenticationService;
     private final IBalloonClient balloonClient;
+    private final IUserClient userClient;
+    private final IUserLoginRegister userLoginRegister;
+    private final ILoginTokenClient loginTokenClient;
 
     @Autowired
-    public LoginRegisterService(AuthenticationService authenticationService, IBalloonClient balloonClient) {
+    public LoginRegisterService(AuthenticationService authenticationService,
+            IBalloonClient balloonClient,
+            IUserClient userClient,
+            IUserLoginRegister userLoginRegister,
+            ILoginTokenClient loginTokenClient) {
         this.authenticationService = authenticationService;
         this.balloonClient = balloonClient;
+        this.userClient = userClient;
+        this.userLoginRegister = userLoginRegister;
+        this.loginTokenClient = loginTokenClient;
     }
 
     /**
@@ -61,7 +73,7 @@ public class LoginRegisterService {
             CreateUserBean newAccountBean, String redirect, boolean postRegistration)
             throws IOException {
 
-        final Member member = register(newAccountBean.getScreenName(), newAccountBean.getPassword(),
+        final UserWrapper member = register(newAccountBean.getScreenName(), newAccountBean.getPassword(),
                 newAccountBean.getEmail(), newAccountBean.getFirstName(),
                 newAccountBean.getLastName(), newAccountBean.getShortBio(),
                 newAccountBean.getCountry(), newAccountBean.getImageId(),
@@ -92,7 +104,7 @@ public class LoginRegisterService {
         }
     }
 
-    private void updateBalloonTracking(Member member, HttpServletRequest request) {
+    private void updateBalloonTracking(UserWrapper member, HttpServletRequest request) {
         Optional<BalloonCookie> balloonCookieOpt = BalloonCookie.from(request.getCookies());
         if (balloonCookieOpt.isPresent()) {
             BalloonCookie balloonCookie = balloonCookieOpt.get();
@@ -117,7 +129,7 @@ public class LoginRegisterService {
                 });
     }
 
-    public void recordRegistrationEvent(Member member) {
+    public void recordRegistrationEvent(UserWrapper member) {
         ActivitiesClientUtil.createActivityEntry(MemberActivityType.REGISTERED, member.getId(),
                 member.getId());
 
@@ -133,19 +145,19 @@ public class LoginRegisterService {
 
     public void updatePassword(String forgotPasswordToken, String newPassword)
             throws MemberNotFoundException {
-        Long userId = MembersClient.updateUserPassword(forgotPasswordToken, newPassword);
+        Long userId = userLoginRegister.updateForgottenPasswordByToken(forgotPasswordToken, newPassword);
         if (userId == null) {
             throw new MemberNotFoundException(
                     "Member with forgotPasswordToken: " + forgotPasswordToken + " was not found");
         }
     }
 
-    public Member autoRegister(String emailAddress, String firstName, String lastName) {
+    public UserWrapper autoRegister(String emailAddress, String firstName, String lastName) {
         return register(null, null, emailAddress, firstName, lastName,
                 "", null, null, true, null);
     }
 
-    public Member register(String screenName, String password, String email, String firstName,
+    public UserWrapper register(String screenName, String password, String email, String firstName,
             String lastName, String shortBio, String country, Long imageId,
             boolean generateLoginUrl, String language) {
 
@@ -153,9 +165,9 @@ public class LoginRegisterService {
         Assert.notNull(email, "First name is required");
         Assert.notNull(email, "Last name is required");
 
-        Member member = new Member();
+        UserWrapper member = new UserWrapper();
         if (screenName == null) {
-            member.setScreenName(MembersClient.generateScreenName(lastName, firstName));
+            member.setScreenName(userLoginRegister.generateScreenName(lastName, firstName));
         } else {
             member.setScreenName(screenName);
         }
@@ -174,10 +186,10 @@ public class LoginRegisterService {
         } else {
             member.setPortraitFileEntryId(0L);
         }
-        member = MembersClient.register(member);
+        member = userClient.register(member);
 
         if (generateLoginUrl) {
-            final LoginToken loginToken = MembersClient.createLoginToken(member.getId());
+            final LoginToken loginToken = loginTokenClient.createLoginToken(member.getId());
             new MemberBatchRegistrationNotification(member, loginToken).sendEmailNotification();
         } else {
             new MemberRegistrationNotification(member).sendEmailNotification();

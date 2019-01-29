@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.user.pojo.IUser;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.model.tables.pojos.PointType;
 import org.xcolab.model.tables.pojos.PointsDistributionConfiguration;
 import org.xcolab.service.contest.exceptions.NotFoundException;
@@ -95,7 +95,7 @@ public class PointsDistributionConfigurationService {
         try {
             Set<Long> userIds = new HashSet<>();
             Set<Long> missinguserIds = new HashSet<>();
-            for (IUser user : proposalService.getProposalMembers(proposalId)) {
+            for (UserWrapper user : proposalService.getProposalMembers(proposalId)) {
                 userIds.add(user.getId());
                 missinguserIds.add(user.getId());
             }

@@ -6,9 +6,9 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.enums.ContestStatus;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.user.PermissionsClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
+import org.xcolab.client.user.StaticUserContext;
 import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.util.activities.enums.ContestActivityType;
 import org.xcolab.util.activities.enums.ProposalActivityType;
@@ -67,7 +67,7 @@ public final class AddUpdateProposalControllerUtil {
 
         final ActivitiesClient activitiesClient = clients.getActivitiesClient();
         if (createNew) {
-            boolean isAdmin = PermissionsClient.canAdminAll(userId);
+            boolean isAdmin = StaticUserContext.getPermissionClient().canAdminAll(userId);
             boolean isClosed = isProposalListClosed(contestPhase);
             if (isAdmin && isClosed) {
                 ServiceRequestUtils.clearCache(CacheName.PROPOSAL_LIST_CLOSED);

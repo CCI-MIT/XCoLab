@@ -18,8 +18,8 @@ import org.xcolab.client.content.pojo.IContentFolder;
 import org.xcolab.client.content.pojo.IContentPage;
 import org.xcolab.client.content.pojo.tables.pojos.ContentArticleVersion;
 import org.xcolab.client.content.pojo.tables.pojos.ContentFolder;
-import org.xcolab.client.user.PermissionsClient;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.IPermissionClient;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.AccessDeniedPage;
@@ -36,10 +36,13 @@ public class ContentEditorController extends BaseContentEditor {
     @Autowired
     private IContentClient contentClient;
 
+    @Autowired
+    private IPermissionClient permissionClient;
+
     @GetMapping("/content-editor")
     public String handleRenderRequest(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member loggedInMember) {
-        if (PermissionsClient.canAdminAll(loggedInMember)) {
+            Model model, UserWrapper loggedInMember) {
+        if (permissionClient.canAdminAll(loggedInMember)) {
             if (ConfigurationAttributeKey.IS_I18N_ACTIVE.get()) {
                 model.addAttribute("i18nOptions", I18nUtils.getSelectList());
             }
@@ -209,8 +212,8 @@ public class ContentEditorController extends BaseContentEditor {
 
     @PostMapping("/content-editor/previewArticle")
     public String previewArticle(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam(required = false) String content, Model model, Member member) {
-        if (!PermissionsClient.canAdminAll(member)) {
+            @RequestParam(required = false) String content, Model model, UserWrapper member) {
+        if (!permissionClient.canAdminAll(member)) {
             return new AccessDeniedPage(member).toViewName(response);
         }
         model.addAttribute("content", content);
@@ -219,13 +222,13 @@ public class ContentEditorController extends BaseContentEditor {
 
     @PostMapping("/content-editor/saveContentArticleVersion")
     public void saveContentArticleVersion(HttpServletRequest request, HttpServletResponse response,
-            Member member, @RequestParam(required = false) Long articleId,
+            UserWrapper member, @RequestParam(required = false) Long articleId,
             @RequestParam(required = false) String title,
             @RequestParam(required = false) Long folderId,
             @RequestParam(required = false) String content,
             @RequestParam(required = false) String lang) throws IOException {
 
-        if (!PermissionsClient.canAdminAll(member)) {
+        if (!permissionClient.canAdminAll(member)) {
             defaultOperationReturnMessage(false, "Not allowed to save article", "", response);
         }
 

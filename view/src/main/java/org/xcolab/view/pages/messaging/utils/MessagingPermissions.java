@@ -1,8 +1,7 @@
 package org.xcolab.view.pages.messaging.utils;
 
-import org.xcolab.client.user.MessagingClient;
-import org.xcolab.client.user.PermissionsClient;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.pages.messaging.beans.MessageBean;
 
 import java.util.List;
@@ -10,23 +9,23 @@ import java.util.List;
 
 public class MessagingPermissions {
 
-    private final Member loggedInMember;
+    private final UserWrapper loggedInMember;
     private final boolean isLoggedIn;
     private MessageBean message;
 
-    public MessagingPermissions(Member loggedInMember) {
+    public MessagingPermissions(UserWrapper loggedInMember) {
         this.loggedInMember = loggedInMember;
         this.isLoggedIn = loggedInMember != null;
     }
 
-    public MessagingPermissions(Member loggedInMember, MessageBean message) {
+    public MessagingPermissions(UserWrapper loggedInMember, MessageBean message) {
         this(loggedInMember);
         this.message = message;
     }
 
     public boolean getCanSendMessage() {
-        return getCanAdminAll() || (isLoggedIn && MessagingClient
-                .canMemberSendMessage(loggedInMember.getId(), 1));
+        return getCanAdminAll() || (isLoggedIn && StaticUserContext.getMessagingClient()
+                .canUserSendMessage(loggedInMember.getId(), 1));
     }
 
     public boolean getCanViewMessage() {
@@ -64,6 +63,6 @@ public class MessagingPermissions {
     }
 
     public boolean getCanAdminAll() {
-        return PermissionsClient.canAdminAll(loggedInMember);
+        return StaticUserContext.getPermissionClient().canAdminAll(loggedInMember);
     }
 }

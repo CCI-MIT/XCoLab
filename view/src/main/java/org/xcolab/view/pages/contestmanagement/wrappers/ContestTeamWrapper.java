@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.contest.ContestTeamMemberClientUtil;
 import org.xcolab.client.contest.pojo.team.ContestTeamMember;
-import org.xcolab.client.user.MembersClient;
+import org.xcolab.client.user.StaticUserContext;
 import org.xcolab.client.user.permissions.SystemRole;
 import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
@@ -46,7 +46,7 @@ public class ContestTeamWrapper {
     private void assignMemberRoleToUser(SystemRole systemRole, List<Long> userIds) {
         long roleId = systemRole.getRoleId();
         for (Long userId : userIds) {
-            MembersClient.assignMemberRole(userId, roleId);
+            StaticUserContext.getUserClient().assignMemberRole(userId, roleId);
         }
     }
 
@@ -75,7 +75,7 @@ public class ContestTeamWrapper {
         Long userId = contestTeamMember.getUserId();
         Long roleId = contestTeamMember.getRoleId();
         if (ContestTeamMemberClientUtil.getTeamMembers(userId, null, roleId).isEmpty()) {
-            MembersClient.removeMemberRole(userId, roleId);
+            StaticUserContext.getUserClient().removeMemberRole(userId, roleId);
         }
 
     }

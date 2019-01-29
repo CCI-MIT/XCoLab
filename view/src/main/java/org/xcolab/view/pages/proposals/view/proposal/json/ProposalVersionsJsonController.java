@@ -9,7 +9,7 @@ import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.ProposalPhaseClient;
@@ -102,7 +102,7 @@ public class ProposalVersionsJsonController {
 
                 long cphId = proposalVersion.getContestPhaseId();
                 final ContestPhase contestPhase = contestClient.getContestPhase(cphId);
-                Member author = Member.fromId(proposalVersion.getAuthorUserId());
+                UserWrapper author = UserWrapper.fromId(proposalVersion.getAuthorUserId());
                 proposalVersionsArray.add(Json.createObjectBuilder()
                         .add("version", proposalVersion.getVersion())
                         .add("date", proposalVersion.getCreatedAt().getTime())

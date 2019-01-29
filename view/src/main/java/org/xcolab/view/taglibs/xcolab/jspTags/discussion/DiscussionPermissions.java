@@ -3,7 +3,7 @@ package org.xcolab.view.taglibs.xcolab.jspTags.discussion;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.comment.pojo.IComment;
 import org.xcolab.client.flagging.FlaggingClient;
-import org.xcolab.client.user.PermissionsClient;
+import org.xcolab.client.user.StaticUserContext;
 import org.xcolab.util.enums.flagging.TargetType;
 import org.xcolab.view.auth.MemberAuthUtil;
 
@@ -23,7 +23,7 @@ public class DiscussionPermissions {
     public DiscussionPermissions() {
         userId = MemberAuthUtil.getUserId();
         isLoggedIn = userId > 0;
-        this.isGuest = PermissionsClient.isGuest(userId);
+        this.isGuest = StaticUserContext.getPermissionClient().isGuest(userId);
     }
 
     public boolean getCanReport() {
@@ -84,6 +84,6 @@ public class DiscussionPermissions {
     }
 
     public boolean getCanAdminAll() {
-        return PermissionsClient.canAdminAll(userId);
+        return StaticUserContext.getPermissionClient().canAdminAll(userId);
     }
 }

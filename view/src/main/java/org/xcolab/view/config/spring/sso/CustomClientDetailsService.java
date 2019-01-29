@@ -7,7 +7,7 @@ import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.ClientRegistrationException;
 
-import org.xcolab.client.user.SsoClientDetailsClient;
+import org.xcolab.client.user.StaticUserContext;
 import org.xcolab.client.user.pojo.SsoClientDetails;
 import org.xcolab.view.config.spring.sso.openid.OpenIdHelper;
 
@@ -28,7 +28,7 @@ public class CustomClientDetailsService implements ClientDetailsService {
     @Override
     public ClientDetails loadClientByClientId(String clientId)
             throws ClientRegistrationException {
-        SsoClientDetails clientDetails = SsoClientDetailsClient.getSsoClientDetails(clientId);
+        SsoClientDetails clientDetails = StaticUserContext.getSsoClientDetailsClient().getSsoClientDetails(clientId);
         return new CustomClientDetails(clientDetails);
     }
 

@@ -18,7 +18,7 @@ import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseRibbonType;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
 import org.xcolab.client.contest.resources.ContestResource;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.commons.IdListUtil;
@@ -698,13 +698,13 @@ public class ContestClient {
                 .execute();
     }
 
-    public boolean getMemberAgreedToTos(long contestId, Member member) {
+    public boolean getMemberAgreedToTos(long contestId, UserWrapper member) {
         return tosAgreementResource.resolveParentId(contestResource.id(contestId))
                 .get(member.getId())
                 .execute();
     }
 
-    public void setMemberAgreedToTos(long contestId, Member member, boolean agreed) {
+    public void setMemberAgreedToTos(long contestId, UserWrapper member, boolean agreed) {
         tosAgreementResource.resolveParentId(contestResource.id(contestId))
                 .create(agreed)
                 .queryParam("memberId", member.getId())

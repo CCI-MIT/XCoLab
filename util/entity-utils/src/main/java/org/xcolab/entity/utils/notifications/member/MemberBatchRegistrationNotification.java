@@ -7,8 +7,8 @@ import org.jsoup.nodes.TextNode;
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.pojo.IEmailTemplate;
-import org.xcolab.client.user.pojo.IUser;
 import org.xcolab.client.user.pojo.LoginToken;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.entity.utils.notifications.basic.MemberNotification;
 
 import java.time.format.DateTimeFormatter;
@@ -25,7 +25,7 @@ public class MemberBatchRegistrationNotification extends MemberNotification {
 
     private final LoginToken loginToken;
 
-    public MemberBatchRegistrationNotification(IUser recipient, LoginToken loginToken) {
+    public MemberBatchRegistrationNotification(UserWrapper recipient, LoginToken loginToken) {
         super(recipient, TEMPLATE_NAME);
         this.loginToken = loginToken;
     }

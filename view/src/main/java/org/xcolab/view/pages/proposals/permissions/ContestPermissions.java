@@ -2,14 +2,14 @@ package org.xcolab.view.pages.proposals.permissions;
 
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.user.PermissionsClient;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 
 public class ContestPermissions {
 
-    private final Member loggedInMember;
+    private final UserWrapper loggedInMember;
 
-    public ContestPermissions(Member loggedInMember) {
+    public ContestPermissions(UserWrapper loggedInMember) {
         this.loggedInMember = loggedInMember;
     }
 
@@ -21,7 +21,7 @@ public class ContestPermissions {
             return false;
         }
         final long userId = loggedInMember.getId();
-        return PermissionsClient.hasRoleGroup(userId, contestType.getRoleGroup());
+        return StaticUserContext.getPermissionClient().hasRoleGroup(userId, contestType.getRoleGroup());
     }
 
     public boolean getCanAccessContest(Contest contest) {
@@ -33,6 +33,6 @@ public class ContestPermissions {
             return false;
         }
         final long userId = loggedInMember.getId();
-        return PermissionsClient.hasRoleGroup(userId, contestType.getRoleGroup());
+        return StaticUserContext.getPermissionClient().hasRoleGroup(userId, contestType.getRoleGroup());
     }
 }

@@ -6,20 +6,18 @@ import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.user.MembersClient;
-import org.xcolab.client.user.MessagingClient;
-import org.xcolab.client.user.PermissionsClient;
-import org.xcolab.client.user.exceptions.MemberNotFoundException;
-import org.xcolab.client.user.legacy.enums.MessageType;
-import org.xcolab.client.user.pojo.Member;
-import org.xcolab.client.user.pojo.MemberCategory;
-import org.xcolab.client.user.pojo.Message;
-import org.xcolab.client.user.pojo.Role;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.proposals.pojo.ContestTypeProposal;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.SupportedProposal;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.legacy.enums.MessageType;
+import org.xcolab.client.user.pojo.MemberCategory;
+import org.xcolab.client.user.pojo.Message;
+import org.xcolab.client.user.pojo.Role;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
 import org.xcolab.view.pages.profile.beans.BadgeBean;
 import org.xcolab.view.pages.profile.beans.MessageBean;
@@ -45,7 +43,7 @@ public class UserProfileWrapper implements Serializable {
     private static final boolean FIRE_GOOGLE_EVENT = false;
     private static final boolean DISPLAY_EMAIL_ERROR_MESSAGE = false;
 
-    private Member member;
+    private UserWrapper member;
     private UserBean userBean;
     private String realName;
     private MemberCategory highestRoleCategory;
@@ -67,16 +65,16 @@ public class UserProfileWrapper implements Serializable {
 
     private boolean viewingOwnProfile;
 
-    public UserProfileWrapper(long userId, Member loggedInMember,
+    public UserProfileWrapper(long userId, UserWrapper loggedInMember,
             ActivityEntryHelper activityEntryHelper)
             throws MemberNotFoundException {
         this.activityEntryHelper = activityEntryHelper;
 
-        member = MembersClient.getMember(userId);
+        member = StaticUserContext.getUserClient().getMember(userId);
 
         if (member.isActive()) {
             if (loggedInMember != null) {
-                Member logUser = MembersClient.getMember(loggedInMember.getId());
+                UserWrapper logUser = StaticUserContext.getUserClient().getMember(loggedInMember.getId());
                 if (loggedInMember.getId() == member.getId()) {
                     viewingOwnProfile = true;
                 }
@@ -99,7 +97,7 @@ public class UserProfileWrapper implements Serializable {
 
         badges = new BadgeBean(member.getId());
 
-        highestRoleCategory = MembersClient.getHighestCategory(member.getRoles());
+        highestRoleCategory = StaticUserContext.getUserClient().getHighestCategory(member.getRoles());
 
         userSubscriptions = new UserSubscriptionsWrapper(member);
         userActivities.clear();
@@ -133,7 +131,7 @@ public class UserProfileWrapper implements Serializable {
     }
 
     public boolean isStaffMemberProfile() {
-        return PermissionsClient.canStaff(member.getId());
+        return StaticUserContext.getPermissionClient().canStaff(member.getId());
     }
 
     public boolean isInitialized() {
@@ -148,11 +146,11 @@ public class UserProfileWrapper implements Serializable {
         return viewingOwnProfile;
     }
 
-    public Member getUser() {
+    public UserWrapper getUser() {
         return member;
     }
 
-    public void setUser(Member user) {
+    public void setUser(UserWrapper user) {
         this.member = user;
     }
 
@@ -233,7 +231,7 @@ public class UserProfileWrapper implements Serializable {
     }
 
     public boolean hasRole(long roleId) {
-        return PermissionsClient.memberHasRole(member.getId(), roleId);
+        return StaticUserContext.getPermissionClient().memberHasRole(member.getId(), roleId);
     }
 
     public boolean isDisplayEMailErrorMessage() {
@@ -244,7 +242,7 @@ public class UserProfileWrapper implements Serializable {
     public List<MessageBean> getMessages() {
         if (messages == null) {
             messages = new ArrayList<>();
-            for (Message msg : MessagingClient.getMessages(this.member.getId(), 0, 2, MessageType.INBOX)) {
+            for (Message msg : StaticUserContext.getMessagingClient().getMessages(this.member.getId(), 0, 2, MessageType.INBOX)) {
                 messages.add(new MessageBean(msg));
             }
         }
@@ -303,7 +301,7 @@ public class UserProfileWrapper implements Serializable {
     }
 
     public long getActualPoints() {
-        return MembersClient.getMemberMaterializedPoints(getUserId());
+        return StaticUserContext.getUserClient().getMemberMaterializedPoints(getUserId());
     }
 
     public String getPotentialPointsFormatted() {
@@ -311,7 +309,7 @@ public class UserProfileWrapper implements Serializable {
     }
 
     public long getPotentialPoints() {
-        return MembersClient.getMemberHypotheticalPoints(getUserId());
+        return StaticUserContext.getUserClient().getMemberHypotheticalPoints(getUserId());
     }
 
     public List<Proposal> getLinkingProposals() {

@@ -4,15 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import org.xcolab.client.user.pojo.ILoginLog;
+import org.xcolab.client.user.pojo.tables.pojos.LoginLog;
+import org.xcolab.client.user.ILoginLogClient;
 import org.xcolab.service.members.service.member.UserService;
 
 @RestController
-@RequestMapping("/loginLogs")
-public class LoginLogsController {
+public class LoginLogsController implements ILoginLogClient {
 
     private final UserService memberService;
 
@@ -23,7 +21,8 @@ public class LoginLogsController {
     }
 
     @PostMapping
-    public ILoginLog createLoginLog(@RequestBody ILoginLog loginLog) {
+    public LoginLog createLoginLog(@RequestBody
+            LoginLog loginLog) {
         return memberService.createLoginLog(loginLog.getUserId(), loginLog.getIpAddress(),
                 loginLog.getEntryUrl());
     }

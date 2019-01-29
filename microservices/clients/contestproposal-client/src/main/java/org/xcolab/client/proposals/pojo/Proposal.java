@@ -25,9 +25,6 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.templates.ProposalTemplate;
 import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
-import org.xcolab.client.user.MembersClient;
-import org.xcolab.client.user.exceptions.MemberNotFoundException;
-import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.client.proposals.MembershipClient;
 import org.xcolab.client.proposals.MembershipClientUtil;
@@ -56,6 +53,9 @@ import org.xcolab.client.proposals.pojo.proposals.ProposalRatings;
 import org.xcolab.client.proposals.pojo.proposals.ProposalRibbon;
 import org.xcolab.client.proposals.pojo.proposals.UserProposalRatings;
 import org.xcolab.client.proposals.pojo.team.ProposalTeamMembershipRequest;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.membershiprequest.MembershipRequestStatus;
@@ -100,7 +100,7 @@ public class Proposal extends AbstractProposal implements Serializable {
     protected ProposalRatings proposalRatings;
     private ProposalRibbon ribbonWrapper;
     private List<ProposalTeamMembershipRequest> membershipRequests;
-    private List<Member> supporters;
+    private List<UserWrapper> supporters;
 
     public Proposal(Proposal proposal, ContestPhase contestPhase) {
         this(proposal, proposal.getCurrentVersion(), null, contestPhase, null);
@@ -297,9 +297,9 @@ public class Proposal extends AbstractProposal implements Serializable {
     }
 
     @JsonIgnore
-    public Member getAuthor() {
+    public UserWrapper getAuthor() {
         try {
-            return MembersClient.getMember(this.getAuthorUserId());
+            return StaticUserContext.getUserClient().getMember(this.getAuthorUserId());
         } catch (MemberNotFoundException e) {
             throw new IllegalStateException("Author " + this.getAuthorUserId()
                     + " of proposal " + this.getId() + " does not exist");
@@ -427,10 +427,10 @@ public class Proposal extends AbstractProposal implements Serializable {
     }
 
     @JsonIgnore
-    public List<Member> getSupporters() {
+    public List<UserWrapper> getSupporters() {
         if (supporters == null) {
             supporters = clients.proposalMemberRating.getProposalSupporters(getId()).stream()
-                    .map(supporter -> MembersClient.getMemberOrNull(supporter.getUserId()))
+                    .map(supporter -> StaticUserContext.getUserClient().getMemberOrNull(supporter.getUserId()))
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList());
         }
@@ -540,7 +540,7 @@ public class Proposal extends AbstractProposal implements Serializable {
         if (members == null) {
             members = new ArrayList<>();
 
-            for (Member member : clients.proposal.getProposalMembers(getId())) {
+            for (UserWrapper member : clients.proposal.getProposalMembers(getId())) {
                 final ProposalTeamMember teamMemberWrapper = new ProposalTeamMember(
                         this, member);
                 members.add(teamMemberWrapper);
@@ -599,15 +599,15 @@ public class Proposal extends AbstractProposal implements Serializable {
     }
 
     @JsonIgnore
-    public List<Member> getSelectedJudgeUsers() {
-        List<Member> selectedJudges = new ArrayList<>();
+    public List<UserWrapper> getSelectedJudgeUsers() {
+        List<UserWrapper> selectedJudges = new ArrayList<>();
 
         // All judges are selected when screening is disabled
         if (!contestPhase.getFellowScreeningActive()) {
             for (Long judgeId : clients.contestTeamMember.getJudgesForContest(contest.getId())) {
 
                 try {
-                    Member judge = MembersClient.getMember(judgeId);
+                    UserWrapper judge = StaticUserContext.getUserClient().getMember(judgeId);
                     selectedJudges.add(judge);
                 } catch (MemberNotFoundException ignored) {
 
@@ -620,7 +620,7 @@ public class Proposal extends AbstractProposal implements Serializable {
             }
             for (String element : s.split(";")) {
                 try {
-                    Member judge = MembersClient.getMember(Long.parseLong(element));
+                    UserWrapper judge = StaticUserContext.getUserClient().getMember(Long.parseLong(element));
                     selectedJudges.add(judge);
                 } catch (MemberNotFoundException ignored) {
 
@@ -923,9 +923,9 @@ public class Proposal extends AbstractProposal implements Serializable {
     }
 
     @JsonIgnore
-    public Member getUserForSelectedVersion() {
+    public UserWrapper getUserForSelectedVersion() {
         try {
-            return MembersClient.getMember(getSelectedVersion().getAuthorUserId());
+            return StaticUserContext.getUserClient().getMember(getSelectedVersion().getAuthorUserId());
         } catch (MemberNotFoundException e) {
             return null;
         }

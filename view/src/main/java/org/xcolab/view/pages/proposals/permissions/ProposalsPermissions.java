@@ -7,10 +7,10 @@ import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
-import org.xcolab.client.user.PermissionsClient;
-import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.pages.proposals.tabs.access.AdaptationImpactAccessAlgorithm;
 import org.xcolab.view.pages.proposals.tabs.access.ImpactAccessAlgorithm;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
@@ -22,7 +22,7 @@ public class ProposalsPermissions {
     private final boolean planIsEditable;
 
     private final long userId;
-    private final Member member;
+    private final UserWrapper member;
     private final boolean isLoggedIn;
     private final boolean isGuest;
 
@@ -37,7 +37,7 @@ public class ProposalsPermissions {
     private final ContestClient contestClient;
 
 
-    public ProposalsPermissions(ClientHelper clientHelper, Member member, Proposal proposal,
+    public ProposalsPermissions(ClientHelper clientHelper, UserWrapper member, Proposal proposal,
             Contest contest, ContestPhase contestPhase) {
         this.member = member;
 
@@ -66,14 +66,14 @@ public class ProposalsPermissions {
         }
         this.userId = member != null ? member.getId() : 0;
         this.isLoggedIn = this.userId > 0;
-        this.isGuest = PermissionsClient.isGuest(userId);
+        this.isGuest = StaticUserContext.getPermissionClient().isGuest(userId);
         this.proposal = proposal;
         this.contest = contest;
         this.contestPhase = contestPhase;
         this.contestPermissions = new ContestPermissions(member);
     }
 
-    public Member getMember() {
+    public UserWrapper getMember() {
         return member;
     }
 
@@ -202,7 +202,7 @@ public class ProposalsPermissions {
      * Returns true if user is admin (not only proposal contributor)
      */
     public boolean getCanAdminAll() {
-        return PermissionsClient.canAdminAll(userId);
+        return StaticUserContext.getPermissionClient().canAdminAll(userId);
     }
 
     private boolean isProposalMember() {
@@ -215,14 +215,14 @@ public class ProposalsPermissions {
             return getCanAdminAll();
         }
 
-        return PermissionsClient.canFellow(userId, contestPhase.getContestId()) || getCanAdminAll();
+        return StaticUserContext.getPermissionClient().canFellow(userId, contestPhase.getContestId()) || getCanAdminAll();
     }
 
     public boolean getCanJudgeActions() {
         if (contestPhase == null) {
             return getCanAdminAll();
         }
-        return PermissionsClient.canJudge(userId, contestPhase.getContestId())
+        return StaticUserContext.getPermissionClient().canJudge(userId, contestPhase.getContestId())
                 || getCanAdminAll();
     }
 
@@ -230,14 +230,15 @@ public class ProposalsPermissions {
         if (!isLoggedIn) {
             return false;
         }
-        return PermissionsClient.canContestManager(member) || PermissionsClient.canAdminAll(member);
+        return StaticUserContext.getPermissionClient().canContestManager(member) ||
+                StaticUserContext.getPermissionClient().canAdminAll(member);
     }
 
     public boolean getCanIAFActions() {
         if (!isLoggedIn) {
             return false;
         }
-        return PermissionsClient.canIAF(member);
+        return StaticUserContext.getPermissionClient().canIAF(member);
     }
 
     public boolean getCanViewMitigationImpactTab() {

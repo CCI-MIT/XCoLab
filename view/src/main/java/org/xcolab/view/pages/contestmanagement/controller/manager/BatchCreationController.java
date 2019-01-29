@@ -22,11 +22,11 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.contest.pojo.templates.ProposalTemplate;
-import org.xcolab.client.user.PermissionsClient;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.IPermissionClient;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.IdListUtil;
-import org.xcolab.util.enums.contest.ContestTier;
 import org.xcolab.commons.html.LabelValue;
+import org.xcolab.util.enums.contest.ContestTier;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.beans.ContestBatchBean;
 import org.xcolab.view.pages.contestmanagement.beans.ContestCSVBean;
@@ -53,6 +53,9 @@ public class BatchCreationController {
 
     @Autowired
     private IContestTypeClient contestTypeClient;
+
+    @Autowired
+    private IPermissionClient permissionClient;
 
     @ModelAttribute("proposalTemplateSelectionItems")
     public List<LabelValue> populateProposalTemplateSelectionItems() {
@@ -115,9 +118,9 @@ public class BatchCreationController {
 
     @GetMapping("manager/batchCreateContest")
     public String batchCreateContestController(HttpServletRequest request, Model model,
-            HttpServletResponse response, Member member) {
+            HttpServletResponse response, UserWrapper member) {
 
-        if (!PermissionsClient.canAdminAll(member)) {
+        if (!permissionClient.canAdminAll(member)) {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
@@ -127,11 +130,11 @@ public class BatchCreationController {
 
     @PostMapping("manager/batchCreateContest")
     public String createBatchContestController(HttpServletRequest request,
-            HttpServletResponse response, Model model, Member member,
+            HttpServletResponse response, Model model, UserWrapper member,
             @Valid ContestBatchBean contestBatchBean, BindingResult result)
             throws IOException {
 
-        if (!PermissionsClient.canAdminAll(member)) {
+        if (!permissionClient.canAdminAll(member)) {
             return new AccessDeniedPage(member).toViewName(response);
         }
 

@@ -7,7 +7,7 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.impact.ImpactIteration;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.enums.ImpactSeriesType;
 import org.xcolab.client.proposals.helpers.ProposalAttributeHelper;
@@ -127,7 +127,7 @@ public class ProposalImpactSeriesList {
         return impactSeriesFocusAreas;
     }
 
-    public void persistImpactSeriesesWithAuthor(Member author) {
+    public void persistImpactSeriesesWithAuthor(UserWrapper author) {
         for (ProposalImpactSeries impactSeries : getImpactSerieses()) {
             impactSeries.persistWithAuthor(author);
         }

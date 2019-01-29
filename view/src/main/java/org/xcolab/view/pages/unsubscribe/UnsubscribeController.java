@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.exceptions.ActivitySubscriptionNotFoundException;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
-import org.xcolab.client.user.MembersClient;
+import org.xcolab.client.user.IUserClient;
 import org.xcolab.client.user.exceptions.MemberNotFoundException;
-import org.xcolab.client.user.pojo.Member;
-import org.xcolab.view.util.entity.NotificationUnregisterUtils;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.commons.servlet.flash.ErrorPage;
+import org.xcolab.view.util.entity.NotificationUnregisterUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,6 +22,8 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 @RequestMapping("/notifications/unsubscribe")
 public class UnsubscribeController {
+
+    private IUserClient userClient;
 
     private static final String UNSUBSCRIBE_TITLE = "You have been unsubscribed";
     private static final String UNSUBSCRIBE_INDIVIDUAL_SUBSCRIPTION_RESPONSE_TEXT =
@@ -37,11 +39,11 @@ public class UnsubscribeController {
             @PathVariable long userId, @PathVariable long subscriptionId,
             @PathVariable String token, @PathVariable long typeId) {
 
-        Member member = null;
+        UserWrapper member = null;
         boolean error = false;
         if (userId > 0) {
             try {
-                member = MembersClient.getMember(userId);
+                member = userClient.getMember(userId);
                 error = !NotificationUnregisterUtils.isTokenValid(token, member)
                         || typeId != NotificationUnregisterUtils.ACTIVITY_TYPE;
             } catch (MemberNotFoundException e) {

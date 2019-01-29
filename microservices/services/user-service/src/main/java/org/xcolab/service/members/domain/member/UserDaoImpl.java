@@ -10,7 +10,7 @@ import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.client.user.pojo.IUser;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.SortColumn;
 import org.xcolab.model.tables.MemberCategoryTable;
 import org.xcolab.model.tables.UserRoleTable;
@@ -48,7 +48,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List<IUser> findByGiven(PaginationHelper paginationHelper, String partialName,
+    public List<UserWrapper> findByGiven(PaginationHelper paginationHelper, String partialName,
             String partialEmail, String roleName, String email, String screenName, Long facebookId,
             String googleId, String colabSsoId, String climateXId, List<Long> roleIds) {
         final UserTable member = USER.as("member");
@@ -160,7 +160,7 @@ public class UserDaoImpl implements UserDao {
             }
         }
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
-        return query.fetchInto(IUser.class);
+        return query.fetchInto(UserWrapper.class);
     }
 
     private Field<String> getDisplayName(UserTable member) {
@@ -193,18 +193,18 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List<IUser> findByIp(String ip) {
+    public List<UserWrapper> findByIp(String ip) {
         final SelectQuery<Record> query = dslContext
                 .selectDistinct(USER.fields())
                 .from(USER)
                 .join(LOGIN_LOG).on(LOGIN_LOG.USER_ID.equal(USER.ID))
                 .where(LOGIN_LOG.IP_ADDRESS.eq(ip))
                 .getQuery();
-        return query.fetchInto(IUser.class);
+        return query.fetchInto(UserWrapper.class);
     }
 
     @Override
-    public List<IUser> findByScreenNameName(String name) {
+    public List<UserWrapper> findByScreenNameName(String name) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(USER)
                 .where(USER.SCREEN_NAME.like("%"+name+"%"))
@@ -212,7 +212,7 @@ public class UserDaoImpl implements UserDao {
                 .and(USER.STATUS.eq(0))
                 .orderBy(USER.SCREEN_NAME)
                 .getQuery();
-        return query.fetchInto(IUser.class);
+        return query.fetchInto(UserWrapper.class);
     }
 
     @Override
@@ -238,7 +238,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Optional<IUser> getUser(long userId) {
+    public Optional<UserWrapper> getUser(long userId) {
         final Record memberRecord = dslContext.select()
                 .from(USER)
                 .where(USER.ID.eq(userId))
@@ -246,7 +246,7 @@ public class UserDaoImpl implements UserDao {
         if (memberRecord == null) {
             return Optional.empty();
         }
-        return Optional.of(memberRecord.into(IUser.class));
+        return Optional.of(memberRecord.into(UserWrapper.class));
     }
 
     @Override
@@ -279,7 +279,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Optional<IUser> findOneByScreenName(String screenName) {
+    public Optional<UserWrapper> findOneByScreenName(String screenName) {
         final Record record = dslContext.select()
                 .from(USER)
                 .where(USER.SCREEN_NAME.eq(screenName))
@@ -287,11 +287,11 @@ public class UserDaoImpl implements UserDao {
         if (record == null) {
             return Optional.empty();
         }
-        return Optional.of(record.into(IUser.class));
+        return Optional.of(record.into(UserWrapper.class));
     }
 
     @Override
-    public Optional<IUser> findOneByEmail(String email) {
+    public Optional<UserWrapper> findOneByEmail(String email) {
         final Record record = dslContext.select()
                 .from(USER)
                 .where(USER.EMAIL_ADDRESS.eq(email))
@@ -299,11 +299,11 @@ public class UserDaoImpl implements UserDao {
         if (record == null) {
             return Optional.empty();
         }
-        return Optional.of(record.into(IUser.class));
+        return Optional.of(record.into(UserWrapper.class));
     }
 
     @Override
-    public Optional<IUser> findOneByLoginTokenId(String loginTokenId) {
+    public Optional<UserWrapper> findOneByLoginTokenId(String loginTokenId) {
         final Record record = dslContext.select()
                 .from(USER)
                 .where(USER.LOGIN_TOKEN_ID.eq(loginTokenId))
@@ -311,11 +311,11 @@ public class UserDaoImpl implements UserDao {
         if (record == null) {
             return Optional.empty();
         }
-        return Optional.of(record.into(IUser.class));
+        return Optional.of(record.into(UserWrapper.class));
     }
 
     @Override
-    public Optional<IUser> findOneByForgotPasswordHash(String newPasswordToken) {
+    public Optional<UserWrapper> findOneByForgotPasswordHash(String newPasswordToken) {
         final Record record = dslContext.select()
                 .from(USER)
                 .where(USER.FORGOT_PASSWORD_TOKEN.eq(newPasswordToken))
@@ -323,11 +323,11 @@ public class UserDaoImpl implements UserDao {
         if (record == null) {
             return Optional.empty();
         }
-        return Optional.of(record.into(IUser.class));
+        return Optional.of(record.into(UserWrapper.class));
     }
 
     @Override
-    public boolean updateUser(IUser member) {
+    public boolean updateUser(UserWrapper member) {
 
         return this.dslContext.update(USER)
                 .set(USER.UUID, member.getUuid())
@@ -362,7 +362,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public IUser createUser(IUser member) {
+    public UserWrapper createUser(UserWrapper member) {
         final Optional<UserRecord> memberRecord =
                 dslContext.insertInto(USER)
                         .set(USER.UUID, member.getUuid())

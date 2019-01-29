@@ -2,7 +2,7 @@ package org.xcolab.view.pages.profile.wrappers;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.pages.profile.SubscriptionType;
 
 import java.io.Serializable;
@@ -12,14 +12,14 @@ import java.util.List;
 public class UserSubscriptionsWrapper implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private Member user;
+    private UserWrapper user;
     private List<ActivitySubscriptionWrapper> subscriptions;
     private SubscriptionType typeFilter;
 
     public UserSubscriptionsWrapper() {
     }
 
-    public UserSubscriptionsWrapper(Member user) {
+    public UserSubscriptionsWrapper(UserWrapper user) {
         this.user = user;
         getSubscriptions();
     }

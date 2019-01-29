@@ -16,7 +16,7 @@ import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.flagging.exceptions.ReportTargetNotFoundException;
 import org.xcolab.client.flagging.pojo.AggregatedReport;
 import org.xcolab.client.flagging.pojo.ReportTarget;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.util.enums.flagging.ManagerAction;
 import org.xcolab.commons.html.LabelValue;
 import org.xcolab.view.auth.MemberAuthUtil;
@@ -52,7 +52,7 @@ public class FlaggingTabController extends AbstractTabController {
 
     @GetMapping("tab/FLAGGING")
     public String showFlaggingTab(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member, @RequestParam(required = false) Long elementId)
+            Model model, UserWrapper member, @RequestParam(required = false) Long elementId)
             throws ReportTargetNotFoundException {
         if (!tabWrapper.getCanView()) {
             return new AccessDeniedPage(member).toViewName(response);
@@ -97,7 +97,7 @@ public class FlaggingTabController extends AbstractTabController {
 
     @PostMapping("tab/FLAGGING/handle/{reportId}/{managerAction}")
     public String approveContent(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member,
+            Model model, UserWrapper member,
             @PathVariable long reportId, @PathVariable ManagerAction managerAction)
             throws IOException {
         if (!tabWrapper.getCanEdit()) {
@@ -111,7 +111,7 @@ public class FlaggingTabController extends AbstractTabController {
 
     @PostMapping("tab/FLAGGING/update")
     public String updateEmailTemplateTabController(HttpServletRequest request, Model model,
-            Member member, @ModelAttribute FlaggingReportTargetWrapper reportTargetWrapper,
+            UserWrapper member, @ModelAttribute FlaggingReportTargetWrapper reportTargetWrapper,
             BindingResult result, HttpServletResponse response) {
         if (!tabWrapper.getCanEdit()) {
             return new AccessDeniedPage(member).toViewName(response);
@@ -129,7 +129,7 @@ public class FlaggingTabController extends AbstractTabController {
 
     @PostMapping("tab/FLAGGING/delete/{reportTargetId}")
     public String deleteEmailTemplateTabController(HttpServletRequest request,
-            HttpServletResponse response, Model model, Member member,
+            HttpServletResponse response, Model model, UserWrapper member,
             @PathVariable long reportTargetId) throws IOException {
         if (!tabWrapper.getCanEdit()) {
             return new AccessDeniedPage(member).toViewName(response);

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -37,7 +37,7 @@ public class ProposalScreeningTabController extends BaseProposalTabController {
 
     @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=SCREENING")
     public String showFellowsPanel(HttpServletRequest request, Model model,
-            ProposalContext proposalContext, Member currentMember) {
+            ProposalContext proposalContext, UserWrapper currentMember) {
 
         //TODO: permission check missing?
 
@@ -69,7 +69,7 @@ public class ProposalScreeningTabController extends BaseProposalTabController {
 
     @PostMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=SCREENING")
     public String saveScreening(HttpServletRequest request, HttpServletResponse response, Model model,
-            ProposalContext proposalContext, Member currentMember,
+            ProposalContext proposalContext, UserWrapper currentMember,
             @ModelAttribute FellowProposalScreeningBean fellowProposalScreeningBean) {
 
         final Contest contest = proposalContext.getContest();

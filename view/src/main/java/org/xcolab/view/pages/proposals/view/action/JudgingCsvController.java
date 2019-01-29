@@ -12,7 +12,7 @@ import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.ContestTeamMemberClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
@@ -52,7 +52,7 @@ public class JudgingCsvController {
     @GetMapping({"phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/ADVANCING/getJudgingCsv",
             "c/{proposalUrlString}/{proposalId}/tab/ADVANCING/getJudgingCsv"})
     public void getJudgingCsv(HttpServletRequest request, HttpServletResponse response,
-            ProposalContext proposalContext, Member currentMember) {
+            ProposalContext proposalContext, UserWrapper currentMember) {
 
         ProposalsPermissions permissions = proposalContext.getPermissions();
         // Security handling
@@ -175,7 +175,7 @@ public class JudgingCsvController {
         return csvExporter.getCsvString();
     }
 
-    private List<Member> getProposalReviewingJudges(Proposal proposal, ContestPhase judgingPhase,
+    private List<UserWrapper> getProposalReviewingJudges(Proposal proposal, ContestPhase judgingPhase,
             ProposalContext proposalContext) {
 
         final ClientHelper clients = proposalContext.getClients();

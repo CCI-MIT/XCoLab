@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.commons.servlet.flash.AlertMessage;
@@ -25,7 +25,7 @@ public class SubscribeProposalActionController {
 
     @PostMapping("/subscribeProposal")
     public void handleAction(HttpServletRequest request, HttpServletResponse response, Model model,
-            ProposalContext proposalContext, Member currentMember)
+            ProposalContext proposalContext, UserWrapper currentMember)
             throws ProposalsAuthorizationException, IOException {
 
         if (proposalContext.getPermissions().getCanSubscribeProposal()) {
@@ -47,7 +47,7 @@ public class SubscribeProposalActionController {
     @GetMapping("/subscribeProposal")
     public String handleInvalidGetRequest(HttpServletRequest request,
             HttpServletResponse response, Model model, ProposalContext proposalContext,
-            Member member) {
+            UserWrapper member) {
 
         AlertMessage.warning(
                 "Could not subscribe to proposal, please make sure to click the button only once.")

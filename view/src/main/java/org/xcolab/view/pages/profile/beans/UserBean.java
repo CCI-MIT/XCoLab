@@ -5,9 +5,9 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.user.MessagingClient;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.StaticUserContext;
 import org.xcolab.client.user.pojo.MessagingUserPreference;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.CountryUtil;
 import org.xcolab.view.util.validation.CompareStrings;
 import org.xcolab.view.util.validation.HtmlMaxLength;
@@ -68,7 +68,7 @@ public class UserBean implements Serializable {
 
     public UserBean() { }
 
-    public UserBean(Member member) {
+    public UserBean(UserWrapper member) {
         userId = member.getId();
         screenName = member.getScreenName();
         firstName = member.getFirstName();
@@ -89,8 +89,8 @@ public class UserBean implements Serializable {
         } else {
             imageId = member.getPortraitFileEntryId();
         }
-        final MessagingUserPreference messagingPreferences = MessagingClient
-                .getMessagingPreferencesForMember(member.getId());
+        final MessagingUserPreference messagingPreferences = StaticUserContext.getMessagingClient()
+                .getMessagingPreferences(member.getId());
         sendEmailOnMessage = messagingPreferences.getEmailOnReceipt();
         sendEmailOnActivity = messagingPreferences.getEmailOnActivity();
         sendDailyEmailOnActivity = messagingPreferences

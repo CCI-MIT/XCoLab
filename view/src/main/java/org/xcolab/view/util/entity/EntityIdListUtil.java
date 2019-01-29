@@ -4,10 +4,10 @@ import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.user.MembersClient;
-import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.IdListUtil;
 
 import java.util.List;
@@ -42,8 +42,8 @@ public final class EntityIdListUtil {
     public final static IdListObjectConverter<ContestType> CONTEST_TYPES =
             new IdListObjectConverter<>(StaticAdminContext.getContestTypeClient()::getContestType, ContestType::getId);
 
-    public final static IdListObjectConverter<Member> MEMBERS =
-            new IdListObjectConverter<>(MembersClient::getMemberUnchecked, Member::getId);
+    public final static IdListObjectConverter<UserWrapper> MEMBERS =
+            new IdListObjectConverter<>(StaticUserContext.getUserClient()::getMemberUnchecked, UserWrapper::getId);
 
 
     public static class IdListObjectConverter<T> {

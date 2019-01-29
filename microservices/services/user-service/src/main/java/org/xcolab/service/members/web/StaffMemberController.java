@@ -5,14 +5,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.client.user.pojo.IStaffMember;
+import org.xcolab.client.user.IStaffUserClient;
+import org.xcolab.client.user.pojo.StaffUserWrapper;
 import org.xcolab.service.members.domain.staffmember.StaffMemberDao;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.util.List;
 
 @RestController
-public class StaffMemberController {
+public class StaffMemberController  implements IStaffUserClient {
 
     private final StaffMemberDao staffMemberDao;
 
@@ -21,8 +22,9 @@ public class StaffMemberController {
         this.staffMemberDao = staffMemberDao;
     }
 
+    @Override
     @GetMapping("staffMembers")
-    public List<IStaffMember> listStaffMembers(
+    public List<StaffUserWrapper> listStaffMembers(
             @RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
             @RequestParam(required = false) String sort,

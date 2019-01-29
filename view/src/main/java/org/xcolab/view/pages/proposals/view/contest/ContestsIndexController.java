@@ -18,8 +18,8 @@ import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.contest.pojo.ontology.FocusAreaOntologyTerm;
 import org.xcolab.client.contest.pojo.ontology.OntologySpace;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
-import org.xcolab.client.user.PermissionsClient;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.http.servlet.RequestUtil;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.proposals.permissions.ContestPermissions;
@@ -63,13 +63,13 @@ public class ContestsIndexController extends BaseProposalsController {
 
     @GetMapping("/contests")
     public String showContestsIndex(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member currentMember, ProposalContext proposalContext,
+            Model model, UserWrapper currentMember, ProposalContext proposalContext,
             @RequestParam(required = false) String preferenceId,
             @RequestParam(required = false) String viewType,
             @RequestParam(required = false, defaultValue="false") boolean showAllContests,
             @RequestParam(required = false, defaultValue = "" + FEATURED_COLLECTION_CARD_ID) long currentCollectionCardId,
             @RequestParam(required = false) Long contestTypeId,
-            Member loggedInMember,
+            UserWrapper loggedInMember,
             SortFilterPage sortFilterPage) {
 
         ContestType contestType;
@@ -259,7 +259,7 @@ public class ContestsIndexController extends BaseProposalsController {
         }
 
         model.addAttribute("showCollectionCards", ConfigurationAttributeKey.COLAB_USES_CARDS.get());
-        boolean showContestManagementLink = PermissionsClient.canAdminAll(currentMember) ;
+        boolean showContestManagementLink = StaticUserContext.getPermissionClient().canAdminAll(currentMember) ;
         model.addAttribute("showContestManagementLink", showContestManagementLink);
         model.addAttribute("totalContestCount", totalContestCount);
         model.addAttribute("contests", contests);

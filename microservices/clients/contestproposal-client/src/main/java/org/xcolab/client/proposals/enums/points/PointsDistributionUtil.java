@@ -1,6 +1,6 @@
 package org.xcolab.client.proposals.enums.points;
 
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.client.proposals.PointsClientUtil;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
@@ -21,8 +21,8 @@ public class PointsDistributionUtil {
     public static List<PointsTarget> distributeEquallyAmongContributors(long proposalId)
              {
         List<PointsTarget> targets = new ArrayList<>();
-        List<Member> members = ProposalClientUtil.getProposalMembers(proposalId);
-        for (Member u : members) {
+        List<UserWrapper> members = ProposalClientUtil.getProposalMembers(proposalId);
+        for (UserWrapper u : members) {
             targets.add(PointsTarget.forUser(u.getId(), 1.0d / members.size()));
         }
         return targets;

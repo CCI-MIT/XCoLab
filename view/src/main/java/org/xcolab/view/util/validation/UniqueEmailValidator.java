@@ -3,7 +3,7 @@ package org.xcolab.view.util.validation;
 import org.jooq.tools.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.xcolab.client.user.MembersClient;
+import org.xcolab.client.user.IUserClient;
 import org.xcolab.view.i18n.ResourceMessageResolver;
 
 import javax.validation.ConstraintValidatorContext;
@@ -16,10 +16,12 @@ import javax.validation.ConstraintValidatorContext;
 public class UniqueEmailValidator extends CustomValidator<UniqueEmail> {
 
     private final ResourceMessageResolver resourceMessageResolver;
+    private final IUserClient userClient;
 
     @Autowired
-    public UniqueEmailValidator(ResourceMessageResolver resourceMessageResolver) {
+    public UniqueEmailValidator(ResourceMessageResolver resourceMessageResolver, IUserClient userClient) {
         this.resourceMessageResolver = resourceMessageResolver;
+        this.userClient = userClient;
     }
 
     @Override
@@ -35,7 +37,7 @@ public class UniqueEmailValidator extends CustomValidator<UniqueEmail> {
             return true;
         }
 
-        boolean isValid = !MembersClient.isEmailUsed(email);
+        boolean isValid = !userClient.isEmailUsed(email);
 
         if (!isValid) {
             boolean isDefaultMessage = "".equals(context.getDefaultConstraintMessageTemplate());

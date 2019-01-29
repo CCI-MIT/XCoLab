@@ -13,7 +13,7 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ProposalTemplateClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.templates.ProposalTemplate;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.html.LabelValue;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.view.errors.AccessDeniedPage;
@@ -76,7 +76,7 @@ public class DescriptionTabController extends AbstractTabController {
 
     @GetMapping(value = {"", "tab/DESCRIPTION"})
     public String showDescriptionTab(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member, @PathVariable long contestId) {
+            Model model, UserWrapper member, @PathVariable long contestId) {
 
         if (!tabWrapper.getCanView()) {
             return new AccessDeniedPage(member).toViewName(response);
@@ -90,7 +90,7 @@ public class DescriptionTabController extends AbstractTabController {
 
     @PostMapping("tab/DESCRIPTION")
     public String updateDescription(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member, @PathVariable long contestId,
+            Model model, UserWrapper member, @PathVariable long contestId,
             @Valid ContestDescriptionBean contestDescriptionBean, BindingResult result) {
 
         if (!tabWrapper.getCanEdit()) {

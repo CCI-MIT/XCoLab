@@ -1,18 +1,18 @@
 package org.xcolab.service.members.domain.messaginguserpreferences;
 
-import org.xcolab.client.user.pojo.IMessagingUserPreference;
+import org.xcolab.client.user.pojo.MessagingUserPreference;
 
 import java.util.Optional;
 
 public interface MessagingUserPreferenceDao {
 
-    Optional<IMessagingUserPreference> get(long id);
+    Optional<MessagingUserPreference> get(long id);
 
-    Optional<IMessagingUserPreference> getByUserId(long userId);
+    Optional<MessagingUserPreference> getByUserId(long userId);
 
-    Optional<IMessagingUserPreference> create(IMessagingUserPreference messagingUserPreferences);
+    Optional<MessagingUserPreference> create(MessagingUserPreference messagingUserPreferences);
 
-    boolean update(IMessagingUserPreference messagingUserPreferences);
+    boolean update(MessagingUserPreference messagingUserPreferences);
 
     boolean delete(long messagingPreferencesId);
 }

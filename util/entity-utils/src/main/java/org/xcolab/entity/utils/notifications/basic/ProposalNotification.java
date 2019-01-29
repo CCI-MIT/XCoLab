@@ -3,10 +3,9 @@ package org.xcolab.entity.utils.notifications.basic;
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.pojo.IEmailTemplate;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.user.pojo.IUser;
-import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 
 public class ProposalNotification extends ContestNotification {
 
@@ -14,7 +13,7 @@ public class ProposalNotification extends ContestNotification {
 
     private ProposalNotificationTemplate templateWrapper;
 
-    public ProposalNotification(Proposal proposal, Contest contest, IUser recipient,
+    public ProposalNotification(Proposal proposal, Contest contest, UserWrapper recipient,
             String templateName) {
         super(contest, recipient, templateName);
         this.proposal = proposal;

@@ -13,9 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.client.user.pojo.IUser;
-import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.spring.web.annotation.ListMapping;
 import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.pojos.ProposalContestPhaseAttribute;
@@ -251,7 +250,7 @@ public class ProposalsController {
 
     //TODO: this service should not be returning a member!
     @GetMapping("/proposals/{proposalId}/allMembers")
-    public List<IUser> getProposalMembers(@PathVariable Long proposalId) throws NotFoundException {
+    public List<UserWrapper> getProposalMembers(@PathVariable Long proposalId) throws NotFoundException {
 
         try {
             return proposalService.getProposalMembers(proposalId);

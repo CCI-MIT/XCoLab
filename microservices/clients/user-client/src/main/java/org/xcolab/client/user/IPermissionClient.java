@@ -11,9 +11,8 @@ import org.xcolab.client.user.exceptions.RoleGroupNotFoundException;
 import org.xcolab.client.user.permissions.SystemRole;
 import org.xcolab.client.user.pojo.IRole;
 import org.xcolab.client.user.pojo.IRoleGroup;
-import org.xcolab.client.user.pojo.IUser;
-import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.user.pojo.Role;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 
 import java.util.Collections;
 import java.util.List;
@@ -37,7 +36,7 @@ public interface IPermissionClient {
      String deleteRoleFromRoleGroup(@PathVariable("roleGroupId") Long roleGroupId,
             @PathVariable("roleId") Long roleId) throws RoleGroupNotFoundException;
 
-    default boolean isGuest(Member member) {
+    default boolean isGuest(UserWrapper member) {
         return member != null && isGuest(member.getId());
     }
 
@@ -53,7 +52,7 @@ public interface IPermissionClient {
         return memberHasRole(userId, SystemRole.ADMINISTRATOR);
     }
 
-    default boolean canAdminAll(IUser member) {
+    default boolean canAdminAll(UserWrapper member) {
         return member != null && canAdminAll(member.getId());
     }
 
@@ -61,7 +60,7 @@ public interface IPermissionClient {
         return memberHasRole(userId, SystemRole.CONTEST_MANAGER);
     }
 
-    default boolean canContestManager(Member member) {
+    default boolean canContestManager(UserWrapper member) {
         return member != null && canContestManager(member.getId());
     }
 
@@ -77,7 +76,7 @@ public interface IPermissionClient {
         return memberHasRole(userId, SystemRole.IMPACT_ASSESSMENT_FELLOW);
     }
 
-    default boolean canIAF(Member member) {
+    default boolean canIAF(UserWrapper member) {
         return member != null && canIAF(member.getId());
     }
 
@@ -122,7 +121,7 @@ public interface IPermissionClient {
             return false;
         }
 
-        final List<Role> roles = MembersClient.getMemberRoles(userId);
+        final List<Role> roles = StaticUserContext.getUserClient().getUserRoles(userId, null);
         return roles.stream().map(Role::getId).anyMatch(rolesToTest::contains);
     }
 
@@ -130,7 +129,7 @@ public interface IPermissionClient {
         if (userId == 0) {
             return false;
         }
-        List<Role> roles = MembersClient.getMemberRolesInContest(userId, contestId);
+        List<Role> roles = StaticUserContext.getUserClient().getMemberRolesInContest(userId, contestId);
         if (roles != null && !roles.isEmpty()) {
             for (Role role : roles) {
                 if (role.getId() == roleToTest.getRoleId()) {

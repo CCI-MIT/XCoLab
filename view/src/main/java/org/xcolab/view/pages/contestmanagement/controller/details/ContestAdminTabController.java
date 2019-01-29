@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.html.LabelStringValue;
 import org.xcolab.commons.html.LabelValue;
 import org.xcolab.util.enums.contest.ContestTier;
@@ -87,7 +87,7 @@ public class ContestAdminTabController extends AbstractTabController {
 
     @GetMapping
     public String showAdminTabController(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member, @PathVariable long contestId) {
+            Model model, UserWrapper member, @PathVariable long contestId) {
 
         if (!tabWrapper.getCanView()) {
             return new AccessDeniedPage(member).toViewName(response);
@@ -99,7 +99,7 @@ public class ContestAdminTabController extends AbstractTabController {
 
     @PostMapping("update")
     public String updateAdminTabController(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member, @ModelAttribute ContestAdminBean updateContestAdminBean,
+            Model model, UserWrapper member, @ModelAttribute ContestAdminBean updateContestAdminBean,
             @PathVariable long contestId) {
 
         if (!tabWrapper.getCanEdit()) {

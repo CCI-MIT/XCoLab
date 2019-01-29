@@ -9,11 +9,11 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.user.MembersClient;
-import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.util.enums.proposal.MoveType;
 import org.xcolab.util.http.client.types.TypeProvider;
 
@@ -95,8 +95,8 @@ public class ProposalMoveHistory extends AbstractProposalMoveHistory implements 
         return (ContestClientUtil.getContestPhase(this.getTargetPhaseId()));
     }
 
-    public Member getMovingUser() {
-        return MembersClient.getMemberUnchecked(this.getMovingUserId());
+    public UserWrapper getMovingUser() {
+        return StaticUserContext.getUserClient().getMemberUnchecked(this.getMovingUserId());
     }
 
 

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.client.proposals.PointsClient;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalClientUtil;
@@ -39,7 +39,7 @@ public class ProposalPointsTabController extends BaseProposalTabController {
 
     @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=POINTS")
     public String showProposalDetails(HttpServletRequest request, HttpServletResponse response,
-            Model model, ProposalContext proposalContext, Member currentMember) {
+            Model model, ProposalContext proposalContext, UserWrapper currentMember) {
 
         final ProposalsPermissions permissions = proposalContext.getPermissions();
         if (!permissions.getCanView()) {
@@ -91,7 +91,7 @@ public class ProposalPointsTabController extends BaseProposalTabController {
 
         final List<Proposal> linkingProposalsWrapped = proposalClient.getLinkingProposals(proposal.getId());
 
-        List<Member> members = proposalClient.getProposalMembers(proposal.getId());
+        List<UserWrapper> members = proposalClient.getProposalMembers(proposal.getId());
 
         //this bean will be filled with the user input
         AssignPointsBean assignPointsBean = new AssignPointsBean(proposal.getId());

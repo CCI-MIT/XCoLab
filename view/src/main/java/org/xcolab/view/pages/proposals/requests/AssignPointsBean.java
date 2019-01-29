@@ -1,13 +1,13 @@
 package org.xcolab.view.pages.proposals.requests;
 
 
-import org.xcolab.client.user.MembersClient;
-import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.proposals.PointsClientUtil;
 import org.xcolab.client.proposals.enums.points.DistributionStrategy;
 import org.xcolab.client.proposals.enums.points.ReceiverLimitationStrategy;
 import org.xcolab.client.proposals.pojo.points.PointType;
 import org.xcolab.client.proposals.pojo.points.PointsDistributionConfiguration;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.exceptions.InternalException;
 
 import java.text.DecimalFormat;
@@ -39,7 +39,7 @@ public class AssignPointsBean {
         assignmentsByUserIdByPointTypeId = new HashMap<>();
     }
 
-    public void addAllAssignments(PointType pointType, List<Member> members) {
+    public void addAllAssignments(PointType pointType, List<UserWrapper> members) {
         if (pointType.getDistributionStrategyz().name().equals(DistributionStrategy.USER_DEFINED.name())) {
 
             PointsClientUtil.verifyDistributionConfigurationsForProposalId(proposalId);
@@ -50,7 +50,7 @@ public class AssignPointsBean {
 
             switch(pointType.getReceiverLimitationStrategyz().getType()) {
                 case USER:
-                    List<Member> presetUsers = null;
+                    List<UserWrapper> presetUsers = null;
                     if (pointType.getReceiverLimitationStrategyz().name().equals(
                             ReceiverLimitationStrategy.ANY_TEAM_MEMBER.name())) {
                         presetUsers = members;
@@ -77,14 +77,14 @@ public class AssignPointsBean {
 
 
 
-    public void addAssignment(PointType pointType, List<Member> users,
+    public void addAssignment(PointType pointType, List<UserWrapper> users,
                               List<PointsDistributionConfiguration> existingDistributionConfigurations) {
 
         final double percentMultiplicationFactor = pointType.getPercentageOfTotal() * 100;
 
         Map<Long, Double> entityPercentages = new HashMap<>();
         if (users != null) {
-            for (Member u : users) {
+            for (UserWrapper u : users) {
                 double percentage = (1.0/users.size()) * percentMultiplicationFactor;
                 PointsDistributionConfiguration foundElement = null;
                 for (PointsDistributionConfiguration distribution : existingDistributionConfigurations) {
@@ -128,10 +128,10 @@ public class AssignPointsBean {
     public Set<Long> getUserIds(Long pointTypeId) {
         return getAssignmentsByUserId(pointTypeId).keySet();
     }
-    public ArrayList<Member> getMembers(Long pointTypeId) {
-        ArrayList<Member> members = new ArrayList<>();
+    public ArrayList<UserWrapper> getMembers(Long pointTypeId) {
+        ArrayList<UserWrapper> members = new ArrayList<>();
         for(Long userId: getAssignmentsByUserId(pointTypeId).keySet()){
-            Member m = MembersClient.getMemberUnchecked(userId);
+            UserWrapper m = StaticUserContext.getUserClient().getMemberUnchecked(userId);
             if(m!=null){
                 members.add(m);
             }

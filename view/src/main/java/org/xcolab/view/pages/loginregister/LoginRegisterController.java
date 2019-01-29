@@ -19,9 +19,9 @@ import org.springframework.web.client.HttpClientErrorException;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.user.MembersClient;
 import org.xcolab.client.tracking.ITrackingClient;
 import org.xcolab.client.tracking.pojo.ILocation;
+import org.xcolab.client.user.IUserLoginRegister;
 import org.xcolab.commons.CountryUtil;
 import org.xcolab.commons.recaptcha.RecaptchaValidator;
 import org.xcolab.commons.servlet.RequestParamUtil;
@@ -50,6 +50,9 @@ public class LoginRegisterController {
 
     @Autowired
     private ITrackingClient trackingClient;
+
+    @Autowired
+    private IUserLoginRegister userLoginRegister;
 
     @Autowired
     public LoginRegisterController(LoginRegisterService loginRegisterService,
@@ -174,7 +177,7 @@ public class LoginRegisterController {
 
         try {
             try {
-                json.put("screenName", MembersClient.generateScreenName(lastName, firstName));
+                json.put("screenName", userLoginRegister.generateScreenName(lastName, firstName));
                 json.put("success", true);
             } catch (HttpClientErrorException e) {
                 _log.warn("Failed to generate user name ", e);

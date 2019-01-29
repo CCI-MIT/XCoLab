@@ -14,11 +14,11 @@ import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
-import org.xcolab.client.user.PlatformTeamsClient;
-import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.util.enums.proposal.ProposalTemplateSectionType;
 import org.xcolab.view.auth.MemberAuthUtil;
@@ -40,7 +40,7 @@ public class CreateProposalController extends BaseProposalsController {
 
     @GetMapping("createProposal/basedOn/{baseProposalId}/{baseProposalVersion}/{baseContestId}")
     public String createProposalsBasedOn(HttpServletRequest request, HttpServletResponse response,
-            Model model, ProposalContext proposalContext, Member loggedInMember,
+            Model model, ProposalContext proposalContext, UserWrapper loggedInMember,
             @PathVariable Long baseProposalId,
             @PathVariable Integer baseProposalVersion, @PathVariable Long baseContestId) {
 
@@ -50,13 +50,13 @@ public class CreateProposalController extends BaseProposalsController {
 
     @GetMapping("createProposal")
     public String showCreateProposal(HttpServletRequest request, HttpServletResponse response,
-            Model model, ProposalContext proposalContext, Member loggedInMember) {
+            Model model, ProposalContext proposalContext, UserWrapper loggedInMember) {
 
         return showCreateProposal(request, response, model, proposalContext, loggedInMember, null, -1, null);
     }
 
     private String showCreateProposal(HttpServletRequest request, HttpServletResponse response,
-            Model model, ProposalContext proposalContext, Member loggedInMember, Long baseProposalId,
+            Model model, ProposalContext proposalContext, UserWrapper loggedInMember, Long baseProposalId,
             int baseProposalVersion, Long baseContestId) {
 
         if (!proposalContext.getPermissions().getCanCreate()) {
@@ -119,7 +119,7 @@ public class CreateProposalController extends BaseProposalsController {
         model.addAttribute("proposalPickerDefaultTabIsContests",
                 ConfigurationAttributeKey.PROPOSALS_PICKER_DEFAULT_TAB_CONTESTS.get());
         model.addAttribute("saveUrl", contest.getNewProposalLinkUrl());
-        model.addAttribute("userTeams", PlatformTeamsClient.getTeams(loggedInMember));
+        model.addAttribute("userTeams", StaticUserContext.getPlatformTeamClient().listPlatformTeams(loggedInMember.getId()));
         model.addAttribute("contestTosAccepted", contest.getMemberAgreedToTos(loggedInMember));
 
         AnalyticsUtil.publishEvent(request, userId, ProposalUpdateHelper.PROPOSAL_ANALYTICS_KEY + 1,
@@ -157,12 +157,12 @@ public class CreateProposalController extends BaseProposalsController {
             AlertMessage.danger(
                     "Proposal NOT created. Please fix the errors before saving.")
                     .flash(request);
-            final Member memberOrNull = MemberAuthUtil.getMemberOrNull();
+            final UserWrapper memberOrNull = MemberAuthUtil.getMemberOrNull();
             return showCreateProposal(request, response, model, proposalContext, memberOrNull);
         }
 
         // if no error occurred it can be assumed that the user agreed to the ToS
-        final Member member = MemberAuthUtil.getMemberOrNull();
+        final UserWrapper member = MemberAuthUtil.getMemberOrNull();
         if (member != null && !proposalContext.getContest().getMemberAgreedToTos(member)) {
             proposalContext.getContest().setMemberAgreedToTos(member, true);
         }

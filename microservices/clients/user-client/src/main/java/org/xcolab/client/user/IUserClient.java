@@ -10,23 +10,27 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
+import org.xcolab.client.user.exceptions.MemberCategoryNotFoundException;
 import org.xcolab.client.user.exceptions.MemberNotFoundException;
 import org.xcolab.client.user.exceptions.UncheckedMemberNotFoundException;
-import org.xcolab.client.user.pojo.IRole;
-import org.xcolab.client.user.pojo.IUser;
+import org.xcolab.client.user.pojo.MemberCategory;
+import org.xcolab.client.user.pojo.Role;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
+import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
 
 @FeignClient("xcolab-user-service")
 @RequestMapping("/members")
 public interface IUserClient {
 
     @GetMapping
-    List<IUser> listUsers(HttpServletResponse response,
+    List<UserWrapper> listUsers(
             @RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
             @RequestParam(required = false) String sort,
@@ -39,30 +43,32 @@ public interface IUserClient {
             @RequestParam(required = false) Long facebookId,
             @RequestParam(required = false) String googleId,
             @RequestParam(required = false) String colabSsoId,
-            @RequestParam(required = false) String climateXId) ;
+            @RequestParam(required = false) String climateXId);
 
     @GetMapping("findByIp")
-    List<IUser> getUserByIp(@RequestParam String ip);
+    List<UserWrapper> getUserByIp(@RequestParam String ip);
 
     @GetMapping("findByScreenNameOrName")
-    List<IUser> getUserByScreenNameName(@RequestParam String name);
+    List<UserWrapper> getUserByScreenNameName(@RequestParam String name);
 
     @GetMapping("findByScreenName")
-    IUser getUserByScreenNameNoRole(@RequestParam String screenName) throws MemberNotFoundException;
+    UserWrapper getUserByScreenNameNoRole(@RequestParam String screenName)
+            throws MemberNotFoundException;
 
 
     @GetMapping("{userId}")
-    IUser getUser(@PathVariable long userId) throws MemberNotFoundException;
+    UserWrapper getUser(@PathVariable long userId) throws MemberNotFoundException;
 
     @PutMapping(value = "{userId}")
-    boolean updateUser(@RequestBody IUser member, @PathVariable Long userId) throws MemberNotFoundException;
+    boolean updateUser(@RequestBody UserWrapper member, @PathVariable Long userId)
+            throws MemberNotFoundException;
 
     @DeleteMapping("{userId}")
     boolean deleteUser(@PathVariable long userId) throws MemberNotFoundException;
 
     @GetMapping("{userId}/roles")
-    List<IRole> getUserRoles(@PathVariable long userId,
-            @RequestParam(required =  false) Long contestId);
+    List<Role> getUserRoles(@PathVariable long userId,
+            @RequestParam(required = false) Long contestId);
 
     @PutMapping("{userId}/roles/{roleId}")
     boolean assignUserRole(@PathVariable long userId,
@@ -78,27 +84,247 @@ public interface IUserClient {
             @RequestParam(required = false) String category);
 
     @PostMapping
-    IUser register(@RequestBody IUser member);
+    UserWrapper register(@RequestBody UserWrapper member);
 
     @GetMapping("{userId}/points")
     int getUserPoints(@PathVariable Long userId,
-            @RequestParam (required = false, defaultValue = "false") boolean hypothetical);
+            @RequestParam(required = false, defaultValue = "false") boolean hypothetical);
 
     @PutMapping("{userId}/subscribe")
-    boolean subscribe(@PathVariable long userId) throws MemberNotFoundException;
+    boolean subscribeToNewsletter(@PathVariable long userId) throws MemberNotFoundException;
 
     @PutMapping("{userId}/unsubscribe")
-    boolean unsubscribe(@PathVariable long userId) throws MemberNotFoundException;
+    boolean unsubscribeToNewsletter(@PathVariable long userId) throws MemberNotFoundException;
 
     @GetMapping("{userId}/isSubscribed")
-    boolean isSubscribed(@PathVariable long userId) throws IOException, MemberNotFoundException;
+    boolean isSubscribedToNewsletter(@PathVariable long userId)
+            throws IOException, MemberNotFoundException;
 
-    default boolean updateUser(IUser member) throws MemberNotFoundException {
-        return updateUser(member,0l);
+    default boolean updateUser(UserWrapper member) throws MemberNotFoundException {
+        return updateUser(member, 0l);
     }
 
+    default List<UserWrapper> listMembersWithRoles(List<Long> roleIds) {
+        return listUsers(0, Integer.MAX_VALUE, null,
+                null,
+                null,
+                null,
+                roleIds,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null);
+    }
 
-    default IUser getMember(long userId) throws MemberNotFoundException {
+    default MemberCategory getHighestCategory(List<Role> roles) {
+        MemberCategory category = null;
+
+        for (Role r : roles) {
+            try {
+                MemberCategory currentCategory =
+                        StaticUserContext.getUserCategoryClient().getMemberCategory(r.getId());
+                if (category == null) {
+                    category = currentCategory;
+                } else if (currentCategory.getSortOrder() > category.getSortOrder()) {
+                    category = currentCategory;
+                }
+            } catch (MemberCategoryNotFoundException e) {
+                //ignore invisible categories
+            }
+        }
+
+        return category;
+    }
+
+    default void assignMemberRole(long userId, long roleId) {
+        assignUserRole(userId, roleId);
+    }
+
+    default void removeMemberRole(long userId, long roleId) {
+        deleteUserRole(userId, roleId);
+    }
+
+    default List<UserWrapper> listMembers(String categoryFilterValue,
+            String screenNameFilterValue, String emailFilterValue, String sortField,
+            boolean ascOrder, int firstMember, int lastMember) {
+
+
+        final String prefix = (ascOrder) ? ("") : ("-");
+        String sortFieldAndPrefix = "";
+        if (sortField != null && !sortField.isEmpty()) {
+
+
+            switch (sortField) {
+                case "USER_NAME":
+                    String sortType = "screenName";
+                    if (ConfigurationAttributeKey.DISPLAY_FIRST_NAME_LAST_NAME.get()) {
+                        sortType = "displayName";
+                    }
+                    sortFieldAndPrefix = prefix + sortType;
+                    break;
+                case "MEMBER_SINCE":
+                    sortFieldAndPrefix = prefix + "createdAt";
+                    break;
+                case "CATEGORY":
+                    sortFieldAndPrefix = prefix + "roleName";
+                    break;
+                case "ACTIVITY":
+                    sortFieldAndPrefix = prefix + "activityCount";
+                    break;
+                case "POINTS":
+                    sortFieldAndPrefix = prefix + "points";
+                    break;
+                default:
+            }
+        }
+
+        return listUsers(firstMember, lastMember, sortFieldAndPrefix,
+                screenNameFilterValue,
+                emailFilterValue,
+                categoryFilterValue,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null);
+    }
+
+    default List<UserWrapper> findMembersMatching(String partialName, int maxMembers) {
+        return listUsers(0, Integer.MAX_VALUE,
+                null,
+                partialName,
+                null,
+                null,
+                null,
+                null,
+                "screenName",
+                null,
+                null,
+                null,
+                null);
+    }
+
+    default List<UserWrapper> listAllMembers() {
+        return listMembers(null, null, null,
+                null, true, 0, Integer.MAX_VALUE);
+    }
+
+    default Integer countMembers(String categoryFilterValue, String screenNameFilterValue) {
+        return countUsers(screenNameFilterValue, categoryFilterValue);
+    }
+
+    default UserWrapper findMemberByEmailAddress(String emailAddress)
+            throws MemberNotFoundException {
+        List<UserWrapper> users =
+                listUsers(0, Integer.MAX_VALUE, null, null,
+                        null, null, null, emailAddress, null,
+                        null, null,
+                        null, null);
+        if (users != null && !users.isEmpty()) {
+            return users.get(0);
+        }
+        throw new MemberNotFoundException("User with email not found" + emailAddress);
+
+    }
+
+    default UserWrapper findMemberByFacebookId(long facebookId) throws MemberNotFoundException {
+
+        List<UserWrapper> users =
+                listUsers(0, Integer.MAX_VALUE, null, null,
+                        null, null, null, null, null,
+                        facebookId, null,
+                        null, null);
+        if (users != null && !users.isEmpty()) {
+            return users.get(0);
+        }
+        throw new MemberNotFoundException(
+                "Member with facebookId " + facebookId + " does not exist");
+
+    }
+
+    default UserWrapper findMemberByGoogleId(String googleId) throws MemberNotFoundException {
+
+        List<UserWrapper> users =
+                listUsers(0, Integer.MAX_VALUE, null, null,
+                        null, null, null, null, null,
+                        null, googleId,
+                        null, null);
+        if (users != null && !users.isEmpty()) {
+            return users.get(0);
+        }
+
+        throw new MemberNotFoundException("Member with googleId " + googleId + " does not exist");
+
+    }
+
+    default UserWrapper findMemberByColabSsoId(String colabSsoId) throws MemberNotFoundException {
+        List<UserWrapper> users =
+                listUsers(0, Integer.MAX_VALUE, null, null,
+                        null, null, null, null, null,
+                        null, null,
+                        colabSsoId, null);
+        if (users != null && !users.isEmpty()) {
+            return users.get(0);
+        }
+        throw new MemberNotFoundException(
+                "Member with colabSsoId " + colabSsoId + " does not exist");
+
+    }
+
+    default UserWrapper findMemberByClimateXId(String climateXId) throws MemberNotFoundException {
+
+        List<UserWrapper> users =
+                listUsers(0, Integer.MAX_VALUE, null, null,
+                        null, null, null, null, null,
+                        null, null,
+                        null, climateXId);
+        if (users != null && !users.isEmpty()) {
+            return users.get(0);
+        }
+        throw new MemberNotFoundException(
+                "Member with climateXId " + climateXId + " does not exist");
+
+    }
+
+    default String hashPassword(String password) {
+        password = encode(password);
+        return hashPassword(password);
+    }
+
+    default String encode(String password) {
+        if (password != null) {
+            try {
+                password = URLEncoder.encode(password, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                throw new InternalException(e);
+            }
+        }
+        return password;
+    }
+
+    default boolean validatePassword(String password, String hashedPassword) {
+        return validatePassword(encode(password), encode(hashedPassword));
+    }
+
+    default UserWrapper findMemberByScreenName(String screenName) throws MemberNotFoundException {
+
+        List<UserWrapper> users =
+                listUsers(0, Integer.MAX_VALUE, null, null, null, null, null, null, screenName,
+                        null, null,
+                        null, null);
+        if (users != null && !users.isEmpty()) {
+            return users.get(0);
+        }
+        throw new MemberNotFoundException(
+                "Member with screenName " + screenName + " does not exist");
+
+    }
+
+    default UserWrapper getMember(long userId) throws MemberNotFoundException {
         try {
             return getMemberInternal(userId);
         } catch (EntityNotFoundException e) {
@@ -106,7 +332,7 @@ public interface IUserClient {
         }
     }
 
-    default IUser getMemberOrNull(long userId) {
+    default UserWrapper getMemberOrNull(long userId) {
         try {
             return getMemberInternal(userId);
         } catch (EntityNotFoundException e) {
@@ -114,7 +340,7 @@ public interface IUserClient {
         }
     }
 
-    default IUser getMemberUnchecked(long userId) {
+    default UserWrapper getMemberUnchecked(long userId) {
         try {
             return getMemberInternal(userId);
         } catch (EntityNotFoundException e) {
@@ -122,8 +348,22 @@ public interface IUserClient {
         }
     }
 
-    default IUser getMemberInternal(long userId) throws EntityNotFoundException {
+    default UserWrapper getMemberInternal(long userId) throws EntityNotFoundException {
 
         return getMember(userId);
+    }
+
+    default boolean isEmailUsed(String email) {
+        return isEmailUsed(email);
+    }
+
+    default Integer getMemberMaterializedPoints(long userId) {
+        return getUserPoints(userId, false);
+    }
+    default Integer getMemberHypotheticalPoints(long userId){
+        return getUserPoints(userId, true);
+    }
+    default List<Role> getMemberRolesInContest(long userId, long contestId) {
+        return getUserRoles(userId,contestId);
     }
 }

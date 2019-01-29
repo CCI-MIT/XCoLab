@@ -3,7 +3,7 @@ package org.xcolab.view.pages.contestmanagement.wrappers;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.AbstractContest;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.html.LabelValue;
 import org.xcolab.view.pages.contestmanagement.beans.ContestFlagTextToolTipBean;
 import org.xcolab.view.pages.contestmanagement.beans.ContestModelSettingsBean;
@@ -37,7 +37,7 @@ public class ContestOverviewWrapper implements MassActionDataWrapper {
         populateContestsAndSelectedList();
     }
 
-    public ContestOverviewWrapper(Member member) {
+    public ContestOverviewWrapper(UserWrapper member) {
         populateContestsAndSelectedList();
         populateSubscribedToContestList(member);
     }
@@ -52,7 +52,7 @@ public class ContestOverviewWrapper implements MassActionDataWrapper {
         }
     }
 
-    private void populateSubscribedToContestList(Member member) {
+    private void populateSubscribedToContestList(UserWrapper member) {
         for (Entry<Long, Contest> contestEntry : contests.entrySet()) {
             final Long contestId = contestEntry.getKey();
             Boolean isUserSubscribedToContest = ContestClientUtil

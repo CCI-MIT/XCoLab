@@ -15,7 +15,7 @@ import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.user.exceptions.MemberNotFoundException;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.errors.ErrorText;
@@ -46,7 +46,7 @@ public class SubscriptionsController {
 
     @GetMapping
     public String showUserProfileSubscriptions(HttpServletRequest request,
-            HttpServletResponse response, Model model, Member loggedInMember,
+            HttpServletResponse response, Model model, UserWrapper loggedInMember,
             @PathVariable long userId, @RequestParam(defaultValue = "1") int page) {
         UserProfilePermissions permissions = new UserProfilePermissions(loggedInMember);
         if (!permissions.getCanEditMemberProfile(userId)) {
@@ -69,7 +69,7 @@ public class SubscriptionsController {
 
     @GetMapping("manage")
     public String showUserSubscriptionsManage(HttpServletRequest request,
-            HttpServletResponse response, Model model, Member loggedInMember,
+            HttpServletResponse response, Model model, UserWrapper loggedInMember,
             @PathVariable long userId, @RequestParam(required = false) String typeFilter) {
         try {
             UserProfileWrapper currentUserProfile = new UserProfileWrapper(userId,

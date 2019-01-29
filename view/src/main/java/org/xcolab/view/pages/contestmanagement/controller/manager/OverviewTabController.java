@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
@@ -64,7 +64,7 @@ public class OverviewTabController extends AbstractTabController {
 
     @GetMapping({"", "manager"})
     public String showAdminTabController(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member) {
+            Model model, UserWrapper member) {
         if (!tabWrapper.getCanView()) {
             return new AccessDeniedPage(member).toViewName(response);
         }
@@ -74,7 +74,7 @@ public class OverviewTabController extends AbstractTabController {
 
     @PostMapping("manager/update")
     public String updateContestOverviewTabController(HttpServletRequest request,
-            HttpServletResponse response, Model model, Member member,
+            HttpServletResponse response, Model model, UserWrapper member,
             @ModelAttribute ContestOverviewWrapper updateContestOverviewWrapper)
             throws IOException, InvocationTargetException, IllegalAccessException {
         if (!tabWrapper.getCanEdit()) {
@@ -92,7 +92,7 @@ public class OverviewTabController extends AbstractTabController {
 
     @PostMapping("manager/updateOrder")
     public void updateContestOrder(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member,
+            Model model, UserWrapper member,
             @ModelAttribute ContestOverviewWrapper updateContestOverviewWrapper)
             throws IOException, InvocationTargetException, IllegalAccessException {
         if (!tabWrapper.getCanEdit()) {

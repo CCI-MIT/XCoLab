@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contest.ProposalTemplateClientUtil;
 import org.xcolab.client.contest.pojo.templates.ProposalTemplate;
-import org.xcolab.client.user.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.controller.AbstractProposalTemplateTabController;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
@@ -49,7 +49,7 @@ public class ProposalTemplateController extends AbstractProposalTemplateTabContr
 
     @GetMapping("tab/PROPOSAL_TEMPLATES")
     public String showProposalTemplatesTabController(HttpServletRequest request,
-            HttpServletResponse response, Model model, Member member,
+            HttpServletResponse response, Model model, UserWrapper member,
             @RequestParam(required = false) Long elementId) {
 
         if (!tabWrapper.getCanView()) {
@@ -81,7 +81,7 @@ public class ProposalTemplateController extends AbstractProposalTemplateTabContr
 
     @PostMapping("tab/PROPOSAL_TEMPLATES/create")
     public String createNewProposalTemplateTabController(HttpServletRequest request,
-            HttpServletResponse response, Model model, Member member)
+            HttpServletResponse response, Model model, UserWrapper member)
             throws IOException {
 
         if (!tabWrapper.getCanEdit()) {
@@ -94,7 +94,7 @@ public class ProposalTemplateController extends AbstractProposalTemplateTabContr
 
     @PostMapping("tab/PROPOSAL_TEMPLATES/delete/{elementId}")
     public String deleteProposalTemplateTabController(HttpServletRequest request,
-            HttpServletResponse response, Model model, Member member,
+            HttpServletResponse response, Model model, UserWrapper member,
             @PathVariable Long elementId) throws IOException {
 
         if (!tabWrapper.getCanEdit()) {
@@ -107,7 +107,7 @@ public class ProposalTemplateController extends AbstractProposalTemplateTabContr
 
     @PostMapping("tab/PROPOSAL_TEMPLATES/update")
     public String updateProposalTemplatesTabController(HttpServletRequest request,
-            HttpServletResponse response, Model model, Member member,
+            HttpServletResponse response, Model model, UserWrapper member,
             @ModelAttribute ProposalTemplateWrapper updatedProposalTemplateWrapper,
             BindingResult result) throws IOException {
 

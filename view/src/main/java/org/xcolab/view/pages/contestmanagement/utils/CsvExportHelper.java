@@ -10,13 +10,13 @@ import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
-import org.xcolab.client.user.MembersClient;
-import org.xcolab.client.user.pojo.Member;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalTeamMember;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -112,7 +112,7 @@ public class CsvExportHelper {
     private String[] generateProposalAndUserDetailsRow(String contestTitle, String proposalTitle,
             String proposalLink, ProposalTeamMember teamMember,
             String lastPhaseTitle) {
-        Member member = MembersClient.getMemberUnchecked(teamMember.getUserId());
+        UserWrapper member = StaticUserContext.getUserClient().getMemberUnchecked(teamMember.getUserId());
         String username = member.getScreenName();
         String firstName = member.getFullName();
         String lastName = member.getLastName();
