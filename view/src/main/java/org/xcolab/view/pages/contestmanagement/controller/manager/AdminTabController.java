@@ -67,18 +67,6 @@ import javax.validation.Validator;
 @RequestMapping("/admin/contest/manager")
 public class AdminTabController extends AbstractTabController {
 
-    @Autowired
-    private ITrackingClient trackingClient;
-
-    @Autowired
-    private IAdminClient adminClient;
-
-    @Autowired
-    private IProposalMemberRatingClient proposalMemberRatingClient;
-
-    @Autowired
-    private IActivityClient activityClient;
-
     private static final Logger log = LoggerFactory.getLogger(AdminTabController.class);
 
     private static final ContestManagerTabs tab = ContestManagerTabs.ADMIN;
@@ -89,19 +77,22 @@ public class AdminTabController extends AbstractTabController {
     private final ActivityEntryHelper activityEntryHelper;
     private final Validator validator;
 
+    private final IActivityClient activityClient;
+    private final IAdminClient adminClient;
+    private final IProposalMemberRatingClient proposalMemberRatingClient;
 
     @Autowired
     public AdminTabController(LoginRegisterService loginRegisterService,
             ServletContext servletContext, ActivityEntryHelper activityEntryHelper,
             Validator validator, ITrackingClient trackingClient, IActivityClient activityClient,
-            IAdminClient adminClient) {
+            IAdminClient adminClient, IProposalMemberRatingClient proposalMemberRatingClient) {
         this.loginRegisterService = loginRegisterService;
         this.servletContext = servletContext;
         this.activityEntryHelper = activityEntryHelper;
         this.validator = validator;
-        this.trackingClient = trackingClient;
         this.activityClient = activityClient;
         this.adminClient = adminClient;
+        this.proposalMemberRatingClient = proposalMemberRatingClient;
     }
 
     @ModelAttribute("currentTabWrapped")
@@ -179,7 +170,7 @@ public class AdminTabController extends AbstractTabController {
             return;
         }
 
-        try (VoteCsvWriter csvWriter = new VoteCsvWriter(response, trackingClient)) {
+        try (VoteCsvWriter csvWriter = new VoteCsvWriter(response)) {
             votingReportBean.getVotingPhaseIds().stream()
                     .map(proposalMemberRatingClient::getProposalVotesInPhase)
                     .forEach(csvWriter::writeVotes);

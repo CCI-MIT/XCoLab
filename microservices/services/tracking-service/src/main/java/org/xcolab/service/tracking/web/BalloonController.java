@@ -27,14 +27,14 @@ import org.xcolab.service.utils.PaginationHelper;
 import java.util.List;
 
 @RestController
-public class BalloonsController implements IBalloonClient {
+public class BalloonController implements IBalloonClient {
 
     private final BalloonUserTrackingDao balloonUserTrackingDao;
     private final BalloonLinkDao balloonLinkDao;
     private final BalloonTextDao balloonTextDao;
 
     @Autowired
-    public BalloonsController(BalloonUserTrackingDao balloonUserTrackingDao,
+    public BalloonController(BalloonUserTrackingDao balloonUserTrackingDao,
             BalloonLinkDao balloonLinkDao, BalloonTextDao balloonTextDao) {
         this.balloonUserTrackingDao = balloonUserTrackingDao;
         this.balloonLinkDao = balloonLinkDao;

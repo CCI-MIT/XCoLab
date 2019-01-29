@@ -30,19 +30,8 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
-            <version>${spring-cloud.feign}</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.xcolab</groupId>
             <artifactId>xcolab-utils</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.xcolab</groupId>
-            <artifactId>pojo-generator-maven-plugin</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

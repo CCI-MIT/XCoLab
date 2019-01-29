@@ -1,12 +1,10 @@
-package org.xcolab.service.contest;
+package org.xcolab.service.activity;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import org.xcolab.client.comment.ICategoryClient;
-import org.xcolab.client.comment.ICommentClient;
-import org.xcolab.client.comment.IThreadClient;
-import org.xcolab.client.comment.StaticCommentContext;
+import org.xcolab.client.activity.IActivityClient;
+import org.xcolab.client.activity.StaticActivityContext;
 import org.xcolab.client.contest.IContestClient;
 import org.xcolab.client.contest.IContestTeamMemberClient;
 import org.xcolab.client.contest.IImpactClient;
@@ -27,8 +25,7 @@ import org.xcolab.client.contest.proposals.StaticProposalContext;
 public class StaticInjector {
 
     @Autowired
-    public StaticInjector(ICommentClient commentClient, ICategoryClient categoryClient,
-            IThreadClient threadClient, IContestClient contestClient,
+    public StaticInjector(IActivityClient activityClient, IContestClient contestClient,
             IContestTeamMemberClient contestTeamMemberClient, IImpactClient impactClient,
             IOntologyClient ontologyClient, IProposalTemplateClient proposalTemplateClient,
             IPointsClient pointsClient, IProposalAttributeClient proposalAttributeClient,
@@ -37,7 +34,7 @@ public class StaticInjector {
             IProposalMemberRatingClient proposalMemberRatingClient,
             IProposalJudgeRatingClient proposalJudgeRatingClient) {
 
-        StaticCommentContext.setClients(commentClient, categoryClient, threadClient);
+        StaticActivityContext.setClients(activityClient);
         StaticContestContext.setClients(contestClient, contestTeamMemberClient, impactClient,
                 ontologyClient, proposalTemplateClient);
         StaticProposalContext.setClients(pointsClient, proposalAttributeClient, proposalMoveClient,

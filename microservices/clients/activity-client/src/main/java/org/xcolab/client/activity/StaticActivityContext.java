@@ -8,8 +8,7 @@ public class StaticActivityContext {
 
     private StaticActivityContext() {}
 
-    public static void setActivityClient(
-            IActivityClient activityClient) {
+    public static void setClients(IActivityClient activityClient) {
         Assert.notNull(activityClient, "activityClient must not be null!");
         StaticActivityContext.activityClient = activityClient;
     }

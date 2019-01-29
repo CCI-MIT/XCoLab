@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
+import org.xcolab.client.comment.StaticCommentContext;
 import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.contest.IContestClient;
 import org.xcolab.client.contest.IContestTeamMemberClient;
@@ -237,8 +238,7 @@ public class ContestWrapper extends Contest implements Serializable {
 
     @JsonIgnore
     public long getCommentsCount() {
-        return StaticContestContext.getCommentClient()
-                .countComments(this.getDiscussionGroupId());
+        return StaticCommentContext.getCommentClient().countComments(this.getDiscussionGroupId());
     }
 
     @JsonIgnore
@@ -419,12 +419,12 @@ public class ContestWrapper extends Contest implements Serializable {
 
     @JsonIgnore
     public long getTotalCommentsCount() {
-        int contestComments = StaticContestContext.getCommentClient()
+        int contestComments = StaticCommentContext.getCommentClient()
                 .countComments(this.getDiscussionGroupId());
         ContestPhaseWrapper phase = contestClient.getActivePhase(this.getId());
         final List<Long> proposalDiscussionThreads =
                 contestClient.getProposalDiscussionThreads(phase.getId());
-        contestComments += StaticContestContext.getCommentClient()
+        contestComments += StaticCommentContext.getCommentClient()
                 .countComments(proposalDiscussionThreads);
 
         return contestComments;
@@ -585,7 +585,7 @@ public class ContestWrapper extends Contest implements Serializable {
             thread.setAuthorUserId(getAuthorUserId());
             thread.setTitle(contestType.getContestName() + " discussion");
             thread.setIsQuiet(false);
-            thread = StaticContestContext.getThreadClient().createThread(thread);
+            thread = StaticCommentContext.getThreadClient().createThread(thread);
             discussionGroupId = thread.getId();
             setDiscussionGroupId(discussionGroupId);
         }

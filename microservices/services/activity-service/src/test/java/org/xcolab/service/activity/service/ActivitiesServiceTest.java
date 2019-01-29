@@ -20,7 +20,6 @@ import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.IProposalClient;
-
 import org.xcolab.service.activity.domain.activitySubscription.ActivitySubscriptionDao;
 import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.util.http.ServiceRequestUtils;
@@ -76,7 +75,7 @@ public class ActivitiesServiceTest {
                 return contest;
             });
 
-        StaticContestContext.setClients(null, null, null, contestClient, null, null, null, null);
+        StaticContestContext.setClients(contestClient, null, null, null, null);
     }
 
     @Test

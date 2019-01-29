@@ -12,6 +12,7 @@ import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
+import org.xcolab.client.comment.StaticCommentContext;
 import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.contest.IContestClient;
 import org.xcolab.client.contest.IContestTeamMemberClient;
@@ -23,10 +24,10 @@ import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
 import org.xcolab.client.contest.pojo.IProposalTemplate;
 import org.xcolab.client.contest.pojo.tables.pojos.Proposal;
 import org.xcolab.client.contest.proposals.IMembershipClient;
+import org.xcolab.client.contest.proposals.IProposalAttributeClient;
 import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.proposals.IProposalJudgeRatingClient;
 import org.xcolab.client.contest.proposals.IProposalMemberRatingClient;
-import org.xcolab.client.contest.proposals.IProposalAttributeClient;
 import org.xcolab.client.contest.proposals.IProposalPhaseClient;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
@@ -302,8 +303,7 @@ public class ProposalWrapper extends Proposal implements Serializable {
     @JsonIgnore
     public long getCommentsCount() {
         if (this.getId() > 0) {
-            return StaticContestContext.getCommentClient()
-                    .countComments(this.getDiscussionId());
+            return StaticCommentContext.getCommentClient().countComments(this.getDiscussionId());
         }
         return 0;
     }
@@ -320,7 +320,7 @@ public class ProposalWrapper extends Proposal implements Serializable {
         thread.setAuthorUserId(getAuthorUserId());
         thread.setTitle(contestType.getProposalName() + getName() + threadTitleSuffix);
         thread.setIsQuiet(isQuiet);
-        return StaticContestContext.getThreadClient().createThread(thread).getId();
+        return StaticCommentContext.getThreadClient().createThread(thread).getId();
     }
 
     @JsonIgnore

@@ -77,7 +77,7 @@ public class LoginRegisterControllerTest {
 
         PowerMockito.mockStatic(MessagingClient.class);
 
-        StaticActivityContext.setActivityClient(Mockito.mock(IActivityClient.class));
+        StaticActivityContext.setClients(Mockito.mock(IActivityClient.class));
 
         MembersClientMockerHelper.mockMembersClient();
 

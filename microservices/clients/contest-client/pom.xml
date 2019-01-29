@@ -19,7 +19,6 @@
             <artifactId>xcolab-utils</artifactId>
             <version>${project.version}</version>
         </dependency>
-
         <dependency>
             <groupId>edu.mit.cci.roma</groupId>
             <artifactId>client</artifactId>
