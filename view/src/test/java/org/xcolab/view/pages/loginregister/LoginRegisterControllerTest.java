@@ -23,6 +23,8 @@ import org.xcolab.client.admin.IAdminClient;
 import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.IEmailTemplateClient;
 import org.xcolab.client.admin.StaticAdminContext;
+import org.xcolab.client.email.IEmailClient;
+import org.xcolab.client.email.StaticEmailContext;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.util.http.ServiceRequestUtils;
@@ -84,9 +86,11 @@ public class LoginRegisterControllerTest {
         IAdminClient adminClient = AdminClientMockerHelper.mockAdminClient();
         IEmailTemplateClient emailTemplateClient =
                 EmailTemplateClientMockerHelper.mockEmailTemplateClient();
-        IContestTypeClient contestTypeClient = ContestTypeClientMockerHelper.mockContestTypeClient();
+        IContestTypeClient contestTypeClient =
+                ContestTypeClientMockerHelper.mockContestTypeClient();
 
         StaticAdminContext.setClients(adminClient, contestTypeClient, emailTemplateClient);
+        StaticEmailContext.setClients(Mockito.mock(IEmailClient.class));
     }
 
     @Test

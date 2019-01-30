@@ -1,6 +1,7 @@
 package org.xcolab.service.contest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import org.xcolab.client.comment.ICategoryClient;
@@ -24,6 +25,7 @@ import org.xcolab.client.contest.proposals.IProposalPhaseClient;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
 
 @Component
+@Profile("!test")
 public class StaticInjector {
 
     @Autowired

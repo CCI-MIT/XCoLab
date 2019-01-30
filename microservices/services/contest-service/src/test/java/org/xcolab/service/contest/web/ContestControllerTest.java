@@ -21,6 +21,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import org.xcolab.client.admin.IAdminClient;
+import org.xcolab.client.admin.IContestTypeClient;
+import org.xcolab.client.admin.IEmailTemplateClient;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.contest.IContestClient;
 import org.xcolab.client.contest.IContestTeamMemberClient;
 import org.xcolab.client.contest.IOntologyClient;
@@ -89,6 +93,9 @@ public class ContestControllerTest {
 
         Mockito.when(contestDiscussionDao.get(anyLong()))
                 .thenAnswer(invocation -> Optional.of(new ContestDiscussion()));
+
+        StaticAdminContext.setClients(Mockito.mock(IAdminClient.class),
+                Mockito.mock(IContestTypeClient.class), Mockito.mock(IEmailTemplateClient.class));
     }
 
     private static ContestWrapper getContest() {
@@ -146,7 +153,7 @@ public class ContestControllerTest {
     public void shouldUpdateContestPost() throws Exception {
         ContestWrapper contest = getContest();
         contest.setId(10L);
-        this.mockMvc.perform(put("/contests/" + contest.getId()).contentType(contentType)
+        this.mockMvc.perform(put("/contests").contentType(contentType)
                 .accept(contentType).content(objectMapper.writeValueAsString(contest)))
                 .andExpect(status().isOk());
 

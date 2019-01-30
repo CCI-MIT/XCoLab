@@ -1,6 +1,7 @@
 package org.xcolab.view;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import org.xcolab.client.activity.IActivityClient;
@@ -44,6 +45,7 @@ import org.xcolab.client.tracking.ITrackingClient;
 import org.xcolab.client.tracking.StaticTrackingContext;
 
 @Component
+@Profile("!test")
 public class StaticInjector {
 
     @Autowired

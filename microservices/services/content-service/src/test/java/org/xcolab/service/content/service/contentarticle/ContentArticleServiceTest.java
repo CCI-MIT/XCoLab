@@ -27,7 +27,7 @@ import static org.junit.Assert.assertTrue;
 @OverrideAutoConfiguration(enabled = false)
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @ComponentScan("org.xcolab.service.content")
-@ComponentScan("org.xcolab.client")
+@ComponentScan("org.xcolab.client.content")
 @ActiveProfiles("test")
 public class ContentArticleServiceTest {
 

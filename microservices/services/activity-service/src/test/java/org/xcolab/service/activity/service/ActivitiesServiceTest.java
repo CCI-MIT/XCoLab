@@ -3,6 +3,7 @@ package org.xcolab.service.activity.service;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -16,6 +17,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import org.xcolab.client.activity.pojo.IActivitySubscription;
 import org.xcolab.client.contest.IContestClient;
+import org.xcolab.client.contest.IContestTeamMemberClient;
+import org.xcolab.client.contest.IImpactClient;
+import org.xcolab.client.contest.IOntologyClient;
+import org.xcolab.client.contest.IProposalTemplateClient;
 import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
@@ -34,9 +39,9 @@ import static org.mockito.Matchers.anyLong;
 @OverrideAutoConfiguration(enabled = false)
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @PrepareForTest({
-    IContestClient.class,
-    ProposalWrapper.class,
-    ContestWrapper.class
+        IContestClient.class,
+        ProposalWrapper.class,
+        ContestWrapper.class
 })
 @ComponentScan("org.xcolab.service.activity")
 @ComponentScan("org.xcolab.client")
@@ -49,10 +54,10 @@ public class ActivitiesServiceTest {
     @Autowired
     ActivitySubscriptionDao ActivitySubscriptionDao;
 
-    @Autowired
+    @Mock
     IContestClient contestClient;
 
-    @Autowired
+    @Mock
     IProposalClient proposalClient;
 
     @Before
@@ -62,20 +67,22 @@ public class ActivitiesServiceTest {
         Mockito.mock(ProposalWrapper.class);
 
         Mockito.when(proposalClient.getProposal(anyLong()))
-            .thenAnswer(invocation -> {
-                ProposalWrapper proposal = Mockito.mock(ProposalWrapper.class);
-                proposal.setDiscussionId(123456L);
-                return proposal;
-            });
+                .thenAnswer(invocation -> {
+                    ProposalWrapper proposal = Mockito.mock(ProposalWrapper.class);
+                    proposal.setDiscussionId(123456L);
+                    return proposal;
+                });
 
         Mockito.when(contestClient.getContest(anyLong()))
-            .thenAnswer(invocation -> {
-                ContestWrapper contest = Mockito.mock(ContestWrapper.class);
-                contest.setDiscussionGroupId(123123L);
-                return contest;
-            });
+                .thenAnswer(invocation -> {
+                    ContestWrapper contest = Mockito.mock(ContestWrapper.class);
+                    contest.setDiscussionGroupId(123123L);
+                    return contest;
+                });
 
-        StaticContestContext.setClients(contestClient, null, null, null, null);
+        StaticContestContext.setClients(contestClient, Mockito.mock(IContestTeamMemberClient.class),
+                Mockito.mock(IImpactClient.class), Mockito.mock(IOntologyClient.class),
+                Mockito.mock(IProposalTemplateClient.class));
     }
 
     @Test
