@@ -3,7 +3,6 @@ package org.xcolab.view.pages.loginregister;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -20,8 +19,6 @@ import org.xcolab.client.admin.IAdminClient;
 import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.IEmailTemplateClient;
 import org.xcolab.client.admin.StaticAdminContext;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.MessagingClient;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.view.util.clienthelpers.AdminClientMockerHelper;
@@ -55,9 +52,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 )
 
 @PrepareForTest({
-        MembersClient.class,
         AlertMessage.class,
-        MessagingClient.class
 })
 
 @ActiveProfiles("test")
@@ -69,8 +64,7 @@ public class ForgotPasswordControllerTest {
     @Before
     public void setup() throws Exception {
         ServiceRequestUtils.setInitialized(true);
-
-        PowerMockito.mockStatic(MessagingClient.class);
+        
 
         MembersClientMockerHelper.mockMembersClient();
         IAdminClient adminClient = AdminClientMockerHelper.mockAdminClient();

@@ -23,10 +23,10 @@ public class ProposalReview {
     private String proposalUrl;
 
     private Map<IProposalRatingType, Double> ratingAverages;
-    private Map<Member, String> reviews;
-    private final Map<Member, Boolean> shouldAdvanceDecisions;
-    private Set<Member> reviewers;
-    private final Map<Member, Map<IProposalRatingType, Double> > userRatings;
+    private Map<UserWrapper, String> reviews;
+    private final Map<UserWrapper, Boolean> shouldAdvanceDecisions;
+    private Set<UserWrapper> reviewers;
+    private final Map<UserWrapper, Map<IProposalRatingType, Double> > userRatings;
 
     public ProposalReview(ProposalWrapper proposal, ContestPhaseWrapper contestPhase, String proposalUrl) {
         this.proposal = proposal;
@@ -87,7 +87,7 @@ public class ProposalReview {
         return avg;
     }
 
-    public void addUserRating(Member user, final IProposalRatingType ratingType, final double rating) {
+    public void addUserRating(UserWrapper user, final IProposalRatingType ratingType, final double rating) {
         Map<IProposalRatingType, Double> ratings;
         if (this.userRatings.get(user) == null) {
             ratings = new HashMap<>();
@@ -98,11 +98,11 @@ public class ProposalReview {
         ratings.put(ratingType, rating);
     }
 
-    public Map<IProposalRatingType, Double> getUserRatings(Member user) {
+    public Map<IProposalRatingType, Double> getUserRatings(UserWrapper user) {
         return this.userRatings.get(user);
     }
 
-    public Double getUserRating(Member user, IProposalRatingType ratingType) {
+    public Double getUserRating(UserWrapper user, IProposalRatingType ratingType) {
         if(this.userRatings.get(user) != null) {
             return this.userRatings.get(user).get(ratingType);
         }

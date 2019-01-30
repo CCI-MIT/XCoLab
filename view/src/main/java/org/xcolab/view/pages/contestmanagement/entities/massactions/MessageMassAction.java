@@ -5,8 +5,8 @@ import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.email.StaticEmailContext;
-import org.xcolab.client.members.MessagingClient;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.view.pages.contestmanagement.beans.MassMessageBean;
 
@@ -45,10 +45,10 @@ public abstract class MessageMassAction extends AbstractContestMassAction {
             List<ProposalWrapper> proposals = getProposalsToBeMessaged(contest);
 
             for (ProposalWrapper proposal : proposals) {
-                List<Member> proposalMember =
+                List<UserWrapper> proposalMember =
                         StaticProposalContext.getProposalClient()
                                 .getProposalMembers(proposal.getId());
-                for (Member member : proposalMember) {
+                for (UserWrapper member : proposalMember) {
                     recipientIds.add(member.getId());
                 }
             }
@@ -61,7 +61,7 @@ public abstract class MessageMassAction extends AbstractContestMassAction {
             List<ContestWrapper> contestList, StringBuilder contestNames) {
         final String messageSubject = massMessageBean.getSubject();
         final String messageBody = massMessageBean.getBody();
-        MessagingClient.sendMessage(messageSubject, messageBody, ADMINISTRATOR_USER_ID,
+        StaticUserContext.getMessagingClient().sendMessage(messageSubject, messageBody, ADMINISTRATOR_USER_ID,
                 null, new ArrayList<>(recipientIds));
         final String emailSubject = "Mass message: " + messageSubject;
         final String emailBody = String.format(

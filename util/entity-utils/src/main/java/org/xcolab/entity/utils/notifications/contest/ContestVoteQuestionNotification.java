@@ -64,7 +64,7 @@ public class ContestVoteQuestionNotification extends ContestNotification {
                     StringBuilder supportedProposalsLinks = new StringBuilder();
                     supportedProposalsLinks.append("<span>");
                     for (ProposalWrapper proposal : supportedProposals) {
-                        Member member;
+                        UserWrapper member;
                         try {
                             member = StaticUserContext.getUserClient().getMember(proposal.getAuthorUserId());
                         } catch (MemberNotFoundException e) {

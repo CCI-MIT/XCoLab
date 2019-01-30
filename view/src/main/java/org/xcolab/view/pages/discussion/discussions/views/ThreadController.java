@@ -20,7 +20,7 @@ import org.xcolab.client.comment.pojo.ICategoryGroup;
 import org.xcolab.client.comment.pojo.IComment;
 import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.comment.pojo.tables.pojos.Comment;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.util.activities.enums.DiscussionThreadActivityType;
 import org.xcolab.view.auth.MemberAuthUtil;
@@ -50,7 +50,7 @@ public class ThreadController extends BaseDiscussionController {
 
     @GetMapping("/discussion/thread/{threadId}")
     public String showThread(HttpServletRequest request, HttpServletResponse response, Model model,
-            Member member, @PathVariable Long threadId)
+            UserWrapper member, @PathVariable Long threadId)
             throws DiscussionAuthorizationException, ThreadNotFoundException {
 
         ICategoryGroup categoryGroup = getCategoryGroup(request);
@@ -70,7 +70,7 @@ public class ThreadController extends BaseDiscussionController {
 
     @GetMapping("/discussion/threads/create")
     public String createThread(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member)
+            Model model, UserWrapper member)
             throws DiscussionAuthorizationException {
 
 
@@ -92,7 +92,7 @@ public class ThreadController extends BaseDiscussionController {
 
     @PostMapping("/discussion/thread/create")
     public String createThreadAction(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member, @RequestParam long categoryId, @RequestParam String title,
+            Model model, UserWrapper member, @RequestParam long categoryId, @RequestParam String title,
             @RequestParam String body)
             throws DiscussionAuthorizationException {
 

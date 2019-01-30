@@ -21,7 +21,7 @@ public class ProposalMembershipInviteNotification extends ProposalUserActionNoti
     private ProposalMembershipRequestTemplate templateWrapper;
 
     public ProposalMembershipInviteNotification(ProposalWrapper proposal, ContestWrapper contest, UserWrapper sender,
-            Member invitee, String message) {
+            UserWrapper invitee, String message) {
         super(proposal, contest, sender, invitee, null,
                 PlatformAttributeKey.COLAB_URL.get());
         this.message = message;

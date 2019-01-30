@@ -11,8 +11,6 @@ import org.xcolab.client.user.pojo.tables.pojos.LoginLog;
 
 @FeignClient("xcolab-user-service")
 @RequestMapping("/loginLogs")
-
-
 public interface ILoginLogClient {
 
     @PostMapping

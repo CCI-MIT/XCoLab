@@ -1,8 +1,9 @@
 package org.xcolab.view.activityentry.provider;
 
 import org.xcolab.client.activity.pojo.IActivityEntry;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
+
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.activityentry.ActivityInitializationException;
 

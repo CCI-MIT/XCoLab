@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contest.pojo.IContestTeamMember;
 import org.xcolab.client.contest.pojo.IContestTeamMemberRole;
-import org.xcolab.client.members.permissions.SystemRole;
+import org.xcolab.client.user.permissions.SystemRole;
 
 import java.util.ArrayList;
 import java.util.List;

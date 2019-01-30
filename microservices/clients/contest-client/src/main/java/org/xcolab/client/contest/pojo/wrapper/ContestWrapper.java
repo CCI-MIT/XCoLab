@@ -73,7 +73,7 @@ public class ContestWrapper extends Contest implements Serializable {
 
     protected List<ContestPhaseWrapper> phases;
     protected ContestType contestType;
-    protected Map<IContestTeamMemberRole, List<Member>> contestTeamMembersByRole;
+    protected Map<IContestTeamMemberRole, List<UserWrapper>> contestTeamMembersByRole;
 
     protected ContestPhaseWrapper activePhase;
 
@@ -297,7 +297,7 @@ public class ContestWrapper extends Contest implements Serializable {
     }
 
     @JsonIgnore
-    public Map<IContestTeamMemberRole, List<Member>> getContestTeamMembersByRole() {
+    public Map<IContestTeamMemberRole, List<UserWrapper>> getContestTeamMembersByRole() {
         if (contestTeamMembersByRole == null) {
             contestTeamMembersByRole = new TreeMap<>();
             final List<IContestTeamMember> teamMembers =
@@ -319,10 +319,10 @@ public class ContestWrapper extends Contest implements Serializable {
 
     @JsonIgnore
     public boolean getHasUserRoleInContest(long userId, long roleId) {
-        for (Entry<IContestTeamMemberRole, List<Member>> entry
+        for (Entry<IContestTeamMemberRole, List<UserWrapper>> entry
                 : getContestTeamMembersByRole().entrySet()) {
             final IContestTeamMemberRole role = entry.getKey();
-            final List<Member> members = entry.getValue();
+            final List<UserWrapper> members = entry.getValue();
             if (role.getId() == roleId) {
                 return members.stream()
                         .anyMatch(p -> p.getId() == userId);
@@ -717,12 +717,12 @@ public class ContestWrapper extends Contest implements Serializable {
 
     @JsonIgnore
     public boolean getMemberAgreedToTos(UserWrapper member) {
-        return contestClient.getMemberAgreedToTos(getId(), member);
+        return contestClient.getMemberAgreedToTos(getId(), member.getId());
     }
 
     @JsonIgnore
     public void setMemberAgreedToTos(UserWrapper member, boolean agreed) {
-        contestClient.setMemberAgreedToTos(getId(), member, agreed);
+        contestClient.setMemberAgreedToTos(getId(), member.getId(), agreed);
     }
 
     @JsonIgnore

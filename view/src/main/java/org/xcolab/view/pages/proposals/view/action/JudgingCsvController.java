@@ -181,7 +181,7 @@ public class JudgingCsvController {
         return csvExporter.getCsvString();
     }
 
-    private List<Member> getProposalReviewingJudges(ProposalWrapper proposal, ContestPhaseWrapper judgingPhase,
+    private List<UserWrapper> getProposalReviewingJudges(ProposalWrapper proposal, ContestPhaseWrapper judgingPhase,
             ProposalContext proposalContext) {
 
         final ClientHelper clients = proposalContext.getClients();

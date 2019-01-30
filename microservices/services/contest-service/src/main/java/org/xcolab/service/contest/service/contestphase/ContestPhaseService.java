@@ -17,6 +17,7 @@ import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.GroupingHelper;
 import org.xcolab.entity.utils.notifications.contest.ContestVoteQuestionNotification;
 import org.xcolab.entity.utils.notifications.proposal.ContestVoteNotification;
+import org.xcolab.service.contest.domain.contest.ContestDao;
 import org.xcolab.service.contest.domain.contestphase.ContestPhaseDao;
 import org.xcolab.service.contest.domain.contestphasetype.ContestPhaseTypeDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;

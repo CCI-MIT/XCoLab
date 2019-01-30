@@ -6,7 +6,8 @@ import org.xcolab.client.contest.pojo.IProposalReference;
 import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.members.pojo.Member;
+
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.service.contest.proposal.service.pointsdistributionconfiguration.PointsDistributionConfigurationService;
 import org.xcolab.service.contest.proposal.service.proposal.ProposalService;
 

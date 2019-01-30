@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.xcolab.client.activity.StaticActivityContext;
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.pojo.ContestType;
+import org.xcolab.client.comment.IThreadClient;
 import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;

@@ -63,9 +63,9 @@ public class ProposalTeamTabController extends BaseProposalTabController {
                 .getLinkingProposalsForProposalId(proposalId);
         model.addAttribute("listOfSubProposals", listOfSubProposals);
 
-        Map<ProposalWrapper, List<Member>> mapOfSubProposalContributors = new HashMap<>();
+        Map<ProposalWrapper, List<UserWrapper>> mapOfSubProposalContributors = new HashMap<>();
         for (ProposalWrapper temp : listOfSubProposals) {
-            List<Member> contributors = proposalClient.getProposalMembers(temp.getId());
+            List<UserWrapper> contributors = proposalClient.getProposalMembers(temp.getId());
             mapOfSubProposalContributors.put(temp, contributors);
         }
         model.addAttribute("mapOfSubProposalContributors", mapOfSubProposalContributors);

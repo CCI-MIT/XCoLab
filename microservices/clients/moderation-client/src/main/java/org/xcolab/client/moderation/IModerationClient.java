@@ -15,7 +15,7 @@ import org.xcolab.client.moderation.pojo.IAggregatedReport;
 import org.xcolab.client.moderation.pojo.IReport;
 import org.xcolab.client.moderation.pojo.IReportTarget;
 import org.xcolab.client.moderation.pojo.tables.pojos.Report;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.util.enums.moderation.ManagerAction;
 import org.xcolab.util.enums.moderation.TargetType;
 
@@ -52,7 +52,7 @@ public interface IModerationClient {
     @PostMapping("/reports")
     IReport createReport(@RequestBody IReport report);
 
-    default IReport report(Member reporter, long targetId, Long targetAdditionalId,
+    default IReport report(UserWrapper reporter, long targetId, Long targetAdditionalId,
             TargetType targetType, String reason, String comment) {
         IReport report = new Report();
         report.setReporterUserId(reporter.getId());
@@ -103,12 +103,12 @@ public interface IModerationClient {
     boolean deleteReportTarget(@PathVariable(value = "reportTargetId") Long reportTargetId)
             throws ReportTargetNotFoundException;
 
-    default IReport reportProposal(Member reporter, long proposalId, long proposalVersion,
+    default IReport reportProposal(UserWrapper reporter, long proposalId, long proposalVersion,
             String reason, String comment) {
         return report(reporter, proposalId, proposalVersion, TargetType.PROPOSAL, reason, comment);
     }
 
-    default IReport reportComment(Member reporter, long commentId,
+    default IReport reportComment(UserWrapper reporter, long commentId,
             String reason, String comment) {
         return report(reporter, commentId, 0L, TargetType.COMMENT, reason, comment);
     }

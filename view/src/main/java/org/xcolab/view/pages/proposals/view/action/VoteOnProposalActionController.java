@@ -55,9 +55,10 @@ public class VoteOnProposalActionController {
     @Autowired
     public VoteOnProposalActionController(
             ProposalDescriptionTabController proposalDescriptionTabController,
-            IActivityClient activityClient) {
+            IActivityClient activityClient, IUserClient userClient) {
         this.proposalDescriptionTabController = proposalDescriptionTabController;
         this.activityClient = activityClient;
+        this.userClient = userClient;
     }
 
     @PostMapping("vote")

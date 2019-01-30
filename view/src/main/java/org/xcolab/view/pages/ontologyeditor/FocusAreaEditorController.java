@@ -30,6 +30,9 @@ public class FocusAreaEditorController {
     @Autowired
     private IOntologyClient ontologyClient;
 
+    @Autowired
+    private IPermissionClient permissionClient;
+
     @ModelAttribute("allFocusAreas")
     public List<FocusAreaWrapper> getAllFocusAreas() {
         return ontologyClient.getAllFocusAreas();

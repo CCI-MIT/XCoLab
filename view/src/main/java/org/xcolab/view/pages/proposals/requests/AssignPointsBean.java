@@ -78,7 +78,7 @@ public class AssignPointsBean {
 
 
 
-    public void addAssignment(PointTypeWrapper pointType, List<Member> users,
+    public void addAssignment(PointTypeWrapper pointType, List<UserWrapper> users,
                               List<IPointsDistributionConfiguration> existingDistributionConfigurations) {
 
         final double percentMultiplicationFactor = pointType.getPercentageOfTotal() * 100;

@@ -1,6 +1,6 @@
 package org.xcolab.view.util.entity.flash;
 
-import org.xcolab.client.user.pojo.wrapper.AnalyticsUserEventWrapper;
+import org.xcolab.client.user.pojo.IAnalyticsUserEvent;
 import org.xcolab.commons.servlet.flash.impl.FlashMessageStore;
 
 import java.util.ArrayList;
@@ -11,12 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 public class AnalyticsAttribute {
 
     private static final FlashMessageStore MESSAGE_STORE = new FlashMessageStore();
-    private final List<AnalyticsUserEventWrapper> events = new ArrayList<>();
+    private final List<IAnalyticsUserEvent> events = new ArrayList<>();
 
     private AnalyticsAttribute() {
     }
 
-    public static void add(HttpServletRequest request, AnalyticsUserEventWrapper event) {
+    public static void add(HttpServletRequest request, IAnalyticsUserEvent event) {
         AnalyticsAttribute attribute = MESSAGE_STORE.peek(request, AnalyticsAttribute.class);
         if (attribute == null) {
             attribute = new AnalyticsAttribute();
@@ -33,7 +33,7 @@ public class AnalyticsAttribute {
         MESSAGE_STORE.put(request, this);
     }
 
-    public List<AnalyticsUserEventWrapper> getEvents() {
+    public List<IAnalyticsUserEvent> getEvents() {
         return events;
     }
 }

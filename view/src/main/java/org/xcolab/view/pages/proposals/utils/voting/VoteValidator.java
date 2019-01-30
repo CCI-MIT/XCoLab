@@ -3,12 +3,11 @@ package org.xcolab.view.pages.proposals.utils.voting;
 import org.joda.time.DateTime;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
+import org.xcolab.client.contest.pojo.IProposalVote;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.user.StaticUserContext;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.pojo.IProposalVote;
-import org.xcolab.entity.utils.notifications.proposal.ProposalVoteValidityConfirmation;
 import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.entity.utils.notifications.proposal.ProposalVoteValidityConfirmation;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
@@ -127,7 +126,7 @@ public class VoteValidator {
                 .sendEmailNotification();
     }
 
-    private IProposalVote getVote(Member votingMember) {
+    private IProposalVote getVote(UserWrapper votingMember) {
         return clients.getProposalMemberRatingClient()
                 .getProposalVoteByProposalIdUserId(proposal.getId(),
                         votingMember.getId());

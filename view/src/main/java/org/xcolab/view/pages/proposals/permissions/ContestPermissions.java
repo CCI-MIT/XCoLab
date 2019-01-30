@@ -1,7 +1,8 @@
 package org.xcolab.view.pages.proposals.permissions;
 
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.contest.pojo.Contest;
+
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.user.StaticUserContext;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 

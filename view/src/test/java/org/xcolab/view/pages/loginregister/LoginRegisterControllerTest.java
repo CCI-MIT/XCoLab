@@ -23,8 +23,7 @@ import org.xcolab.client.admin.IAdminClient;
 import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.IEmailTemplateClient;
 import org.xcolab.client.admin.StaticAdminContext;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.MessagingClient;
+
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.view.util.clienthelpers.AdminClientMockerHelper;
 import org.xcolab.view.util.clienthelpers.ContestTypeClientMockerHelper;
@@ -60,10 +59,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         }
 )
 
-@PrepareForTest({
-        MembersClient.class,
-        MessagingClient.class,
-})
+
 
 @ActiveProfiles("test")
 public class LoginRegisterControllerTest {
@@ -75,7 +71,6 @@ public class LoginRegisterControllerTest {
     public void setup() throws Exception {
         ServiceRequestUtils.setInitialized(true);
 
-        PowerMockito.mockStatic(MessagingClient.class);
 
         StaticActivityContext.setActivityClient(Mockito.mock(IActivityClient.class));
 

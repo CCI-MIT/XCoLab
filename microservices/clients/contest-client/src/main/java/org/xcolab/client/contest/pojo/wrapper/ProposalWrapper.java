@@ -523,7 +523,7 @@ public class ProposalWrapper extends Proposal implements Serializable {
         if (members == null) {
             members = new ArrayList<>();
 
-            for (Member member : clients.proposal.getProposalMembers(getId())) {
+            for (UserWrapper member : clients.proposal.getProposalMembers(getId())) {
                 final ProposalTeamMemberWrapper teamMemberWrapper = new ProposalTeamMemberWrapper(
                         this, member);
                 members.add(teamMemberWrapper);

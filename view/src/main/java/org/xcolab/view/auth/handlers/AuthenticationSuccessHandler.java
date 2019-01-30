@@ -7,7 +7,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
-import org.xcolab.client.user.IPermissionClient;
 import org.xcolab.client.user.StaticUserContext;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.exceptions.InternalException;
@@ -31,14 +30,13 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
     private final AuthenticationService authenticationService;
     private final BalloonService balloonService;
     private final boolean allowLogin;
-    private final IPermissionClient permissionClient;
 
     public AuthenticationSuccessHandler(AuthenticationService authenticationService,
-            BalloonService balloonService, boolean allowLogin, IPermissionClient permissionClient) {
+            BalloonService balloonService, boolean allowLogin) {
         this.authenticationService = authenticationService;
         this.balloonService = balloonService;
         this.allowLogin = allowLogin;
-        this.permissionClient = permissionClient;
+
         setDefaultTargetUrl("/");
 
         //TODO COLAB-2362: Rethink circular dependency
@@ -63,7 +61,7 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
             return;
         }
 
-        if (!allowLogin && !permissionClient.canAdminAll(member)) {
+        if (!allowLogin && !StaticUserContext.getPermissionClient().canAdminAll(member)) {
             authenticationService.logout(request, response);
             getRedirectStrategy().sendRedirect(request, response, "/loginDisabled");
             return;

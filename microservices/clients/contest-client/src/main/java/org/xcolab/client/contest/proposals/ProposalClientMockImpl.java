@@ -4,13 +4,10 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import org.xcolab.client.contest.pojo.IProposalReference;
-import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMembershipRequestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalVersionWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.proposals.exceptions.ConflictException;
-import org.xcolab.client.contest.proposals.exceptions.MembershipRequestNotFoundException;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 
 import java.util.Collections;
 import java.util.List;
@@ -46,7 +43,7 @@ public class ProposalClientMockImpl implements IProposalClient {
     }
 
     @Override
-    public List<Member> getProposalMembers(Long proposalId) {
+    public List<UserWrapper> getProposalMembers(Long proposalId) {
         return Collections.emptyList();
     }
 

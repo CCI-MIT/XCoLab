@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMembershipRequestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.IMembershipClient;
 import org.xcolab.client.contest.proposals.exceptions.ConflictException;
 import org.xcolab.client.contest.proposals.exceptions.MembershipRequestNotFoundException;
@@ -18,9 +20,8 @@ import org.xcolab.client.user.IMessagingClient;
 import org.xcolab.client.user.IUserClient;
 import org.xcolab.client.user.exceptions.MemberNotFoundException;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMembershipRequestWrapper;
+import org.xcolab.commons.html.HtmlUtil;
+import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.entity.utils.notifications.proposal.ProposalMembershipInviteNotification;
 import org.xcolab.entity.utils.notifications.proposal.ProposalUserActionNotification;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
@@ -174,7 +175,7 @@ public class ProposalRequestMembershipActionController {
 
     @PostMapping("c/{proposalUrlString}/{proposalId}/tab/ADMIN/replyToMembershipRequest")
     public void respond(HttpServletRequest request, HttpServletResponse response, Model model,
-            ProposalContext proposalContext, Member loggedInMember, @RequestParam String approve,
+            ProposalContext proposalContext, UserWrapper loggedInMember, @RequestParam String approve,
             @RequestParam String comment, @RequestParam long requestId)
             throws IOException, MembershipRequestNotFoundException, ConflictException {
 

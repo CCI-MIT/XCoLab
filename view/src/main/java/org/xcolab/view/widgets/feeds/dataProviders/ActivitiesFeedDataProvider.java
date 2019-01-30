@@ -38,10 +38,13 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
     private final IUserCategoryClient userCategoryClient;
 
     @Autowired
-    public ActivitiesFeedDataProvider(ActivityEntryHelper activityEntryHelper, IUserClient userClient, IActivityClient activityClient) {
+    public ActivitiesFeedDataProvider(ActivityEntryHelper activityEntryHelper,
+            IUserClient userClient, IActivityClient activityClient,
+            IUserCategoryClient userCategoryClient) {
         this.activityEntryHelper = activityEntryHelper;
         this.userClient = userClient;
         this.activityClient = activityClient;
+        this.userCategoryClient = userCategoryClient;
     }
 
     @Override

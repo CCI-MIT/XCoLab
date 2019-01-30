@@ -20,7 +20,7 @@ public class ProposalUserActionNotification extends ProposalNotification {
     private ProposalUserActionNotificationTemplate templateWrapper;
 
     public ProposalUserActionNotification(ProposalWrapper proposal, ContestWrapper contest, UserWrapper sender,
-            Member recipient, String templateName, String baseUrl) {
+            UserWrapper recipient, String templateName, String baseUrl) {
         super(proposal, contest, recipient, null);
         this.sender = sender;
         this.templateName = templateName;

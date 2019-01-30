@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.user.IPermissionClient;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
+import org.xcolab.commons.servlet.flash.InfoPage;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.utils.ContestCreatorUtil;
 

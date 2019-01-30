@@ -51,7 +51,7 @@ public class LoginRegisterService {
 
     @Autowired
     public LoginRegisterService(AuthenticationService authenticationService,
-                                IBalloonClient balloonClient, IActivityClient activityClient,,
+                                IBalloonClient balloonClient, IActivityClient activityClient,
                                 IUserClient userClient,
                                 IUserLoginRegister userLoginRegister,
                                 ILoginTokenClient loginTokenClient) {

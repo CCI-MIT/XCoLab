@@ -3,7 +3,7 @@ package org.xcolab.view.pages.members.users.utils;
 import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.activity.StaticActivityContext;
-mport org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.StaticUserContext;
 import org.xcolab.client.user.pojo.MemberCategory;
 import org.xcolab.client.user.pojo.Role;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;

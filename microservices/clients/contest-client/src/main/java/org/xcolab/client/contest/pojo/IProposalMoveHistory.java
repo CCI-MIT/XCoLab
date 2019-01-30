@@ -10,8 +10,9 @@ import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.pojo.Member;
+
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.util.enums.proposal.MoveType;
 
 import java.sql.Timestamp;
@@ -101,8 +102,8 @@ public interface IProposalMoveHistory {
         return StaticContestContext.getContestClient().getContestPhase(this.getTargetPhaseId());
     }
 
-    default Member getMovingUser() {
-        return MembersClient.getMemberUnchecked(this.getMovingUserId());
+    default UserWrapper getMovingUser() {
+        return StaticUserContext.getUserClient().getMemberUnchecked(this.getMovingUserId());
     }
 
     //deal with this

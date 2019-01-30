@@ -13,7 +13,7 @@ public class MemberPasswordEncoder implements PasswordEncoder {
     @Override
     public String encode(CharSequence rawPassword) {
         if (ServiceRequestUtils.isInitialized()) {
-            return StaticUserContext.getUserClient().hashPassword(rawPassword.toString());
+            return StaticUserContext.getUserLoginRegister().hashPassword(rawPassword.toString());
         } else {
             // Spring Security calls this service once during startup before Eureka is initialized
             return USER_NOT_FOUND_PASSWORD_HASH;
@@ -22,6 +22,6 @@ public class MemberPasswordEncoder implements PasswordEncoder {
 
     @Override
     public boolean matches(CharSequence rawPassword, String encodedPassword) {
-        return StaticUserContext.getUserClient().validatePassword(rawPassword.toString(), encodedPassword);
+        return StaticUserContext.getUserLoginRegister().validatePassword(rawPassword.toString(), encodedPassword);
     }
 }

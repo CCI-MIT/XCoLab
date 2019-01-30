@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.IEmailTemplateClient;
 import org.xcolab.client.admin.pojo.IEmailTemplate;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.html.LabelStringValue;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.view.errors.AccessDeniedPage;
@@ -46,7 +46,7 @@ public class EmailTemplateTabController extends AbstractTabController {
 
     @GetMapping("tab/EMAIL_TEMPLATES")
     public String showEmailTabController(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member, @RequestParam(required = false) String elementId) {
+            Model model, UserWrapper member, @RequestParam(required = false) String elementId) {
         if (!tabWrapper.getCanView()) {
             return new AccessDeniedPage(member).toViewName(response);
         }
@@ -77,7 +77,7 @@ public class EmailTemplateTabController extends AbstractTabController {
 
     @PostMapping("tab/EMAIL_TEMPLATES/update")
     public String updateEmailTemplateTabController(HttpServletRequest request, Model model,
-            Member member, @ModelAttribute EmailTemplateWrapper updateEmailTemplateWrapper,
+            UserWrapper member, @ModelAttribute EmailTemplateWrapper updateEmailTemplateWrapper,
             BindingResult result, HttpServletResponse response) {
         if (!tabWrapper.getCanEdit()) {
             return new AccessDeniedPage(member).toViewName(response);

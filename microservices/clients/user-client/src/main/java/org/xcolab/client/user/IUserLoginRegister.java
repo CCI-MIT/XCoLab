@@ -1,6 +1,7 @@
 package org.xcolab.client.user;
 
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,7 +10,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.user.exceptions.MemberNotFoundException;
 import org.xcolab.client.user.pojo.TokenValidity;
+import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 @FeignClient("xcolab-user-service")
 @RequestMapping("/members")
@@ -53,21 +58,67 @@ public interface IUserLoginRegister {
             @RequestParam String passwordToken)
             throws MemberNotFoundException;
 
-    default boolean isEmailUsed(String email){
+    default boolean isEmailUsed(String email) {
         return isUsed(null, email);
     }
-    default boolean isScreenNameUsed(String screen){
+
+    default boolean isScreenNameUsed(String screen) {
         return isUsed(screen, null);
     }
-    default boolean isForgotPasswordTokenValid(String token){
-        try{
+
+    default boolean isForgotPasswordTokenValid(String token) {
+        try {
             return validateForgotPasswordToken(token);
-        }catch (MemberNotFoundException e ){
+        } catch (MemberNotFoundException e) {
             return false;
         }
     }
-    default String generateScreenName(String lastName, String firstName){
+
+    default boolean updatePassword(long userId, String newPassword) {
+        try {
+            return updateForgottenPasswordByToken(userId, hashThePassword(newPassword));
+        } catch (MemberNotFoundException ignore) {
+            return false;
+        }
+    }
+
+    default String generateScreenName(String lastName, String firstName) {
         String values[] = {lastName, firstName};
         return generateScreenName(values);
     }
+
+    default String hashThePassword(String password) {
+        password = encode(password);
+        return hashPassword(password);
+
+    }
+
+    default boolean validatePassword(String password, long userId) {
+        try {
+            return validatePassword(encode(password), null, userId);
+        } catch (MemberNotFoundException ignore) {
+            return false;
+        }
+
+    }
+
+    default boolean validatePassword(String password, String hashedPassword) {
+        try {
+            return validatePassword(encode(password), hashedPassword, null);
+        } catch (MemberNotFoundException ignore) {
+            return false;
+        }
+    }
+
+    default String encode(String password) {
+        if (password != null) {
+            try {
+                password = URLEncoder.encode(password, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                throw new InternalException(e);
+            }
+        }
+        return password;
+    }
+
 }

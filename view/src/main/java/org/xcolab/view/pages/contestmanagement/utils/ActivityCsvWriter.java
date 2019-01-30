@@ -75,7 +75,7 @@ public class ActivityCsvWriter extends CsvResponseWriter {
         }
     }
 
-    private Member getMemberOrNull(IActivityEntry activityEntry) {
+    private UserWrapper getMemberOrNull(IActivityEntry activityEntry) {
         try {
             return StaticUserContext.getUserClient().getMember(activityEntry.getUserId());
         } catch (MemberNotFoundException e) {

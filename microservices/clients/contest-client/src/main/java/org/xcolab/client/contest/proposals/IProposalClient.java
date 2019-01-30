@@ -20,7 +20,7 @@ import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalVersionWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
 import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.util.http.ServiceRequestUtils;
@@ -122,7 +122,7 @@ public interface IProposalClient {
     }
 
     @GetMapping("/proposals/{proposalId}/allMembers")
-    List<Member> getProposalMembers(@PathVariable("proposalId") Long proposalId);
+    List<UserWrapper> getProposalMembers(@PathVariable("proposalId") Long proposalId);
 
     @DeleteMapping("/proposals/{proposalId}/removeMemberFromProposalTeam")
     boolean removeMemberFromProposalTeam(@PathVariable("proposalId") Long proposalId,

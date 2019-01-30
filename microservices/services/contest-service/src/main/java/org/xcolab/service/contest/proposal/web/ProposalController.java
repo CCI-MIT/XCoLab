@@ -21,7 +21,8 @@ import org.xcolab.client.contest.pojo.wrapper.ProposalVersionWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.members.pojo.Member;
+
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.proposal.domain.proposal.ProposalDao;
 import org.xcolab.service.contest.proposal.domain.proposalcontestphaseattribute.ProposalContestPhaseAttributeDao;
@@ -280,7 +281,7 @@ public class ProposalController implements IProposalClient {
     //TODO: move to proposals/{proposalId}/teamMembers endpoint
     @Override
     @GetMapping("/proposals/{proposalId}/allMembers")
-    public List<Member> getProposalMembers(@PathVariable Long proposalId) {
+    public List<UserWrapper> getProposalMembers(@PathVariable Long proposalId) {
         return proposalService.getProposalMembers(proposalId);
     }
 

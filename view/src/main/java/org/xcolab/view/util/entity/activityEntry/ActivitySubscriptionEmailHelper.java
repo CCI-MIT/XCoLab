@@ -17,11 +17,11 @@ import org.xcolab.client.comment.ICommentClient;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.pojo.IComment;
 import org.xcolab.client.email.StaticEmailContext;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.MessagingClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.MessagingUserPreference;
+import org.xcolab.client.user.IMessagingClient;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.pojo.MessagingUserPreference;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.util.activities.enums.ActivityCategory;
@@ -104,6 +104,7 @@ public class ActivitySubscriptionEmailHelper {
     private final IActivityClient activityClient;
 
     private static ICommentClient commentClient;
+    private static IMessagingClient messagingClient;
 
     public static void setCommentClient(ICommentClient commentClient) {
         ActivitySubscriptionEmailHelper.commentClient = commentClient;
@@ -111,9 +112,12 @@ public class ActivitySubscriptionEmailHelper {
 
     @Autowired
     public ActivitySubscriptionEmailHelper(ActivityEntryHelper activityEntryHelper,
-            IActivityClient activityClient) {
+            IActivityClient activityClient, ICommentClient commentClient,
+            IMessagingClient messagingClient) {
         this.activityEntryHelper = activityEntryHelper;
         this.activityClient = activityClient;
+        this.commentClient = commentClient;
+        this.messagingClient = messagingClient;
     }
 
     public void sendEmailNotifications() {
@@ -178,7 +182,7 @@ public class ActivitySubscriptionEmailHelper {
         // Send the digest to each user which is included in the set of subscriptions
         for (Map.Entry<Long, List<IActivityEntry>> entry : userActivitiesDigestMap.entrySet()) {
             try {
-                final Member recipient = MembersClient.getMember(entry.getKey());
+                final UserWrapper recipient = StaticUserContext.getUserClient().getMember(entry.getKey());
                 final List<IActivityEntry> userDigestActivities = entry.getValue();
                 String body = getDigestMessageBody(userDigestActivities);
                 String unsubscribeFooter = getUnsubscribeDailyDigestFooter(
@@ -188,7 +192,7 @@ public class ActivitySubscriptionEmailHelper {
                         PlatformAttributeKey.COLAB_URL
 
                                 .get(), recipient.getId());
-            } catch (MemberNotFoundException ignored) {
+            } catch (org.xcolab.client.user.exceptions.MemberNotFoundException ignored) {
                 _log.error("sendDailyDigestNotifications: MemberNotFound : {}",
                         ignored.getMessage());
             }
@@ -272,7 +276,7 @@ public class ActivitySubscriptionEmailHelper {
                 }
 
                 final MessagingUserPreference messagingPreferences =
-                        MessagingClient.getMessagingPreferencesForMember(recipientId);
+                        messagingClient.getMessagingPreferences(recipientId);
                 if (messagingPreferences.getEmailOnActivity() && messagingPreferences
                         .getEmailActivityDailyDigest()) {
 
@@ -304,7 +308,7 @@ public class ActivitySubscriptionEmailHelper {
         String subject = clearLinksInSubject(activityEntryHelper.getActivityTitle(activity)) + " ";
         String messageTemplate = activityEntryHelper.getActivityBody(activity);
 
-        Set<Member> recipients = new HashSet<>();
+        Set<UserWrapper> recipients = new HashSet<>();
         Map<Long, IActivitySubscription> subscriptionsPerUser = new HashMap<>();
 
         for (Object subscriptionObj : getActivitySubscribers(activity)) {
@@ -314,7 +318,7 @@ public class ActivitySubscriptionEmailHelper {
                 continue;
             }
             try {
-                Member member = MembersClient.getMember(subscription.getReceiverUserId());
+                UserWrapper member = StaticUserContext.getUserClient().getMember(subscription.getReceiverUserId());
                 recipients.add(member);
                 subscriptionsPerUser.put(member.getId(), subscription);
             } catch (MemberNotFoundException ignored) {
@@ -324,9 +328,9 @@ public class ActivitySubscriptionEmailHelper {
             // map users to subscriptions for unregistration links
 
         }
-        for (Member recipient : recipients) {
+        for (UserWrapper recipient : recipients) {
             final MessagingUserPreference messagingPreferences =
-                    MessagingClient.getMessagingPreferencesForMember(recipient.getId());
+                    messagingClient.getMessagingPreferences(recipient.getId());
             if (messagingPreferences.getEmailOnActivity() && !messagingPreferences
                     .getEmailActivityDailyDigest()) {
                 _log.info("Sending activity notification to member {}.", recipient.getId());
@@ -348,7 +352,7 @@ public class ActivitySubscriptionEmailHelper {
         return "";
     }
 
-    private void sendEmailMessage(Member recipient, String subject, String body,
+    private void sendEmailMessage(UserWrapper recipient, String subject, String body,
             String unregisterFooter, String portalBaseUrl, Long referenceId) {
         try {
             InternetAddress fromEmail = TemplateReplacementUtil.getAdminFromEmailAddress();
@@ -426,7 +430,7 @@ public class ActivitySubscriptionEmailHelper {
         return footer;
     }
 
-    private String getUserLink(Member user, String portalBaseUrl) {
+    private String getUserLink(UserWrapper user, String portalBaseUrl) {
         return USER_PROFILE_LINK_TEMPLATE
                 .replaceAll(USER_ID_PLACEHOLDER, String.valueOf(user.getId()))
                 .replaceAll(DOMAIN_PLACEHOLDER, portalBaseUrl);

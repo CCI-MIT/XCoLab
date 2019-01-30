@@ -290,25 +290,7 @@ public interface IUserClient {
 
     }
 
-    default String hashPassword(String password) {
-        password = encode(password);
-        return hashPassword(password);
-    }
 
-    default String encode(String password) {
-        if (password != null) {
-            try {
-                password = URLEncoder.encode(password, "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                throw new InternalException(e);
-            }
-        }
-        return password;
-    }
-
-    default boolean validatePassword(String password, String hashedPassword) {
-        return validatePassword(encode(password), encode(hashedPassword));
-    }
 
     default UserWrapper findMemberByScreenName(String screenName) throws MemberNotFoundException {
 

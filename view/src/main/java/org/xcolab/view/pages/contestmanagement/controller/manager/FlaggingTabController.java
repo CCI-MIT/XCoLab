@@ -18,15 +18,15 @@ import org.xcolab.client.moderation.exceptions.ReportTargetNotFoundException;
 import org.xcolab.client.moderation.pojo.IAggregatedReport;
 import org.xcolab.client.moderation.pojo.IReportTarget;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
-import org.xcolab.util.enums.moderation.ManagerAction;
 import org.xcolab.commons.html.LabelValue;
+import org.xcolab.commons.servlet.flash.AlertMessage;
+import org.xcolab.util.enums.moderation.ManagerAction;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.view.pages.contestmanagement.wrappers.ModerationReportTargetWrapper;
 import org.xcolab.view.pages.contestmanagement.wrappers.ModerationReportWrapper;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
-import org.xcolab.commons.servlet.flash.AlertMessage;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -115,7 +115,7 @@ public class FlaggingTabController extends AbstractTabController {
 
     @PostMapping("tab/FLAGGING/update")
     public String updateEmailTemplateTabController(HttpServletRequest request, Model model,
-            Member member, @ModelAttribute ModerationReportTargetWrapper reportTargetWrapper,
+            UserWrapper member, @ModelAttribute ModerationReportTargetWrapper reportTargetWrapper,
             BindingResult result, HttpServletResponse response) throws ReportTargetNotFoundException {
         if (!tabWrapper.getCanEdit()) {
             return new AccessDeniedPage(member).toViewName(response);
@@ -133,7 +133,7 @@ public class FlaggingTabController extends AbstractTabController {
 
     @PostMapping("tab/FLAGGING/delete/{reportTargetId}")
     public String deleteEmailTemplateTabController(HttpServletRequest request,
-            HttpServletResponse response, Model model, Member member,
+            HttpServletResponse response, Model model, UserWrapper member,
             @PathVariable long reportTargetId) throws IOException, ReportTargetNotFoundException {
         if (!tabWrapper.getCanEdit()) {
             return new AccessDeniedPage(member).toViewName(response);

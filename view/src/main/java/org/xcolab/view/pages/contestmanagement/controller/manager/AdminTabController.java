@@ -17,11 +17,7 @@ import org.xcolab.client.admin.pojo.INotification;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.proposals.IProposalMemberRatingClient;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.permissions.SystemRole;
-import org.xcolab.client.members.pojo.Member;
+
 import org.xcolab.client.tracking.ITrackingClient;
 import org.xcolab.client.user.IPermissionClient;
 import org.xcolab.client.user.IUserClient;
