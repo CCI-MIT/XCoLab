@@ -4,7 +4,7 @@ package org.xcolab.view.pages.messaging.beans;
 import org.xcolab.client.user.StaticUserContext;
 import org.xcolab.client.user.exceptions.MemberNotFoundException;
 import org.xcolab.client.user.exceptions.MessageNotFoundException;
-import org.xcolab.client.user.pojo.Message;
+import org.xcolab.client.user.pojo.wrapper.MessageWrapper;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
 import org.xcolab.commons.html.HtmlUtil;
@@ -20,14 +20,14 @@ public class MessageBean implements Serializable {
     private static final long serialVersionUID = 1L;
     private List<UserWrapper> recipients = new ArrayList<>();
     private List<String> threads = new ArrayList<>();
-    private Message message;
+    private MessageWrapper message;
     private long messageId;
     private boolean selected;
 
     @SuppressWarnings("unused")
     public MessageBean() { }
 
-    public MessageBean(Message message) {
+    public MessageBean(MessageWrapper message) {
         this.message = message;
         this.messageId = message.getId();
         this.recipients = StaticUserContext.getMessagingClient().getMessageRecipients(message.getId());
@@ -70,7 +70,7 @@ public class MessageBean implements Serializable {
             return StaticUserContext.getUserClient().getMember(message.getFromId());
         } catch (MemberNotFoundException e) {
             throw ReferenceResolutionException.toObject(UserWrapper.class, message.getFromId())
-                    .fromObject(Message.class, message.getId());
+                    .fromObject(MessageWrapper.class, message.getId());
         }
     }
 
@@ -94,7 +94,7 @@ public class MessageBean implements Serializable {
         this.selected = selected;
     }
 
-    public Message getMessage() throws MessageNotFoundException {
+    public MessageWrapper getMessage() throws MessageNotFoundException {
         if (message == null) {
             try {
                 message = StaticUserContext.getMessagingClient().getMessage(messageId);
@@ -105,7 +105,7 @@ public class MessageBean implements Serializable {
         return message;
     }
 
-    public void setMessage(Message message) {
+    public void setMessage(MessageWrapper message) {
         this.message = message;
     }
 

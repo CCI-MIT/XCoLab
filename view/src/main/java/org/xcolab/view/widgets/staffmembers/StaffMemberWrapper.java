@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.user.StaticUserContext;
 import org.xcolab.client.user.exceptions.MemberNotFoundException;
-import org.xcolab.client.user.pojo.StaffUserWrapper;
+import org.xcolab.client.user.pojo.wrapper.StaffUserWrapper;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 
 import java.io.Serializable;

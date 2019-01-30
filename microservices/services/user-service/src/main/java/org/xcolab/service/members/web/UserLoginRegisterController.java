@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.client.user.IUserLoginRegister;
+import org.xcolab.client.user.IUserLoginRegisterClient;
 import org.xcolab.client.user.exceptions.MemberNotFoundException;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.exceptions.InternalException;
@@ -21,7 +21,7 @@ import java.net.URLDecoder;
 
 @RestController
 @RequestMapping("/members")
-public class UserLoginRegisterController implements IUserLoginRegister {
+public class UserLoginRegisterController implements IUserLoginRegisterClient {
 
     private final UserService memberService;
 

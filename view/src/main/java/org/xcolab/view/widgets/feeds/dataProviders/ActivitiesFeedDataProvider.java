@@ -9,7 +9,7 @@ import org.xcolab.client.activity.pojo.IActivityEntry;
 import org.xcolab.client.user.IUserCategoryClient;
 import org.xcolab.client.user.IUserClient;
 import org.xcolab.client.user.permissions.SystemRole;
-import org.xcolab.client.user.pojo.MemberCategory;
+import org.xcolab.client.user.pojo.wrapper.MemberCategoryWrapper;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
 import org.xcolab.view.util.entity.ActivityUtil;
@@ -71,7 +71,7 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
         }
         HashMap<Long, Long> idsToExclude = new HashMap<>();
         if (feedsPreferences.getRemoveAdmin()) {//STAFF
-            final MemberCategory memberCategory =
+            final MemberCategoryWrapper memberCategory =
                     userCategoryClient.getMemberCategory(SystemRole.ADMINISTRATOR.getRoleId());
 
             List<UserWrapper> adminList = userClient.listMembers(memberCategory.getCategoryName(),
@@ -82,7 +82,7 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
             }
         }
 
-        final MemberCategory memberCategory =
+        final MemberCategoryWrapper memberCategory =
                 userCategoryClient.getMemberCategory(SystemRole.STAFF.getRoleId());
 
         List<UserWrapper> staffList = userClient

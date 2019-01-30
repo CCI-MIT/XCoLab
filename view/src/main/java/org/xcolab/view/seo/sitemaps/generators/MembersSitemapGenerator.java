@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.user.IUserCategoryClient;
 import org.xcolab.client.user.IUserClient;
-import org.xcolab.client.user.pojo.MemberCategory;
+import org.xcolab.client.user.pojo.wrapper.MemberCategoryWrapper;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.time.DateUtil;
 import org.xcolab.view.seo.sitemaps.xml.XmlUrl;
@@ -35,7 +35,7 @@ public class MembersSitemapGenerator {
                 .filter(category -> category.getRoleId() != 10122)
                 // Remove admins
                 .filter(category -> category.getRoleId() != 10118)
-                .map(MemberCategory::getRoleId)
+                .map(MemberCategoryWrapper::getRoleId)
                 .collect(Collectors.toList());
         List<UserWrapper> members = userClient.listMembersWithRoles(roleIds);
         for (UserWrapper member : members) {

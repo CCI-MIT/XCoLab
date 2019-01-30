@@ -16,7 +16,7 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.user.IUserCategoryClient;
 import org.xcolab.client.user.IUserClient;
 import org.xcolab.client.user.exceptions.MemberNotFoundException;
-import org.xcolab.client.user.pojo.MemberCategory;
+import org.xcolab.client.user.pojo.wrapper.MemberCategoryWrapper;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.util.i18n.I18nUtils;
@@ -124,9 +124,9 @@ public class MembersController {
         return "members/users";
     }
 
-    private MemberCategory getMemberCategoryInLocale(
+    private MemberCategoryWrapper getMemberCategoryInLocale(
             @RequestParam(value = "memberCategory", required = false) String memberCategoryParam) {
-        final MemberCategory memberCategory = userCategoryClient.getMemberCategory(memberCategoryParam);
+        final MemberCategoryWrapper memberCategory = userCategoryClient.getMemberCategory(memberCategoryParam);
         memberCategory.setDescription(TemplateReplacementUtil
                 .replacePlatformConstants(memberCategory.getDescription()));
         return memberCategory;

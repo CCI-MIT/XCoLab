@@ -6,7 +6,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.user.StaticUserContext;
-import org.xcolab.client.user.pojo.MessagingUserPreference;
+import org.xcolab.client.user.pojo.wrapper.MessagingUserPreferenceWrapper;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.CountryUtil;
 import org.xcolab.view.util.validation.CompareStrings;
@@ -89,7 +89,7 @@ public class UserBean implements Serializable {
         } else {
             imageId = member.getPortraitFileEntryId();
         }
-        final MessagingUserPreference messagingPreferences = StaticUserContext.getMessagingClient()
+        final MessagingUserPreferenceWrapper messagingPreferences = StaticUserContext.getMessagingClient()
                 .getMessagingPreferences(member.getId());
         sendEmailOnMessage = messagingPreferences.getEmailOnReceipt();
         sendEmailOnActivity = messagingPreferences.getEmailOnActivity();

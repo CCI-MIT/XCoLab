@@ -6,7 +6,7 @@ import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.client.user.pojo.StaffUserWrapper;
+import org.xcolab.client.user.pojo.wrapper.StaffUserWrapper;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.util.List;

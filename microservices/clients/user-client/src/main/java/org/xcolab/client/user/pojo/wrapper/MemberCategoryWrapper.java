@@ -1,4 +1,4 @@
-package org.xcolab.client.user.pojo;
+package org.xcolab.client.user.pojo.wrapper;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.core.ParameterizedTypeReference;
@@ -9,13 +9,13 @@ import java.io.Serializable;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class MemberCategory implements Serializable, Comparable<MemberCategory> {
+public class MemberCategoryWrapper implements Serializable, Comparable<MemberCategoryWrapper> {
 
     private static final long serialVersionUID = -2052172539;
 
-    public static final TypeProvider<MemberCategory> TYPES =
-            new TypeProvider<>(MemberCategory.class,
-                    new ParameterizedTypeReference<List<MemberCategory>>() {
+    public static final TypeProvider<MemberCategoryWrapper> TYPES =
+            new TypeProvider<>(MemberCategoryWrapper.class,
+                    new ParameterizedTypeReference<List<MemberCategoryWrapper>>() {
                     });
 
     private Long roleid;
@@ -26,10 +26,10 @@ public class MemberCategory implements Serializable, Comparable<MemberCategory> 
     private String imagename;
     private String description;
 
-    public MemberCategory() {
+    public MemberCategoryWrapper() {
     }
 
-    public MemberCategory(MemberCategory value) {
+    public MemberCategoryWrapper(MemberCategoryWrapper value) {
         this.roleid = value.roleid;
         this.displayname = value.displayname;
         this.categoryname = value.categoryname;
@@ -39,7 +39,7 @@ public class MemberCategory implements Serializable, Comparable<MemberCategory> 
         this.description = value.description;
     }
 
-    public MemberCategory(
+    public MemberCategoryWrapper(
             Long roleid,
             String displayname,
             String categoryname,
@@ -120,7 +120,7 @@ public class MemberCategory implements Serializable, Comparable<MemberCategory> 
     }
 
     @Override
-    public int compareTo(MemberCategory o) {
+    public int compareTo(MemberCategoryWrapper o) {
         return getSortOrder().compareTo(o.getSortOrder());
     }
 }

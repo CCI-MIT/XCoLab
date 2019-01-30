@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.xcolab.client.user.ILoginTokenClient;
 import org.xcolab.client.user.IPermissionClient;
 import org.xcolab.client.user.IUserClient;
-import org.xcolab.client.user.pojo.LoginToken;
+import org.xcolab.client.user.pojo.wrapper.LoginTokenWrapper;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.entity.utils.notifications.member.MemberBatchRegistrationNotification;
 
@@ -43,7 +43,7 @@ public class LoginLinkJsonController {
         final UserWrapper user = editingOwnProfile ? loggedInUser
                 : userClient.getMemberUnchecked(userId);
 
-        final LoginToken loginToken = loginTokenClient.createLoginToken(user.getId());
+        final LoginTokenWrapper loginToken = loginTokenClient.createLoginToken(user.getId());
         new MemberBatchRegistrationNotification(user, loginToken).sendEmailNotification();
         return ResponseEntity.ok(null);
     }

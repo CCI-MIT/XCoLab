@@ -1,4 +1,4 @@
-package org.xcolab.client.user.pojo;
+package org.xcolab.client.user.pojo.wrapper;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -12,28 +12,28 @@ import java.util.List;
 import java.util.Objects;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Role implements Serializable {
+public class RoleWrapper implements Serializable {
 
 	private static final long serialVersionUID = -416641117;
 
-	public static final TypeProvider<Role> TYPES =
-			new TypeProvider<>(Role.class,
-					new ParameterizedTypeReference<List<Role>>() {
+	public static final TypeProvider<RoleWrapper> TYPES =
+			new TypeProvider<>(RoleWrapper.class,
+					new ParameterizedTypeReference<List<RoleWrapper>>() {
 					});
 
 	private Long id;
 	private String    name;
 	private Timestamp createdAt;
 
-	public Role() {}
+	public RoleWrapper() {}
 
-	public Role(Role value) {
+	public RoleWrapper(RoleWrapper value) {
 		this.id = value.id;
 		this.name = value.name;
 		this.createdAt = value.createdAt;
 	}
 
-    public Role(Long id, String name, Timestamp createdAt) {
+    public RoleWrapper(Long id, String name, Timestamp createdAt) {
 		this.id = id;
 		this.name = name;
 		this.createdAt = createdAt;
@@ -68,10 +68,10 @@ public class Role implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Role)) {
+        if (!(o instanceof RoleWrapper)) {
             return false;
         }
-        Role role = (Role) o;
+        RoleWrapper role = (RoleWrapper) o;
         return Objects.equals(id, role.id) && Objects.equals(getName(), role.getName()) && Objects
                 .equals(getCreatedAt(), role.getCreatedAt());
     }

@@ -20,7 +20,7 @@ import org.xcolab.client.user.exceptions.MessageNotFoundException;
 import org.xcolab.client.user.exceptions.MessageOrThreadNotFoundException;
 import org.xcolab.client.user.legacy.enums.MessageType;
 import org.xcolab.client.user.messaging.MessageLimitExceededException;
-import org.xcolab.client.user.pojo.Message;
+import org.xcolab.client.user.pojo.wrapper.MessageWrapper;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.IdListUtil;
 import org.xcolab.commons.html.HtmlUtil;
@@ -111,7 +111,7 @@ public class MessagingController {
     public String showFullConversation(HttpServletRequest request, HttpServletResponse response, Model model,
             @PathVariable Long messageId, UserWrapper loggedInMember,
             @RequestParam(required=false) String threadId) throws MessageOrThreadNotFoundException, MessageNotFoundException {
-        List<Message> fullConversation = new ArrayList<>();
+        List<MessageWrapper> fullConversation = new ArrayList<>();
         //Retrieve conversation and check if it was found
         if (StringUtils.isNotEmpty(threadId)) {
                 fullConversation = StaticUserContext.getMessagingClient().getFullConversation(messageId, threadId);
@@ -124,7 +124,7 @@ public class MessagingController {
         //Transform messages into beans and discard messages newer than this one
         List<MessageBean> messageBeanListNewestFirst = new ArrayList<>();
         boolean reachedRequiredMessage = false;
-        for (Message message : fullConversation){
+        for (MessageWrapper message : fullConversation){
             if (message.getId().equals(messageId)) {
                 reachedRequiredMessage = true;
             }
@@ -176,7 +176,7 @@ public class MessagingController {
             List<MessageBean> items = messagingBean.getDataPage().getMessages();
             for (MessageBean item : items) {
                 if (item.isSelected()) {
-                    Message message = item.getMessage();
+                    MessageWrapper message = item.getMessage();
                     StaticUserContext.getMessagingClient()
                             .setArchived(message.getId(), loggedInMember.getId(), true);
                 }

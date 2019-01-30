@@ -3,7 +3,7 @@ package org.xcolab.view.util.validation;
 import org.jooq.tools.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.xcolab.client.user.IUserLoginRegister;
+import org.xcolab.client.user.IUserLoginRegisterClient;
 import org.xcolab.view.i18n.ResourceMessageResolver;
 
 import javax.validation.ConstraintValidatorContext;
@@ -17,11 +17,11 @@ public class UniqueScreenNameValidator extends CustomValidator<UniqueScreenName>
 
     private final ResourceMessageResolver resourceMessageResolver;
 
-    private final IUserLoginRegister userLoginRegister;
+    private final IUserLoginRegisterClient userLoginRegister;
 
     @Autowired
     public UniqueScreenNameValidator(ResourceMessageResolver resourceMessageResolver,
-            IUserLoginRegister userLoginRegister) {
+            IUserLoginRegisterClient userLoginRegister) {
         this.resourceMessageResolver = resourceMessageResolver;
         this.userLoginRegister = userLoginRegister;
     }

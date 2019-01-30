@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.user.IPlatformTeamClient;
 import org.xcolab.client.user.IUserClient;
 import org.xcolab.client.user.StaticUserContext;
-import org.xcolab.client.user.pojo.PlatformTeam;
+import org.xcolab.client.user.pojo.wrapper.PlatformTeamWrapper;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.html.LabelValue;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
@@ -53,7 +53,7 @@ public class TeamsTabController extends AbstractTabController {
         return tabWrapper;
     }
 
-    private List<org.xcolab.client.user.pojo.PlatformTeam> getTeams() {
+    private List<PlatformTeamWrapper> getTeams() {
         return platformTeamClient.listAllPlatformTeams();
     }
 
@@ -66,9 +66,9 @@ public class TeamsTabController extends AbstractTabController {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
-        List<PlatformTeam> teams = getTeams();
+        List<PlatformTeamWrapper> teams = getTeams();
 
-        PlatformTeam team = null;
+        PlatformTeamWrapper team = null;
         if (elementId != null) {
             team = platformTeamClient.getPlatformTeam(elementId);
         } else if (!teams.isEmpty()) {
@@ -98,7 +98,7 @@ public class TeamsTabController extends AbstractTabController {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
-        PlatformTeam team;
+        PlatformTeamWrapper team;
         if (teamBean != null && teamBean.getTeamId() != null) {
             team = updateTeamName(teamBean.getTeamId(), teamBean.getName());
         } else {
@@ -150,18 +150,18 @@ public class TeamsTabController extends AbstractTabController {
         }
     }
 
-    private PlatformTeam updateTeamName(Long teamId, String teamName)
+    private PlatformTeamWrapper updateTeamName(Long teamId, String teamName)
             throws EntityNotFoundException {
-        PlatformTeam team = platformTeamClient.getPlatformTeam(teamId);
+        PlatformTeamWrapper team = platformTeamClient.getPlatformTeam(teamId);
         team.setName(teamName);
         platformTeamClient.updatePlatformTeam(team,team.getId());
         return team;
 
     }
 
-    private List<LabelValue> getTeamItems(List<PlatformTeam> teams) {
+    private List<LabelValue> getTeamItems(List<PlatformTeamWrapper> teams) {
         List<LabelValue> teamItems = new ArrayList<>();
-        for (PlatformTeam team : teams) {
+        for (PlatformTeamWrapper team : teams) {
             teamItems.add(new LabelValue(team.getId(), team.getName()));
         }
         return teamItems;
@@ -169,7 +169,7 @@ public class TeamsTabController extends AbstractTabController {
 
     private void addMember(Long teamId, Long userId) {
         try {
-            PlatformTeam team = platformTeamClient.getPlatformTeam(teamId);
+            PlatformTeamWrapper team = platformTeamClient.getPlatformTeam(teamId);
             UserWrapper member = StaticUserContext.getUserClient().getMember(userId);
             platformTeamClient.addUser(team.getId(), member.getId());
         } catch (EntityNotFoundException  e) {
@@ -179,7 +179,7 @@ public class TeamsTabController extends AbstractTabController {
 
     private void removeMember(Long teamId, Long userId) {
         try {
-            PlatformTeam team = platformTeamClient.getPlatformTeam(teamId);
+            PlatformTeamWrapper team = platformTeamClient.getPlatformTeam(teamId);
             UserWrapper member = StaticUserContext.getUserClient().getMember(userId);
             platformTeamClient.removeUser(team.getId(), member.getId());
         } catch (EntityNotFoundException  e) {
@@ -189,7 +189,7 @@ public class TeamsTabController extends AbstractTabController {
 
     private void deleteTeam(Long teamId) {
         try {
-            PlatformTeam team = platformTeamClient.getPlatformTeam(teamId);
+            PlatformTeamWrapper team = platformTeamClient.getPlatformTeam(teamId);
             team.setId(teamId);
             platformTeamClient.deletePlatformTeam(team.getId());
         } catch (EntityNotFoundException e) {
@@ -197,7 +197,7 @@ public class TeamsTabController extends AbstractTabController {
         }
     }
 
-    private PlatformTeam addNewTeam() {
+    private PlatformTeamWrapper addNewTeam() {
         return platformTeamClient.createPlatformTeam(NEW_TEAM_NAME);
     }
 }

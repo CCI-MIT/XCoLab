@@ -12,7 +12,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.user.IUserClient;
-import org.xcolab.client.user.IUserLoginRegister;
+import org.xcolab.client.user.IUserLoginRegisterClient;
 import org.xcolab.client.user.exceptions.MemberNotFoundException;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.exceptions.InternalException;
@@ -37,12 +37,12 @@ public class ForgotPasswordController {
 
     private final LoginRegisterService loginRegisterService;
 
-    private final IUserLoginRegister userLoginRegister;
+    private final IUserLoginRegisterClient userLoginRegister;
 
     private final IUserClient userClient;
 
     @Autowired
-    public ForgotPasswordController(LoginRegisterService loginRegisterService, IUserLoginRegister userLoginRegister,
+    public ForgotPasswordController(LoginRegisterService loginRegisterService, IUserLoginRegisterClient userLoginRegister,
             IUserClient userClient) {
         this.loginRegisterService = loginRegisterService;
         this.userLoginRegister = userLoginRegister;

@@ -20,7 +20,7 @@ import org.xcolab.client.email.StaticEmailContext;
 import org.xcolab.client.user.IMessagingClient;
 import org.xcolab.client.user.StaticUserContext;
 import org.xcolab.client.user.exceptions.MemberNotFoundException;
-import org.xcolab.client.user.pojo.MessagingUserPreference;
+import org.xcolab.client.user.pojo.wrapper.MessagingUserPreferenceWrapper;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
@@ -275,7 +275,7 @@ public class ActivitySubscriptionEmailHelper {
                     continue;
                 }
 
-                final MessagingUserPreference messagingPreferences =
+                final MessagingUserPreferenceWrapper messagingPreferences =
                         messagingClient.getMessagingPreferences(recipientId);
                 if (messagingPreferences.getEmailOnActivity() && messagingPreferences
                         .getEmailActivityDailyDigest()) {
@@ -329,7 +329,7 @@ public class ActivitySubscriptionEmailHelper {
 
         }
         for (UserWrapper recipient : recipients) {
-            final MessagingUserPreference messagingPreferences =
+            final MessagingUserPreferenceWrapper messagingPreferences =
                     messagingClient.getMessagingPreferences(recipient.getId());
             if (messagingPreferences.getEmailOnActivity() && !messagingPreferences
                     .getEmailActivityDailyDigest()) {

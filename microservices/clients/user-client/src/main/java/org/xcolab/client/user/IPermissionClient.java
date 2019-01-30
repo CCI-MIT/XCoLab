@@ -11,7 +11,7 @@ import org.xcolab.client.user.exceptions.RoleGroupNotFoundException;
 import org.xcolab.client.user.permissions.SystemRole;
 import org.xcolab.client.user.pojo.IRole;
 import org.xcolab.client.user.pojo.IRoleGroup;
-import org.xcolab.client.user.pojo.Role;
+import org.xcolab.client.user.pojo.wrapper.RoleWrapper;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 
 import java.util.Collections;
@@ -121,17 +121,17 @@ public interface IPermissionClient {
             return false;
         }
 
-        final List<Role> roles = StaticUserContext.getUserClient().getUserRoles(userId, null);
-        return roles.stream().map(Role::getId).anyMatch(rolesToTest::contains);
+        final List<RoleWrapper> roles = StaticUserContext.getUserClient().getUserRoles(userId, null);
+        return roles.stream().map(RoleWrapper::getId).anyMatch(rolesToTest::contains);
     }
 
     default boolean memberHasRoleInContest(Long userId, Long contestId, SystemRole roleToTest) {
         if (userId == 0) {
             return false;
         }
-        List<Role> roles = StaticUserContext.getUserClient().getMemberRolesInContest(userId, contestId);
+        List<RoleWrapper> roles = StaticUserContext.getUserClient().getMemberRolesInContest(userId, contestId);
         if (roles != null && !roles.isEmpty()) {
-            for (Role role : roles) {
+            for (RoleWrapper role : roles) {
                 if (role.getId() == roleToTest.getRoleId()) {
                     return true;
                 }

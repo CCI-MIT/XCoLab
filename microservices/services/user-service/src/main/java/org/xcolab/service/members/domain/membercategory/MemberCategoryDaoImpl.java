@@ -6,7 +6,7 @@ import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.client.user.pojo.MemberCategory;
+import org.xcolab.client.user.pojo.wrapper.MemberCategoryWrapper;
 import org.xcolab.commons.SortColumn;
 import org.xcolab.service.utils.PaginationHelper;
 
@@ -26,17 +26,17 @@ public class MemberCategoryDaoImpl implements MemberCategoryDao {
     }
 
     @Override
-    public Optional<MemberCategory> getMemberCategory(Long roleId) {
+    public Optional<MemberCategoryWrapper> getMemberCategory(Long roleId) {
         final Record record = this.dslContext.select().from(MEMBER_CATEGORY)
                 .where(MEMBER_CATEGORY.ROLE_ID.equal(roleId)).fetchOne();
         if (record == null) {
             return Optional.empty();
         }
-        return Optional.of(record.into(MemberCategory.class));
+        return Optional.of(record.into(MemberCategoryWrapper.class));
     }
 
     @Override
-    public List<MemberCategory> findByGiven(PaginationHelper paginationHelper,
+    public List<MemberCategoryWrapper> findByGiven(PaginationHelper paginationHelper,
             String displayName, String categoryName, Boolean showInList) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(MEMBER_CATEGORY)
@@ -60,6 +60,6 @@ public class MemberCategoryDaoImpl implements MemberCategoryDao {
             }
         }
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
-        return query.fetchInto(MemberCategory.class);
+        return query.fetchInto(MemberCategoryWrapper.class);
     }
 }

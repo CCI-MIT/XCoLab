@@ -13,20 +13,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.client.user.IUserClient;
 import org.xcolab.client.user.exceptions.MemberNotFoundException;
-import org.xcolab.client.user.pojo.IRole;
-import org.xcolab.client.user.pojo.Role;
+import org.xcolab.client.user.pojo.wrapper.RoleWrapper;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.service.members.domain.member.UserDao;
 import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.members.service.member.UserService;
 import org.xcolab.service.members.service.role.RoleService;
-import org.xcolab.service.utils.ControllerUtils;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.io.IOException;
 import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
 
 @RestController
 
@@ -131,7 +127,7 @@ public class UserController implements IUserClient {
 
     @Override
     @GetMapping("{userId}/roles")
-    public List<Role> getUserRoles(@PathVariable long userId,
+    public List<RoleWrapper> getUserRoles(@PathVariable long userId,
             @RequestParam(required = false) Long contestId) {
         if (contestId == null) {
             return this.roleService.getUserRoles(userId);

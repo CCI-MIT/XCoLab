@@ -1,4 +1,4 @@
-package org.xcolab.client.user.pojo;
+package org.xcolab.client.user.pojo.wrapper;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.core.ParameterizedTypeReference;

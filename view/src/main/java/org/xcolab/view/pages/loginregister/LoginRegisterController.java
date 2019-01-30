@@ -21,7 +21,7 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.tracking.ITrackingClient;
 import org.xcolab.client.tracking.pojo.ILocation;
-import org.xcolab.client.user.IUserLoginRegister;
+import org.xcolab.client.user.IUserLoginRegisterClient;
 import org.xcolab.commons.CountryUtil;
 import org.xcolab.commons.recaptcha.RecaptchaValidator;
 import org.xcolab.commons.servlet.RequestParamUtil;
@@ -52,7 +52,7 @@ public class LoginRegisterController {
     private ITrackingClient trackingClient;
 
     @Autowired
-    private IUserLoginRegister userLoginRegister;
+    private IUserLoginRegisterClient userLoginRegister;
 
     @Autowired
     public LoginRegisterController(LoginRegisterService loginRegisterService,

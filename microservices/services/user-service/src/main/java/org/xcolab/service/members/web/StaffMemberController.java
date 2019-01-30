@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.client.user.IStaffUserClient;
-import org.xcolab.client.user.pojo.StaffUserWrapper;
+import org.xcolab.client.user.pojo.wrapper.StaffUserWrapper;
 import org.xcolab.service.members.domain.staffmember.StaffMemberDao;
 import org.xcolab.service.utils.PaginationHelper;
 

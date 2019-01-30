@@ -4,7 +4,7 @@ import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.client.user.pojo.SsoClientDetails;
+import org.xcolab.client.user.pojo.wrapper.SsoClientDetailsWrapper;
 
 import static org.xcolab.model.Tables.SSO_CLIENT_DETAILS;
 
@@ -19,9 +19,9 @@ public class SsoClientDetailsDaoImpl implements SsoClientDetailsDao {
     }
 
     @Override
-    public SsoClientDetails get(String id) {
+    public SsoClientDetailsWrapper get(String id) {
         return dslContext.select().from(SSO_CLIENT_DETAILS)
                 .where(SSO_CLIENT_DETAILS.ID.eq(id))
-                .fetchOne().into(SsoClientDetails.class);
+                .fetchOne().into(SsoClientDetailsWrapper.class);
     }
 }

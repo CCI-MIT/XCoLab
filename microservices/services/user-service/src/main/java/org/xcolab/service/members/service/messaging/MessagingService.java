@@ -11,7 +11,7 @@ import org.xcolab.client.admin.util.TemplateReplacementUtilPlaceholder;
 import org.xcolab.client.email.IEmailClient;
 import org.xcolab.client.user.messaging.MessageLimitExceededException;
 import org.xcolab.client.user.pojo.IUser;
-import org.xcolab.client.user.pojo.Message;
+import org.xcolab.client.user.pojo.wrapper.MessageWrapper;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
@@ -47,7 +47,7 @@ public class MessagingService {
         this.emailClient = emailClient;
     }
 
-    public Message sendMessage(Message message, Collection<Long> recipientIds, boolean checkLimit, String threadId)
+    public MessageWrapper sendMessage(MessageWrapper message, Collection<Long> recipientIds, boolean checkLimit, String threadId)
             throws MessageLimitExceededException {
         if (checkLimit) {
             Long fromId = message.getFromId();
@@ -86,11 +86,11 @@ public class MessagingService {
         }
     }
 
-    private Message sendMessage(Message messageBean, Collection<Long> recipientIds, String threadId) {
+    private MessageWrapper sendMessage(MessageWrapper messageBean, Collection<Long> recipientIds, String threadId) {
         if (messageBean.getSubject().isEmpty()) {
             messageBean.setSubject("(No Subject)");
         }
-        final Message message = messageDao.createMessage(messageBean).orElseThrow(
+        final MessageWrapper message = messageDao.createMessage(messageBean).orElseThrow(
                 () -> new InternalException("Could not retrieve id of created message"));
 
         final Long messageId = message.getId();
@@ -124,11 +124,11 @@ public class MessagingService {
         return message;
     }
 
-    private void copyRecipient(UserWrapper recipient, Message m) {
+    private void copyRecipient(UserWrapper recipient, MessageWrapper m) {
         UserWrapper from = memberDao.getUser(m.getFromId())
                 .orElseThrow(() -> ReferenceResolutionException
                         .toObject(IUser.class, m.getFromId())
-                        .fromObject(Message.class, m.getId()));
+                        .fromObject(MessageWrapper.class, m.getId()));
 
         String subject = m.getSubject();
         if (subject.length() < 3) {
@@ -151,7 +151,7 @@ public class MessagingService {
                 fromEmail, ConfigurationAttributeKey.COLAB_NAME.get(), m.getId());
     }
 
-    private static String createMessageURL(Message m) {
+    private static String createMessageURL(MessageWrapper m) {
         String home = PlatformAttributeKey.COLAB_URL.get();
         return home + MessageConstants.EMAIL_MESSAGE_URL_TEMPLATE + m.getId();
     }

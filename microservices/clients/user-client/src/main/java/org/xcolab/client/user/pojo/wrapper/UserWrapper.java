@@ -12,7 +12,6 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.user.StaticUserContext;
 import org.xcolab.client.user.exceptions.MemberNotFoundException;
-import org.xcolab.client.user.pojo.Role;
 
 import java.io.Serializable;
 import java.util.List;
@@ -89,7 +88,7 @@ public class UserWrapper extends org.xcolab.client.user.pojo.tables.pojos.User i
     }
 
     @JsonIgnore
-    public List<Role> getRoles() {
+    public List<RoleWrapper> getRoles() {
         return StaticUserContext.getUserClient().getUserRoles(this.getId(),null);
     }
 

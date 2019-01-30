@@ -10,7 +10,7 @@ import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.client.user.pojo.Message;
+import org.xcolab.client.user.pojo.wrapper.MessageWrapper;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.SortColumn;
 import org.xcolab.model.tables.records.MessageRecord;
@@ -37,7 +37,7 @@ public class MessageDaoImpl implements MessageDao {
     }
 
     @Override
-    public Message getMessage(long messageId) throws NotFoundException {
+    public MessageWrapper getMessage(long messageId) throws NotFoundException {
         final Record record = dslContext.select()
                 .from(MESSAGE)
                 .where(MESSAGE.ID.eq(messageId))
@@ -45,12 +45,12 @@ public class MessageDaoImpl implements MessageDao {
         if (record == null) {
             throw new NotFoundException("Message with id " + messageId + "does not exist");
         }
-        return record.into(Message.class);
+        return record.into(MessageWrapper.class);
     }
 
     @Override
-    public List<Message> getFullConversation(long messageId, String threadId) throws NotFoundException {
-        List<Message> messageList;
+    public List<MessageWrapper> getFullConversation(long messageId, String threadId) throws NotFoundException {
+        List<MessageWrapper> messageList;
         if (threadId != null) {
             // There is thread info, get all the thread
             messageList = dslContext.select(MESSAGE.fields())
@@ -61,7 +61,7 @@ public class MessageDaoImpl implements MessageDao {
                         MESSAGE_RECIPIENT_STATUS.THREAD_ID.eq(threadId)
                     )
                     .orderBy(MESSAGE.CREATED_AT.desc())
-                    .fetchInto(Message.class);
+                    .fetchInto(MessageWrapper.class);
 
             if (messageList.isEmpty()) {
                 throw new NotFoundException("Thread " + threadId + "does not exist or does not contain messages with id <= "+messageId);
@@ -70,7 +70,7 @@ public class MessageDaoImpl implements MessageDao {
             messageList = dslContext.select()
                     .from(MESSAGE)
                     .where(MESSAGE.ID.eq(messageId))
-                    .fetchInto(Message.class);
+                    .fetchInto(MessageWrapper.class);
             if (messageList.isEmpty()) {
                 throw new NotFoundException("Message with id " + messageId + "does not exist");
             }
@@ -109,7 +109,7 @@ public class MessageDaoImpl implements MessageDao {
     }
 
     @Override
-    public List<Message> findByGiven(PaginationHelper paginationHelper,
+    public List<MessageWrapper> findByGiven(PaginationHelper paginationHelper,
             Long senderId, Long recipientId, Boolean isArchived, Boolean isOpened, Timestamp sinceDate) {
         final Field<?>[] fields = ArrayUtils.addAll(MESSAGE.fields(),
                 MESSAGE_RECIPIENT_STATUS.OPENED, MESSAGE_RECIPIENT_STATUS.ARCHIVED,
@@ -169,7 +169,7 @@ public class MessageDaoImpl implements MessageDao {
         query.addOrderBy(MESSAGE.CREATED_AT.desc());
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
 
-        return query.fetchInto(recipientId != null ? MessageReceived.class : Message.class);
+        return query.fetchInto(recipientId != null ? MessageReceived.class : MessageWrapper.class);
     }
 
     @Override
@@ -209,7 +209,7 @@ public class MessageDaoImpl implements MessageDao {
     }
 
     @Override
-    public Optional<Message> createMessage(Message message) {
+    public Optional<MessageWrapper> createMessage(MessageWrapper message) {
         final MessageRecord record = dslContext.insertInto(MESSAGE)
                 .set(MESSAGE.FROM_ID, message.getFromId())
                 .set(MESSAGE.REPLIES_TO, message.getRepliesTo())

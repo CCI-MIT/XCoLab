@@ -4,7 +4,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import org.xcolab.client.user.StaticUserContext;
 import org.xcolab.client.user.exceptions.MemberNotFoundException;
-import org.xcolab.client.user.pojo.Message;
+import org.xcolab.client.user.pojo.wrapper.MessageWrapper;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 
 import java.io.Serializable;
@@ -20,14 +20,14 @@ public class MessageBean implements Serializable {
     private String messageSubject;
     @NotBlank
     private String messageText;
-    private Message message;
+    private MessageWrapper message;
     private boolean selected;
 
 
     public MessageBean() {
     }
 
-    public MessageBean(Message message) {
+    public MessageBean(MessageWrapper message) {
         this.message = message;
         this.recipients = StaticUserContext.getMessagingClient().getMessageRecipients(message.getId());
     }
@@ -79,7 +79,7 @@ public class MessageBean implements Serializable {
         this.selected = selected;
     }
 
-    public Message getMessage() {
+    public MessageWrapper getMessage() {
         return message;
     }
 

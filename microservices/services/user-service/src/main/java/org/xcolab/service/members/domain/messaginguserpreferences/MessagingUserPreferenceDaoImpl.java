@@ -5,7 +5,7 @@ import org.jooq.Record;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.client.user.pojo.MessagingUserPreference;
+import org.xcolab.client.user.pojo.wrapper.MessagingUserPreferenceWrapper;
 
 import java.util.Optional;
 
@@ -22,7 +22,7 @@ public class MessagingUserPreferenceDaoImpl implements MessagingUserPreferenceDa
     }
 
     @Override
-    public Optional<MessagingUserPreference> get(long id) {
+    public Optional<MessagingUserPreferenceWrapper> get(long id) {
         final Record record = dslContext.select()
                 .from(MESSAGING_USER_PREFERENCE)
                 .where(MESSAGING_USER_PREFERENCE.ID.eq(id))
@@ -30,11 +30,11 @@ public class MessagingUserPreferenceDaoImpl implements MessagingUserPreferenceDa
         if (record == null) {
             return Optional.empty();
         }
-        return Optional.of(record.into(MessagingUserPreference.class));
+        return Optional.of(record.into(MessagingUserPreferenceWrapper.class));
     }
 
     @Override
-    public Optional<MessagingUserPreference> getByUserId(long userId) {
+    public Optional<MessagingUserPreferenceWrapper> getByUserId(long userId) {
         final Record record = dslContext.select()
                 .from(MESSAGING_USER_PREFERENCE)
                 .where(MESSAGING_USER_PREFERENCE.USER_ID.eq(userId))
@@ -42,11 +42,12 @@ public class MessagingUserPreferenceDaoImpl implements MessagingUserPreferenceDa
         if (record == null) {
             return Optional.empty();
         }
-        return Optional.of(record.into(MessagingUserPreference.class));
+        return Optional.of(record.into(MessagingUserPreferenceWrapper.class));
     }
 
     @Override
-    public Optional<MessagingUserPreference> create(MessagingUserPreference messagingUserPreferences) {
+    public Optional<MessagingUserPreferenceWrapper> create(
+            MessagingUserPreferenceWrapper messagingUserPreferences) {
         final Record record = dslContext
                 .insertInto(MESSAGING_USER_PREFERENCE)
                 .set(MESSAGING_USER_PREFERENCE.USER_ID, messagingUserPreferences.getUserId())
@@ -69,7 +70,7 @@ public class MessagingUserPreferenceDaoImpl implements MessagingUserPreferenceDa
     }
 
     @Override
-    public boolean update(MessagingUserPreference messagingUserPreferences) {
+    public boolean update(MessagingUserPreferenceWrapper messagingUserPreferences) {
         return dslContext.update(MESSAGING_USER_PREFERENCE)
                 .set(MESSAGING_USER_PREFERENCE.USER_ID, messagingUserPreferences.getUserId())
                 .set(MESSAGING_USER_PREFERENCE.EMAIL_ON_SEND,

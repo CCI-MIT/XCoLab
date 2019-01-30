@@ -1,9 +1,9 @@
 package org.xcolab.service.members.domain.messaginguserpreferences;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.user.pojo.MessagingUserPreference;
+import org.xcolab.client.user.pojo.wrapper.MessagingUserPreferenceWrapper;
 
-public class DefaultMessagingUserPreference extends MessagingUserPreference {
+public class DefaultMessagingUserPreference extends MessagingUserPreferenceWrapper {
 
     private static final boolean EMAIL_ON_SEND = false;
 

@@ -17,9 +17,9 @@ import org.xcolab.client.user.exceptions.MessageOrThreadNotFoundException;
 import org.xcolab.client.user.exceptions.ReplyingToManyException;
 import org.xcolab.client.user.legacy.enums.MessageType;
 import org.xcolab.client.user.messaging.MessageLimitExceededException;
-import org.xcolab.client.user.pojo.Message;
-import org.xcolab.client.user.pojo.MessagingUserPreference;
-import org.xcolab.client.user.pojo.SendMessageBean;
+import org.xcolab.client.user.pojo.wrapper.MessageWrapper;
+import org.xcolab.client.user.pojo.wrapper.MessagingUserPreferenceWrapper;
+import org.xcolab.client.user.pojo.wrapper.SendMessageWrapper;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.spring.web.annotation.ListMapping;
 import org.xcolab.util.http.exceptions.Http429TooManyRequestsException;
@@ -31,8 +31,8 @@ import java.util.List;
 @FeignClient("xcolab-messaging-service")
 public interface IMessagingClient {
 
-    @ListMapping("/messages")
-    List<Message> getUserMessages(@RequestParam(required = false) Integer startRecord,
+    @RequestMapping(value = "/messages", method = RequestMethod.GET)
+    List<MessageWrapper> getUserMessages(@RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
             @RequestParam(required = false) Long recipientId,
             @RequestParam(required = false) Long senderId,
@@ -56,7 +56,7 @@ public interface IMessagingClient {
             @RequestParam(required = false) String threadId);
 
     @RequestMapping(value = "/messages/{messageId}", method = RequestMethod.GET)
-    Message getMessage(@PathVariable long messageId) throws MessageNotFoundException;
+    MessageWrapper getMessage(@PathVariable long messageId) throws MessageNotFoundException;
 
     @RequestMapping(value = "/messages/{messageId}/recipients", method = RequestMethod.GET)
     List<UserWrapper> getMessageRecipients(@PathVariable long messageId);
@@ -65,7 +65,7 @@ public interface IMessagingClient {
     List<String> getMessageThreads(@PathVariable long messageId);
 
     @RequestMapping(value = "/messages", method = RequestMethod.POST)
-    Message createMessage(@RequestBody SendMessageBean sendMessageBean,
+    MessageWrapper createMessage(@RequestBody SendMessageWrapper sendMessageBean,
             @RequestParam(required = false, defaultValue = "true") boolean checkLimit,
             @RequestParam(required = false) String threadId)
             throws MessageLimitExceededException;
@@ -76,16 +76,16 @@ public interface IMessagingClient {
             @RequestParam(required = false) Boolean isOpened);
 
     @GetMapping("/members/{userId}/messagingPreferences")
-    MessagingUserPreference getMessagingPreferences(@PathVariable long userId);
+    MessagingUserPreferenceWrapper getMessagingPreferences(@PathVariable long userId);
 
     @PutMapping("/members/{userId}/messagingPreferences/{messagingPreferencesId}")
     boolean updateMessagingPreferences(@PathVariable long userId,
             @PathVariable long messagingPreferencesId,
-            @RequestBody MessagingUserPreference messagingUserPreferences);
+            @RequestBody MessagingUserPreferenceWrapper messagingUserPreferences);
 
     @PostMapping("/members/{userId}/messagingPreferences")
-    MessagingUserPreference createMessagingPreferences(@PathVariable long userId,
-            @RequestBody MessagingUserPreference messagingUserPreferences);
+    MessagingUserPreferenceWrapper createMessagingPreferences(@PathVariable long userId,
+            @RequestBody MessagingUserPreferenceWrapper messagingUserPreferences);
 
     @RequestMapping(value = "/members/{userId}/canSendMessage", method = RequestMethod.GET)
     boolean canUserSendMessage(@PathVariable long userId,
@@ -122,7 +122,7 @@ public interface IMessagingClient {
 
     default void sendMessage(String subject, String content, long fromId, String threadId,
             List<Long> recipientIds, boolean checkLimit) {
-        SendMessageBean sendMessageBean = new SendMessageBean();
+        SendMessageWrapper sendMessageBean = new SendMessageWrapper();
         sendMessageBean.setSubject(StringEscapeUtils.unescapeXml(subject));
         sendMessageBean.setContent(content.replaceAll("\n", ""));
         sendMessageBean.setFromId(fromId);
@@ -188,7 +188,7 @@ public interface IMessagingClient {
                 null, null, null, null);
     }
 
-    default List<Message> getMessages(long userId, int pagerStart, int pagerNext,
+    default List<MessageWrapper> getMessages(long userId, int pagerStart, int pagerNext,
             MessageType type) {
         switch (type) {
             case INBOX:
@@ -202,7 +202,7 @@ public interface IMessagingClient {
         }
     }
 
-    default List<Message> getMessagesForUser(int firstMessage, int lastMessage, long userId,
+    default List<MessageWrapper> getMessagesForUser(int firstMessage, int lastMessage, long userId,
             boolean isArchived) {
         try {
             return getUserMessages(firstMessage,
@@ -213,7 +213,7 @@ public interface IMessagingClient {
         }
     }
 
-    default List<Message> getSentMessagesForUser(int firstMessage, int lastMessage,
+    default List<MessageWrapper> getSentMessagesForUser(int firstMessage, int lastMessage,
             long userId) {
         try {
             return getUserMessages(firstMessage,
@@ -224,7 +224,7 @@ public interface IMessagingClient {
         }
     }
 
-    default List<Message> getFullConversation(long messageId, String threadId) throws MessageOrThreadNotFoundException {
+    default List<MessageWrapper> getFullConversation(long messageId, String threadId) throws MessageOrThreadNotFoundException {
         try {
             return getUserMessages(0,
                     Integer.MAX_VALUE, null, null, null, null,

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import org.xcolab.client.user.IMessagingClient;
-import org.xcolab.client.user.pojo.MessagingUserPreference;
+import org.xcolab.client.user.pojo.wrapper.MessagingUserPreferenceWrapper;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.pages.profile.utils.JSONHelper;
 
@@ -45,7 +45,7 @@ public class MessageSettingsJSONController extends JSONHelper {
     }
 
     private void updateUserSendEmailOnMessagePreferences(long userId, boolean setting) {
-        MessagingUserPreference preferences = messagingClient.getMessagingPreferences(userId);
+        MessagingUserPreferenceWrapper preferences = messagingClient.getMessagingPreferences(userId);
         preferences.setEmailOnReceipt(setting);
         messagingClient.updateMessagingPreferences(userId, preferences.getId(), preferences);
     }
@@ -71,13 +71,13 @@ public class MessageSettingsJSONController extends JSONHelper {
     }
 
     private void updateUserSendEmailOnActivityPreferences(long userId, boolean setting) {
-        MessagingUserPreference preferences = messagingClient.getMessagingPreferences(userId);
+        MessagingUserPreferenceWrapper preferences = messagingClient.getMessagingPreferences(userId);
         preferences.setEmailOnActivity(setting);
         messagingClient.updateMessagingPreferences(userId, preferences.getId(), preferences);
     }
 
     private void updateUserSendDailyEmailOnActivityPreferences(long userId, boolean setting) {
-        MessagingUserPreference preferences = messagingClient.getMessagingPreferences(userId);
+        MessagingUserPreferenceWrapper preferences = messagingClient.getMessagingPreferences(userId);
         preferences.setEmailActivityDailyDigest(setting);
         messagingClient.updateMessagingPreferences(userId, preferences.getId(), preferences);
     }

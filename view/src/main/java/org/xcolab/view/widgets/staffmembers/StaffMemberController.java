@@ -15,7 +15,7 @@ import org.xcolab.client.user.IStaffUserClient;
 import org.xcolab.client.user.IUserClient;
 import org.xcolab.client.user.legacy.enums.StaffMemberCategoryRole;
 import org.xcolab.client.user.legacy.enums.StaffMemberCategoryRole.NoSuchCategoryRoleException;
-import org.xcolab.client.user.pojo.StaffUserWrapper;
+import org.xcolab.client.user.pojo.wrapper.StaffUserWrapper;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.widgets.AbstractWidgetController;
 

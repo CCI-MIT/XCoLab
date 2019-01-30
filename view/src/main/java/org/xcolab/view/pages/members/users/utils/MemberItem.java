@@ -4,8 +4,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.activity.StaticActivityContext;
 import org.xcolab.client.user.StaticUserContext;
-import org.xcolab.client.user.pojo.MemberCategory;
-import org.xcolab.client.user.pojo.Role;
+import org.xcolab.client.user.pojo.wrapper.MemberCategoryWrapper;
+import org.xcolab.client.user.pojo.wrapper.RoleWrapper;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 
 import java.io.Serializable;
@@ -20,7 +20,7 @@ public class MemberItem implements Serializable {
     private final String displayName;
     private final String screenName;
     private final int points;
-    private final MemberCategory memberCategory;
+    private final MemberCategoryWrapper memberCategory;
 
     public MemberItem(UserWrapper member, String memberCategoryParam) {
         userId = member.getId();
@@ -33,7 +33,7 @@ public class MemberItem implements Serializable {
         if (StringUtils.isNotEmpty(memberCategoryParam)) {
             memberCategory = StaticUserContext.getUserCategoryClient().getMemberCategory(memberCategoryParam);
         } else {
-            List<Role> roles = StaticUserContext.getUserClient().getUserRoles(userId,null);
+            List<RoleWrapper> roles = StaticUserContext.getUserClient().getUserRoles(userId,null);
             memberCategory = StaticUserContext.getUserClient().getHighestCategory(roles);
         }
     }
@@ -54,7 +54,7 @@ public class MemberItem implements Serializable {
         return String.format("%,d", points);
     }
 
-    public MemberCategory getMemberCategory() {
+    public MemberCategoryWrapper getMemberCategory() {
         return memberCategory;
     }
     

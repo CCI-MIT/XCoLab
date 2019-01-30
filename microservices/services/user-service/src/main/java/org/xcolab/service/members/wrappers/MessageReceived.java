@@ -1,10 +1,8 @@
 package org.xcolab.service.members.wrappers;
 
-import org.xcolab.client.user.pojo.Message;
+import org.xcolab.client.user.pojo.wrapper.MessageWrapper;
 
-import java.sql.Timestamp;
-
-public class MessageReceived extends Message {
+public class MessageReceived extends MessageWrapper {
 
 	private Boolean opened;
 	private Boolean archived;
@@ -12,7 +10,7 @@ public class MessageReceived extends Message {
 
 	public MessageReceived() {}
 
-	public MessageReceived(Message value, Boolean opened, Boolean archived, String threadId) {
+	public MessageReceived(MessageWrapper value, Boolean opened, Boolean archived, String threadId) {
         super(value);
 		this.opened = opened;
 		this.archived = archived;

@@ -1,10 +1,11 @@
-package org.xcolab.client.user.pojo;
+package org.xcolab.client.user.pojo.wrapper;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.springframework.core.ParameterizedTypeReference;
 
+import org.xcolab.client.user.pojo.IMessage;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.io.Serializable;
@@ -13,12 +14,13 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_NULL)
-public class Message implements IMessage, Serializable {
+public class MessageWrapper implements IMessage, Serializable {
 
     private static final long serialVersionUID = 1208926668;
 
-    public static final TypeProvider<Message> TYPES =
-            new TypeProvider<>(Message.class, new ParameterizedTypeReference<List<Message>>() {});
+    public static final TypeProvider<MessageWrapper> TYPES =
+            new TypeProvider<>(
+                    MessageWrapper.class, new ParameterizedTypeReference<List<MessageWrapper>>() {});
 
     private Long id;
     private Long fromId;
@@ -30,10 +32,10 @@ public class Message implements IMessage, Serializable {
     private Boolean archived;
     private String threadId;
 
-    public Message() {
+    public MessageWrapper() {
     }
 
-    public Message(Message value) {
+    public MessageWrapper(MessageWrapper value) {
         this.id = value.id;
         this.fromId = value.fromId;
         this.repliesTo = value.repliesTo;
@@ -45,14 +47,14 @@ public class Message implements IMessage, Serializable {
         this.threadId = value.threadId;
     }
 
-    public Message(Message value, Boolean opened, Boolean archived, String threadId) {
+    public MessageWrapper(MessageWrapper value, Boolean opened, Boolean archived, String threadId) {
         this(value);
         this.opened = opened;
         this.archived = archived;
         this.threadId = threadId;
     }
 
-    public Message(Long id, Long fromId, Long repliesTo, Timestamp createdAt,
+    public MessageWrapper(Long id, Long fromId, Long repliesTo, Timestamp createdAt,
             String subject, String content, Boolean opened, Boolean archived, String threadId) {
         this.id = id;
         this.fromId = fromId;

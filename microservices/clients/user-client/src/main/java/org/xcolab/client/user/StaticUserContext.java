@@ -10,7 +10,7 @@ public class StaticUserContext {
 
     private static IUserCategoryClient userCategoryClient;
 
-    private static IUserLoginRegister userLoginRegister;
+    private static IUserLoginRegisterClient userLoginRegister;
 
     private static ILoginTokenClient loginTokenClient;
 
@@ -54,11 +54,11 @@ public class StaticUserContext {
         StaticUserContext.userCategoryClient = userCategoryClient;
     }
 
-    public static IUserLoginRegister getUserLoginRegister() {
+    public static IUserLoginRegisterClient getUserLoginRegister() {
         return userLoginRegister;
     }
 
-    public static void setUserLoginRegister(IUserLoginRegister userLoginRegister) {
+    public static void setUserLoginRegister(IUserLoginRegisterClient userLoginRegister) {
         StaticUserContext.userLoginRegister = userLoginRegister;
     }
 

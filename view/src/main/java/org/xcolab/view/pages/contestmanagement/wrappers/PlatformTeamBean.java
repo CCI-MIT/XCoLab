@@ -3,13 +3,13 @@ package org.xcolab.view.pages.contestmanagement.wrappers;
 import org.hibernate.validator.constraints.Length;
 
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
-import org.xcolab.client.user.pojo.PlatformTeam;
+import org.xcolab.client.user.pojo.wrapper.PlatformTeamWrapper;
 
 import java.util.List;
 
 
 public class PlatformTeamBean {
-    private PlatformTeam team;
+    private PlatformTeamWrapper team;
     private List<UserWrapper> members;
 
     private Long teamId;
@@ -18,7 +18,7 @@ public class PlatformTeamBean {
 
     public PlatformTeamBean() { }
 
-    public PlatformTeamBean(PlatformTeam team, List<UserWrapper> members) {
+    public PlatformTeamBean(PlatformTeamWrapper team, List<UserWrapper> members) {
         this.team = team;
         this.members = members;
     }

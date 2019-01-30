@@ -1,4 +1,4 @@
-package org.xcolab.client.user.pojo;
+package org.xcolab.client.user.pojo.wrapper;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -13,26 +13,26 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_NULL)
-public class PlatformTeam implements Serializable {
+public class PlatformTeamWrapper implements Serializable {
 
     private static final long serialVersionUID = 741848212;
 
-    public static final TypeProvider<PlatformTeam> TYPES =
-            new TypeProvider<>(PlatformTeam.class,
-                    new ParameterizedTypeReference<List<PlatformTeam>>() {
+    public static final TypeProvider<PlatformTeamWrapper> TYPES =
+            new TypeProvider<>(PlatformTeamWrapper.class,
+                    new ParameterizedTypeReference<List<PlatformTeamWrapper>>() {
                     });
 
     private Long   id;
     private String name;
 
-    public PlatformTeam() {}
+    public PlatformTeamWrapper() {}
 
-    public PlatformTeam(PlatformTeam value) {
+    public PlatformTeamWrapper(PlatformTeamWrapper value) {
         this.id = value.id;
         this.name = value.name;
     }
 
-    public PlatformTeam(
+    public PlatformTeamWrapper(
             Long   id,
             String name
     ) {
@@ -64,7 +64,7 @@ public class PlatformTeam implements Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        final PlatformTeam other = (PlatformTeam) obj;
+        final PlatformTeamWrapper other = (PlatformTeamWrapper) obj;
         if (id == null) {
             if (other.id != null)
                 return false;

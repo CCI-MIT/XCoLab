@@ -7,15 +7,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.user.exceptions.MemberNotFoundException;
-import org.xcolab.client.user.pojo.LoginToken;
-import org.xcolab.client.user.pojo.TokenValidity;
+import org.xcolab.client.user.pojo.wrapper.LoginTokenWrapper;
+import org.xcolab.client.user.pojo.wrapper.TokenValidityWrapper;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 
 @FeignClient("xcolab-user-service")
 public interface ILoginTokenClient {
 
     @GetMapping("/loginTokens/{tokenId}/validate")
-    TokenValidity validateToken(@PathVariable String tokenId, @RequestParam String tokenKey)
+    TokenValidityWrapper validateToken(@PathVariable String tokenId, @RequestParam String tokenKey)
             throws MemberNotFoundException;
 
     @PostMapping("/loginTokens/{tokenId}/invalidate")
@@ -26,14 +26,14 @@ public interface ILoginTokenClient {
             throws MemberNotFoundException;
 
     @PostMapping("/members/{userId}/loginToken")
-    LoginToken generateToken(@PathVariable long userId) throws MemberNotFoundException;
+    LoginTokenWrapper generateToken(@PathVariable long userId) throws MemberNotFoundException;
 
 
-    default TokenValidity validateLoginToken(String tokenId, String tokenKey) {
+    default TokenValidityWrapper validateLoginToken(String tokenId, String tokenKey) {
         try{
             return validateToken(tokenId,tokenKey);
         }catch (MemberNotFoundException e){
-            return TokenValidity.INVALID;
+            return TokenValidityWrapper.INVALID;
         }
     }
     default void invalidateLoginToken(String tokenId) {
@@ -47,7 +47,7 @@ public interface ILoginTokenClient {
             return null;
         }
     }
-    default LoginToken createLoginToken(long userId) {
+    default LoginTokenWrapper createLoginToken(long userId) {
         try{
             return generateToken(userId);
         }catch (MemberNotFoundException e){

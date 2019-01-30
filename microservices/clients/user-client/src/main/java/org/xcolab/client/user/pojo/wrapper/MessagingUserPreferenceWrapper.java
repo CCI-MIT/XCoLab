@@ -1,4 +1,4 @@
-package org.xcolab.client.user.pojo;
+package org.xcolab.client.user.pojo.wrapper;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.core.ParameterizedTypeReference;
@@ -9,13 +9,13 @@ import java.io.Serializable;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class MessagingUserPreference implements Serializable {
+public class MessagingUserPreferenceWrapper implements Serializable {
 
     private static final long serialVersionUID = 1819303241;
 
-    public static final TypeProvider<MessagingUserPreference> TYPES =
-            new TypeProvider<>(MessagingUserPreference.class,
-                    new ParameterizedTypeReference<List<MessagingUserPreference>>() {
+    public static final TypeProvider<MessagingUserPreferenceWrapper> TYPES =
+            new TypeProvider<>(MessagingUserPreferenceWrapper.class,
+                    new ParameterizedTypeReference<List<MessagingUserPreferenceWrapper>>() {
                     });
 
     private Long id;
@@ -26,10 +26,10 @@ public class MessagingUserPreference implements Serializable {
     private boolean emailActivityDailyDigest;
     private Integer dailyMessageLimit;
 
-    public MessagingUserPreference() {
+    public MessagingUserPreferenceWrapper() {
     }
 
-    public MessagingUserPreference(MessagingUserPreference value) {
+    public MessagingUserPreferenceWrapper(MessagingUserPreferenceWrapper value) {
         this.id = value.id;
         this.userId = value.userId;
         this.emailOnSend = value.emailOnSend;
@@ -39,7 +39,7 @@ public class MessagingUserPreference implements Serializable {
         this.dailyMessageLimit = value.dailyMessageLimit;
     }
 
-    public MessagingUserPreference(long id, long userId, boolean emailOnSend,
+    public MessagingUserPreferenceWrapper(long id, long userId, boolean emailOnSend,
             boolean emailOnReceipt, boolean emailOnActivity, boolean emailActivityDailyDigest) {
         this.id = id;
         this.userId = userId;
@@ -108,7 +108,7 @@ public class MessagingUserPreference implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final MessagingUserPreference other = (MessagingUserPreference) obj;
+        final MessagingUserPreferenceWrapper other = (MessagingUserPreferenceWrapper) obj;
         if (id == null) {
             if (other.id != null) {
                 return false;

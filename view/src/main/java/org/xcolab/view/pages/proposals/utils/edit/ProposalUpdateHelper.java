@@ -8,7 +8,7 @@ import org.xcolab.client.contest.proposals.IMembershipClient;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.contest.proposals.exceptions.ConflictException;
 import org.xcolab.client.user.StaticUserContext;
-import org.xcolab.client.user.pojo.PlatformTeam;
+import org.xcolab.client.user.pojo.wrapper.PlatformTeamWrapper;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
@@ -204,7 +204,7 @@ public class ProposalUpdateHelper {
         if (updateProposalSectionsBean.getSelectedTeam() != null) {
             try {
                 // Setup team stuff
-                PlatformTeam team = StaticUserContext.getPlatformTeamClient().getPlatformTeam(updateProposalSectionsBean.getSelectedTeam());
+                PlatformTeamWrapper team = StaticUserContext.getPlatformTeamClient().getPlatformTeam(updateProposalSectionsBean.getSelectedTeam());
                 List<UserWrapper> members = StaticUserContext.getPlatformTeamClient().listTeamUsers(team.getId());
                 for (UserWrapper member : members) {
                     Long userId = member.getId();

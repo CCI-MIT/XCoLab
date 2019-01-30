@@ -14,22 +14,19 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.user.exceptions.MemberCategoryNotFoundException;
 import org.xcolab.client.user.exceptions.MemberNotFoundException;
 import org.xcolab.client.user.exceptions.UncheckedMemberNotFoundException;
-import org.xcolab.client.user.pojo.MemberCategory;
-import org.xcolab.client.user.pojo.Role;
+import org.xcolab.client.user.pojo.wrapper.MemberCategoryWrapper;
+import org.xcolab.client.user.pojo.wrapper.RoleWrapper;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
-import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.List;
 
 @FeignClient("xcolab-user-service")
 @RequestMapping("/members")
 public interface IUserClient {
 
-    @GetMapping
+    @GetMapping("")
     List<UserWrapper> listUsers(
             @RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
@@ -67,7 +64,7 @@ public interface IUserClient {
     boolean deleteUser(@PathVariable long userId) throws MemberNotFoundException;
 
     @GetMapping("{userId}/roles")
-    List<Role> getUserRoles(@PathVariable long userId,
+    List<RoleWrapper> getUserRoles(@PathVariable long userId,
             @RequestParam(required = false) Long contestId);
 
     @PutMapping("{userId}/roles/{roleId}")
@@ -118,12 +115,12 @@ public interface IUserClient {
                 null);
     }
 
-    default MemberCategory getHighestCategory(List<Role> roles) {
-        MemberCategory category = null;
+    default MemberCategoryWrapper getHighestCategory(List<RoleWrapper> roles) {
+        MemberCategoryWrapper category = null;
 
-        for (Role r : roles) {
+        for (RoleWrapper r : roles) {
             try {
-                MemberCategory currentCategory =
+                MemberCategoryWrapper currentCategory =
                         StaticUserContext.getUserCategoryClient().getMemberCategory(r.getId());
                 if (category == null) {
                     category = currentCategory;
@@ -345,7 +342,7 @@ public interface IUserClient {
     default Integer getMemberHypotheticalPoints(long userId){
         return getUserPoints(userId, true);
     }
-    default List<Role> getMemberRolesInContest(long userId, long contestId) {
+    default List<RoleWrapper> getMemberRolesInContest(long userId, long contestId) {
         return getUserRoles(userId,contestId);
     }
 }

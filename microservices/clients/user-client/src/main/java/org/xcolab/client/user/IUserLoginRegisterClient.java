@@ -1,7 +1,6 @@
 package org.xcolab.client.user;
 
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,16 +8,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.user.exceptions.MemberNotFoundException;
-import org.xcolab.client.user.pojo.TokenValidity;
 import org.xcolab.commons.exceptions.InternalException;
-import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 @FeignClient("xcolab-user-service")
 @RequestMapping("/members")
-public interface IUserLoginRegister {
+public interface IUserLoginRegisterClient {
 
     @GetMapping("generateScreenName")
     String generateScreenName(@RequestParam String[] values);

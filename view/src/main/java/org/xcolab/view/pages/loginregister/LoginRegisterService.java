@@ -14,9 +14,9 @@ import org.xcolab.client.tracking.exceptions.BalloonUserTrackingNotFoundExceptio
 import org.xcolab.client.tracking.pojo.IBalloonUserTracking;
 import org.xcolab.client.user.ILoginTokenClient;
 import org.xcolab.client.user.IUserClient;
-import org.xcolab.client.user.IUserLoginRegister;
+import org.xcolab.client.user.IUserLoginRegisterClient;
 import org.xcolab.client.user.exceptions.MemberNotFoundException;
-import org.xcolab.client.user.pojo.LoginToken;
+import org.xcolab.client.user.pojo.wrapper.LoginTokenWrapper;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.entity.utils.LinkUtils;
@@ -46,14 +46,14 @@ public class LoginRegisterService {
     private final IBalloonClient balloonClient;
     private final IActivityClient activityClient;
     private final IUserClient userClient;
-    private final IUserLoginRegister userLoginRegister;
+    private final IUserLoginRegisterClient userLoginRegister;
     private final ILoginTokenClient loginTokenClient;
 
     @Autowired
     public LoginRegisterService(AuthenticationService authenticationService,
                                 IBalloonClient balloonClient, IActivityClient activityClient,
                                 IUserClient userClient,
-                                IUserLoginRegister userLoginRegister,
+                                IUserLoginRegisterClient userLoginRegister,
                                 ILoginTokenClient loginTokenClient) {
         this.authenticationService = authenticationService;
         this.balloonClient = balloonClient;
@@ -191,7 +191,7 @@ public class LoginRegisterService {
         member = userClient.register(member);
 
         if (generateLoginUrl) {
-            final LoginToken loginToken = loginTokenClient.createLoginToken(member.getId());
+            final LoginTokenWrapper loginToken = loginTokenClient.createLoginToken(member.getId());
             new MemberBatchRegistrationNotification(member, loginToken).sendEmailNotification();
         } else {
             new MemberRegistrationNotification(member).sendEmailNotification();

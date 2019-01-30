@@ -64,7 +64,7 @@ public class ForgotPasswordControllerTest {
     @Before
     public void setup() throws Exception {
         ServiceRequestUtils.setInitialized(true);
-        
+
 
         MembersClientMockerHelper.mockMembersClient();
         IAdminClient adminClient = AdminClientMockerHelper.mockAdminClient();

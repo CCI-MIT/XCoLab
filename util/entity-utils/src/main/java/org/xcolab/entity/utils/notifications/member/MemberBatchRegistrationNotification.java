@@ -7,7 +7,7 @@ import org.jsoup.nodes.TextNode;
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.pojo.IEmailTemplate;
-import org.xcolab.client.user.pojo.LoginToken;
+import org.xcolab.client.user.pojo.wrapper.LoginTokenWrapper;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.entity.utils.notifications.basic.MemberNotification;
 
@@ -23,9 +23,9 @@ public class MemberBatchRegistrationNotification extends MemberNotification {
     private static final String LOGIN_LINK_PLACEHOLDER = "login-link";
     private static final String LOGIN_LINK_EXPIRATION_PLACEHOLDER = "link-expiration";
 
-    private final LoginToken loginToken;
+    private final LoginTokenWrapper loginToken;
 
-    public MemberBatchRegistrationNotification(UserWrapper recipient, LoginToken loginToken) {
+    public MemberBatchRegistrationNotification(UserWrapper recipient, LoginTokenWrapper loginToken) {
         super(recipient, TEMPLATE_NAME);
         this.loginToken = loginToken;
     }

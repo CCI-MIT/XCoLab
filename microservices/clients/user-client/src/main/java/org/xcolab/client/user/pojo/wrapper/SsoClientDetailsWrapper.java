@@ -1,4 +1,4 @@
-package org.xcolab.client.user.pojo;
+package org.xcolab.client.user.pojo.wrapper;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.core.ParameterizedTypeReference;
@@ -9,21 +9,21 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
-public class SsoClientDetails implements Serializable {
+public class SsoClientDetailsWrapper implements Serializable {
 
     private static final long serialVersionUID = -1119078696;
 
-    public static final TypeProvider<SsoClientDetails> TYPES = new TypeProvider<>(
-            SsoClientDetails.class, new ParameterizedTypeReference<List<SsoClientDetails>>() {});
+    public static final TypeProvider<SsoClientDetailsWrapper> TYPES = new TypeProvider<>(
+            SsoClientDetailsWrapper.class, new ParameterizedTypeReference<List<SsoClientDetailsWrapper>>() {});
 
     private String id;
     private String secret;
     private String scope;
     private String registeredRedirectUri;
 
-    public SsoClientDetails() {}
+    public SsoClientDetailsWrapper() {}
 
-    public SsoClientDetails(SsoClientDetails value) {
+    public SsoClientDetailsWrapper(SsoClientDetailsWrapper value) {
         this.id = value.id;
         this.secret = value.secret;
         this.scope = value.scope;
@@ -67,10 +67,10 @@ public class SsoClientDetails implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof SsoClientDetails)) {
+        if (!(o instanceof SsoClientDetailsWrapper)) {
             return false;
         }
-        SsoClientDetails that = (SsoClientDetails) o;
+        SsoClientDetailsWrapper that = (SsoClientDetailsWrapper) o;
         return Objects.equals(getId(), that.getId())
                 && Objects.equals(getSecret(), that.getSecret())
                 && Objects.equals(getScope(), that.getScope())

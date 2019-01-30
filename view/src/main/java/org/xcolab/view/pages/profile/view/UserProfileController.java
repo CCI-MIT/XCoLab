@@ -28,11 +28,11 @@ import org.xcolab.client.tracking.IBalloonClient;
 import org.xcolab.client.tracking.pojo.IBalloonUserTracking;
 import org.xcolab.client.user.IPermissionClient;
 import org.xcolab.client.user.IUserClient;
-import org.xcolab.client.user.IUserLoginRegister;
+import org.xcolab.client.user.IUserLoginRegisterClient;
 import org.xcolab.client.user.StaticUserContext;
 import org.xcolab.client.user.exceptions.MemberNotFoundException;
 import org.xcolab.client.user.permissions.SystemRole;
-import org.xcolab.client.user.pojo.MessagingUserPreference;
+import org.xcolab.client.user.pojo.wrapper.MessagingUserPreferenceWrapper;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.CountryUtil;
 import org.xcolab.commons.html.HtmlUtil;
@@ -82,14 +82,14 @@ public class UserProfileController {
     private final IEmailClient emailClient;
     private final IUserClient userClient;
     private final IPermissionClient permissionClient;
-    private final IUserLoginRegister userLoginRegisterClient;
+    private final IUserLoginRegisterClient userLoginRegisterClient;
 
     @Autowired
     public UserProfileController(ActivityEntryHelper activityEntryHelper,
             AuthenticationService authenticationService, BalloonService balloonService,
             SmartValidator validator, IFileClient fileClient, IBalloonClient balloonClient,
             IEmailClient emailClient, IUserClient userClient, IPermissionClient permissionClient,
-            IUserLoginRegister userLoginRegisterClient) {
+            IUserLoginRegisterClient userLoginRegisterClient) {
         this.activityEntryHelper = activityEntryHelper;
         this.authenticationService = authenticationService;
         this.balloonService = balloonService;
@@ -426,7 +426,7 @@ public class UserProfileController {
             }
         }
 
-        final MessagingUserPreference messagingPreferences = StaticUserContext.getMessagingClient()
+        final MessagingUserPreferenceWrapper messagingPreferences = StaticUserContext.getMessagingClient()
                 .getMessagingPreferences(currentUserProfile.getUser().getId());
         boolean changedMessagingPreferences = false;
         if (updatedUserBean.getSendEmailOnMessage() != messagingPreferences.getEmailOnReceipt()) {

@@ -1,8 +1,8 @@
-package org.xcolab.client.user.pojo;
+package org.xcolab.client.user.pojo.wrapper;
 
 import java.io.Serializable;
 
-public class LoginBean implements Serializable {
+public class LoginBeanWrapper implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -10,10 +10,10 @@ public class LoginBean implements Serializable {
     private String ipAddress;
     private String redirectUrl;
 
-    public LoginBean() {
+    public LoginBeanWrapper() {
     }
 
-    public LoginBean(String password, String ipAddress, String redirectUrl) {
+    public LoginBeanWrapper(String password, String ipAddress, String redirectUrl) {
         this.password = password;
         this.ipAddress = ipAddress;
         this.redirectUrl = redirectUrl;

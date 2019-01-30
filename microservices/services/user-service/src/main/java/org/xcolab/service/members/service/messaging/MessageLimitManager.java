@@ -3,7 +3,7 @@ package org.xcolab.service.members.service.messaging;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import org.xcolab.client.user.pojo.MessagingUserPreference;
+import org.xcolab.client.user.pojo.wrapper.MessagingUserPreferenceWrapper;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.service.members.domain.member.UserDao;
 import org.xcolab.service.members.domain.messaging.MessageDao;
@@ -73,7 +73,7 @@ public class MessageLimitManager {
             return Integer.MAX_VALUE;
         }
 
-        MessagingUserPreference messagingPreferences = messagingUserPreferencesService.getByuserId(userId);
+        MessagingUserPreferenceWrapper messagingPreferences = messagingUserPreferencesService.getByuserId(userId);
 
         int messagesLimit;
         if (messagingPreferences.getDailyMessageLimit() != null) {

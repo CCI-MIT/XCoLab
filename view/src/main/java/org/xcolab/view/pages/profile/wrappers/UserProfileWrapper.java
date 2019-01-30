@@ -13,9 +13,9 @@ import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.user.StaticUserContext;
 import org.xcolab.client.user.exceptions.MemberNotFoundException;
 import org.xcolab.client.user.legacy.enums.MessageType;
-import org.xcolab.client.user.pojo.MemberCategory;
-import org.xcolab.client.user.pojo.Message;
-import org.xcolab.client.user.pojo.Role;
+import org.xcolab.client.user.pojo.wrapper.MemberCategoryWrapper;
+import org.xcolab.client.user.pojo.wrapper.MessageWrapper;
+import org.xcolab.client.user.pojo.wrapper.RoleWrapper;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
 import org.xcolab.view.pages.profile.beans.BadgeBean;
@@ -45,7 +45,7 @@ public class UserProfileWrapper implements Serializable {
     private UserWrapper member;
     private UserBean userBean;
     private String realName;
-    private MemberCategory highestRoleCategory;
+    private MemberCategoryWrapper highestRoleCategory;
     private int subscriptionsPageSize = 20;
     private int subscriptionsPaginationPageId;
     private String proposalsString;
@@ -224,11 +224,11 @@ public class UserProfileWrapper implements Serializable {
         return FIRE_GOOGLE_EVENT;
     }
 
-    public MemberCategory getHighestRoleCategory() {
+    public MemberCategoryWrapper getHighestRoleCategory() {
         return highestRoleCategory;
     }
 
-    public List<Role> getRoles() {
+    public List<RoleWrapper> getRoles() {
         return member.getRoles();
     }
 
@@ -244,7 +244,7 @@ public class UserProfileWrapper implements Serializable {
     public List<MessageBean> getMessages() {
         if (messages == null) {
             messages = new ArrayList<>();
-            for (Message msg : StaticUserContext.getMessagingClient().getMessages(this.member.getId(), 0, 2, MessageType.INBOX)) {
+            for (MessageWrapper msg : StaticUserContext.getMessagingClient().getMessages(this.member.getId(), 0, 2, MessageType.INBOX)) {
                 messages.add(new MessageBean(msg));
             }
         }

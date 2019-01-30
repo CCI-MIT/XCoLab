@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.client.user.IUserCategoryClient;
 import org.xcolab.client.user.exceptions.MemberCategoryNotFoundException;
-import org.xcolab.client.user.pojo.MemberCategory;
+import org.xcolab.client.user.pojo.wrapper.MemberCategoryWrapper;
 import org.xcolab.service.members.domain.membercategory.MemberCategoryDao;
 import org.xcolab.service.utils.PaginationHelper;
 
@@ -28,13 +28,13 @@ public class MemberCategoriesController implements IUserCategoryClient {
 
 
     @RequestMapping(value = "/membercategories/{roleId}", method = RequestMethod.GET)
-    public MemberCategory getMemberCategory(@PathVariable long roleId) throws MemberCategoryNotFoundException {
+    public MemberCategoryWrapper getMemberCategory(@PathVariable long roleId) throws MemberCategoryNotFoundException {
         return memberCategoryDao.getMemberCategory(roleId).orElseThrow(
                 MemberCategoryNotFoundException::new);
     }
 
     @RequestMapping(value = "/membercategories", method = RequestMethod.GET)
-    public List<MemberCategory> getMemberCategories(
+    public List<MemberCategoryWrapper> getMemberCategories(
             @RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
             @RequestParam(required = false) String sort,

@@ -1,16 +1,16 @@
-package org.xcolab.client.user.pojo;
+package org.xcolab.client.user.pojo.wrapper;
 
 import java.io.Serializable;
 import java.util.List;
 
-public class SendMessageBean extends Message implements Serializable {
+public class SendMessageWrapper extends MessageWrapper implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private List<Long> recipientIds;
     private List<String> threadIds;
 
-    public SendMessageBean() {
+    public SendMessageWrapper() {
     }
 
 

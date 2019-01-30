@@ -5,9 +5,8 @@ import org.jooq.Record;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.client.user.pojo.PlatformTeam;
+import org.xcolab.client.user.pojo.wrapper.PlatformTeamWrapper;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
-import org.xcolab.model.tables.pojos.PlatformTeamImpl;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,14 +26,14 @@ public class PlatformTeamDaoImpl implements PlatformTeamDao {
     }
 
     @Override
-    public List<PlatformTeam> getPlatformTeams() {
+    public List<PlatformTeamWrapper> getPlatformTeams() {
         return dslContext.select(PLATFORM_TEAM.fields())
                 .from(PLATFORM_TEAM)
-                .fetchInto(PlatformTeam.class);
+                .fetchInto(PlatformTeamWrapper.class);
     }
 
     @Override
-    public Optional<PlatformTeam> getPlatformTeam(long teamId) {
+    public Optional<PlatformTeamWrapper> getPlatformTeam(long teamId) {
         final Record memberRecord = dslContext.select()
                 .from(PLATFORM_TEAM)
                 .where(PLATFORM_TEAM.ID.eq(teamId))
@@ -42,11 +41,11 @@ public class PlatformTeamDaoImpl implements PlatformTeamDao {
         if (memberRecord == null) {
             return Optional.empty();
         }
-        return Optional.of(memberRecord.into(PlatformTeam.class));
+        return Optional.of(memberRecord.into(PlatformTeamWrapper.class));
     }
 
     @Override
-    public PlatformTeam updateOrInsertPlatformTeam(PlatformTeam team) {
+    public PlatformTeamWrapper updateOrInsertPlatformTeam(PlatformTeamWrapper team) {
         this.dslContext.insertInto(PLATFORM_TEAM, PLATFORM_TEAM.ID, PLATFORM_TEAM.NAME)
                 .values(team.getId(), team.getName())
                 .onDuplicateKeyUpdate()
@@ -56,7 +55,7 @@ public class PlatformTeamDaoImpl implements PlatformTeamDao {
     }
 
     @Override
-    public PlatformTeam createPlatformTeam(String name) {
+    public PlatformTeamWrapper createPlatformTeam(String name) {
         Long teamId = this.dslContext.insertInto(PLATFORM_TEAM)
                 .set(PLATFORM_TEAM.NAME, name)
                 .returning(PLATFORM_TEAM.ID, PLATFORM_TEAM.NAME)
@@ -64,19 +63,19 @@ public class PlatformTeamDaoImpl implements PlatformTeamDao {
                 .getId();
 
         if (teamId != null) {
-            return new PlatformTeam(teamId, name);
+            return new PlatformTeamWrapper(teamId, name);
         } else {
             return null;
         }
     }
 
     @Override
-    public List<PlatformTeam> getUserTeams(long userId) {
+    public List<PlatformTeamWrapper> getUserTeams(long userId) {
         return dslContext.select(PLATFORM_TEAM.fields())
                 .from(PLATFORM_TEAM.join(PLATFORM_TEAM_MEMBER)
                         .on(PLATFORM_TEAM.ID.eq(PLATFORM_TEAM_MEMBER.TEAM_ID)))
                 .where(PLATFORM_TEAM_MEMBER.USER_ID.eq(userId))
-                .fetchInto(PlatformTeam.class);
+                .fetchInto(PlatformTeamWrapper.class);
     }
 
     @Override

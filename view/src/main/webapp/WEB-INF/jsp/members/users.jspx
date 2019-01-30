@@ -7,12 +7,12 @@
 
     <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
 
-    <!--@elvariable id="memberCategory" type="org.xcolab.client.user.pojo.MemberCategory"-->
+    <!--@elvariable id="memberCategory" type="org.xcolab.client.user.pojo.wrapper.MemberCategoryWrapper"-->
     <!--@elvariable id="users" type="java.util.List<org.xcolab.view.pages.members.users.utils.MemberItem>"-->
     <!--@elvariable id="sortFilterPage" type="org.xcolab.view.util.pagination.SortFilterPage"-->
-    <!--@elvariable id="memberCategory" type="org.xcolab.client.user.pojo.MemberCategory"-->
+    <!--@elvariable id="memberCategory" type="org.xcolab.client.user.pojo.wrapper.MemberCategoryWrapper"-->
     <!--@elvariable id="permissions" type="org.xcolab.view.pages.members.users.utils.MembersPermissions"-->
-    <!--@elvariable id="memberCategories" type="java.util.List<org.xcolab.client.user.pojo.MemberCategory>"-->
+    <!--@elvariable id="memberCategories" type="java.util.List<org.xcolab.client.user.pojo.wrapper.MemberCategoryWrapper>"-->
     <!--@elvariable id="pageNavigation" type="org.xcolab.view.util.pagination.PageNavigation"-->
     <!--@elvariable id="membersNavigation" type="org.xcolab.view.pages.members.users.utils.MembersNavigation"-->
 

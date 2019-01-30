@@ -1,4 +1,4 @@
-package org.xcolab.client.user.pojo;
+package org.xcolab.client.user.pojo.wrapper;
 
 import org.springframework.core.ParameterizedTypeReference;
 
@@ -7,19 +7,20 @@ import org.xcolab.util.http.client.types.TypeProvider;
 import java.time.Instant;
 import java.util.List;
 
-public class LoginToken {
+public class LoginTokenWrapper {
 
-    public static final TypeProvider<LoginToken> TYPES = new TypeProvider<>(LoginToken.class,
-            new ParameterizedTypeReference<List<LoginToken>>() {});
+    public static final TypeProvider<LoginTokenWrapper> TYPES = new TypeProvider<>(
+            LoginTokenWrapper.class,
+            new ParameterizedTypeReference<List<LoginTokenWrapper>>() {});
 
     private String tokenId;
     private String tokenKey;
     private Instant tokenExpirationDate;
 
-    public LoginToken() {
+    public LoginTokenWrapper() {
     }
 
-    public LoginToken(String tokenId, String tokenKey, Instant tokenExpirationDate) {
+    public LoginTokenWrapper(String tokenId, String tokenKey, Instant tokenExpirationDate) {
         this.tokenId = tokenId;
         this.tokenKey = tokenKey;
         this.tokenExpirationDate = tokenExpirationDate;
@@ -54,11 +55,11 @@ public class LoginToken {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof LoginToken)) {
+        if (!(o instanceof LoginTokenWrapper)) {
             return false;
         }
 
-        LoginToken that = (LoginToken) o;
+        LoginTokenWrapper that = (LoginTokenWrapper) o;
 
         if (!tokenId.equals(that.tokenId)) {
             return false;

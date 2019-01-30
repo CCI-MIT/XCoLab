@@ -3,8 +3,7 @@ package org.xcolab.service.members.service.messaging;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import org.xcolab.client.user.pojo.IMessagingUserPreference;
-import org.xcolab.client.user.pojo.MessagingUserPreference;
+import org.xcolab.client.user.pojo.wrapper.MessagingUserPreferenceWrapper;
 import org.xcolab.service.members.domain.messaginguserpreferences.DefaultMessagingUserPreference;
 import org.xcolab.service.members.domain.messaginguserpreferences.MessagingUserPreferenceDao;
 
@@ -18,7 +17,7 @@ public class MessagingUserPreferenceService {
         this.messagingUserPreferencesDao = messagingUserPreferencesDao;
     }
 
-    public MessagingUserPreference getByuserId(long userId) {
+    public MessagingUserPreferenceWrapper getByuserId(long userId) {
         return messagingUserPreferencesDao.getByUserId(userId)
                 .orElse(new DefaultMessagingUserPreference(userId));
     }

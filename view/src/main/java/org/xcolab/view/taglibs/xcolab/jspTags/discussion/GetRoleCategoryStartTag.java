@@ -4,7 +4,7 @@ import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.user.StaticUserContext;
 import org.xcolab.client.user.exceptions.MemberNotFoundException;
-import org.xcolab.client.user.pojo.MemberCategory;
+import org.xcolab.client.user.pojo.wrapper.MemberCategoryWrapper;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
 
@@ -41,7 +41,7 @@ public class GetRoleCategoryStartTag extends BodyTagSupport {
     public int doStartTag() throws JspException {
         try {
             UserWrapper member = StaticUserContext.getUserClient().getMember(userId);
-            MemberCategory roleCategory = StaticUserContext.getUserClient().getHighestCategory(member.getRoles());
+            MemberCategoryWrapper roleCategory = StaticUserContext.getUserClient().getHighestCategory(member.getRoles());
             pageContext.setAttribute("roleCategory", roleCategory);
 
             // Is the user contributing to the proposal?
