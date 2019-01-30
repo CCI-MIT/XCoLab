@@ -34,7 +34,7 @@ public class ProposalRatingTypeWrapper implements Serializable {
 
     public boolean getIsActive()
     {
-        return this.proposalRatingType.getIsActive();
+        return this.proposalRatingType.isIsActive();
     }
 
     public void setIsActive(boolean isActive){

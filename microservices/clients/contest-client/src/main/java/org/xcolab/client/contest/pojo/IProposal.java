@@ -25,7 +25,7 @@ public interface IProposal {
 
     void setAuthorUserId(Long authorUserId);
 
-    Boolean getVisible();
+    Boolean isVisible();
 
     void setVisible(Boolean visible);
 

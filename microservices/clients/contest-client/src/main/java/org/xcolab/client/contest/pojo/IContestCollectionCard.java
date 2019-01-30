@@ -31,7 +31,7 @@ public interface IContestCollectionCard {
 
     void setShortName(String shortName);
 
-    Boolean getVisible();
+    Boolean isVisible();
 
     void setVisible(Boolean visible);
 
@@ -43,7 +43,7 @@ public interface IContestCollectionCard {
 
     void setOntologyTermToLoad(Long ontologyTermToLoad);
 
-    Boolean getOnlyFeatured();
+    Boolean isOnlyFeatured();
 
     void setOnlyFeatured(Boolean onlyFeatured);
 }

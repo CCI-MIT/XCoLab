@@ -225,7 +225,7 @@ public class ProposalWrapper extends Proposal implements Serializable {
                 visibleAttributeValue = pcpa.getNumericValue();
             }
         }
-        return !this.getVisible() || visibleAttributeValue == 0;
+        return !this.isVisible() || visibleAttributeValue == 0;
 
     }
 
@@ -490,13 +490,8 @@ public class ProposalWrapper extends Proposal implements Serializable {
     }
 
     @JsonIgnore
-    public long getcontestId() {
+    public long getContestId() {
         return contest.getId();
-    }
-
-    @JsonIgnore
-    public boolean isVisible() {
-        return !this.isDeleted();
     }
 
     @JsonIgnore
@@ -979,11 +974,11 @@ public class ProposalWrapper extends Proposal implements Serializable {
     }
 
     @JsonIgnore
-    public Boolean getRatingShouldAdvance() {
+    public Boolean isRatingShouldAdvance() {
         if (this.proposalRatings == null) {
             return null;
         }
-        return this.proposalRatings.getShouldAdvance();
+        return this.proposalRatings.isShouldAdvance();
     }
 
     @JsonIgnore

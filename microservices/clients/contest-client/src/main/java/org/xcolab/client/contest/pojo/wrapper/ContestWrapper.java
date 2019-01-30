@@ -131,21 +131,6 @@ public class ContestWrapper extends Contest implements Serializable {
     }
 
     @JsonIgnore
-    public boolean isShowInTileView(){
-        return this.getShowInTileView();
-    }
-
-    @JsonIgnore
-    public boolean isShowInListView(){
-        return this.getShowInListView();
-    }
-
-    @JsonIgnore
-    public boolean isShowInOutlineView(){
-        return this.getShowInOutlineView();
-    }
-
-    @JsonIgnore
     public String generateContestUrlName() {
         String contestUrlName = this.getTitle().toLowerCase();
         return contestUrlName.replaceAll(" ", "-").replaceAll("[^a-z0-9-]", "");
@@ -171,11 +156,6 @@ public class ContestWrapper extends Contest implements Serializable {
             }
         }
         return contestShortName;
-    }
-
-    @JsonIgnore
-    public boolean isContestActive() {
-        return this.getContestActive();
     }
 
     @JsonIgnore
@@ -205,16 +185,6 @@ public class ContestWrapper extends Contest implements Serializable {
             return getFlag() == 1;
         }
         return getActivePhase().getStatus().isCanAnything();
-    }
-
-    @JsonIgnore
-    public boolean isFeatured() {
-        return this.getFeatured();
-    }
-
-    @JsonIgnore
-    public boolean isPlansOpenByDefault() {
-        return this.getPlansOpenByDefault();
     }
 
     @JsonIgnore

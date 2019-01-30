@@ -43,7 +43,7 @@ public class EmailService {
                 email.addRecipient(null, emailTo, Message.RecipientType.TO);
             }
 
-            if (emailPojo.getHtml()) {
+            if (emailPojo.isHtml()) {
                 email.setTextHTML(emailPojo.getEmailBody());
             } else {
                 email.setText(emailPojo.getEmailBody());

@@ -77,7 +77,7 @@ public class ContestsController extends AbstractWidgetController<ContestPreferen
                 if (contestWrappers.size() >= contestPreferences.getFeedSize()) {
                     break;
                 }
-                if (!contest.getContestPrivate()) {
+                if (!contest.isContestPrivate()) {
                     contestWrappers.add(contest);
                 }
             }

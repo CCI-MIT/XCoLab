@@ -115,7 +115,7 @@ public class ProposalImpactSeries {
         for (IImpactDefaultSeries defaultSeries : impactDefaultSerieses) {
 
             // Look for already entered data
-            if (defaultSeries.getEditable()) {
+            if (defaultSeries.isEditable()) {
 
                 boolean foundEnteredData = false;
                 final ImpactSeriesType seriesType =
@@ -164,7 +164,7 @@ public class ProposalImpactSeries {
 
         for (IImpactDefaultSeries defaultSeries : StaticContestContext.getOntologyClient()
                 .getAllmpactDefaultSeriesByFocusArea(focusArea.getId())) {
-            if (!defaultSeries.getEditable()) {
+            if (!defaultSeries.isEditable()) {
                 continue;
             }
 
@@ -301,7 +301,7 @@ public class ProposalImpactSeries {
             JSONObject series = new JSONObject();
             series.put("name", defaultSeries.getName());
             series.put("description", defaultSeries.getDescription());
-            series.put("editable", defaultSeries.getEditable());
+            series.put("editable", defaultSeries.isEditable());
             series.put("values", seriesValues.toJSONArrayWithIteration(impactIterations));
             serieses.put(defaultSeries.getName(), series);
         }

@@ -123,7 +123,7 @@ public class StaffMemberController extends AbstractWidgetController<StaffMembers
                         if (!alreadyInStaffMembers) {
                             final ContestWrapper contest =
                                     contestClient.getContest(ctm.getContestId());
-                            if (!contest.getContestPrivate() &&
+                            if (!contest.isContestPrivate() &&
                                     !usersInYear.contains(ctm.getUserId())) {
                                 Member member = MembersClient.getMemberUnchecked(ctm.getUserId());
                                 usersInYear.add(ctm.getUserId());

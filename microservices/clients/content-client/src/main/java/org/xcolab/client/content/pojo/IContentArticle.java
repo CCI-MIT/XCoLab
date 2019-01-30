@@ -40,7 +40,7 @@ public interface IContentArticle {
 
     void setViewRoleGroupId(Long viewRoleGroupId);
 
-    Boolean getVisible();
+    Boolean isVisible();
 
     void setVisible(Boolean visible);
 

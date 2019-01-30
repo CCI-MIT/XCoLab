@@ -9,14 +9,14 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.util.TemplateReplacementUtilPlaceholder;
 import org.xcolab.client.email.IEmailClient;
-import org.xcolab.model.tables.pojos.User;
+import org.xcolab.commons.exceptions.InternalException;
+import org.xcolab.commons.exceptions.ReferenceResolutionException;
 import org.xcolab.model.tables.pojos.Message;
+import org.xcolab.model.tables.pojos.User;
 import org.xcolab.service.members.domain.member.UserDao;
 import org.xcolab.service.members.domain.messaging.MessageDao;
 import org.xcolab.service.members.exceptions.MessageLimitExceededException;
 import org.xcolab.service.members.exceptions.MessageRecipientException;
-import org.xcolab.commons.exceptions.InternalException;
-import org.xcolab.commons.exceptions.ReferenceResolutionException;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -106,7 +106,7 @@ public class MessagingService {
                  } else {
                      messageDao.createMessageRecipient(messageId, userId, threadId);
                  }
-                if (messagingUserPreferencesService.getByuserId(userId).getEmailOnReceipt()) {
+                if (messagingUserPreferencesService.getByuserId(userId).isEmailOnReceipt()) {
                     copyRecipient(recipientUser, message);
                 }
                 recipientsFound.add(userId);

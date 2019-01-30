@@ -79,11 +79,11 @@ public class CollectionCardWrapper{
     }
 
     public boolean getOnlyFeatured() {
-        return this.contestCollectionCard.getOnlyFeatured();
+        return this.contestCollectionCard.isOnlyFeatured();
     }
 
     public boolean getVisible() {
-        return this.contestCollectionCard.getVisible();
+        return this.contestCollectionCard.isVisible();
     }
 
     public String getDescription() {

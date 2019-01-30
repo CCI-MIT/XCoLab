@@ -201,10 +201,10 @@ public class ModelOutputIndexedDisplayItem extends ModelOutputDisplayItem {
     public boolean isVisible() {
         _log.debug("Checking if {}:{} is visible", chartModel.getModelId(),
                 chartModel.getModelOutputLabel());
-        if (chartModel.getModelChartIsVisible()) {
+        if (chartModel.isModelChartIsVisible()) {
             setVisible(true);
         }
-        return chartModel.getModelChartIsVisible();
+        return chartModel.isModelChartIsVisible();
     }
 
     @Override

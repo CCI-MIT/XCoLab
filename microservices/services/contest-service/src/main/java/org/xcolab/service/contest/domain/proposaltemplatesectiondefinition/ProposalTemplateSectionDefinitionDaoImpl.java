@@ -73,9 +73,9 @@ public class ProposalTemplateSectionDefinitionDaoImpl implements ProposalTemplat
                 .set(PROPOSAL_TEMPLATE_SECTION_DEFINITION.ALLOWED_CONTEST_TYPE_IDS, proposalTemplateSectionDefinition.getAllowedContestTypeIds())
                 .set(PROPOSAL_TEMPLATE_SECTION_DEFINITION.ALLOWED_VALUES, proposalTemplateSectionDefinition.getAllowedValues())
                 .set(PROPOSAL_TEMPLATE_SECTION_DEFINITION.ADDITIONAL_IDS, proposalTemplateSectionDefinition.getAdditionalIds())
-                .set(PROPOSAL_TEMPLATE_SECTION_DEFINITION.LOCKED, proposalTemplateSectionDefinition.getLocked())
-                .set(PROPOSAL_TEMPLATE_SECTION_DEFINITION.CONTEST_INTEGRATION_RELEVANCE, proposalTemplateSectionDefinition.getContestIntegrationRelevance())
-                .set(PROPOSAL_TEMPLATE_SECTION_DEFINITION.INCLUDE_IN_JUDGING_REPORT, proposalTemplateSectionDefinition.getIncludeInJudgingReport())
+                .set(PROPOSAL_TEMPLATE_SECTION_DEFINITION.LOCKED, proposalTemplateSectionDefinition.isLocked())
+                .set(PROPOSAL_TEMPLATE_SECTION_DEFINITION.CONTEST_INTEGRATION_RELEVANCE, proposalTemplateSectionDefinition.isContestIntegrationRelevance())
+                .set(PROPOSAL_TEMPLATE_SECTION_DEFINITION.INCLUDE_IN_JUDGING_REPORT, proposalTemplateSectionDefinition.isIncludeInJudgingReport())
                 .returning(PROPOSAL_TEMPLATE_SECTION_DEFINITION.ID)
                 .fetchOne();
         if (ret != null) {
@@ -108,9 +108,9 @@ public class ProposalTemplateSectionDefinitionDaoImpl implements ProposalTemplat
                 .set(PROPOSAL_TEMPLATE_SECTION_DEFINITION.ALLOWED_CONTEST_TYPE_IDS, proposalTemplateSectionDefinition.getAllowedContestTypeIds())
                 .set(PROPOSAL_TEMPLATE_SECTION_DEFINITION.ALLOWED_VALUES, proposalTemplateSectionDefinition.getAllowedValues())
                 .set(PROPOSAL_TEMPLATE_SECTION_DEFINITION.ADDITIONAL_IDS, proposalTemplateSectionDefinition.getAdditionalIds())
-                .set(PROPOSAL_TEMPLATE_SECTION_DEFINITION.LOCKED, proposalTemplateSectionDefinition.getLocked())
-                .set(PROPOSAL_TEMPLATE_SECTION_DEFINITION.CONTEST_INTEGRATION_RELEVANCE, proposalTemplateSectionDefinition.getContestIntegrationRelevance())
-                .set(PROPOSAL_TEMPLATE_SECTION_DEFINITION.INCLUDE_IN_JUDGING_REPORT, proposalTemplateSectionDefinition.getIncludeInJudgingReport())
+                .set(PROPOSAL_TEMPLATE_SECTION_DEFINITION.LOCKED, proposalTemplateSectionDefinition.isLocked())
+                .set(PROPOSAL_TEMPLATE_SECTION_DEFINITION.CONTEST_INTEGRATION_RELEVANCE, proposalTemplateSectionDefinition.isContestIntegrationRelevance())
+                .set(PROPOSAL_TEMPLATE_SECTION_DEFINITION.INCLUDE_IN_JUDGING_REPORT, proposalTemplateSectionDefinition.isIncludeInJudgingReport())
                 .where(PROPOSAL_TEMPLATE_SECTION_DEFINITION.ID.eq(proposalTemplateSectionDefinition.getId()))
                 .execute() > 0;
     }

@@ -31,10 +31,10 @@ public class ModelGlobalPreferenceDaoImpl implements ModelGlobalPreferenceDao {
                         .set(MODEL_GLOBAL_PREFERENCE.MODEL_CATEGORY_ID,
                                 modelGlobalPreference.getModelCategoryId())
                         .set(MODEL_GLOBAL_PREFERENCE.USES_CUSTOM_INPUTS,
-                                modelGlobalPreference.getUsesCustomInputs())
+                                modelGlobalPreference.isUsesCustomInputs())
                         .set(MODEL_GLOBAL_PREFERENCE.CUSTOM_INPUTS_DEFINITION,
                                 modelGlobalPreference.getCustomInputsDefinition())
-                        .set(MODEL_GLOBAL_PREFERENCE.VISIBLE, modelGlobalPreference.getVisible())
+                        .set(MODEL_GLOBAL_PREFERENCE.VISIBLE, modelGlobalPreference.isVisible())
                         .set(MODEL_GLOBAL_PREFERENCE.WEIGHT, modelGlobalPreference.getWeight())
                         .set(MODEL_GLOBAL_PREFERENCE.EXPERT_EVALUATION_PAGE_ID,
                                 modelGlobalPreference.getExpertEvaluationPageId())
@@ -78,10 +78,10 @@ public class ModelGlobalPreferenceDaoImpl implements ModelGlobalPreferenceDao {
                 .set(MODEL_GLOBAL_PREFERENCE.MODEL_CATEGORY_ID,
                         pojo.getModelCategoryId())
                 .set(MODEL_GLOBAL_PREFERENCE.USES_CUSTOM_INPUTS,
-                        pojo.getUsesCustomInputs())
+                        pojo.isUsesCustomInputs())
                 .set(MODEL_GLOBAL_PREFERENCE.CUSTOM_INPUTS_DEFINITION,
                         pojo.getCustomInputsDefinition())
-                .set(MODEL_GLOBAL_PREFERENCE.VISIBLE, pojo.getVisible())
+                .set(MODEL_GLOBAL_PREFERENCE.VISIBLE, pojo.isVisible())
                 .set(MODEL_GLOBAL_PREFERENCE.WEIGHT, pojo.getWeight())
                 .set(MODEL_GLOBAL_PREFERENCE.EXPERT_EVALUATION_PAGE_ID,
                         pojo.getExpertEvaluationPageId())

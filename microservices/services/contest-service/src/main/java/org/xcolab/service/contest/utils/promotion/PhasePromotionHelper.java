@@ -26,7 +26,7 @@ public class PhasePromotionHelper {
     }
 
     public boolean isProposalVisible(ProposalWrapper p) {
-        if (!p.getVisible()) {
+        if (!p.isVisible()) {
             return false;
         }
 

@@ -25,7 +25,7 @@ public interface IContestPhaseType {
 
     void setStatus(String status);
 
-    Boolean getFellowScreeningActiveDefault();
+    Boolean isFellowScreeningActiveDefault();
 
     void setFellowScreeningActiveDefault(Boolean fellowScreeningActiveDefault);
 
@@ -33,7 +33,7 @@ public interface IContestPhaseType {
 
     void setContestPhaseAutopromoteDefault(String contestPhaseAutopromoteDefault);
 
-    Boolean getInvisible();
+    Boolean isInvisible();
 
     void setInvisible(Boolean invisible);
 
@@ -49,7 +49,7 @@ public interface IContestPhaseType {
 
     void setDefaultFlagText(String defaultFlagText);
 
-    Boolean getIsDeprecated();
+    Boolean isIsDeprecated();
 
     void setIsDeprecated(Boolean isDeprecated);
 

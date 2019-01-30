@@ -95,6 +95,6 @@ public class DiscussionSearchItem extends AbstractSearchItem {
 
     @Override
     public boolean isVisible() {
-        return StringUtils.isNotEmpty(getLinkUrl()) && !thread.getIsQuiet();
+        return StringUtils.isNotEmpty(getLinkUrl()) && !thread.isIsQuiet();
     }
 }

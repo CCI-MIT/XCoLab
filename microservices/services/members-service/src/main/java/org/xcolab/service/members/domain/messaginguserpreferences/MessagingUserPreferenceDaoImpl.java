@@ -51,13 +51,13 @@ public class MessagingUserPreferenceDaoImpl implements MessagingUserPreferenceDa
                 .insertInto(MESSAGING_USER_PREFERENCE)
                 .set(MESSAGING_USER_PREFERENCE.USER_ID, messagingUserPreferences.getUserId())
                 .set(MESSAGING_USER_PREFERENCE.EMAIL_ON_SEND,
-                        messagingUserPreferences.getEmailOnSend())
+                        messagingUserPreferences.isEmailOnSend())
                 .set(MESSAGING_USER_PREFERENCE.EMAIL_ON_RECEIPT,
-                        messagingUserPreferences.getEmailOnReceipt())
+                        messagingUserPreferences.isEmailOnReceipt())
                 .set(MESSAGING_USER_PREFERENCE.EMAIL_ON_ACTIVITY,
-                        messagingUserPreferences.getEmailOnActivity())
+                        messagingUserPreferences.isEmailOnActivity())
                 .set(MESSAGING_USER_PREFERENCE.EMAIL_ACTIVITY_DAILY_DIGEST,
-                        messagingUserPreferences.getEmailActivityDailyDigest())
+                        messagingUserPreferences.isEmailActivityDailyDigest())
                 .returning(MESSAGING_USER_PREFERENCE.ID)
                 .fetchOne();
         if (record == null) {
@@ -73,13 +73,13 @@ public class MessagingUserPreferenceDaoImpl implements MessagingUserPreferenceDa
         return dslContext.update(MESSAGING_USER_PREFERENCE)
                 .set(MESSAGING_USER_PREFERENCE.USER_ID, messagingUserPreferences.getUserId())
                 .set(MESSAGING_USER_PREFERENCE.EMAIL_ON_SEND,
-                        messagingUserPreferences.getEmailOnSend())
+                        messagingUserPreferences.isEmailOnSend())
                 .set(MESSAGING_USER_PREFERENCE.EMAIL_ON_RECEIPT,
-                        messagingUserPreferences.getEmailOnReceipt())
+                        messagingUserPreferences.isEmailOnReceipt())
                 .set(MESSAGING_USER_PREFERENCE.EMAIL_ON_ACTIVITY,
-                        messagingUserPreferences.getEmailOnActivity())
+                        messagingUserPreferences.isEmailOnActivity())
                 .set(MESSAGING_USER_PREFERENCE.EMAIL_ACTIVITY_DAILY_DIGEST,
-                        messagingUserPreferences.getEmailActivityDailyDigest())
+                        messagingUserPreferences.isEmailActivityDailyDigest())
                 .where(MESSAGING_USER_PREFERENCE.ID.eq(messagingUserPreferences.getId()))
                 .execute() > 0;
     }

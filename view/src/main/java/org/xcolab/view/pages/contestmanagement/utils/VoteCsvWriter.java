@@ -119,8 +119,8 @@ public class VoteCsvWriter extends CsvResponseWriter {
             addValue(row, vote.getConfirmationEmailSendDate() != null ? vote.getConfirmationEmailSendDate() : "");
             addValue(row, vote.getInitialValidationResult());
             addValue(row, vote.getLastValidationResult());
-            addValue(row, vote.getIsValid());
-            addValue(row, vote.getIsValidOverride() != null ? vote.getIsValidOverride() : "");
+            addValue(row, vote.isIsValid());
+            addValue(row, vote.isIsValidOverride() != null ? vote.isIsValidOverride() : "");
             addValue(row, vote.getManualValidationResult() != null ? vote.getManualValidationResult() : "");
             writeRow(row);
         }

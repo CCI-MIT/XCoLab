@@ -27,7 +27,7 @@ public interface IProposal2Phase {
 
     void setSortWeight(Integer sortWeight);
 
-    Boolean getAutopromoteCandidate();
+    Boolean isAutopromoteCandidate();
 
     void setAutopromoteCandidate(Boolean autopromoteCandidate);
 }

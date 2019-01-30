@@ -2,9 +2,9 @@ package org.xcolab.view.pages.proposals.requests;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper;
 import org.xcolab.client.contest.pojo.IProposalRatingType;
+import org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.view.pages.proposals.wrappers.ProposalRatingTypeWrapper;
 import org.xcolab.view.util.validation.NoBlankValues;
 
@@ -50,7 +50,7 @@ public class RatingBean implements Serializable {
                         String.valueOf(ratingWrapper.getRatingValueId()));
             }
             comment = wrapper.getRatingComment();
-            shouldAdvanceProposal = wrapper.getRatingShouldAdvance();
+            shouldAdvanceProposal = wrapper.isRatingShouldAdvance();
         }
     }
 

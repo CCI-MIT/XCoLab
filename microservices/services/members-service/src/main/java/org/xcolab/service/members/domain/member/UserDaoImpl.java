@@ -32,9 +32,9 @@ import static org.jooq.impl.DSL.sum;
 import static org.jooq.impl.DSL.val;
 import static org.xcolab.model.Tables.ACTIVITY_ENTRY;
 import static org.xcolab.model.Tables.LOGIN_LOG;
-import static org.xcolab.model.Tables.USER;
 import static org.xcolab.model.Tables.MEMBER_CATEGORY;
 import static org.xcolab.model.Tables.POINTS;
+import static org.xcolab.model.Tables.USER;
 import static org.xcolab.model.Tables.USER_ROLE;
 
 @Repository
@@ -334,8 +334,8 @@ public class UserDaoImpl implements UserDao {
                 .set(USER.UPDATED_AT, DSL.currentTimestamp())
                 .set(USER.SCREEN_NAME, member.getScreenName())
                 .set(USER.EMAIL_ADDRESS, member.getEmailAddress())
-                .set(USER.IS_EMAIL_CONFIRMED, member.getIsEmailConfirmed())
-                .set(USER.IS_EMAIL_BOUNCED, member.getIsEmailBounced())
+                .set(USER.IS_EMAIL_CONFIRMED, member.isIsEmailConfirmed())
+                .set(USER.IS_EMAIL_BOUNCED, member.isIsEmailBounced())
                 .set(USER.OPEN_ID, member.getOpenId())
                 .set(USER.DEFAULT_LOCALE, member.getDefaultLocale())
                 .set(USER.FIRST_NAME, member.getFirstName())
@@ -368,8 +368,8 @@ public class UserDaoImpl implements UserDao {
                         .set(USER.UUID, member.getUuid())
                         .set(USER.SCREEN_NAME, member.getScreenName())
                         .set(USER.EMAIL_ADDRESS, member.getEmailAddress())
-                        .set(USER.IS_EMAIL_CONFIRMED, member.getIsEmailConfirmed())
-                        .set(USER.IS_EMAIL_BOUNCED, member.getIsEmailBounced())
+                        .set(USER.IS_EMAIL_CONFIRMED, member.isIsEmailConfirmed())
+                        .set(USER.IS_EMAIL_BOUNCED, member.isIsEmailBounced())
                         .set(USER.OPEN_ID, member.getOpenId())
                         .set(USER.DEFAULT_LOCALE, member.getDefaultLocale())
                         .set(USER.FIRST_NAME, member.getFirstName())

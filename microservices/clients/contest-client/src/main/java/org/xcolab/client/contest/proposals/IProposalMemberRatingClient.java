@@ -110,7 +110,7 @@ public interface IProposalMemberRatingClient {
     default void invalidateVotesForMember(long userId, String reason) {
         getVotesByMember(userId)
                 .stream()
-                .filter(IProposalVote::getIsValid)
+                .filter(IProposalVote::isIsValid)
                 .forEach(vote -> {
                     vote.setIsValid(false);
                     vote.setLastValidationResult(reason);

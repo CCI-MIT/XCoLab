@@ -206,7 +206,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
         Map<Long, List<Long>> averageRatingList = new HashMap<>();
         List<Long> judgeIds = new ArrayList<>();
         for (ProposalRatingWrapper judgeRating : judgeRatingsForProposal) {
-            if (judgeRating.getOnlyForInternalUsage()) {
+            if (judgeRating.isOnlyForInternalUsage()) {
                 continue;
             }
             Long ratingAverageIndex = judgeRating.getRatingValueId() / 5L;

@@ -133,7 +133,7 @@ public class ThreadDaoImpl implements ThreadDao {
                 .set(THREAD.AUTHOR_USER_ID, thread.getAuthorUserId())
                 .set(THREAD.DELETED_AT, thread.getDeletedAt())
                 .set(THREAD.TITLE, thread.getTitle())
-                .set(THREAD.IS_QUIET, thread.getIsQuiet())
+                .set(THREAD.IS_QUIET, thread.isIsQuiet())
                 .set(THREAD.CATEGORY_ID, thread.getCategoryId())
                 .where(THREAD.ID.equal(thread.getId()))
                 .execute() > 0;
@@ -146,7 +146,7 @@ public class ThreadDaoImpl implements ThreadDao {
                 .set(THREAD.AUTHOR_USER_ID, thread.getAuthorUserId())
                 .set(THREAD.DELETED_AT, thread.getDeletedAt())
                 .set(THREAD.TITLE, thread.getTitle())
-                .set(THREAD.IS_QUIET, thread.getIsQuiet())
+                .set(THREAD.IS_QUIET, thread.isIsQuiet())
                 .set(THREAD.CATEGORY_ID, thread.getCategoryId())
                 .returning(THREAD.ID)
                 .fetchOne();

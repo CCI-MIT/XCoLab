@@ -57,7 +57,7 @@ public interface IContest {
 
     void setAuthorUserId(Long authorUserId);
 
-    Boolean getContestActive();
+    Boolean isContestActive();
 
     void setContestActive(Boolean contestActive);
 
@@ -101,11 +101,11 @@ public interface IContest {
 
     void setContestLogoId(Long contestLogoId);
 
-    Boolean getFeatured();
+    Boolean isFeatured();
 
     void setFeatured(Boolean featured);
 
-    Boolean getPlansOpenByDefault();
+    Boolean isPlansOpenByDefault();
 
     void setPlansOpenByDefault(Boolean plansOpenByDefault);
 
@@ -149,11 +149,11 @@ public interface IContest {
 
     void setResourcesUrl(String resourcesUrl);
 
-    Boolean getContestPrivate();
+    Boolean isContestPrivate();
 
     void setContestPrivate(Boolean contestPrivate);
 
-    Boolean getUsePermissions();
+    Boolean isUsePermissions();
 
     void setUsePermissions(Boolean usePermissions);
 
@@ -189,19 +189,19 @@ public interface IContest {
 
     void setEmailTemplateUrl(String emailTemplateUrl);
 
-    Boolean getShowInTileView();
+    Boolean isShowInTileView();
 
     void setShowInTileView(Boolean showInTileView);
 
-    Boolean getShowInListView();
+    Boolean isShowInListView();
 
     void setShowInListView(Boolean showInListView);
 
-    Boolean getShowInOutlineView();
+    Boolean isShowInOutlineView();
 
     void setShowInOutlineView(Boolean showInOutlineView);
 
-    Boolean getHideRibbons();
+    Boolean isHideRibbons();
 
     void setHideRibbons(Boolean hideRibbons);
 
@@ -209,7 +209,7 @@ public interface IContest {
 
     void setResourceArticleId(Long resourceArticleId);
 
-    Boolean getReadOnlyComments();
+    Boolean isReadOnlyComments();
 
     void setReadOnlyComments(Boolean readOnlyComments);
 }

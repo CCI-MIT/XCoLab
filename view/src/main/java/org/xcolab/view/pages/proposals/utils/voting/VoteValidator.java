@@ -3,13 +3,13 @@ package org.xcolab.view.pages.proposals.utils.voting;
 import org.joda.time.DateTime;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
+import org.xcolab.client.contest.pojo.IProposalVote;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
-import org.xcolab.client.contest.pojo.IProposalVote;
-import org.xcolab.entity.utils.notifications.proposal.ProposalVoteValidityConfirmation;
 import org.xcolab.commons.exceptions.InternalException;
+import org.xcolab.entity.utils.notifications.proposal.ProposalVoteValidityConfirmation;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 
 import java.sql.Timestamp;
@@ -98,10 +98,10 @@ public class VoteValidator {
             }
 
             recentVotesFromSharedIp.stream()
-                    .filter(IProposalVote::getIsValid)
+                    .filter(IProposalVote::isIsValid)
                     .forEach(this::sendConfirmationEmail);
 
-            if (vote.getIsValid()) {
+            if (vote.isIsValid()) {
                 sendConfirmationEmail(vote);
                 return ValidationResult.AWAITING_RESPONSE;
             }
@@ -111,7 +111,7 @@ public class VoteValidator {
 
     private long countConfirmedVotes(List<IProposalVote> recentVotesFromSharedIp) {
         return recentVotesFromSharedIp.stream()
-                .filter(IProposalVote::getIsValid)
+                .filter(IProposalVote::isIsValid)
                 .filter(otherVote -> otherVote.getConfirmationEmailSendDate() != null)
                 .count();
     }

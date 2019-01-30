@@ -46,7 +46,7 @@ public class CategoryGroupDaoImpl implements CategoryGroupDao {
     @Override
     public boolean update(ICategoryGroup group) {
         return dslContext.update(CATEGORY_GROUP)
-                .set(CATEGORY_GROUP.IS_QUIET, group.getIsQuiet())
+                .set(CATEGORY_GROUP.IS_QUIET, group.isIsQuiet())
                 .set(CATEGORY_GROUP.DESCRIPTION, group.getDescription())
                 .set(CATEGORY_GROUP.URL, group.getUrl())
                 .where(CATEGORY_GROUP.ID.equal(group.getId()))
@@ -56,7 +56,7 @@ public class CategoryGroupDaoImpl implements CategoryGroupDao {
     @Override
     public ICategoryGroup create(ICategoryGroup group) {
         final CategoryGroupRecord groupRecord = dslContext.insertInto(CATEGORY_GROUP)
-                .set(CATEGORY_GROUP.IS_QUIET, group.getIsQuiet())
+                .set(CATEGORY_GROUP.IS_QUIET, group.isIsQuiet())
                 .set(CATEGORY_GROUP.DESCRIPTION, group.getDescription())
                 .set(CATEGORY_GROUP.URL, group.getUrl())
                 .returning(CATEGORY_GROUP.ID)

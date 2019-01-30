@@ -179,7 +179,7 @@ public class PojoGenerator extends AbstractMojo {
                 }
             }
 
-            PojoGenerator.createEmptyConstructor(pojo);
+            PojoGenerator.createDefaultConstructor(pojo);
             PojoGenerator.createFullConstructor(pojo, fields);
             PojoGenerator.createCopyConstructor(pojo, fields);
 
@@ -225,7 +225,7 @@ public class PojoGenerator extends AbstractMojo {
         return className;
     }
 
-    private static void createEmptyConstructor(JavaClassSource pojo) {
+    private static void createDefaultConstructor(JavaClassSource pojo) {
         pojo.addMethod()
                 .setPublic()
                 .setConstructor(true)
@@ -234,13 +234,13 @@ public class PojoGenerator extends AbstractMojo {
 
     private static void createFullConstructor(JavaClassSource pojo,
             List<FieldSource<JavaClassSource>> fields) {
-        String parameters = fields.stream().map(field -> {
-            return field.getType() + " " + field.getName();
-        }).collect(Collectors.joining(", "));
+        String parameters = fields.stream()
+                .map(field -> field.getType() + " " + field.getName())
+                .collect(Collectors.joining(", "));
 
-        String body = fields.stream().map(field -> {
-            return String.format("this.%s = %s;", field.getName(), field.getName());
-        }).collect(Collectors.joining("\n"));
+        String body = fields.stream()
+                .map(field -> String.format("this.%s = %s;", field.getName(), field.getName()))
+                .collect(Collectors.joining("\n"));
 
         pojo.addMethod()
                 .setPublic()
@@ -253,9 +253,10 @@ public class PojoGenerator extends AbstractMojo {
             List<FieldSource<JavaClassSource>> fields) {
         String parameter = pojo.getName() + " value";
 
-        String body = fields.stream().map(field -> {
-            return String.format("this.%s = value.%s;", field.getName(), field.getName());
-        }).collect(Collectors.joining("\n"));
+        String body = fields.stream()
+                .map(field -> String
+                        .format("this.%s = value.%s;", field.getName(), field.getName()))
+                .collect(Collectors.joining("\n"));
 
         pojo.addMethod()
                 .setPublic()
@@ -271,6 +272,7 @@ public class PojoGenerator extends AbstractMojo {
             String parameterString = field.getType().getName() + " " + field.getName();
             String bodySetter = String.format("this.%s = %s;", field.getName(), field.getName());
             String bodyGetter = String.format("return %s;", field.getName());
+            String getterPrefix = field.getType().isType(Boolean.class) ? "is" : "get";
 
             pojo.addMethod()
                     .setPublic()
@@ -283,7 +285,7 @@ public class PojoGenerator extends AbstractMojo {
             pojo.addMethod()
                     .setPublic()
                     .setReturnType(field.getType())
-                    .setName("get" + capitalizedName)
+                    .setName(getterPrefix + capitalizedName)
                     .setBody(bodyGetter)
                     .addAnnotation(Override.class);
         }

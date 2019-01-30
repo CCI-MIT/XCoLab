@@ -73,6 +73,6 @@ public class ProposalSearchItem extends AbstractSearchItem {
 
     @Override
     public boolean isVisible() {
-        return proposal.getVisible();
+        return proposal.isVisible();
     }
 }

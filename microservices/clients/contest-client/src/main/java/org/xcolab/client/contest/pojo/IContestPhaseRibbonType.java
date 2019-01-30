@@ -23,7 +23,7 @@ public interface IContestPhaseRibbonType {
 
     void setHoverText(String hoverText);
 
-    Boolean getShowText();
+    Boolean isShowText();
 
     void setShowText(Boolean showText);
 
@@ -31,7 +31,7 @@ public interface IContestPhaseRibbonType {
 
     void setDescription(String description);
 
-    Boolean getCopyOnPromote();
+    Boolean isCopyOnPromote();
 
     void setCopyOnPromote(Boolean copyOnPromote);
 

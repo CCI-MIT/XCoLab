@@ -30,9 +30,9 @@ public class ProposalRatingDaoImpl implements ProposalRatingDao {
                 .set(PROPOSAL_RATING.USER_ID, proposalRating.getUserId())
                 .set(PROPOSAL_RATING.RATING_VALUE_ID, proposalRating.getRatingValueId())
                 .set(PROPOSAL_RATING.COMMENT, proposalRating.getComment())
-                .set(PROPOSAL_RATING.COMMENT_ENABLED, proposalRating.getCommentEnabled())
+                .set(PROPOSAL_RATING.COMMENT_ENABLED, proposalRating.isCommentEnabled())
                 .set(PROPOSAL_RATING.OTHER_DATA_STRING, proposalRating.getOtherDataString())
-                .set(PROPOSAL_RATING.ONLY_FOR_INTERNAL_USAGE, proposalRating.getOnlyForInternalUsage())
+                .set(PROPOSAL_RATING.ONLY_FOR_INTERNAL_USAGE, proposalRating.isOnlyForInternalUsage())
                 .returning(PROPOSAL_RATING.ID)
                 .fetchOne();
         if (ret != null) {
@@ -51,9 +51,9 @@ public class ProposalRatingDaoImpl implements ProposalRatingDao {
                 .set(PROPOSAL_RATING.USER_ID, proposalRating.getUserId())
                 .set(PROPOSAL_RATING.RATING_VALUE_ID, proposalRating.getRatingValueId())
                 .set(PROPOSAL_RATING.COMMENT, proposalRating.getComment())
-                .set(PROPOSAL_RATING.COMMENT_ENABLED, proposalRating.getCommentEnabled())
+                .set(PROPOSAL_RATING.COMMENT_ENABLED, proposalRating.isCommentEnabled())
                 .set(PROPOSAL_RATING.OTHER_DATA_STRING, proposalRating.getOtherDataString())
-                .set(PROPOSAL_RATING.ONLY_FOR_INTERNAL_USAGE, proposalRating.getOnlyForInternalUsage())
+                .set(PROPOSAL_RATING.ONLY_FOR_INTERNAL_USAGE, proposalRating.isOnlyForInternalUsage())
                 .where(PROPOSAL_RATING.ID.eq(proposalRating.getId()))
                 .execute() > 0;
     }

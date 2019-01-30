@@ -169,7 +169,7 @@ public class ProposalService {
                 if (onlyWithContestIntegrationRelevance) {
                     ProposalAttribute attribute = proposalAttributeDao.get(proposalReference.getSectionAttributeId());
                     ProposalTemplateSectionDefinitionWrapper psd = StaticContestContext.getProposalTemplateClient().getProposalTemplateSectionDefinition(attribute.getAdditionalId());
-                    if (!psd.getContestIntegrationRelevance()) {
+                    if (!psd.isContestIntegrationRelevance()) {
                         continue;
                     }
                 }

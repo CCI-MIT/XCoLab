@@ -2,9 +2,9 @@ package org.xcolab.view.pages.proposals.discussion;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
-import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMemberWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.view.pages.proposals.tabs.ProposalTab;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
 
@@ -94,7 +94,7 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
             return getCanAdminAll();
         }
 
-        isReadOnly = proposal.getContest().getReadOnlyComments();
+        isReadOnly = proposal.getContest().isReadOnlyComments();
         if (isReadOnly && (isUserFellowOrJudgeOrAdvisor() || getCanAdminAll())) {
             return false;
         }

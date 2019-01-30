@@ -5,12 +5,12 @@ import org.springframework.stereotype.Service;
 
 import org.xcolab.client.comment.ICommentClient;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
-import org.xcolab.client.moderation.pojo.IReport;
-import org.xcolab.client.moderation.pojo.IReportTarget;
 import org.xcolab.client.comment.pojo.IComment;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.moderation.pojo.IReport;
+import org.xcolab.client.moderation.pojo.IReportTarget;
 import org.xcolab.service.moderation.domain.report.ReportDao;
 import org.xcolab.service.moderation.domain.reportTarget.ReportTargetDao;
 import org.xcolab.service.utils.PaginationHelper;
@@ -109,7 +109,7 @@ public class ModerationService {
 
     private void approveProposal(long proposalId) throws ProposalNotFoundException {
         final ProposalWrapper proposal = proposalClient.getProposal(proposalId, true);
-        if (!proposal.getVisible()) {
+        if (!proposal.isVisible()) {
             proposal.setVisible(true);
             proposalClient.updateProposal(proposal);
         }

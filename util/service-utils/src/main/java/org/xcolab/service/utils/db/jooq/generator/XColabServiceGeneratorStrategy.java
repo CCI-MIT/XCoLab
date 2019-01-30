@@ -1,6 +1,7 @@
 package org.xcolab.service.utils.db.jooq.generator;
 
 import org.jooq.util.Definition;
+import org.jooq.util.TypedElementDefinition;
 
 import java.util.Arrays;
 import java.util.List;
@@ -9,7 +10,9 @@ public class XColabServiceGeneratorStrategy extends XColabGeneratorStrategy {
 
     private static final String INTERFACE_PATH_FORMAT = "org.xcolab.client.%s.pojo.%s";
     //TODO: COLAB-2918: remove when new client/server architecture is used for all services
-    private static final List<String> clients = Arrays.asList("tracking", "content", "modeling", "comment", "admin", "contest", "activity");
+    private static final List<String> clients =
+            Arrays.asList("tracking", "content", "modeling", "comment", "admin", "contest",
+                    "activity");
 
     @Override
     public List<String> getJavaClassImplements(Definition definition, Mode mode) {
@@ -39,5 +42,18 @@ public class XColabServiceGeneratorStrategy extends XColabGeneratorStrategy {
             }
         }
         return className;
+    }
+
+
+    @Override
+    public String getJavaGetterName(Definition definition, Mode mode) {
+        String getterName = super.getJavaGetterName(definition, mode);
+        if (definition instanceof TypedElementDefinition && mode == Mode.POJO) {
+            TypedElementDefinition def = (TypedElementDefinition) definition;
+            if ("BOOLEAN".equals(def.getType().getType())) {
+                getterName = getterName.replaceFirst("get", "is");
+            }
+        }
+        return getterName;
     }
 }

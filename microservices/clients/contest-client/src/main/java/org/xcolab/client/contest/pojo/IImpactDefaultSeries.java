@@ -23,11 +23,11 @@ public interface IImpactDefaultSeries {
 
     void setFocusAreaId(Long focusAreaId);
 
-    Boolean getVisible();
+    Boolean isVisible();
 
     void setVisible(Boolean visible);
 
-    Boolean getEditable();
+    Boolean isEditable();
 
     void setEditable(Boolean editable);
 }

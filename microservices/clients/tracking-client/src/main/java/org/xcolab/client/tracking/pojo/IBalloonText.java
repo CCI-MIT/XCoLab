@@ -39,7 +39,7 @@ public interface IBalloonText {
 
     void setShareDescription(String shareDescription);
 
-    Boolean getEnabled();
+    Boolean isEnabled();
 
     void setEnabled(Boolean enabled);
 }

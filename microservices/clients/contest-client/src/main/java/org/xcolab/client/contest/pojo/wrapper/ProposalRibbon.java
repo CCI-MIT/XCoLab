@@ -77,7 +77,7 @@ public class ProposalRibbon implements Serializable {
     }
 
     public String getRibbonText() {
-        if (contestPhaseRibbonType != null && contestPhaseRibbonType.getShowText()) {
+        if (contestPhaseRibbonType != null && contestPhaseRibbonType.isShowText()) {
             return contestPhaseRibbonType.getHoverText();
         }
         return "";

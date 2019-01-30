@@ -55,15 +55,15 @@ public interface IProposalTemplateSectionDefinition {
 
     void setAdditionalIds(String additionalIds);
 
-    Boolean getLocked();
+    Boolean isLocked();
 
     void setLocked(Boolean locked);
 
-    Boolean getContestIntegrationRelevance();
+    Boolean isContestIntegrationRelevance();
 
     void setContestIntegrationRelevance(Boolean contestIntegrationRelevance);
 
-    Boolean getIncludeInJudgingReport();
+    Boolean isIncludeInJudgingReport();
 
     void setIncludeInJudgingReport(Boolean includeInJudgingReport);
 }
