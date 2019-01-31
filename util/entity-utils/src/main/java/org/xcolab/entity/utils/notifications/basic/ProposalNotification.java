@@ -43,7 +43,7 @@ public class ProposalNotification extends ContestNotification {
 
     @Override
     protected Long getReferenceId(){
-        return this.proposal.getcontestId();
+        return this.proposal.getContestId();
     }
 
     protected class ProposalNotificationTemplate extends ContestNotificationTemplate {

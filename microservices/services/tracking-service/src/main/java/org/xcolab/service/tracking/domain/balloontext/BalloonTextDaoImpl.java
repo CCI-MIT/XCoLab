@@ -55,7 +55,7 @@ public class BalloonTextDaoImpl implements BalloonTextDao {
                 .set(BALLOON_TEXT.EMAIL_SUBJECT_TEMPLATE, balloonText.getEmailSubjectTemplate())
                 .set(BALLOON_TEXT.SHARE_TITLE, balloonText.getShareTitle())
                 .set(BALLOON_TEXT.SHARE_DESCRIPTION, balloonText.getShareDescription())
-                .set(BALLOON_TEXT.ENABLED, balloonText.getEnabled())
+                .set(BALLOON_TEXT.ENABLED, balloonText.isEnabled())
                 .where(BALLOON_TEXT.ID.eq(balloonText.getId()))
                 .execute() > 0;
     }
@@ -70,7 +70,7 @@ public class BalloonTextDaoImpl implements BalloonTextDao {
                 .set(BALLOON_TEXT.EMAIL_SUBJECT_TEMPLATE, balloonText.getEmailSubjectTemplate())
                 .set(BALLOON_TEXT.SHARE_TITLE, balloonText.getShareTitle())
                 .set(BALLOON_TEXT.SHARE_DESCRIPTION, balloonText.getShareDescription())
-                .set(BALLOON_TEXT.ENABLED, balloonText.getEnabled())
+                .set(BALLOON_TEXT.ENABLED, balloonText.isEnabled())
 
                 .returning(BALLOON_TEXT.ID)
                 .fetchOne();

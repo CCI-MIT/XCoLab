@@ -102,18 +102,12 @@ public class ActivitySubscriptionEmailHelper {
 
     private final ActivityEntryHelper activityEntryHelper;
     private final IActivityClient activityClient;
-
-    private static ICommentClient commentClient;
-    private static IMessagingClient messagingClient;
-
-    public static void setCommentClient(ICommentClient commentClient) {
-        ActivitySubscriptionEmailHelper.commentClient = commentClient;
-    }
+    private final ICommentClient commentClient;
+    private final IMessagingClient messagingClient;
 
     @Autowired
     public ActivitySubscriptionEmailHelper(ActivityEntryHelper activityEntryHelper,
-            IActivityClient activityClient, ICommentClient commentClient,
-            IMessagingClient messagingClient) {
+            IActivityClient activityClient, ICommentClient commentClient, IMessagingClient messagingClient) {
         this.activityEntryHelper = activityEntryHelper;
         this.activityClient = activityClient;
         this.commentClient = commentClient;

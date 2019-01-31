@@ -329,7 +329,7 @@ public interface IUserClient {
 
     default UserWrapper getMemberInternal(long userId) throws EntityNotFoundException {
 
-        return getMember(userId);
+        return getUser(userId);
     }
 
     default boolean isEmailUsed(String email) {

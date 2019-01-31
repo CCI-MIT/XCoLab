@@ -38,18 +38,18 @@ public class ContestList {
     }
 
     public ContestList getInTileView() {
-        return new ContestList(list.stream().filter(ContestWrapper::getShowInTileView)
+        return new ContestList(list.stream().filter(ContestWrapper::isShowInTileView)
                 .collect(Collectors.toList()));
     }
 
     public ContestList getInOutlineView() {
         return new ContestList(list.stream()
-                .filter(ContestWrapper::getShowInOutlineView)
+                .filter(ContestWrapper::isShowInOutlineView)
                 .collect(Collectors.toList()));
     }
 
     public ContestList getInListView() {
-        return new ContestList(list.stream().filter(ContestWrapper::getShowInListView)
+        return new ContestList(list.stream().filter(ContestWrapper::isShowInListView)
                 .collect(Collectors.toList()));
     }
 

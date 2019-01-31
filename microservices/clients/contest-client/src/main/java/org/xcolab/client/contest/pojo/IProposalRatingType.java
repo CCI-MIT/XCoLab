@@ -23,7 +23,7 @@ public interface IProposalRatingType {
 
     void setJudgeType(Integer judgeType);
 
-    Boolean getIsActive();
+    Boolean isIsActive();
 
     void setIsActive(Boolean isActive);
 }

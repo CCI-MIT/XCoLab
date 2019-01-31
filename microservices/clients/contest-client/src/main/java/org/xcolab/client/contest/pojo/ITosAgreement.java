@@ -15,7 +15,7 @@ public interface ITosAgreement {
 
     void setUserId(Long userId);
 
-    Boolean getAgreed();
+    Boolean isAgreed();
 
     void setAgreed(Boolean agreed);
 }

@@ -15,7 +15,7 @@ public interface IModelGlobalPreference {
 
     void setModelId(Long modelId);
 
-    Boolean getVisible();
+    Boolean isVisible();
 
     void setVisible(Boolean visible);
 
@@ -31,7 +31,7 @@ public interface IModelGlobalPreference {
 
     void setModelCategoryId(Long modelCategoryId);
 
-    Boolean getUsesCustomInputs();
+    Boolean isUsesCustomInputs();
 
     void setUsesCustomInputs(Boolean usesCustomInputs);
 

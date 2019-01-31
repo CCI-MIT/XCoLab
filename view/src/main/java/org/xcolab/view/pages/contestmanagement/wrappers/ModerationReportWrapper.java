@@ -4,8 +4,7 @@ package org.xcolab.view.pages.contestmanagement.wrappers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.comment.ICommentClient;
-import org.xcolab.client.comment.IThreadClient;
+import org.xcolab.client.comment.StaticCommentContext;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.IComment;
@@ -13,7 +12,7 @@ import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.moderation.IModerationClient;
+import org.xcolab.client.moderation.StaticModerationContext;
 import org.xcolab.client.moderation.pojo.IAggregatedReport;
 import org.xcolab.client.moderation.pojo.tables.pojos.AggregatedReport;
 import org.xcolab.util.enums.moderation.ManagerAction;
@@ -28,19 +27,6 @@ public class ModerationReportWrapper {
     private final IAggregatedReport report;
 
     private ManagerAction managerAction = ManagerAction.PENDING;
-
-    private static IModerationClient moderationClient;
-    private static ICommentClient commentClient;
-    private static IThreadClient threadClient;
-
-    public static void setModerationClient(IModerationClient moderationClient) {
-        ModerationReportWrapper.moderationClient = moderationClient;
-    }
-
-    public static void setClients(ICommentClient commentClient, IThreadClient threadClient) {
-            ModerationReportWrapper.commentClient = commentClient;
-            ModerationReportWrapper.threadClient = threadClient;
-    }
 
     public ModerationReportWrapper() {
         report = new AggregatedReport();
@@ -60,7 +46,8 @@ public class ModerationReportWrapper {
                 if (commentTarget != null) {
                     final IThread thread;
                     try {
-                        thread = threadClient.getThread(commentTarget.getThreadId());
+                        thread = StaticCommentContext.getThreadClient()
+                                .getThread(commentTarget.getThreadId());
                     } catch (ThreadNotFoundException e) {
                         return "unknown thread";
                     }
@@ -83,7 +70,7 @@ public class ModerationReportWrapper {
 
     private IComment getTargetComment() {
         try {
-            return commentClient.getComment(report.getTargetId(), true);
+            return StaticCommentContext.getCommentClient().getComment(report.getTargetId(), true);
         } catch (CommentNotFoundException e) {
             return null;
         }
@@ -109,11 +96,13 @@ public class ModerationReportWrapper {
     }
 
     public void approveContent(long userId) {
-        moderationClient.handleReport(userId, ManagerAction.APPROVE, report.getFirstReportId());
+        StaticModerationContext.getModerationClient()
+                .handleReport(userId, ManagerAction.APPROVE, report.getFirstReportId());
     }
 
     public void removeContent(long userId) {
-        moderationClient.handleReport(userId, ManagerAction.REMOVE, report.getFirstReportId());
+        StaticModerationContext.getModerationClient()
+                .handleReport(userId, ManagerAction.REMOVE, report.getFirstReportId());
     }
 
     public long getFirstReportId() {

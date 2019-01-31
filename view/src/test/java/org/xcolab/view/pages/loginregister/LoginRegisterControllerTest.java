@@ -72,7 +72,7 @@ public class LoginRegisterControllerTest {
         ServiceRequestUtils.setInitialized(true);
 
 
-        StaticActivityContext.setActivityClient(Mockito.mock(IActivityClient.class));
+        StaticActivityContext.setClients(Mockito.mock(IActivityClient.class));
 
         MembersClientMockerHelper.mockMembersClient();
 

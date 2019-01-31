@@ -88,7 +88,7 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
 
         for (Iterator i = judgesRatingsUnWrapped.iterator(); i.hasNext(); ) {
             ProposalRatingWrapper judgesRatingUnWrapped = (ProposalRatingWrapper) i.next();
-            if (judgesRatingUnWrapped.getOnlyForInternalUsage()) {
+            if (judgesRatingUnWrapped.isOnlyForInternalUsage()) {
                 i.remove();
             }
         }

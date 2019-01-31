@@ -71,9 +71,9 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
         this.focusAreaId = proposalTemplateSectionDefinition.getFocusAreaId();
         this.additionalIds = proposalTemplateSectionDefinition.getAdditionalIds();
         this.allowedValues = proposalTemplateSectionDefinition.getAllowedValues();
-        this.locked = proposalTemplateSectionDefinition.getLocked();
+        this.locked = proposalTemplateSectionDefinition.isLocked();
         this.level = proposalTemplateSectionDefinition.getTier();
-        this.contestIntegrationRelevance = proposalTemplateSectionDefinition.getContestIntegrationRelevance();
+        this.contestIntegrationRelevance = proposalTemplateSectionDefinition.isContestIntegrationRelevance();
         this.allowedContestTypeIds =
                 IdListUtil.getIdsFromString(proposalTemplateSectionDefinition.getAllowedContestTypeIds());
 

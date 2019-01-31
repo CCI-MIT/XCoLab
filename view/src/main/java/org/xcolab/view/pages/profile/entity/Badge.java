@@ -30,7 +30,7 @@ public class Badge implements Serializable {
         this.contest = contest;
 
         // Associate the year and get hideRibbon property from contest
-        hideRibbon = contest.getHideRibbons();
+        hideRibbon = contest.isHideRibbons();
 
         ContestPhaseWrapper lastPhase = StaticContestContext.getContestClient()
                 .getActivePhase(contest.getId());

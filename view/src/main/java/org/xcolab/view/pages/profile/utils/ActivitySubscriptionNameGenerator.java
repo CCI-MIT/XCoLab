@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.activity.pojo.IActivitySubscription;
-import org.xcolab.client.comment.IThreadClient;
+import org.xcolab.client.comment.StaticCommentContext;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.ICategory;
 import org.xcolab.client.comment.pojo.ICategoryGroup;
@@ -19,14 +19,9 @@ import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 
 public class ActivitySubscriptionNameGenerator {
+
     private static final Logger _log = LoggerFactory.getLogger(ActivitySubscriptionNameGenerator.class);
     private static final String HYPERLINK = "<a href=\"%s\">%s</a>";
-
-    private static IThreadClient threadClient;
-
-    public static void setThreadClient(IThreadClient threadClient) {
-        ActivitySubscriptionNameGenerator.threadClient = threadClient;
-    }
 
     public static String getName(IActivitySubscription subscription) {
         switch (subscription.getActivityCategoryEnum()) {
@@ -72,7 +67,7 @@ public class ActivitySubscriptionNameGenerator {
 //        StringBuilder name = new StringBuilder();
 
         try {
-            IThread thread = threadClient.getThread(categoryId);
+            IThread thread = StaticCommentContext.getThreadClient().getThread(categoryId);
             return String.format(HYPERLINK, thread.getLinkUrl(), thread.getTitle());
         } catch (ThreadNotFoundException e) {
             _log.warn("Could not resolve discussion subscription name for subscription {}",

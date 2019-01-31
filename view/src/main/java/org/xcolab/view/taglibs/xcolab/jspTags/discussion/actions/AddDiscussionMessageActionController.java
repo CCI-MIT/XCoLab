@@ -100,7 +100,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
 
             updateAnalyticsAndActivities(commentThread, comment, userId, request);
 
-            if (commentThread.getIsQuiet() != null && !commentThread.getIsQuiet()) {
+            if (commentThread.isIsQuiet() != null && !commentThread.isIsQuiet()) {
 
                 if (commentThread.getCategory() != null) {
                     activityClient.createActivityEntry(DiscussionThreadActivityType.COMMENT_ADDED,

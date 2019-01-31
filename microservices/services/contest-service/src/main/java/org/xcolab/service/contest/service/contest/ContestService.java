@@ -6,10 +6,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
-import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.IContestPhaseType;
 import org.xcolab.client.contest.pojo.IContestTranslation;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.service.contest.domain.contest.ContestDao;
 import org.xcolab.service.contest.domain.contest.ContestDaoQuery;
 import org.xcolab.service.contest.domain.contestphase.ContestPhaseDao;
@@ -74,7 +74,7 @@ public class ContestService {
                 .filter(contestPhase -> {
                     final Optional<IContestPhaseType> contestPhaseType = contestPhaseTypeDao
                             .get(contestPhase.getContestPhaseTypeId());
-                    return contestPhaseType.isPresent() && !contestPhaseType.get().getInvisible();
+                    return contestPhaseType.isPresent() && !contestPhaseType.get().isInvisible();
                 })
                 .collect(Collectors.toList());
     }

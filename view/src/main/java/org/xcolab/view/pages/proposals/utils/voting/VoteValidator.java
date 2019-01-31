@@ -60,7 +60,7 @@ public class VoteValidator {
             return ValidationResult.VALID;
         }
 
-        if (member.getIsEmailBounced()) {
+        if (member.isIsEmailBounced()) {
             return ValidationResult.INVALID_BOUNCED_EMAIL;
         }
 
@@ -98,10 +98,10 @@ public class VoteValidator {
             }
 
             recentVotesFromSharedIp.stream()
-                    .filter(IProposalVote::getIsValid)
+                    .filter(IProposalVote::isIsValid)
                     .forEach(this::sendConfirmationEmail);
 
-            if (vote.getIsValid()) {
+            if (vote.isIsValid()) {
                 sendConfirmationEmail(vote);
                 return ValidationResult.AWAITING_RESPONSE;
             }
@@ -111,7 +111,7 @@ public class VoteValidator {
 
     private long countConfirmedVotes(List<IProposalVote> recentVotesFromSharedIp) {
         return recentVotesFromSharedIp.stream()
-                .filter(IProposalVote::getIsValid)
+                .filter(IProposalVote::isIsValid)
                 .filter(otherVote -> otherVote.getConfirmationEmailSendDate() != null)
                 .count();
     }

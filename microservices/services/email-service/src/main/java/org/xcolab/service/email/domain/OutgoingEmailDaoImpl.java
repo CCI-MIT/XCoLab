@@ -36,7 +36,7 @@ public class OutgoingEmailDaoImpl implements OutgoingEmailDao {
                 .set(OUTGOING_EMAIL.SENT_AT, outgoingEmail.getSentAt())
                 .set(OUTGOING_EMAIL.REFERENCE_ID, outgoingEmail.getReferenceId())
                 .set(OUTGOING_EMAIL.EMAIL_BODY_HASH, outgoingEmail.getEmailBodyHash())
-                .set(OUTGOING_EMAIL.WAS_SENT, outgoingEmail.getWasSent())
+                .set(OUTGOING_EMAIL.WAS_SENT, outgoingEmail.isWasSent())
                 .returning(OUTGOING_EMAIL.ID)
                 .fetchOne();
         if (ret != null) {
@@ -73,7 +73,7 @@ public class OutgoingEmailDaoImpl implements OutgoingEmailDao {
                 .set(OUTGOING_EMAIL.SENT_AT, outgoingEmail.getSentAt())
                 .set(OUTGOING_EMAIL.REFERENCE_ID, outgoingEmail.getReferenceId())
                 .set(OUTGOING_EMAIL.EMAIL_BODY_HASH, outgoingEmail.getEmailBodyHash())
-                .set(OUTGOING_EMAIL.WAS_SENT, outgoingEmail.getWasSent())
+                .set(OUTGOING_EMAIL.WAS_SENT, outgoingEmail.isWasSent())
                 .where(OUTGOING_EMAIL.ID.eq(outgoingEmail.getId()))
                 .execute() > 0;
     }

@@ -53,7 +53,7 @@ public class SchedulesTabController extends AbstractTabController {
     @ModelAttribute("contestPhaseTypesSelectionItems")
     public List<LabelValue> populateContestPhaseTypesSelectionItems() {
         return contestClient.getAllContestPhaseTypes().stream()
-                .filter(phaseType -> !phaseType.getIsDeprecated())
+                .filter(phaseType -> !phaseType.isIsDeprecated())
                 .map(phaseType -> new LabelValue(phaseType.getId(), phaseType.getName()))
                 .collect(Collectors.toList());
     }
@@ -61,7 +61,7 @@ public class SchedulesTabController extends AbstractTabController {
     @ModelAttribute("contestPhaseTypesSelectionItemsDeprecated")
     public List<LabelValue> populateContestPhaseTypesSelectionItemsDeprecated() {
         return contestClient.getAllContestPhaseTypes().stream()
-                .filter(phaseType -> phaseType.getIsDeprecated())
+                .filter(phaseType -> phaseType.isIsDeprecated())
                 .map(phaseType -> new LabelValue(phaseType.getId(), phaseType.getName() + " (Deprecated)"))
                 .collect(Collectors.toList());
     }

@@ -10,19 +10,19 @@ public interface IMessagingUserPreference {
 
     void setUserId(Long userId);
 
-    Boolean getEmailOnSend();
+    Boolean isEmailOnSend();
 
     void setEmailOnSend(Boolean emailOnSend);
 
-    Boolean getEmailOnReceipt();
+    Boolean isEmailOnReceipt();
 
     void setEmailOnReceipt(Boolean emailOnReceipt);
 
-    Boolean getEmailOnActivity();
+    Boolean isEmailOnActivity();
 
     void setEmailOnActivity(Boolean emailOnActivity);
 
-    Boolean getEmailActivityDailyDigest();
+    Boolean isEmailActivityDailyDigest();
 
     void setEmailActivityDailyDigest(Boolean emailActivityDailyDigest);
 

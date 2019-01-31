@@ -4,8 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.comment.ICommentClient;
-import org.xcolab.client.comment.IThreadClient;
+import org.xcolab.client.comment.StaticCommentContext;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.IComment;
@@ -28,20 +27,12 @@ public class DiscussionSearchItem extends AbstractSearchItem {
 
     private String searchQuery;
 
-    private static ICommentClient commentClient;
-    private static IThreadClient threadClient;
-
-    public static void setClients(ICommentClient commentClient, IThreadClient threadClient) {
-        DiscussionSearchItem.commentClient = commentClient;
-        DiscussionSearchItem.threadClient = threadClient;
-    }
-
     @Override
     public void init(ISearchPojo pojo, String searchQuery) {
         this.searchQuery = searchQuery;
         try {
-            comment = commentClient.getComment(pojo.getClassPrimaryKey());
-            thread = threadClient.getThread(comment.getThreadId());
+            comment = StaticCommentContext.getCommentClient().getComment(pojo.getClassPrimaryKey());
+            thread = StaticCommentContext.getThreadClient().getThread(comment.getThreadId());
         } catch (CommentNotFoundException | ThreadNotFoundException e) {
             throw ReferenceResolutionException.toObject(Comment.class, pojo.getClassPrimaryKey())
                     .build();
@@ -104,6 +95,6 @@ public class DiscussionSearchItem extends AbstractSearchItem {
 
     @Override
     public boolean isVisible() {
-        return StringUtils.isNotEmpty(getLinkUrl()) && !thread.getIsQuiet();
+        return StringUtils.isNotEmpty(getLinkUrl()) && !thread.isIsQuiet();
     }
 }

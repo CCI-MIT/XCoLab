@@ -44,8 +44,8 @@ public class ContestAdminBean implements Serializable {
             contestYear = contest.getContestYear();
             contestTier = contest.getContestTier();
             contestType = contest.getContestTypeId();
-            readOnlyComments = contest.getReadOnlyComments();
-            hideRibbons = contest.getHideRibbons();
+            readOnlyComments = contest.isReadOnlyComments();
+            hideRibbons = contest.isHideRibbons();
             emailTemplateUrl = contest.getEmailTemplateUrl();
             contestModelSettings = new ContestModelSettingsBean(contest);
         }

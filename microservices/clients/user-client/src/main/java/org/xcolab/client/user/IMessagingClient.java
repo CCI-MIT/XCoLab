@@ -28,7 +28,7 @@ import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.List;
 
-@FeignClient("xcolab-messaging-service")
+@FeignClient("xcolab-user-service")
 public interface IMessagingClient {
 
     @RequestMapping(value = "/messages", method = RequestMethod.GET)

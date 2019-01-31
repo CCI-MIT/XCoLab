@@ -160,7 +160,7 @@ public class ProposalTemplateController implements IProposalTemplateClient {
     public ProposalTemplateSectionDefinitionWrapper createProposalTemplateSectionDefinition(
             @RequestBody
                     ProposalTemplateSectionDefinitionWrapper proposalTemplateSectionDefinition) {
-        if (proposalTemplateSectionDefinition.getLocked() == null) {
+        if (proposalTemplateSectionDefinition.isLocked() == null) {
             proposalTemplateSectionDefinition.setLocked(false);
         }
         return this.proposalTemplateSectionDefinitionDao.create(proposalTemplateSectionDefinition);

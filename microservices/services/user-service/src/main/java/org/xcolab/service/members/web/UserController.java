@@ -61,9 +61,6 @@ public class UserController implements IUserClient {
             @RequestParam(required = false) String climateXId) {
         PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
 
-//        response.setHeader(ControllerUtils.COUNT_HEADER_NAME,
-//                Integer.toString(memberDao.countByGiven(partialName, partialEmail, roleName)));
-
         return memberDao.findByGiven(paginationHelper, partialName, partialEmail,
                 roleName, email, screenName, facebookId, googleId, colabSsoId, climateXId, roleIds);
     }

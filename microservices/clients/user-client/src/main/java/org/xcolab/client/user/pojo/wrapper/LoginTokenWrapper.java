@@ -9,9 +9,6 @@ import java.util.List;
 
 public class LoginTokenWrapper {
 
-    public static final TypeProvider<LoginTokenWrapper> TYPES = new TypeProvider<>(
-            LoginTokenWrapper.class,
-            new ParameterizedTypeReference<List<LoginTokenWrapper>>() {});
 
     private String tokenId;
     private String tokenKey;

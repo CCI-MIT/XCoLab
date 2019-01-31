@@ -24,7 +24,7 @@ public interface ICategoryGroup {
 
     void setUrl(String url);
 
-    Boolean getIsQuiet();
+    Boolean isIsQuiet();
 
     void setIsQuiet(Boolean isQuiet);
 

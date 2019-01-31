@@ -9,34 +9,23 @@ import java.io.Serializable;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class MemberCategoryWrapper implements Serializable, Comparable<MemberCategoryWrapper> {
+public class MemberCategoryWrapper extends org.xcolab.client.user.pojo.tables.pojos.MemberCategory implements Serializable, Comparable<MemberCategoryWrapper> {
 
     private static final long serialVersionUID = -2052172539;
 
-    public static final TypeProvider<MemberCategoryWrapper> TYPES =
-            new TypeProvider<>(MemberCategoryWrapper.class,
-                    new ParameterizedTypeReference<List<MemberCategoryWrapper>>() {
-                    });
 
-    private Long roleid;
-    private String displayname;
-    private String categoryname;
-    private Long sortorder;
-    private Boolean showinlist;
-    private String imagename;
-    private String description;
 
     public MemberCategoryWrapper() {
     }
 
     public MemberCategoryWrapper(MemberCategoryWrapper value) {
-        this.roleid = value.roleid;
-        this.displayname = value.displayname;
-        this.categoryname = value.categoryname;
-        this.sortorder = value.sortorder;
-        this.showinlist = value.showinlist;
-        this.imagename = value.imagename;
-        this.description = value.description;
+        this.setRoleId(value.getRoleId());
+        this.setDisplayName(value.getDisplayName());
+        this.setCategoryName(value.getCategoryName());
+        this.setSortOrder(value.getSortOrder());
+        this.setShowInList(value.isShowInList());
+        this.setImageName(value.getImageName());
+        this.setDescription(value.getDescription());
     }
 
     public MemberCategoryWrapper(
@@ -47,74 +36,21 @@ public class MemberCategoryWrapper implements Serializable, Comparable<MemberCat
             Boolean showinlist,
             String imagename
     ) {
-        this.roleid = roleid;
-        this.displayname = displayname;
-        this.categoryname = categoryname;
-        this.sortorder = sortorder;
-        this.showinlist = showinlist;
-        this.imagename = imagename;
+
+        this.setRoleId(roleid);
+        this.setDisplayName(displayname);
+        this.setCategoryName(categoryname);
+        this.setSortOrder(sortorder);
+        this.setShowInList(showinlist);
+        this.setImageName(imagename);
     }
 
-    public Long getRoleId() {
-        return this.roleid;
-    }
 
-    public void setRoleId(Long roleid) {
-        this.roleid = roleid;
-    }
-
-    public String getDisplayName() {
-        return this.displayname;
-    }
-
-    public void setDisplayName(String displayname) {
-        this.displayname = displayname;
-    }
-
-    public String getCategoryName() {
-        return this.categoryname;
-    }
-
-    public void setCategoryName(String categoryname) {
-        this.categoryname = categoryname;
-    }
-
-    public Long getSortOrder() {
-        return this.sortorder;
-    }
-
-    public void setSortOrder(Long sortorder) {
-        this.sortorder = sortorder;
-    }
-
-    public Boolean getShowInList() {
-        return this.showinlist;
-    }
-
-    public void setShowInList(Boolean showinlist) {
-        this.showinlist = showinlist;
-    }
-
-    public String getImageName() {
-        return this.imagename;
-    }
-
-    public void setImageName(String imagename) {
-        this.imagename = imagename;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
     @Override
     public String toString() {
-        String sb = "MemberCategory (" + roleid + ", " + displayname + ", " + categoryname + ", "
-                + sortorder + ", " + showinlist + ", " + imagename + ")";
+        String sb = "MemberCategory (" + getRoleId() + ", " + getDisplayName() + ", " + getCategoryName() + ", "
+                + getSortOrder() + ", " + isShowInList() + ", " + getImageName() + ")";
 
         return sb;
     }

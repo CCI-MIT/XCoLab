@@ -43,7 +43,7 @@ public abstract class ProposalRatings {
             return comment;
         } else {
             for (ProposalRatingWrapper r : ratings) {
-                if (r.getCommentEnabled()) {
+                if (r.isCommentEnabled()) {
                     return r.getComment();
                 }
             }
@@ -51,12 +51,12 @@ public abstract class ProposalRatings {
         }
     }
 
-    public Boolean getShouldAdvance() {
+    public Boolean isShouldAdvance() {
         if (shouldAdvance != null) {
             return shouldAdvance;
         } else {
             for (ProposalRatingWrapper r : ratings) {
-                if (r.getCommentEnabled()) {
+                if (r.isCommentEnabled()) {
                     final String shouldAdvanceString = r.getOtherDataString();
                     shouldAdvance = StringUtils.isNotBlank(shouldAdvanceString)
                             ? Boolean.parseBoolean(shouldAdvanceString) : null;

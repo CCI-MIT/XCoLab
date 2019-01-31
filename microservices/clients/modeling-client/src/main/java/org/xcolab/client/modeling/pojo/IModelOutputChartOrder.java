@@ -39,7 +39,7 @@ public interface IModelOutputChartOrder {
 
     void setModelIndexErrorMessage(String modelIndexErrorMessage);
 
-    Boolean getModelChartIsVisible();
+    Boolean isModelChartIsVisible();
 
     void setModelChartIsVisible(Boolean modelChartIsVisible);
 }

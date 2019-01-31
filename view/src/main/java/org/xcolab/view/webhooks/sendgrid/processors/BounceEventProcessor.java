@@ -35,7 +35,7 @@ public class BounceEventProcessor implements SendGridEventProcessor {
             }
 
             final boolean isHardBounce = event.getStatus().startsWith("5");
-            if (isHardBounce && !member.getIsEmailBounced()) {
+            if (isHardBounce && !member.isIsEmailBounced()) {
                 member.setIsEmailBounced(true);
                 userClient.updateUser(member);
                 StaticProposalContext.getProposalMemberRatingClient()

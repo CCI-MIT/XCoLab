@@ -131,11 +131,11 @@ public class ModelOutputSeriesDisplayItem extends ModelOutputDisplayItem {
 
     @Override
     public boolean isVisible() {
-        if (item.getModelItemIsVisible()) {
+        if (item.isModelItemIsVisible()) {
             setVisible(true);
         }
 
-        return item.getModelItemIsVisible();
+        return item.isModelItemIsVisible();
     }
 
     public void setVisible(boolean b) {

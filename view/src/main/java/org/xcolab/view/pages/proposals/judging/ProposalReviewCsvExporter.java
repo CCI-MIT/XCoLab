@@ -147,7 +147,7 @@ public class ProposalReviewCsvExporter {
     private String getDataFields(ProposalWrapper proposal) {
         StringBuilder dataFields = new StringBuilder(TQF);
         for (ProposalTemplateSectionDefinitionWrapper sectionDefinition : proposal.getSections()) {
-            if (sectionDefinition.getIncludeInJudgingReport()) {
+            if (sectionDefinition.isIncludeInJudgingReport()) {
                 dataFields.append("\"")
                         .append(escapeQuote(HtmlUtil.cleanAll(sectionDefinition.getContent())))
                         .append("\"")
@@ -187,7 +187,7 @@ public class ProposalReviewCsvExporter {
     private String getDataFieldHeaders() {
         StringBuilder dataFieldHeaders = new StringBuilder(TQF);
         for (ProposalTemplateSectionDefinitionWrapper sectionDefinition : contest.getSections()) {
-            if (sectionDefinition.getIncludeInJudgingReport()) {
+            if (sectionDefinition.isIncludeInJudgingReport()) {
                 dataFieldHeaders.append(
                         String.format("\"%s\"%s", sectionDefinition.getTitle(), delimiter));
             }

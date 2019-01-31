@@ -1,7 +1,7 @@
 package org.xcolab.client.contest.enums;
 
-import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalRibbon;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 
 import java.util.Comparator;
 
@@ -12,13 +12,17 @@ public enum ProposalSortColumn {
     VOTES((o1, o2) -> (int) (o1.getVotesCountFromCache() - o2.getVotesCountFromCache())),
     COMMENTS((o1, o2) -> (int) (o1.getCommentsCount() - o2.getCommentsCount())),
     JUDGESTATUS(
-            (o1, o2) -> (o1.getJudgeStatus().getStatusValue() - o2.getJudgeStatus().getStatusValue())),
+            (o1, o2) -> (o1.getJudgeStatus().getStatusValue() - o2.getJudgeStatus()
+                    .getStatusValue())),
     OVERALLSTATUS(
-            (o1, o2) -> (o1.getOverallStatus().getStatusValue() - o2.getOverallStatus().getStatusValue())),
+            (o1, o2) -> (o1.getOverallStatus().getStatusValue() - o2.getOverallStatus()
+                    .getStatusValue())),
     SCREENINGSTATUS(
-            (o1, o2) -> (o1.getScreeningStatus().getStatusValue() - o2.getScreeningStatus().getStatusValue())),
+            (o1, o2) -> (o1.getScreeningStatus().getStatusValue() - o2.getScreeningStatus()
+                    .getStatusValue())),
     IAFSTATUS(
-            (o1, o2) -> (o1.getImpactAssessmentStatus().getStatusValue() - o2.getImpactAssessmentStatus().getStatusValue())),
+            (o1, o2) -> (o1.getImpactAssessmentStatus().getStatusValue() - o2
+                    .getImpactAssessmentStatus().getStatusValue())),
     MODIFIED(Comparator.comparing(ProposalWrapper::getLastupdatedAt)),
     CONTRIBUTORS((o1, o2) -> {
         if (o1.isOpen()) {
@@ -38,7 +42,7 @@ public enum ProposalSortColumn {
 
         return ribbon1.getRibbon() - ribbon2.getRibbon();
     });
-    
+
     private final Comparator<ProposalWrapper> proposalsComparator;
 
     ProposalSortColumn(Comparator<ProposalWrapper> comparator) {
@@ -48,5 +52,4 @@ public enum ProposalSortColumn {
     public Comparator<ProposalWrapper> getComparator() {
         return proposalsComparator;
     }
-
 }

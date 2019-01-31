@@ -47,7 +47,7 @@ public interface ICategory {
 
     void setSort(Integer sort);
 
-    Boolean getIsQuiet();
+    Boolean isIsQuiet();
 
     void setIsQuiet(Boolean isQuiet);
 

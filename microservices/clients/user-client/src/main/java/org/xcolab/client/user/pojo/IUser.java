@@ -17,11 +17,11 @@ public interface IUser {
 
     void setEmailAddress(String emailAddress);
 
-    Boolean getIsEmailConfirmed();
+    Boolean isIsEmailConfirmed();
 
     void setIsEmailConfirmed(Boolean isEmailConfirmed);
 
-    Boolean getIsEmailBounced();
+    Boolean isIsEmailBounced();
 
     void setIsEmailBounced(Boolean isEmailBounced);
 

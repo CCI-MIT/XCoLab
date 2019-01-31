@@ -1,6 +1,7 @@
 package org.xcolab.service.utils.db.jooq.generator;
 
 import org.jooq.util.Definition;
+import org.jooq.util.TypedElementDefinition;
 
 import java.util.Arrays;
 import java.util.List;
@@ -32,6 +33,8 @@ public class XColabServiceGeneratorStrategy extends XColabGeneratorStrategy {
         String className = super.getJavaClassName(definition, mode);
 
         if (mode == Mode.POJO) {
+            System.out.println(">>>>>> " + definition.getOutputName());
+            //TODO: Fix the out of bounds issue
             String clientName = definition.getOutputName()
                     .substring(0, definition.getOutputName().indexOf(PREFIX_SEPARATOR));
             if (clients.stream().anyMatch(client -> clientName.contains(client))) {
@@ -39,5 +42,18 @@ public class XColabServiceGeneratorStrategy extends XColabGeneratorStrategy {
             }
         }
         return className;
+    }
+
+
+    @Override
+    public String getJavaGetterName(Definition definition, Mode mode) {
+        String getterName = super.getJavaGetterName(definition, mode);
+        if (definition instanceof TypedElementDefinition && mode == Mode.POJO) {
+            TypedElementDefinition def = (TypedElementDefinition) definition;
+            if ("BOOLEAN".equals(def.getType().getType())) {
+                getterName = getterName.replaceFirst("get", "is");
+            }
+        }
+        return getterName;
     }
 }

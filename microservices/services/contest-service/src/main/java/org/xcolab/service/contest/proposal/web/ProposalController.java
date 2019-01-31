@@ -115,7 +115,7 @@ public class ProposalController implements IProposalClient {
             @RequestParam(required = false, defaultValue = "false") Boolean includeDeleted) {
         try {
             ProposalWrapper proposal = proposalDao.get(proposalId);
-            if (proposal.getVisible() || includeDeleted) {
+            if (proposal.isVisible() || includeDeleted) {
                 return proposal;
             }
         } catch (NotFoundException e) {}

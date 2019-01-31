@@ -45,7 +45,7 @@ public class ContentArticleWrapper extends ContentArticleImpl {
                 ", " + getMaxVersionId() +
                 ", " + getEditRoleGroupId() +
                 ", " + getViewRoleGroupId() +
-                ", " + getVisible() +
+                ", " + isVisible() +
                 ", " + title +
                 ", " + getFolderId() +
                 ")";

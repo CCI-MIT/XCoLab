@@ -31,11 +31,11 @@ public class ContestCollectionCardDaoImpl implements ContestCollectionCardDao {
                         contestCollectionCard.getSmallOntologyTerm())
                 .set(CONTEST_COLLECTION_CARD.DESCRIPTION, contestCollectionCard.getDescription())
                 .set(CONTEST_COLLECTION_CARD.SHORT_NAME, contestCollectionCard.getShortName())
-                .set(CONTEST_COLLECTION_CARD.VISIBLE, contestCollectionCard.getVisible())
+                .set(CONTEST_COLLECTION_CARD.VISIBLE, contestCollectionCard.isVisible())
                 .set(CONTEST_COLLECTION_CARD.SORT_ORDER, contestCollectionCard.getSortOrder())
                 .set(CONTEST_COLLECTION_CARD.ONTOLOGY_TERM_TO_LOAD,
                         contestCollectionCard.getOntologyTermToLoad())
-                .set(CONTEST_COLLECTION_CARD.ONLY_FEATURED, contestCollectionCard.getOnlyFeatured())
+                .set(CONTEST_COLLECTION_CARD.ONLY_FEATURED, contestCollectionCard.isOnlyFeatured())
                 .returning(CONTEST_COLLECTION_CARD.ID)
                 .fetchOne();
 
@@ -58,11 +58,11 @@ public class ContestCollectionCardDaoImpl implements ContestCollectionCardDao {
                         contestCollectionCard.getSmallOntologyTerm())
                 .set(CONTEST_COLLECTION_CARD.DESCRIPTION, contestCollectionCard.getDescription())
                 .set(CONTEST_COLLECTION_CARD.SHORT_NAME, contestCollectionCard.getShortName())
-                .set(CONTEST_COLLECTION_CARD.VISIBLE, contestCollectionCard.getVisible())
+                .set(CONTEST_COLLECTION_CARD.VISIBLE, contestCollectionCard.isVisible())
                 .set(CONTEST_COLLECTION_CARD.SORT_ORDER, contestCollectionCard.getSortOrder())
                 .set(CONTEST_COLLECTION_CARD.ONTOLOGY_TERM_TO_LOAD,
                         contestCollectionCard.getOntologyTermToLoad())
-                .set(CONTEST_COLLECTION_CARD.ONLY_FEATURED, contestCollectionCard.getOnlyFeatured())
+                .set(CONTEST_COLLECTION_CARD.ONLY_FEATURED, contestCollectionCard.isOnlyFeatured())
                 .where(CONTEST_COLLECTION_CARD.ID.eq(contestCollectionCard.getId()))
                 .execute() > 0;
     }

@@ -8,7 +8,9 @@ import org.xcolab.util.autoconfigure.AbstractFeignConfig;
 
 @Component
 @Profile("!test")
-@EnableFeignClients(basePackages = {"org.xcolab.client.tracking", "org.xcolab.client.email", "org.xcolab.client.admin"})
+@EnableFeignClients(basePackages = {
+        "org.xcolab.client.tracking",
+        "org.xcolab.client.email",
+        "org.xcolab.client.admin"})
 public class FeignConfig extends AbstractFeignConfig {
-
 }

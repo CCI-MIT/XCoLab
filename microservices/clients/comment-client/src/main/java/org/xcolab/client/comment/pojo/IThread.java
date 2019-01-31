@@ -43,7 +43,7 @@ public interface IThread {
 
     void setDeletedAt(Timestamp deletedAt);
 
-    Boolean getIsQuiet();
+    Boolean isIsQuiet();
 
     void setIsQuiet(Boolean isQuiet);
 

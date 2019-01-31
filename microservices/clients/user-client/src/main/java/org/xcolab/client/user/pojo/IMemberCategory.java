@@ -18,7 +18,7 @@ public interface IMemberCategory {
 
     void setSortOrder(Long sortOrder);
 
-    Boolean getShowInList();
+    Boolean isShowInList();
 
     void setShowInList(Boolean showInList);
 

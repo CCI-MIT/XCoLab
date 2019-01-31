@@ -22,6 +22,17 @@ import org.xcolab.client.contest.proposals.IProposalMemberRatingClient;
 import org.xcolab.client.contest.proposals.IProposalMoveClient;
 import org.xcolab.client.contest.proposals.IProposalPhaseClient;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
+import org.xcolab.client.user.IAnalyticsClient;
+import org.xcolab.client.user.ILoginLogClient;
+import org.xcolab.client.user.ILoginTokenClient;
+import org.xcolab.client.user.IMessagingClient;
+import org.xcolab.client.user.IPermissionClient;
+import org.xcolab.client.user.IPlatformTeamClient;
+import org.xcolab.client.user.ISsoClientDetailsClient;
+import org.xcolab.client.user.IUserCategoryClient;
+import org.xcolab.client.user.IUserClient;
+import org.xcolab.client.user.IUserLoginRegisterClient;
+import org.xcolab.client.user.StaticUserContext;
 
 @Component
 public class StaticInjector {
@@ -35,13 +46,35 @@ public class StaticInjector {
             IProposalMoveClient proposalMoveClient, IProposalPhaseClient proposalPhaseClient,
             IProposalClient proposalClient, IMembershipClient membershipClient,
             IProposalMemberRatingClient proposalMemberRatingClient,
-            IProposalJudgeRatingClient proposalJudgeRatingClient) {
-        StaticCommentContext.setClients(commentClient, categoryClient, threadClient);
+            IProposalJudgeRatingClient proposalJudgeRatingClient,
+            IAnalyticsClient analyticsClient,
+            ILoginTokenClient loginTokenClient,
+            ILoginLogClient loginLogClient,
+            IMessagingClient messagingClient,
+            IPermissionClient permissionClient,
+            IPlatformTeamClient platformTeamClient,
+            ISsoClientDetailsClient ssoClientDetailsClient,
+            IUserCategoryClient userCategoryClient,
+            IUserClient userClient,
+            IUserLoginRegisterClient userLoginRegisterClient) {
 
-        StaticContestContext.setClients(commentClient, categoryClient, threadClient, contestClient,
-                contestTeamMemberClient, impactClient, ontologyClient, proposalTemplateClient);
+        StaticCommentContext.setClients(commentClient, categoryClient, threadClient);
+        StaticContestContext.setClients(contestClient, contestTeamMemberClient, impactClient,
+                ontologyClient, proposalTemplateClient);
         StaticProposalContext.setClients(pointsClient, proposalAttributeClient, proposalMoveClient,
                 proposalPhaseClient, proposalClient, membershipClient, proposalMemberRatingClient,
                 proposalJudgeRatingClient);
+
+        StaticUserContext.setAnalyticsClient(analyticsClient);
+        StaticUserContext.setLoginLogClient(loginLogClient);
+        StaticUserContext.setLoginTokenClient(loginTokenClient);
+        StaticUserContext.setMessagingClient(messagingClient);
+        StaticUserContext.setPermissionClient(permissionClient);
+        StaticUserContext.setPlatformTeamClient(platformTeamClient);
+        StaticUserContext.setSsoClientDetailsClient(ssoClientDetailsClient);
+        StaticUserContext.setUserCategoryClient(userCategoryClient);
+        StaticUserContext.setUserClient(userClient);
+        StaticUserContext.setUserLoginRegister(userLoginRegisterClient);
+
     }
 }

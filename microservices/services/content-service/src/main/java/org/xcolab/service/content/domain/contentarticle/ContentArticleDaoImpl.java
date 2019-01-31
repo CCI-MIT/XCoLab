@@ -34,7 +34,7 @@ public class ContentArticleDaoImpl implements ContentArticleDao {
                 .set(CONTENT_ARTICLE.MAX_VERSION_ID, contentArticle.getMaxVersionId())
                 .set(CONTENT_ARTICLE.FOLDER_ID, contentArticle.getFolderId())
                 .set(CONTENT_ARTICLE.CREATED_AT, contentArticle.getCreatedAt())
-                .set(CONTENT_ARTICLE.VISIBLE, contentArticle.getVisible())
+                .set(CONTENT_ARTICLE.VISIBLE, contentArticle.isVisible())
                 .returning(CONTENT_ARTICLE.ID)
                 .fetchOne();
         if (ret != null) {
@@ -62,7 +62,7 @@ public class ContentArticleDaoImpl implements ContentArticleDao {
                 .set(CONTENT_ARTICLE.MAX_VERSION_ID, contentArticle.getMaxVersionId())
                 .set(CONTENT_ARTICLE.FOLDER_ID, contentArticle.getFolderId())
                 .set(CONTENT_ARTICLE.CREATED_AT, contentArticle.getCreatedAt())
-                .set(CONTENT_ARTICLE.VISIBLE, contentArticle.getVisible())
+                .set(CONTENT_ARTICLE.VISIBLE, contentArticle.isVisible())
                 .where(CONTENT_ARTICLE.ID.eq(contentArticle.getId()))
                 .execute() > 0;
     }

@@ -31,7 +31,7 @@ public interface IProposalRating {
 
     void setComment(String comment);
 
-    Boolean getCommentEnabled();
+    Boolean isCommentEnabled();
 
     void setCommentEnabled(Boolean commentEnabled);
 
@@ -39,7 +39,7 @@ public interface IProposalRating {
 
     void setOtherDataString(String otherDataString);
 
-    Boolean getOnlyForInternalUsage();
+    Boolean isOnlyForInternalUsage();
 
     void setOnlyForInternalUsage(Boolean onlyForInternalUsage);
 }

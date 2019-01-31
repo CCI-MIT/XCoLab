@@ -37,17 +37,17 @@ public class CollectionCardService {
             while(!collectionCards.isEmpty()) {
                 for(ContestWrapper contest: contestService.getContestsByOntologyTerm(contestCollectionCardDao.get(collectionCards.get(0)).getOntologyTermToLoad(), getActive, false)) {
                     if(!contestList.contains(contest.getId())) {
-                        if(     (!onlyFeatured || contest.getFeatured())                                   &&
-                                (   (viewType.equals(VIEW_TYPE_GRID) && contest.getShowInTileView())     ||
-                                    (viewType.equals(VIEW_TYPE_LIST) && contest.getShowInListView())     ||
-                                    (viewType.equals(VIEW_TYPE_OUTLINE) && contest.getShowInOutlineView())
+                        if(     (!onlyFeatured || contest.isFeatured())                                   &&
+                                (   (viewType.equals(VIEW_TYPE_GRID) && contest.isShowInTileView())     ||
+                                    (viewType.equals(VIEW_TYPE_LIST) && contest.isShowInListView())     ||
+                                    (viewType.equals(VIEW_TYPE_OUTLINE) && contest.isShowInOutlineView())
                                 )){
                             contestList.add(contest.getId());
                         }
                     }
                 }
                 for(IContestCollectionCard childCollectionCard : contestCollectionCardDao.findByGiven(collectionCards.get(0))) {
-                    if(childCollectionCard.getVisible()) {
+                    if(childCollectionCard.isVisible()) {
                         collectionCards.add(childCollectionCard.getId());
                     }
                 }

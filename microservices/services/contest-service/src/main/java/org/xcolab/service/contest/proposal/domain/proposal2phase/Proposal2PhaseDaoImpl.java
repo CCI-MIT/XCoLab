@@ -37,7 +37,7 @@ public class Proposal2PhaseDaoImpl implements Proposal2PhaseDao {
                 .set(PROPOSAL2_PHASE.VERSION_FROM, proposal2Phase.getVersionFrom())
                 .set(PROPOSAL2_PHASE.VERSION_TO, proposal2Phase.getVersionTo())
                 .set(PROPOSAL2_PHASE.SORT_WEIGHT, proposal2Phase.getSortWeight())
-                .set(PROPOSAL2_PHASE.AUTOPROMOTE_CANDIDATE, proposal2Phase.getAutopromoteCandidate())
+                .set(PROPOSAL2_PHASE.AUTOPROMOTE_CANDIDATE, proposal2Phase.isAutopromoteCandidate())
                 .execute();
         return proposal2Phase;
     }
@@ -63,7 +63,7 @@ public class Proposal2PhaseDaoImpl implements Proposal2PhaseDao {
                 .set(PROPOSAL2_PHASE.VERSION_FROM, proposal2Phase.getVersionFrom())
                 .set(PROPOSAL2_PHASE.VERSION_TO, proposal2Phase.getVersionTo())
                 .set(PROPOSAL2_PHASE.SORT_WEIGHT, proposal2Phase.getSortWeight())
-                .set(PROPOSAL2_PHASE.AUTOPROMOTE_CANDIDATE, proposal2Phase.getAutopromoteCandidate())
+                .set(PROPOSAL2_PHASE.AUTOPROMOTE_CANDIDATE, proposal2Phase.isAutopromoteCandidate())
                 .where(PROPOSAL2_PHASE.PROPOSAL_ID.eq(proposal2Phase.getProposalId()))
                 .and(PROPOSAL2_PHASE.CONTEST_PHASE_ID.eq(proposal2Phase.getContestPhaseId()))
                 .execute() > 0;

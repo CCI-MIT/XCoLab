@@ -16,11 +16,8 @@ import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.user.StaticUserContext;
 import org.xcolab.client.user.exceptions.MemberNotFoundException;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
-import org.xcolab.client.tracking.ITrackingClient;
+import org.xcolab.client.tracking.StaticTrackingContext;
 import org.xcolab.client.tracking.pojo.ILocation;
-import org.xcolab.client.user.StaticUserContext;
-import org.xcolab.client.user.exceptions.MemberNotFoundException;
-import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.CsvResponseWriter;
 
 import java.io.IOException;
@@ -68,11 +65,8 @@ public class VoteCsvWriter extends CsvResponseWriter {
             "Vote is valid (manual override)",
             "manualValidationResult");
 
-    private ITrackingClient trackingClient;
-
-    public VoteCsvWriter(HttpServletResponse response, ITrackingClient trackingClient) throws IOException {
+    public VoteCsvWriter(HttpServletResponse response) throws IOException {
         super("votingReport", COLUMN_NAMES, response);
-        this.trackingClient = trackingClient;
     }
 
     public void writeVotes(List<IProposalVote> proposalVotes) {
@@ -116,8 +110,8 @@ public class VoteCsvWriter extends CsvResponseWriter {
             addValue(row, member != null ? member.getCreatedAt() : "Member not found");
             addValue(row, member != null ? member.hasLinkedSocialAccount() : "Member not found");
             addValue(row, member != null ? member.getEmailAddress() : "Member not found");
-            addValue(row, member != null ? member.getIsEmailConfirmed() : "Member not found");
-            addValue(row, member != null ? member.getIsEmailBounced() : "Member not found");
+            addValue(row, member != null ? member.isIsEmailConfirmed() : "Member not found");
+            addValue(row, member != null ? member.isIsEmailBounced() : "Member not found");
             addValue(row, vote.getCreatedAt());
             addValue(row, vote.getVoterIp());
             addLocationForIp(row, vote.getVoterIp());
@@ -125,8 +119,8 @@ public class VoteCsvWriter extends CsvResponseWriter {
             addValue(row, vote.getConfirmationEmailSendDate() != null ? vote.getConfirmationEmailSendDate() : "");
             addValue(row, vote.getInitialValidationResult());
             addValue(row, vote.getLastValidationResult());
-            addValue(row, vote.getIsValid());
-            addValue(row, vote.getIsValidOverride() != null ? vote.getIsValidOverride() : "");
+            addValue(row, vote.isIsValid());
+            addValue(row, vote.isIsValidOverride() != null ? vote.isIsValidOverride() : "");
             addValue(row, vote.getManualValidationResult() != null ? vote.getManualValidationResult() : "");
             writeRow(row);
         }
@@ -135,7 +129,7 @@ public class VoteCsvWriter extends CsvResponseWriter {
     private void addLocationForIp(List<String> row, String ipAddress) {
         ILocation loginLocation = null;
         if (StringUtils.isNotEmpty(ipAddress)) {
-            loginLocation = trackingClient.getLocationForIp(ipAddress);
+            loginLocation = StaticTrackingContext.getTrackingClient().getLocationForIp(ipAddress);
         }
         if (loginLocation != null) {
             addValue(row, loginLocation.getCountryNameInEnglish());

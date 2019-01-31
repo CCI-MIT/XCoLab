@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
-public class AnalyticsUserEventWrapper implements IAnalyticsUserEvent, Serializable {
+public class AnalyticsUserEventWrapper extends org.xcolab.client.user.pojo.tables.pojos.AnalyticsUserEvent {
 
     private static final long serialVersionUID = 899448763;
 

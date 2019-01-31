@@ -2,7 +2,7 @@ package org.xcolab.view.tags;
 
 import org.springframework.context.i18n.LocaleContextHolder;
 
-import org.xcolab.client.content.IContentClient;
+import org.xcolab.client.content.StaticContentContext;
 import org.xcolab.client.content.exceptions.ContentNotFoundException;
 import org.xcolab.client.content.pojo.IContentArticle;
 import org.xcolab.client.content.pojo.IContentArticleVersion;
@@ -17,17 +17,11 @@ public class LoadContentArticleTag extends BodyTagSupport {
 
     private long articleId;
 
-    private static IContentClient contentClient;
-
-    public static void setContentClient(IContentClient contentClient) {
-        LoadContentArticleTag.contentClient = contentClient;
-    }
-
     @Override
     public int doStartTag() throws JspException {
         if (articleId > 0) {
             try {
-                final IContentArticle contentArticle = LoadContentArticleTag.contentClient
+                final IContentArticle contentArticle = StaticContentContext.getContentClient()
                         .getContentArticle(articleId);
 
                 Locale locale = LocaleContextHolder.getLocale();
@@ -36,11 +30,11 @@ public class LoadContentArticleTag extends BodyTagSupport {
                     localeString = locale.getLanguage();
                 }
 
-                IContentArticleVersion contentArticleVersion = LoadContentArticleTag.contentClient
-                        .getLatestVersionByArticleIdAndLanguage(
+                IContentArticleVersion contentArticleVersion = StaticContentContext
+                        .getContentClient().getLatestVersionByArticleIdAndLanguage(
                                 contentArticle.getId(), localeString);
                 if (contentArticleVersion == null) {
-                    contentArticleVersion = LoadContentArticleTag.contentClient
+                    contentArticleVersion = StaticContentContext.getContentClient()
                             .getLatestVersionByArticleIdAndLanguage(contentArticle.getId(),
                             I18nUtils.DEFAULT_LOCALE.getLanguage());
                 }

@@ -42,7 +42,7 @@ public class ProposalTemplateWrapper {
             for (ProposalTemplateSectionDefinitionWrapper proposalTemplateSectionDefinition :
                     StaticContestContext.getProposalTemplateClient()
                     .getProposalTemplateSectionDefinitionByProposalTemplateId(proposalTemplate.getId(), null)) {
-                if (!proposalTemplateSectionDefinition.getLocked()) {
+                if (!proposalTemplateSectionDefinition.isLocked()) {
                     sections.add(new SectionDefinitionWrapper(proposalTemplateSectionDefinition,
                             proposalTemplate.getId()));
                 }

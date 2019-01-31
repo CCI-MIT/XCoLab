@@ -94,7 +94,7 @@ public class UserWrapper extends org.xcolab.client.user.pojo.tables.pojos.User i
 
     @JsonIgnore
     public boolean isVerifiedAccount() {
-        return getIsEmailConfirmed();
+        return this.isIsEmailConfirmed();
     }
 
     @JsonIgnore
@@ -189,7 +189,7 @@ public class UserWrapper extends org.xcolab.client.user.pojo.tables.pojos.User i
     @Override
     public boolean equals(Object obj) {
         return obj instanceof UserWrapper
-                && ((UserWrapper) obj).getId() == this.getId();
+                && ((UserWrapper) obj).getId().longValue() == this.getId().longValue();
     }
 
     @Override
@@ -202,8 +202,8 @@ public class UserWrapper extends org.xcolab.client.user.pojo.tables.pojos.User i
         return new ToStringBuilder(this).append("id", getId())
                 .append("screenName", getScreenName())
                 .append("emailAddress", getEmailAddress())
-                .append("isEmailConfirmed", getIsEmailConfirmed())
-                .append("isEmailBounced", getIsEmailBounced())
+                .append("isEmailConfirmed", this.isIsEmailConfirmed())
+                .append("isEmailBounced", this.isIsEmailBounced())
                 .append("createdAt", getCreatedAt())
                 .append("updatedAt", getUpdatedAt())
                 .append("passwordUpdatedAt", getPasswordUpdatedAt())

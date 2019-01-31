@@ -59,7 +59,7 @@ public class ProposalsResult {
             this.contestName = StringUtils.abbreviate(proposal
                 .getContest().getTitleWithEndYear(), MAX_CHARS_FOR_NAMES);
             this.linkUrl = proposal.getProposalUrl();
-            this.contestId = proposal.getcontestId();
+            this.contestId = proposal.getContestId();
             this.team = proposal.getTeam();
             this.authorName = proposal.getAuthorName();
             this.authorUserId = proposal.getAuthorUserId();

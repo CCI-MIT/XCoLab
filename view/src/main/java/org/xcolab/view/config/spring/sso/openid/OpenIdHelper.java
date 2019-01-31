@@ -108,7 +108,7 @@ public class OpenIdHelper {
 
     public void addEmailScopedFields(Map<String, Object> map, UserWrapper member) {
         map.put(EMAIL, member.getEmailAddress());
-        map.put(EMAIL_VERIFIED, member.getIsEmailConfirmed());
+        map.put(EMAIL_VERIFIED, member.isIsEmailConfirmed());
     }
 
     public void addProfileScopedFields(Map<String, Object> map, UserWrapper member) {

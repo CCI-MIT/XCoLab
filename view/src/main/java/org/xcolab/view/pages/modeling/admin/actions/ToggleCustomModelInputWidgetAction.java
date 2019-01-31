@@ -34,7 +34,7 @@ public class ToggleCustomModelInputWidgetAction {
             throws IllegalUIConfigurationException, IOException {
 
         IModelGlobalPreference modelPreferences = modelingClient.getModelPreference(modelId);
-        modelPreferences.setUsesCustomInputs(!modelPreferences.getUsesCustomInputs());
+        modelPreferences.setUsesCustomInputs(!modelPreferences.isUsesCustomInputs());
         modelingClient.updatePreferences(modelPreferences);
         response.sendRedirect(ModelsAdminController.getTabMapping(modelId, "inputWidgets"));
     }

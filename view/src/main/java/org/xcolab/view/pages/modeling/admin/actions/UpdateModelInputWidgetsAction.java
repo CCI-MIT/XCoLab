@@ -40,7 +40,7 @@ public class UpdateModelInputWidgetsAction {
             throws IllegalUIConfigurationException, IOException {
 
         IModelGlobalPreference modelPreferences = modelingClient.getModelPreference(modelId);
-        if (modelPreferences.getUsesCustomInputs()) {
+        if (modelPreferences.isUsesCustomInputs()) {
             modelPreferences
                     .setCustomInputsDefinition(updateModelWidgetsBean.getCustomInputWidgets());
             modelingClient.updatePreferences(modelPreferences);

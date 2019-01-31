@@ -79,7 +79,7 @@ public class ContentEditorController extends BaseContentEditor {
                 IContentArticle contentArticle = null;
                 try {
                     contentArticle = contentClient.getContentArticle(ca.getArticleId());
-                    if (contentArticle.getVisible()) {
+                    if (contentArticle.isVisible()) {
                         responseArray.put(articleNode(ca.getTitle(), ca.getArticleId()));
                     }
                 } catch (ContentNotFoundException e) {

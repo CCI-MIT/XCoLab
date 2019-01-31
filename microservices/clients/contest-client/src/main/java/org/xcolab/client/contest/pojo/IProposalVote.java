@@ -37,7 +37,7 @@ public interface IProposalVote {
 
     void setVoterUserAgent(String voterUserAgent);
 
-    Boolean getIsValid();
+    Boolean isIsValid();
 
     void setIsValid(Boolean isValid);
 
@@ -61,7 +61,7 @@ public interface IProposalVote {
 
     void setManualValidationResult(String manualValidationResult);
 
-    Boolean getIsValidOverride();
+    Boolean isIsValidOverride();
 
     void setIsValidOverride(Boolean isValidOverride);
 }

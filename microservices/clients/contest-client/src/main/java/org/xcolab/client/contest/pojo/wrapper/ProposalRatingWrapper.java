@@ -47,7 +47,7 @@ public class ProposalRatingWrapper extends ProposalRating implements Serializabl
     }
 
     public boolean isRatingComplete() {
-        final boolean commentComplete = !getCommentEnabled()
+        final boolean commentComplete = !isCommentEnabled()
                 || !StringUtils.isEmpty(this.getComment());
         return getRatingValueId() > 0 && commentComplete;
     }
@@ -78,7 +78,7 @@ public class ProposalRatingWrapper extends ProposalRating implements Serializabl
     public boolean getIsActive() {
         IProposalRatingType ratingType = this.getRatingType();
         if (ratingType != null) {
-            return ratingType.getIsActive();
+            return ratingType.isIsActive();
         } else {
             return true;
         }

@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@FeignClient("xcolab-permission-service")
+@FeignClient("xcolab-user-service")
 
 public interface IPermissionClient {
 

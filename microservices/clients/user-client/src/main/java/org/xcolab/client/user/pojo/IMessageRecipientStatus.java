@@ -18,11 +18,11 @@ public interface IMessageRecipientStatus {
 
     void setThreadId(String threadId);
 
-    Boolean getOpened();
+    Boolean isOpened();
 
     void setOpened(Boolean opened);
 
-    Boolean getArchived();
+    Boolean isArchived();
 
     void setArchived(Boolean archived);
 }

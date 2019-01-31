@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
+import org.xcolab.client.comment.StaticCommentContext;
 import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.contest.IContestClient;
 import org.xcolab.client.contest.IContestTeamMemberClient;
@@ -130,21 +131,6 @@ public class ContestWrapper extends Contest implements Serializable {
     }
 
     @JsonIgnore
-    public boolean isShowInTileView(){
-        return this.getShowInTileView();
-    }
-
-    @JsonIgnore
-    public boolean isShowInListView(){
-        return this.getShowInListView();
-    }
-
-    @JsonIgnore
-    public boolean isShowInOutlineView(){
-        return this.getShowInOutlineView();
-    }
-
-    @JsonIgnore
     public String generateContestUrlName() {
         String contestUrlName = this.getTitle().toLowerCase();
         return contestUrlName.replaceAll(" ", "-").replaceAll("[^a-z0-9-]", "");
@@ -170,11 +156,6 @@ public class ContestWrapper extends Contest implements Serializable {
             }
         }
         return contestShortName;
-    }
-
-    @JsonIgnore
-    public boolean isContestActive() {
-        return this.getContestActive();
     }
 
     @JsonIgnore
@@ -207,16 +188,6 @@ public class ContestWrapper extends Contest implements Serializable {
     }
 
     @JsonIgnore
-    public boolean isFeatured() {
-        return this.getFeatured();
-    }
-
-    @JsonIgnore
-    public boolean isPlansOpenByDefault() {
-        return this.getPlansOpenByDefault();
-    }
-
-    @JsonIgnore
     public boolean getSponsorLinkAvailable() {
         return !StringUtils.isEmpty(this.getSponsorLink());
     }
@@ -237,8 +208,7 @@ public class ContestWrapper extends Contest implements Serializable {
 
     @JsonIgnore
     public long getCommentsCount() {
-        return StaticContestContext.getCommentClient()
-                .countComments(this.getDiscussionGroupId());
+        return StaticCommentContext.getCommentClient().countComments(this.getDiscussionGroupId());
     }
 
     @JsonIgnore
@@ -419,12 +389,12 @@ public class ContestWrapper extends Contest implements Serializable {
 
     @JsonIgnore
     public long getTotalCommentsCount() {
-        int contestComments = StaticContestContext.getCommentClient()
+        int contestComments = StaticCommentContext.getCommentClient()
                 .countComments(this.getDiscussionGroupId());
         ContestPhaseWrapper phase = contestClient.getActivePhase(this.getId());
         final List<Long> proposalDiscussionThreads =
                 contestClient.getProposalDiscussionThreads(phase.getId());
-        contestComments += StaticContestContext.getCommentClient()
+        contestComments += StaticCommentContext.getCommentClient()
                 .countComments(proposalDiscussionThreads);
 
         return contestComments;
@@ -585,7 +555,7 @@ public class ContestWrapper extends Contest implements Serializable {
             thread.setAuthorUserId(getAuthorUserId());
             thread.setTitle(contestType.getContestName() + " discussion");
             thread.setIsQuiet(false);
-            thread = StaticContestContext.getThreadClient().createThread(thread);
+            thread = StaticCommentContext.getThreadClient().createThread(thread);
             discussionGroupId = thread.getId();
             setDiscussionGroupId(discussionGroupId);
         }

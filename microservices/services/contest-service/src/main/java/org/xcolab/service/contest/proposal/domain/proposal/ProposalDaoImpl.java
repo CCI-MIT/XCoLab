@@ -242,7 +242,7 @@ public class ProposalDaoImpl implements ProposalDao {
                 .set(PROPOSAL.CREATED_AT, DSL.currentTimestamp())
                 .set(PROPOSAL.UPDATED_AT, DSL.currentTimestamp())
                 .set(PROPOSAL.AUTHOR_USER_ID, proposal.getAuthorUserId())
-                .set(PROPOSAL.VISIBLE, proposal.getVisible())
+                .set(PROPOSAL.VISIBLE, proposal.isVisible())
                 .set(PROPOSAL.DISCUSSION_ID, proposal.getDiscussionId())
                 .set(PROPOSAL.RESULTS_DISCUSSION_ID, proposal.getResultsDiscussionId())
                 .returning(PROPOSAL.ID)
@@ -286,7 +286,7 @@ public class ProposalDaoImpl implements ProposalDao {
         return dslContext.update(PROPOSAL)
                 .set(PROPOSAL.UPDATED_AT, DSL.currentTimestamp())
                 .set(PROPOSAL.AUTHOR_USER_ID, proposal.getAuthorUserId())
-                .set(PROPOSAL.VISIBLE, proposal.getVisible())
+                .set(PROPOSAL.VISIBLE, proposal.isVisible())
                 .set(PROPOSAL.DISCUSSION_ID, proposal.getDiscussionId())
                 .set(PROPOSAL.RESULTS_DISCUSSION_ID, proposal.getResultsDiscussionId())
                 .where(PROPOSAL.ID.eq(proposal.getId())).execute() > 0;

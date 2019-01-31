@@ -11,7 +11,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
@@ -26,7 +25,6 @@ import org.xcolab.commons.IdListUtil;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.util.enums.Plurality;
 import org.xcolab.util.enums.proposal.ProposalTemplateSectionType;
-import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.io.Serializable;
 import java.net.URISyntaxException;
@@ -209,11 +207,6 @@ public class ProposalTemplateSectionDefinitionWrapper extends ProposalTemplateSe
     public Long getSectionDefinitionId() {
         return this.getId();
     }
-
-    public boolean isLocked() {
-        return this.getLocked();
-    }
-
 
     public OntologyTermWrapper getNumericValueAsOntologyTerm() {
         ProposalAttribute attr = getSectionAttribute();

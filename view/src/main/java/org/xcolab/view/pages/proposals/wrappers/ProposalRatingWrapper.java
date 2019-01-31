@@ -52,7 +52,7 @@ public class ProposalRatingWrapper {
     public boolean getIsActive() {
         IProposalRatingType ratingType = this.getRatingType();
         if (ratingType != null) {
-            return ratingType.getIsActive();
+            return ratingType.isIsActive();
         } else {
             return true;
         }

@@ -73,7 +73,7 @@ public interface IUserLoginRegisterClient {
 
     default boolean updatePassword(long userId, String newPassword) {
         try {
-            return updateForgottenPasswordByToken(userId, hashThePassword(newPassword));
+            return updateForgottenPasswordByToken(userId, encode(newPassword));
         } catch (MemberNotFoundException ignore) {
             return false;
         }
@@ -101,7 +101,7 @@ public interface IUserLoginRegisterClient {
 
     default boolean validatePassword(String password, String hashedPassword) {
         try {
-            return validatePassword(encode(password), hashedPassword, null);
+            return validatePassword(encode(password), encode(hashedPassword), null);
         } catch (MemberNotFoundException ignore) {
             return false;
         }

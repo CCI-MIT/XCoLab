@@ -3,7 +3,7 @@ package org.xcolab.view.pages.contestmanagement.wrappers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.moderation.IModerationClient;
+import org.xcolab.client.moderation.StaticModerationContext;
 import org.xcolab.client.moderation.exceptions.ReportTargetNotFoundException;
 import org.xcolab.client.moderation.pojo.IReportTarget;
 import org.xcolab.client.moderation.pojo.tables.pojos.ReportTarget;
@@ -14,18 +14,15 @@ public class ModerationReportTargetWrapper {
 
     private IReportTarget reportTarget;
     private Boolean createNew = false;
-    private static IModerationClient moderationClient;
 
-    public static void setModerationClient(IModerationClient moderationClient) {
-        ModerationReportTargetWrapper.moderationClient = moderationClient;
-    }
     public ModerationReportTargetWrapper() {
         reportTarget = new ReportTarget();
     }
 
     public ModerationReportTargetWrapper(long reportTargetId)
             throws ReportTargetNotFoundException {
-        reportTarget = moderationClient.getReportTarget(reportTargetId);
+        reportTarget = StaticModerationContext.getModerationClient()
+                .getReportTarget(reportTargetId);
     }
 
     public Boolean getCreateNew() {
@@ -45,11 +42,12 @@ public class ModerationReportTargetWrapper {
     }
 
     private void createReportTargetFromExisting() {
-        reportTarget = moderationClient.createReportTarget(reportTarget);
+        reportTarget = StaticModerationContext.getModerationClient()
+                .createReportTarget(reportTarget);
     }
 
     private void persistUpdatedReportTarget() throws ReportTargetNotFoundException {
-        moderationClient.updateReportTarget(reportTarget);
+        StaticModerationContext.getModerationClient().updateReportTarget(reportTarget);
     }
 
     public long getReportTargetId() {

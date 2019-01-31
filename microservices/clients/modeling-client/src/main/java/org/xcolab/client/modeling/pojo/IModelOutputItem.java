@@ -43,7 +43,7 @@ public interface IModelOutputItem {
 
     void setModelItemLabelFormat(String modelItemLabelFormat);
 
-    Boolean getModelItemIsVisible();
+    Boolean isModelItemIsVisible();
 
     void setModelItemIsVisible(Boolean modelItemIsVisible);
 

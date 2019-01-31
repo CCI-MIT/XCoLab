@@ -146,7 +146,7 @@ public class JudgingCsvController {
                                 ratingWrapper.getRatingValue().getValue());
 
                         occurringRatingTypes.add(ratingWrapper.getRatingType());
-                        if (rating.getCommentEnabled()) {
+                        if (rating.isCommentEnabled()) {
                             proposalReview.addReview(ratingWrapper.getUser(), rating.getComment());
                         }
                         if (StringUtils.isNotBlank(rating.getOtherDataString())) {

@@ -29,9 +29,9 @@ public interface IEmail {
 
     void setEmailBody(String emailBody);
 
-    boolean getHtml();
+    Boolean isHtml();
 
-    void setHtml(boolean html);
+    void setHtml(Boolean html);
 
     Long getReferenceId();
 

@@ -185,7 +185,7 @@ public class CollectionCardWrapper {
     }
 
     public boolean isVisible() {
-        return contestCollectionCard.getVisible();
+        return contestCollectionCard.isVisible();
     }
 
     public void setVisible(boolean visible) {
@@ -193,7 +193,7 @@ public class CollectionCardWrapper {
     }
 
     public boolean isOnlyFeatured() {
-        return contestCollectionCard.getOnlyFeatured();
+        return contestCollectionCard.isOnlyFeatured();
     }
 
     public void setOnlyFeatured(boolean onlyFeatured) {

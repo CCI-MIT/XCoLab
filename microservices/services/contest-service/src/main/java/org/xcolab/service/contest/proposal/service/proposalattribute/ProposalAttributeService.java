@@ -3,9 +3,9 @@ package org.xcolab.service.contest.proposal.service.proposalattribute;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.xcolab.client.comment.StaticCommentContext;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.IThread;
-import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
 import org.xcolab.client.contest.pojo.wrapper.ProposalUnversionedAttribute;
 import org.xcolab.client.contest.pojo.wrapper.ProposalVersionWrapper;
@@ -109,12 +109,13 @@ public class ProposalAttributeService {
             // Update the proposal name in the discussion category
             if (proposalAttribute.getName().equals(ProposalAttributeKeys.NAME)) {
                 try {
-                    IThread thread = StaticContestContext.getThreadClient().getThread(proposal.getDiscussionId());
+                    IThread thread = StaticCommentContext.getThreadClient()
+                            .getThread(proposal.getDiscussionId());
 
                     thread.setTitle(
                             String.format("%s %s", getProposalNameFromOldTitle(thread.getTitle()),
                                     proposalAttribute.getStringValue()));
-                    StaticContestContext.getThreadClient().updateThread(thread);
+                    StaticCommentContext.getThreadClient().updateThread(thread);
                 } catch (ThreadNotFoundException  ignored) {
                 }
             }

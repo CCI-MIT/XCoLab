@@ -143,7 +143,7 @@ public class ModelingJsonController {
             inputValuesArray.add(ModelUIFactory.convertToJson(item));
         }
         jsonBuilder.add("inputValues", inputValuesArray)
-                .add("usesCustomInputs", modelPreference.getUsesCustomInputs())
+                .add("usesCustomInputs", modelPreference.isUsesCustomInputs())
                 .add("customInputsDefinition", modelPreference.getCustomInputsDefinition());
         return jsonBuilder.build();
 
@@ -170,7 +170,7 @@ public class ModelingJsonController {
             inputsArray.add(item.toJson());
         }
         jsonBuilder.add("inputs", inputsArray)
-                .add("usesCustomInputs", modelPreference.getUsesCustomInputs())
+                .add("usesCustomInputs", modelPreference.isUsesCustomInputs())
                 .add("customInputsDefinition", modelPreference.getCustomInputsDefinition());
 
         return jsonBuilder.build();
