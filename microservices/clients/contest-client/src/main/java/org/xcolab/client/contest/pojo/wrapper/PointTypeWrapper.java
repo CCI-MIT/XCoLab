@@ -1,5 +1,6 @@
 package org.xcolab.client.contest.pojo.wrapper;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -28,15 +29,9 @@ public class PointTypeWrapper extends PointType implements Serializable {
         initChildren();
     }
 
-    public PointTypeWrapper(
-            Long id,
-            Long parentpointtypeid,
-            Double percentageofparent,
-            String distributionstrategy,
-            String receiverlimitationstrategy,
-            String name,
-            Long sort
-    ) {
+    public PointTypeWrapper(Long id, Long parentpointtypeid, Double percentageofparent,
+            String distributionstrategy, String receiverlimitationstrategy, String name,
+            Long sort) {
         super(id, parentpointtypeid, percentageofparent, distributionstrategy,
                 receiverlimitationstrategy, name, sort);
         initChildren();
@@ -54,7 +49,8 @@ public class PointTypeWrapper extends PointType implements Serializable {
 
     }
 
-    private void initChildren(){
+    @JsonIgnore
+    private void initChildren() {
         if (this.getId() != null) {
             List<PointTypeWrapper> unwrappedChildren =
                     StaticProposalContext.getPointsClient().getPointTypes(this.getId());
@@ -70,18 +66,22 @@ public class PointTypeWrapper extends PointType implements Serializable {
     }
 
     //DEAL WITH IT
+    @JsonIgnore
     public DistributionStrategy getDistributionStrategyz() {
         return DistributionStrategy.valueOf(this.getDistributionStrategy());
     }
 
+    @JsonIgnore
     public ReceiverLimitationStrategy getReceiverLimitationStrategyz() {
         return ReceiverLimitationStrategy.valueOf(this.getReceiverLimitationStrategy());
     }
 
+    @JsonIgnore
     public double getPercentageOfTotal() {
         return percentageOfTotal;
     }
 
+    @JsonIgnore
     public void setPercentageOfTotal(double percentageOfTotal) {
         this.percentageOfTotal = percentageOfTotal;
     }

@@ -1,5 +1,6 @@
 package org.xcolab.client.contest.pojo.wrapper;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -37,6 +38,7 @@ public class ProposalVersionWrapper extends ProposalVersion implements Serializa
         proposalPhaseClient = StaticProposalContext.getProposalPhaseClient();
     }
 
+    @JsonIgnore
     public long getContestPhaseId() {
         return proposalPhaseClient
                 .getProposal2PhaseByProposalIdVersion(getProposalId(), getVersion())

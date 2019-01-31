@@ -1,5 +1,6 @@
 package org.xcolab.client.contest.pojo.wrapper;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -30,6 +31,7 @@ public class ProposalTeamMembershipRequestWrapper extends ProposalTeamMembership
         super(abstractMembershipRequest);
     }
 
+    @JsonIgnore
     public Member getRequestUser(){
         if(this.requestUser == null){
             if(this.getUserId() != null) {
@@ -49,6 +51,7 @@ public class ProposalTeamMembershipRequestWrapper extends ProposalTeamMembership
         return requestUser;
     }
 
+    @JsonIgnore
     public ProposalTeamMembershipRequestWrapper getMembershipRequest(){
         return this;
     }
