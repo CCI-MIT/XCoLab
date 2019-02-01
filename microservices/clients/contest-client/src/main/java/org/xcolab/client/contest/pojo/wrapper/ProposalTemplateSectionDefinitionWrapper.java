@@ -1,5 +1,6 @@
 package org.xcolab.client.contest.pojo.wrapper;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -67,11 +68,13 @@ public class ProposalTemplateSectionDefinitionWrapper extends ProposalTemplateSe
         proposal = null;
     }
 
+    @JsonIgnore
     public List<Long> getAdditionalIdsAsList() {
         final String stringOfStringIds = this.getAdditionalIds();
         return IdListUtil.getIdsFromString(stringOfStringIds);
     }
 
+    @JsonIgnore
     public String getContent() {
         ProposalAttribute attr = getSectionAttribute();
 
@@ -81,6 +84,7 @@ public class ProposalTemplateSectionDefinitionWrapper extends ProposalTemplateSe
         return attr.getStringValue().trim();
     }
 
+    @JsonIgnore
     public String getContentFormatted() throws URISyntaxException {
         String content = getContent();
         if (content == null) {
@@ -197,6 +201,7 @@ public class ProposalTemplateSectionDefinitionWrapper extends ProposalTemplateSe
         return contentDocument.select("body").html();
     }
 
+    @JsonIgnore
     public ProposalTemplateSectionType getTypeEnum() {
         if (StringUtils.isBlank(this.getType())) {
             return ProposalTemplateSectionType.TEXT;
@@ -204,10 +209,12 @@ public class ProposalTemplateSectionDefinitionWrapper extends ProposalTemplateSe
         return ProposalTemplateSectionType.valueOf(this.getType());
     }
 
+    @JsonIgnore
     public Long getSectionDefinitionId() {
         return this.getId();
     }
 
+    @JsonIgnore
     public OntologyTermWrapper getNumericValueAsOntologyTerm() {
         ProposalAttribute attr = getSectionAttribute();
         if (attr == null || attr.getNumericValue() <= 0) {
@@ -217,6 +224,7 @@ public class ProposalTemplateSectionDefinitionWrapper extends ProposalTemplateSe
         return StaticContestContext.getOntologyClient().getOntologyTerm(attr.getNumericValue());
     }
 
+    @JsonIgnore
     public ProposalWrapper getNumericValueAsProposal() throws ProposalNotFoundException {
         ProposalAttribute attr = getSectionAttribute();
         if (attr == null || attr.getNumericValue() <= 0) {
@@ -225,6 +233,7 @@ public class ProposalTemplateSectionDefinitionWrapper extends ProposalTemplateSe
         return (StaticProposalContext.getProposalClient().getProposal(attr.getNumericValue()));
     }
 
+    @JsonIgnore
     public List<ProposalWrapper> getStringValueAsProposalArray() {
         ProposalAttribute attr = getSectionAttribute();
         if (attr == null || StringUtils.isEmpty(attr.getStringValue())) {
@@ -246,6 +255,7 @@ public class ProposalTemplateSectionDefinitionWrapper extends ProposalTemplateSe
         return proposals;
     }
 
+    @JsonIgnore
     public long getNumericValue() {
         ProposalAttribute attr = getSectionAttribute();
         if (attr == null) {
@@ -254,6 +264,7 @@ public class ProposalTemplateSectionDefinitionWrapper extends ProposalTemplateSe
         return attr.getNumericValue();
     }
 
+    @JsonIgnore
     public String getStringValue() {
         ProposalAttribute attr = getSectionAttribute();
         if (attr == null) {
@@ -262,6 +273,7 @@ public class ProposalTemplateSectionDefinitionWrapper extends ProposalTemplateSe
         return attr.getStringValue();
     }
 
+    @JsonIgnore
     public List<OntologyTermWrapper> getFocusAreaTerms() {
         if (this.getFocusAreaId() <= 0) {
             return null;
@@ -273,22 +285,26 @@ public class ProposalTemplateSectionDefinitionWrapper extends ProposalTemplateSe
         return StaticContestContext.getOntologyClient().getOntologyTermsForFocusArea(area);
     }
 
+    @JsonIgnore
     public List<String> getOptionsForDropdownMenu() {
         return Stream.of(this.getAllowedValues().split(";"))
                 .map(String::trim)
                 .collect(Collectors.toList());
     }
 
+    @JsonIgnore
     public List<String> getOptionsForCheckbox() {
         return Stream.of(this.getAllowedValues().split(";"))
                 .map(String::trim)
                 .collect(Collectors.toList());
     }
 
+    @JsonIgnore
     private List<String> getSelectedValuesForCheckbox() {
         return Arrays.asList(this.getStringValue().split(";"));
     }
 
+    @JsonIgnore
     public boolean isOptionForCheckboxSelected(String value) {
         for (String selectedValue : getSelectedValuesForCheckbox()) {
             if (selectedValue.equals(value)) {
@@ -298,6 +314,7 @@ public class ProposalTemplateSectionDefinitionWrapper extends ProposalTemplateSe
         return false;
     }
 
+    @JsonIgnore
     public List<Long> getAllowedContestTypeIdsList() {
         final List<Long> allowedContestTypeIds =
             IdListUtil.getIdsFromString(this.getAllowedContestTypeIds());
@@ -308,27 +325,31 @@ public class ProposalTemplateSectionDefinitionWrapper extends ProposalTemplateSe
         return allowedContestTypeIds;
     }
 
+    @JsonIgnore
     public String getProposalNames() {
         return StaticAdminContext.getContestTypeClient()
                 .getProposalNames(getAllowedContestTypeIdsList(), Plurality.SINGULAR.name(), "or");
     }
 
-
+    @JsonIgnore
     public String getProposalNamesPlural() {
         return StaticAdminContext.getContestTypeClient()
                 .getProposalNames(getAllowedContestTypeIdsList(), Plurality.PLURAL.name(), "and");
     }
 
+    @JsonIgnore
     public String getContestNames() {
         return StaticAdminContext.getContestTypeClient()
                 .getContestNames(getAllowedContestTypeIdsList(), Plurality.SINGULAR.name(), "or");
     }
 
+    @JsonIgnore
     public String getContestNamesPlural() {
         return StaticAdminContext.getContestTypeClient()
                 .getContestNames(getAllowedContestTypeIdsList(), Plurality.PLURAL.name(), "or");
     }
 
+    @JsonIgnore
     private ProposalAttribute getSectionAttribute() {
         if (proposal == null) {
             throw new ProposalFieldNotInitializedException();

@@ -47,7 +47,6 @@ public class PromotionServiceTest {
     @Test
     @Ignore
     public void shouldForcePromotionOfProposalInPhase() throws Exception {
-
         promotionService.doPromotion(new Date());
     }
 }

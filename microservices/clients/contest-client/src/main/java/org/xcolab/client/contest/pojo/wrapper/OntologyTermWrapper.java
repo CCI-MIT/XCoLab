@@ -1,5 +1,6 @@
 package org.xcolab.client.contest.pojo.wrapper;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -23,19 +24,21 @@ public class OntologyTermWrapper extends OntologyTerm implements Serializable {
         super(value);
     }
 
-    public OntologyTermWrapper(Long id, Long parentid, Long ontologyspaceid, String name,
-            String descriptionurl, Integer order_) {
-        super(id, parentid, ontologyspaceid, name, descriptionurl, order_);
+    public OntologyTermWrapper(Long id, Long parentId, Long ontologySpaceId, String name,
+            String descriptionUrl, Integer order) {
+        super(id, parentId, ontologySpaceId, name, descriptionUrl, order);
     }
 
     public OntologyTermWrapper(OntologyTerm abstractOntologyTerm) {
         super(abstractOntologyTerm);
     }
 
+    @JsonIgnore
     public OntologyTermWrapper getParent() {
         return parent;
     }
 
+    @JsonIgnore
     public void setParent(OntologyTermWrapper parent) {
         if (parent != null) {
             this.parent = parent;
@@ -43,14 +46,17 @@ public class OntologyTermWrapper extends OntologyTerm implements Serializable {
         }
     }
 
+    @JsonIgnore
     public List<OntologyTermWrapper> getChildren() {
         return children;
     }
 
+    @JsonIgnore
     public boolean hasParent() {
         return this.getParentId() > 0;
     }
 
+    @JsonIgnore
     public int getOrder() {
         return this.getSortOrder();
     }

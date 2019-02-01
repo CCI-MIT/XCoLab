@@ -182,7 +182,7 @@ public class StaffMemberController extends AbstractWidgetController<StaffMembers
         sm.setPhotoUrl(userImageDomain + "/image/member/" + member.getPortraitId());
         sm.setFirstNames(member.getFirstName());
         sm.setLastName(member.getLastName());
-        sm.setSort(0);
+        sm.setSortOrder(0);
         return new StaffMemberWrapper(sm);
     }
 

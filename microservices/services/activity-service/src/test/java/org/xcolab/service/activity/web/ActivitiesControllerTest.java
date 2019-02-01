@@ -45,6 +45,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @PowerMockRunnerDelegate(SpringJUnit4ClassRunner.class)
 @WebMvcTest(ActivityController.class)
 @ComponentScan("org.xcolab.service.activity")
+@ComponentScan("org.xcolab.client.contest")
 @ComponentScan("com.netflix.discovery")
 @ActiveProfiles("test")
 public class ActivitiesControllerTest {

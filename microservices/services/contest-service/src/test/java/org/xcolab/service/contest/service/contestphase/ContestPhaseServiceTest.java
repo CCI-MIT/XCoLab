@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.modules.junit4.PowerMockRunnerDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.OverrideAutoConfiguration;
@@ -17,14 +18,18 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import org.xcolab.client.admin.IAdminClient;
+import org.xcolab.client.admin.IContestTypeClient;
+import org.xcolab.client.admin.IEmailTemplateClient;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.IMembershipClient;
+import org.xcolab.client.contest.proposals.IPointsClient;
+import org.xcolab.client.contest.proposals.IProposalAttributeClient;
 import org.xcolab.client.contest.proposals.IProposalClient;
 import org.xcolab.client.contest.proposals.IProposalJudgeRatingClient;
 import org.xcolab.client.contest.proposals.IProposalMemberRatingClient;
-import org.xcolab.client.contest.proposals.IPointsClient;
-import org.xcolab.client.contest.proposals.IProposalAttributeClient;
 import org.xcolab.client.contest.proposals.IProposalMoveClient;
 import org.xcolab.client.contest.proposals.IProposalPhaseClient;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
@@ -35,7 +40,7 @@ import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
 
 @RunWith(PowerMockRunner.class)
-@org.powermock.modules.junit4.PowerMockRunnerDelegate(SpringJUnit4ClassRunner.class)
+@PowerMockRunnerDelegate(SpringJUnit4ClassRunner.class)
 @OverrideAutoConfiguration(enabled = false)
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @PrepareForTest({
@@ -43,7 +48,9 @@ import static org.mockito.Matchers.anyString;
         ContestWrapper.class
 })
 @ComponentScan("org.xcolab.service.contest")
-@ComponentScan("org.xcolab.client")
+@ComponentScan("org.xcolab.client.contest")
+@ComponentScan("org.xcolab.client.comment")
+@ComponentScan("org.xcolab.client.admin")
 @ActiveProfiles("test")
 public class ContestPhaseServiceTest {
 
@@ -74,6 +81,8 @@ public class ContestPhaseServiceTest {
                     return proposal;
                 });
 
+        StaticAdminContext.setClients(Mockito.mock(IAdminClient.class),
+                Mockito.mock(IContestTypeClient.class), Mockito.mock(IEmailTemplateClient.class));
         StaticProposalContext.setClients(Mockito.mock(IPointsClient.class), Mockito.mock(
                 IProposalAttributeClient.class), Mockito.mock(IProposalMoveClient.class),
                 proposalPhaseClient, proposalClient, Mockito.mock(IMembershipClient.class),

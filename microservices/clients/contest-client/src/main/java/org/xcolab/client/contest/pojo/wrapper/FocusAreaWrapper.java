@@ -1,5 +1,6 @@
 package org.xcolab.client.contest.pojo.wrapper;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -31,10 +32,12 @@ public class FocusAreaWrapper extends FocusArea implements Serializable {
         super(abstractFocusArea);
     }
 
+    @JsonIgnore
     public List<OntologyTermWrapper> getOntologyTerms() {
         return ontologyTerms;
     }
 
+    @JsonIgnore
     public void addOntologyTerm(OntologyTermWrapper term) {
         if (term != null) {
             ontologyTerms.add(term);
@@ -42,6 +45,7 @@ public class FocusAreaWrapper extends FocusArea implements Serializable {
         }
     }
 
+    @JsonIgnore
     public String getTermsIdsStr() {
         return ontologyTermsIds.toString();
     }

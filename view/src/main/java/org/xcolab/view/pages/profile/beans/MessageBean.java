@@ -100,7 +100,7 @@ public class MessageBean implements Serializable {
     }
 
     public String getThreadId() {
-        return getMessage().getThreadId();
+        return null;//getMessage().getThreadId(); //TODO FIGURE OUT HOW TO GET THIS
     }
 
 }

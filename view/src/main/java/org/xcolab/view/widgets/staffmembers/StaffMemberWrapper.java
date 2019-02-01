@@ -60,8 +60,8 @@ public class StaffMemberWrapper implements Serializable {
     }
 
     public Integer getSort() {
-        if (this.staffMember.getSort() != null) {
-            return this.staffMember.getSort();
+        if (this.staffMember.getSortOrder() != null) {
+            return this.staffMember.getSortOrder();
         } else {
             return 0;
         }

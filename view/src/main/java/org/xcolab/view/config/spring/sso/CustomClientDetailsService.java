@@ -63,8 +63,8 @@ public class CustomClientDetailsService implements ClientDetailsService {
 
         @Override
         public Set<String> getRegisteredRedirectUri() {
-            if (!StringUtils.isEmpty(clientDetails.getRegisteredRedirectUri())) {
-                return Collections.singleton(clientDetails.getRegisteredRedirectUri());
+            if (!StringUtils.isEmpty(clientDetails.getRegisteredredirecturi())) {
+                return Collections.singleton(clientDetails.getRegisteredredirecturi());
             }
             return Collections.emptySet();
         }

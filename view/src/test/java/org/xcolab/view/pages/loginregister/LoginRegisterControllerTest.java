@@ -4,9 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.modules.junit4.PowerMockRunnerDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +21,8 @@ import org.xcolab.client.admin.IAdminClient;
 import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.IEmailTemplateClient;
 import org.xcolab.client.admin.StaticAdminContext;
-
+import org.xcolab.client.email.IEmailClient;
+import org.xcolab.client.email.StaticEmailContext;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.view.util.clienthelpers.AdminClientMockerHelper;
 import org.xcolab.view.util.clienthelpers.ContestTypeClientMockerHelper;
@@ -79,9 +78,11 @@ public class LoginRegisterControllerTest {
         IAdminClient adminClient = AdminClientMockerHelper.mockAdminClient();
         IEmailTemplateClient emailTemplateClient =
                 EmailTemplateClientMockerHelper.mockEmailTemplateClient();
-        IContestTypeClient contestTypeClient = ContestTypeClientMockerHelper.mockContestTypeClient();
+        IContestTypeClient contestTypeClient =
+                ContestTypeClientMockerHelper.mockContestTypeClient();
 
         StaticAdminContext.setClients(adminClient, contestTypeClient, emailTemplateClient);
+        StaticEmailContext.setClients(Mockito.mock(IEmailClient.class));
     }
 
     @Test

@@ -1,12 +1,11 @@
 package org.xcolab.client.contest.pojo.wrapper;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.contest.pojo.tables.pojos.OntologySpace;
-import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -29,20 +28,25 @@ public class OntologySpaceWrapper extends OntologySpace implements Serializable 
     private final List<OntologyTermWrapper> terms = new ArrayList<>();
     private final List<OntologyTermWrapper> rootTerms = new ArrayList<>();
 
+    @JsonIgnore
     public void addTerm(OntologyTermWrapper term) {
         terms.add(term);
-        if (! term.hasParent()) {
+        if (!term.hasParent()) {
             rootTerms.add(term);
         }
     }
+
+    @JsonIgnore
     public List<OntologyTermWrapper> getTerms() {
         return terms;
     }
 
+    @JsonIgnore
     public List<OntologyTermWrapper> getRootTerms() {
         return rootTerms;
     }
 
+    @JsonIgnore
     public int getOrder() {
         return this.getSortOrder();
     }

@@ -379,6 +379,7 @@ public class ContestWrapper extends Contest implements Serializable {
     }
 
     @Override
+    @JsonIgnore
     public String getEmailTemplateUrl() {
         if (super.getEmailTemplateUrl().isEmpty()) {
             return EMAIL_TEMPLATE_URL;
@@ -547,6 +548,7 @@ public class ContestWrapper extends Contest implements Serializable {
     }
 
     @Override
+    @JsonIgnore
     public Long getDiscussionGroupId() {
         Long discussionGroupId = super.getDiscussionGroupId();
         if (discussionGroupId == null) {

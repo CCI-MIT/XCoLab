@@ -1,6 +1,7 @@
 package org.xcolab.view;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import org.xcolab.client.activity.IActivityClient;
@@ -55,6 +56,7 @@ import org.xcolab.client.user.IUserLoginRegisterClient;
 import org.xcolab.client.user.StaticUserContext;
 
 @Component
+@Profile("!test")
 public class StaticInjector {
 
     @Autowired

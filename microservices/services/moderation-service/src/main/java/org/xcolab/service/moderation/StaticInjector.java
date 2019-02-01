@@ -1,6 +1,7 @@
 package org.xcolab.service.moderation;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import org.xcolab.client.comment.ICategoryClient;
@@ -26,6 +27,7 @@ import org.xcolab.client.moderation.IModerationClient;
 import org.xcolab.client.moderation.StaticModerationContext;
 
 @Component
+@Profile("!test")
 public class StaticInjector {
 
     @Autowired

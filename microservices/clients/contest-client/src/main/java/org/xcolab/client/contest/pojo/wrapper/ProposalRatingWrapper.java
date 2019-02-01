@@ -1,5 +1,6 @@
 package org.xcolab.client.contest.pojo.wrapper;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -27,36 +28,31 @@ public class ProposalRatingWrapper extends ProposalRating implements Serializabl
         super(value);
     }
 
-    public ProposalRatingWrapper(
-            Long id,
-            Long proposalid,
-            Long contestphaseid,
-            Long userid,
-            Long ratingvalueid,
-            String comment_,
-            Boolean commentenabled,
-            String otherdatastring,
-            Boolean onlyforinternalusage
-    ) {
-        super(id, proposalid, contestphaseid, userid, ratingvalueid, comment_, commentenabled,
-                otherdatastring, onlyforinternalusage);
+    public ProposalRatingWrapper(Long id, Long proposalId, Long contestPhaseId, Long userId,
+            Long ratingValueId, String comment, Boolean commentEnabled, String otherDataString,
+            Boolean onlyForInternalUsage) {
+        super(id, proposalId, contestPhaseId, userId, ratingValueId, comment, commentEnabled,
+                otherDataString, onlyForInternalUsage);
     }
 
     public ProposalRatingWrapper(ProposalRating abstractProposalRating) {
         super(abstractProposalRating);
     }
 
+    @JsonIgnore
     public boolean isRatingComplete() {
-        final boolean commentComplete = !isCommentEnabled()
-                || !StringUtils.isEmpty(this.getComment());
+        final boolean commentComplete =
+                !isCommentEnabled() || !StringUtils.isEmpty(this.getComment());
         return getRatingValueId() > 0 && commentComplete;
     }
 
+    @JsonIgnore
     public ProposalRatingWrapper(ProposalRatingWrapper proposalRating, Long roundFactor) {
         super(proposalRating);
         this.roundFactor = roundFactor;
     }
 
+    @JsonIgnore
     public String getRatingValueName() {
         IProposalRatingValue ratingValue = this.getRatingValue();
         if (ratingValue != null) {
@@ -66,6 +62,7 @@ public class ProposalRatingWrapper extends ProposalRating implements Serializabl
         }
     }
 
+    @JsonIgnore
     public String getRatingTypeLabel() {
         IProposalRatingType ratingType = this.getRatingType();
         if (ratingType != null) {
@@ -75,6 +72,7 @@ public class ProposalRatingWrapper extends ProposalRating implements Serializabl
         }
     }
 
+    @JsonIgnore
     public boolean getIsActive() {
         IProposalRatingType ratingType = this.getRatingType();
         if (ratingType != null) {
@@ -84,6 +82,7 @@ public class ProposalRatingWrapper extends ProposalRating implements Serializabl
         }
     }
 
+    @JsonIgnore
     public Long getRatingTypeId() {
         IProposalRatingType ratingType = this.getRatingType();
         if (ratingType != null) {
@@ -93,28 +92,33 @@ public class ProposalRatingWrapper extends ProposalRating implements Serializabl
         }
     }
 
+    @JsonIgnore
     public IProposalRatingType getRatingType() {
         IProposalRatingValue ratingValue = this.getRatingValue();
         if (ratingValue != null) {
-            if (ratingType == null)
+            if (ratingType == null) {
                 ratingType = StaticProposalContext.getProposalJudgeRatingClient()
                         .getProposalRatingType(ratingValue.getRatingTypeId());
+            }
             return ratingType;
         }
 
         return null;
     }
 
+    @JsonIgnore
     public IProposalRatingValue getRatingValue() {
-        if (ratingValue == null)
+        if (ratingValue == null) {
             if (roundFactor == null) {
                 roundFactor = 1L;
             }
+        }
         ratingValue = StaticProposalContext.getProposalJudgeRatingClient()
                 .getProposalRatingValue(this.getRatingValueId() / roundFactor);
         return ratingValue;
     }
 
+    @JsonIgnore
     public double getNotRoundedRatingValue() {
         double ratingValueNotRounded = 0.;
         try {
@@ -128,11 +132,13 @@ public class ProposalRatingWrapper extends ProposalRating implements Serializabl
         return ratingValueNotRounded;
     }
 
+    @JsonIgnore
     public String getNotRoundedRatingValueFormatted() {
         DecimalFormat f = new DecimalFormat("#0.0");
         return f.format(getNotRoundedRatingValue());
     }
 
+    @JsonIgnore
     public double getRatingValueInPercent() {
         double ratingValueInPercent = 0;
         Double proposalRatingValue = getNotRoundedRatingValue();

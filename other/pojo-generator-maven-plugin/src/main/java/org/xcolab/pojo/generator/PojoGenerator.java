@@ -288,6 +288,16 @@ public class PojoGenerator extends AbstractMojo {
                     .setName(getterPrefix + capitalizedName)
                     .setBody(bodyGetter)
                     .addAnnotation(Override.class);
+
+
+            if (field.getType().isType(Boolean.class)) {
+                pojo.addMethod()
+                        .setPublic()
+                        .setReturnType(field.getType())
+                        .setName("get" + capitalizedName)
+                        .setBody(String.format("return this.is%s();", capitalizedName))
+                        .addAnnotation(Deprecated.class);
+            }
         }
     }
 

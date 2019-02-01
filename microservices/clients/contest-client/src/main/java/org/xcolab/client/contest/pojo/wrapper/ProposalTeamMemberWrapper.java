@@ -1,5 +1,6 @@
 package org.xcolab.client.contest.pojo.wrapper;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -23,32 +24,39 @@ public class ProposalTeamMemberWrapper extends ProposalTeamMember implements Ser
         this.member = member;
     }
 
+    @JsonIgnore
     public String getFullName() {
         return member.getFullName();
     }
 
+    @JsonIgnore
     public String getScreenName() {
         return member.getDisplayName();
     }
 
+    @JsonIgnore
     @Override
     public Long getProposalId() {
         return proposal.getId();
     }
 
+    @JsonIgnore
     @Override
     public Long getUserId() {
         return member.getId();
     }
 
+    @JsonIgnore
     public UserWrapper getMember() {
         return member;
     }
 
+    @JsonIgnore
     public long getPortraitId() {
         return member.getPortraitId();
     }
 
+    @JsonIgnore
     public ProposalMemberType getMemberType() {
         if (memberType == null) {
             if (proposal.getAuthorUserId() == member.getId()) {
@@ -60,6 +68,7 @@ public class ProposalTeamMemberWrapper extends ProposalTeamMember implements Ser
         return memberType;
     }
 
+    @JsonIgnore
     public String getMemberTypeForDisplay() {
         return getMemberType().getDescription();
     }
