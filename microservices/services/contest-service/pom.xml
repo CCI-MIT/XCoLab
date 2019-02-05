@@ -45,6 +45,7 @@
             <artifactId>email-client</artifactId>
             <version>${project.version}</version>
         </dependency>
+
     </dependencies>
 
     <build>

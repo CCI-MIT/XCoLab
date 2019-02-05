@@ -9,6 +9,8 @@ import org.xcolab.util.autoconfigure.AbstractFeignConfig;
 @Component
 @Profile("!test")
 @EnableFeignClients(basePackages = {
+        "org.xcolab.client.activity",
+        "org.xcolab.client.contest",
         "org.xcolab.client.tracking",
         "org.xcolab.client.email",
         "org.xcolab.client.admin"})

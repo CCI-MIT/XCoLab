@@ -179,6 +179,8 @@ public class LoginRegisterService {
         member.setLastName(lastName);
         member.setDefaultLocale(language != null ? language : I18nUtils.DEFAULT_LANGUAGE);
         member.setStatus(0);
+        member.setIsEmailConfirmed(false);
+        member.setIsEmailBounced(false);
 
         final String baseUri = PlatformAttributeKey.COLAB_URL.get();
         member.setShortBio(HtmlUtil.cleanSome(shortBio, baseUri));

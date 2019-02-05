@@ -103,7 +103,7 @@ public class BalloonController implements IBalloonClient {
     @GetMapping("/balloonUserTrackings")
     public List<IBalloonUserTracking> listBalloonUserTrackings(
             @RequestParam String email,
-            @RequestParam String context) {
+            @RequestParam(value = "context", required = false) String context) {
         return this.balloonUserTrackingDao.list(email, context);
     }
 

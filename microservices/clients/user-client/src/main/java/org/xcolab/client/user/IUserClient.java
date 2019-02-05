@@ -332,10 +332,6 @@ public interface IUserClient {
         return getUser(userId);
     }
 
-    default boolean isEmailUsed(String email) {
-        return isEmailUsed(email);
-    }
-
     default Integer getMemberMaterializedPoints(long userId) {
         return getUserPoints(userId, false);
     }

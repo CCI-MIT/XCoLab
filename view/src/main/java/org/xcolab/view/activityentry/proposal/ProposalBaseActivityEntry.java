@@ -27,8 +27,8 @@ public abstract class ProposalBaseActivityEntry extends AbstractActivityEntryCon
     @Override
     public void initializeInternal() throws ActivityInitializationException {
         try {
-            proposal = StaticProposalContext.getProposalClient()
-                    .getProposal(getActivityEntry().getCategoryId());
+            proposal = new ProposalWrapper(StaticProposalContext.getProposalClient()
+                    .getProposal(getActivityEntry().getCategoryId()));
         } catch (ProposalNotFoundException e) {
             throw new ActivityInitializationException(getActivityEntry().getId(), e);
         }

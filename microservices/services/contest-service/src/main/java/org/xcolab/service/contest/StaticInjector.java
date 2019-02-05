@@ -4,6 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+import org.xcolab.client.admin.IAdminClient;
+import org.xcolab.client.admin.IContestTypeClient;
+import org.xcolab.client.admin.IEmailTemplateClient;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.comment.ICategoryClient;
 import org.xcolab.client.comment.ICommentClient;
 import org.xcolab.client.comment.IThreadClient;
@@ -49,6 +53,11 @@ public class StaticInjector {
             IProposalClient proposalClient, IMembershipClient membershipClient,
             IProposalMemberRatingClient proposalMemberRatingClient,
             IProposalJudgeRatingClient proposalJudgeRatingClient,
+
+            IAdminClient adminClient,
+            IEmailTemplateClient emailTemplateClient,
+            IContestTypeClient contestTypeClient,
+
             IAnalyticsClient analyticsClient,
             ILoginTokenClient loginTokenClient,
             ILoginLogClient loginLogClient,
@@ -66,6 +75,8 @@ public class StaticInjector {
         StaticProposalContext.setClients(pointsClient, proposalAttributeClient, proposalMoveClient,
                 proposalPhaseClient, proposalClient, membershipClient, proposalMemberRatingClient,
                 proposalJudgeRatingClient);
+
+        StaticAdminContext.setClients(adminClient, contestTypeClient, emailTemplateClient);
 
         StaticUserContext.setAnalyticsClient(analyticsClient);
         StaticUserContext.setLoginLogClient(loginLogClient);

@@ -12,6 +12,8 @@ public class XColabServiceGeneratorStrategy extends XColabGeneratorStrategy {
     //TODO: COLAB-2918: remove when new client/server architecture is used for all services
     private static final List<String> clients = Arrays.asList("tracking", "content", "modeling", "comment", "admin", "contest", "activity","user");
 
+    protected static final String SPECIAL_CASES_PREFIX_SEPARATOR = "_";
+
     @Override
     public List<String> getJavaClassImplements(Definition definition, Mode mode) {
         List<String> list = super.getJavaClassImplements(definition, mode);
@@ -34,9 +36,16 @@ public class XColabServiceGeneratorStrategy extends XColabGeneratorStrategy {
 
         if (mode == Mode.POJO) {
             System.out.println(">>>>>> " + definition.getOutputName());
-            //TODO: Fix the out of bounds issue
-            String clientName = definition.getOutputName()
-                    .substring(0, definition.getOutputName().indexOf(PREFIX_SEPARATOR));
+
+            String clientName;
+            if(definition.getOutputName().indexOf(PREFIX_SEPARATOR)!= -1) {
+                clientName = definition.getOutputName()
+                        .substring(0, definition.getOutputName().indexOf(PREFIX_SEPARATOR));
+            } else {
+                 clientName = definition.getOutputName()
+                        .substring(0, definition.getOutputName().indexOf(SPECIAL_CASES_PREFIX_SEPARATOR));
+            }
+
             if (clients.stream().anyMatch(client -> clientName.contains(client))) {
                 className += "Impl";
             }
