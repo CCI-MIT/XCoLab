@@ -30,8 +30,8 @@ public class ProposalCreatedActivityEntry extends ContestBaseActivityEntry {
         super.initializeInternal();
 
         try {
-            proposal = StaticProposalContext.getProposalClient()
-                    .getProposal(getActivityEntry().getAdditionalId(), true);
+            proposal = new ProposalWrapper(StaticProposalContext.getProposalClient()
+                    .getProposal(getActivityEntry().getAdditionalId(), true));
         } catch (ProposalNotFoundException e) {
             throw new ActivityInitializationException(getActivityEntry().getId(), e);
         }

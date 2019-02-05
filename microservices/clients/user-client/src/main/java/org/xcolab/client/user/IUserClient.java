@@ -98,7 +98,7 @@ public interface IUserClient {
             throws IOException, MemberNotFoundException;
 
     default boolean updateUser(UserWrapper member) throws MemberNotFoundException {
-        return updateUser(member, 0l);
+        return updateUser(member, member.getId());
     }
 
     default List<UserWrapper> listMembersWithRoles(List<Long> roleIds) {

@@ -6,6 +6,7 @@ import org.xcolab.client.activity.StaticActivityContext;
 import org.xcolab.client.activity.pojo.IActivityEntry;
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.pojo.ContestType;
+import org.xcolab.client.contest.pojo.IProposalSupporter;
 import org.xcolab.client.contest.pojo.wrapper.ContestTypeProposal;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.pojo.wrapper.SupportedProposal;
@@ -100,8 +101,16 @@ public class UserProfileWrapper implements Serializable {
 
         userSubscriptions = new UserSubscriptionsWrapper(member);
         userActivities.clear();
-        supportedProposals.addAll(StaticProposalContext.getProposalMemberRatingClient()
-                .getSupportedProposals(member.getId()));
+        List<IProposalSupporter> list = StaticProposalContext.getProposalMemberRatingClient()
+                .getSupportedProposals(member.getId());
+        if(list!=null) {
+            for (IProposalSupporter sp : list) {
+                supportedProposals.add(
+                        new SupportedProposal(new ProposalWrapper(StaticProposalContext.getProposalClient()
+                                .getProposal(sp.getProposalId())),sp));
+            }
+        }
+
 
         for (IActivityEntry activity : ActivityUtil
                 .groupActivities(StaticActivityContext.getActivityClient()

@@ -20,7 +20,7 @@ public class ProposalMemberRatingClientMockImpl implements IProposalMemberRating
     }
 
     @Override
-    public List<SupportedProposal> getSupportedProposals(Long userId) {
+    public List<IProposalSupporter> getSupportedProposals(Long userId) {
         return Collections.emptyList();
     }
 

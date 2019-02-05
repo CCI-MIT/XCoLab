@@ -28,7 +28,7 @@ public class ProposalSupportService {
         this.proposalDao = proposalDao;
     }
 
-    public List<SupportedProposal> getSupportedProposalsForUser(long userId, boolean onlyVisible,
+    public List<IProposalSupporter> getSupportedProposalsForUser(long userId, boolean onlyVisible,
             boolean excludePrivateContests) {
         final List<IProposalSupporter> proposalSupporters = proposalSupporterDao.findByGiven(null, userId);
         Map<Long, IProposalSupporter> supportsByProposalId = new GroupingHelper<>(proposalSupporters)
@@ -37,8 +37,7 @@ public class ProposalSupportService {
         final Boolean visible = onlyVisible ? true : null;
         final Boolean contestPrivate = excludePrivateContests ? false : null;
         return proposalDao.filterByGiven(supportsByProposalId.keySet(), visible, contestPrivate)
-                .stream().map(proposal -> new SupportedProposal(proposal,
-                        supportsByProposalId.get(proposal.getId())))
+                .stream().map(proposal -> supportsByProposalId.get(proposal.getId()))
                 .collect(Collectors.toList());
     }
 }

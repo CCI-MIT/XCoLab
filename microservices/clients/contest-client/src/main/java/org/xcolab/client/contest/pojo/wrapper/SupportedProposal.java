@@ -15,7 +15,7 @@ import java.sql.Timestamp;
 // by single inheritance as they both (should) inherit from abstract classes
 @JsonInclude(Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SupportedProposal extends ProposalWrapper implements Serializable {
+public class SupportedProposal extends ProposalWrapper {
 
     private Timestamp supportDate;
     private Long supporterUserId;

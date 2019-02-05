@@ -39,7 +39,7 @@ public interface IProposalMemberRatingClient {
     }
 
     @GetMapping("/supportedProposals")
-    List<SupportedProposal> getSupportedProposals(@RequestParam("userId") Long userId);
+    List<IProposalSupporter> getSupportedProposals(@RequestParam("userId") Long userId);
 
     @RequestMapping("/proposalSupporters/count")
     int getProposalSupportersCount(@RequestParam("proposalId") Long proposalId);

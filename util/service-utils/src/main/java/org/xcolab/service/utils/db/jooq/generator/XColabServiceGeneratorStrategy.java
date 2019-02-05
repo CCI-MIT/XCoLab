@@ -19,8 +19,8 @@ public class XColabServiceGeneratorStrategy extends XColabGeneratorStrategy {
         List<String> list = super.getJavaClassImplements(definition, mode);
 
         if (mode == Mode.POJO) {
-            String clientName = definition.getOutputName()
-                    .substring(0, definition.getOutputName().indexOf(PREFIX_SEPARATOR));
+            String clientName = extractClientName(definition);
+
             if (clients.stream().anyMatch(client -> clientName.contains(client))) {
                 list.add(String.format(INTERFACE_PATH_FORMAT, clientName,
                         getJavaClassName(definition, Mode.INTERFACE)));
@@ -30,21 +30,25 @@ public class XColabServiceGeneratorStrategy extends XColabGeneratorStrategy {
         return list;
     }
 
+    private String extractClientName(Definition definition) {
+
+        if(definition.getOutputName().indexOf(PREFIX_SEPARATOR) != -1) {
+            return definition.getOutputName()
+                    .substring(0, definition.getOutputName().indexOf(PREFIX_SEPARATOR));
+        } else {
+            return definition.getOutputName()
+                    .substring(0, definition.getOutputName().indexOf(SPECIAL_CASES_PREFIX_SEPARATOR));
+        }
+    }
+
     @Override
     public String getJavaClassName(Definition definition, Mode mode) {
         String className = super.getJavaClassName(definition, mode);
 
         if (mode == Mode.POJO) {
-            System.out.println(">>>>>> " + definition.getOutputName());
 
-            String clientName;
-            if(definition.getOutputName().indexOf(PREFIX_SEPARATOR)!= -1) {
-                clientName = definition.getOutputName()
-                        .substring(0, definition.getOutputName().indexOf(PREFIX_SEPARATOR));
-            } else {
-                 clientName = definition.getOutputName()
-                        .substring(0, definition.getOutputName().indexOf(SPECIAL_CASES_PREFIX_SEPARATOR));
-            }
+
+            String clientName = extractClientName(definition);
 
             if (clients.stream().anyMatch(client -> clientName.contains(client))) {
                 className += "Impl";

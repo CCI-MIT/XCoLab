@@ -105,7 +105,7 @@ public class ProposalMemberRatingController implements IProposalMemberRatingClie
 
     @Override
     @GetMapping("/supportedProposals")
-    public List<SupportedProposal> getSupportedProposals(@RequestParam Long userId) {
+    public List<IProposalSupporter> getSupportedProposals(@RequestParam Long userId) {
         return proposalSupportService.getSupportedProposalsForUser(userId, true, true);
     }
 
