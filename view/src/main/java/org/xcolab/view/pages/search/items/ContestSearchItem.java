@@ -18,8 +18,8 @@ public class ContestSearchItem extends AbstractSearchItem {
     public void init(ISearchPojo pojo, String searchQuery) {
         this.searchPojo = pojo;
         this.searchQuery = searchQuery;
-        contest = StaticContestContext.getContestClient()
-                .getContest(searchPojo.getClassPrimaryKey());
+        contest = new ContestWrapper(StaticContestContext.getContestClient()
+                .getContest(searchPojo.getClassPrimaryKey()));
     }
 
     @Override

@@ -31,8 +31,8 @@ public class ProposalSearchItem extends AbstractSearchItem {
             this.searchQuery = searchQuery;
             proposalAttribute = StaticProposalContext.getProposalAttributeClient()
                     .getProposalAttribute(searchPojo.getClassPrimaryKey());
-            proposal = StaticProposalContext.getProposalClient()
-                    .getProposal(proposalAttribute.getProposalId(), true);
+            proposal = new ProposalWrapper(StaticProposalContext.getProposalClient()
+                    .getProposal(proposalAttribute.getProposalId(), true));
             ProposalAttributeHelper proposalAttributeHelper =
                     new ProposalAttributeHelper(proposal, StaticProposalContext
                             .getProposalAttributeClient());
