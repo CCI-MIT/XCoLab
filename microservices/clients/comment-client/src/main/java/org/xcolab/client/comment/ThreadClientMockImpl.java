@@ -26,7 +26,7 @@ public class ThreadClientMockImpl implements IThreadClient {
     }
 
     @Override
-    public boolean updateThread(IThread thread) {
+    public boolean updateThread(Long threadId , IThread thread ) {
         return false;
     }
 

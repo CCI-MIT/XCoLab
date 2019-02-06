@@ -65,4 +65,21 @@ public class MessageWrapper extends Message {
                 ", " + threadId +
                 ")";
     }
+
+    public Boolean getOpened() {
+        return opened;
+    }
+
+
+
+    public Boolean getArchived() {
+        return archived;
+    }
+
+
+    public String getThreadId() {
+        return threadId;
+    }
+
+
 }

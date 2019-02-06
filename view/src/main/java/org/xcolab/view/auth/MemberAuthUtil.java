@@ -21,7 +21,12 @@ public final class MemberAuthUtil {
 
     public static UserWrapper getMemberOrNull() {
         try {
-            return StaticUserContext.getUserClient().getUser(getUserId());
+            Long id = getUserId();
+            if(id!= null && id.longValue() != 0l) {
+                return StaticUserContext.getUserClient().getUser(getUserId());
+            } else {
+                return null;
+            }
         } catch (MemberNotFoundException e) {
             return null;
         }

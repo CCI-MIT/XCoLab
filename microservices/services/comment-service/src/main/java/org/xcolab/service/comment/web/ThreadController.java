@@ -81,7 +81,7 @@ public class ThreadController implements IThreadClient {
 
     @Override
     @PutMapping("/threads/{threadId}")
-    public boolean updateThread(@RequestBody IThread thread) {
+    public boolean updateThread(@PathVariable Long threadId, @RequestBody IThread thread) {
         try {
             if (threadDao.get(thread.getId()) != null) {
                 return threadDao.update(thread);

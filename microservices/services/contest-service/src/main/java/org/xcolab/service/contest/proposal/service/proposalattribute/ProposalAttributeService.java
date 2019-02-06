@@ -115,7 +115,7 @@ public class ProposalAttributeService {
                     thread.setTitle(
                             String.format("%s %s", getProposalNameFromOldTitle(thread.getTitle()),
                                     proposalAttribute.getStringValue()));
-                    StaticCommentContext.getThreadClient().updateThread(thread);
+                    StaticCommentContext.getThreadClient().updateThread(thread.getId(), thread);
                 } catch (ThreadNotFoundException  ignored) {
                 }
             }

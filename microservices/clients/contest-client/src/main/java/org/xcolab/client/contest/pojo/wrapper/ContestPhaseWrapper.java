@@ -203,7 +203,7 @@ public class ContestPhaseWrapper extends ContestPhase implements Serializable {
     }
 
     @JsonIgnore
-    public Boolean isProposalVisibility(long proposalId) {
+    public Boolean getProposalVisibility(long proposalId) {
         IProposalPhaseClient proposalPhaseClient = StaticProposalContext.getProposalPhaseClient();
         IProposalContestPhaseAttribute attr = proposalPhaseClient
                 .getProposalContestPhaseAttribute(proposalId, this.getId(),

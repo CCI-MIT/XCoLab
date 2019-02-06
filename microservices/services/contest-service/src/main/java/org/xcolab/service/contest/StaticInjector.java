@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+import org.xcolab.client.activity.IActivityClient;
+import org.xcolab.client.activity.StaticActivityContext;
 import org.xcolab.client.admin.IAdminClient;
 import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.IEmailTemplateClient;
@@ -58,6 +60,8 @@ public class StaticInjector {
             IEmailTemplateClient emailTemplateClient,
             IContestTypeClient contestTypeClient,
 
+            IActivityClient activityClient,
+
             IAnalyticsClient analyticsClient,
             ILoginTokenClient loginTokenClient,
             ILoginLogClient loginLogClient,
@@ -68,6 +72,8 @@ public class StaticInjector {
             IUserCategoryClient userCategoryClient,
             IUserClient userClient,
             IUserLoginRegisterClient userLoginRegisterClient) {
+
+        StaticActivityContext.setClients(activityClient);
 
         StaticCommentContext.setClients(commentClient, categoryClient, threadClient);
         StaticContestContext.setClients(contestClient, contestTeamMemberClient, impactClient,

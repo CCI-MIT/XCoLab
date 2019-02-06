@@ -632,8 +632,8 @@ public class ProposalWrapper extends Proposal implements Serializable {
         if (this.getId() > 0) {
 
             long votingPhasePK = contest.getVotingPhasePK();
-            return clients.proposalMemberRating.countVotesByUserInPhase(
-                    votingPhasePK, this.getId());
+            return clients.proposalMemberRating.countProposalVotes(
+                    votingPhasePK, this.getId(),null,true);
         }
         return 0;
     }

@@ -25,6 +25,6 @@ spring:
 feign:
   client:
     config:
-      feignName:
+      default:
         connectTimeout: 160000000
         readTimeout: 160000000

@@ -37,8 +37,8 @@ public interface IThreadClient {
     @GetMapping("/threads/{threadId}")
     IThread getThread(@PathVariable("threadId") Long threadId) throws ThreadNotFoundException;
 
-    @PutMapping("/threads")
-    boolean updateThread(@RequestBody IThread thread);
+    @PutMapping("/threads/{threadId}")
+    boolean updateThread(@PathVariable Long threadId, @RequestBody IThread thread);
 
     @PostMapping("/threads")
     IThread createThread(@RequestBody IThread thread);

@@ -79,11 +79,11 @@ public class MessageBean implements Serializable {
     }
 
     public boolean getIsOpened() throws MessageNotFoundException {
-        return false;//TODO FIGURE OUT HOW TO GET THIS
+        return message.getOpened();//TODO FIGURE OUT HOW TO GET THIS
     }
 
     public String getThreadId() throws MessageNotFoundException {
-        return null;//TODO FIGURE OUT HOW TO GET THIS
+        return message.getThreadId();//TODO FIGURE OUT HOW TO GET THIS
     }
 
     public boolean isSelected() {

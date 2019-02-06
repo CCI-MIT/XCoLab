@@ -95,7 +95,7 @@ public class VoteOnProposalActionController {
         long userId = member.getId();
 
         ProposalActivityType activitySubType;
-        if (proposalMemberRatingClient.hasUserVoted(proposalId, contestPhaseId, userId)) {
+        if (proposalMemberRatingClient.hasUserVoted(contestPhaseId,proposalId, userId)) {
             // User has voted for this proposal and would like to retract the vote
             proposalMemberRatingClient.deleteProposalVote(proposalId, contestPhaseId, userId);
             activitySubType = ProposalActivityType.VOTE_RETRACTED;

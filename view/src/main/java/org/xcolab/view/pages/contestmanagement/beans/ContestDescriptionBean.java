@@ -96,7 +96,7 @@ public class ContestDescriptionBean implements Serializable {
                     contestTypeClient.getContestType(contest.getContestTypeId());
             thread.setTitle(String.format("%s %s",
                     contestType.getContestName(), contest.getTitle()));
-            threadClient.updateThread(thread);
+            threadClient.updateThread(thread.getId(), thread);
         } catch (ThreadNotFoundException e) {
             _log.warn("No thread (id = {}) exists for contest {}", contest.getDiscussionGroupId(),
                     contest.getId());

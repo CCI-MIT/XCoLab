@@ -64,7 +64,7 @@ public class ProposalsDisplayPermissions {
     private boolean hasVotedOnThisProposal() {
         return proposal != null && proposal.getId() > 0
                 && clientHelper.getProposalMemberRatingClient().hasUserVoted(
-                proposal.getId(), contestPhase.getId(), userId);
+                contestPhase.getId(), proposal.getId(), userId);
     }
 
     public boolean getCanSeeUnsubscribeProposalButton() {

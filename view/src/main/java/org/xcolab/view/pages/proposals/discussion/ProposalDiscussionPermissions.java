@@ -18,7 +18,7 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
     public ProposalDiscussionPermissions(HttpServletRequest request, ProposalWrapper proposal) {
         super();
         this.discussionTabName = getTabName(request);
-        this.proposal = proposal;
+        this.proposal = new ProposalWrapper(proposal);
     }
 
     private String getTabName(HttpServletRequest request) {
