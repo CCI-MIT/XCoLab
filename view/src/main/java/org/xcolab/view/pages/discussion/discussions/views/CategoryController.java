@@ -79,7 +79,7 @@ public class CategoryController extends BaseDiscussionController {
     public String showCategory(HttpServletRequest request, HttpServletResponse response,
             Model model, @PathVariable long categoryId,
             @RequestParam(required = false) String sortColumn,
-            @RequestParam boolean sortAscending)
+            @RequestParam(defaultValue = "false") boolean sortAscending)
             throws DiscussionAuthorizationException, CategoryNotFoundException {
 
         long userId = MemberAuthUtil.getUserId();
