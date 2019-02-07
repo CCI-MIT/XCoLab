@@ -23,10 +23,9 @@ import java.io.IOException;
 import java.util.List;
 
 @FeignClient("xcolab-user-service")
-@RequestMapping("/members")
 public interface IUserClient {
 
-    @GetMapping("")
+    @GetMapping("/members")
     List<UserWrapper> listUsers(
             @RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
@@ -42,58 +41,58 @@ public interface IUserClient {
             @RequestParam(required = false) String colabSsoId,
             @RequestParam(required = false) String climateXId);
 
-    @GetMapping("findByIp")
+    @GetMapping("/members/findByIp")
     List<UserWrapper> getUserByIp(@RequestParam String ip);
 
-    @GetMapping("findByScreenNameOrName")
+    @GetMapping("/members/findByScreenNameOrName")
     List<UserWrapper> getUserByScreenNameName(@RequestParam String name);
 
-    @GetMapping("findByScreenName")
+    @GetMapping("/members/findByScreenName")
     UserWrapper getUserByScreenNameNoRole(@RequestParam String screenName)
             throws MemberNotFoundException;
 
 
-    @GetMapping("{userId}")
+    @GetMapping("/members/{userId}")
     UserWrapper getUser(@PathVariable long userId) throws MemberNotFoundException;
 
-    @PutMapping(value = "{userId}")
+    @PutMapping(name = "/members/", value = "{userId}")
     boolean updateUser(@RequestBody UserWrapper member, @PathVariable Long userId)
             throws MemberNotFoundException;
 
-    @DeleteMapping("{userId}")
+    @DeleteMapping("/members/{userId}")
     boolean deleteUser(@PathVariable long userId) throws MemberNotFoundException;
 
-    @GetMapping("{userId}/roles")
+    @GetMapping("/members/{userId}/roles")
     List<RoleWrapper> getUserRoles(@PathVariable long userId,
             @RequestParam(required = false) Long contestId);
 
-    @PutMapping("{userId}/roles/{roleId}")
+    @PutMapping("/members/{userId}/roles/{roleId}")
     boolean assignUserRole(@PathVariable long userId,
             @PathVariable Long roleId);
 
-    @DeleteMapping("{userId}/roles/{roleId}")
+    @DeleteMapping("/members/{userId}/roles/{roleId}")
     boolean deleteUserRole(@PathVariable long userId,
             @PathVariable Long roleId);
 
-    @GetMapping("count")
+    @GetMapping("/members/count")
     Integer countUsers(
             @RequestParam(required = false) String screenName,
             @RequestParam(required = false) String category);
 
-    @PostMapping
+    @PostMapping("/members/")
     UserWrapper register(@RequestBody UserWrapper member);
 
-    @GetMapping("{userId}/points")
+    @GetMapping("/members/{userId}/points")
     int getUserPoints(@PathVariable Long userId,
             @RequestParam(required = false, defaultValue = "false") boolean hypothetical);
 
-    @PutMapping("{userId}/subscribe")
+    @PutMapping("/members/{userId}/subscribe")
     boolean subscribeToNewsletter(@PathVariable long userId) throws MemberNotFoundException;
 
-    @PutMapping("{userId}/unsubscribe")
+    @PutMapping("/members/{userId}/unsubscribe")
     boolean unsubscribeToNewsletter(@PathVariable long userId) throws MemberNotFoundException;
 
-    @GetMapping("{userId}/isSubscribed")
+    @GetMapping("/members/{userId}/isSubscribed")
     boolean isSubscribedToNewsletter(@PathVariable long userId)
             throws IOException, MemberNotFoundException;
 

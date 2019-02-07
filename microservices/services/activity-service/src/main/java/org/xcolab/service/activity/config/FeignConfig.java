@@ -8,6 +8,7 @@ import org.xcolab.util.autoconfigure.AbstractFeignConfig;
 
 @Component
 @Profile("!test")
-@EnableFeignClients(basePackages = {"org.xcolab.client.contest"})
+@EnableFeignClients(basePackages = {"org.xcolab.client.contest",
+        "org.xcolab.client.admin", "org.xcolab.client.comment"})
 public class FeignConfig extends AbstractFeignConfig {
 }

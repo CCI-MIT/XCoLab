@@ -26,7 +26,7 @@ import java.util.List;
 
 @RestController
 
-@RequestMapping("/members")
+
 public class UserController implements IUserClient {
 
     private final UserService memberService;
@@ -45,6 +45,7 @@ public class UserController implements IUserClient {
 
     @Override
     @GetMapping
+    @RequestMapping("/members")
     public List<UserWrapper> listUsers(
             @RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
@@ -66,19 +67,19 @@ public class UserController implements IUserClient {
     }
 
     @Override
-    @GetMapping("findByIp")
+    @GetMapping("/members/findByIp")
     public List<UserWrapper> getUserByIp(@RequestParam String ip) {
         return memberDao.findByIp(ip);
     }
 
     @Override
-    @GetMapping("findByScreenNameOrName")
+    @GetMapping("/members/findByScreenNameOrName")
     public List<UserWrapper> getUserByScreenNameName(@RequestParam String name) {
         return memberDao.findByScreenNameName(name);
     }
 
     @Override
-    @GetMapping("findByScreenName")
+    @GetMapping("/members/findByScreenName")
     public UserWrapper getUserByScreenNameNoRole(@RequestParam String screenName)
             throws MemberNotFoundException {
         if (screenName == null) {
@@ -90,7 +91,7 @@ public class UserController implements IUserClient {
     }
 
     @Override
-    @GetMapping("{userId}")
+    @GetMapping("/members/{userId}")
     public UserWrapper getUser(@PathVariable long userId) throws MemberNotFoundException {
         if (userId == 0) {
             throw new MemberNotFoundException("No member id given");
@@ -100,7 +101,7 @@ public class UserController implements IUserClient {
     }
 
     @Override
-    @PutMapping(value = "{userId}")
+    @PutMapping(value = "/members/{userId}")
     public boolean updateUser(@RequestBody UserWrapper member, @PathVariable Long userId)
             throws MemberNotFoundException {
         if (userId == 0 || memberDao.getUser(userId) == null) {
@@ -110,7 +111,7 @@ public class UserController implements IUserClient {
     }
 
     @Override
-    @DeleteMapping("{userId}")
+    @DeleteMapping("/members/{userId}")
     public boolean deleteUser(@PathVariable long userId) throws MemberNotFoundException {
         if (userId == 0) {
             throw new MemberNotFoundException("No message id given");
@@ -123,7 +124,7 @@ public class UserController implements IUserClient {
     }
 
     @Override
-    @GetMapping("{userId}/roles")
+    @GetMapping("/members/{userId}/roles")
     public List<RoleWrapper> getUserRoles(@PathVariable long userId,
             @RequestParam(required = false) Long contestId) {
         if (contestId == null) {
@@ -134,21 +135,21 @@ public class UserController implements IUserClient {
     }
 
     @Override
-    @PutMapping("{userId}/roles/{roleId}")
+    @PutMapping("/members/{userId}/roles/{roleId}")
     public boolean assignUserRole(@PathVariable long userId,
             @PathVariable Long roleId) {
         return this.roleService.assignUserRole(userId, roleId);
     }
 
     @Override
-    @DeleteMapping("{userId}/roles/{roleId}")
+    @DeleteMapping("/members/{userId}/roles/{roleId}")
     public boolean deleteUserRole(@PathVariable long userId,
             @PathVariable Long roleId) {
         return this.roleService.deleteUserRole(userId, roleId);
     }
 
     @Override
-    @GetMapping("count")
+    @GetMapping("/members/count")
     public Integer countUsers(
             @RequestParam(required = false) String screenName,
             @RequestParam(required = false) String category) {
@@ -156,13 +157,13 @@ public class UserController implements IUserClient {
     }
 
     @Override
-    @PostMapping
+    @PostMapping("/members/")
     public UserWrapper register(@RequestBody UserWrapper member) {
         return memberService.register(member);
     }
 
     @Override
-    @GetMapping("{userId}/points")
+    @GetMapping("/members/{userId}/points")
     public int getUserPoints(@PathVariable Long userId,
             @RequestParam(required = false, defaultValue = "false") boolean hypothetical) {
         if (userId == null) {
@@ -179,7 +180,7 @@ public class UserController implements IUserClient {
     }
 
     @Override
-    @PutMapping("{userId}/subscribe")
+    @PutMapping("/members/{userId}/subscribe")
     public boolean subscribeToNewsletter(@PathVariable long userId) throws MemberNotFoundException {
         try {
             return memberService.subscribeToNewsletter(userId);
@@ -189,7 +190,7 @@ public class UserController implements IUserClient {
     }
 
     @Override
-    @PutMapping("{userId}/unsubscribe")
+    @PutMapping("/members/{userId}/unsubscribe")
     public boolean unsubscribeToNewsletter(@PathVariable long userId) throws MemberNotFoundException {
         try {
             return memberService.unsubscribeFromNewsletter(userId);
@@ -199,7 +200,7 @@ public class UserController implements IUserClient {
     }
 
     @Override
-    @GetMapping("{userId}/isSubscribed")
+    @GetMapping("/members/{userId}/isSubscribed")
     public boolean isSubscribedToNewsletter(@PathVariable long userId)
             throws IOException, MemberNotFoundException {
         try {

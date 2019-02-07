@@ -79,7 +79,7 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
 
 
         IPointsDistributionConfiguration pdc = StaticProposalContext.getPointsClient()
-                .getPointsDistributionConfigurationByTargetProposalTemplateSectionDefinitionId(id);
+                .getPointsDistributionConfigurationByTargetProposalTemplateSectionDefinitionIdOrNull(id);
         if (pdc != null) {
             this.pointPercentage = Double.toString(pdc.getPercentage());
             this.pointType = pdc.getPointTypeId();
@@ -265,7 +265,7 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
             psd = StaticContestContext.getProposalTemplateClient()
                     .getProposalTemplateSectionDefinition(id);
             pdc = StaticProposalContext.getPointsClient()
-                    .getPointsDistributionConfigurationByTargetProposalTemplateSectionDefinitionId(id);
+                    .getPointsDistributionConfigurationByTargetProposalTemplateSectionDefinitionIdOrNull(id);
 
             populateProposalTemplateSectionDefinition(psd);
 

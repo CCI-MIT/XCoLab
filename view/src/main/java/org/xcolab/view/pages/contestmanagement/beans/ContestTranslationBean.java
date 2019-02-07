@@ -3,7 +3,6 @@ package org.xcolab.view.pages.contestmanagement.beans;
 import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.contest.StaticContestContext;
-import org.xcolab.client.contest.pojo.IContestTranslation;
 import org.xcolab.client.contest.pojo.tables.pojos.ContestTranslation;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.util.i18n.I18nUtils;
@@ -18,20 +17,20 @@ public class ContestTranslationBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private List<IContestTranslation> translations;
+    private List<ContestTranslation> translations;
 
     public ContestTranslationBean() {
     }
 
     public ContestTranslationBean(ContestWrapper contest) {
-        final Map<String, IContestTranslation> translations =
+        final Map<String, ContestTranslation> translations =
                 StaticContestContext.getContestClient().getTranslationsForContestId(contest.getId())
                 .stream()
-                .collect(Collectors.toMap(IContestTranslation::getLang, t -> t));
+                .collect(Collectors.toMap(ContestTranslation::getLang, t -> t));
 
         for (String lang : I18nUtils.getAllLanguages()) {
             translations.computeIfAbsent(lang, k -> {
-                IContestTranslation translation = new ContestTranslation();
+                ContestTranslation translation = new ContestTranslation();
                 translation.setLang(lang);
                 translation.setContestId(contest.getId());
                 return translation;
@@ -40,11 +39,11 @@ public class ContestTranslationBean implements Serializable {
         this.translations = new ArrayList<>(translations.values());
     }
 
-    public List<IContestTranslation> getTranslations() {
+    public List<ContestTranslation> getTranslations() {
         return translations;
     }
 
-    public void setTranslations(List<IContestTranslation> translations) {
+    public void setTranslations(List<ContestTranslation> translations) {
         this.translations = translations;
     }
 

@@ -381,7 +381,7 @@ public class ContestWrapper extends Contest implements Serializable {
     @Override
     @JsonIgnore
     public String getEmailTemplateUrl() {
-        if (super.getEmailTemplateUrl().isEmpty()) {
+        if (super.getEmailTemplateUrl()==null || super.getEmailTemplateUrl().isEmpty()) {
             return EMAIL_TEMPLATE_URL;
         } else {
             return super.getEmailTemplateUrl();

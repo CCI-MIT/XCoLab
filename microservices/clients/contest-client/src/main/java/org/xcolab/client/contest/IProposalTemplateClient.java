@@ -89,6 +89,6 @@ public interface IProposalTemplateClient {
     default IProposalTemplateSection getProposalTemplateSection(Long proposalTemplateId,
             Long sectionDefinitionId) {
         return getProposalTemplateSections(proposalTemplateId, sectionDefinitionId).stream()
-                .findFirst().orElseThrow(NullPointerException::new);
+                .findFirst().orElse(null);
     }
 }

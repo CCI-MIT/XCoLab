@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.xcolab.client.contest.exceptions.PointDistributionNotFoundException;
 import org.xcolab.client.contest.pojo.IPointsDistributionConfiguration;
 import org.xcolab.client.contest.pojo.wrapper.PointTypeWrapper;
 import org.xcolab.client.contest.proposals.IPointsClient;
@@ -98,12 +99,13 @@ public class PointsController implements IPointsClient {
 
     @Override
     @GetMapping("/pointsDistributionConfigurations/{targetProposalTemplateSectionDefinitionId}")
+
     public IPointsDistributionConfiguration getPointsDistributionConfigurationByTargetProposalTemplateSectionDefinitionId(
             @PathVariable("targetProposalTemplateSectionDefinitionId")
-                    Long targetProposalTemplateSectionDefinitionId) {
+                    Long targetProposalTemplateSectionDefinitionId) throws PointDistributionNotFoundException {
         if (targetProposalTemplateSectionDefinitionId == null
                 || targetProposalTemplateSectionDefinitionId == 0) {
-            throw new RuntimeEntityNotFoundException(
+            throw new PointDistributionNotFoundException(
                     "PointsDistributionConfiguration not found with the id "
                             + targetProposalTemplateSectionDefinitionId);
         }
@@ -111,7 +113,7 @@ public class PointsController implements IPointsClient {
             return pointsDistributionConfigurationDao.getByProposalTemplateSectionDefinitionId(
                     targetProposalTemplateSectionDefinitionId);
         } catch (NotFoundException e) {}
-        throw new RuntimeEntityNotFoundException(
+        throw new PointDistributionNotFoundException(
                 "PointsDistributionConfiguration not found with the id "
                         + targetProposalTemplateSectionDefinitionId);
     }

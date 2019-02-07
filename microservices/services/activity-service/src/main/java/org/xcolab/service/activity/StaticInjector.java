@@ -6,6 +6,14 @@ import org.springframework.stereotype.Component;
 
 import org.xcolab.client.activity.IActivityClient;
 import org.xcolab.client.activity.StaticActivityContext;
+import org.xcolab.client.admin.IAdminClient;
+import org.xcolab.client.admin.IContestTypeClient;
+import org.xcolab.client.admin.IEmailTemplateClient;
+import org.xcolab.client.admin.StaticAdminContext;
+import org.xcolab.client.comment.ICategoryClient;
+import org.xcolab.client.comment.ICommentClient;
+import org.xcolab.client.comment.IThreadClient;
+import org.xcolab.client.comment.StaticCommentContext;
 import org.xcolab.client.contest.IContestClient;
 import org.xcolab.client.contest.IContestTeamMemberClient;
 import org.xcolab.client.contest.IImpactClient;
@@ -34,7 +42,14 @@ public class StaticInjector {
             IProposalMoveClient proposalMoveClient, IProposalPhaseClient proposalPhaseClient,
             IProposalClient proposalClient, IMembershipClient membershipClient,
             IProposalMemberRatingClient proposalMemberRatingClient,
-            IProposalJudgeRatingClient proposalJudgeRatingClient) {
+            IProposalJudgeRatingClient proposalJudgeRatingClient,
+            IAdminClient adminClient, IContestTypeClient contestTypeClient, IEmailTemplateClient emailTemplateClient,
+            IThreadClient threadClient, ICommentClient commentClient,
+            ICategoryClient categoryClient) {
+
+        StaticAdminContext.setClients(adminClient, contestTypeClient,emailTemplateClient);
+
+        StaticCommentContext.setClients(commentClient,categoryClient,threadClient);
 
         StaticActivityContext.setClients(activityClient);
         StaticContestContext.setClients(contestClient, contestTeamMemberClient, impactClient,

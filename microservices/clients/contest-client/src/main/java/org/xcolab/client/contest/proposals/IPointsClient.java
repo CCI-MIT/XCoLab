@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.xcolab.client.contest.exceptions.PointDistributionNotFoundException;
 import org.xcolab.client.contest.pojo.IPointsDistributionConfiguration;
 import org.xcolab.client.contest.pojo.wrapper.PointTypeWrapper;
 
@@ -21,10 +22,10 @@ public interface IPointsClient {
     IPointsDistributionConfiguration createPointsDistributionConfiguration(@RequestBody
             IPointsDistributionConfiguration pointsDistributionConfiguration);
 
-    @GetMapping("/pointsDistributionConfigurations/targetProposalTemplateSectionDefinitionId")
+    @GetMapping("/pointsDistributionConfigurations/{targetProposalTemplateSectionDefinitionId}")
     IPointsDistributionConfiguration getPointsDistributionConfigurationByTargetProposalTemplateSectionDefinitionId(
             @PathVariable("targetProposalTemplateSectionDefinitionId")
-                    Long targetProposalTemplateSectionDefinitionId);
+                    Long targetProposalTemplateSectionDefinitionId) throws PointDistributionNotFoundException;
 
     @PutMapping("/pointsDistributionConfigurations")
     boolean updatePointsDistributionConfiguration(
@@ -55,5 +56,14 @@ public interface IPointsClient {
 
     default List<PointTypeWrapper> getAllPointTypes() {
         return getPointTypes(null);
+    }
+
+    default IPointsDistributionConfiguration getPointsDistributionConfigurationByTargetProposalTemplateSectionDefinitionIdOrNull(Long templateSection){
+        try{
+            return getPointsDistributionConfigurationByTargetProposalTemplateSectionDefinitionId(templateSection);
+        } catch (PointDistributionNotFoundException e) {
+            return null;
+        }
+
     }
 }

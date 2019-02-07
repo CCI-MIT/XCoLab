@@ -3,6 +3,7 @@ package org.xcolab.view.pages.contestmanagement.beans;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.xcolab.client.content.IContentClient;
+import org.xcolab.client.content.StaticContentContext;
 import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.view.pages.contestmanagement.wrappers.WikiPageWrapper;
@@ -15,8 +16,7 @@ public class ContestAdminBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Autowired
-    private IContentClient contentClient;
+
 
     private String emailTemplateUrl;
     private ContestModelSettingsBean contestModelSettings;
@@ -54,7 +54,7 @@ public class ContestAdminBean implements Serializable {
     public void persist(ContestWrapper contest) {
 
         updateContest(contest);
-        WikiPageWrapper.updateContestWiki(contentClient, contest);
+        WikiPageWrapper.updateContestWiki(StaticContentContext.getContentClient(), contest);
     }
 
     private void updateContest(ContestWrapper contest) {

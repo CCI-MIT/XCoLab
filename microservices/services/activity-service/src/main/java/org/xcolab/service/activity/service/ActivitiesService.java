@@ -77,7 +77,7 @@ public class ActivitiesService {
         final IActivitySubscription contestSubscription = createSubscription(userId,
                 ActivityCategory.CONTEST, contestId, 0);
 
-        ContestWrapper contest = contestClient.getContest(contestId);
+        ContestWrapper contest = new ContestWrapper(contestClient.getContest(contestId));
 
         subscribeDiscussion(userId, contest.getDiscussionGroupId(), true);
 

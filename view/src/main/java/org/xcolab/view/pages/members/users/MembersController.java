@@ -49,8 +49,8 @@ public class MembersController {
     @Autowired
     private IUserCategoryClient userCategoryClient;
 
-    @RequestMapping("/members")
-    public String showUsers(HttpServletRequest request, HttpServletResponse response, Model model,
+    @GetMapping("/members")
+    public String showUsers(HttpServletRequest request, Model model,
             SortFilterPage sortFilterPage,
             @RequestParam(value = "page", required = false) Long pageParam,
             @RequestParam(value = "memberCategory", required = false) String memberCategoryParam) {

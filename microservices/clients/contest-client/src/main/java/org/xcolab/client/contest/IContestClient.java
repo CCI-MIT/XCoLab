@@ -27,6 +27,7 @@ import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.commons.IdListUtil;
 import org.xcolab.util.activities.enums.ActivityCategory;
+import org.xcolab.client.contest.pojo.tables.pojos.ContestTranslation;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -85,6 +86,7 @@ public interface IContestClient {
         c.setPointDistributionStrategy("");
         c.setEmailTemplateUrl("");
         c.setHideRibbons(false);
+        c.setEmailTemplateUrl("");
         c.setReadOnlyComments(false);
         c.setResourceArticleId(0L);
         return createContest(c);
@@ -146,11 +148,11 @@ public interface IContestClient {
     }
 
     @GetMapping("/contests/{contestId}/translations")
-    List<IContestTranslation> getTranslationsForContestId(
+    List<ContestTranslation> getTranslationsForContestId(
             @PathVariable("contestId") Long contestId);
 
     @PutMapping("/contests/translations")
-    boolean saveTranslation(@RequestBody IContestTranslation contestTranslation);
+    boolean saveTranslation(@RequestBody ContestTranslation contestTranslation);
 
     @GetMapping("/contests/isContestTitleYearUnique")
     boolean isContestTitleYearUnique(

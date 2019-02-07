@@ -20,7 +20,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
 @RestController
-@RequestMapping("/members")
+
 public class UserLoginRegisterController implements IUserLoginRegisterClient {
 
     private final UserService memberService;
@@ -35,12 +35,12 @@ public class UserLoginRegisterController implements IUserLoginRegisterClient {
         this.memberDao = memberDao;
     }
 
-    @GetMapping("generateScreenName")
+    @GetMapping("/members/generateScreenName")
     public String generateScreenName(@RequestParam String[] values) {
         return memberService.generateScreenName(values);
     }
 
-    @GetMapping("isUsed")
+    @GetMapping("/members/isUsed")
     public boolean isUsed(
             @RequestParam(required = false) String screenName,
             @RequestParam(required = false) String email) {
@@ -54,14 +54,14 @@ public class UserLoginRegisterController implements IUserLoginRegisterClient {
         return ret;
     }
 
-    @GetMapping("hashPassword")
+    @GetMapping("/members/hashPassword")
     public String hashPassword(@RequestParam String password) {
         password = decode(password);
         return memberService
                 .hashPassword(password);
     }
 
-    @PostMapping("validatePassword")
+    @PostMapping("/members/validatePassword")
     public Boolean validatePassword(
             @RequestParam String password,
             @RequestParam(required = false) String hash,
@@ -83,7 +83,7 @@ public class UserLoginRegisterController implements IUserLoginRegisterClient {
         throw new MemberNotFoundException("The endpoint you requested is not available for the given attributes");
     }
 
-    @PostMapping("{userId}/updatePassword")
+    @PostMapping("/members/{userId}/updatePassword")
     public boolean updateForgottenPasswordByToken(@PathVariable long userId,
             @RequestParam String newPassword)
             throws MemberNotFoundException {
@@ -91,7 +91,7 @@ public class UserLoginRegisterController implements IUserLoginRegisterClient {
         return memberService.updatePassword(userId, newPassword);
     }
 
-    @GetMapping("createForgotPasswordToken")
+    @GetMapping("/members/createForgotPasswordToken")
     public String createForgotPasswordToken(
             @RequestParam(required = false) Long userId) throws MemberNotFoundException {
         if (userId != null) {
@@ -101,7 +101,7 @@ public class UserLoginRegisterController implements IUserLoginRegisterClient {
                 "The endpoint you requested is not available for the given attributes");
     }
 
-    @PostMapping("updateForgottenPassword")
+    @PostMapping("/members/updateForgottenPassword")
     public Long updateForgottenPasswordByToken(
             @RequestParam String forgotPasswordToken,
             @RequestParam String password)
@@ -110,7 +110,7 @@ public class UserLoginRegisterController implements IUserLoginRegisterClient {
         return memberService.updateUserPasswordWithToken(forgotPasswordToken, password);
     }
 
-    @GetMapping("validateForgotPasswordToken")
+    @GetMapping("/members/validateForgotPasswordToken")
     public boolean validateForgotPasswordToken(
             @RequestParam String passwordToken)
             throws MemberNotFoundException {

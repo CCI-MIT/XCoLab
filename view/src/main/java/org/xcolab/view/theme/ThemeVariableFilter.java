@@ -41,10 +41,14 @@ public class ThemeVariableFilter extends GenericFilterBean {
         }
 
         HttpServletRequest httpRequest = (HttpServletRequest) request;
+        String requestUri = httpRequest.getRequestURI();
 
-        ThemeContext themeContext = new ThemeContext(authenticationService, ssoServices,
-                httpRequest);
-        httpRequest.setAttribute(REQUEST_ATTRIBUTE_NAME, themeContext);
+        if(!(requestUri.equals("/notificationMessage") && !requestUri.contains("/image/"))&&(!requestUri.contains("/vendor/"))) {
+
+            ThemeContext themeContext = new ThemeContext(authenticationService, ssoServices,
+                    httpRequest);
+            httpRequest.setAttribute(REQUEST_ATTRIBUTE_NAME, themeContext);
+        }
 
         chain.doFilter(request, response);
     }

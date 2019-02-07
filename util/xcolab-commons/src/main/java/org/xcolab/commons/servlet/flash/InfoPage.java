@@ -2,12 +2,16 @@ package org.xcolab.commons.servlet.flash;
 
 import org.xcolab.commons.servlet.flash.impl.FlashMessageStore;
 
+import java.io.Serializable;
+
 import javax.servlet.http.HttpServletRequest;
 
-public class InfoPage {
+public class InfoPage implements Serializable {
+
+    private static final long serialVersionUID = 13284972398L;
 
     private static final FlashMessageStore MESSAGE_STORE = new FlashMessageStore();
-    private static final String MESSAGE_VIEW = "message";
+    private static final String MESSAGE_VIEW = "redirect:/admin/contest/manager/contestCreated";
 
     private final String title;
     private final String message;

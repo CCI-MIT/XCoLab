@@ -20,7 +20,7 @@ import org.xcolab.client.contest.pojo.IContestDiscussion;
 import org.xcolab.client.contest.pojo.IContestPhaseRibbonType;
 import org.xcolab.client.contest.pojo.IContestPhaseType;
 import org.xcolab.client.contest.pojo.IContestSchedule;
-import org.xcolab.client.contest.pojo.IContestTranslation;
+
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.commons.spring.web.annotation.ListMapping;
@@ -41,6 +41,7 @@ import org.xcolab.service.contest.service.ontology.OntologyService;
 import org.xcolab.service.contest.utils.promotion.PromotionService;
 import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.util.http.exceptions.RuntimeEntityNotFoundException;
+import org.xcolab.client.contest.pojo.tables.pojos.ContestTranslation;
 
 import java.sql.Timestamp;
 import java.util.Collections;
@@ -330,7 +331,8 @@ public class ContestController implements IContestClient {
 
     @Override
     @PutMapping("/contests/translations")
-    public boolean saveTranslation(@RequestBody IContestTranslation contestTranslation) {
+    public boolean saveTranslation(@RequestBody
+            ContestTranslation contestTranslation) {
         Long contestId = contestTranslation.getContestId();
         String lang = contestTranslation.getLang();
 
@@ -344,7 +346,7 @@ public class ContestController implements IContestClient {
 
     @Override
     @GetMapping("/contests/{contestId}/translations")
-    public List<IContestTranslation> getTranslationsForContestId(@PathVariable Long contestId) {
+    public List<ContestTranslation> getTranslationsForContestId(@PathVariable Long contestId) {
         return contestTranslationDao.listByContestId(contestId);
     }
 

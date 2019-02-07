@@ -8,7 +8,7 @@ import org.xcolab.client.contest.pojo.IContestDiscussion;
 import org.xcolab.client.contest.pojo.IContestPhaseRibbonType;
 import org.xcolab.client.contest.pojo.IContestPhaseType;
 import org.xcolab.client.contest.pojo.IContestSchedule;
-import org.xcolab.client.contest.pojo.IContestTranslation;
+import org.xcolab.client.contest.pojo.tables.pojos.ContestTranslation;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 
@@ -51,12 +51,12 @@ public class ContestClientMockImpl implements IContestClient {
     }
 
     @Override
-    public List<IContestTranslation> getTranslationsForContestId(Long contestId) {
+    public List<ContestTranslation> getTranslationsForContestId(Long contestId) {
         return Collections.emptyList();
     }
 
     @Override
-    public boolean saveTranslation(IContestTranslation contestTranslation) {
+    public boolean saveTranslation(ContestTranslation contestTranslation) {
         return false;
     }
 

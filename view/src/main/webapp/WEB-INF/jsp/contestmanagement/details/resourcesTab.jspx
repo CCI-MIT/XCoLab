@@ -36,7 +36,7 @@
                         data-confirm="Are you sure you want to permanently delete this contest's resource page?"
                         name="enable" value="false">Destroy resource page</button>
             </form:form>
-            <form:form action="${updateContestResourcesURL}" modelAttribute="contestResourcesBean"
+            <form:form action="${updateContestResourcesURL}"
              modelAttribute="contestResourcesBean" cssClass="addpropform" id="editForm" method="post">
                 <form:hidden path="numberOfSections"/>
                 <form:errors cssClass="alert alert-danger" element="div" path="*" />

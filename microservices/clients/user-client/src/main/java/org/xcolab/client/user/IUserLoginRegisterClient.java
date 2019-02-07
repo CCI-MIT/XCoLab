@@ -14,43 +14,42 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 @FeignClient("xcolab-user-service")
-@RequestMapping("/members")
 public interface IUserLoginRegisterClient {
 
-    @GetMapping("generateScreenName")
+    @GetMapping("/members/generateScreenName")
     String generateScreenName(@RequestParam String[] values);
 
-    @GetMapping("isUsed")
+    @GetMapping("/members/isUsed")
     boolean isUsed(
             @RequestParam(required = false) String screenName,
             @RequestParam(required = false) String email);
 
-    @GetMapping("hashPassword")
+    @GetMapping("/members/hashPassword")
     String hashPassword(@RequestParam String password);
 
-    @PostMapping("validatePassword")
+    @PostMapping("/members/validatePassword")
     Boolean validatePassword(
             @RequestParam String password,
             @RequestParam(required = false) String hash,
             @RequestParam(required = false) Long userId)
             throws MemberNotFoundException;
 
-    @PostMapping("{userId}/updatePassword")
+    @PostMapping("/members/{userId}/updatePassword")
     boolean updateForgottenPasswordByToken(@PathVariable long userId,
             @RequestParam String newPassword)
             throws MemberNotFoundException;
 
-    @GetMapping("createForgotPasswordToken")
+    @GetMapping("/members/createForgotPasswordToken")
     String createForgotPasswordToken(
             @RequestParam(required = false) Long userId) throws MemberNotFoundException;
 
-    @PostMapping("updateForgottenPassword")
+    @PostMapping("/members/updateForgottenPassword")
     Long updateForgottenPasswordByToken(
             @RequestParam String forgotPasswordToken,
             @RequestParam String password)
             throws MemberNotFoundException;
 
-    @GetMapping("validateForgotPasswordToken")
+    @GetMapping("/members/validateForgotPasswordToken")
     boolean validateForgotPasswordToken(
             @RequestParam String passwordToken)
             throws MemberNotFoundException;

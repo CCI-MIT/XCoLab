@@ -25,7 +25,7 @@ public class ContestTranslationDaoImpl implements ContestTranslationDao {
     }
 
     @Override
-    public IContestTranslation create(IContestTranslation translation) {
+    public ContestTranslation create(ContestTranslation translation) {
         dslContext.insertInto(CONTEST_TRANSLATION)
                 .set(CONTEST_TRANSLATION.CONTEST_ID, translation.getContestId())
                 .set(CONTEST_TRANSLATION.LANG, translation.getLang())
@@ -40,7 +40,7 @@ public class ContestTranslationDaoImpl implements ContestTranslationDao {
     }
 
     @Override
-    public boolean update(IContestTranslation translation) {
+    public boolean update(ContestTranslation translation) {
         return dslContext.update(CONTEST_TRANSLATION)
                 .set(CONTEST_TRANSLATION.TITLE, translation.getTitle())
                 .set(CONTEST_TRANSLATION.QUESTION, translation.getQuestion())
@@ -61,7 +61,7 @@ public class ContestTranslationDaoImpl implements ContestTranslationDao {
     }
 
     @Override
-    public Optional<IContestTranslation> get(long contestId, String lang) {
+    public Optional<ContestTranslation> get(long contestId, String lang) {
         final Record record = dslContext.select().from(CONTEST_TRANSLATION)
                 .where(CONTEST_TRANSLATION.CONTEST_ID.eq(contestId)
                         .and(CONTEST_TRANSLATION.LANG.equalIgnoreCase(lang))).fetchOne();
@@ -72,7 +72,7 @@ public class ContestTranslationDaoImpl implements ContestTranslationDao {
     }
 
     @Override
-    public List<IContestTranslation> listByContestId(long contestId) {
+    public List<ContestTranslation> listByContestId(long contestId) {
         return dslContext.select()
                 .from(CONTEST_TRANSLATION)
                 .where(CONTEST_TRANSLATION.CONTEST_ID.eq(contestId))

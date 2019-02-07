@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.xcolab.client.contest.pojo.IContestPhaseType;
-import org.xcolab.client.contest.pojo.IContestTranslation;
+
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.service.contest.domain.contest.ContestDao;
@@ -18,6 +18,7 @@ import org.xcolab.service.contest.domain.contesttranslation.ContestTranslationDa
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.service.ontology.OntologyService;
 import org.xcolab.service.utils.PaginationHelper;
+import org.xcolab.client.contest.pojo.tables.pojos.ContestTranslation;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -177,7 +178,7 @@ public class ContestService {
     }
 
     public ContestWrapper resolveTranslation(ContestWrapper contest, String lang) {
-        final Optional<IContestTranslation> contestTranslation =
+        final Optional<ContestTranslation> contestTranslation =
                 contestTranslationDao.get(contest.getId(), lang);
         return contestTranslation
                 .map(translation -> {

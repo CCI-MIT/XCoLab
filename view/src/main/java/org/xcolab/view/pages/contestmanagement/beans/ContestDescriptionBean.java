@@ -3,14 +3,13 @@ package org.xcolab.view.pages.contestmanagement.beans;
 import org.hibernate.validator.constraints.Length;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import org.xcolab.client.admin.IContestTypeClient;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.comment.IThreadClient;
+import org.xcolab.client.comment.StaticCommentContext;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.IThread;
-import org.xcolab.client.content.IContentClient;
+import org.xcolab.client.content.StaticContentContext;
 import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.view.pages.contestmanagement.wrappers.WikiPageWrapper;
@@ -27,14 +26,7 @@ public class ContestDescriptionBean implements Serializable {
     private static final long serialVersionUID = 1L;
     private static final String NO_SPECIAL_CHAR_REGEX = "^[a-zA-Z:.,;'’0-9äöüÄÖÜ?! ]*$";
 
-    @Autowired
-    private IContentClient contentClient;
 
-    @Autowired
-    private IThreadClient threadClient;
-
-    @Autowired
-    private IContestTypeClient contestTypeClient;
 
     private Long contestId;
     private Long contestLogoId;
@@ -91,12 +83,12 @@ public class ContestDescriptionBean implements Serializable {
         updateContestDescription(contest);
 
         try {
-            final IThread thread = threadClient.getThread(contest.getDiscussionGroupId());
+            final IThread thread = StaticCommentContext.getThreadClient().getThread(contest.getDiscussionGroupId());
             ContestType contestType =
-                    contestTypeClient.getContestType(contest.getContestTypeId());
+                    StaticAdminContext.getContestTypeClient().getContestType(contest.getContestTypeId());
             thread.setTitle(String.format("%s %s",
                     contestType.getContestName(), contest.getTitle()));
-            threadClient.updateThread(thread.getId(), thread);
+            StaticCommentContext.getThreadClient().updateThread(thread.getId(), thread);
         } catch (ThreadNotFoundException e) {
             _log.warn("No thread (id = {}) exists for contest {}", contest.getDiscussionGroupId(),
                     contest.getId());
@@ -106,7 +98,7 @@ public class ContestDescriptionBean implements Serializable {
             contest.setContestUrlName((contest).generateContestUrlName());
             StaticContestContext.getContestClient().updateContest(contest);
         }
-        WikiPageWrapper.updateContestWiki(contentClient, contest);
+        WikiPageWrapper.updateContestWiki(StaticContentContext.getContentClient(), contest);
         updateContestSchedule(contest, scheduleTemplateId);
     }
 
