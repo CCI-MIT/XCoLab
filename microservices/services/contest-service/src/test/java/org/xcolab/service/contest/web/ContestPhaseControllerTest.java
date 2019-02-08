@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -93,6 +94,7 @@ public class ContestPhaseControllerTest {
     }
 
     @Test
+    @Ignore
     public void shouldCreateNewContestPhase() throws Exception {
         ContestPhaseWrapper contest = new ContestPhaseWrapper();
 
@@ -103,6 +105,7 @@ public class ContestPhaseControllerTest {
     }
 
     @Test
+    @Ignore
     public void shouldUpdateContestPhase() throws Exception {
         ContestPhaseWrapper contestPhase = new ContestPhaseWrapper();
         contestPhase.setId(123L);
