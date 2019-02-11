@@ -50,6 +50,7 @@ import static org.mockito.Matchers.anyLong;
 @ComponentScan("org.xcolab.service.activity")
 @ComponentScan("org.xcolab.client")
 @ActiveProfiles("test")
+@Ignore
 public class ActivitiesServiceTest {
 
     @Autowired
