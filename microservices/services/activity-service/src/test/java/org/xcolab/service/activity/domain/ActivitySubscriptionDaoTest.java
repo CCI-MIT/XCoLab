@@ -26,6 +26,7 @@ import static org.junit.Assert.assertTrue;
 @OverrideAutoConfiguration(enabled = false)
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @ComponentScan("org.xcolab.service.activity")
+@ComponentScan("org.xcolab.client.contest")
 @ActiveProfiles("test")
 public class ActivitySubscriptionDaoTest {
 

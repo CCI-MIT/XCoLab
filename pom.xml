@@ -435,11 +435,11 @@
                         <configuration combine.self="override">
                             <forkCount>3</forkCount>
                             <argLine>-Xmx512m -Xms256m</argLine>
-                            <includes>
-                                <include>**/*ControllerTest.java</include>
-                                <include>**/*ServiceTest.java</include>
-                                <include>**/*DaoTest.java</include>
-                            </includes>
+                            <excludes>
+                                <exclude>**/*ControllerTest.java</exclude>
+                                <exclude>**/*ServiceTest.java</exclude>
+                                <exclude>**/*DaoTest.java</exclude>
+                            </excludes>
                         </configuration>
                     </plugin>
                 </plugins>
