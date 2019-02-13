@@ -16,8 +16,11 @@ public class OrderMassAction extends AbstractContestMassAction {
     @Override
     public void execute(List<Contest> contests, boolean actionConfirmed,
             MassActionDataWrapper dataWrapper, HttpServletResponse response) {
+        Integer newWeight;
         for (Contest contest : contests) {
+            newWeight = contest.getWeight();
             contest = ContestClientUtil.getContest(contest.getId());
+            contest.setWeight(newWeight);
             ContestClientUtil.updateContest(contest);
         }
     }

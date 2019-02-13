@@ -347,6 +347,20 @@ public final class ConfigurationAttributeKey {
             ConfigurationAttributes.newBooleanAttribute("PROPOSALS_COMMENTS_READ_ONLY")
                     .defaultValue(false)
                     .build();
+    public static final AttributeGetter<Long> PROPOSALS_PITCH_CHAR_LIMIT =
+            ConfigurationAttributes.newLongAttribute("PROPOSALS_PITCH_CHAR_LIMIT")
+                    .defaultValue(140l)
+                    .build();
+    public static final AttributeGetter<Long> PROPOSALS_MAX_PER_AUTHOR_IN_CONTEST =
+            ConfigurationAttributes.newLongAttribute("PROPOSALS_MAX_PER_AUTHOR_IN_CONTEST")
+                    .defaultValue(0l)
+                    .build();
+    public static final AttributeGetter<Boolean> PROPOSALS_VOTE_IN_CONTEST_PAGE =
+            ConfigurationAttributes.newBooleanAttribute("PROPOSALS_VOTE_IN_CONTEST_PAGE")
+                    .defaultValue(false)
+                    .build();
+
+
 
     // Points
     public static final AttributeGetter<Boolean> POINTS_IS_ACTIVE =

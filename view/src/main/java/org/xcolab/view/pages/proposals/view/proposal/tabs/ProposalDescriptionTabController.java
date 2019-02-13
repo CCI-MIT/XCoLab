@@ -164,6 +164,8 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
                     ConfigurationAttributeKey.PROPOSALS_PICKER_DEFAULT_TAB_CONTESTS.get());
             model.addAttribute("userTeams", PlatformTeamsClient.getTeams(currentMember));
 
+            model.addAttribute("proposalPitchCharLimit", ConfigurationAttributeKey.PROPOSALS_PITCH_CHAR_LIMIT.get());
+
             return "proposals/proposalDetails_edit";
         }
 

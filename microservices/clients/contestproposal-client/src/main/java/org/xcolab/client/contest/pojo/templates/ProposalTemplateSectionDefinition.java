@@ -1,5 +1,6 @@
 package org.xcolab.client.contest.pojo.templates;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -75,11 +76,13 @@ public class ProposalTemplateSectionDefinition extends AbstractProposalTemplateS
         proposal = null;
     }
 
+    @JsonIgnore
     public List<Long> getAdditionalIdsAsList() {
         final String stringOfStringIds = this.getAdditionalIds();
         return IdListUtil.getIdsFromString(stringOfStringIds);
     }
 
+    @JsonIgnore
     public String getContent() {
         ProposalAttribute attr = getSectionAttribute();
 
@@ -89,6 +92,7 @@ public class ProposalTemplateSectionDefinition extends AbstractProposalTemplateS
         return attr.getStringValue().trim();
     }
 
+    @JsonIgnore
     public String getContentFormatted() throws URISyntaxException {
         String content = getContent();
         if (content == null) {
@@ -204,6 +208,7 @@ public class ProposalTemplateSectionDefinition extends AbstractProposalTemplateS
         return contentDocument.select("body").html();
     }
 
+    @JsonIgnore
     public ProposalTemplateSectionType getTypeEnum() {
         if (StringUtils.isBlank(this.getType())) {
             return ProposalTemplateSectionType.TEXT;
@@ -211,15 +216,17 @@ public class ProposalTemplateSectionDefinition extends AbstractProposalTemplateS
         return ProposalTemplateSectionType.valueOf(this.getType());
     }
 
+    @JsonIgnore
     public Long getSectionDefinitionId() {
         return this.getId();
     }
+
 
     public boolean isLocked() {
         return this.getLocked();
     }
 
-
+    @JsonIgnore
     public OntologyTerm getNumericValueAsOntologyTerm() {
         ProposalAttribute attr = getSectionAttribute();
         if (attr == null || attr.getNumericValue() <= 0) {
@@ -229,6 +236,7 @@ public class ProposalTemplateSectionDefinition extends AbstractProposalTemplateS
         return OntologyClientUtil.getOntologyTerm(attr.getNumericValue());
     }
 
+    @JsonIgnore
     public Proposal getNumericValueAsProposal() throws ProposalNotFoundException {
         ProposalAttribute attr = getSectionAttribute();
         if (attr == null || attr.getNumericValue() <= 0) {
@@ -236,7 +244,7 @@ public class ProposalTemplateSectionDefinition extends AbstractProposalTemplateS
         }
         return (ProposalClientUtil.getProposal(attr.getNumericValue()));
     }
-
+    @JsonIgnore
     public List<Proposal> getStringValueAsProposalArray() {
         ProposalAttribute attr = getSectionAttribute();
         if (attr == null || StringUtils.isEmpty(attr.getStringValue())) {
@@ -257,6 +265,7 @@ public class ProposalTemplateSectionDefinition extends AbstractProposalTemplateS
         return proposals;
     }
 
+    @JsonIgnore
     public long getNumericValue() {
         ProposalAttribute attr = getSectionAttribute();
         if (attr == null) {
@@ -265,6 +274,7 @@ public class ProposalTemplateSectionDefinition extends AbstractProposalTemplateS
         return attr.getNumericValue();
     }
 
+    @JsonIgnore
     public String getStringValue() {
         ProposalAttribute attr = getSectionAttribute();
         if (attr == null) {
@@ -273,6 +283,7 @@ public class ProposalTemplateSectionDefinition extends AbstractProposalTemplateS
         return attr.getStringValue();
     }
 
+    @JsonIgnore
     public List<OntologyTerm> getFocusAreaTerms() {
         if (this.getFocusAreaId() <= 0) {
             return null;
@@ -283,12 +294,14 @@ public class ProposalTemplateSectionDefinition extends AbstractProposalTemplateS
         return OntologyClientUtil.getOntologyTermsForFocusArea(area);
     }
 
+    @JsonIgnore
     public List<String> getOptionsForDropdownMenu() {
         return Stream.of(this.getAllowedValues().split(";"))
                 .map(String::trim)
                 .collect(Collectors.toList());
     }
 
+    @JsonIgnore
     public List<String> getOptionsForCheckbox() {
         return Stream.of(this.getAllowedValues().split(";"))
                 .map(String::trim)
@@ -299,6 +312,7 @@ public class ProposalTemplateSectionDefinition extends AbstractProposalTemplateS
         return Arrays.asList(this.getStringValue().split(";"));
     }
 
+    @JsonIgnore
     public boolean isOptionForCheckboxSelected(String value) {
         for (String selectedValue : getSelectedValuesForCheckbox()) {
             if (selectedValue.equals(value)) {
@@ -308,6 +322,7 @@ public class ProposalTemplateSectionDefinition extends AbstractProposalTemplateS
         return false;
     }
 
+    @JsonIgnore
     public List<Long> getAllowedContestTypeIdsList() {
         final List<Long> allowedContestTypeIds =
             IdListUtil.getIdsFromString(this.getAllowedContestTypeIds());
@@ -318,22 +333,25 @@ public class ProposalTemplateSectionDefinition extends AbstractProposalTemplateS
         return allowedContestTypeIds;
     }
 
+    @JsonIgnore
     public String getProposalNames() {
         return ContestTypeClient
                 .getProposalNames(getAllowedContestTypeIdsList(), Plurality.SINGULAR.name(), "or");
     }
 
-
+    @JsonIgnore
     public String getProposalNamesPlural() {
         return ContestTypeClient
                 .getProposalNames(getAllowedContestTypeIdsList(), Plurality.PLURAL.name(), "and");
     }
 
+    @JsonIgnore
     public String getContestNames() {
         return ContestTypeClient
                 .getContestNames(getAllowedContestTypeIdsList(), Plurality.SINGULAR.name(), "or");
     }
 
+    @JsonIgnore
     public String getContestNamesPlural() {
         return ContestTypeClient
                 .getContestNames(getAllowedContestTypeIdsList(), Plurality.PLURAL.name(), "or");
