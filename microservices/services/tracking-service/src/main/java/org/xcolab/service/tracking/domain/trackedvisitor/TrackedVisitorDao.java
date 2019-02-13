@@ -1,4 +1,4 @@
-package org.xcolab.service.tracking.domain.trackedVisitor;
+package org.xcolab.service.tracking.domain.trackedvisitor;
 
 
 import org.xcolab.model.tables.pojos.TrackedVisitor;
