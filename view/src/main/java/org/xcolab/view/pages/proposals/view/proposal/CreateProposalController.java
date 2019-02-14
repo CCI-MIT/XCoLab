@@ -132,6 +132,8 @@ public class CreateProposalController extends BaseProposalsController {
                 ConfigurationAttributeKey.IMAGE_UPLOAD_EXTERNAL_SERVICE_URL.get());
         request.setAttribute("imageUploadHelpText", ConfigurationAttributeKey.IMAGE_UPLOAD_HELP_TEXT.get());
 
+        model.addAttribute("proposalPitchCharLimit", ConfigurationAttributeKey.PROPOSALS_PITCH_CHAR_LIMIT.get());
+
         return "proposals/proposalDetails_edit";
     }
 

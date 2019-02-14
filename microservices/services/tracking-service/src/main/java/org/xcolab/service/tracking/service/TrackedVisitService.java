@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.xcolab.model.tables.pojos.TrackedVisit;
 import org.xcolab.model.tables.pojos.TrackedVisitor;
 import org.xcolab.service.tracking.domain.trackedvisit.TrackedVisitDao;
-import org.xcolab.service.tracking.domain.trackedVisitor.TrackedVisitorDao;
+import org.xcolab.service.tracking.domain.trackedvisitor.TrackedVisitorDao;
 import org.xcolab.service.tracking.service.iptranslation.IpTranslationService;
 import org.xcolab.service.tracking.service.iptranslation.IpTranslationService.IpFormatException;
 

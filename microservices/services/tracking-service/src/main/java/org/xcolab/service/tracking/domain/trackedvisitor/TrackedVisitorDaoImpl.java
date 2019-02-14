@@ -14,7 +14,7 @@ import java.util.Optional;
 import static org.xcolab.model.tables.TrackedVisitorTable.TRACKED_VISITOR;
 
 @Repository
-public class TrackedVisitorDaoImpl implements org.xcolab.service.tracking.domain.trackedVisitor.TrackedVisitorDao {
+public class TrackedVisitorDaoImpl implements TrackedVisitorDao {
 
     private final DSLContext dslContext;
 
