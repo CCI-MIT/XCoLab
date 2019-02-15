@@ -139,6 +139,15 @@ http-client:
     max-total: 40
     default-max-per-route: 3
 
+web:
+  guest-access:
+    allow-all: false
+    always-allow-content-pages: true
+  cache:
+    images:
+      active: false
+      maxAgeDays: 1
+
 ---
 
 spring:

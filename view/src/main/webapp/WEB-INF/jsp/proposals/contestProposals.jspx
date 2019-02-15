@@ -188,8 +188,8 @@
             </div>
         </c:if>
     </div>
-    <proposalsPortlet:proposalsList proposals="${proposals.proposalsWithRibbons }" />
-    <proposalsPortlet:proposalsList proposals="${proposals.proposalsWithoutRibbons }" />
+    <proposalsPortlet:proposalsList proposals="${proposals.proposalsWithRibbons }"  proposalVoteInContestPage="${proposalVoteInContestPage}"/>
+    <proposalsPortlet:proposalsList proposals="${proposals.proposalsWithoutRibbons }" proposalVoteInContestPage="${proposalVoteInContestPage}"/>
 
     <collab:script src="/js/proposals/proposals.js"/>
     <c:set var="contestPageBreadcumbs" >

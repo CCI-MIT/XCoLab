@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.util.enums.proposal.MoveType;
+import org.xcolab.view.util.validation.ConfigurableProposalPitchMaxLength;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +14,8 @@ import java.util.Map;
 public class UpdateProposalDetailsBean {
     private Map<Long, String> sectionsContent = new HashMap<>();
 
-    @Length(max = 140, message = "The pitch is limited to 140 characters.")
+    //@Length(max = 140, message = "The pitch is limited to 140 characters.")
+    @ConfigurableProposalPitchMaxLength
     private String pitch;
 
     @NotBlank(message = "Please enter a title.")

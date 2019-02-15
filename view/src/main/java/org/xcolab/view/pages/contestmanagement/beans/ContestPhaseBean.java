@@ -163,7 +163,7 @@ public class ContestPhaseBean implements Serializable {
     }
 
     private void createNewContestPhase() {
-        ContestPhase contestPhase = new ContestPhase();
+        ContestPhase contestPhase =  getContestPhase();
         contestPhase = ContestClientUtil.createContestPhase(contestPhase);
         id = contestPhase.getId();
     }

@@ -167,7 +167,6 @@ public class ContestPhase extends AbstractContestPhase implements Serializable {
         return DurationFormatter.forRequestLocale().formatDifferenceAsDays(getPhaseEndDate());
     }
 
-    @JsonIgnore
     public String getDurationTillEndFormatted() {
         String duration = getDurationTillEnd();
         //surrounds number with <span> tag for formatting
@@ -194,8 +193,7 @@ public class ContestPhase extends AbstractContestPhase implements Serializable {
         Date now = new Date();
         return (this.getPhaseEndDate() != null) && this.getPhaseEndDate().before(now);
     }
-
-    @JsonIgnore
+    
     public boolean isAlreadyStarted() {
         Date now = new Date();
         final Timestamp phaseStartDate = this.getPhaseStartDate();

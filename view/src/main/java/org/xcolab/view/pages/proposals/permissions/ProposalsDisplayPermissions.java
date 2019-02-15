@@ -60,6 +60,11 @@ public class ProposalsDisplayPermissions {
         return !isLoggedIn || (!isGuest && !hasVotedOnThisProposal());
     }
 
+    public boolean getCanSeeVoteButtonForProposal(Long proposalId) {
+        return !isLoggedIn || (!isGuest && !(clientHelper.getProposalMemberRatingClient()
+                .hasUserVoted(proposalId, contestPhase.getId(), userId)));
+    }
+
     private boolean hasVotedOnThisProposal() {
         return proposal != null && proposal.getId() > 0
                 && clientHelper.getProposalMemberRatingClient().hasUserVoted(
