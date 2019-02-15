@@ -8,7 +8,8 @@ public enum ColabTheme {
     CROWDSENSOR("d71a11", 109, true),
     RESILIENCE_DIALOGUES("30a3fb", 136),
     CLIMATE_RISKS_COLAB("aa2029", 145, true),
-    FUTURES_COLAB("30a3fb", 145, true);
+    FUTURES_COLAB("30a3fb", 145, true),
+    CHILE_COLAB("00ff00", 145, true);
 
     private final String themeName;
     private final int logoWidth;
