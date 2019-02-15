@@ -1,5 +1,6 @@
 package org.xcolab.client.contest.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -41,6 +42,7 @@ public class ContestSchedule extends AbstractContestSchedule implements Serializ
         this.contestClient = ContestClientUtil.getClient();
     }
 
+    @JsonIgnore
     public boolean isUsedInNonEmptyContest() {
         return contestClient.getContestsByContestScheduleId(getId())
                 .stream()

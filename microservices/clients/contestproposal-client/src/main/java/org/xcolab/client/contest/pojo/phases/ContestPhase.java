@@ -1,5 +1,6 @@
 package org.xcolab.client.contest.pojo.phases;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -68,6 +69,7 @@ public class ContestPhase extends AbstractContestPhase implements Serializable {
         return newPhase;
     }
 
+    @JsonIgnore
     public boolean getPhaseActive() {
         if (this.getPhaseStartDate() != null) {
             Date now = new Date();
@@ -79,6 +81,7 @@ public class ContestPhase extends AbstractContestPhase implements Serializable {
         return false;
     }
 
+    @JsonIgnore
     public String getContestPhaseLinkUrl() {
         try {
             Contest contest = contestClient.getContest(this.getContestId());
@@ -91,35 +94,43 @@ public class ContestPhase extends AbstractContestPhase implements Serializable {
         }
     }
 
+    @JsonIgnore
     public String getContestStatusStr() {
         return getContestPhaseTypeObject().getStatus();
     }
 
+    @JsonIgnore
     public ContestPhaseType getContestPhaseTypeObject() {
         return contestClient.getContestPhaseType(this.getContestPhaseTypeId());
     }
 
+    @JsonIgnore
     public Date getPhaseStartDateDt() {
         return this.getPhaseStartDate();
     }
 
+    @JsonIgnore
     public Instant getPhaseStartDateInstant() {
         return this.getPhaseStartDate().toInstant();
     }
 
+    @JsonIgnore
     public Date getPhaseEndDateDt() {
         return this.getPhaseEndDate();
     }
 
+    @JsonIgnore
     public Instant getPhaseEndDateInstant() {
         return this.getPhaseEndDate() != null ? this.getPhaseEndDate().toInstant() : null;
     }
 
+    @JsonIgnore
     public Date getPhaseReferenceDate() {
         return (this.getPhaseEndDate() == null) ? this.getPhaseStartDateDt()
                 : this.getPhaseEndDateDt();
     }
 
+    @JsonIgnore
     public String getPhaseReferenceYear() {
         Date referenceDate = getPhaseReferenceDate();
         Calendar cal = Calendar.getInstance();
@@ -128,7 +139,7 @@ public class ContestPhase extends AbstractContestPhase implements Serializable {
         return "" + cal.get(Calendar.YEAR);
     }
 
-
+    @JsonIgnore
     public ContestStatus getStatus() {
         if (status == null) {
             status = ContestStatus.valueOf(getContestStatusStr());
@@ -136,32 +147,39 @@ public class ContestPhase extends AbstractContestPhase implements Serializable {
         return status;
     }
 
+    @JsonIgnore
     public boolean getCanVote() {
         return (getStatus() != null) && getStatus().isCanVote();
     }
 
+    @JsonIgnore
     public boolean getCanEdit() {
         return (getStatus() != null) && getStatus().isCanEdit();
     }
 
+    @JsonIgnore
     public boolean isActive() {
         return this.getPhaseActive();
     }
 
+    @JsonIgnore
     public String getDurationTillEnd() {
         return DurationFormatter.forRequestLocale().formatDifferenceAsDays(getPhaseEndDate());
     }
 
+    @JsonIgnore
     public String getDurationTillEndFormatted() {
         String duration = getDurationTillEnd();
         //surrounds number with <span> tag for formatting
         return duration.replaceAll("\\b(\\d+)\\b", "<span class='c-Count__number'>$1</span>");
     }
 
+    @JsonIgnore
     public String getName() {
         return contestClient.getContestPhaseType(this.getContestPhaseTypeId()).getName();
     }
 
+    @JsonIgnore
     public String getFlagText() {
         ContestPhaseType phaseType = getContestPhaseTypeObject();
         String flagText = phaseType.getDefaultFlagText();
@@ -171,21 +189,25 @@ public class ContestPhase extends AbstractContestPhase implements Serializable {
         return flagText;
     }
 
+    @JsonIgnore
     public boolean isEnded() {
         Date now = new Date();
         return (this.getPhaseEndDate() != null) && this.getPhaseEndDate().before(now);
     }
 
+    @JsonIgnore
     public boolean isAlreadyStarted() {
         Date now = new Date();
         final Timestamp phaseStartDate = this.getPhaseStartDate();
         return phaseStartDate != null && phaseStartDate.before(now);
     }
 
+    @JsonIgnore
     public ContestPhasePromoteType getContestPhaseAutopromoteEnum() {
         return ContestPhasePromoteType.getPromoteType(getContestPhaseAutopromote());
     }
 
+    @JsonIgnore
     public Boolean getProposalVisibility(long proposalId) {
         ProposalPhaseClient proposalPhaseClient = ProposalPhaseClientUtil.getClient();
         ProposalContestPhaseAttribute attr = proposalPhaseClient
@@ -195,6 +217,7 @@ public class ContestPhase extends AbstractContestPhase implements Serializable {
 
     }
 
+    @JsonIgnore
     public boolean setProposalVisibility(long proposalId, boolean visible) {
         ProposalPhaseClientUtil.getClient()
                 .setProposalContestPhaseAttribute(proposalId, this.getId(),
@@ -202,18 +225,22 @@ public class ContestPhase extends AbstractContestPhase implements Serializable {
         return true;
     }
 
+    @JsonIgnore
     public String getPhaseStatusDescription() {
         return getContestPhaseTypeObject().getDescription();
     }
 
+    @JsonIgnore
     public boolean isCompleted() {
         return getStatus() == ContestStatus.COMPLETED;
     }
 
+    @JsonIgnore
     public boolean getIsJudged() {
         return getContestPhaseTypeObject().getDefaultPromotionTypeEnum() == ContestPhasePromoteType.PROMOTE_JUDGED;
     }
 
+    @JsonIgnore
     public boolean isFinalistPhase() {
         List<ContestPhase> contestPhases = this.getContest().getVisiblePhases();
         final Predicate<ContestPhase> isAfterCurrentPhase =
@@ -227,14 +254,17 @@ public class ContestPhase extends AbstractContestPhase implements Serializable {
                 .noneMatch(isJudgedPhase);
     }
 
+    @JsonIgnore
     public String getContestPhaseUrl() {
         return this.getContestPhaseLinkUrl();
     }
 
+    @JsonIgnore
     public Contest getContest() {
         return contestClient.getContest(getContestId());
     }
 
+    @JsonIgnore
     public boolean getFellowScreeningActive() {
         return getContestPhaseTypeObject().getFellowScreeningActiveDefault();
     }
