@@ -78,6 +78,7 @@ public final class ContestCreatorUtil {
     private static ContestSchedule getOrCreateDefaultContestSchedule() {
         final long defaultContestScheduleId = ConfigurationAttributeKey
                 .DEFAULT_CONTEST_SCHEDULE_ID.get();
+        // TODO: create default contest schedule not working
         try {
             if (defaultContestScheduleId > 0) {
                 return ContestClientUtil.getContestSchedule(defaultContestScheduleId);
