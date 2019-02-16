@@ -15,6 +15,7 @@ import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalClient;
+import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -148,6 +149,21 @@ public class ContestProposalsController extends BaseProposalsController {
         boolean showDownloadLink = proposalContext.getPermissions().getCanDownload();
         model.addAttribute("showEditLink", showEditLink);
         model.addAttribute("showDownloadLink", showDownloadLink);
+
+        Long proposalCreationMaxPerAuthor = ConfigurationAttributeKey.PROPOSALS_MAX_PER_AUTHOR_IN_CONTEST.get();
+        model.addAttribute("proposalCreationMaxPerAuthor",proposalCreationMaxPerAuthor);
+        if(proposalCreationMaxPerAuthor != 0 ) {
+            int totalProposalsByAuthor = 0;
+            for(Proposal p: proposals){
+                if(p.getAuthor().getId() == loggedInMember.getId()) {
+                    totalProposalsByAuthor = totalProposalsByAuthor + 1;
+                }
+            }
+
+            model.addAttribute("hasAuthorReachedLimit", (totalProposalsByAuthor>= proposalCreationMaxPerAuthor));
+
+        }
+
 
         setBasePageAttributes(proposalContext, model);
 
