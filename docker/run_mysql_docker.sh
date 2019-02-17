@@ -11,4 +11,4 @@ docker run -d -p 3306:3306 --name xcolab_mysql --env-file ${currentPath}/mysql_e
 -e MYSQL_PASSWORD=${mysqlPassword} -e MYSQL_ROOT_PASSWORD=${mysqlRootPassword} \
 --mount type=bind,src=${currentPath}/mysql_config,dst=/etc/mysql \
 --mount type=bind,src=${dataPath},dst=/var/lib/mysql \
-mysql/mysql-server:5.7
+--restart=always mysql/mysql-server:5.7
