@@ -55,7 +55,7 @@ public interface IUserClient {
     @GetMapping("/members/{userId}")
     UserWrapper getUser(@PathVariable long userId) throws MemberNotFoundException;
 
-    @PutMapping(name = "/members/", value = "{userId}")
+    @PutMapping("/members/{userId}")
     boolean updateUser(@RequestBody UserWrapper member, @PathVariable Long userId)
             throws MemberNotFoundException;
 

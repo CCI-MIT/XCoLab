@@ -101,7 +101,7 @@ public class UserController implements IUserClient {
     }
 
     @Override
-    @PutMapping(value = "/members/{userId}")
+    @PutMapping("/members/{userId}")
     public boolean updateUser(@RequestBody UserWrapper member, @PathVariable Long userId)
             throws MemberNotFoundException {
         if (userId == 0 || memberDao.getUser(userId) == null) {
