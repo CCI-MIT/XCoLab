@@ -360,7 +360,9 @@
             var index = 0;
             do {
                 if (!isElementDummyContestPhase(nextElementInList)) {
+
                     index++;
+                    console.log("Index: " + index);
                     var dataFormIndexLable = nextElementInList.querySelector("[data-form-attribute=indexLable]");
                     dataFormIndexLable.innerHTML = index.toString();
                 }

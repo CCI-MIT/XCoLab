@@ -103,7 +103,11 @@ public class UserProfileWrapper implements Serializable {
 
         userSubscriptions = new UserSubscriptionsWrapper(member);
         userActivities.clear();
-        supportedProposals.addAll(ProposalMemberRatingClientUtil.getSupportedProposals(member.getId()));
+
+
+        for(SupportedProposal supportedProposal: ProposalMemberRatingClientUtil.getSupportedProposals(member.getId())){
+            supportedProposals.add(new SupportedProposal(supportedProposal));
+        }
 
         for (ActivityEntry activity : ActivityUtil.groupActivities(ActivitiesClientUtil
                 .getActivityEntries(0, MAX_ACTIVITIES_COUNT, member.getId(), null))) {
@@ -125,7 +129,7 @@ public class UserProfileWrapper implements Serializable {
             if (proposalsInContestType != null) {
                 for (Proposal p : proposalsInContestType) {
                     contestTypeProposalWrappersByContestTypeId.get(contestType.getId())
-                            .getProposals().add(p);
+                            .getProposals().add(new Proposal(p));
                 }
             }
         }
