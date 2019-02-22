@@ -41,7 +41,7 @@ function extractInputElementsInNode(node){
 
 function createFormInputsIdReplacements(oldSectionElementId, newSectionElementId, sectionElementNames, sectionPrefix){
     var formInputData = [];
-    newSectionElementId = newSectionElementId -1;
+    newSectionElementId = newSectionElementId;
     for (var i = 0; i < sectionElementNames.length; i++) {
         var sectionDummyInputId = sectionPrefix + oldSectionElementId + "." + sectionElementNames[i];
         var sectionInputId = sectionPrefix + newSectionElementId + "." + sectionElementNames[i];

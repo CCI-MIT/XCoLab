@@ -65,10 +65,19 @@
             <c:set var="createProposalUrl" value="${contest.newProposalLinkUrl}"/>
             <c:set var="createProposalBtnClass"
                    value="${proposalsPermissions.isCreationAllowedByPhase ? 'btn-primary' : 'cb-btn-admin'}"/>
-            <a class="btn ${createProposalBtnClass} js-EnhancedLink" data-require-login="true"
-               href="${proposalsPermissions.canCreate ? createProposalUrl : '#'}">
-                ${contestType.creationPrompt}
-            </a>
+            <c:if test="${proposalCreationMaxPerAuthor == 0}">
+                <a class="btn ${createProposalBtnClass} js-EnhancedLink" data-require-login="true"
+                   href="${proposalsPermissions.canCreate ? createProposalUrl : '#'}">
+                    ${contestType.creationPrompt}
+                </a>
+            </c:if>
+            <c:if test="${proposalCreationMaxPerAuthor!=0 and !hasAuthorReachedLimit }">
+                <a class="btn ${createProposalBtnClass} js-EnhancedLink" data-require-login="true"
+                   href="${proposalsPermissions.canCreate ? createProposalUrl : '#'}">
+                    ${contestType.creationPrompt}
+                </a>
+            </c:if>
+            <c:if test="${hasAuthorReachedLimit }"><spring:message code="contests.proposal.header.creationlimit.reached" arguments="${proposalCreationMaxPerAuthor},${contestType.proposalNameLowercase},${contestType.contestNameLowercase}"/> </c:if>
         </c:if>
     </div>
 

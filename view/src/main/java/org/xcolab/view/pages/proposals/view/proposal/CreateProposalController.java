@@ -30,6 +30,8 @@ import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.pages.proposals.utils.edit.ProposalUpdateHelper;
 import org.xcolab.view.util.entity.analytics.AnalyticsUtil;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -52,6 +54,22 @@ public class CreateProposalController extends BaseProposalsController {
     public String showCreateProposal(HttpServletRequest request, HttpServletResponse response,
             Model model, ProposalContext proposalContext, Member loggedInMember) {
 
+
+        Long proposalCreationMaxPerAuthor = ConfigurationAttributeKey.PROPOSALS_MAX_PER_AUTHOR_IN_CONTEST.get();
+        if(proposalCreationMaxPerAuthor != 0 ) {
+            int totalProposalsByAuthor = 0;
+            List<Proposal> proposals = proposalContext.getClients().getProposalClient().getActiveProposalsInContestPhase(
+                    proposalContext.getContestPhase().getId());
+            for(Proposal p: proposals){
+                if(p.getAuthor().getId() == loggedInMember.getId()) {
+                    totalProposalsByAuthor = totalProposalsByAuthor + 1;
+                }
+            }
+            if((totalProposalsByAuthor>= proposalCreationMaxPerAuthor)) {
+                return "redirect:" + proposalContext.getContest().getContestUrl();
+            }
+
+        }
         return showCreateProposal(request, response, model, proposalContext, loggedInMember, null, -1, null);
     }
 

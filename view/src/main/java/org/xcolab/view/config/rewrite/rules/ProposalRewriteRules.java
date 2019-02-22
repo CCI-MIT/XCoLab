@@ -23,6 +23,8 @@ public class ProposalRewriteRules implements RewriteRuleProvider {
                             .or(Path.matches("/trends{path}"))
                             .or(Path.matches("/dialogues{path}"))
                             .or(Path.matches("/contributions{path}"))
+                            .or(Path.matches("/ClimatePhilanthropy{path}"))
+                            .or(Path.matches("/DisruptingSystems{path}"))
                     ))
                     .perform(Forward.to("/contests{path}"))
                     .where("path").matches(".*");
