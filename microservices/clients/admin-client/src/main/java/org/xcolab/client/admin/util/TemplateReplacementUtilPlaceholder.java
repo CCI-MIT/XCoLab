@@ -19,6 +19,9 @@ public final class TemplateReplacementUtilPlaceholder {
     }
 
     public static String replacePlatformConstants(String text) {
+        if(text == null) {
+            return "";
+        }
         final String colabName = ConfigurationAttributeKey.COLAB_NAME.get();
         final String colabShortName = ConfigurationAttributeKey.COLAB_SHORT_NAME.get();
         final String colabUrl = PlatformAttributeKey.COLAB_URL.get();
