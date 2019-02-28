@@ -121,7 +121,7 @@
                     <a class="btn btn-primary" href="javascript:;" onclick="pickProposalList(${section.sectionDefinitionId},
                         ${proposalPickerDefaultTabIsContests ? 'PICKER_TAB_ALL_CONTESTS' : 'PICKER_TAB_ALL_PROPOSALS'},
                         '${section.proposalNames}', '${section.proposalNamesPlural}', '${section.contestNames}', '${section.contestNamesPlural}');">
-                        Edit ${section.proposalNames} list
+                        Select from list <!-- Edit ${section.proposalNames} -->
                     </a>
                 </c:when>
 

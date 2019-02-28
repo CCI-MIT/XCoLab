@@ -372,6 +372,8 @@
                 disableDirtyCheck();
                 submitted = true;
                 jQuery("#editForm").submit();
+            } else {
+                enableButtons();
             }
         }
 
