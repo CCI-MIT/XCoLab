@@ -75,7 +75,7 @@
             </div>
             <c:if test="${contestPhase.canVote or (contestPhase.completed and not shouldHideRibbons)}">
                 <div class="col c-TableGrid__cell text-center votes">
-                    <c:if test="${not proposalVoteInContestPage or not proposalsPermissions.votingEnabled}">}">
+                    <c:if test="${not proposalVoteInContestPage or not proposalsPermissions.votingEnabled}">
                         <div class="highlight">
                             <collab:image src="/images/icon-proposal-vote-small.png" cssClass="c-Icon" />
                             <xcolab:proposalLink proposal="${proposal}" text="${proposal.votesCountFromCache}" />
