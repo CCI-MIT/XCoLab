@@ -3,3 +3,66 @@
 
 // Import base theme
 @import "../main";
+
+// hide: contest page: author names
+.c-TableGrid__row .propname-authors a:nth-child(2),
+.c-TableGrid__header .c-TableGrid__cell span:nth-child(2) a {
+  display: none;
+}
+
+// hide: contest page: contributors
+.c-TableGrid__row--continued div:nth-child(2),
+.c-TableGrid__row--continued div:nth-child(5),
+.c-TableGrid__cell.supporters,
+.c-TableGrid__cell.votes,
+.c-TableGrid__cell.contributors {
+  display: none;
+}
+
+// hide: contest page: 'debate' button
+.p-ContestProposals__header__buttons a.btn-outline-primary {
+  display: none;
+}
+
+// hide: proposal page: sidebar
+.l-Content__sidebar.l-Content__sidebar--large.l-Content__sidebar--right {
+  display: none;
+}
+
+// hide: proposal page: tabs
+.proposal-head ul.nav.nav-tabs.flex-column {
+  display: none;
+}
+
+// hide: proposal page, pitch, description, etc//
+.l-Content__main.c-UserContent p.lead,
+.l-Content__main.c-UserContent div:first-child,
+.l-Content__main.c-UserContent h2,
+.l-Content__main.c-UserContent h3,
+.l-Content__main.c-UserContent hr {
+  display: none;
+}
+
+
+// hide: proposal page: proposal image and sub-header
+.proposal-head img,
+.proposal-head h1 small {
+  display: none !important;
+}
+
+// hide: 'Contest' link in breadcrumbs
+li.breadcrumb-item:first-child {
+  display: none;
+}
+
+li.breadcrumb-item:nth-child(2)::before {
+  content: '';
+  padding: 0;
+}
+
+// hide: registration page: country, language, img & bio
+#registrationForm div.form-row:nth-child(8),
+#registrationForm div.form-row:nth-child(9),
+#registrationForm div.form-row:nth-child(10) {
+  display: none;
+}
