@@ -1,5 +1,6 @@
 package org.xcolab.client.proposals.pojo.team;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -38,6 +39,7 @@ public class ProposalTeamMembershipRequest extends AbstractProposalTeamMembershi
 
     }
 
+    @JsonIgnore
     public Member getRequestUser(){
         if(this.requestUser == null){
             if(this.getUserId() != null) {
@@ -57,6 +59,7 @@ public class ProposalTeamMembershipRequest extends AbstractProposalTeamMembershi
         return requestUser;
     }
 
+    @JsonIgnore
     public ProposalTeamMembershipRequest getMembershipRequest(){
         return this;
     }
