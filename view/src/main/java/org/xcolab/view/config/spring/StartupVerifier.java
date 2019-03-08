@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.enums.ServerEnvironment;
 import org.xcolab.commons.servlet.ManifestUtil;
+import org.xcolab.util.i18n.I18nUtils;
 
 import java.util.Optional;
 
@@ -41,5 +42,8 @@ public class StartupVerifier implements ApplicationRunner {
             log.warn("Running in NON PRODUCTION environment. For production use, please set the"
                             + " server environment to {}.", ServerEnvironment.PRODUCTION);
         }
+
+        log.info("Running with default locale : {}", I18nUtils.DEFAULT_LOCALE.getCountry() + "_" + I18nUtils.DEFAULT_LOCALE.getLanguage());
+
     }
 }

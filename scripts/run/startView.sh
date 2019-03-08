@@ -28,7 +28,7 @@ function startView {
         fi
         rm ${OUT_FILE} > /dev/null 2>&1
         exec java -Xmx${maxMem} -Xms1G -XX:-OmitStackTraceInFastThrow \
-            -jar ${VIEW}-1.0-SNAPSHOT.war > ${OUT_FILE}  & echo $! > ${PID_FILE}
+            -Duser.language=en -Duser.country=US  -jar ${VIEW}-1.0-SNAPSHOT.war > ${OUT_FILE}  & echo $! > ${PID_FILE}
     fi
 }
 
