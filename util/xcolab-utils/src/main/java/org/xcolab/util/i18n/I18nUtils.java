@@ -14,7 +14,8 @@ import java.util.stream.Collectors;
 public final class I18nUtils {
 
     public static final String MEMBER_LOCALE_SESSION_IDENTIFIER = "memberLocale";
-    public static final Locale DEFAULT_LOCALE = Locale.US;
+
+    public static final Locale DEFAULT_LOCALE = Locale.getDefault();
     public static final String DEFAULT_LANGUAGE = DEFAULT_LOCALE.getLanguage();
 
     private static final Map<String, String> codeToLocale = new HashMap<>();

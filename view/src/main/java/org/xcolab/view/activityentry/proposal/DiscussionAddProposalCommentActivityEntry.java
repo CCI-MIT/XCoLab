@@ -34,6 +34,7 @@ public class DiscussionAddProposalCommentActivityEntry extends ProposalBaseActiv
 
     @Override
     protected String getProposalLinkUrl() {
-        return super.getProposalLinkUrl() + "/tab/COMMENTS";
+
+        return this.getProposal().getProposalDiscussionUrl();
     }
 }
