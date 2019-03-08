@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import org.xcolab.model.tables.pojos.ContestTypeAttribute;
+import org.xcolab.util.i18n.I18nUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +18,7 @@ import static org.xcolab.model.Tables.CONTEST_TYPE_ATTRIBUTE;
 @Repository
 public class ContestTypeAttributeDaoImpl implements ContestTypeAttributeDao {
 
-    private static final String DEFAULT_LOCALE = "en";
+    private static final String DEFAULT_LOCALE = I18nUtils.DEFAULT_LANGUAGE;
 
     private final DSLContext dslContext;
 
