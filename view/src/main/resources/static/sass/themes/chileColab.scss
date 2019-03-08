@@ -4,13 +4,18 @@
 // Import base theme
 @import "../main";
 
-// hide: contest page: author names
+
+
+/* Contest page */
+
+
+// hide author names
 .c-TableGrid__row .propname-authors a:nth-child(2),
 .c-TableGrid__header .c-TableGrid__cell span:nth-child(2) a {
   display: none;
 }
 
-// hide: contest page: contributors
+// hide contributors
 .c-TableGrid__row--continued div:nth-child(2),
 .c-TableGrid__row--continued div:nth-child(5),
 .c-TableGrid__cell.supporters,
@@ -19,22 +24,31 @@
   display: none;
 }
 
-// hide: contest page: 'debate' button
+// hide 'debate' button
 .p-ContestProposals__header__buttons a.btn-outline-primary {
   display: none;
 }
 
-// hide: proposal page: sidebar
+.c-TitleBar__element.future span {
+  opacity: 0;
+}
+
+
+
+/* Proposal page */
+
+
+// hide sidebar
 .l-Content__sidebar.l-Content__sidebar--large.l-Content__sidebar--right {
   display: none;
 }
 
-// hide: proposal page: tabs
+// hide tabs
 .proposal-head ul.nav.nav-tabs.flex-column {
   display: none;
 }
 
-// hide: proposal page, pitch, description, etc//
+// hide pitch, description, etc//
 .l-Content__main.c-UserContent p.lead,
 .l-Content__main.c-UserContent div:first-child,
 .l-Content__main.c-UserContent h2,
@@ -43,8 +57,7 @@
   display: none;
 }
 
-
-// hide: proposal page: proposal image and sub-header
+// hide proposal image and sub-header
 .proposal-head img,
 .proposal-head h1 small {
   display: none !important;
@@ -59,6 +72,33 @@ li.breadcrumb-item:nth-child(2)::before {
   content: '';
   padding: 0;
 }
+
+// proposal head & content background, margin and padding
+.proposal-head {
+  margin-bottom: 0;
+  background: #f6f6f6;
+  padding: 1rem 1rem 0 1rem;
+}
+
+.proposal-head .c-Headline {
+  margin-bottom: 0;
+}
+
+.l-Content__main.c-UserContent {
+  margin: 0;
+  font-size: 1.25rem;
+  background: #f6f6f6;
+  padding: 0 1rem;
+}
+
+.c-TitleBar__element.future span {
+  opacity: 0;
+}
+
+
+
+/* Registration page */
+
 
 // hide: registration page: country, language, img & bio
 #registrationForm div.form-row:nth-child(8),
