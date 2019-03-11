@@ -99,10 +99,34 @@ li.breadcrumb-item:nth-child(2)::before {
 
 /* Registration page */
 
+#registrationForm label[for="country"] + div,
+#registrationForm label[for="country"] {
+  display: none;
+}
 
-// hide: registration page: country, language, img & bio
-#registrationForm div.form-row:nth-child(8),
-#registrationForm div.form-row:nth-child(9),
-#registrationForm div.form-row:nth-child(10) {
+#registrationForm label[for="language"] + div,
+#registrationForm label[for="language"] {
+  display: none;
+}
+
+#registrationForm .col-auto.mx-auto,
+#registrationForm .col-auto.mx-auto div,
+#registrationForm .col-auto.mx-auto + div {
+  display: none;
+}
+
+
+
+/* Footer */
+
+#c-Footer li.nav-item:nth-child(1),
+#c-Footer li.nav-item:nth-child(2) {
+  display: none;
+}
+
+
+
+/* Header */
+.cb-navbar-background ul.navbar-nav li.nav-item.cb-nav-item-gray.cb-nav-item-sm.cb-nav-item-separator-left.cb-nav-item-icon {
   display: none;
 }
