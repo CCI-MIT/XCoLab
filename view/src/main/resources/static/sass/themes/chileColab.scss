@@ -45,6 +45,17 @@ div#auxilaryLawDocuments p.title {
   font-size: 18px;
 }
 
+// css for moderators
+.p-ContestProposals__header__team .p-ContestProposals__header__team__member img {
+  width: 50px;
+  height: 50px;
+  float: left;
+}
+
+.p-ContestProposals__header__team .p-ContestProposals__header__team__member {
+  min-width: 350px;
+}
+
 
 /* Proposal page */
 
