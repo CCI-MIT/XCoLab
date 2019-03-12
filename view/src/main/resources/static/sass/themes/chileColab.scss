@@ -33,6 +33,17 @@
   opacity: 0;
 }
 
+// css for extra information section
+div#auxilaryLawDocuments {
+  background: #f6f6f6;
+  margin-top: 24px;
+  font-style: italic;
+}
+
+div#auxilaryLawDocuments p.title {
+  font-weight: bold;
+  font-size: 18px;
+}
 
 
 /* Proposal page */
