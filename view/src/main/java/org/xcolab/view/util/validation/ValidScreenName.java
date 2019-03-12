@@ -10,7 +10,7 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 import javax.validation.constraints.Pattern;
 
-@Pattern(regexp = "^[a-zA-Z0-9]*$")
+@Pattern(regexp = "^[a-zA-Z0-9]*$", message = "{register.screenName.pattern}")
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = {})
