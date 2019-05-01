@@ -9,6 +9,7 @@ import org.xcolab.client.user.StaticUserContext;
 import org.xcolab.client.user.pojo.wrapper.MessagingUserPreferenceWrapper;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.CountryUtil;
+import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.util.validation.CompareStrings;
 import org.xcolab.view.util.validation.HtmlMaxLength;
 import org.xcolab.view.util.validation.PasswordLength;
@@ -82,7 +83,7 @@ public class UserBean implements Serializable {
         if(member.getDefaultLocale()!=null){
             defaultLocale = member.getDefaultLocale();
         }else{
-            defaultLocale = "en"; //TODO COLAB-2621: migrate this to a single i18n file
+            defaultLocale = I18nUtils.DEFAULT_LOCALE.getLanguage();
         }
         if(member.getPortraitFileEntryId()==null){
             imageId = 0;

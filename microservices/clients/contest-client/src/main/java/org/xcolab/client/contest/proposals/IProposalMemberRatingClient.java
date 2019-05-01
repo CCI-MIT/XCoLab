@@ -85,6 +85,9 @@ public interface IProposalMemberRatingClient {
         return countProposalVotes(contestPhaseId, null, null, true);
     }
 
+    default int countVotesByUserInProposalAndPhase(long userId, long proposalId, long phaseId){
+        return countProposalVotes(phaseId, proposalId, userId, null);
+    }
     default int countVotesByUserInPhase(long userId, long phaseId) {
         return countProposalVotes(phaseId, null, userId, null);
     }

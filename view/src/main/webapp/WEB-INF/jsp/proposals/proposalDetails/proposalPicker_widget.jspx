@@ -148,7 +148,8 @@
                 <div class="modal-footer">
                     <button type="close" class="btn btn-gray" data-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-primary" onclick="savePickedProposals()">
-                        Choose <span class="contestTypeProposalNames">Proposal</span>
+                        <!-- -->
+                        Select item(s)
                     </button>
                 </div>
             </div>

@@ -153,6 +153,7 @@
                                                     data-type-attribute="start"
                                                     data-index-attribute="${dateTimePickerIndex}"
                                                     data-select-attribute="datetimepicker"
+                                                    autocomplete="off"
                                                     data-form-name="phaseStartDate"
                                                     readonly="${inputIsReadOnly}"
                                                 />
@@ -266,15 +267,17 @@
                     var nexDateTimePickerIndex = parseInt(dateTimePickerIndex) + 1;
                     var nextDateTimePicker = document.querySelectorAll('[data-index-attribute="' + nexDateTimePickerIndex + '"]');
                     nextDateTimePicker = nextDateTimePicker[0];
-                    if (nextDateTimePicker.value != undefined) {
-                        try {
-                            var nextDateTimePickerDate = new Date(nextDateTimePicker.value);
-                            var dateTimePickerDate = new Date(dateTimePickerDateString);
-                            if (dateTimePickerDate > nextDateTimePickerDate) {
-                                nextDateTimePicker.value = inst.val();
+                    if(nextDateTimePicker) {
+                        if (nextDateTimePicker.value != undefined) {
+                            try {
+                                var nextDateTimePickerDate = new Date(nextDateTimePicker.value);
+                                var dateTimePickerDate = new Date(dateTimePickerDateString);
+                                if (dateTimePickerDate > nextDateTimePickerDate) {
+                                    nextDateTimePicker.value = inst.val();
+                                }
+                            } catch (e) {
+                                console.log("Couldn't parse nextDateTimePickerDate", e);
                             }
-                        } catch (e) {
-                            console.log("Couldn't parse nextDateTimePickerDate", e);
                         }
                     }
                 }
@@ -357,7 +360,9 @@
             var index = 0;
             do {
                 if (!isElementDummyContestPhase(nextElementInList)) {
+
                     index++;
+                    console.log("Index: " + index);
                     var dataFormIndexLable = nextElementInList.querySelector("[data-form-attribute=indexLable]");
                     dataFormIndexLable.innerHTML = index.toString();
                 }

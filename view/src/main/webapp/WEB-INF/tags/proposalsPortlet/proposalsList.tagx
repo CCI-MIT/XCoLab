@@ -2,7 +2,9 @@
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
-          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+          xmlns:spring="http://www.springframework.org/tags"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:form="http://www.springframework.org/tags/form">
 
     <!--@elvariable id="proposalsPermissions" type="org.xcolab.view.pages.proposals.permissions.ProposalsPermissions"-->
     <!--@elvariable id="contest" type="org.xcolab.client.contest.pojo.wrapper.ContestWrapper"-->
@@ -12,6 +14,10 @@
     <!--@elvariable id="judgeId" type="java.lang.Long"-->
 
     <jsp:directive.attribute name="proposals" type="java.util.Collection" required="true" rtexprvalue="true" description="proposals" />
+
+
+
+    <jsp:directive.attribute name="proposalVoteInContestPage" type="java.lang.Boolean" required="false" rtexprvalue="true" description="proposals" />
 
     <c:set var="shouldHideRibbons" value="${contest.hideRibbons and not proposalsPermissions.canAdminAll}"/>
 
@@ -69,10 +75,42 @@
             </div>
             <c:if test="${contestPhase.canVote or (contestPhase.completed and not shouldHideRibbons)}">
                 <div class="col c-TableGrid__cell text-center votes">
-                    <div class="highlight">
-                        <collab:image src="/images/icon-proposal-vote-small.png" cssClass="c-Icon" />
-                        <xcolab:proposalLink proposal="${proposal}" text="${proposal.votesCountFromCache}" />
-                    </div>
+                    <c:if test="${not proposalVoteInContestPage or not proposalsPermissions.votingEnabled}">
+                        <div class="highlight">
+                            <collab:image src="/images/icon-proposal-vote-small.png" cssClass="c-Icon" />
+                            <xcolab:proposalLink proposal="${proposal}" text="${proposal.votesCountFromCache}" />
+                        </div>
+                    </c:if>
+                    <c:if test="${proposalVoteInContestPage and proposalsPermissions.votingEnabled}">
+                        <c:set var="voteOnProposalURL" value="${proposal.proposalUrl}/voteInContestPage" />
+
+                        <form:form action="${voteOnProposalURL}" method="post">
+                            <span class="col" style="padding: 0px">
+                                <c:set var="userPropCount" value="${proposalsDisplayPermissions.countVotesByUserInPhase(proposal.id)}"/>
+                                <c:if test="${userPropCount > 0}">
+                                    <span class="col-12">
+                                        You cast ${userPropCount} ${((userPropCount==1)?("vote"):("votes"))}
+                                    </span>
+                                </c:if>
+                                <span class="col-12">
+                                    <c:if test="${proposalsDisplayPermissions.getCanSeeVoteButtonForProposal(proposal.id) and contest.maxVotesPerProposal > 1}">
+
+                                            <input class="form-control cb-form-control-inline cb-form-control-xs mr-2"
+                                               name="voteValue" id="voteValue" value="0" style="font-size: 11px;width: 31px;padding-right: 0px;padding-left: 5px;"
+                                               type="number" min="1" max="${contest.maxVotesPerProposal}"/>
+
+                                    </c:if>
+                                    <button type="submit" class="btn btn-primary js-EnhancedLink"
+                                            data-require-login="true" style="${proposalsDisplayPermissions.getCanSeeVoteButtonForProposal(proposal.id) ? 'width: 38px;font-size: 9px;padding-left: 7px;'  : 'width: 97px;font-size: 9px;padding-left: 13px;'}">
+                                        <collab:message var="voteForText" code="contests.voting.onepage.vote" contestType="${contestType}"/>
+                                        <spring:message var="retractVoteText" code="contests.voting.onepage.retract"/>
+                                        ${proposalsDisplayPermissions.getCanSeeVoteButtonForProposal(proposal.id) ? voteForText  : retractVoteText}
+                                    </button>
+                                </span>
+                                <span class="col-12" style="padding-left: 0px;padding-right: 0px;">total ${proposal.votesCount} ${((proposal.votesCount==1)?("vote"):("votes"))}</span>
+                            </span>
+                        </form:form>
+                    </c:if>
                 </div>
             </c:if>
             <c:if test="${not contestPhase.canVote}">

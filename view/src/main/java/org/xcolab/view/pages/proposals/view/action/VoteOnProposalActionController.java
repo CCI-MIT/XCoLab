@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import org.xcolab.client.activity.IActivityClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
@@ -60,6 +61,21 @@ public class VoteOnProposalActionController {
         this.activityClient = activityClient;
         this.userClient = userClient;
     }
+
+    @PostMapping("voteInContestPage")
+    public String voteInContestPage(
+            HttpServletRequest request, HttpServletResponse response,
+            ProposalContext proposalContext,
+            Model model,
+            UserWrapper member,@RequestParam(defaultValue = "1") int voteValue) throws ProposalsAuthorizationException {
+
+            this.handleAction(request,response, model, proposalContext, member,voteValue);
+
+        return "redirect:" + proposalContext.getContest().getContestUrl();
+
+    }
+
+
 
     @PostMapping("vote")
     public String handleAction(HttpServletRequest request, HttpServletResponse response,

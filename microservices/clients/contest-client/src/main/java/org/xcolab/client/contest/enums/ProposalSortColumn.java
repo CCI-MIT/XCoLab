@@ -6,6 +6,7 @@ import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import java.util.Comparator;
 
 public enum ProposalSortColumn {
+    PROPOSAL_ID(Comparator.comparing(o -> o.getId())),
     NAME(Comparator.comparing(o -> o.getName().toLowerCase())),
     AUTHOR(Comparator.comparing(o -> o.getAuthorName().toLowerCase())),
     SUPPORTERS((o1, o2) -> (int) (o1.getSupportersCount() - o2.getSupportersCount())),

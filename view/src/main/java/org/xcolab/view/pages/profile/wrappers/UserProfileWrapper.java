@@ -135,7 +135,7 @@ public class UserProfileWrapper implements Serializable {
             if (proposalsInContestType != null) {
                 for (ProposalWrapper p : proposalsInContestType) {
                     contestTypeProposalWrappersByContestTypeId.get(contestType.getId())
-                            .getProposals().add(p);
+                            .getProposals().add(new ProposalWrapper(p));
                 }
             }
         }

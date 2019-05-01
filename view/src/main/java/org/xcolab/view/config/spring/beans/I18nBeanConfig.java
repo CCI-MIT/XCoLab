@@ -41,7 +41,7 @@ public class I18nBeanConfig {
     @Bean
     public LocaleResolver localeResolver(AuthenticationService authenticationService) {
         SessionLocaleResolver sessionLocaleResolver = new SessionLocaleResolver();
-        sessionLocaleResolver.setDefaultLocale(Locale.US);
+        sessionLocaleResolver.setDefaultLocale(I18nUtils.DEFAULT_LOCALE);
         sessionLocaleResolver.setLocaleAttributeName(I18nUtils.MEMBER_LOCALE_SESSION_IDENTIFIER);
         return new MemberLocaleResolver(authenticationService, sessionLocaleResolver);
     }

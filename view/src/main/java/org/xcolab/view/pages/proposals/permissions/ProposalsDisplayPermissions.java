@@ -61,6 +61,15 @@ public class ProposalsDisplayPermissions {
         return !isLoggedIn || (!isGuest && !hasVotedOnThisProposal());
     }
 
+    public boolean getCanSeeVoteButtonForProposal(Long proposalId) {
+        return !isLoggedIn || (!isGuest && !(clientHelper.getProposalMemberRatingClient()
+                .hasUserVoted(proposalId, contestPhase.getId(), userId)));
+    }
+    public int countVotesByUserInPhase(Long proposalId) {
+        return clientHelper.getProposalMemberRatingClient()
+                .countVotesByUserInProposalAndPhase(userId, proposalId, contestPhase.getId());
+    }
+
     private boolean hasVotedOnThisProposal() {
         return proposal != null && proposal.getId() > 0
                 && clientHelper.getProposalMemberRatingClient().hasUserVoted(

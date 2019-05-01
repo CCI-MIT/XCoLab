@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 import org.xcolab.client.admin.pojo.IConfigurationAttribute;
 import org.xcolab.client.admin.pojo.tables.pojos.ConfigurationAttribute;
 
+import org.xcolab.util.i18n.I18nUtils;
+
 import java.util.Optional;
 
 import static org.xcolab.model.Tables.CONFIGURATION_ATTRIBUTE;
@@ -17,7 +19,7 @@ import static org.xcolab.model.Tables.CONFIGURATION_ATTRIBUTE;
 @Repository
 public class ConfigurationAttributeDaoImpl implements ConfigurationAttributeDao {
 
-    private static final String DEFAULT_LOCALE = "en";
+    private static final String DEFAULT_LOCALE = I18nUtils.DEFAULT_LANGUAGE;
 
     private final DSLContext dslContext;
 

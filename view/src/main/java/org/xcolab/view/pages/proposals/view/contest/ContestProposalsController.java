@@ -140,10 +140,27 @@ public class ContestProposalsController extends BaseProposalsController {
         model.addAttribute("showContributorsColumn",
             ConfigurationAttributeKey.CONTESTS_ALLOW_OPEN_PROPOSALS.get());
 
+        model.addAttribute("proposalVoteInContestPage", ConfigurationAttributeKey.PROPOSALS_VOTE_IN_CONTEST_PAGE.get());
+
         boolean showEditLink = proposalContext.getPermissions().getCanEditContest();
         boolean showDownloadLink = proposalContext.getPermissions().getCanDownload();
         model.addAttribute("showEditLink", showEditLink);
         model.addAttribute("showDownloadLink", showDownloadLink);
+
+        Long proposalCreationMaxPerAuthor = ConfigurationAttributeKey.PROPOSALS_MAX_PER_AUTHOR_IN_CONTEST.get();
+        model.addAttribute("proposalCreationMaxPerAuthor",proposalCreationMaxPerAuthor);
+        if(proposalCreationMaxPerAuthor != 0 ) {
+            int totalProposalsByAuthor = 0;
+            for(ProposalWrapper p: proposals){
+                if(p.getAuthor().getId() == loggedInMember.getId()) {
+                    totalProposalsByAuthor = totalProposalsByAuthor + 1;
+                }
+            }
+
+            model.addAttribute("hasAuthorReachedLimit", (totalProposalsByAuthor>= proposalCreationMaxPerAuthor));
+
+        }
+
 
         setBasePageAttributes(proposalContext, model);
 
