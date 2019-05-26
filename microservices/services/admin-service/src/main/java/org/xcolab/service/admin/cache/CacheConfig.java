@@ -30,12 +30,12 @@ public class CacheConfig implements CachingConfigurer {
 
         GuavaCache configAttributeCache =
                 new GuavaCache(CONFIG_ATTRIBUTE_CACHE, CacheBuilder.newBuilder()
-                        .expireAfterWrite(20, TimeUnit.SECONDS)
+                        .expireAfterWrite(10, TimeUnit.MINUTES)
                         .build());
 
         GuavaCache contestTypeAttributeCache =
                 new GuavaCache(CONTEST_TYPE_ATTRIBUTE_CACHE, CacheBuilder.newBuilder()
-                        .expireAfterWrite(20, TimeUnit.SECONDS)
+                        .expireAfterWrite(10, TimeUnit.MINUTES)
                         .build());
 
         cacheManager.setCaches(Arrays.asList(
