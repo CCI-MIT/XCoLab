@@ -22,11 +22,11 @@ public class CacheController implements ICacheClient {
     @Override
     @GetMapping("/clearCache")
     public String clearCache() {
-        LOGGER.info("Clearing all User Service cache");
+        LOGGER.info("Clearing all Admin Service cache");
         cacheManager.getCacheNames().stream()
                 .forEach(cacheName -> cacheManager.getCache(cacheName).clear());
 
-        return "Clearing all User Service cache";
+        return "Clearing all Admin Service cache";
     }
 
 }
