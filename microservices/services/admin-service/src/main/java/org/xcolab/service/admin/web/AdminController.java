@@ -1,6 +1,7 @@
 package org.xcolab.service.admin.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,7 @@ import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.pojo.IConfigurationAttribute;
 import org.xcolab.client.admin.pojo.IContestTypeAttribute;
 import org.xcolab.client.admin.pojo.INotification;
+import org.xcolab.service.admin.cache.CacheConfig;
 import org.xcolab.service.admin.domain.configurationattribute.ConfigurationAttributeDao;
 import org.xcolab.service.admin.domain.contesttypeattribute.ContestTypeAttributeDao;
 
@@ -67,6 +69,7 @@ public class AdminController implements IContestTypeClient, IAdminClient {
     }
 
     @Override
+    @Cacheable(CacheConfig.CONFIG_ATTRIBUTE_CACHE)
     @GetMapping("/attributes/{name}")
     public Optional<IConfigurationAttribute> getConfigurationAttribute(@PathVariable String name,
             @RequestParam(required = false) String locale) {
@@ -100,6 +103,7 @@ public class AdminController implements IContestTypeClient, IAdminClient {
     }
 
     @Override
+    @Cacheable(CacheConfig.CONTEST_TYPE_ATTRIBUTE_CACHE)
     @GetMapping("/contestTypeAttributes/{attributeName}")
     public Optional<IContestTypeAttribute> getContestTypeAttribute(@PathVariable String attributeName,
             @RequestParam Long additionalId, @RequestParam(required = false) String locale) {
