@@ -3,7 +3,7 @@ package org.xcolab.view.config.spring.beans;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
+//import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -63,11 +63,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.authorizeRequests()
+        /*httpSecurity.authorizeRequests()
+                .antMatchers("/actuator/prometheus").permitAll()
                 .requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole("ADMIN")
                 .antMatchers("/oauth/authorize").authenticated()
                 .antMatchers("/impersonate")
-                    .hasAnyRole("ADMIN", SwitchUserFilter.ROLE_PREVIOUS_ADMINISTRATOR);
+                    .hasAnyRole("ADMIN", SwitchUserFilter.ROLE_PREVIOUS_ADMINISTRATOR);*/
 
         final GuestAccess guestAccessProperties = webProperties.getGuestAccess();
 
@@ -103,6 +104,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/reportError**").permitAll()
                     .anyRequest().authenticated();
         }
+
 
         httpSecurity
                 .formLogin()

@@ -1,5 +1,6 @@
 package org.xcolab.view.pages.members.users;
 
+import io.micrometer.core.instrument.Metrics;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -36,6 +37,9 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static java.util.concurrent.TimeUnit.NANOSECONDS;
+
 @Controller
 public class MembersController {
 
@@ -54,6 +58,11 @@ public class MembersController {
             SortFilterPage sortFilterPage,
             @RequestParam(value = "page", required = false) Long pageParam,
             @RequestParam(value = "memberCategory", required = false) String memberCategoryParam) {
+
+        // Metrics code
+        Metrics.counter("xcolab-view","endpoint","/members", "function", "/members").increment();
+
+        long startTime = System.nanoTime();
 
         model.addAttribute("communityTopContentArticleId",
                 ConfigurationAttributeKey.MEMBERS_CONTENT_ARTICLE_ID.get());
@@ -121,6 +130,13 @@ public class MembersController {
 
         model.addAttribute("permissions", membersPermissions);
         model.addAttribute("_activePageLink", "community");
+
+        long endTime = System.nanoTime();
+
+        long duration = (endTime - startTime);
+
+        Metrics.timer("xcolab-view_timer","endpoint","/members", "function", "/members").record(duration, NANOSECONDS);
+
         return "members/users";
     }
 

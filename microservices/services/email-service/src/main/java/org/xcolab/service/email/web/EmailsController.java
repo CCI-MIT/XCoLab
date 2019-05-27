@@ -31,6 +31,7 @@ public class EmailsController implements IEmailClient {
     @Override
     @PostMapping("/emails/send")
     public void sendEmail(@RequestBody IEmail email) {
+        //Metrics.counter("email-service","function","sendEmail").increment();
         boolean shouldSendEmail = true;
         if (email.getTo().size() == 1) {
             List<OutgoingEmail> colabEmails = colabEmailDao
@@ -46,6 +47,7 @@ public class EmailsController implements IEmailClient {
     }
 
     private void createColabEmailFromEmail(IEmail email, boolean sentStatus) {
+        //Metrics.counter("email-service","function","createColabEmailFromEmail").increment();
         for (String recipient : email.getTo()) {
             OutgoingEmail ce = new OutgoingEmail();
             ce.setSentAt(new Timestamp(new Date().getTime()));

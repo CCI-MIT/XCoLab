@@ -47,7 +47,7 @@ public class ThreadController implements IThreadClient {
             @RequestParam(required = false) Long authorUserId,
             @RequestParam(required = false) Long categoryId,
             @RequestParam(required = false) Long groupId) {
-
+        //Metrics.counter("comment-service","function","listThreads").increment();
         PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
         return threadDao.findByGiven(paginationHelper, authorUserId, categoryId, groupId);
     }
@@ -55,6 +55,7 @@ public class ThreadController implements IThreadClient {
     @Override
     @DeleteMapping("/threads/{threadId}")
     public boolean deleteThread(@PathVariable Long threadId) {
+        //Metrics.counter("comment-service","function","deleteThread").increment();
         boolean result = false;
         if (threadId != null) {
             result = threadDao.delete(threadId);
@@ -65,6 +66,7 @@ public class ThreadController implements IThreadClient {
     @Override
     @GetMapping("/threads/{threadId}")
     public IThread getThread(@PathVariable Long threadId) throws ThreadNotFoundException {
+        //Metrics.counter("comment-service","function","deleteThread").increment();
         try {
             return threadDao.get(threadId);
         } catch (NotFoundException e) {
@@ -75,6 +77,7 @@ public class ThreadController implements IThreadClient {
     @Override
     @PostMapping("/threads")
     public IThread createThread(@RequestBody IThread thread) {
+        //Metrics.counter("comment-service","function","createThread").increment();
         thread.setCreatedAt(new Timestamp(new Date().getTime()));
         return threadDao.create(thread);
     }
@@ -82,6 +85,7 @@ public class ThreadController implements IThreadClient {
     @Override
     @PutMapping("/threads/{threadId}")
     public boolean updateThread(@PathVariable Long threadId, @RequestBody IThread thread) {
+        //Metrics.counter("comment-service","function","updateThread").increment();
         try {
             if (threadDao.get(thread.getId()) != null) {
                 return threadDao.update(thread);
@@ -93,6 +97,7 @@ public class ThreadController implements IThreadClient {
     @Override
     @GetMapping("/threads/{threadId}/lastActivityDate")
     public Date getLastActivityDate(@PathVariable Long threadId) {
+        //Metrics.counter("comment-service","function","getLastActivityDate").increment();
         return threadDao.getLastComment(threadId)
                 .map(IComment::getCreatedAt)
                 .map(timestamp -> new Date(timestamp.getTime()))
@@ -102,6 +107,7 @@ public class ThreadController implements IThreadClient {
     @Override
     @GetMapping("/threads/{threadId}/lastActivityAuthorUserId")
     public Long getLastActivityAuthorUserId(@PathVariable Long threadId) {
+        //Metrics.counter("comment-service","function","getLastActivityAuthorUserId").increment();
         return threadDao.getLastComment(threadId)
                 .map(IComment::getAuthorUserId)
                 .orElseThrow(() -> new LastActivityNotFoundException(threadId));

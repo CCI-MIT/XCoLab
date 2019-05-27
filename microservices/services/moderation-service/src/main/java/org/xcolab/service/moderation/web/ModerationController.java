@@ -23,7 +23,6 @@ import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.util.enums.moderation.ManagerAction;
 import org.xcolab.util.enums.moderation.TargetType;
 
-
 import java.util.List;
 
 
@@ -52,6 +51,7 @@ public class ModerationController implements IModerationClient {
             @RequestParam(required = false) Long targetId,
             @RequestParam(required = false) Long targetAdditionalId,
             @RequestParam(required = false) Long managerUserId) {
+        //Metrics.counter("moderation-service","function","listReports").increment();
         Integer limitRecord = lastRecord - startRecord;
         PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, "");
 
@@ -65,6 +65,7 @@ public class ModerationController implements IModerationClient {
             @RequestParam(required = false) TargetType targetType,
             @RequestParam(required = false) Long targetId,
             @RequestParam(required = false) Long targetAdditionalId, Long managerUserId) {
+        //Metrics.counter("moderation-service","function","countReports").increment();
         return reportDao
                 .countByGiven(reporterUserId, managerUserId, targetType.toString(), targetId,
                         targetAdditionalId, "");
@@ -72,6 +73,7 @@ public class ModerationController implements IModerationClient {
 
     @GetMapping("/reports/{reportId}")
     public IReport getReport(@PathVariable Long reportId) throws ReportNotFoundException {
+        //Metrics.counter("moderation-service","function","getReport").increment();
         final IReport report = reportDao.get(reportId);
         if (report == null) {
             throw new ReportNotFoundException(reportId);
@@ -81,11 +83,13 @@ public class ModerationController implements IModerationClient {
 
     @PostMapping("/reports")
     public IReport createReport(@RequestBody IReport report) {
+        //Metrics.counter("moderation-service","function","createReport").increment();
         return moderationService.createReport(report);
     }
 
     @PutMapping("/reports")
     public boolean updateReport(@RequestBody IReport report) throws ReportNotFoundException {
+        //Metrics.counter("moderation-service","function","updateReport").increment();
         if (reportDao.get(report.getId()) == null) {
             throw new ReportNotFoundException(report.getId());
         }
@@ -97,6 +101,7 @@ public class ModerationController implements IModerationClient {
     public List<IAggregatedReport> listAggregatedReports(
             @RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer lastRecord) {
+        //Metrics.counter("moderation-service","function","listAggregatedReports").increment();
         Integer limitRecord = lastRecord - startRecord;
         PaginationHelper paginationHelper =
                 new PaginationHelper(startRecord, limitRecord, "firstReportDate");
@@ -110,6 +115,7 @@ public class ModerationController implements IModerationClient {
             @RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer lastRecord,
             @RequestParam(required = false) TargetType type) {
+        //Metrics.counter("moderation-service","function","listReportTargets").increment();
         Integer limitRecord = lastRecord - startRecord;
         PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, "");
         return reportTargetDao.findByGiven(paginationHelper, type);
@@ -118,6 +124,7 @@ public class ModerationController implements IModerationClient {
     @GetMapping("/reportTargets/{reportTargetId}")
     public IReportTarget getReportTarget(@PathVariable Long reportTargetId)
             throws ReportTargetNotFoundException {
+        //Metrics.counter("moderation-service","function","getReportTarget").increment();
         final IReportTarget reportTarget = reportTargetDao.get(reportTargetId);
         if (reportTarget == null) {
             throw new ReportTargetNotFoundException(reportTargetId);
@@ -127,12 +134,14 @@ public class ModerationController implements IModerationClient {
 
     @PostMapping("/reportTargets")
     public IReportTarget createReportTarget(@RequestBody IReportTarget reportTarget) {
+        //Metrics.counter("moderation-service","function","createReportTarget").increment();
         return reportTargetDao.create(reportTarget);
     }
 
     @PutMapping("/reportTargets")
     public boolean updateReportTarget(@RequestBody IReportTarget reportTarget)
             throws ReportTargetNotFoundException {
+        //Metrics.counter("moderation-service","function","updateReportTarget").increment();
         if (reportTargetDao.get(reportTarget.getId()) == null) {
             throw new ReportTargetNotFoundException(reportTarget.getId());
         }
@@ -143,6 +152,7 @@ public class ModerationController implements IModerationClient {
     @DeleteMapping("/reportTargets/{reportTargetId}")
     public boolean deleteReportTarget(@PathVariable Long reportTargetId)
             throws ReportTargetNotFoundException {
+        //Metrics.counter("moderation-service","function","deleteReportTarget").increment();
         if (reportTargetDao.get(reportTargetId) == null) {
             throw new ReportTargetNotFoundException(reportTargetId);
         }
@@ -153,6 +163,7 @@ public class ModerationController implements IModerationClient {
     @PostMapping("/reports/{reportId}/handle")
     public boolean handleReport(@RequestParam Long managerId,
             @RequestParam ManagerAction managerAction, @PathVariable Long reportId) {
+        //Metrics.counter("moderation-service","function","handleReport").increment();
         return moderationService.handleReport(reportId, managerId, managerAction);
     }
 

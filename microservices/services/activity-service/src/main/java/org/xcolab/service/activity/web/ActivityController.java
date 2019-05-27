@@ -63,7 +63,6 @@ public class ActivityController implements IActivityClient {
             @RequestParam(required = false) List<Long> userIdsToExclude,
             @RequestParam(required = false) String sort,
             @RequestParam(required = false) String activitiesAfter) {
-
         //TODO: this should not be an either or!
         if (activitiesAfter != null) {
             return activityEntryDao.getActivitiesAfter(Utils.parseDate(activitiesAfter));
@@ -117,6 +116,7 @@ public class ActivityController implements IActivityClient {
     public boolean deleteSubscription(@RequestParam(required = false) Long receiverId,
             @RequestParam(required = false) ActivityCategory activityCategory,
             @RequestParam(required = false) Long categoryId) {
+        //Metrics.counter("activity-service","function","deleteSubscription").increment();
         return activitiesService.unsubscribe(receiverId, activityCategory, categoryId);
     }
 

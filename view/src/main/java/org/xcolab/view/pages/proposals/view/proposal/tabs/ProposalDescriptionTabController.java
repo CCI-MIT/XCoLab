@@ -1,5 +1,6 @@
 package org.xcolab.view.pages.proposals.view.proposal.tabs;
 
+import io.micrometer.core.instrument.Metrics;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -80,6 +81,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
             @RequestParam(required = false) String moveType,
             @Valid JudgeProposalFeedbackBean judgeProposalFeedbackBean,
             BindingResult bindingResult) {
+        Metrics.counter("xcolab-view","endpoint","/contests/"+  contestYear +"/" + contestUrlName + "/c/proposal" +proposalId, "function", "/contests").increment();
         return showProposalDetails(request, response, model, proposalContext, currentMember, false,
                 edit, moveFromContestPhaseId, moveType);
     }
