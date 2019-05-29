@@ -21,6 +21,10 @@ import java.util.concurrent.TimeUnit;
 public class CacheConfig implements CachingConfigurer {
 
     public final static String CONTEST_PHASE_TYPE_CACHE = "contestPhaseTypeCache";
+    public final static String PROPOSAL_DISCUSSION_THREADS_CACHE = "proposalDiscussionThreadsCache";
+    public final static String CONTEST_TEAM_MEMBER_ROLES_CACHE = "contestTeamMemberRoleCache";
+    public final static String CONTEST_ACTIVE_PHASE_CACHE = "contestActivePhaseCache";
+    public final static String PROPOSAL_TO_PHASE_CACHE = "proposalToPhaseCache";
 
     @Bean
     @Override
@@ -32,9 +36,32 @@ public class CacheConfig implements CachingConfigurer {
                         .expireAfterWrite(10, TimeUnit.MINUTES)
                         .build());
 
+        GuavaCache proposalDiscussionThreadsCache =
+                new GuavaCache(PROPOSAL_DISCUSSION_THREADS_CACHE, CacheBuilder.newBuilder()
+                        .expireAfterWrite(10, TimeUnit.MINUTES)
+                        .build());
+
+        GuavaCache contestTeamMemberRoleCache =
+                new GuavaCache(CONTEST_TEAM_MEMBER_ROLES_CACHE, CacheBuilder.newBuilder()
+                        .expireAfterWrite(10, TimeUnit.MINUTES)
+                        .build());
+
+        GuavaCache contestActivePhaseCache =
+                new GuavaCache(CONTEST_ACTIVE_PHASE_CACHE, CacheBuilder.newBuilder()
+                        .expireAfterWrite(10, TimeUnit.MINUTES)
+                        .build());
+
+        GuavaCache proposalToPhaseCache =
+                new GuavaCache(PROPOSAL_TO_PHASE_CACHE, CacheBuilder.newBuilder()
+                        .expireAfterWrite(10, TimeUnit.MINUTES)
+                        .build());
 
         cacheManager.setCaches(Arrays.asList(
-                contestPhaseTypeCache));
+                contestPhaseTypeCache,
+                proposalDiscussionThreadsCache,
+                contestTeamMemberRoleCache,
+                contestActivePhaseCache,
+                proposalToPhaseCache));
 
         return cacheManager;
     }

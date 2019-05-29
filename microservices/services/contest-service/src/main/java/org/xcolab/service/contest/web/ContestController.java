@@ -395,6 +395,7 @@ public class ContestController implements IContestClient {
     }
 
     @Override
+    @Cacheable(CacheConfig.CONTEST_ACTIVE_PHASE_CACHE)
     @GetMapping("/contests/{contestId}/activePhase")
     public ContestPhaseWrapper getActivePhase(@PathVariable Long contestId) {
         ContestPhaseWrapper activePhase = contestService.getActiveOrLastPhase(contestId);
@@ -545,6 +546,7 @@ public class ContestController implements IContestClient {
     }
 
     @Override
+    @Cacheable(CacheConfig.PROPOSAL_DISCUSSION_THREADS_CACHE)
     @GetMapping("/contestPhases/{phaseId}/proposalDiscussionThreads")
     public List<Long> getProposalDiscussionThreads(@PathVariable Long phaseId) {
         if (!contestPhaseDao.exists(phaseId)) {

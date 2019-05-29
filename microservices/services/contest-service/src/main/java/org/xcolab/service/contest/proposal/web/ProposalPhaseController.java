@@ -1,6 +1,7 @@
 package org.xcolab.service.contest.proposal.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.xcolab.client.contest.pojo.IProposal2Phase;
 import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
 import org.xcolab.client.contest.proposals.IProposalPhaseClient;
+import org.xcolab.service.contest.cache.CacheConfig;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.proposal.domain.proposal2phase.Proposal2PhaseDao;
 import org.xcolab.service.contest.proposal.domain.proposalcontestphaseattribute.ProposalContestPhaseAttributeDao;
@@ -39,6 +41,7 @@ public class ProposalPhaseController implements IProposalPhaseClient {
     }
 
     @Override
+    @Cacheable(CacheConfig.PROPOSAL_TO_PHASE_CACHE)
     @GetMapping("/count/proposal2Phases/{proposal2PhaseId}")
     public int getProposalCountForActiveContestPhase(@PathVariable Long proposal2PhaseId) {
         return proposal2PhaseDao.getProposalCountForActiveContestPhase(proposal2PhaseId);
