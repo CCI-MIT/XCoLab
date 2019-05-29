@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 @EnableCaching
 public class CacheConfig implements CachingConfigurer {
 
-    public final static String USER_LIST_CACHE = "userListCache";
+    public final static String MEMBER_CATEGORIES_CACHE = "memberCategoriesCache";
 
 
     @Bean
@@ -30,11 +30,11 @@ public class CacheConfig implements CachingConfigurer {
     public CacheManager cacheManager() {
         SimpleCacheManager cacheManager = new SimpleCacheManager();
 
-        GuavaCache userListCache = new GuavaCache(USER_LIST_CACHE, CacheBuilder.newBuilder()
-                .expireAfterWrite(20, TimeUnit.SECONDS)
+        GuavaCache memberCategoriesCache = new GuavaCache(MEMBER_CATEGORIES_CACHE, CacheBuilder.newBuilder()
+                .expireAfterWrite(10, TimeUnit.MINUTES)
                 .build());
 
-        cacheManager.setCaches(Arrays.asList(userListCache));
+        cacheManager.setCaches(Arrays.asList(memberCategoriesCache));
 
         return cacheManager;
     }
