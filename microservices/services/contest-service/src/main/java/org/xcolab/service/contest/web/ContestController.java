@@ -2,6 +2,7 @@ package org.xcolab.service.contest.web;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +25,7 @@ import org.xcolab.client.contest.pojo.IContestSchedule;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.commons.spring.web.annotation.ListMapping;
+import org.xcolab.service.contest.cache.CacheConfig;
 import org.xcolab.service.contest.domain.contest.ContestDao;
 import org.xcolab.service.contest.domain.contestcollectioncard.ContestCollectionCardDao;
 import org.xcolab.service.contest.domain.contestdiscussion.ContestDiscussionDao;
@@ -481,6 +483,7 @@ public class ContestController implements IContestClient {
 
 
     @Override
+    @Cacheable(CacheConfig.CONTEST_PHASE_TYPE_CACHE)
     @GetMapping("/contestPhaseTypes/{contestPhaseTypeId}")
     public IContestPhaseType getContestPhaseType(@PathVariable Long contestPhaseTypeId) {
         return contestPhaseTypeDao.get(contestPhaseTypeId)
