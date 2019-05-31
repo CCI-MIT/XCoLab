@@ -50,7 +50,6 @@ public class ContentController implements IContentClient {
     @Override
     @PostMapping("/contentArticles")
     public IContentArticle createContentArticle(@RequestBody IContentArticle contentArticle) {
-        //Metrics.counter("content-service","function","createContentArticle").increment();
         Date date = new Date();
         contentArticle.setCreatedAt(new Timestamp(date.getTime()));
 
@@ -65,7 +64,6 @@ public class ContentController implements IContentClient {
     @GetMapping("/contentArticles")
     public List<? extends IContentArticle> getContentArticles(
             @RequestParam(required = false) Long folderId) {
-        //Metrics.counter("content-service","function","getContentArticles").increment();
         if (folderId != null) {
             return contentArticleDao.getArticlesInFolder(folderId);
         }
@@ -82,7 +80,6 @@ public class ContentController implements IContentClient {
             @RequestParam(required = false) Long contentArticleVersion,
             @RequestParam(required = false) String title,
             @RequestParam(required = false) String lang) {
-        //Metrics.counter("content-service","function","getContentArticleVersions").increment();
         //TODO: sort parameter:
         //                .optionalQueryParam("sort","-contentArticleVersion")
         PaginationHelper paginationHelper =
@@ -94,7 +91,6 @@ public class ContentController implements IContentClient {
     @Override
     @GetMapping("/contentFolders")
     public List<IContentFolder> getContentFolders() {
-        //Metrics.counter("content-service","function","getContentFolders").increment();
         final PaginationHelper paginationHelper = new PaginationHelper(null, null, null);
         return contentFolderDao.findByGiven(paginationHelper, null);
     }
@@ -102,7 +98,6 @@ public class ContentController implements IContentClient {
     @Override
     @GetMapping("/contentFolders/{folderId}/descendantFolders")
     public List<IContentFolder> getContentFolders(@PathVariable Long folderId) {
-        //Metrics.counter("content-service","function","getContentFolders").increment();
         return contentFolderDao.findByAncestorFolderId(folderId);
     }
 
@@ -110,7 +105,6 @@ public class ContentController implements IContentClient {
     @GetMapping("/contentArticles/{articleId}")
     public IContentArticle getContentArticle(@PathVariable Long articleId)
             throws ContentNotFoundException {
-        //Metrics.counter("content-service","function","getContentArticle").increment();
         if (articleId == null || articleId == 0) {
             throw new ContentNotFoundException("No content article with id " + articleId);
         } else {
@@ -126,7 +120,6 @@ public class ContentController implements IContentClient {
     @PutMapping("/contentArticles")
     public boolean updateContentArticle(@RequestBody IContentArticle contentArticle)
             throws ContentNotFoundException {
-        //Metrics.counter("content-service","function","updateContentArticle").increment();
         Long articleId = contentArticle.getId();
         if (articleId == null || articleId == 0) {
             throw new ContentNotFoundException("No content article with id " + articleId);
@@ -145,7 +138,6 @@ public class ContentController implements IContentClient {
     @PostMapping("/contentArticleVersions")
     public IContentArticleVersion createContentArticleVersion(
             @RequestBody IContentArticleVersion contentArticleVersion) {
-        //Metrics.counter("content-service","function","createContentArticleVersion").increment();
         Date date = new Date();
         contentArticleVersion.setCreatedAt(new Timestamp(date.getTime()));
 
@@ -185,7 +177,6 @@ public class ContentController implements IContentClient {
     @GetMapping("/contentArticleVersions/{articleVersionId}")
     public IContentArticleVersion getContentArticleVersion(@PathVariable Long articleVersionId)
             throws ContentNotFoundException {
-        //Metrics.counter("content-service","function","getContentArticleVersion").increment();
         if (articleVersionId == 0) {
             throw new ContentNotFoundException("No content article version with id=0 given");
         }
@@ -202,7 +193,6 @@ public class ContentController implements IContentClient {
     public boolean updateContentArticleVersion(
             @RequestBody IContentArticleVersion contentArticleVersion)
             throws ContentNotFoundException {
-        //Metrics.counter("content-service","function","updateContentArticleVersion").increment();
         long articleVersionId = contentArticleVersion.getId();
         if (articleVersionId == 0) {
             throw new ContentNotFoundException("No content article version with id=0 exists");
@@ -226,7 +216,6 @@ public class ContentController implements IContentClient {
     @Override
     @PostMapping("/contentFolders")
     public IContentFolder createContentFolder(@RequestBody IContentFolder contentFolder) {
-        //Metrics.counter("content-service","function","createContentFolder").increment();
         return this.contentFolderDao.create(contentFolder);
 
         //TODO COLAB-2589: fine-grained cache control
@@ -237,7 +226,6 @@ public class ContentController implements IContentClient {
     @GetMapping("/contentFolders/{contentFolderId}")
     public IContentFolder getContentFolder(@PathVariable Long contentFolderId)
             throws ContentNotFoundException {
-        //Metrics.counter("content-service","function","getContentFolder").increment();
         if (contentFolderId == null || contentFolderId == 0) {
             throw new ContentNotFoundException(
                     "No content folder with content folder id " + contentFolderId);
@@ -250,7 +238,6 @@ public class ContentController implements IContentClient {
     @GetMapping("/contentFolders/{contentFolderId}/contentArticleVersions")
     public List<IContentArticleVersion> getContentFolderArticleVersions(
             @PathVariable Long contentFolderId) {
-        //Metrics.counter("content-service","function","getContentFolderArticleVersions").increment();
         if (contentFolderId == 0) {
             contentFolderId = null;
         }
@@ -261,7 +248,6 @@ public class ContentController implements IContentClient {
     @PutMapping("/contentFolders/{contentFolderId}")
     public boolean updateContentFolder(@RequestBody IContentFolder contentFolder)
             throws ContentNotFoundException {
-        //Metrics.counter("content-service","function","updateContentFolder").increment();
         if (contentFolderDao.get(contentFolder.getId()) == null) {
             throw new ContentNotFoundException(
                     "No content folder with content folder id " + contentFolder.getId());
@@ -275,21 +261,18 @@ public class ContentController implements IContentClient {
     @Override
     @DeleteMapping("/contentArticles/{contentArticleId}")
     public void deleteContentArticle(@PathVariable Long contentArticleId) {
-        //Metrics.counter("content-service","function","deleteContentArticle").increment();
         contentArticleService.delete(contentArticleId);
     }
 
     @Override
     @GetMapping("/contentPages")
     public List<IContentPage> getContentPages(@RequestParam(required = false) String title) {
-        //Metrics.counter("content-service","function","getContentPages").increment();
         return contentPageDao.list(title);
     }
 
     @Override
     @GetMapping("/contentPages/{pageId}")
     public IContentPage getContentPage(@PathVariable Long pageId) throws ContentNotFoundException {
-        //Metrics.counter("content-service","function","getContentPage").increment();
         return contentPageDao.get(pageId).orElseThrow(
                 () -> new ContentNotFoundException("Content page does not exist: " + pageId));
     }
@@ -298,7 +281,6 @@ public class ContentController implements IContentClient {
     @GetMapping("/contentPages/getByContentArticleId")
     public IContentPage getContentPageByContentArticleId(@RequestParam Long contentArticleId)
             throws ContentNotFoundException {
-        //Metrics.counter("content-service","function","getContentPageByContentArticleId").increment();
         return contentPageDao.getByContentArticleId(contentArticleId).orElseThrow(
                 () -> new ContentNotFoundException(
                         "Content page does not exist for content article id " + contentArticleId));
@@ -307,14 +289,12 @@ public class ContentController implements IContentClient {
     @Override
     @PostMapping("/contentPages")
     public IContentPage createContentPage(@RequestBody IContentPage page) {
-        //Metrics.counter("content-service","function","createContentPage").increment();
         return contentPageDao.create(page);
     }
 
     @Override
     @PutMapping("/contentPages")
     public Boolean updateContentPage(@RequestBody IContentPage page) {
-        //Metrics.counter("content-service","function","updateContentPage").increment();
         return contentPageDao.update(page);
     }
 }

@@ -1,9 +1,14 @@
 package org.xcolab.service.content.config;
 
 import io.micrometer.core.instrument.Metrics;
+import io.micrometer.core.instrument.Tag;
 import org.springframework.stereotype.Component;
 
+import org.xcolab.commons.monitoring.Parameter;
+
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Enumeration;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -27,13 +32,36 @@ public class MicrometerConfig implements Filter {
             FilterChain chain) throws IOException, ServletException
     {
         HttpServletRequest req = (HttpServletRequest) request;
+
         chain.doFilter(request, response);
+
         String function = "";
         if(req.getRequestURI().length() > 1){
             function = req.getRequestURI().split("/")[1];
         }
 
-        Metrics.counter("content-service","endpoint",req.getRequestURI(), "function", function).increment();
+        Enumeration enumeration = request.getParameterNames();
+
+        ArrayList<Parameter> parameters = new ArrayList<>();
+
+        while(enumeration.hasMoreElements()){
+            String parameterName = (String) enumeration.nextElement();
+            parameters.add( new Parameter(parameterName, request.getParameter(parameterName)));
+        }
+
+        ArrayList<Tag> tags = new ArrayList<>();
+
+        String args = "";
+
+        for (Parameter parameter: parameters) {
+            args +=   parameter.getKey() + " : " +  parameter.getValue() +  " | ";
+        }
+
+        tags.addAll(parameters);
+
+
+        Metrics.counter("content-service","endpoint",req.getRequestURI(), "function", function, "method", req.getMethod(), "Arguments", args).increment();
+        //Metrics.counter("contest-service",tags).increment();
 
     }
 

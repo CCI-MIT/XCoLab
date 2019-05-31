@@ -28,7 +28,6 @@ public class SearchController implements ISearchClient {
     public List<ISearchPojo> search(@RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
             @RequestParam(required = false) String filter, @RequestParam String query) {
-        //Metrics.counter("search-service","function","search").increment();
         final PaginationHelper paginationHelper =
                 new PaginationHelper(startRecord, limitRecord, filter);
         if (filter != null) {
@@ -53,7 +52,6 @@ public class SearchController implements ISearchClient {
     @GetMapping("/search/count")
     public Integer searchCount(@RequestParam(required = false) String sort,
             @RequestParam String query) {
-        ////Metrics.counter("search-service","function","searchCount").increment();
         if (sort != null) {
             if (sort.equals(SearchType.USER.getStringType())) {
                 return searchDao.findMemberCount(query);

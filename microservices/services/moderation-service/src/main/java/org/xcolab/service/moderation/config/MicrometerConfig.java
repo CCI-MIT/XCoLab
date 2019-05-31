@@ -1,9 +1,15 @@
 package org.xcolab.service.moderation.config;
 
 import io.micrometer.core.instrument.Metrics;
+import io.micrometer.core.instrument.Tag;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
+import org.xcolab.commons.monitoring.Parameter;
+
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Enumeration;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -33,7 +39,33 @@ public class MicrometerConfig implements Filter {
             function = req.getRequestURI().split("/")[1];
         }
 
-        Metrics.counter("moderation-service","endpoint",req.getRequestURI(), "function", function).increment();
+
+        Enumeration enumeration = request.getParameterNames();
+
+        ArrayList<Parameter> parameters = new ArrayList<>();
+
+        while(enumeration.hasMoreElements()){
+            String parameterName = (String) enumeration.nextElement();
+            parameters.add( new Parameter(parameterName, request.getParameter(parameterName)));
+        }
+
+        if(StringUtils.compare(function, "contests") == 0){
+            String fml = function;
+        }
+
+        ArrayList<Tag> tags = new ArrayList<>();
+
+        String args = "";
+
+        for (Parameter parameter: parameters) {
+            args +=   parameter.getKey() + " : " +  parameter.getValue() +  " | ";
+        }
+
+        tags.addAll(parameters);
+
+
+        Metrics.counter("moderation-service","endpoint",req.getRequestURI(), "function", function, "method", req.getMethod(), "Arguments", args).increment();
+        //Metrics.counter("contest-service",tags).increment();
 
     }
 

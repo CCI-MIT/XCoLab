@@ -50,7 +50,6 @@ public class CommentController implements ICommentClient {
             @RequestParam(required = false) Long authorUserId,
             @RequestParam(required = false) List<Long> threadIds,
             @RequestParam(required = false, defaultValue = "false") boolean includeDeleted) {
-        //Metrics.counter("comment-service","function","listComments").increment();
         PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
 
         //TODO: what to do with this:?
@@ -66,7 +65,6 @@ public class CommentController implements ICommentClient {
     @GetMapping("/count/comments")
     public int countComments(@RequestParam(required = false) Long authorUserId,
             @RequestParam(required = false) List<Long> threadIds) {
-        //Metrics.counter("comment-service","function","countComments").increment();
         return commentDao.countByGiven(authorUserId, threadIds);
     }
 
@@ -75,7 +73,6 @@ public class CommentController implements ICommentClient {
     public IComment getComment(@PathVariable Long commentId,
             @RequestParam(required = false, defaultValue = "false") boolean includeDeleted)
             throws CommentNotFoundException {
-        //Metrics.counter("comment-service","function","getComment").increment();
         IComment comment = null;
         try {
             comment = commentDao.get(commentId);
@@ -92,7 +89,6 @@ public class CommentController implements ICommentClient {
     @Override
     @PostMapping("/comments")
     public IComment createComment(@RequestBody IComment comment) {
-        //Metrics.counter("comment-service","function","createComment").increment();
         comment.setCreatedAt(new Timestamp(new Date().getTime()));
         return commentDao.create(comment);
     }
@@ -100,7 +96,6 @@ public class CommentController implements ICommentClient {
     @Override
     @DeleteMapping("/comments/{commentId}")
     public boolean deleteComment(@PathVariable Long commentId) {
-        //Metrics.counter("comment-service","function","deleteComment").increment();
         try {
             IComment comment = commentDao.get(commentId);
             comment.setDeletedAt(new Timestamp(new Date().getTime()));
@@ -120,7 +115,6 @@ public class CommentController implements ICommentClient {
     @Override
     @PutMapping("/comments")
     public boolean updateComment(@RequestBody IComment comment) {
-        //Metrics.counter("comment-service","function","updateComment").increment();
         try {
             commentDao.get(comment.getId());
         } catch (NotFoundException e) {

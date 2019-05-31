@@ -35,7 +35,6 @@ public class FileController implements IFileClient {
     @Override
     @PostMapping("/fileEntries")
     public IFileEntry createFileEntry(@RequestBody FileEntryWrapper fileEntryWrapper) {
-        //Metrics.counter("content-service","function","createFileEntry").increment();
         IFileEntry ret = this.fileEntryDao.create(fileEntryWrapper.getFileEntry());
         persistenceProvider.saveFileToFinalDestination(fileEntryWrapper.getImgArr(), ret,
                 fileEntryWrapper.getPath());
@@ -46,7 +45,6 @@ public class FileController implements IFileClient {
     @GetMapping("/imageFile")
     public File getImageFile(@RequestParam Long fileEntryId, @RequestParam String filePath,
             @RequestParam String fileExtension) {
-        //Metrics.counter("content-service","function","getImageFile").increment();
         String finalFilePath = persistenceProvider
                 .getFilePathFromFinalDestination(fileEntryId, filePath, fileExtension);
         File file = new File(finalFilePath);
@@ -59,7 +57,6 @@ public class FileController implements IFileClient {
     @Override
     @GetMapping("/fileEntries/{fileEntryId}")
     public Optional<IFileEntry> getFileEntry(@PathVariable Long fileEntryId) {
-        //Metrics.counter("content-service","function","getFileEntry").increment();
         if (fileEntryId != null && fileEntryId > 0) {
             try {
                 IFileEntry fileEntry = this.fileEntryDao.get(fileEntryId);
