@@ -35,34 +35,17 @@ public class MicrometerConfig implements Filter {
 
         chain.doFilter(request, response);
 
-        String function = "";
-        if(req.getRequestURI().length() > 1){
-            function = req.getRequestURI().split("/")[1];
-        }
-
-
         Enumeration enumeration = request.getParameterNames();
+        String args = "";
 
-        ArrayList<Parameter> parameters = new ArrayList<>();
+        String function = (req.getRequestURI().length() > 1) ? req.getRequestURI().split("/")[1] : "";
 
         while(enumeration.hasMoreElements()){
             String parameterName = (String) enumeration.nextElement();
-            parameters.add( new Parameter(parameterName, request.getParameter(parameterName)));
+            args +=   parameterName + " : " +  request.getParameter(parameterName) +  " | ";
         }
 
-        ArrayList<Tag> tags = new ArrayList<>();
-
-        String args = "";
-
-        for (Parameter parameter: parameters) {
-            args +=   parameter.getKey() + " : " +  parameter.getValue() +  " | ";
-        }
-
-        tags.addAll(parameters);
-
-
-        Metrics.counter("comment-service","endpoint",req.getRequestURI(), "function", function, "method", req.getMethod(), "Arguments", args).increment();
-        //Metrics.counter("contest-service",tags).increment();
+        Metrics.counter("comment-service","endpoint",req.getRequestURI(), "function", function, "method", req.getMethod(), "arguments", args).increment();
 
     }
 

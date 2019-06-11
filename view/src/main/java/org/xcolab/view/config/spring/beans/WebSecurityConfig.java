@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +12,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.switchuser.SwitchUserFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
@@ -49,6 +52,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final XCoLabProperties xCoLabProperties;
 
     @Autowired
+    private ColabBasicAuthenticationEntryPoint authenticationEntryPoint;
+
+    @Autowired
     public WebSecurityConfig(RememberMeServices rememberMeServices,
             MemberDetailsService memberDetailsService, WebProperties webProperties,
             XCoLabProperties xCoLabProperties,
@@ -61,16 +67,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         this.ssoFilter = ssoFilter;
     }
 
+
+
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
 
-        // TODO: Implement authorization for Prometheus
-        /*httpSecurity.authorizeRequests()
-                .antMatchers("/actuator/prometheus").permitAll()
+        httpSecurity.authorizeRequests()
+                .requestMatchers(EndpointRequest.to("health", "flyway","info","prometheus")).authenticated()
+                .and().httpBasic()
+                .authenticationEntryPoint(authenticationEntryPoint);
+
+        httpSecurity.authorizeRequests()
                 .requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole("ADMIN")
                 .antMatchers("/oauth/authorize").authenticated()
                 .antMatchers("/impersonate")
-                    .hasAnyRole("ADMIN", SwitchUserFilter.ROLE_PREVIOUS_ADMINISTRATOR);*/
+                    .hasAnyRole("ADMIN", SwitchUserFilter.ROLE_PREVIOUS_ADMINISTRATOR);
 
         final GuestAccess guestAccessProperties = webProperties.getGuestAccess();
 
@@ -145,10 +156,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         .sameOrigin();
     }
 
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(memberDetailsService)
                 .passwordEncoder(new MemberPasswordEncoder());
+        auth.inMemoryAuthentication()
+                .withUser("mit").password(passwordEncoder().encode("colab"))
+                .authorities("ADMIN");
     }
 
     @Bean
@@ -180,3 +200,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return filter;
     }
 }
+
+

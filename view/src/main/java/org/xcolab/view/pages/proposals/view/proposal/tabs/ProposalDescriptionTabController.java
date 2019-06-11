@@ -60,6 +60,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import static java.util.concurrent.TimeUnit.NANOSECONDS;
+
 @Controller
 @RequestMapping("/contests/{contestYear}/{contestUrlName}")
 public class ProposalDescriptionTabController extends BaseProposalTabController {
@@ -81,9 +83,17 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
             @RequestParam(required = false) String moveType,
             @Valid JudgeProposalFeedbackBean judgeProposalFeedbackBean,
             BindingResult bindingResult) {
+        long startTime = System.nanoTime();
         Metrics.counter("xcolab-view","endpoint","/contests/"+  contestYear +"/" + contestUrlName + "/c/proposal" +proposalId, "function", "/contests").increment();
-        return showProposalDetails(request, response, model, proposalContext, currentMember, false,
+        String proposalView = showProposalDetails(request, response, model, proposalContext, currentMember, false,
                 edit, moveFromContestPhaseId, moveType);
+        long endTime = System.nanoTime();
+
+        long duration = (endTime - startTime);
+
+        Metrics.timer("xcolab-view_timer","endpoint","/contests/"+  contestYear +"/" + contestUrlName + "/c/proposal" +proposalId, "function", "/contests").record(duration, NANOSECONDS);
+        return proposalView;
+
     }
 
     public String showProposalDetails(HttpServletRequest request, HttpServletResponse response,
