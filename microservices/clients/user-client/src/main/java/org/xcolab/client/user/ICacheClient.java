@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public interface ICacheClient {
 
     @GetMapping("/clearCache")
-    public String clearCache();
+    String clearCache();
 
 }
