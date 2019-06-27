@@ -116,7 +116,6 @@ public class ActivityController implements IActivityClient {
     public boolean deleteSubscription(@RequestParam(required = false) Long receiverId,
             @RequestParam(required = false) ActivityCategory activityCategory,
             @RequestParam(required = false) Long categoryId) {
-        //Metrics.counter("activity-service","function","deleteSubscription").increment();
         return activitiesService.unsubscribe(receiverId, activityCategory, categoryId);
     }
 

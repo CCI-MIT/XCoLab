@@ -1,7 +1,5 @@
 package org.xcolab.view.pages.loginregister;
 
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.Metrics;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.savedrequest.DefaultSavedRequest;
@@ -24,7 +22,6 @@ import org.xcolab.commons.servlet.flash.ErrorPage;
 import org.xcolab.entity.utils.notifications.member.MemberBatchRegistrationNotification;
 import org.xcolab.view.auth.AuthenticationService;
 
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -49,7 +46,7 @@ public class LoginController {
 
     @GetMapping("/login")
     public String login(HttpServletRequest request, HttpServletResponse response, Model model) {
-        Metrics.counter("login.counter").increment();
+
         boolean isOauthLogin = false;
         boolean hideClimateXLogin = false;
         SavedRequest savedRequest = this.requestCache.getRequest(request, response);
@@ -66,7 +63,6 @@ public class LoginController {
 
     @GetMapping("/logout")
     public String showLogoutPage(HttpServletRequest request, HttpServletResponse response, Model model) {
-        Metrics.counter("logout.counter").increment();
         return LOGOUT_VIEW_NAME;
     }
 

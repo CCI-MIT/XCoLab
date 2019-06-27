@@ -1,6 +1,5 @@
 package org.xcolab.view.pages.proposals.view.contest;
 
-import io.micrometer.core.instrument.Metrics;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,7 +43,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
 @Controller
 public class ContestsIndexController extends BaseProposalsController {
@@ -72,9 +70,6 @@ public class ContestsIndexController extends BaseProposalsController {
             @RequestParam(required = false) Long contestTypeId,
             UserWrapper loggedInMember,
             SortFilterPage sortFilterPage) {
-
-        Metrics.counter("xcolab-view","endpoint","/contests", "function", "/contests").increment();
-        long startTime = System.nanoTime();
 
         ContestType contestType;
         if (contestTypeId != null) {
@@ -289,11 +284,6 @@ public class ContestsIndexController extends BaseProposalsController {
         model.addAttribute("pageDescription", description);
 
         setActivePageLink(model, contestType);
-        long endTime = System.nanoTime();
-
-        long duration = (endTime - startTime);
-
-        Metrics.timer("xcolab-view_timer","endpoint","/contests", "function", "/contests").record(duration, NANOSECONDS);
 
         return "/proposals/contestsIndex";
     }

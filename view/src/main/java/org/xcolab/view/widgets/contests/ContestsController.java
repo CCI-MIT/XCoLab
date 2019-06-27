@@ -1,6 +1,5 @@
 package org.xcolab.view.widgets.contests;
 
-import io.micrometer.core.instrument.Metrics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,6 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
 @Controller
 @RequestMapping(ContestsController.BASE_URL)

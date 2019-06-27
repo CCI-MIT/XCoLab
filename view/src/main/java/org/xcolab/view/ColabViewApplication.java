@@ -1,7 +1,5 @@
 package org.xcolab.view;
 
-import io.micrometer.core.instrument.Metrics;
-import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -19,7 +17,6 @@ public class ColabViewApplication extends SpringBootServletInitializer {
     }
 
     public static void main(String[] args) {
-        Metrics.addRegistry(new SimpleMeterRegistry());
         SpringApplication.run(ColabViewApplication.class, args);
     }
 }

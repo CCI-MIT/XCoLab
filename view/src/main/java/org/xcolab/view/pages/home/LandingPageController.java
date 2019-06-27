@@ -1,6 +1,5 @@
 package org.xcolab.view.pages.home;
 
-import io.micrometer.core.instrument.Metrics;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,9 +35,6 @@ public class LandingPageController {
 
     @RequestMapping("/")
     public String hello(HttpServletRequest request, HttpServletResponse response) {
-
-        Metrics.counter("xcolab-view","endpoint","/", "function", "/").increment();
-
         return "home/home";
     }
 }

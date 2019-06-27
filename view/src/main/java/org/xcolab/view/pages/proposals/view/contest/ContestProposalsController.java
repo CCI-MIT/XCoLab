@@ -1,6 +1,5 @@
 package org.xcolab.view.pages.proposals.view.contest;
 
-import io.micrometer.core.instrument.Metrics;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,8 +37,6 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static java.util.concurrent.TimeUnit.NANOSECONDS;
-
 @Controller
 public class ContestProposalsController extends BaseProposalsController {
 
@@ -73,24 +70,8 @@ public class ContestProposalsController extends BaseProposalsController {
             final SortFilterPage sortFilterPage) {
         setBasePageAttributes(proposalContext, model);
 
-        String name = "contest." + contestYear +"." + contestUrlName;
-
-
-        Metrics.counter("xcolab-view","endpoint","/contests/"+  contestYear +"/" + contestUrlName, "function", "/contests").increment();
-
-        long startTime = System.nanoTime();
-
-
-        String porposalsPage = showContestProposalsPage(response, model, proposalContext, sortFilterPage,
+        return showContestProposalsPage(response, model, proposalContext, sortFilterPage,
                 loggedInMember);
-
-        long endTime = System.nanoTime();
-
-        long duration = (endTime - startTime);
-
-        Metrics.timer("xcolab-view_timer","endpoint","/contests/"+  contestYear +"/" + contestUrlName, "function", "/contests").record(duration, NANOSECONDS);;
-
-        return porposalsPage;
     }
 
     private List<ProposalWrapper> getProposals(ProposalContext proposalContext, UserWrapper loggedInMember) {

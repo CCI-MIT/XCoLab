@@ -39,8 +39,7 @@ public class AuthenticationService {
     }
 
     public boolean isLoggedIn() {
-        return true;
-        //return authenticationContext.isLoggedIn();
+        return authenticationContext.isLoggedIn();
     }
 
     public boolean isImpersonating() {

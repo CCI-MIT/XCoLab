@@ -1,6 +1,5 @@
 package org.xcolab.view.pages.proposals.view.proposal.tabs;
 
-import io.micrometer.core.instrument.Metrics;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -60,7 +59,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
 @Controller
 @RequestMapping("/contests/{contestYear}/{contestUrlName}")
@@ -83,16 +81,9 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
             @RequestParam(required = false) String moveType,
             @Valid JudgeProposalFeedbackBean judgeProposalFeedbackBean,
             BindingResult bindingResult) {
-        long startTime = System.nanoTime();
-        Metrics.counter("xcolab-view","endpoint","/contests/"+  contestYear +"/" + contestUrlName + "/c/proposal" +proposalId, "function", "/contests").increment();
-        String proposalView = showProposalDetails(request, response, model, proposalContext, currentMember, false,
-                edit, moveFromContestPhaseId, moveType);
-        long endTime = System.nanoTime();
 
-        long duration = (endTime - startTime);
-
-        Metrics.timer("xcolab-view_timer","endpoint","/contests/"+  contestYear +"/" + contestUrlName + "/c/proposal" +proposalId, "function", "/contests").record(duration, NANOSECONDS);
-        return proposalView;
+         return showProposalDetails(request, response, model, proposalContext, currentMember, false,
+                 edit, moveFromContestPhaseId, moveType);
 
     }
 

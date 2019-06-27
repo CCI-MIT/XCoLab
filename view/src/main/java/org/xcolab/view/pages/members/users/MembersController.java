@@ -59,11 +59,6 @@ public class MembersController {
             @RequestParam(value = "page", required = false) Long pageParam,
             @RequestParam(value = "memberCategory", required = false) String memberCategoryParam) {
 
-        // Metrics code
-        Metrics.counter("xcolab-view","endpoint","/members", "function", "/members").increment();
-
-        long startTime = System.nanoTime();
-
         model.addAttribute("communityTopContentArticleId",
                 ConfigurationAttributeKey.MEMBERS_CONTENT_ARTICLE_ID.get());
         int page = 1;
@@ -130,12 +125,6 @@ public class MembersController {
 
         model.addAttribute("permissions", membersPermissions);
         model.addAttribute("_activePageLink", "community");
-
-        long endTime = System.nanoTime();
-
-        long duration = (endTime - startTime);
-
-        Metrics.timer("xcolab-view_timer","endpoint","/members", "function", "/members").record(duration, NANOSECONDS);
 
         return "members/users";
     }
