@@ -54,7 +54,7 @@ public class FlaggingTabController extends AbstractTabController {
         return tabWrapper;
     }
 
-    @GetMapping("tab/FLAGGING")
+    @GetMapping("tab/MODERATION")
     public String showFlaggingTab(HttpServletRequest request, HttpServletResponse response,
             Model model, UserWrapper member, @RequestParam(required = false) Long elementId)
             throws ReportTargetNotFoundException {
@@ -99,7 +99,7 @@ public class FlaggingTabController extends AbstractTabController {
         return 0L;
     }
 
-    @PostMapping("tab/FLAGGING/handle/{reportId}/{managerAction}")
+    @PostMapping("tab/MODERATION/handle/{reportId}/{managerAction}")
     public String approveContent(HttpServletRequest request, HttpServletResponse response,
             Model model, UserWrapper member,
             @PathVariable long reportId, @PathVariable ManagerAction managerAction)
@@ -113,7 +113,7 @@ public class FlaggingTabController extends AbstractTabController {
         return "redirect:" + tab.getTabUrl();
     }
 
-    @PostMapping("tab/FLAGGING/update")
+    @PostMapping("tab/MODERATION/update")
     public String updateEmailTemplateTabController(HttpServletRequest request, Model model,
             UserWrapper member, @ModelAttribute ModerationReportTargetWrapper reportTargetWrapper,
             BindingResult result, HttpServletResponse response) throws ReportTargetNotFoundException {
@@ -131,7 +131,7 @@ public class FlaggingTabController extends AbstractTabController {
         return "redirect:" + tab.getTabUrl(reportTargetWrapper.getReportTargetId());
     }
 
-    @PostMapping("tab/FLAGGING/delete/{reportTargetId}")
+    @PostMapping("tab/MODERATION/delete/{reportTargetId}")
     public String deleteEmailTemplateTabController(HttpServletRequest request,
             HttpServletResponse response, Model model, UserWrapper member,
             @PathVariable long reportTargetId) throws IOException, ReportTargetNotFoundException {
