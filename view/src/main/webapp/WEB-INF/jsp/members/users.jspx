@@ -72,7 +72,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-7 mb-2">
-                    <form:form action="${membersNavigation.blankFilterUrl}" method="post" cssClass="form-inline flex-nowrap">
+                    <form:form action="${membersNavigation.blankFilterUrl}" method="get" cssClass="form-inline flex-nowrap">
                         <spring:message code="community.page.members.search.placeholder" var="placeHolderText"/>
                         <input class="form-control flex-fill" type="text" value="${sortFilterPage.filter}" placeholder="${placeHolderText}" name="filter" />
                         <button type="submit" class="btn btn-primary ml-2">
