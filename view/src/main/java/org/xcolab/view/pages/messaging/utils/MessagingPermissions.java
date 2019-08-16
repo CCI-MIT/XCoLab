@@ -58,10 +58,9 @@ public class MessagingPermissions {
     }
 
     public boolean isRecipient() {
-        return isLoggedIn && message != null && message.getTo().stream()
-                .anyMatch(recipient -> recipient.getId() == loggedInMember.getId());
+        return isLoggedIn && message != null && message.getTo().stream().anyMatch(recipient ->
+                recipient.getId().longValue() == loggedInMember.getId().longValue());
     }
-
     public boolean getCanAdminAll() {
         return StaticUserContext.getPermissionClient().canAdminAll(loggedInMember);
     }
