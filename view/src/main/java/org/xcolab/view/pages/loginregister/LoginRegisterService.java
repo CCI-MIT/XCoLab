@@ -136,7 +136,7 @@ public class LoginRegisterService {
     }
 
     public Member autoRegister(String emailAddress, String firstName, String lastName) {
-        return register(null, null, emailAddress, firstName, lastName,
+        return register(null, " ", emailAddress, firstName, lastName,
                 "", null, null, true, null);
     }
 
