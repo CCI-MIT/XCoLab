@@ -1,5 +1,6 @@
 package org.xcolab.view.pages.members.users;
 
+import io.micrometer.core.instrument.Metrics;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -35,6 +36,9 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
 @Controller
 public class MembersController {
@@ -121,6 +125,7 @@ public class MembersController {
 
         model.addAttribute("permissions", membersPermissions);
         model.addAttribute("_activePageLink", "community");
+
         return "members/users";
     }
 

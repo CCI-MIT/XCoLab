@@ -1,6 +1,7 @@
 package org.xcolab.service.contest.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.xcolab.client.contest.IContestTeamMemberClient;
 import org.xcolab.client.contest.pojo.IContestTeamMember;
 import org.xcolab.client.contest.pojo.IContestTeamMemberRole;
+import org.xcolab.service.contest.cache.CacheConfig;
 import org.xcolab.service.contest.domain.contestteammember.ContestTeamMemberDao;
 import org.xcolab.service.contest.domain.contestteammemberrole.ContestTeamMemberRoleDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
@@ -76,6 +78,7 @@ public class ContestTeamMembersController implements IContestTeamMemberClient {
     }
 
     @Override
+    @Cacheable(CacheConfig.CONTEST_TEAM_MEMBER_ROLES_CACHE)
     @GetMapping("/contestTeamMemberRoles/{contestTeamMemberRoleId}")
     public IContestTeamMemberRole getContestTeamMemberRole(
             @PathVariable Long contestTeamMemberRoleId) {

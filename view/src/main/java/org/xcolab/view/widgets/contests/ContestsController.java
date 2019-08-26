@@ -26,6 +26,7 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
 @Controller
 @RequestMapping(ContestsController.BASE_URL)
 public class ContestsController extends AbstractWidgetController<ContestPreferences> {
@@ -100,6 +101,7 @@ public class ContestsController extends AbstractWidgetController<ContestPreferen
         model.addAttribute("contestPreferences", contestPreferences);
         model.addAttribute("contestType", contestTypeClient
                 .getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get()));
+
         return VIEW_BASE_PATH + "/showContests";
     }
 }

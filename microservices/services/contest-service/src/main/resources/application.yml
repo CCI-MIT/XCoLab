@@ -6,6 +6,21 @@ eureka:
     serviceUrl:
       defaultZone: http://127.0.0.1:8761/eureka/
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
 logging:
   level:
     ROOT: WARN
@@ -18,6 +33,8 @@ logging:
     org.xcolab.service.contest.utils.promotion: INFO;
 
 spring:
+  profiles:
+    active: prod
   flyway:
     table: flyway_contest_schema_version
     baselineOnMigrate: true

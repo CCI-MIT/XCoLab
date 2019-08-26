@@ -47,7 +47,6 @@ public class ThreadController implements IThreadClient {
             @RequestParam(required = false) Long authorUserId,
             @RequestParam(required = false) Long categoryId,
             @RequestParam(required = false) Long groupId) {
-
         PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
         return threadDao.findByGiven(paginationHelper, authorUserId, categoryId, groupId);
     }
@@ -75,6 +74,7 @@ public class ThreadController implements IThreadClient {
     @Override
     @PostMapping("/threads")
     public IThread createThread(@RequestBody IThread thread) {
+
         thread.setCreatedAt(new Timestamp(new Date().getTime()));
         return threadDao.create(thread);
     }

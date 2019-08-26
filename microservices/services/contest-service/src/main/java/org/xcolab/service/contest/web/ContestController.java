@@ -2,6 +2,7 @@ package org.xcolab.service.contest.web;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,10 +21,11 @@ import org.xcolab.client.contest.pojo.IContestDiscussion;
 import org.xcolab.client.contest.pojo.IContestPhaseRibbonType;
 import org.xcolab.client.contest.pojo.IContestPhaseType;
 import org.xcolab.client.contest.pojo.IContestSchedule;
-
+import org.xcolab.client.contest.pojo.tables.pojos.ContestTranslation;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.commons.spring.web.annotation.ListMapping;
+import org.xcolab.service.contest.cache.CacheConfig;
 import org.xcolab.service.contest.domain.contest.ContestDao;
 import org.xcolab.service.contest.domain.contestcollectioncard.ContestCollectionCardDao;
 import org.xcolab.service.contest.domain.contestdiscussion.ContestDiscussionDao;
@@ -41,7 +43,6 @@ import org.xcolab.service.contest.service.ontology.OntologyService;
 import org.xcolab.service.contest.utils.promotion.PromotionService;
 import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.util.http.exceptions.RuntimeEntityNotFoundException;
-import org.xcolab.client.contest.pojo.tables.pojos.ContestTranslation;
 
 import java.sql.Timestamp;
 import java.util.Collections;
@@ -120,6 +121,7 @@ public class ContestController implements IContestClient {
     @PutMapping("/contestCollectionCards")
     public boolean updateContestCollectionCard(
             @RequestBody IContestCollectionCard contestCollectionCard) {
+
         Long id = contestCollectionCard.getId();
         try {
             if (contestCollectionCardDao.get(id) == null) {
@@ -393,6 +395,7 @@ public class ContestController implements IContestClient {
     }
 
     @Override
+    @Cacheable(CacheConfig.CONTEST_ACTIVE_PHASE_CACHE)
     @GetMapping("/contests/{contestId}/activePhase")
     public ContestPhaseWrapper getActivePhase(@PathVariable Long contestId) {
         ContestPhaseWrapper activePhase = contestService.getActiveOrLastPhase(contestId);
@@ -481,6 +484,7 @@ public class ContestController implements IContestClient {
 
 
     @Override
+    @Cacheable(CacheConfig.CONTEST_PHASE_TYPE_CACHE)
     @GetMapping("/contestPhaseTypes/{contestPhaseTypeId}")
     public IContestPhaseType getContestPhaseType(@PathVariable Long contestPhaseTypeId) {
         return contestPhaseTypeDao.get(contestPhaseTypeId)
@@ -542,6 +546,7 @@ public class ContestController implements IContestClient {
     }
 
     @Override
+    @Cacheable(CacheConfig.PROPOSAL_DISCUSSION_THREADS_CACHE)
     @GetMapping("/contestPhases/{phaseId}/proposalDiscussionThreads")
     public List<Long> getProposalDiscussionThreads(@PathVariable Long phaseId) {
         if (!contestPhaseDao.exists(phaseId)) {
@@ -567,6 +572,7 @@ public class ContestController implements IContestClient {
     @Override
     @GetMapping("/contestPhases/autoPromoteProposals")
     public int autoPromoteProposals() {
+
         Date now = new Date();
         return promotionService.doPromotion(now);
     }

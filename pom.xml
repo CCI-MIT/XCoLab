@@ -66,6 +66,7 @@
         <!-- Monitoring -->
         <metrics.version>3.2.5</metrics.version>
         <metrics-datadog.version>1.1.13</metrics-datadog.version>
+        <micrometer.version>1.0.8</micrometer.version>
 
         <!-- Test dependencies -->
         <powermock.version>2.0.0-RC.4</powermock.version>
@@ -295,6 +296,12 @@
                 <groupId>io.sentry</groupId>
                 <artifactId>sentry-spring</artifactId>
                 <version>${sentry.version}</version>
+            </dependency>
+            <!-- micrometer -->
+            <dependency>
+                <groupId>io.micrometer</groupId>
+                <artifactId>micrometer-registry-prometheus</artifactId>
+                <version>${micrometer.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

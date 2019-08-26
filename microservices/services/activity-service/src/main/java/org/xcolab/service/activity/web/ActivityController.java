@@ -63,7 +63,6 @@ public class ActivityController implements IActivityClient {
             @RequestParam(required = false) List<Long> userIdsToExclude,
             @RequestParam(required = false) String sort,
             @RequestParam(required = false) String activitiesAfter) {
-
         //TODO: this should not be an either or!
         if (activitiesAfter != null) {
             return activityEntryDao.getActivitiesAfter(Utils.parseDate(activitiesAfter));

@@ -28,7 +28,6 @@ public class SearchController implements ISearchClient {
     public List<ISearchPojo> search(@RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
             @RequestParam(required = false) String filter, @RequestParam String query) {
-
         final PaginationHelper paginationHelper =
                 new PaginationHelper(startRecord, limitRecord, filter);
         if (filter != null) {

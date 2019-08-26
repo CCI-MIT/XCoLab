@@ -59,6 +59,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+
 @Controller
 @RequestMapping("/contests/{contestYear}/{contestUrlName}")
 public class ProposalDescriptionTabController extends BaseProposalTabController {
@@ -80,8 +81,10 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
             @RequestParam(required = false) String moveType,
             @Valid JudgeProposalFeedbackBean judgeProposalFeedbackBean,
             BindingResult bindingResult) {
-        return showProposalDetails(request, response, model, proposalContext, currentMember, false,
-                edit, moveFromContestPhaseId, moveType);
+
+         return showProposalDetails(request, response, model, proposalContext, currentMember, false,
+                 edit, moveFromContestPhaseId, moveType);
+
     }
 
     public String showProposalDetails(HttpServletRequest request, HttpServletResponse response,

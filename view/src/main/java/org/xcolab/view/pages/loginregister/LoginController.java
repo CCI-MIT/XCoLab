@@ -22,6 +22,7 @@ import org.xcolab.commons.servlet.flash.ErrorPage;
 import org.xcolab.entity.utils.notifications.member.MemberBatchRegistrationNotification;
 import org.xcolab.view.auth.AuthenticationService;
 
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -45,6 +46,7 @@ public class LoginController {
 
     @GetMapping("/login")
     public String login(HttpServletRequest request, HttpServletResponse response, Model model) {
+
         boolean isOauthLogin = false;
         boolean hideClimateXLogin = false;
         SavedRequest savedRequest = this.requestCache.getRequest(request, response);

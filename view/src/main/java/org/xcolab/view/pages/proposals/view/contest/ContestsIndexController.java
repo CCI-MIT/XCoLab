@@ -43,6 +43,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
 @Controller
 public class ContestsIndexController extends BaseProposalsController {
 
@@ -283,6 +284,7 @@ public class ContestsIndexController extends BaseProposalsController {
         model.addAttribute("pageDescription", description);
 
         setActivePageLink(model, contestType);
+
         return "/proposals/contestsIndex";
     }
 
