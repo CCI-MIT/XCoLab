@@ -42,6 +42,7 @@ public class ProposalReviewCsvExporter {
         this.ratingTypes = ratingTypes;
     }
 
+
     public String getCsvString() {
         if (proposalToProposalReviewsMap.isEmpty()) {
             return "";
@@ -54,11 +55,13 @@ public class ProposalReviewCsvExporter {
             String proposalName = ProposalAttributeClientUtil.getProposalAttribute(proposal.getId(),
                     ProposalAttributeKeys.NAME, 0L).getStringValue();
 
+
+
             for (ProposalReview proposalReview : proposalReviews) {
                 for (Member reviewer : proposalReview.getReviewers()) {
 
                     tableBody.append(getRowHeader(proposalName, proposalReview));
-                    tableBody.append(String.format("\"%s %s\"", reviewer.getFirstName(), reviewer.getLastName()));
+                    tableBody.append(String.format("\"%s %s\"", (reviewer.getFirstName()), (reviewer.getLastName())));
 
                     StringBuilder commentString = new StringBuilder();
 
@@ -206,7 +209,7 @@ public class ProposalReviewCsvExporter {
 
     private String escapeQuote(String input) {
         //replace double quotes with single quotes (safer than 3 quotes)
-        input = StringUtils.replace(input, "\"", "'");
+        input = StringUtils.replace(input, "\\\"", "'");
         //delete new lines
         input = StringUtils.replace(input, "\r\n", " ");
         input = StringUtils.replace(input, "\n", " ");
