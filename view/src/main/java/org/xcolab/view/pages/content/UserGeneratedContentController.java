@@ -83,9 +83,9 @@ public class UserGeneratedContentController {
         contentArticleVersion.setFolderId((oldContentArticleVersion.getFolderId()));
         contentArticleVersion.setTitle(oldContentArticleVersion.getTitle());
         if(currentContent.isEmpty()){
-            currentContent = header.toString() + CSVWriter.DEFAULT_LINE_END;
+            currentContent = header.toString() + "<br/>";
         }
-        currentContent += csvString.toString() + CSVWriter.DEFAULT_LINE_END;
+        currentContent += csvString.toString() + "<br/>";
 
         contentArticleVersion.setContent(currentContent);
         ContentsClient.createContentArticleVersion(contentArticleVersion);
