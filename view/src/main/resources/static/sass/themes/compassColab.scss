@@ -1,0 +1,16 @@
+// Override variables with theme specific variables
+@import "../variables/t-compassColab";
+
+// Import base theme
+@import "../main";
+
+
+.cb-navbar-background{
+  border-bottom: 1px solid #bababa;
+  background: url(https://sustainabledevelopment.un.org/content/images/sdgbg.jpg);
+  background-repeat: repeat-x;
+  background-position: bottom;
+  background-size: 160px 4px;
+  padding-bottom: 5px;
+  box-shadow: none;
+}

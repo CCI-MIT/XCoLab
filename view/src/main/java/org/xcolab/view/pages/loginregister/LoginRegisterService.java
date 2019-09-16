@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -155,7 +156,7 @@ public class LoginRegisterService {
     }
 
     public UserWrapper autoRegister(String emailAddress, String firstName, String lastName) {
-        return register(null, null, emailAddress, firstName, lastName,
+        return register(null,UUID.randomUUID().toString(), emailAddress, firstName, lastName,
                 "", null, null, true, null);
     }
 
