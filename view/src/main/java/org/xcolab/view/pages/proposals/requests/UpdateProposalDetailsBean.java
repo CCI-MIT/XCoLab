@@ -19,7 +19,7 @@ public class UpdateProposalDetailsBean {
     private String pitch;
 
     @NotBlank(message = "Please enter a title.")
-    @Length(max = 80, message = "The title is limited to 80 characters.")
+    //@Length(max = 80, message = "The title is limited to 80 characters.")
     private String name;
 
     @Length(max = 35, message = "The team name is limited to 35 characters.")
