@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import org.xcolab.client.user.pojo.IRole;
 import org.xcolab.client.user.pojo.IRoleGroup;
+import org.xcolab.client.user.pojo.wrapper.RoleWrapper;
 import org.xcolab.model.tables.records.RoleGroupRecord;
 
 import java.util.List;
@@ -60,12 +61,12 @@ public class RoleGroupDaoImpl implements RoleGroupDao {
 
 
     @Override
-    public List<IRole> getAllRolesInGroup(Long groupId) {
+    public List<RoleWrapper> getAllRolesInGroup(Long groupId) {
         return this.dslContext.select()
                 .from(ROLE_GROUP_ROLE)
                 .innerJoin(ROLE).on(ROLE.ID.eq(ROLE_GROUP_ROLE.ROLE_ID))
                 .where(ROLE_GROUP_ROLE.ROLE_GROUP_ID.eq(groupId))
-                .fetchInto(IRole.class);
+                .fetchInto(RoleWrapper.class);
     }
 
     @Override

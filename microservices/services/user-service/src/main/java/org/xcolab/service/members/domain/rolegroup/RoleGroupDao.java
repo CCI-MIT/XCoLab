@@ -2,6 +2,7 @@ package org.xcolab.service.members.domain.rolegroup;
 
 import org.xcolab.client.user.pojo.IRole;
 import org.xcolab.client.user.pojo.IRoleGroup;
+import org.xcolab.client.user.pojo.wrapper.RoleWrapper;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public interface RoleGroupDao {
 
     void removeRoleFromGroup(Long roleGroupId, Long roleId);
 
-    List<IRole> getAllRolesInGroup(Long groupId);
+    List<RoleWrapper> getAllRolesInGroup(Long groupId);
 
     boolean groupHasRole(Long roleGroupId, Long groupId);
 }

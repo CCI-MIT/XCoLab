@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.xcolab.client.user.pojo.tables.pojos.Role;
 import org.xcolab.client.user.exceptions.RoleGroupNotFoundException;
 import org.xcolab.client.user.permissions.SystemRole;
 import org.xcolab.client.user.pojo.IRole;
@@ -27,7 +28,7 @@ public interface IPermissionClient {
     IRoleGroup create(@RequestBody IRoleGroup roleGroup) ;
 
     @RequestMapping(value = "/roleGroups/{roleGroupId}/roles", method = RequestMethod.GET)
-     List<IRole> getRolesInGroup(@PathVariable("roleGroupId") Long roleGroupId) throws RoleGroupNotFoundException;
+     List<RoleWrapper> getRolesInGroup(@PathVariable("roleGroupId") Long roleGroupId) throws RoleGroupNotFoundException;
 
     @RequestMapping(value = "/roleGroups/{roleGroupId}/roles", method = RequestMethod.POST)
      String addRoleToRoleGroup(@PathVariable Long roleGroupId, @RequestParam Long roleId);
@@ -87,7 +88,8 @@ public interface IPermissionClient {
     default boolean hasRoleGroup(long userId, long roleGroupId) {
         try {
 
-            final List<IRole> roles = getRolesInGroup(roleGroupId);
+            final List<RoleWrapper> roles = getRolesInGroup(roleGroupId);
+
             for (IRole role : roles) {
                 if (memberHasRole(userId, role.getId())) {
                     return true;

@@ -12,6 +12,7 @@ import org.xcolab.client.user.IPermissionClient;
 import org.xcolab.client.user.exceptions.RoleGroupNotFoundException;
 import org.xcolab.client.user.pojo.IRole;
 import org.xcolab.client.user.pojo.IRoleGroup;
+import org.xcolab.client.user.pojo.wrapper.RoleWrapper;
 import org.xcolab.service.members.domain.rolegroup.RoleGroupDao;
 import org.xcolab.service.members.service.rolegroup.RoleGroupService;
 
@@ -33,7 +34,7 @@ public class RoleGroupController implements IPermissionClient {
     }
 
     @RequestMapping(value = "/roleGroups/{roleGroupId}/roles", method = RequestMethod.GET)
-    public List<IRole> getRolesInGroup(@PathVariable("roleGroupId") Long roleGroupId)
+    public List<RoleWrapper> getRolesInGroup(@PathVariable("roleGroupId") Long roleGroupId)
             throws RoleGroupNotFoundException {
         if (roleGroupId != null) {
             return roleGroupService.getAllRolesInGroup(roleGroupId);

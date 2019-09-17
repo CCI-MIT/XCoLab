@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import org.xcolab.client.user.exceptions.RoleGroupNotFoundException;
 import org.xcolab.client.user.pojo.IRole;
+import org.xcolab.client.user.pojo.wrapper.RoleWrapper;
 import org.xcolab.service.members.domain.rolegroup.RoleGroupDao;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
@@ -35,7 +36,7 @@ public class RoleGroupService {
         }
     }
 
-    public List<IRole> getAllRolesInGroup(Long groupId) {
+    public List<RoleWrapper> getAllRolesInGroup(Long groupId) {
         return this.roleGroupDao.getAllRolesInGroup(groupId);
     }
 
