@@ -1,5 +1,7 @@
 package org.xcolab.client.proposals;
 
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.resources.ProposalResource;
 import org.xcolab.client.proposals.pojo.phases.ProposalMoveHistory;
 import org.xcolab.util.enums.proposal.MoveType;
@@ -65,7 +67,8 @@ public final class ProposalMoveClient {
         ProposalMoveHistory proposalMoveHistory = new ProposalMoveHistory();
         proposalMoveHistory.setSourceProposalId(srcProposalId);
         proposalMoveHistory.setTargetProposalId(targetProposalId);
-
+        ContestPhase sourcePhase = ContestClientUtil.getActivePhase(srcContestId);
+        proposalMoveHistory.setSourcePhaseId(sourcePhase.getId());
         proposalMoveHistory.setSourceContestId(srcContestId);
         proposalMoveHistory.setTargetContestId(targetContestId);
 
