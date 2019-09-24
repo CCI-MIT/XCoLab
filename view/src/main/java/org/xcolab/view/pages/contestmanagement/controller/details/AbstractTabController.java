@@ -4,8 +4,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.view.pages.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.view.taglibs.xcolab.controller.BaseTabController;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
@@ -29,8 +28,8 @@ public abstract class AbstractTabController extends BaseTabController {
     public abstract TabWrapper populateCurrentTabWrapped(HttpServletRequest request);
 
     @ModelAttribute("contestWrapper")
-    public Contest populateContestWrapper(Model model, HttpServletRequest request,
+    public ContestWrapper populateContestWrapper(Model model, HttpServletRequest request,
             @PathVariable long contestId) {
-        return ContestClientUtil.getContest(contestId);
+        return contestClient.getContest(contestId);
     }
 }

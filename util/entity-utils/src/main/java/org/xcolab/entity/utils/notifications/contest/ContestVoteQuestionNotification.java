@@ -3,13 +3,13 @@ package org.xcolab.entity.utils.notifications.contest;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 
-import org.xcolab.client.admin.EmailTemplateClientUtil;
-import org.xcolab.client.admin.pojo.EmailTemplate;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.admin.StaticAdminContext;
+import org.xcolab.client.admin.pojo.IEmailTemplate;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.entity.utils.notifications.basic.ContestNotification;
 
 import java.util.List;
@@ -20,11 +20,11 @@ public class ContestVoteQuestionNotification extends ContestNotification {
 
     private static final String SUPPORTED_PROPOSALS_PLACEHOLDER = "supported-proposals";
 
-    private final List<Proposal> supportedProposals;
+    private final List<ProposalWrapper> supportedProposals;
     private ContestVoteQuestionTemplate templateWrapper;
 
-    public ContestVoteQuestionNotification(Member recipient, Contest contest,
-            List<Proposal> supportedProposals, String baseUrl) {
+    public ContestVoteQuestionNotification(UserWrapper recipient, ContestWrapper contest,
+            List<ProposalWrapper> supportedProposals, String baseUrl) {
         super(contest, recipient, null);
         this.supportedProposals = supportedProposals;
     }
@@ -39,8 +39,8 @@ public class ContestVoteQuestionNotification extends ContestNotification {
         if (voteQuestionTemplateString.isEmpty()) {
             voteQuestionTemplateString = DEFAULT_TEMPLATE_STRING;
         }
-        final EmailTemplate emailTemplate =
-                EmailTemplateClientUtil.getContestEmailTemplateByType(voteQuestionTemplateString);
+        final IEmailTemplate emailTemplate =
+                StaticAdminContext.getEmailTemplateClient().getEmailTemplate(voteQuestionTemplateString);
         templateWrapper = new ContestVoteQuestionTemplate(emailTemplate, contest.getTitle());
 
         return templateWrapper;
@@ -48,7 +48,7 @@ public class ContestVoteQuestionNotification extends ContestNotification {
 
     private class ContestVoteQuestionTemplate extends ContestNotificationTemplate {
 
-        public ContestVoteQuestionTemplate(EmailTemplate template, String contestName) {
+        public ContestVoteQuestionTemplate(IEmailTemplate template, String contestName) {
             super(template, "", contestName);
         }
 
@@ -63,10 +63,10 @@ public class ContestVoteQuestionNotification extends ContestNotification {
                 case SUPPORTED_PROPOSALS_PLACEHOLDER:
                     StringBuilder supportedProposalsLinks = new StringBuilder();
                     supportedProposalsLinks.append("<span>");
-                    for (Proposal proposal : supportedProposals) {
-                        Member member;
+                    for (ProposalWrapper proposal : supportedProposals) {
+                        UserWrapper member;
                         try {
-                            member = MembersClient.getMember(proposal.getAuthorUserId());
+                            member = StaticUserContext.getUserClient().getMember(proposal.getAuthorUserId());
                         } catch (MemberNotFoundException e) {
                             _log.error("Author {} of proposal {} does not exist",
                                     proposal.getAuthorUserId(), proposal.getId());

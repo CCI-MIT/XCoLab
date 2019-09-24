@@ -1,5 +1,6 @@
 package org.xcolab.view.pages.profile.view;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -7,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import org.xcolab.client.members.MessagingClient;
-import org.xcolab.client.members.pojo.MessagingUserPreference;
+import org.xcolab.client.user.IMessagingClient;
+import org.xcolab.client.user.pojo.wrapper.MessagingUserPreferenceWrapper;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.pages.profile.utils.JSONHelper;
 
@@ -19,7 +20,12 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/members/profile/{userId}/api/settings/messaging")
 public class MessageSettingsJSONController extends JSONHelper {
 
-    public MessageSettingsJSONController() { }
+    private final IMessagingClient messagingClient;
+
+    @Autowired
+    public MessageSettingsJSONController(IMessagingClient messagingClient) {
+        this.messagingClient = messagingClient;
+    }
 
     @PostMapping("updateEmailOnMessage")
     public @ResponseBody void handleUpdateUserSendEmailOnMessageSettingAJAXRequest(
@@ -39,9 +45,9 @@ public class MessageSettingsJSONController extends JSONHelper {
     }
 
     private void updateUserSendEmailOnMessagePreferences(long userId, boolean setting) {
-        MessagingUserPreference preferences = MessagingClient.getMessagingPreferencesForMember(userId);
+        MessagingUserPreferenceWrapper preferences = messagingClient.getMessagingPreferences(userId);
         preferences.setEmailOnReceipt(setting);
-        MessagingClient.updateMessagingPreferences(preferences);
+        messagingClient.updateMessagingPreferences(userId, preferences.getId(), preferences);
     }
 
     @PostMapping("updateEmailOnActivity")
@@ -65,15 +71,15 @@ public class MessageSettingsJSONController extends JSONHelper {
     }
 
     private void updateUserSendEmailOnActivityPreferences(long userId, boolean setting) {
-        MessagingUserPreference preferences = MessagingClient.getMessagingPreferencesForMember(userId);
+        MessagingUserPreferenceWrapper preferences = messagingClient.getMessagingPreferences(userId);
         preferences.setEmailOnActivity(setting);
-        MessagingClient.updateMessagingPreferences(preferences);
+        messagingClient.updateMessagingPreferences(userId, preferences.getId(), preferences);
     }
 
     private void updateUserSendDailyEmailOnActivityPreferences(long userId, boolean setting) {
-        MessagingUserPreference preferences = MessagingClient.getMessagingPreferencesForMember(userId);
+        MessagingUserPreferenceWrapper preferences = messagingClient.getMessagingPreferences(userId);
         preferences.setEmailActivityDailyDigest(setting);
-        MessagingClient.updateMessagingPreferences(preferences);
+        messagingClient.updateMessagingPreferences(userId, preferences.getId(), preferences);
     }
 
     @PostMapping("updateDailyEmail")

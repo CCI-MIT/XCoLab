@@ -1,23 +1,23 @@
 package org.xcolab.view.pages.search.items;
 
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.search.pojo.SearchPojo;
+import org.xcolab.client.search.pojo.ISearchPojo;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 
 public class UserSearchItem extends AbstractSearchItem {
 
-    private SearchPojo searchPojo;
+    private ISearchPojo searchPojo;
     private String searchQuery;
 
-    private Member member;
+    private UserWrapper member;
 
     @Override
-    public void init(SearchPojo pojo, String searchQuery) {
+    public void init(ISearchPojo pojo, String searchQuery) {
         this.searchPojo = pojo;
         this.searchQuery = searchQuery;
         try {
-            member = MembersClient.getMember(searchPojo.getClassPrimaryKey());
+            member = StaticUserContext.getUserClient().getMember(searchPojo.getClassPrimaryKey());
         } catch (MemberNotFoundException ignored) {
 
         }

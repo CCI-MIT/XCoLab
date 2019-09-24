@@ -1,12 +1,11 @@
 package org.xcolab.view.pages.messaging.beans;
 
 
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.MessagingClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.exceptions.MessageNotFoundException;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.Message;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.exceptions.MessageNotFoundException;
+import org.xcolab.client.user.pojo.wrapper.MessageWrapper;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.commons.time.DurationFormatter;
@@ -19,20 +18,20 @@ import java.util.List;
 public class MessageBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private List<Member> recipients = new ArrayList<>();
+    private List<UserWrapper> recipients = new ArrayList<>();
     private List<String> threads = new ArrayList<>();
-    private Message message;
+    private MessageWrapper message;
     private long messageId;
     private boolean selected;
 
     @SuppressWarnings("unused")
     public MessageBean() { }
 
-    public MessageBean(Message message) {
+    public MessageBean(MessageWrapper message) {
         this.message = message;
         this.messageId = message.getId();
-        this.recipients = MessagingClient.getMessageRecipients(message.getId());
-        this.threads = MessagingClient.getMessageThreads(message.getId());
+        this.recipients = StaticUserContext.getMessagingClient().getMessageRecipients(message.getId());
+        this.threads = StaticUserContext.getMessagingClient().getMessageThreads(message.getId());
     }
 
     public String getSubject() {
@@ -66,25 +65,25 @@ public class MessageBean implements Serializable {
         this.messageId = messageId;
     }
 
-    public Member getFrom() {
+    public UserWrapper getFrom() {
         try {
-            return MembersClient.getMember(message.getFromId());
+            return StaticUserContext.getUserClient().getMember(message.getFromId());
         } catch (MemberNotFoundException e) {
-            throw ReferenceResolutionException.toObject(Member.class, message.getFromId())
-                    .fromObject(Message.class, message.getId());
+            throw ReferenceResolutionException.toObject(UserWrapper.class, message.getFromId())
+                    .fromObject(MessageWrapper.class, message.getId());
         }
     }
 
     public void markMessageAsOpened(long userId) {
-        MessagingClient.setOpened(messageId, userId, true);
+        StaticUserContext.getMessagingClient().setOpened(messageId, userId, true);
     }
 
     public boolean getIsOpened() throws MessageNotFoundException {
-        return getMessage().getOpened();
+        return message.getOpened();//TODO FIGURE OUT HOW TO GET THIS
     }
 
     public String getThreadId() throws MessageNotFoundException {
-        return getMessage().getThreadId();
+        return message.getThreadId();//TODO FIGURE OUT HOW TO GET THIS
     }
 
     public boolean isSelected() {
@@ -95,18 +94,22 @@ public class MessageBean implements Serializable {
         this.selected = selected;
     }
 
-    public Message getMessage() throws MessageNotFoundException {
+    public MessageWrapper getMessage() throws MessageNotFoundException {
         if (message == null) {
-            message = MessagingClient.getMessage(messageId);
+            try {
+                message = StaticUserContext.getMessagingClient().getMessage(messageId);
+            }catch (MessageNotFoundException mnfe){
+
+            }
         }
         return message;
     }
 
-    public void setMessage(Message message) {
+    public void setMessage(MessageWrapper message) {
         this.message = message;
     }
 
-    public List<Member> getTo() {
+    public List<UserWrapper> getTo() {
         return recipients;
     }
 

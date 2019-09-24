@@ -21,8 +21,30 @@
         </dependency>
         <dependency>
             <groupId>org.xcolab</groupId>
-            <artifactId>members-client</artifactId>
+            <artifactId>user-client</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.xcolab</groupId>
+                <artifactId>pojo-generator-maven-plugin</artifactId>
+                <version>${project.version}</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generatePojos</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <interfaceDirectory>src/main/java/org/xcolab/client/comment/pojo</interfaceDirectory>
+                    <implementationPackageSuffix>tables.pojos</implementationPackageSuffix>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

@@ -1,11 +1,11 @@
 package org.xcolab.view.taglibs.xcolab.jspTags.discussion;
 
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.MemberCategory;
-import org.xcolab.client.proposals.ProposalClient;
-import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.proposals.IProposalClient;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.pojo.wrapper.MemberCategoryWrapper;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
 
 import java.util.List;
@@ -35,20 +35,20 @@ public class GetRoleCategoryStartTag extends BodyTagSupport {
         this.proposalId = proposalId;
     }
 
-    private ProposalClient proposalClient = ProposalClientUtil.getClient();
+    private IProposalClient proposalClient = StaticProposalContext.getProposalClient();
 
     @Override
     public int doStartTag() throws JspException {
         try {
-            Member member = MembersClient.getMember(userId);
-            MemberCategory roleCategory = MembersClient.getHighestCategory(member.getRoles());
+            UserWrapper member = StaticUserContext.getUserClient().getMember(userId);
+            MemberCategoryWrapper roleCategory = StaticUserContext.getUserClient().getHighestCategory(member.getRoles());
             pageContext.setAttribute("roleCategory", roleCategory);
 
             // Is the user contributing to the proposal?
             boolean isContributing = false;
             if (proposalId > 0) {
-                List<Member> contributors = proposalClient.getProposalMembers(proposalId);
-                for (Member contributor : contributors) {
+                List<UserWrapper> contributors = proposalClient.getProposalMembers(proposalId);
+                for (UserWrapper contributor : contributors) {
                     if (contributor.getId() == userId) {
                         isContributing = true;
                         break;
@@ -58,7 +58,7 @@ public class GetRoleCategoryStartTag extends BodyTagSupport {
             pageContext.setAttribute("isContributing", isContributing);
 
         } catch (MemberNotFoundException e) {
-            throw ReferenceResolutionException.toObject(Member.class, userId)
+            throw ReferenceResolutionException.toObject(UserWrapper.class, userId)
                     .fromObject(GetRoleCategoryStartTag.class,
                             "user id " + userId + " proposalId " + proposalId);
         }

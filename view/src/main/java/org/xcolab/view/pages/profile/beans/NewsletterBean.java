@@ -1,7 +1,9 @@
 package org.xcolab.view.pages.profile.beans;
 
-import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
 
+import java.io.IOException;
 import java.io.Serializable;
 
 public class NewsletterBean implements Serializable {
@@ -13,6 +15,10 @@ public class NewsletterBean implements Serializable {
     }
 
     public boolean isEmailSubscribedToNewsletter() {
-        return MembersClient.isSubscribedToNewsletter(userId);
+        try {
+            return StaticUserContext.getUserClient().isSubscribedToNewsletter(userId);
+        } catch (MemberNotFoundException | IOException e) {
+            return false;
+        }
     }
 }

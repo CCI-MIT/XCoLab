@@ -1,60 +1,58 @@
 package org.xcolab.view.pages.contestmanagement.wrappers;
 
-import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.contents.ContentsClient;
-import org.xcolab.client.contents.exceptions.ContentNotFoundException;
-import org.xcolab.client.contents.pojo.ContentArticle;
-import org.xcolab.client.contents.pojo.ContentArticleVersion;
-import org.xcolab.client.contents.pojo.ContentFolder;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.content.IContentClient;
+import org.xcolab.client.content.exceptions.ContentNotFoundException;
+import org.xcolab.client.content.pojo.IContentArticle;
+import org.xcolab.client.content.pojo.IContentArticleVersion;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
 import org.xcolab.view.pages.contestmanagement.beans.ContestResourcesBean;
 
-import java.io.UnsupportedEncodingException;
-import java.text.ParseException;
-
 public class WikiPageWrapper {
 
-    private final Contest contest;
+    private final IContentClient contentClient;
+    private final ContestWrapper contest;
     private final Long loggedInUserId;
-    private final ContentArticle contentArticle;
-    private final ContentArticleVersion contentArticleVersion;
+    private final IContentArticle contentArticle;
+    private final IContentArticleVersion contentArticleVersion;
 
-    public WikiPageWrapper(Contest contest, Long loggedInUserId) {
+    public WikiPageWrapper(IContentClient contentClient, ContestWrapper contest, Long loggedInUserId) {
+        this.contentClient = contentClient;
         this.contest = contest;
         this.loggedInUserId = loggedInUserId;
 
         if (contest.getResourceArticleId() == null || contest.getResourceArticleId() <= 0) {
             throw ReferenceResolutionException
-                    .toObject(ContentArticle.class, contest.getResourceArticleId())
-                    .fromObject(Contest.class, contest.getId());
+                    .toObject(IContentArticle.class, contest.getResourceArticleId())
+                    .fromObject(ContestWrapper.class, contest.getId());
         }
         try {
-            contentArticle = ContentsClient.getContentArticle(contest.getResourceArticleId());
-            contentArticleVersion = ContentsClient.getContentArticleVersion(contentArticle.getMaxVersionId());
+            contentArticle = contentClient.getContentArticle(contest.getResourceArticleId());
+            contentArticleVersion = contentClient.getContentArticleVersion(contentArticle.getMaxVersionId());
         } catch (ContentNotFoundException e) {
             throw ReferenceResolutionException
-                    .toObject(ContentArticle.class, contest.getResourceArticleId())
-                    .fromObject(Contest.class, contest.getId());
+                    .toObject(IContentArticle.class, contest.getResourceArticleId())
+                    .fromObject(ContestWrapper.class, contest.getId());
         }
     }
 
-    public static void updateContestWiki(Contest contest) {
+    public static void updateContestWiki(IContentClient contentClient, ContestWrapper contest) {
         try {
             if (contest.getResourceArticleId() != null) {
-                final ContentArticleVersion resourceArticleVersion = ContentsClient
+                final IContentArticleVersion resourceArticleVersion = contentClient
                         .getLatestContentArticleVersion(contest.getResourceArticleId());
                 resourceArticleVersion.setTitle(contest.getTitle());
-                ContentsClient.updateContentArticleVersion(resourceArticleVersion);
+                contentClient.updateContentArticleVersion(resourceArticleVersion);
             }
         } catch (ContentNotFoundException ignored) {
         }
     }
 
     public ContestResourcesBean getContestResourcesBean() {
-        final ContestType contestType = ContestTypeClient.getContestType(contest.getContestTypeId());
+        final ContestType contestType = StaticAdminContext.getContestTypeClient()
+                .getContestType(contest.getContestTypeId());
         ContestResourcesBean contestResourcesBean = new ContestResourcesBean(contestType);
         String resourcesContent = contentArticleVersion.getContent();
         contestResourcesBean.fillSectionsWithContent(resourcesContent);
@@ -62,7 +60,7 @@ public class WikiPageWrapper {
     }
 
     public void updateWikiPage(ContestResourcesBean updatedContestResourcesBean)
-            throws UnsupportedEncodingException, ParseException {
+            throws ContentNotFoundException {
         updatedContestResourcesBean.fillOverviewSectionContent(contest);
         String updatedResourcesContent = updatedContestResourcesBean.getSectionsAsHtml();
         if (!contentArticleVersion.getContent().equals(updatedResourcesContent)) {
@@ -70,7 +68,7 @@ public class WikiPageWrapper {
             contentArticleVersion.setContent(updatedResourcesContent);
             contentArticleVersion.setArticleId(contentArticle.getId());
             contentArticleVersion.setAuthorUserId(loggedInUserId);
-            ContentsClient.updateContentArticleVersion(contentArticleVersion);
+            contentClient.updateContentArticleVersion(contentArticleVersion);
         }
     }
 }

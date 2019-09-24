@@ -1,22 +1,22 @@
 package org.xcolab.view.pages.proposals.wrappers;
 
-import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
-import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingType;
-import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingValue;
+import org.xcolab.client.contest.pojo.IProposalRatingType;
+import org.xcolab.client.contest.pojo.IProposalRatingValue;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 
 import java.io.Serializable;
 import java.util.List;
 
 public class ProposalRatingTypeWrapper implements Serializable {
 
-    private final ProposalRatingType proposalRatingType;
+    private final IProposalRatingType proposalRatingType;
 
-    public ProposalRatingTypeWrapper(ProposalRatingType proposalRatingType) {
+    public ProposalRatingTypeWrapper(IProposalRatingType proposalRatingType) {
         this.proposalRatingType = proposalRatingType;
     }
 
-    public List<ProposalRatingValue> getRatingValues() {
-        return ProposalJudgeRatingClientUtil
+    public List<IProposalRatingValue> getRatingValues() {
+        return StaticProposalContext.getProposalJudgeRatingClient()
                 .getProposalRatingValuesByProposalRatingTypeId(this.proposalRatingType.getId());
     }
 
@@ -34,7 +34,7 @@ public class ProposalRatingTypeWrapper implements Serializable {
 
     public boolean getIsActive()
     {
-        return this.proposalRatingType.getIsActive();
+        return this.proposalRatingType.isIsActive();
     }
 
     public void setIsActive(boolean isActive){

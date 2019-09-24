@@ -1,7 +1,5 @@
-<?xml version="1.0"?>
-
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.xcolab</groupId>
@@ -20,15 +18,18 @@
 		<module>microservices</module>
         <module>util</module>
 		<module>view</module>
-	</modules>
+        <module>other</module>
+    </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
+        <maven.version>3.5.0</maven.version>
 
         <!-- Spring versions -->
         <spring-boot.version>2.0.7.RELEASE</spring-boot.version>
         <spring-cloud.release-train>Finchley.SR2</spring-cloud.release-train>
+        <spring-cloud.feign>2.0.2.RELEASE</spring-cloud.feign>
 
         <!-- Database -->
         <jooq.version>3.9.2</jooq.version>
@@ -72,6 +73,9 @@
 
         <!-- Error monitoring -->
         <sentry.version>1.7.10</sentry.version>
+
+        <!-- Code generation -->
+        <roaster.version>2.20.4.Final</roaster.version>
     </properties>
 
 	<repositories>
@@ -101,6 +105,11 @@
                 <version>${spring-cloud.release-train}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-openfeign</artifactId>
+                <version>2.0.2.RELEASE</version>
             </dependency>
 
             <!-- Database dependencies -->
@@ -287,6 +296,11 @@
                 <artifactId>sentry-spring</artifactId>
                 <version>${sentry.version}</version>
             </dependency>
+            <dependency>
+                <groupId>javax.xml.bind</groupId>
+                <artifactId>jaxb-api</artifactId>
+                <version>2.3.1</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -301,6 +315,11 @@
 				<plugin>
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>3.8.0</version>
+                    <configuration>
+                        <compilerArgs>
+                            <arg>-parameters</arg>
+                        </compilerArgs>
+                    </configuration>
 				</plugin>
 
                 <plugin>
@@ -377,6 +396,9 @@
                     <encoding>${project.build.sourceEncoding}</encoding>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                    <compilerArgs>
+                        <arg>-parameters</arg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
 			<plugin>
@@ -418,11 +440,11 @@
                         <configuration combine.self="override">
                             <forkCount>3</forkCount>
                             <argLine>-Xmx512m -Xms256m</argLine>
-                            <includes>
-                                <include>**/*ControllerTest.java</include>
-                                <include>**/*ServiceTest.java</include>
-                                <include>**/*DaoTest.java</include>
-                            </includes>
+                            <excludes>
+                                <exclude>**/*ControllerTest.java</exclude>
+                                <exclude>**/*ServiceTest.java</exclude>
+                                <exclude>**/*DaoTest.java</exclude>
+                            </excludes>
                         </configuration>
                     </plugin>
                 </plugins>

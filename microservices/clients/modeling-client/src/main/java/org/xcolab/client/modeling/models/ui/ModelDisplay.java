@@ -6,8 +6,6 @@ import edu.mit.cci.roma.client.Simulation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.modeling.models.ModelInputGroupType;
-
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;

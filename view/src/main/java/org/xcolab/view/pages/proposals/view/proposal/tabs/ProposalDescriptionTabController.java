@@ -1,6 +1,7 @@
 package org.xcolab.view.pages.proposals.view.proposal.tabs;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,24 +11,23 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
-import org.xcolab.client.flagging.FlaggingClient;
-import org.xcolab.client.members.PlatformTeamsClient;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalClient;
-import org.xcolab.client.proposals.ProposalMoveClient;
-import org.xcolab.client.proposals.pojo.ContestTypeProposal;
-import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.phases.ProposalMoveHistory;
+import org.xcolab.client.contest.pojo.IProposalMoveHistory;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestTypeProposal;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.IProposalClient;
+import org.xcolab.client.contest.proposals.IProposalMoveClient;
+import org.xcolab.client.moderation.IModerationClient;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.util.enums.contest.ContestPhaseTypeValue;
-import org.xcolab.util.enums.flagging.TargetType;
+import org.xcolab.util.enums.moderation.TargetType;
 import org.xcolab.util.enums.proposal.MoveType;
 import org.xcolab.util.enums.proposal.ProposalTemplateSectionType;
 import org.xcolab.view.errors.AccessDeniedPage;
@@ -63,9 +63,15 @@ import javax.validation.Valid;
 @RequestMapping("/contests/{contestYear}/{contestUrlName}")
 public class ProposalDescriptionTabController extends BaseProposalTabController {
 
+    @Autowired
+    private IModerationClient moderationClient;
+
+    @Autowired
+    private IContestTypeClient contestTypeClient;
+
     @GetMapping("c/{proposalUrlString}/{proposalId}")
     public String showProposalDetails(HttpServletRequest request, HttpServletResponse response,
-            Model model, ProposalContext proposalContext, Member currentMember,
+            Model model, ProposalContext proposalContext, UserWrapper currentMember,
             @PathVariable Long contestYear,
             @PathVariable String contestUrlName, @PathVariable Long proposalId,
             @RequestParam(defaultValue = "false") boolean edit,
@@ -79,7 +85,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
     }
 
     public String showProposalDetails(HttpServletRequest request, HttpServletResponse response,
-            Model model, ProposalContext proposalContext, Member currentMember,
+            Model model, ProposalContext proposalContext, UserWrapper currentMember,
             boolean voted, boolean edit, Long moveFromContestPhaseId, String moveType) {
 
         final ProposalsPermissions permissions = proposalContext.getPermissions();
@@ -96,7 +102,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
         }
         model.addAttribute("edit", editValidated);
         model.addAttribute("voted", voted);
-        model.addAttribute("reportTargets", FlaggingClient.listReportTargets(TargetType.PROPOSAL));
+        model.addAttribute("reportTargets", moderationClient.listReportTargets(TargetType.PROPOSAL));
         model.addAttribute("showOpennessStatus",
             ConfigurationAttributeKey.CONTESTS_ALLOW_OPEN_PROPOSALS.get());
 
@@ -104,11 +110,11 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
         // which might not be the proposal's contests (e.g. when moving)
         model.addAttribute("saveUrl", proposalContext.getProposal().getProposalLinkUrl(proposalContext.getContest()));
 
-        final Proposal proposal = proposalContext.getProposal();
+        final ProposalWrapper proposal = proposalContext.getProposal();
 
         final ClientHelper clients = proposalContext.getClients();
-        final ProposalClient proposalClient = clients.getProposalClient();
-        final Contest baseContest = proposalClient
+        final IProposalClient proposalClient = clients.getProposalClient();
+        final ContestWrapper baseContest = proposalClient
                 .getCurrentContestForProposal(proposal.getId());
 
         if (voted) {
@@ -118,10 +124,10 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
         final boolean isMove = moveFromContestPhaseId != null && moveType != null;
         if (isMove) {
             // get base proposal from base contest
-            ContestPhase baseContestPhase =
-                    ContestClientUtil.getActivePhase(baseContest.getId());
+            ContestPhaseWrapper baseContestPhase =
+                    contestClient.getActivePhase(baseContest.getId());
 
-            Proposal baseProposalWrapped = new Proposal(proposal, proposal.getCurrentVersion(),
+            ProposalWrapper baseProposalWrapped = new ProposalWrapper(proposal, proposal.getCurrentVersion(),
                     baseContest, baseContestPhase, null);
 
             UpdateProposalDetailsBean updateProposalDetailsBean = new UpdateProposalDetailsBean(
@@ -162,7 +168,8 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
                     ConfigurationAttributeKey.PROPOSALS_SAVE_HELP_TEXT.get());
             model.addAttribute("proposalPickerDefaultTabIsContests",
                     ConfigurationAttributeKey.PROPOSALS_PICKER_DEFAULT_TAB_CONTESTS.get());
-            model.addAttribute("userTeams", PlatformTeamsClient.getTeams(currentMember));
+            model.addAttribute("userTeams", StaticUserContext.getPlatformTeamClient()
+                    .listPlatformTeams(currentMember.getId()));
 
             model.addAttribute("proposalPitchCharLimit", ConfigurationAttributeKey.PROPOSALS_PITCH_CHAR_LIMIT.get());
 
@@ -178,15 +185,15 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
         request.setAttribute(DiscussionPermissions.REQUEST_ATTRIBUTE_NAME, pdp);
 
         setLinkedProposals(model, proposalContext, proposal);
-        final Contest contest = proposalContext.getContest();
+        final ContestWrapper contest = proposalContext.getContest();
         populateMoveHistory(model, proposalContext, proposal, contest);
 
         return "proposals/proposalDetails";
     }
 
-    private boolean hasUnmappedSections(Contest moveToContest, Proposal baseProposalWrapped) {
+    private boolean hasUnmappedSections(ContestWrapper moveToContest, ProposalWrapper baseProposalWrapped) {
         Set<Long> newContestSections = moveToContest.getSections().stream()
-                .map(ProposalTemplateSectionDefinition::getSectionDefinitionId)
+                .map(ProposalTemplateSectionDefinitionWrapper::getSectionDefinitionId)
                 .collect(Collectors.toSet());
 
         return baseProposalWrapped.getSections().stream()
@@ -194,23 +201,23 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
                 .anyMatch(section -> !newContestSections.contains(section.getSectionDefinitionId()));
     }
 
-    private boolean hasProposalPicker(Proposal proposal) {
+    private boolean hasProposalPicker(ProposalWrapper proposal) {
         return proposal.getSections().stream()
-                .map(ProposalTemplateSectionDefinition::getTypeEnum)
+                .map(ProposalTemplateSectionDefinitionWrapper::getTypeEnum)
                 .anyMatch(ProposalTemplateSectionType.PROPOSAL_PICKER_SECTION_TYPES::contains);
     }
 
     private void populateMoveHistory(Model model, ProposalContext proposalContext,
-            Proposal proposal, Contest contest) {
+            ProposalWrapper proposal, ContestWrapper contest) {
 
         final ClientHelper clients = proposalContext.getClients();
-        final ProposalMoveClient proposalMoveClient = clients.getProposalMoveClient();
-        List<ProposalMoveHistory> sourceMoveHistories = proposalMoveClient
+        final IProposalMoveClient proposalMoveClient = clients.getProposalMoveClient();
+        List<IProposalMoveHistory> sourceMoveHistories = proposalMoveClient
                         .getBySourceProposalIdContestId(proposal.getId(),
                                 contest.getId());
         model.addAttribute("sourceMoveHistories", sourceMoveHistories);
 
-        ProposalMoveHistory targetMoveHistory = proposalMoveClient
+        IProposalMoveHistory targetMoveHistory = proposalMoveClient
                         .getByTargetProposalIdContestId(proposal.getId(),
                                 contest.getId());
         if (targetMoveHistory != null) {
@@ -218,22 +225,21 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
         }
     }
 
-    private void setLinkedProposals(Model model, ProposalContext proposalContext, Proposal proposal) {
+    private void setLinkedProposals(Model model, ProposalContext proposalContext, ProposalWrapper proposal) {
         final ClientHelper clients = proposalContext.getClients();
-        final ProposalClient proposalClient = clients.getProposalClient();
-        List<Proposal> linkedProposals = proposalClient
+        final IProposalClient proposalClient = clients.getProposalClient();
+        List<ProposalWrapper> linkedProposals = proposalClient
                         .getSubproposals(proposal.getId(), true);
-        Map<ContestType, Set<Proposal>> proposalsByContestType =
+        Map<ContestType, Set<ProposalWrapper>> proposalsByContestType =
                 EntityGroupingUtil.groupByContestType(linkedProposals);
         Map<Long, ContestTypeProposal> contestTypeProposalWrappersByContestTypeId = new HashMap<>();
 
-        for (ContestType contestType : ContestTypeClient
-                .getActiveContestTypes()) {
+        for (ContestType contestType : contestTypeClient.getActiveContestTypes()) {
             contestTypeProposalWrappersByContestTypeId.put(contestType.getId(),
                     new ContestTypeProposal(contestType));
-            final Set<Proposal> proposalsInContestType = proposalsByContestType.get(contestType);
+            final Set<ProposalWrapper> proposalsInContestType = proposalsByContestType.get(contestType);
             if (proposalsInContestType != null) {
-                for (Proposal p : proposalsInContestType) {
+                for (ProposalWrapper p : proposalsInContestType) {
                     contestTypeProposalWrappersByContestTypeId.get(contestType.getId())
                             .getProposals().add((p));
                 }
@@ -243,14 +249,14 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
                 contestTypeProposalWrappersByContestTypeId);
     }
 
-    private void setJudgeProposalBean(Model model, ProposalContext proposalContext, Member member) {
+    private void setJudgeProposalBean(Model model, ProposalContext proposalContext, UserWrapper member) {
         final JudgeProposalFeedbackBean judgeProposalFeedbackBean =
                 (JudgeProposalFeedbackBean) model.asMap().get("judgeProposalFeedbackBean");
         if (judgeProposalFeedbackBean == null
                 || judgeProposalFeedbackBean.getContestPhaseId() == null) {
 
-            final Proposal proposal = proposalContext.getProposal();
-            final ContestPhase contestPhase = proposalContext.getContestPhase();
+            final ProposalWrapper proposal = proposalContext.getProposal();
+            final ContestPhaseWrapper contestPhase = proposalContext.getContestPhase();
 
             ProposalJudgeWrapper proposalJudgeWrapper = new ProposalJudgeWrapper(proposal, member);
             JudgeProposalFeedbackBean judgeProposalBean =
@@ -261,7 +267,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
         }
     }
 
-    private void setVotingDeadline(Model model, ProposalContext proposalContext, Contest baseContest) {
+    private void setVotingDeadline(Model model, ProposalContext proposalContext, ContestWrapper baseContest) {
         Date votingDeadline = getVotingDeadline(proposalContext, baseContest);
         if (votingDeadline != null) {
             final DateFormat customDateFormat = new SimpleDateFormat("MMMM dd, yyyy", Locale.US);
@@ -271,18 +277,18 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
         }
     }
 
-    private Date getVotingDeadline(ProposalContext proposalContext, Contest contest) {
-        List<ContestPhase> contestPhases = proposalContext.getClients().getContestClient()
+    private Date getVotingDeadline(ProposalContext proposalContext, ContestWrapper contest) {
+        List<ContestPhaseWrapper> contestPhases = proposalContext.getClients().getContestClient()
                 .getAllContestPhases(contest.getId());
-        final ContestPhase activeVotingPhase = getActiveVotingPhase(contestPhases);
+        final ContestPhaseWrapper activeVotingPhase = getActiveVotingPhase(contestPhases);
         if (activeVotingPhase != null) {
             return activeVotingPhase.getPhaseEndDate();
         }
         return null;
     }
 
-    private ContestPhase getActiveVotingPhase(List<ContestPhase> contestPhases) {
-        for (ContestPhase phase : contestPhases) {
+    private ContestPhaseWrapper getActiveVotingPhase(List<ContestPhaseWrapper> contestPhases) {
+        for (ContestPhaseWrapper phase : contestPhases) {
             if (phase.getContestPhaseTypeId() == ContestPhaseTypeValue.SELECTION_OF_WINNERS.getTypeId() ||
                     phase.getContestPhaseTypeId() == ContestPhaseTypeValue.SELECTION_OF_WINNERS_NEW.getTypeId() ||
                     phase.getContestPhaseTypeId() == ContestPhaseTypeValue.WINNERS_SELECTION.getTypeId() ||
@@ -299,13 +305,13 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
 
     @PostMapping("c/{proposalUrlString}/{proposalId}")
     public String updateProposal(HttpServletRequest request, HttpServletResponse response,
-            Model model, ProposalContext proposalContext, Member currentMember,
+            Model model, ProposalContext proposalContext, UserWrapper currentMember,
             @PathVariable String contestYear, @PathVariable String contestUrlName,
             @PathVariable String proposalUrlString, @PathVariable String proposalId,
             @Valid UpdateProposalDetailsBean updateProposalDetailsBean, BindingResult result)
             throws ProposalsAuthorizationException, IOException {
 
-        Proposal proposal = proposalContext.getProposal();
+        ProposalWrapper proposal = proposalContext.getProposal();
         final ProposalsPermissions permissions = proposalContext.getPermissions();
         if (proposal != null && !permissions.getCanEdit()) {
             return new AccessDeniedPage(currentMember).toViewName(response);

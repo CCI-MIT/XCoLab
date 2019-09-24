@@ -2,12 +2,13 @@ package org.xcolab.client.admin.attributes.configuration;
 
 import org.springframework.util.Assert;
 
-import org.xcolab.client.admin.AdminClient;
-import org.xcolab.client.admin.pojo.ConfigurationAttribute;
+import org.xcolab.client.admin.StaticAdminContext;
+import org.xcolab.client.admin.pojo.IConfigurationAttribute;
+import org.xcolab.commons.attributes.exceptions.AttributeNotFoundException;
 import org.xcolab.commons.attributes.i18n.LocalizableAttributeProvider;
 
 class ConfigurationAttributeProvider
-        implements LocalizableAttributeProvider<ConfigurationAttribute> {
+        implements LocalizableAttributeProvider<IConfigurationAttribute> {
 
     private final String name;
 
@@ -22,23 +23,36 @@ class ConfigurationAttributeProvider
     }
 
     @Override
-    public ConfigurationAttribute get() {
-        return AdminClient.getConfigurationAttribute(name, null);
+    public IConfigurationAttribute get() {
+        return StaticAdminContext.getAdminClient()
+                .getConfigurationAttribute(name, null).<AttributeNotFoundException>orElseThrow(
+                        () -> {
+                            throw new AttributeNotFoundException(
+                                    "Attribute not found with name " + name);
+                        });
     }
 
     @Override
-    public ConfigurationAttribute get(long additionalId) {
-        throw new UnsupportedOperationException("Configuration Attributes don't support additional ids");
+    public IConfigurationAttribute get(long additionalId) {
+        throw new UnsupportedOperationException(
+                "Configuration Attributes don't support additional ids");
     }
 
     @Override
-    public ConfigurationAttribute get(String locale) {
-        return AdminClient.getConfigurationAttribute(name, locale);
+    public IConfigurationAttribute get(String locale) {
+        return StaticAdminContext.getAdminClient()
+                .getConfigurationAttribute(name, locale).<AttributeNotFoundException>orElseThrow(
+                        () -> {
+                            throw new AttributeNotFoundException(
+                                    "Attribute not found with name " + name + " and locale "
+                                            + locale);
+                        });
     }
 
     @Override
-    public ConfigurationAttribute get(String locale, long additionalId) {
-        throw new UnsupportedOperationException("Configuration Attributes don't support additional ids");
+    public IConfigurationAttribute get(String locale, long additionalId) {
+        throw new UnsupportedOperationException(
+                "Configuration Attributes don't support additional ids");
     }
 
     @Override

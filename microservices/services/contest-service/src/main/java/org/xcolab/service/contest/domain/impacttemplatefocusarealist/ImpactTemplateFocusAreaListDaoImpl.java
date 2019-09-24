@@ -5,7 +5,9 @@ import org.jooq.Record;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Repository;
-import org.xcolab.model.tables.pojos.ImpactTemplateFocusAreaList;
+
+import org.xcolab.client.contest.pojo.IImpactTemplateFocusAreaList;
+import org.xcolab.client.contest.pojo.tables.pojos.ImpactTemplateFocusAreaList;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import static org.xcolab.model.Tables.IMPACT_TEMPLATE_FOCUS_AREA_LIST;
@@ -19,7 +21,7 @@ public class ImpactTemplateFocusAreaListDaoImpl implements ImpactTemplateFocusAr
     public ImpactTemplateFocusAreaListDaoImpl(DSLContext dslContext) {this.dslContext = dslContext;}
 
     @Override
-    public ImpactTemplateFocusAreaList get(Long focusAreaListId) throws NotFoundException {
+    public IImpactTemplateFocusAreaList get(Long focusAreaListId) throws NotFoundException {
 
         final Record record = this.dslContext.selectFrom(IMPACT_TEMPLATE_FOCUS_AREA_LIST)
                 .where(IMPACT_TEMPLATE_FOCUS_AREA_LIST.ID.eq(focusAreaListId))

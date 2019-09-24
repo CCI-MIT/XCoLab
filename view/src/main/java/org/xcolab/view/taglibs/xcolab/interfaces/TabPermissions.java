@@ -1,6 +1,6 @@
 package org.xcolab.view.taglibs.xcolab.interfaces;
 
-import org.xcolab.client.members.permissions.SystemRole;
+import org.xcolab.client.user.permissions.SystemRole;
 
 import java.io.Serializable;
 

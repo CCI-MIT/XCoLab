@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.activities.pojo.ActivityEntry;
+import org.xcolab.client.activity.IActivityClient;
+import org.xcolab.client.activity.pojo.IActivityEntry;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
 import org.xcolab.view.pages.contestmanagement.utils.ActivityCsvWriter;
 
@@ -19,18 +19,20 @@ import javax.servlet.http.HttpServletResponse;
 public class FeedsDumpGeneratingController {
 
     private final ActivityEntryHelper activityEntryHelper;
+    private final IActivityClient activityClient;
 
     @Autowired
-    public FeedsDumpGeneratingController(ActivityEntryHelper activityEntryHelper) {
+    public FeedsDumpGeneratingController(ActivityEntryHelper activityEntryHelper,
+            IActivityClient activityClient) {
         this.activityEntryHelper = activityEntryHelper;
+        this.activityClient = activityClient;
     }
 
     @GetMapping("/activities/downloadCsv")
     public void showFeed(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-
-        final List<ActivityEntry> activityEntries = ActivitiesClientUtil
-                .getActivityEntries(0, Integer.MAX_VALUE, null, null);
+        final List<IActivityEntry> activityEntries =
+                activityClient.getActivityEntries(0, Integer.MAX_VALUE, null, null);
 
         try (ActivityCsvWriter csvWriter = new ActivityCsvWriter(response, activityEntryHelper)) {
             csvWriter.writeActivities(activityEntries);

@@ -2,24 +2,22 @@ package org.xcolab.view.pages.profile.wrappers;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.activities.pojo.ActivityEntry;
-import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.activity.StaticActivityContext;
+import org.xcolab.client.activity.pojo.IActivityEntry;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.MessagingClient;
-import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.legacy.enums.MessageType;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.MemberCategory;
-import org.xcolab.client.members.pojo.Message;
-import org.xcolab.client.members.pojo.Role;
-import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
-import org.xcolab.client.proposals.pojo.ContestTypeProposal;
-import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.SupportedProposal;
+import org.xcolab.client.contest.pojo.IProposalSupporter;
+import org.xcolab.client.contest.pojo.wrapper.ContestTypeProposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.wrapper.SupportedProposal;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.legacy.enums.MessageType;
+import org.xcolab.client.user.pojo.wrapper.MemberCategoryWrapper;
+import org.xcolab.client.user.pojo.wrapper.MessageWrapper;
+import org.xcolab.client.user.pojo.wrapper.RoleWrapper;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
 import org.xcolab.view.pages.profile.beans.BadgeBean;
 import org.xcolab.view.pages.profile.beans.MessageBean;
@@ -45,10 +43,10 @@ public class UserProfileWrapper implements Serializable {
     private static final boolean FIRE_GOOGLE_EVENT = false;
     private static final boolean DISPLAY_EMAIL_ERROR_MESSAGE = false;
 
-    private Member member;
+    private UserWrapper member;
     private UserBean userBean;
     private String realName;
-    private MemberCategory highestRoleCategory;
+    private MemberCategoryWrapper highestRoleCategory;
     private int subscriptionsPageSize = 20;
     private int subscriptionsPaginationPageId;
     private String proposalsString;
@@ -57,7 +55,7 @@ public class UserProfileWrapper implements Serializable {
     private List<MessageBean> messages;
     private final List<SupportedProposal> supportedProposals = new ArrayList<>();
     private final Map<Long, ContestTypeProposal> contestTypeProposalWrappersByContestTypeId = new HashMap<>();
-    private List<Proposal> linkingProposals;
+    private List<ProposalWrapper> linkingProposals;
     private final ArrayList<UserActivityWrapper> userActivities = new ArrayList<>();
     private List<UserActivityWrapper> subscribedActivities;
     private UserSubscriptionsWrapper userSubscriptions;
@@ -67,16 +65,16 @@ public class UserProfileWrapper implements Serializable {
 
     private boolean viewingOwnProfile;
 
-    public UserProfileWrapper(long userId, Member loggedInMember,
+    public UserProfileWrapper(long userId, UserWrapper loggedInMember,
             ActivityEntryHelper activityEntryHelper)
             throws MemberNotFoundException {
         this.activityEntryHelper = activityEntryHelper;
 
-        member = MembersClient.getMember(userId);
+        member = StaticUserContext.getUserClient().getMember(userId);
 
         if (member.isActive()) {
             if (loggedInMember != null) {
-                Member logUser = MembersClient.getMember(loggedInMember.getId());
+                UserWrapper logUser = StaticUserContext.getUserClient().getMember(loggedInMember.getId());
                 if (loggedInMember.getId() == member.getId()) {
                     viewingOwnProfile = true;
                 }
@@ -99,18 +97,24 @@ public class UserProfileWrapper implements Serializable {
 
         badges = new BadgeBean(member.getId());
 
-        highestRoleCategory = MembersClient.getHighestCategory(member.getRoles());
+        highestRoleCategory = StaticUserContext.getUserClient().getHighestCategory(member.getRoles());
 
         userSubscriptions = new UserSubscriptionsWrapper(member);
         userActivities.clear();
-
-
-        for(SupportedProposal supportedProposal: ProposalMemberRatingClientUtil.getSupportedProposals(member.getId())){
-            supportedProposals.add(new SupportedProposal(supportedProposal));
+        List<IProposalSupporter> list = StaticProposalContext.getProposalMemberRatingClient()
+                .getSupportedProposals(member.getId());
+        if(list!=null) {
+            for (IProposalSupporter sp : list) {
+                supportedProposals.add(
+                        new SupportedProposal(new ProposalWrapper(StaticProposalContext.getProposalClient()
+                                .getProposal(sp.getProposalId())),sp));
+            }
         }
 
-        for (ActivityEntry activity : ActivityUtil.groupActivities(ActivitiesClientUtil
-                .getActivityEntries(0, MAX_ACTIVITIES_COUNT, member.getId(), null))) {
+
+        for (IActivityEntry activity : ActivityUtil
+                .groupActivities(StaticActivityContext.getActivityClient()
+                        .getActivityEntries(0, MAX_ACTIVITIES_COUNT, member.getId(), null))) {
 
             UserActivityWrapper a = new UserActivityWrapper(activity, activityEntryHelper);
             if (StringUtils.isNotBlank(a.getBody())) {
@@ -118,25 +122,27 @@ public class UserProfileWrapper implements Serializable {
             }
         }
 
-        List<Proposal> proposals = ProposalClientUtil.getMemberProposals(member.getId());
-        Map<ContestType, Set<Proposal>> proposalsByContestType = EntityGroupingUtil
+        List<ProposalWrapper> proposals = StaticProposalContext.getProposalClient()
+                .getMemberProposals(member.getId());
+        Map<ContestType, Set<ProposalWrapper>> proposalsByContestType = EntityGroupingUtil
                 .groupByContestType(proposals);
-        for (ContestType contestType : ContestTypeClient.getActiveContestTypes()) {
+        for (ContestType contestType : StaticAdminContext.getContestTypeClient()
+                .getActiveContestTypes()) {
             contestTypeProposalWrappersByContestTypeId
                     .put(contestType.getId(), new ContestTypeProposal(contestType));
-            final Set<Proposal> proposalsInContestType = proposalsByContestType
+            final Set<ProposalWrapper> proposalsInContestType = proposalsByContestType
                     .get(contestType);
             if (proposalsInContestType != null) {
-                for (Proposal p : proposalsInContestType) {
+                for (ProposalWrapper p : proposalsInContestType) {
                     contestTypeProposalWrappersByContestTypeId.get(contestType.getId())
-                            .getProposals().add(new Proposal(p));
+                            .getProposals().add(new ProposalWrapper(p));
                 }
             }
         }
     }
 
     public boolean isStaffMemberProfile() {
-        return PermissionsClient.canStaff(member.getId());
+        return StaticUserContext.getPermissionClient().canStaff(member.getId());
     }
 
     public boolean isInitialized() {
@@ -151,11 +157,11 @@ public class UserProfileWrapper implements Serializable {
         return viewingOwnProfile;
     }
 
-    public Member getUser() {
+    public UserWrapper getUser() {
         return member;
     }
 
-    public void setUser(Member user) {
+    public void setUser(UserWrapper user) {
         this.member = user;
     }
 
@@ -227,16 +233,16 @@ public class UserProfileWrapper implements Serializable {
         return FIRE_GOOGLE_EVENT;
     }
 
-    public MemberCategory getHighestRoleCategory() {
+    public MemberCategoryWrapper getHighestRoleCategory() {
         return highestRoleCategory;
     }
 
-    public List<Role> getRoles() {
+    public List<RoleWrapper> getRoles() {
         return member.getRoles();
     }
 
     public boolean hasRole(long roleId) {
-        return PermissionsClient.memberHasRole(member.getId(), roleId);
+        return StaticUserContext.getPermissionClient().memberHasRole(member.getId(), roleId);
     }
 
     public boolean isDisplayEMailErrorMessage() {
@@ -247,7 +253,7 @@ public class UserProfileWrapper implements Serializable {
     public List<MessageBean> getMessages() {
         if (messages == null) {
             messages = new ArrayList<>();
-            for (Message msg : MessagingClient.getMessages(this.member.getId(), 0, 2, MessageType.INBOX)) {
+            for (MessageWrapper msg : StaticUserContext.getMessagingClient().getMessages(this.member.getId(), 0, 2, MessageType.INBOX)) {
                 messages.add(new MessageBean(msg));
             }
         }
@@ -258,11 +264,12 @@ public class UserProfileWrapper implements Serializable {
         if (subscribedActivities == null) {
             subscribedActivities = new ArrayList<>();
 
-            for (ActivitySubscriptionWrapper subscription: userSubscriptions.getSubscriptions()) {
+            for (ActivitySubscriptionWrapper subscription : userSubscriptions.getSubscriptions()) {
                 Long categoryId = subscription.getSubscription().getCategoryId();
                 String activityCategory = subscription.getSubscription().getActivityCategory();
-                List<ActivityEntry> activities = ActivitiesClientUtil.getActivitiesByCategoryId(activityCategory, categoryId);
-                for (ActivityEntry activity: activities) {
+                List<IActivityEntry> activities = StaticActivityContext.getActivityClient()
+                        .getActivitiesByCategoryId(activityCategory, categoryId);
+                for (IActivityEntry activity : activities) {
                     UserActivityWrapper a = new UserActivityWrapper(activity, activityEntryHelper);
                     if (StringUtils.isNotBlank(a.getBody())) {
                         subscribedActivities.add(a);
@@ -294,7 +301,7 @@ public class UserProfileWrapper implements Serializable {
     }
 
     public long getUserActivityCount() {
-            return ActivitiesClientUtil.countActivities(getUserId(),null);
+            return StaticActivityContext.getActivityClient().countActivities(getUserId(),null);
     }
 
     public Long getUserId() {
@@ -306,7 +313,7 @@ public class UserProfileWrapper implements Serializable {
     }
 
     public long getActualPoints() {
-        return MembersClient.getMemberMaterializedPoints(getUserId());
+        return StaticUserContext.getUserClient().getMemberMaterializedPoints(getUserId());
     }
 
     public String getPotentialPointsFormatted() {
@@ -314,13 +321,14 @@ public class UserProfileWrapper implements Serializable {
     }
 
     public long getPotentialPoints() {
-        return MembersClient.getMemberHypotheticalPoints(getUserId());
+        return StaticUserContext.getUserClient().getMemberHypotheticalPoints(getUserId());
     }
 
-    public List<Proposal> getLinkingProposals() {
+    public List<ProposalWrapper> getLinkingProposals() {
         if (linkingProposals == null) {
             linkingProposals = new ArrayList<>();
-            List<Proposal> proposals = ProposalClientUtil.getLinkingProposalsForUser(getUserId());
+            List<ProposalWrapper> proposals = StaticProposalContext.getProposalClient()
+                    .getLinkingProposalsForUser(getUserId());
 
             linkingProposals.addAll(proposals);
         }
@@ -329,7 +337,7 @@ public class UserProfileWrapper implements Serializable {
 
     private String getProposalWithPlurality(String plurality) {
         if (proposalsString == null) {
-            proposalsString = ContestTypeClient.getProposalNames(
+            proposalsString = StaticAdminContext.getContestTypeClient().getProposalNames(
                             new ArrayList<>(contestTypeProposalWrappersByContestTypeId.keySet()),
                                             plurality,"or");
         }

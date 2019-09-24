@@ -4,7 +4,7 @@ import io.sentry.Sentry;
 import io.sentry.event.UserBuilder;
 import org.springframework.web.filter.GenericFilterBean;
 
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.auth.AuthenticationContext;
 
 import java.io.IOException;
@@ -26,10 +26,10 @@ public class SentryUserInfoFilter extends GenericFilterBean {
             throw new ServletException("SentryUserInfoFilter just supports HTTP requests");
         }
 
-        final Member realMemberOrNull = authenticationContext.getRealMemberOrNull();
+        final UserWrapper realMemberOrNull = authenticationContext.getRealMemberOrNull();
         if (realMemberOrNull != null) {
             //noinspection UnnecessaryLocalVariable
-            final Member member = realMemberOrNull;
+            final UserWrapper member = realMemberOrNull;
             Sentry.getContext().setUser(new UserBuilder()
                     .setId(Long.toString(member.getId()))
                     .setUsername(member.getScreenName())

@@ -4,11 +4,11 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 
-import org.xcolab.client.admin.EmailTemplateClientUtil;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.admin.pojo.EmailTemplate;
-import org.xcolab.client.members.pojo.LoginToken;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.admin.pojo.IEmailTemplate;
+import org.xcolab.client.user.pojo.wrapper.LoginTokenWrapper;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.entity.utils.notifications.basic.MemberNotification;
 
 import java.time.format.DateTimeFormatter;
@@ -23,9 +23,9 @@ public class MemberBatchRegistrationNotification extends MemberNotification {
     private static final String LOGIN_LINK_PLACEHOLDER = "login-link";
     private static final String LOGIN_LINK_EXPIRATION_PLACEHOLDER = "link-expiration";
 
-    private final LoginToken loginToken;
+    private final LoginTokenWrapper loginToken;
 
-    public MemberBatchRegistrationNotification(Member recipient, LoginToken loginToken) {
+    public MemberBatchRegistrationNotification(UserWrapper recipient, LoginTokenWrapper loginToken) {
         super(recipient, TEMPLATE_NAME);
         this.loginToken = loginToken;
     }
@@ -41,8 +41,8 @@ public class MemberBatchRegistrationNotification extends MemberNotification {
             return templateWrapper;
         }
 
-        final EmailTemplate emailTemplate =
-                EmailTemplateClientUtil.getContestEmailTemplateByType(templateName);
+        final IEmailTemplate emailTemplate =
+                StaticAdminContext.getEmailTemplateClient().getEmailTemplate(templateName);
         templateWrapper = new MemberBatchRegistrationTemplate(emailTemplate);
 
         return templateWrapper;
@@ -57,7 +57,7 @@ public class MemberBatchRegistrationNotification extends MemberNotification {
 
     protected class MemberBatchRegistrationTemplate extends MemberNotificationTemplate {
 
-        public MemberBatchRegistrationTemplate(EmailTemplate template) {
+        public MemberBatchRegistrationTemplate(IEmailTemplate template) {
             super(template, null, null);
         }
 

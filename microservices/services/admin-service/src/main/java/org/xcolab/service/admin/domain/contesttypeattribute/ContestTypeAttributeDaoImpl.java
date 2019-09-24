@@ -7,7 +7,9 @@ import org.jooq.Record;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.model.tables.pojos.ContestTypeAttribute;
+import org.xcolab.client.admin.pojo.IContestTypeAttribute;
+import org.xcolab.client.admin.pojo.tables.pojos.ContestTypeAttribute;
+
 import org.xcolab.util.i18n.I18nUtils;
 
 import java.util.List;
@@ -28,7 +30,7 @@ public class ContestTypeAttributeDaoImpl implements ContestTypeAttributeDao {
     }
 
     @Override
-    public ContestTypeAttribute create(ContestTypeAttribute pojo) {
+    public IContestTypeAttribute create(IContestTypeAttribute pojo) {
         dslContext.insertInto(CONTEST_TYPE_ATTRIBUTE)
                 .set(CONTEST_TYPE_ATTRIBUTE.NAME, pojo.getName())
                 .set(CONTEST_TYPE_ATTRIBUTE.ADDITIONAL_ID, pojo.getAdditionalId())
@@ -41,7 +43,7 @@ public class ContestTypeAttributeDaoImpl implements ContestTypeAttributeDao {
     }
 
     @Override
-    public Optional<ContestTypeAttribute> get(String attributeName, long additionalId,
+    public Optional<IContestTypeAttribute> get(String attributeName, long additionalId,
             String locale) {
         final Condition localeCondition;
         if (StringUtils.isEmpty(locale) || DEFAULT_LOCALE.equalsIgnoreCase(locale)) {
@@ -64,7 +66,7 @@ public class ContestTypeAttributeDaoImpl implements ContestTypeAttributeDao {
     }
 
     @Override
-    public boolean update(ContestTypeAttribute pojo) {
+    public boolean update(IContestTypeAttribute pojo) {
         return dslContext.update(CONTEST_TYPE_ATTRIBUTE)
                 .set(CONTEST_TYPE_ATTRIBUTE.ADDITIONAL_ID, pojo.getAdditionalId())
                 .set(CONTEST_TYPE_ATTRIBUTE.LOCALE, pojo.getLocale())
@@ -78,7 +80,7 @@ public class ContestTypeAttributeDaoImpl implements ContestTypeAttributeDao {
     }
 
     @Override
-    public List<ContestTypeAttribute> list() {
+    public List<IContestTypeAttribute> list() {
         return dslContext.select()
                 .from(CONTEST_TYPE_ATTRIBUTE)
                 .fetchInto(ContestTypeAttribute.class);

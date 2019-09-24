@@ -1,56 +1,55 @@
 package org.xcolab.view.pages.search.items;
 
-import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.proposals.ProposalAttributeClientUtil;
-import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
-import org.xcolab.client.proposals.exceptions.ProposalAttributeNotFoundException;
-import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.proposals.helpers.ProposalAttributeHelper;
-import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
-import org.xcolab.client.search.pojo.SearchPojo;
+import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
+import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
+import org.xcolab.client.contest.proposals.exceptions.ProposalAttributeNotFoundException;
+import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.contest.proposals.helpers.ProposalAttributeHelper;
+import org.xcolab.client.search.pojo.ISearchPojo;
 
 public class ProposalSearchItem extends AbstractSearchItem {
 
-    private Proposal proposal;
+    private ProposalWrapper proposal;
 
     private ProposalAttribute proposalAttribute;
 
-    private SearchPojo searchPojo;
+    private ISearchPojo searchPojo;
 
     private String searchQuery;
 
     private String proposalName;
 
     @Override
-    public void init(SearchPojo pojo, String searchQuery) {
+    public void init(ISearchPojo pojo, String searchQuery) {
         try {
             searchPojo = pojo;
             this.searchQuery = searchQuery;
-            proposalAttribute = ProposalAttributeClientUtil
+            proposalAttribute = StaticProposalContext.getProposalAttributeClient()
                     .getProposalAttribute(searchPojo.getClassPrimaryKey());
-            proposal = ProposalClientUtil.getProposal(proposalAttribute.getProposalId(), true);
+            proposal = new ProposalWrapper(StaticProposalContext.getProposalClient()
+                    .getProposal(proposalAttribute.getProposalId(), true));
             ProposalAttributeHelper proposalAttributeHelper =
-                    new ProposalAttributeHelper(proposal, ProposalAttributeClientUtil.getClient());
+                    new ProposalAttributeHelper(proposal, StaticProposalContext
+                            .getProposalAttributeClient());
 
             proposalName =
                     proposalAttributeHelper.getAttributeValueString(ProposalAttributeKeys.NAME, "");
 
         } catch (ProposalAttributeNotFoundException | ProposalNotFoundException ignored) {
-
         }
     }
 
     @Override
     public String getPrintName() {
-
         final long contestTypeId = ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get();
-        final ContestType contestType = ContestTypeClient.getContestType(contestTypeId);
+        final ContestType contestType =
+                StaticAdminContext.getContestTypeClient().getContestType(contestTypeId);
         return contestType.getProposalNamePlural();
-
     }
 
     @Override
@@ -65,20 +64,15 @@ public class ProposalSearchItem extends AbstractSearchItem {
         } else {
             return "";
         }
-
     }
-
 
     @Override
     public String getContent() {
-
         return getContent(proposalAttribute.getStringValue(), searchQuery);
-
     }
 
     @Override
     public boolean isVisible() {
-        return proposal.getVisible();
+        return proposal.isVisible();
     }
-
 }

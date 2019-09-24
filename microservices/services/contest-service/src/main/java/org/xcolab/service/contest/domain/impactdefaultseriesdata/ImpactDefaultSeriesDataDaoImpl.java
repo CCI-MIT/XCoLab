@@ -5,7 +5,9 @@ import org.jooq.Record;
 import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.xcolab.model.tables.pojos.ImpactDefaultSeriesData;
+
+import org.xcolab.client.contest.pojo.IImpactDefaultSeriesData;
+import org.xcolab.client.contest.pojo.tables.pojos.ImpactDefaultSeriesData;
 
 import java.util.List;
 import static org.xcolab.model.Tables.IMPACT_DEFAULT_SERIES_DATA;
@@ -21,7 +23,7 @@ public class ImpactDefaultSeriesDataDaoImpl implements ImpactDefaultSeriesDataDa
     }
 
     @Override
-    public List<ImpactDefaultSeriesData> findByGiven(Long seriesId, Integer year) {
+    public List<IImpactDefaultSeriesData> findByGiven(Long seriesId, Integer year) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(IMPACT_DEFAULT_SERIES_DATA).getQuery();
 

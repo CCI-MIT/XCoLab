@@ -8,12 +8,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.OntologyClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ontology.FocusArea;
-import org.xcolab.client.contest.pojo.ontology.FocusAreaOntologyTerm;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.contest.pojo.IFocusAreaOntologyTerm;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.FocusAreaWrapper;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.IdListUtil;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.entities.ContestDetailsTabs;
@@ -52,7 +50,7 @@ public class OntologyTabController extends AbstractTabController {
 
     @GetMapping
     public String showOntologyTabController(HttpServletRequest request,
-            HttpServletResponse response, Model model, Member member, @PathVariable long contestId) {
+            HttpServletResponse response, Model model, UserWrapper member, @PathVariable long contestId) {
 
         if (!tabWrapper.getCanView()) {
             return new AccessDeniedPage(member).toViewName(response);
@@ -62,13 +60,14 @@ public class OntologyTabController extends AbstractTabController {
         model.addAttribute("ontologyTerms", ontologyWrapper.getOntologyTerms());
         model.addAttribute("ontologySpaces", ontologyWrapper.getSortedOntologySpaces());
         model.addAttribute("contestOntologyTerms",
-                ontologyWrapper.getOntologyTermIdsForFocusAreaOfContest(ContestClientUtil.getContest(contestId)));
+                ontologyWrapper.getOntologyTermIdsForFocusAreaOfContest(
+                        contestClient.getContest(contestId)));
         return TAB_VIEW;
     }
 
     @PostMapping("update")
     public String updateOntologyTabController(HttpServletRequest request,
-            HttpServletResponse response, Model model, Member member,
+            HttpServletResponse response, Model model, UserWrapper member,
             @PathVariable long contestId) {
 
         if (!tabWrapper.getCanEdit()) {
@@ -78,29 +77,27 @@ public class OntologyTabController extends AbstractTabController {
         List<Long> selectedOntologyTerms =
                 IdListUtil.getIdsFromString(request.getParameter("selectedOntologyTerms"));
 
-        Contest contest = ContestClientUtil.getContest(contestId);
+        ContestWrapper contest = contestClient.getContest(contestId);
         Long focusAreaId = contest.getFocusAreaId();
         if (focusAreaId == null) {
-            FocusArea focusArea = new FocusArea();
+            FocusAreaWrapper focusArea = new FocusAreaWrapper();
 
             focusArea.setName("Focus area for " + contest.getTitle());
             focusArea.setSortOrder(0);
-            focusArea = OntologyClientUtil.createFocusArea(focusArea);
+            focusArea = ontologyClient.createFocusArea(focusArea);
             focusAreaId = focusArea.getId();
             contest.setFocusAreaId(focusAreaId);
-            ContestClientUtil.updateContest(contest);
+            contestClient.updateContest(contest);
         }
 
-        for (FocusAreaOntologyTerm focusAreaOntologyTerm : OntologyClientUtil
+        for (IFocusAreaOntologyTerm focusAreaOntologyTerm : ontologyClient
                 .getFocusAreaOntologyTermsByFocusArea(focusAreaId)) {
-            OntologyClientUtil
-                    .deleteFocusAreaOntologyTerm(focusAreaOntologyTerm.getFocusAreaId(),
+            ontologyClient.deleteFocusAreaOntologyTerm(focusAreaOntologyTerm.getFocusAreaId(),
                             focusAreaOntologyTerm.getOntologyTermId());
         }
 
         for (Long ontologyTerm : selectedOntologyTerms) {
-            OntologyClientUtil
-                    .addOntologyTermsToFocusAreaByOntologyTermId(focusAreaId, ontologyTerm);
+            ontologyClient.addOntologyTermsToFocusAreaByOntologyTermId(focusAreaId, ontologyTerm);
         }
         return "redirect:" + tab.getTabUrl(contestId);
     }

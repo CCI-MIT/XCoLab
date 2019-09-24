@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
-import org.xcolab.model.tables.pojos.ContestPhase;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.model.tables.records.ContestPhaseRecord;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
@@ -32,8 +32,7 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
     }
 
     @Override
-    public ContestPhase create(ContestPhase contestPhase) {
-
+    public ContestPhaseWrapper create(ContestPhaseWrapper contestPhase) {
         ContestPhaseRecord record = this.dslContext.insertInto(CONTEST_PHASE)
                 .set(CONTEST_PHASE.CONTEST_ID, contestPhase.getContestId())
                 .set(CONTEST_PHASE.CONTEST_PHASE_TYPE_ID, contestPhase.getContestPhaseTypeId())
@@ -54,7 +53,7 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
     }
 
     @Override
-    public boolean update(ContestPhase contestPhase) {
+    public boolean update(ContestPhaseWrapper contestPhase) {
         return dslContext.update(CONTEST_PHASE)
                 .set(CONTEST_PHASE.CONTEST_ID, contestPhase.getContestId())
                 .set(CONTEST_PHASE.CONTEST_PHASE_TYPE_ID, contestPhase.getContestPhaseTypeId())
@@ -67,7 +66,6 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
                 .execute() > 0;
     }
 
-
     @Override
     public boolean delete(Long contestPhaseId) {
         dslContext.deleteFrom(PROPOSAL2_PHASE)
@@ -79,18 +77,18 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
     }
 
     @Override
-    public List<ContestPhase> findByPhaseAutopromote(String contestPhaseAutoPromote) {
+    public List<ContestPhaseWrapper> findByPhaseAutopromote(String contestPhaseAutoPromote) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(CONTEST_PHASE).getQuery();
 
         query.addConditions(CONTEST_PHASE.CONTEST_PHASE_AUTOPROMOTE.eq(contestPhaseAutoPromote));
 
         query.addOrderBy(CONTEST_PHASE.PHASE_START_DATE.asc());
-        return query.fetchInto(ContestPhase.class);
+        return query.fetchInto(ContestPhaseWrapper.class);
     }
 
     @Override
-    public List<ContestPhase> findByGiven(Long contestId, Long contestScheduleId,
+    public List<ContestPhaseWrapper> findByGiven(Long contestId, Long contestScheduleId,
             Long contestPhaseTypeId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(CONTEST_PHASE).getQuery();
@@ -108,11 +106,11 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
         }
 
         query.addOrderBy(CONTEST_PHASE.PHASE_START_DATE.asc());
-        return query.fetchInto(ContestPhase.class);
+        return query.fetchInto(ContestPhaseWrapper.class);
     }
 
     @Override
-    public boolean isPhaseActive(ContestPhase contestPhase) {
+    public boolean isPhaseActive(ContestPhaseWrapper contestPhase) {
         if (contestPhase.getPhaseStartDate() != null) {
             Date now = new Date();
             if (now.after(contestPhase.getPhaseStartDate())) {
@@ -125,8 +123,7 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
 
     //ContestPhaseLocalServiceUtil.getContestPhase
     @Override
-    public Optional<ContestPhase> get(Long contestPhaseId) throws NotFoundException {
-
+    public Optional<ContestPhaseWrapper> get(Long contestPhaseId) throws NotFoundException {
         final Record record = this.dslContext.selectFrom(CONTEST_PHASE)
                 .where(CONTEST_PHASE.ID.eq(contestPhaseId))
                 .fetchOne();
@@ -134,7 +131,7 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
         if (record == null) {
             return Optional.empty();
         }
-        return Optional.of(record.into(ContestPhase.class));
+        return Optional.of(record.into(ContestPhaseWrapper.class));
     }
 
     @Override
@@ -155,5 +152,4 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
                         .and(PROPOSAL.DISCUSSION_ID.isNotNull()))
                 .fetch().into(Long.class);
     }
-
 }

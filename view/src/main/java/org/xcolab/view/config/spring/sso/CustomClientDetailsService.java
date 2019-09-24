@@ -7,8 +7,8 @@ import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.ClientRegistrationException;
 
-import org.xcolab.client.members.SsoClientDetailsClient;
-import org.xcolab.client.members.pojo.SsoClientDetails;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.pojo.wrapper.SsoClientDetailsWrapper;
 import org.xcolab.view.config.spring.sso.openid.OpenIdHelper;
 
 import java.util.Arrays;
@@ -28,15 +28,15 @@ public class CustomClientDetailsService implements ClientDetailsService {
     @Override
     public ClientDetails loadClientByClientId(String clientId)
             throws ClientRegistrationException {
-        SsoClientDetails clientDetails = SsoClientDetailsClient.getSsoClientDetails(clientId);
+        SsoClientDetailsWrapper clientDetails = StaticUserContext.getSsoClientDetailsClient().getSsoClientDetails(clientId);
         return new CustomClientDetails(clientDetails);
     }
 
     public static class CustomClientDetails implements ClientDetails {
 
-        private final SsoClientDetails clientDetails;
+        private final SsoClientDetailsWrapper clientDetails;
 
-        public CustomClientDetails(SsoClientDetails clientDetails) {
+        public CustomClientDetails(SsoClientDetailsWrapper clientDetails) {
             this.clientDetails = clientDetails;
         }
 
@@ -63,8 +63,8 @@ public class CustomClientDetailsService implements ClientDetailsService {
 
         @Override
         public Set<String> getRegisteredRedirectUri() {
-            if (!StringUtils.isEmpty(clientDetails.getRegisteredRedirectUri())) {
-                return Collections.singleton(clientDetails.getRegisteredRedirectUri());
+            if (!StringUtils.isEmpty(clientDetails.getRegisteredredirecturi())) {
+                return Collections.singleton(clientDetails.getRegisteredredirecturi());
             }
             return Collections.emptySet();
         }

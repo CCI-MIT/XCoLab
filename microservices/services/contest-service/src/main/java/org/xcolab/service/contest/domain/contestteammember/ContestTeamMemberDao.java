@@ -1,6 +1,6 @@
 package org.xcolab.service.contest.domain.contestteammember;
 
-import org.xcolab.model.tables.pojos.ContestTeamMember;
+import org.xcolab.client.contest.pojo.IContestTeamMember;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.util.List;
@@ -9,17 +9,17 @@ import java.util.Optional;
 public interface ContestTeamMemberDao {
     boolean delete(Long id);
 
-    ContestTeamMember create(ContestTeamMember contestTeamMember);
+    IContestTeamMember create(IContestTeamMember contestTeamMember);
 
-    Optional<ContestTeamMember> get(Long id) throws NotFoundException;
+    Optional<IContestTeamMember> get(Long id) throws NotFoundException;
 
     boolean exists(Long id);
 
-    boolean update(ContestTeamMember contestTeamMember);
+    boolean update(IContestTeamMember contestTeamMember);
 
-    List<ContestTeamMember> findByGiven(Long userId, Long contestId, Long roleId);
+    List<IContestTeamMember> findByGiven(Long userId, Long contestId, Long roleId);
 
-    ContestTeamMember findOneBy(Long userId, Long contestId, Long roleId);
+    IContestTeamMember findOneBy(Long userId, Long contestId, Long roleId);
 
-    List<ContestTeamMember> findByContestYear(Long categoryId, Long contestYear);
+    List<IContestTeamMember> findByContestYear(Long categoryId, Long contestYear);
 }

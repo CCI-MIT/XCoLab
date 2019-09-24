@@ -5,7 +5,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.contest.pojo.impact.ImpactIteration;
+import org.xcolab.client.contest.pojo.IImpactIteration;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -67,10 +67,10 @@ public class ProposalImpactSeriesValues {
         }
     }
 
-    public JSONArray toJSONArrayWithIteration(List<ImpactIteration> iterations) {
+    public JSONArray toJSONArrayWithIteration(List<IImpactIteration> iterations) {
         JSONArray jsonArray = new JSONArray();
 
-        for (ImpactIteration iteration : iterations) {
+        for (IImpactIteration iteration : iterations) {
             JSONObject jsonValue = new JSONObject();
             jsonValue.put("year", iteration.getYear());
             jsonValue.put("value", yearToValueMap.get(iteration.getYear()));

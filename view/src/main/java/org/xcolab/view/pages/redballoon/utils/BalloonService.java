@@ -9,18 +9,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.balloons.BalloonsClient;
-import org.xcolab.client.balloons.exceptions.BalloonTextNotFoundException;
-import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFoundException;
-import org.xcolab.client.balloons.pojo.BalloonLink;
-import org.xcolab.client.balloons.pojo.BalloonText;
-import org.xcolab.client.balloons.pojo.BalloonUserTracking;
-import org.xcolab.client.emails.EmailClient;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.tracking.TrackingClient;
-import org.xcolab.client.tracking.pojo.Location;
-import org.xcolab.entity.utils.LinkUtils;
+import org.xcolab.client.email.IEmailClient;
+import org.xcolab.client.tracking.IBalloonClient;
+import org.xcolab.client.tracking.ITrackingClient;
+import org.xcolab.client.tracking.exceptions.BalloonTextNotFoundException;
+import org.xcolab.client.tracking.exceptions.BalloonUserTrackingNotFoundException;
+import org.xcolab.client.tracking.pojo.IBalloonLink;
+import org.xcolab.client.tracking.pojo.IBalloonText;
+import org.xcolab.client.tracking.pojo.IBalloonUserTracking;
+import org.xcolab.client.tracking.pojo.ILocation;
+import org.xcolab.client.tracking.pojo.tables.pojos.BalloonLink;
+import org.xcolab.client.tracking.pojo.tables.pojos.BalloonUserTracking;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
+import org.xcolab.entity.utils.LinkUtils;
 import org.xcolab.view.auth.AuthenticationService;
 
 import java.sql.Timestamp;
@@ -48,31 +50,37 @@ public class BalloonService {
             "org.xcolab.snp.newBalloonUserTracking";
 
     private final AuthenticationService authenticationService;
+    private final ITrackingClient trackingClient;
+    private final IBalloonClient balloonClient;
+    private final IEmailClient emailClient;
 
     @Autowired
-    public BalloonService(AuthenticationService authenticationService) {
+    public BalloonService(AuthenticationService authenticationService,
+            ITrackingClient trackingClient, IBalloonClient balloonClient, IEmailClient emailClient) {
         this.authenticationService = authenticationService;
+        this.trackingClient = trackingClient;
+        this.balloonClient = balloonClient;
+        this.emailClient = emailClient;
     }
 
-    public BalloonLink createBalloonLink(String email, BalloonUserTracking but)
+    public IBalloonLink createBalloonLink(String email, IBalloonUserTracking but)
             throws BalloonTextNotFoundException {
-
-        BalloonLink link = new BalloonLink();
+        IBalloonLink link = new BalloonLink();
         link.setUuid(UUID.randomUUID().toString());
         link.setBalloonUserUuid(but.getUuid());
         link.setCreatedAt(new Timestamp(new Date().getTime()));
         link.setTargetUrl(getSnpLinkUrl(link.getUuid()));
-        link = BalloonsClient.createBalloonLink(link);
+        link = balloonClient.createBalloonLink(link);
 
-        BalloonText text = BalloonsClient.getBalloonText(but.getBalloonTextId());
+        IBalloonText text = balloonClient.getBalloonText(but.getBalloonTextId());
         String messageSubject = text.getEmailSubjectTemplate();
         String messageBody = text.getEmailTemplate()
                 .replaceAll(URL_PLACEHOLDER, LinkUtils.getAbsoluteUrl(link.getTargetUrl()));
-
         final String fromEmail = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.get();
         final String fromName = ConfigurationAttributeKey.COLAB_NAME.get();
-        EmailClient.sendEmail(fromEmail, fromName, email, messageSubject, messageBody, true,
+        emailClient.sendEmail(fromEmail, fromName, email, messageSubject, messageBody, true,
                 fromEmail, fromName, but.getBalloonTextId());
+
         return link;
     }
 
@@ -83,24 +91,24 @@ public class BalloonService {
         return uriBuilder.buildAndExpand(uriVariables).toUriString();
     }
 
-    public Optional<BalloonUserTracking> getBalloonUserTracking(HttpServletRequest request,
+    public Optional<IBalloonUserTracking> getBalloonUserTracking(HttpServletRequest request,
             HttpServletResponse response) {
 
         // a new tracking created earlier in this request won't show up in the cookies
         // it's saved in an attribute so we can use that instead
-        final BalloonUserTracking createdBut =
-                (BalloonUserTracking) request.getAttribute(NEW_BALLOON_USER_TRACKING_ATTRIBUTE);
+        final IBalloonUserTracking createdBut =
+                (IBalloonUserTracking) request.getAttribute(NEW_BALLOON_USER_TRACKING_ATTRIBUTE);
         if (createdBut != null) {
             return Optional.of(createdBut);
         }
 
         //make sure we always track the correct user, even when impersonating
-        Member member = authenticationService.getRealMemberOrNull();
+        UserWrapper member = authenticationService.getRealMemberOrNull();
 
         Optional<BalloonCookie> cookieOpt = BalloonCookie.from(request.getCookies());
         if (cookieOpt.isPresent()) {
             try {
-                BalloonUserTracking but = getBalloonUserTrackingFromCookie(cookieOpt.get());
+                IBalloonUserTracking but = getBalloonUserTrackingFromCookie(cookieOpt.get());
 
                 if (member == null) {
                     return Optional.of(but);
@@ -109,7 +117,8 @@ public class BalloonService {
                 final boolean butLinkedToOtherMember =
                         but.getUserId() != null && but.getUserId() != member.getId();
                 if (!butLinkedToOtherMember) {
-                    but.updateUserIdAndEmailIfEmpty(member.getId(), member.getEmailAddress());
+                    balloonClient.updateUserIdAndEmailIfEmpty(but, member.getId(),
+                            member.getEmailAddress());
                     return Optional.of(but);
                 }
             } catch (ReferenceResolutionException rre) {
@@ -118,9 +127,10 @@ public class BalloonService {
         }
 
         if (member != null) {
-            BalloonUserTracking but = getBalloonUserTrackingForMember(member);
+            IBalloonUserTracking but = getBalloonUserTrackingForMember(member);
             if (but != null) {
-                but.updateUserIdAndEmailIfEmpty(member.getId(), member.getEmailAddress());
+                balloonClient.updateUserIdAndEmailIfEmpty(but, member.getId(),
+                        member.getEmailAddress());
                 BalloonCookie cookie = BalloonCookie.of(but.getUuid());
                 response.addCookie(cookie.getHttpCookie());
                 return Optional.of(but);
@@ -130,16 +140,16 @@ public class BalloonService {
         return Optional.empty();
     }
 
-    public BalloonUserTracking getOrCreateBalloonUserTracking(HttpServletRequest request,
+    public IBalloonUserTracking getOrCreateBalloonUserTracking(HttpServletRequest request,
             HttpServletResponse response, String parent, String linkUuid) {
 
-        final Optional<BalloonUserTracking> butOpt = getBalloonUserTracking(request, response);
+        final Optional<IBalloonUserTracking> butOpt = getBalloonUserTracking(request, response);
         if (butOpt.isPresent()) {
             return butOpt.get();
         }
 
         //make sure we always track the correct user, even when impersonating
-        Member member = authenticationService.getRealMemberOrNull();
+        UserWrapper member = authenticationService.getRealMemberOrNull();
 
         String uuid;
         if (member != null) {
@@ -149,7 +159,7 @@ public class BalloonService {
         }
         response.addCookie(BalloonCookie.of(uuid).getHttpCookie());
 
-        final BalloonUserTracking but =
+        final IBalloonUserTracking but =
                 createBalloonUserTracking(uuid, parent, linkUuid, member, request.getRemoteAddr(),
                         request.getHeader(HttpHeaders.REFERER),
                         request.getHeader(HttpHeaders.USER_AGENT));
@@ -157,15 +167,16 @@ public class BalloonService {
         return but;
     }
 
-    public void associateBalloonTrackingWithUser(HttpServletRequest request, Member member) {
+    public void associateBalloonTrackingWithUser(HttpServletRequest request, UserWrapper member) {
         Optional<BalloonCookie> balloonCookieOpt = BalloonCookie.from(request.getCookies());
         if (balloonCookieOpt.isPresent()) {
             final BalloonCookie balloonCookie = balloonCookieOpt.get();
             try {
-                BalloonUserTracking but =
-                        BalloonsClient.getBalloonUserTracking(balloonCookie.getUuid());
+                IBalloonUserTracking but =
+                        balloonClient.getBalloonUserTracking(balloonCookie.getUuid());
                 if (but != null) {
-                    but.updateUserIdAndEmailIfEmpty(member.getId(), member.getEmailAddress());
+                    balloonClient.updateUserIdAndEmailIfEmpty(but, member.getId(),
+                            member.getEmailAddress());
                 }
             } catch (BalloonUserTrackingNotFoundException e) {
                 _log.error("Invalid UUID: {}", balloonCookie);
@@ -173,16 +184,16 @@ public class BalloonService {
         }
     }
 
-    private BalloonUserTracking getBalloonUserTrackingFromCookie(BalloonCookie cookie) {
-        return getOptional(() -> BalloonsClient.getBalloonUserTracking(cookie.getUuid()))
+    private IBalloonUserTracking getBalloonUserTrackingFromCookie(BalloonCookie cookie) {
+        return getOptional(() -> balloonClient.getBalloonUserTracking(cookie.getUuid()))
                 .orElseThrow(() -> ReferenceResolutionException
-                        .toObject(BalloonUserTracking.class, cookie.getUuid())
+                        .toObject(IBalloonUserTracking.class, cookie.getUuid())
                         .fromObject(BalloonCookie.class, ""));
     }
 
-    private BalloonUserTracking createBalloonUserTracking(String uuid, String parent,
-            String linkUuid, Member member, String remoteIp, String referrer, String userAgent) {
-        BalloonUserTracking but = new BalloonUserTracking();
+    private IBalloonUserTracking createBalloonUserTracking(String uuid, String parent,
+            String linkUuid, UserWrapper member, String remoteIp, String referrer, String userAgent) {
+        IBalloonUserTracking but = new BalloonUserTracking();
         but.setUuid(uuid);
         but.setIp(remoteIp);
         but.setParent(parent);
@@ -191,7 +202,7 @@ public class BalloonService {
         but.setUserAgent(userAgent);
 
         // populate GeoLocation data
-        Location location = TrackingClient.getLocationForIp(remoteIp);
+        ILocation location = trackingClient.getLocationForIp(remoteIp);
         if (location != null) {
             but.setCity(location.getCity());
             but.setCountry(location.getCountry());
@@ -204,26 +215,24 @@ public class BalloonService {
         }
 
         // pick random balloon text to be displayed
-        List<BalloonText> texts = BalloonsClient.getAllEnabledBalloonTexts();
+        List<IBalloonText> texts = balloonClient.getAllEnabledBalloonLinks();
         if (!texts.isEmpty()) {
             but.setBalloonTextId(texts.get(RandomUtils.nextInt(0, texts.size())).getId());
         } else {
             but.setBalloonTextId(0L);
         }
 
-        BalloonsClient.createBalloonUserTracking(but);
+        balloonClient.createBalloonUserTracking(but);
         return but;
     }
 
-    private static BalloonUserTracking getBalloonUserTrackingForMember(Member member) {
+    private IBalloonUserTracking getBalloonUserTrackingForMember(UserWrapper member) {
         try {
-            return BalloonsClient.getBalloonUserTracking(member.getOrGenerateUuid());
+            return balloonClient.getBalloonUserTracking(member.getOrGenerateUuid());
         } catch (BalloonUserTrackingNotFoundException ignored) {
-            List<BalloonUserTracking> buts =
-                    BalloonsClient.getBalloonUserTrackingByEmail(member.getEmailAddress());
-
+            List<IBalloonUserTracking> buts =
+                    balloonClient.listBalloonUserTrackings(member.getEmailAddress(), null);
             return buts.stream().findFirst().orElse(null);
         }
     }
-
 }

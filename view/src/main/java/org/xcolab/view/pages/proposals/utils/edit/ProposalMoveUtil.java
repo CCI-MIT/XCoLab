@@ -2,19 +2,20 @@ package org.xcolab.view.pages.proposals.utils.edit;
 
 import org.apache.commons.lang3.NotImplementedException;
 
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.proposals.ProposalClient;
-import org.xcolab.client.proposals.ProposalMoveClient;
-import org.xcolab.client.proposals.ProposalPhaseClient;
-import org.xcolab.client.proposals.ProposalPhaseClientUtil;
-import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
-import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
-import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
+import org.xcolab.client.contest.pojo.IProposal2Phase;
+import org.xcolab.client.contest.pojo.tables.pojos.Proposal2Phase;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.IProposalClient;
+import org.xcolab.client.contest.proposals.IProposalMoveClient;
+import org.xcolab.client.contest.proposals.IProposalPhaseClient;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
+import org.xcolab.client.contest.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.commons.exceptions.InternalException;
+import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.view.pages.proposals.requests.UpdateProposalDetailsBean;
@@ -27,16 +28,17 @@ public final class ProposalMoveUtil {
     }
 
     public static void moveProposal(ProposalContext proposalContext,
-            UpdateProposalDetailsBean updateProposalSectionsBean, Proposal proposal,
-            ContestPhase contestPhase, Contest targetContest, long userId) {
+            UpdateProposalDetailsBean updateProposalSectionsBean, ProposalWrapper proposal,
+            ContestPhaseWrapper contestPhase, ContestWrapper targetContest, long userId) {
         try {
             final ClientHelper clients = proposalContext.getClients();
-            final ProposalClient proposalClient = clients.getProposalClient();
-            final ProposalPhaseClient proposalPhaseClient = clients.getProposalPhaseClient();
-            final ProposalMoveClient proposalMoveClient = clients.getProposalMoveClient();
+            final IProposalClient proposalClient = clients.getProposalClient();
+            final IProposalPhaseClient proposalPhaseClient = clients.getProposalPhaseClient();
+            final IProposalMoveClient proposalMoveClient = clients.getProposalMoveClient();
 
-            final Contest fromContest = proposalClient.getCurrentContestForProposal(proposal.getId());
-            ContestPhase targetPhase = ContestClientUtil.getActivePhase(targetContest.getId());
+            final ContestWrapper fromContest = proposalClient.getCurrentContestForProposal(proposal.getId());
+            ContestPhaseWrapper targetPhase = StaticContestContext.getContestClient()
+                    .getActivePhase(targetContest.getId());
 
             try {
                 if (proposalPhaseClient.getProposal2PhaseByProposalIdContestPhaseId(proposal.getId(),
@@ -52,9 +54,10 @@ public final class ProposalMoveUtil {
                     proposalMoveClient.createProposalMoveHistory(proposal.getId(),
                             fromContest.getId(), targetContest.getId(), targetPhase.getId(),
                             userId);
-                    for (Proposal2Phase p2p : ProposalPhaseClientUtil
+                    for (IProposal2Phase p2p : StaticProposalContext.getProposalPhaseClient()
                             .getProposal2PhaseByProposalId(proposal.getId())) {
-                        if (ContestClientUtil.getContestPhase(p2p.getContestPhaseId()).getContestId()
+                        if (StaticContestContext.getContestClient()
+                                .getContestPhase(p2p.getContestPhaseId()).getContestId()
                                 != updateProposalSectionsBean.getBaseProposalContestId()) {
                             continue;
                         }
@@ -66,9 +69,9 @@ public final class ProposalMoveUtil {
                         }
 
                         if (updateProposalSectionsBean.getMoveFromContestPhaseId() != null) {
-                            if (!ContestClientUtil.getContestPhase(p2p.getContestPhaseId()).getPhaseStartDate()
-                                    .before(
-                                            ContestClientUtil
+                            if (!StaticContestContext.getContestClient()
+                                    .getContestPhase(p2p.getContestPhaseId()).getPhaseStartDate()
+                                    .before(StaticContestContext.getContestClient()
                                                     .getContestPhase(updateProposalSectionsBean.getMoveFromContestPhaseId())
                                                     .getPhaseStartDate())) {
                                 // remove proposal from this contest in all phases that come after the selected one
@@ -81,7 +84,7 @@ public final class ProposalMoveUtil {
                     proposalMoveClient.createCopyProposalMoveHistory(proposal.getId(),
                             fromContest.getId(), targetContest.getId(), targetPhase.getId(),
                             userId);
-                    for (Proposal2Phase p2p : ProposalPhaseClientUtil
+                    for (IProposal2Phase p2p : StaticProposalContext.getProposalPhaseClient()
                             .getProposal2PhaseByProposalId(proposal.getId())) {
                         if (p2p.getVersionTo() < 0) {
                             p2p.setVersionTo(proposal.getCurrentVersion());
@@ -97,7 +100,7 @@ public final class ProposalMoveUtil {
                     throw new NotImplementedException("Not supported");
                 default:
             }
-            Proposal2Phase p2p = new Proposal2Phase();
+            IProposal2Phase p2p = new Proposal2Phase();
             p2p.setContestPhaseId(targetPhase.getId());
             p2p.setProposalId(proposal.getId());
 
@@ -105,9 +108,8 @@ public final class ProposalMoveUtil {
             p2p.setVersionTo(-1);
 
             proposalPhaseClient.createProposal2Phase(p2p);
-            ProposalPhaseClientUtil
-                    .setProposalContestPhaseAttribute(proposal.getId(), contestPhase
-                                    .getId(),
+            StaticProposalContext.getProposalPhaseClient()
+                    .setProposalContestPhaseAttribute(proposal.getId(), contestPhase.getId(),
                             ProposalContestPhaseAttributeKeys.VISIBLE, 0L, 1L, "");
             ServiceRequestUtils.clearCache(CacheName.PROPOSAL_LIST_CLOSED);
             ServiceRequestUtils.clearCache(CacheName.PROPOSAL_PHASE);

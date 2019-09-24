@@ -1,7 +1,7 @@
 package org.xcolab.view.widgets.proposals;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 
 import java.util.List;
 
@@ -9,9 +9,9 @@ public class ProposalsModel {
 
     private final RandomProposalsPreferences _preferences;
 
-    private final List<Proposal> _proposals;
+    private final List<ProposalWrapper> _proposals;
 
-    public ProposalsModel(List<Proposal> proposals, RandomProposalsPreferences preferences) {
+    public ProposalsModel(List<ProposalWrapper> proposals, RandomProposalsPreferences preferences) {
         _proposals = proposals;
         _preferences = preferences;
     }
@@ -24,7 +24,7 @@ public class ProposalsModel {
         return PlatformAttributeKey.COLAB_URL.get() + "/proposal/";
     }
 
-    public List<Proposal> getProposals() {
+    public List<ProposalWrapper> getProposals() {
         return _proposals;
     }
 

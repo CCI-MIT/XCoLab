@@ -144,12 +144,12 @@
         </dependency>
         <dependency>
             <groupId>org.xcolab</groupId>
-            <artifactId>members-client</artifactId>
+            <artifactId>user-client</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.xcolab</groupId>
-            <artifactId>contestproposal-client</artifactId>
+            <artifactId>contest-client</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -160,33 +160,23 @@
         </dependency>
         <dependency>
             <groupId>org.xcolab</groupId>
-            <artifactId>files-client</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.xcolab</groupId>
-            <artifactId>ballons-client</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.xcolab</groupId>
             <artifactId>tracking-client</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.xcolab</groupId>
-            <artifactId>contents-client</artifactId>
+            <artifactId>content-client</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.xcolab</groupId>
-            <artifactId>emails-client</artifactId>
+            <artifactId>email-client</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.xcolab</groupId>
-            <artifactId>flagging-client</artifactId>
+            <artifactId>moderation-client</artifactId>
             <version>${project.version}</version>
         </dependency>
 		<dependency>
@@ -282,6 +272,9 @@
                     <encoding>${project.build.sourceEncoding}</encoding>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                    <compilerArgs>
+                        <arg>-parameters</arg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
             <plugin>

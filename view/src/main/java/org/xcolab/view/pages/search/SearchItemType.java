@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.search;
 
-import org.xcolab.client.search.pojo.SearchPojo;
+import org.xcolab.client.search.pojo.ISearchPojo;
 import org.xcolab.view.pages.search.items.AbstractSearchItem;
 import org.xcolab.view.pages.search.items.ContestSearchItem;
 import org.xcolab.view.pages.search.items.DiscussionSearchItem;
@@ -24,7 +24,7 @@ public enum SearchItemType {
         this.id = id;
     }
 
-    public boolean isOfGivenType(SearchPojo pojo) {
+    public boolean isOfGivenType(ISearchPojo pojo) {
         return pojo.getSearchTypeId().longValue() == this.id.longValue();
     }
 

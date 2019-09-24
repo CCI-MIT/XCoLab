@@ -6,7 +6,8 @@ import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.model.tables.pojos.ModelInputGroup;
+import org.xcolab.client.modeling.pojo.IModelInputGroup;
+import org.xcolab.model.tables.pojos.ModelInputGroupImpl;
 import org.xcolab.model.tables.records.ModelInputGroupRecord;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class ModelInputGroupDaoImpl implements ModelInputGroupDao {
     }
 
     @Override
-    public Optional<ModelInputGroup> get(long id) {
+    public Optional<IModelInputGroup> get(long id) {
         final Record record = dslContext.select()
                 .from(MODEL_INPUT_GROUP)
                 .where(MODEL_INPUT_GROUP.ID.eq(id))
@@ -33,18 +34,18 @@ public class ModelInputGroupDaoImpl implements ModelInputGroupDao {
         if (record == null) {
             return Optional.empty();
         }
-        return Optional.of(record.into(ModelInputGroup.class));
+        return Optional.of(record.into(ModelInputGroupImpl.class));
     }
 
     @Override
-    public List<ModelInputGroup> list() {
+    public List<IModelInputGroup> list() {
         return dslContext.select()
                 .from(MODEL_INPUT_GROUP)
-                .fetch().into(ModelInputGroup.class);
+                .fetch().into(ModelInputGroupImpl.class);
     }
 
     @Override
-    public List<ModelInputGroup> findByGiven(Long parentGroupPk, Long modelId) {
+    public List<IModelInputGroup> findByGiven(Long parentGroupPk, Long modelId) {
         final SelectQuery<Record> query = dslContext.select().from(MODEL_INPUT_GROUP)
                 .getQuery();
 
@@ -56,11 +57,11 @@ public class ModelInputGroupDaoImpl implements ModelInputGroupDao {
             query.addConditions(MODEL_INPUT_GROUP.MODEL_ID.eq(modelId));
         }
 
-        return query.fetch().into(ModelInputGroup.class);
+        return query.fetch().into(ModelInputGroupImpl.class);
     }
 
     @Override
-    public ModelInputGroup create(ModelInputGroup pojo) {
+    public IModelInputGroup create(IModelInputGroup pojo) {
         final ModelInputGroupRecord record = dslContext.insertInto(MODEL_INPUT_GROUP)
                 .set(MODEL_INPUT_GROUP.MODEL_ID, pojo.getModelId())
                 .set(MODEL_INPUT_GROUP.NAME, pojo.getName())
@@ -79,7 +80,7 @@ public class ModelInputGroupDaoImpl implements ModelInputGroupDao {
     }
 
     @Override
-    public boolean update(ModelInputGroup pojo) {
+    public boolean update(IModelInputGroup pojo) {
         return dslContext.update(MODEL_INPUT_GROUP)
                 .set(MODEL_INPUT_GROUP.MODEL_ID, pojo.getModelId())
                 .set(MODEL_INPUT_GROUP.NAME, pojo.getName())

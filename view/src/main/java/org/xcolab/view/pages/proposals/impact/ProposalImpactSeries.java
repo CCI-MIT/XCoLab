@@ -3,23 +3,21 @@ package org.xcolab.view.pages.proposals.impact;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.xcolab.client.contest.ImpactClientUtil;
-import org.xcolab.client.contest.OntologyClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.impact.ImpactDefaultSeries;
-import org.xcolab.client.contest.pojo.impact.ImpactDefaultSeriesData;
-import org.xcolab.client.contest.pojo.impact.ImpactIteration;
-import org.xcolab.client.contest.pojo.ontology.FocusArea;
-import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalAttributeClientUtil;
-import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.client.proposals.enums.ImpactSeriesType;
-import org.xcolab.client.proposals.helpers.ProposalAttributeHelper;
-import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.ProposalVersion;
-import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
+import org.xcolab.client.contest.StaticContestContext;
+import org.xcolab.client.contest.pojo.IImpactDefaultSeries;
+import org.xcolab.client.contest.pojo.IImpactDefaultSeriesData;
+import org.xcolab.client.contest.pojo.IImpactIteration;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.FocusAreaWrapper;
+import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ProposalVersionWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
+import org.xcolab.client.contest.proposals.enums.ImpactSeriesType;
+import org.xcolab.client.contest.proposals.helpers.ProposalAttributeHelper;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -41,23 +39,23 @@ public class ProposalImpactSeries {
     //    public static final String SERIES_TYPE_DDPP_KEY = "DDPP";
     public static final String SERIES_TYPE_RESULT_KEY = "RESULT";
 
-    private final List<ImpactIteration> impactIterations;
-    private final OntologyTerm whatTerm;
-    private final OntologyTerm whereTerm;
-    private final FocusArea focusArea;
-    private final Proposal proposal;
+    private final List<IImpactIteration> impactIterations;
+    private final OntologyTermWrapper whatTerm;
+    private final OntologyTermWrapper whereTerm;
+    private final FocusAreaWrapper focusArea;
+    private final ProposalWrapper proposal;
     private final Map<ImpactSeriesType, ProposalImpactSeriesValues> seriesTypeToSeriesMap;
     private final Map<ImpactSeriesType, Boolean> seriesTypeToEditableMap;
-    private final ImpactDefaultSeries bauSeries;
-    private ProposalVersion lastModifiedVersion;
+    private final IImpactDefaultSeries bauSeries;
+    private ProposalVersionWrapper lastModifiedVersion;
     //    private ImpactDefaultSeries ddppSeries;
     private ProposalImpactSeriesValues resultValues;
 
-    public ProposalImpactSeries(Contest contest, Proposal proposal, FocusArea focusArea) {
+    public ProposalImpactSeries(ContestWrapper contest, ProposalWrapper proposal, FocusAreaWrapper focusArea) {
         this(contest, proposal, focusArea, true);
     }
 
-    private ProposalImpactSeries(Contest contest, Proposal proposal, FocusArea focusArea,
+    private ProposalImpactSeries(ContestWrapper contest, ProposalWrapper proposal, FocusAreaWrapper focusArea,
             boolean loadData) {
         this.seriesTypeToSeriesMap = new HashMap<>();
         this.seriesTypeToEditableMap = new HashMap<>();
@@ -65,10 +63,10 @@ public class ProposalImpactSeries {
         this.proposal = proposal;
         this.whatTerm = ProposalImpactUtil.getWhatTerm(focusArea);
         this.whereTerm = ProposalImpactUtil.getWhereTerm(focusArea);
-        this.impactIterations = ImpactClientUtil.getContestImpactIterations(contest);
+        this.impactIterations = StaticContestContext.getImpactClient().getContestImpactIterations(contest);
         // Retrieve static serieses
-        bauSeries = OntologyClientUtil
-                .getImpactDefaultSeriesByFocusAreaAndSeriesName(focusArea.getId(), SERIES_TYPE_BAU_KEY);
+        bauSeries = StaticContestContext.getOntologyClient()
+                .getImpactDefaultSeriesByFocusAreaName(focusArea.getId(), SERIES_TYPE_BAU_KEY);
         addSeriesWithType(bauSeries, false, false);
 
         //        ddppSeries = ImpactDefaultSeriesLocalServiceUtil
@@ -80,12 +78,12 @@ public class ProposalImpactSeries {
         }
     }
 
-    private void addSeriesWithType(ImpactDefaultSeries defaultSeries, boolean editable,
+    private void addSeriesWithType(IImpactDefaultSeries defaultSeries, boolean editable,
             boolean invertSeriesSign) {
-        List<ImpactDefaultSeriesData> seriesDataList = OntologyClientUtil
+        List<IImpactDefaultSeriesData> seriesDataList = StaticContestContext.getOntologyClient()
                 .getImpactDefaultSeriesDataBySeries(defaultSeries.getSeriesId());
         if (invertSeriesSign) {
-            for (ImpactDefaultSeriesData seriesData : seriesDataList) {
+            for (IImpactDefaultSeriesData seriesData : seriesDataList) {
                 if (seriesData.getValue() != null) {
                     seriesData.setValue(seriesData.getValue() * (-1.0));
                 }
@@ -95,34 +93,34 @@ public class ProposalImpactSeries {
         addSeriesWithType(seriesType, seriesDataList, editable);
     }
 
-    private void addSeriesWithType(ImpactSeriesType seriesType, List<ImpactDefaultSeriesData> seriesDataList,
+    private void addSeriesWithType(ImpactSeriesType seriesType, List<IImpactDefaultSeriesData> seriesDataList,
             boolean editable) {
         ProposalImpactSeriesValues seriesValues = new ProposalImpactSeriesValues();
         seriesTypeToSeriesMap.put(seriesType, seriesValues);
         seriesTypeToEditableMap.put(seriesType, editable);
 
-        for (ImpactDefaultSeriesData defaultDataPoint : seriesDataList) {
+        for (IImpactDefaultSeriesData defaultDataPoint : seriesDataList) {
             seriesValues.putSeriesValue(defaultDataPoint.getYear(), defaultDataPoint.getValue());
         }
     }
 
     private void loadEditableData() {
         // Get default serieses
-        List<ImpactDefaultSeries> impactDefaultSerieses =
-                OntologyClientUtil.getAllmpactDefaultSeriesByFocusArea(focusArea.getId());
+        List<IImpactDefaultSeries> impactDefaultSerieses = StaticContestContext.getOntologyClient()
+                .getAllmpactDefaultSeriesByFocusArea(focusArea.getId());
 
         final ProposalAttributeHelper proposalAttributeHelper =
                 proposal.getProposalAttributeHelper();
 
-        for (ImpactDefaultSeries defaultSeries : impactDefaultSerieses) {
+        for (IImpactDefaultSeries defaultSeries : impactDefaultSerieses) {
 
             // Look for already entered data
-            if (defaultSeries.getEditable()) {
+            if (defaultSeries.isEditable()) {
 
                 boolean foundEnteredData = false;
                 final ImpactSeriesType seriesType =
                         ImpactSeriesType.valueOf(defaultSeries.getName());
-                for (ImpactIteration iteration : impactIterations) {
+                for (IImpactIteration iteration : impactIterations) {
                     String attributeName = defaultSeries.getName() + "_" + iteration.getYear();
                     final ProposalAttribute attribute = proposalAttributeHelper
                             .getAttributeOrNull(attributeName, focusArea.getId());
@@ -132,7 +130,7 @@ public class ProposalImpactSeries {
                                 attribute.getRealValue());
 
                         // Set author and modification date
-                        this.lastModifiedVersion = ProposalClientUtil
+                        this.lastModifiedVersion = StaticProposalContext.getProposalClient()
                                 .getProposalVersionByProposalIdVersion(proposal.getId(),
                                 attribute.getVersion());
                     }
@@ -140,9 +138,9 @@ public class ProposalImpactSeries {
 
                 // Use default data if not entered
                 if (!foundEnteredData) {
-                    List<ImpactDefaultSeriesData> defaultSeriesDataList =
-                            OntologyClientUtil.getImpactDefaultSeriesDataBySeries(
-                                    defaultSeries.getSeriesId());
+                    List<IImpactDefaultSeriesData> defaultSeriesDataList =
+                            StaticContestContext.getOntologyClient()
+                                    .getImpactDefaultSeriesDataBySeries(defaultSeries.getSeriesId());
                     addSeriesWithType(seriesType, defaultSeriesDataList, true);
                 }
             }
@@ -160,20 +158,20 @@ public class ProposalImpactSeries {
         seriesValues.putSeriesValue(year, value);
     }
 
-    public ProposalImpactSeries(Contest contest, Proposal proposal, FocusArea focusArea,
+    public ProposalImpactSeries(ContestWrapper contest, ProposalWrapper proposal, FocusAreaWrapper focusArea,
             JSONObject json) {
         this(contest, proposal, focusArea, false);
 
-        for (ImpactDefaultSeries defaultSeries : OntologyClientUtil
+        for (IImpactDefaultSeries defaultSeries : StaticContestContext.getOntologyClient()
                 .getAllmpactDefaultSeriesByFocusArea(focusArea.getId())) {
-            if (!defaultSeries.getEditable()) {
+            if (!defaultSeries.isEditable()) {
                 continue;
             }
 
             final ImpactSeriesType seriesType = ImpactSeriesType.valueOf(defaultSeries.getName());
             seriesTypeToEditableMap.put(seriesType, true);
             JSONObject seriesValues = json.getJSONObject(defaultSeries.getName());
-            for (ImpactIteration iteration : impactIterations) {
+            for (IImpactIteration iteration : impactIterations) {
                 if (Double.isNaN(seriesValues.getDouble(iteration.getYear() + ""))) {
                     throw new RuntimeException(
                             "Could not parse value for year " + iteration.getYear());
@@ -205,13 +203,12 @@ public class ProposalImpactSeries {
      */
     private void calculateResultSeriesValues() {
         resultValues = new ProposalImpactSeriesValues();
-        for (ImpactIteration impactIteration : impactIterations) {
+        for (IImpactIteration impactIteration : impactIterations) {
             int currentYear = impactIteration.getYear();
 
-            double bauValue =
-                    OntologyClientUtil
-                            .getImpactDefaultSeriesDataBySeriesIdAndYear(bauSeries.getSeriesId(),
-                                    currentYear).getValue();
+            double bauValue = StaticContestContext.getOntologyClient()
+                    .getImpactDefaultSeriesDataBySeriesIdAndYear(bauSeries.getSeriesId(),
+                            currentYear).getValue();
 
             double reductionRate =
                     seriesTypeToSeriesMap.get(ImpactSeriesType.IMPACT_REDUCTION)
@@ -232,7 +229,7 @@ public class ProposalImpactSeries {
         return seriesTypeToEditableMap.get(seriesType);
     }
 
-    public void persistWithAuthor(Member author) {
+    public void persistWithAuthor(UserWrapper author) {
         // Persist all editable attributes
         Integer version = null;
         for (Map.Entry<ImpactSeriesType, Boolean> entry : seriesTypeToEditableMap.entrySet()) {
@@ -241,11 +238,11 @@ public class ProposalImpactSeries {
             if (isEditable) {
                 ProposalImpactSeriesValues seriesValues =
                         this.seriesTypeToSeriesMap.get(seriesType);
-                for (ImpactIteration iteration : impactIterations) {
+                for (IImpactIteration iteration : impactIterations) {
                     double filteredValue = ProposalImpactValueFilterAlgorithm
                             .filterValueForImpactSeriesType(
                                     seriesValues.getValueForYear(iteration.getYear()), seriesType.name());
-                    version = ProposalAttributeClientUtil
+                    version = StaticProposalContext.getProposalAttributeClient()
                             .setProposalAttribute(author.getId(), proposal.getId(),
                                     seriesType.getAttributeName(iteration.getYear()),
                                     focusArea.getId(), "", null,
@@ -298,19 +295,19 @@ public class ProposalImpactSeries {
             ImpactSeriesType seriesType = entry.getKey();
             final ProposalImpactSeriesValues seriesValues = seriesTypeToSeriesMap.get(seriesType);
 
-            ImpactDefaultSeries defaultSeries = OntologyClientUtil
-                    .getImpactDefaultSeriesByFocusAreaAndSeriesName(focusArea.getId(), seriesType.name());
+            IImpactDefaultSeries defaultSeries = StaticContestContext.getOntologyClient()
+                    .getImpactDefaultSeriesByFocusAreaName(focusArea.getId(), seriesType.name());
 
             JSONObject series = new JSONObject();
             series.put("name", defaultSeries.getName());
             series.put("description", defaultSeries.getDescription());
-            series.put("editable", defaultSeries.getEditable());
+            series.put("editable", defaultSeries.isEditable());
             series.put("values", seriesValues.toJSONArrayWithIteration(impactIterations));
             serieses.put(defaultSeries.getName(), series);
         }
 
         JSONArray iterations = new JSONArray();
-        for (ImpactIteration impactIteration : impactIterations) {
+        for (IImpactIteration impactIteration : impactIterations) {
             iterations.put(impactIteration.getYear());
         }
         returnObject.put("iterations", iterations);
@@ -319,13 +316,14 @@ public class ProposalImpactSeries {
         return returnObject;
     }
 
-    public FocusArea getFocusArea() {
+    public FocusAreaWrapper getFocusArea() {
         return focusArea;
     }
 
-    private Member getSeriesAuthor() {
+    private UserWrapper getSeriesAuthor() {
         if (lastModifiedVersion != null) {
-            return MembersClient.getMemberUnchecked(lastModifiedVersion.getAuthorUserId());
+            return StaticUserContext.getUserClient().
+                    getMemberUnchecked(lastModifiedVersion.getAuthorUserId());
         }
         return null;
     }
@@ -334,15 +332,15 @@ public class ProposalImpactSeries {
         return lastModifiedVersion.getCreatedAt();
     }
 
-    public Proposal getProposal() {
+    public ProposalWrapper getProposal() {
         return proposal;
     }
 
-    public OntologyTerm getWhatTerm() {
+    public OntologyTermWrapper getWhatTerm() {
         return whatTerm;
     }
 
-    public OntologyTerm getWhereTerm() {
+    public OntologyTermWrapper getWhereTerm() {
         return whereTerm;
     }
 }

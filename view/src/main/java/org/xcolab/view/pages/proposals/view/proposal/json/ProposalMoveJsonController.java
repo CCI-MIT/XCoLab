@@ -1,20 +1,21 @@
 package org.xcolab.view.pages.proposals.view.proposal.json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.IContestClient;
 import org.xcolab.client.contest.enums.ContestStatus;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
-import org.xcolab.client.contest.pojo.templates.ProposalTemplate;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.Role;
-import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
-import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
+import org.xcolab.client.contest.pojo.IProposalTemplate;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
+import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
+import org.xcolab.client.user.pojo.wrapper.RoleWrapper;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 
@@ -31,17 +32,19 @@ public class ProposalMoveJsonController {
 
     private final ObjectMapper mapper = new ObjectMapper();
 
+    @Autowired
+    private IContestClient contestClient;
 
     @GetMapping("/api/contestsOpenForProposals")
     public void getContestsOpenForProposals(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
 
         boolean admin = false;
-        Member member = MemberAuthUtil.getMemberOrNull();
+        UserWrapper member = MemberAuthUtil.getMemberOrNull();
         if (member != null) {
-            List<Role> roles = member.getRoles();
+            List<RoleWrapper> roles = member.getRoles();
 
-            for (Role role : roles) {
+            for (RoleWrapper role : roles) {
                 if (role.getName().equals("Administrator")) {
                     admin = true;
                     break;
@@ -50,8 +53,8 @@ public class ProposalMoveJsonController {
         }
 
         List<ImmutableContest> returnList = new ArrayList<>();
-        for (Contest contest: ContestClientUtil.findContestsByActive(true)) {
-            ContestPhase cp = ContestClientUtil.getActivePhase(contest.getId());
+        for (ContestWrapper contest: contestClient.findContestsByActive(true)) {
+            ContestPhaseWrapper cp = contestClient.getActivePhase(contest.getId());
             if (cp.getPhaseActive()) {
                 String statusStr = cp.getContestStatusStr();
                 ContestStatus status = null;
@@ -66,8 +69,8 @@ public class ProposalMoveJsonController {
 
         // Add non active contests
         if (admin) {
-            final List<Contest> inactiveContests = ContestClientUtil.findContestsByActive(false);
-            for (Contest inactiveContest : inactiveContests) {
+            final List<ContestWrapper> inactiveContests = contestClient.findContestsByActive(false);
+            for (ContestWrapper inactiveContest : inactiveContests) {
                 returnList.add(new ImmutableContest(inactiveContest));
             }
         }
@@ -83,7 +86,7 @@ public class ProposalMoveJsonController {
         private final long contestYear;
         private final String contestUrlName;
 
-        private ImmutableContest(Contest contest) {
+        private ImmutableContest(ContestWrapper contest) {
             this.contestShortName = contest.getTitleWithEndYear();
             this.contestName = contest.getQuestion();
             this.contestYear = contest.getContestYear();
@@ -114,14 +117,14 @@ public class ProposalMoveJsonController {
             throws IOException {
         List<ImmutableSection> returnList = new ArrayList<>();
 
-        Contest contest = ContestClientUtil.getContest(contestId);
+        ContestWrapper contest = contestClient.getContest(contestId);
         ClientHelper clientHelper = new ClientHelper();
 
-        ProposalTemplate proposalTemplate = clientHelper.getProposalTemplateClient()
+        IProposalTemplate proposalTemplate = clientHelper.getProposalTemplateClient()
                 .getProposalTemplate(contest.getProposalTemplateId());
 
         if (proposalTemplate != null) {
-            for (ProposalTemplateSectionDefinition psd : clientHelper.getProposalTemplateClient()
+            for (ProposalTemplateSectionDefinitionWrapper psd : clientHelper.getProposalTemplateClient()
                     .getProposalTemplateSectionDefinitionByProposalTemplateId(proposalTemplate.getId(), false)) {
                 ProposalAttribute attribute = clientHelper.getProposalAttributeClient()
                         .getProposalAttribute(proposalId, version,

@@ -26,8 +26,8 @@
         <!--@elvariable id="newMessage" type="org.xcolab.view.taglibs.xcolab.jspTags.discussion.wrappers.NewMessageWrapper"-->
         <!--@elvariable id="discussionPermissions" type="org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions"-->
         <!--@elvariable id="shareTitle" type="java.lang.String"-->
-        <!--@elvariable id="reportTargets" type="java.util.List<org.xcolab.client.flagging.pojo.ReportTarget>"-->
-        <!--@elvariable id="ontologySpaces" type="java.util.List<org.xcolab.client.contest.pojo.ontology.OntologySpace>"-->
+        <!--@elvariable id="ontologySpaces" type="java.util.List<org.xcolab.client.contest.pojo.wrapper.OntologySpaceWrapper>"-->
+        <!--@elvariable id="reportTargets" type="java.util.List<org.xcolab.client.moderation.pojo.ReportTarget>"-->
 
 		<xcolab:requireLibrary name="CKEditor" />
 
@@ -86,7 +86,7 @@
 					<c:forEach var="message" items="${thread.comments }" varStatus="status">
                         <!-- TODO COLAB-1387: replace client calls -->
 						<discussions:getRoleCategory userId="${message.author.id}" proposalId="${proposalId}">
-                            <!--@elvariable id="roleCategory" type="org.xcolab.client.members.pojo.MemberCategory"-->
+                            <!--@elvariable id="roleCategory" type="org.xcolab.client.user.pojo.wrapper.MemberCategoryWrapper"-->
 							<tr class="${status.index mod 2 == 0 ? 'odd' : 'even'}">
 								<td class="c-Comment__commentor">
 									<a id="_message_${message.id}"><!-- empty --></a>

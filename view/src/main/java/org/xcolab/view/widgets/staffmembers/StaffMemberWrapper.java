@@ -4,10 +4,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.StaffMember;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.pojo.wrapper.StaffUserWrapper;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 
 import java.io.Serializable;
 
@@ -16,22 +16,22 @@ public class StaffMemberWrapper implements Serializable {
     private static final Logger _log = LoggerFactory.getLogger(StaffMemberWrapper.class);
 
     private static final long serialVersionUID = 1L;
-    private final StaffMember staffMember;
-    private final Member colabMember;
+    private final StaffUserWrapper staffMember;
+    private final UserWrapper colabMember;
 
-    public StaffMemberWrapper(StaffMember staffMember) {
+    public StaffMemberWrapper(StaffUserWrapper staffMember) {
         this.staffMember = staffMember;
         this.colabMember = getColabMember();
     }
 
-    private Member getColabMember() {
+    private UserWrapper getColabMember() {
         long userId = staffMember.getUserId();
         if (userId == 0L) {
             return null;
         }
 
         try {
-            return MembersClient.getMember(staffMember.getUserId());
+            return StaticUserContext.getUserClient().getMember(staffMember.getUserId());
         } catch (MemberNotFoundException e) {
             _log.warn("Member account {} linked to staff member {} does not exist ",
                     staffMember.getUserId(), staffMember.getId());
@@ -39,7 +39,7 @@ public class StaffMemberWrapper implements Serializable {
         }
     }
 
-    public Member getMember() {
+    public UserWrapper getMember() {
         return this.colabMember;
     }
 
@@ -60,8 +60,8 @@ public class StaffMemberWrapper implements Serializable {
     }
 
     public Integer getSort() {
-        if (this.staffMember.getSort() != null) {
-            return this.staffMember.getSort();
+        if (this.staffMember.getSortOrder() != null) {
+            return this.staffMember.getSortOrder();
         } else {
             return 0;
         }

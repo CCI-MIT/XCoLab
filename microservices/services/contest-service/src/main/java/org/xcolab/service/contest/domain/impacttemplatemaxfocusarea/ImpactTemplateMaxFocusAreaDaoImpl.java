@@ -5,7 +5,9 @@ import org.jooq.Record;
 import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.xcolab.model.tables.pojos.ImpactTemplateMaxFocusArea;
+
+import org.xcolab.client.contest.pojo.IImpactTemplateMaxFocusArea;
+import org.xcolab.client.contest.pojo.tables.pojos.ImpactTemplateMaxFocusArea;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.util.List;
@@ -21,7 +23,7 @@ public class ImpactTemplateMaxFocusAreaDaoImpl implements ImpactTemplateMaxFocus
     public ImpactTemplateMaxFocusAreaDaoImpl(DSLContext dslContext) {this.dslContext = dslContext;}
 
     @Override
-    public ImpactTemplateMaxFocusArea getByFocusAreaListId(Long id) throws NotFoundException {
+    public IImpactTemplateMaxFocusArea getByFocusAreaListId(Long id) throws NotFoundException {
 
         final Record record = this.dslContext.selectFrom(IMPACT_TEMPLATE_MAX_FOCUS_AREA)
                 .where(IMPACT_TEMPLATE_MAX_FOCUS_AREA.FOCUS_AREA_LIST_ID.eq(id))
@@ -34,7 +36,7 @@ public class ImpactTemplateMaxFocusAreaDaoImpl implements ImpactTemplateMaxFocus
     }
 
     @Override
-    public List<ImpactTemplateMaxFocusArea> findByGiven(Long focusAreaListId) {
+    public List<IImpactTemplateMaxFocusArea> findByGiven(Long focusAreaListId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(IMPACT_TEMPLATE_MAX_FOCUS_AREA).getQuery();
 

@@ -2,7 +2,7 @@ package org.xcolab.view.config.spring.sso;
 
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.auth.login.spring.MemberDetails;
 import org.xcolab.view.auth.login.spring.MemberDetailsService;
 import org.xcolab.view.pages.loginregister.LoginRegisterService;
@@ -23,7 +23,7 @@ public class FacebookPrincipalExtractor extends CustomPrincipalExtractor<Long> {
     }
 
     @Override
-    protected void setSsoId(Member member, Long ssoId) {
+    protected void setSsoId(UserWrapper member, Long ssoId) {
         member.setFacebookId(ssoId);
     }
 

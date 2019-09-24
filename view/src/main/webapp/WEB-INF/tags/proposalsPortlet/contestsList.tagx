@@ -8,7 +8,7 @@
     <jsp:directive.attribute name="featured" type="java.lang.Boolean" required="true" rtexprvalue="true" description="whether the contests are featured" />
 
     <!--@elvariable id="proposalsPermissions" type="org.xcolab.view.pages.proposals.permissions.ProposalsPermissions"-->
-    <!--@elvariable id="contests" type="java.util.List<org.xcolab.client.contest.pojo.Contest>"-->
+    <!--@elvariable id="contests" type="java.util.List<org.xcolab.client.contest.pojo.wrapper.ContestWrapper>"-->
 
     <c:forEach var="contest" items="${contests}">
         <c:if test="${contest.showInListView}">

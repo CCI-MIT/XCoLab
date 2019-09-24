@@ -1,6 +1,7 @@
 package org.xcolab.view.pages.messaging.views;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,13 +14,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.members.MessagingClient;
-import org.xcolab.client.members.exceptions.MessageNotFoundException;
-import org.xcolab.client.members.exceptions.MessageOrThreadNotFoundException;
-import org.xcolab.client.members.legacy.enums.MessageType;
-import org.xcolab.client.members.messaging.MessageLimitExceededException;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.Message;
+import org.xcolab.client.user.IMessagingClient;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.exceptions.MessageNotFoundException;
+import org.xcolab.client.user.exceptions.MessageOrThreadNotFoundException;
+import org.xcolab.client.user.legacy.enums.MessageType;
+import org.xcolab.client.user.messaging.MessageLimitExceededException;
+import org.xcolab.client.user.pojo.wrapper.MessageWrapper;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.IdListUtil;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.commons.servlet.flash.AlertMessage;
@@ -42,6 +44,9 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/messaging")
 public class MessagingController {
 
+    @Autowired
+    private IMessagingClient messagingClient;
+
     @ModelAttribute("communityTopContentArticleId")
     public Long getCommunityTopContentArticleId() {
         return ConfigurationAttributeKey.MEMBERS_CONTENT_ARTICLE_ID.get();
@@ -49,19 +54,19 @@ public class MessagingController {
 
     @GetMapping
     public String showMessagesDefault(HttpServletResponse response, Model model,
-            @RequestParam(defaultValue = "1") Integer pageNumber, Member loggedInMember) {
+            @RequestParam(defaultValue = "1") Integer pageNumber, UserWrapper loggedInMember) {
         return showMessages(response, model, "INBOX", pageNumber, loggedInMember);
     }
 
     @GetMapping("mailbox/{mailboxType}")
     public String showMessagesBoxType(HttpServletResponse response, Model model,
             @PathVariable String mailboxType, @RequestParam(defaultValue = "1") Integer pageNumber,
-            Member loggedInMember) {
+            UserWrapper loggedInMember) {
         return showMessages(response, model, mailboxType, pageNumber, loggedInMember);
     }
 
     private String showMessages(HttpServletResponse response, Model model, String mailboxType,
-            Integer pageNumber, Member loggedInMember) {
+            Integer pageNumber, UserWrapper loggedInMember) {
 
         if (loggedInMember == null) {
             return new AccessDeniedPage(null).toViewName(response);
@@ -79,10 +84,10 @@ public class MessagingController {
 
     @GetMapping("message/{messageId}")
     public String showMessage(HttpServletRequest request, HttpServletResponse response, Model model,
-            @PathVariable Integer messageId, Member loggedInMember)
+            @PathVariable Integer messageId, UserWrapper loggedInMember)
             throws MessageNotFoundException {
 
-        final MessageBean messageBean = new MessageBean(MessagingClient.getMessage(messageId));
+        final MessageBean messageBean = new MessageBean(messagingClient.getMessage(messageId));
         final MessagingPermissions messagingPermissions =
                 new MessagingPermissions(loggedInMember, messageBean);
 
@@ -104,14 +109,14 @@ public class MessagingController {
 
     @GetMapping("fullConversation/{messageId}")
     public String showFullConversation(HttpServletRequest request, HttpServletResponse response, Model model,
-            @PathVariable Long messageId, Member loggedInMember,
+            @PathVariable Long messageId, UserWrapper loggedInMember,
             @RequestParam(required=false) String threadId) throws MessageOrThreadNotFoundException, MessageNotFoundException {
-        List<Message> fullConversation = new ArrayList<>();
+        List<MessageWrapper> fullConversation = new ArrayList<>();
         //Retrieve conversation and check if it was found
         if (StringUtils.isNotEmpty(threadId)) {
-                fullConversation = MessagingClient.getFullConversation(messageId, threadId);
+                fullConversation = StaticUserContext.getMessagingClient().getFullConversation(messageId, threadId);
         } else {
-            fullConversation.add(MessagingClient.getMessage(messageId));
+            fullConversation.add(StaticUserContext.getMessagingClient().getMessage(messageId));
         }
 
         boolean isLastMessage = messageId.equals(fullConversation.get(0).getId());
@@ -119,7 +124,7 @@ public class MessagingController {
         //Transform messages into beans and discard messages newer than this one
         List<MessageBean> messageBeanListNewestFirst = new ArrayList<>();
         boolean reachedRequiredMessage = false;
-        for (Message message : fullConversation){
+        for (MessageWrapper message : fullConversation){
             if (message.getId().equals(messageId)) {
                 reachedRequiredMessage = true;
             }
@@ -161,7 +166,7 @@ public class MessagingController {
     @PostMapping("archiveMessages")
     public String archiveMessages(HttpServletRequest request, HttpServletResponse response,
             Model model, @ModelAttribute("messagingBean") MessagingBean messagingBean,
-            Member loggedInMember) throws MessageNotFoundException, IOException {
+            UserWrapper loggedInMember) throws MessageNotFoundException, IOException {
 
         if (loggedInMember == null) {
             return new AccessDeniedPage(null).toViewName(response);
@@ -171,8 +176,8 @@ public class MessagingController {
             List<MessageBean> items = messagingBean.getDataPage().getMessages();
             for (MessageBean item : items) {
                 if (item.isSelected()) {
-                    Message message = item.getMessage();
-                    MessagingClient
+                    MessageWrapper message = item.getMessage();
+                    StaticUserContext.getMessagingClient()
                             .setArchived(message.getId(), loggedInMember.getId(), true);
                 }
             }
@@ -185,7 +190,7 @@ public class MessagingController {
     public String sendMessage(HttpServletRequest request, HttpServletResponse response, Model model,
             @RequestParam String userIdsRecipients, @RequestParam String messageSubject,
             @RequestParam String messageContent, @RequestParam(required = false) String threadId,
-            Member loggedInMember) throws MessageNotFoundException {
+            UserWrapper loggedInMember) throws MessageNotFoundException {
 
         //Check if I'm logged in
         if (loggedInMember == null) {
@@ -205,7 +210,7 @@ public class MessagingController {
                     String[] threadParts = threadId.split("-");
                     Long firstMessageId = Long.parseLong(threadParts[0]);
                         List<MessageBean> firstMessageBeanList = new ArrayList<>(Arrays.asList(
-                                new MessageBean(MessagingClient.getMessage(firstMessageId))));
+                                new MessageBean(StaticUserContext.getMessagingClient().getMessage(firstMessageId))));
                         if (!messagingPermissions.getCanViewThread(threadId, firstMessageBeanList)) {
                             //Permission denied
                             AlertMessage.danger("You don't have permissions on this thread" ).flash(request);
@@ -214,7 +219,7 @@ public class MessagingController {
                 }
 
                 final String baseUri = PlatformAttributeKey.COLAB_URL.get();
-                MessagingClient.checkLimitAndSendMessage(HtmlUtil.cleanAll(messageSubject),
+                StaticUserContext.getMessagingClient().checkLimitAndSendMessage(HtmlUtil.cleanAll(messageSubject),
                         HtmlUtil.cleanSome(messageContent, baseUri), loggedInMember.getId(),
                         HtmlUtil.cleanAll(threadId), recipientIds);
                 AlertMessage.success("The message has been sent!").flash(request);

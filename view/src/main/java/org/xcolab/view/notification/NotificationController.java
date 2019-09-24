@@ -1,10 +1,11 @@
 package org.xcolab.view.notification;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.client.admin.AdminClient;
-import org.xcolab.client.admin.pojo.Notification;
+import org.xcolab.client.admin.IAdminClient;
+import org.xcolab.client.admin.pojo.INotification;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,11 +13,14 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 public class NotificationController {
 
+    @Autowired
+    private IAdminClient adminClient;
+
     @GetMapping("/notificationMessage")
     public NotificationResponse showNotification(HttpServletRequest request,
             HttpServletResponse response) {
 
-        Notification firstNotification = AdminClient.getFirstNotification();
+        INotification firstNotification = adminClient.getFirstNotification();
 
         if (firstNotification != null) {
             return new NotificationResponse(firstNotification.getNotificationId(),

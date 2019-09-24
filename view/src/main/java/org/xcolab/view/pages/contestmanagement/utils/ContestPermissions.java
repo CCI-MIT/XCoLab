@@ -1,8 +1,8 @@
 package org.xcolab.view.pages.contestmanagement.utils;
 
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.client.members.permissions.SystemRole;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.permissions.SystemRole;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.taglibs.xcolab.interfaces.TabPermissions;
 
@@ -10,12 +10,12 @@ import java.io.Serializable;
 
 public class ContestPermissions implements TabPermissions, Serializable {
 
-    private final Contest contestWrapper;
+    private final ContestWrapper contestWrapper;
 
     private final long userId;
     private final boolean isLoggedIn;
 
-    public ContestPermissions(Contest contest) {
+    public ContestPermissions(ContestWrapper contest) {
         userId = MemberAuthUtil.getUserId();
         isLoggedIn = userId > 0;
         contestWrapper = (contest);
@@ -23,7 +23,7 @@ public class ContestPermissions implements TabPermissions, Serializable {
 
     @Override
     public boolean getCanAdmin() {
-        return PermissionsClient.canAdminAll(userId);
+        return StaticUserContext.getPermissionClient().canAdminAll(userId);
     }
 
     @Override
@@ -47,6 +47,6 @@ public class ContestPermissions implements TabPermissions, Serializable {
     }
 
     public boolean getCanAdminAll() {
-        return PermissionsClient.canAdminAll(userId);
+        return StaticUserContext.getPermissionClient().canAdminAll(userId);
     }
 }

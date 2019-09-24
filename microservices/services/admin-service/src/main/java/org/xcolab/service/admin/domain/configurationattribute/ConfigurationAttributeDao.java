@@ -1,14 +1,14 @@
 package org.xcolab.service.admin.domain.configurationattribute;
 
-import org.xcolab.model.tables.pojos.ConfigurationAttribute;
+import org.xcolab.client.admin.pojo.IConfigurationAttribute;
 
 import java.util.Optional;
 
 public interface ConfigurationAttributeDao {
 
-    ConfigurationAttribute create(ConfigurationAttribute pojo);
+    IConfigurationAttribute create(IConfigurationAttribute pojo);
 
-    Optional<ConfigurationAttribute> getConfigurationAttribute(String attributeName, String locale);
+    Optional<IConfigurationAttribute> getConfigurationAttribute(String attributeName, String locale);
 
-    boolean update(ConfigurationAttribute pojo);
+    boolean update(IConfigurationAttribute pojo);
 }

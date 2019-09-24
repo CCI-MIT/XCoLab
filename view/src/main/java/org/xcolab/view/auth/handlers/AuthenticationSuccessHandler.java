@@ -7,9 +7,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.entity.utils.LinkUtils;
 import org.xcolab.view.auth.AuthenticationService;
@@ -37,6 +36,7 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
         this.authenticationService = authenticationService;
         this.balloonService = balloonService;
         this.allowLogin = allowLogin;
+
         setDefaultTargetUrl("/");
 
         //TODO COLAB-2362: Rethink circular dependency
@@ -51,7 +51,7 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
 
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
             Authentication authentication, boolean redirectOnSuccess) throws IOException {
-        final Member member = authenticationService.getRealMemberOrNull();
+        final UserWrapper member = authenticationService.getRealMemberOrNull();
         if (member == null) {
             // This can currently happen when there's an error during SSO
             // In that case, the CustomPrincipalExtractor returns null
@@ -61,7 +61,7 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
             return;
         }
 
-        if (!allowLogin && !PermissionsClient.canAdminAll(member)) {
+        if (!allowLogin && !StaticUserContext.getPermissionClient().canAdminAll(member)) {
             authenticationService.logout(request, response);
             getRedirectStrategy().sendRedirect(request, response, "/loginDisabled");
             return;
@@ -77,7 +77,7 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
         } else {
             refererHeader = request.getHeader(HttpHeaders.REFERER);
         }
-        MembersClient.createLoginLog(member.getId(), request.getRemoteAddr(), refererHeader);
+        StaticUserContext.getLoginLogClient().createLoginLog(member.getId(), request.getRemoteAddr(), refererHeader);
 
         if (redirectOnSuccess) {
             try {

@@ -2,7 +2,7 @@ package org.xcolab.view.config.spring.sso;
 
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.auth.login.spring.MemberDetails;
 import org.xcolab.view.auth.login.spring.MemberDetailsService;
 import org.xcolab.view.pages.loginregister.LoginRegisterService;
@@ -22,7 +22,7 @@ public class ColabPrincipalExtractor extends AbstractOpenIdPrincipalExtractor {
     }
 
     @Override
-    protected void setSsoId(Member member, String colabSsoId) {
+    protected void setSsoId(UserWrapper member, String colabSsoId) {
         member.setColabSsoId(colabSsoId);
     }
 

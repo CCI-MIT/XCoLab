@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalClient;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
+import org.xcolab.client.contest.proposals.IProposalClient;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
@@ -25,14 +25,14 @@ public class SubscribeProposalActionController {
 
     @PostMapping("/subscribeProposal")
     public void handleAction(HttpServletRequest request, HttpServletResponse response, Model model,
-            ProposalContext proposalContext, Member currentMember)
+            ProposalContext proposalContext, UserWrapper currentMember)
             throws ProposalsAuthorizationException, IOException {
 
         if (proposalContext.getPermissions().getCanSubscribeProposal()) {
-            final Proposal proposal = proposalContext.getProposal();
+            final ProposalWrapper proposal = proposalContext.getProposal();
             long proposalId = proposal.getId();
             long userId = currentMember.getId();
-            final ProposalClient proposalClient = proposalContext.getClients().getProposalClient();
+            final IProposalClient proposalClient = proposalContext.getClients().getProposalClient();
             if (proposalClient.isMemberSubscribedToProposal(proposalId, userId)) {
                 proposalClient.unsubscribeMemberFromProposal(proposalId, userId);
             } else {
@@ -47,13 +47,13 @@ public class SubscribeProposalActionController {
     @GetMapping("/subscribeProposal")
     public String handleInvalidGetRequest(HttpServletRequest request,
             HttpServletResponse response, Model model, ProposalContext proposalContext,
-            Member member) {
+            UserWrapper member) {
 
         AlertMessage.warning(
                 "Could not subscribe to proposal, please make sure to click the button only once.")
                 .flash(request);
-        final Contest contest = proposalContext.getContest();
-        final Proposal proposal = proposalContext.getProposal();
+        final ContestWrapper contest = proposalContext.getContest();
+        final ProposalWrapper proposal = proposalContext.getProposal();
         return "redirect:" + proposal.getProposalLinkUrl(contest);
     }
 }

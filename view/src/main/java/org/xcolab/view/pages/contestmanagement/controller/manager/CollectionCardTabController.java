@@ -9,16 +9,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.OntologyClientUtil;
-import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
+import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.view.pages.contestmanagement.wrappers.CollectionCardWrapper;
-import org.xcolab.view.pages.contestmanagement.wrappers.OntologyTermWrapper;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
-import org.xcolab.commons.servlet.flash.AlertMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +45,7 @@ public class CollectionCardTabController extends AbstractTabController {
 
     @GetMapping("tab/COLLECTION_CARDS")
     public String showCollectionCardTabController(HttpServletRequest request,
-            HttpServletResponse response, Model model, Member member,
+            HttpServletResponse response, Model model, UserWrapper member,
             @RequestParam(required = false) String elementId) {
         if (!tabWrapper.getCanView()) {
             return new AccessDeniedPage(member).toViewName(response);
@@ -59,13 +56,13 @@ public class CollectionCardTabController extends AbstractTabController {
         model.addAttribute("collectionCardWrapperWhere",
                 new CollectionCardWrapper(BY_LOCATION_COLLECTION_CARD_ID));
 
-        List<OntologyTermWrapper> whatTerms = new ArrayList<>();
-        List<OntologyTermWrapper> whereTerms = new ArrayList<>();
-        for (OntologyTerm term : OntologyClientUtil.getChildOntologyTerms(ROOT_ONTOLOGY_TERM_ID)) {
+        List<org.xcolab.view.pages.contestmanagement.wrappers.OntologyTermWrapper> whatTerms = new ArrayList<>();
+        List<org.xcolab.view.pages.contestmanagement.wrappers.OntologyTermWrapper> whereTerms = new ArrayList<>();
+        for (OntologyTermWrapper term : ontologyClient.getChildOntologyTerms(ROOT_ONTOLOGY_TERM_ID)) {
             if (term.getOntologySpaceId() == WHAT_ONTOLOGY_SPACE_ID) {
-                whatTerms.add(new OntologyTermWrapper(term));
+                whatTerms.add(new org.xcolab.view.pages.contestmanagement.wrappers.OntologyTermWrapper(term));
             } else if (term.getOntologySpaceId() == WHERE_ONTOLOGY_SPACE_ID) {
-                whereTerms.add(new OntologyTermWrapper(term));
+                whereTerms.add(new org.xcolab.view.pages.contestmanagement.wrappers.OntologyTermWrapper(term));
             }
         }
         model.addAttribute("ontologyTermsWhat", whatTerms);
@@ -75,7 +72,7 @@ public class CollectionCardTabController extends AbstractTabController {
 
     @PostMapping("tab/COLLECTION_CARDS/update")
     public String updateCollectionCardController(HttpServletRequest request, Model model,
-            Member member, @ModelAttribute CollectionCardWrapper collectionCardWrapper,
+            UserWrapper member, @ModelAttribute CollectionCardWrapper collectionCardWrapper,
             BindingResult result, HttpServletResponse response) {
         if (!tabWrapper.getCanEdit()) {
             return new AccessDeniedPage(member).toViewName(response);
@@ -90,13 +87,12 @@ public class CollectionCardTabController extends AbstractTabController {
     }
 
     @PostMapping("tab/COLLECTION_CARDS/delete")
-    public String deleteCollectionCardController(HttpServletRequest request, Member member,
+    public String deleteCollectionCardController(HttpServletRequest request, UserWrapper member,
             @RequestParam long collectionCardId, HttpServletResponse response) {
         if (!tabWrapper.getCanEdit()) {
             return new AccessDeniedPage(member).toViewName(response);
         }
-        ContestClientUtil.deleteContestCollectionCard(collectionCardId);
+        contestClient.deleteContestCollectionCard(collectionCardId);
         return "redirect:" + tab.getTabUrl();
     }
-
 }

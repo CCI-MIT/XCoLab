@@ -4,8 +4,9 @@ import edu.mit.cci.roma.client.MetaData;
 import edu.mit.cci.roma.client.Simulation;
 import edu.mit.cci.roma.client.Variable;
 
-import org.xcolab.client.modeling.ModelingClient;
-import org.xcolab.client.modeling.pojo.ModelInputItem;
+import org.xcolab.client.modeling.StaticModelingContext;
+import org.xcolab.client.modeling.pojo.IModelInputItem;
+import org.xcolab.client.modeling.pojo.tables.pojos.ModelInputItem;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -18,12 +19,12 @@ import javax.json.JsonObjectBuilder;
 public class ModelInputIndividualDisplayItem extends ModelInputDisplayItem implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    ModelInputItem item;
+    IModelInputItem item;
 
 
-    public ModelInputIndividualDisplayItem(ModelInputItem item) throws IOException {
-        super(ModelingClient.instance().getModel(item),
-                ModelingClient.instance().getMetaData(item));
+    public ModelInputIndividualDisplayItem(IModelInputItem item) throws IOException {
+        super(StaticModelingContext.getModelingClient().getModel(item),
+                StaticModelingContext.getModelingClient().getMetaData(item));
         this.item = item;
     }
 
@@ -34,11 +35,11 @@ public class ModelInputIndividualDisplayItem extends ModelInputDisplayItem imple
      */
     public static ModelInputIndividualDisplayItem create(Simulation sim, MetaData md,
             ModelInputWidgetType type) throws IOException {
-        ModelInputItem item = new ModelInputItem();
+        IModelInputItem item = new ModelInputItem();
         item.setModelId(sim.getId());
-        item.setModelInputItemID(md.getId());
+        item.setModelInputItemId(md.getId());
         item.setType(type.name());
-        ModelingClient.instance().createModelInputItem(item);
+        StaticModelingContext.getModelingClient().createModelInputItem(item);
         return new ModelInputIndividualDisplayItem(item);
     }
 
@@ -57,7 +58,7 @@ public class ModelInputIndividualDisplayItem extends ModelInputDisplayItem imple
     @Override
     public void setOrder(int order) {
         item.setDisplayItemOrder(order);
-        ModelingClient.instance().updateModelInputItem(item);
+        StaticModelingContext.getModelingClient().updateModelInputItem(item);
     }
 
     @Override
@@ -120,7 +121,7 @@ public class ModelInputIndividualDisplayItem extends ModelInputDisplayItem imple
     @Override
     public void setType(ModelInputWidgetType type) {
         item.setType(type.name());
-        ModelingClient.instance().updateModelInputItem(item);
+        StaticModelingContext.getModelingClient().updateModelInputItem(item);
     }
 
     /**
@@ -138,11 +139,10 @@ public class ModelInputIndividualDisplayItem extends ModelInputDisplayItem imple
             modelGroupId = 0L;
         }
         item.setModelGroupId(modelGroupId);
-        ModelingClient.instance().updateModelInputItem(item);
+        StaticModelingContext.getModelingClient().updateModelInputItem(item);
     }
 
     public String getProperty(ModelWidgetProperty prop) {
-        return ModelingClient.instance().getPropertyMap(item).get(prop.toString());
+        return StaticModelingContext.getModelingClient().getPropertyMap(item).get(prop.toString());
     }
-
 }

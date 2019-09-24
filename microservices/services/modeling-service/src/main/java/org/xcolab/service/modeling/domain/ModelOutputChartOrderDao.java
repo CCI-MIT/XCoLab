@@ -1,21 +1,21 @@
 package org.xcolab.service.modeling.domain;
 
-import org.xcolab.model.tables.pojos.ModelOutputChartOrder;
+import org.xcolab.client.modeling.pojo.IModelOutputChartOrder;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface ModelOutputChartOrderDao {
 
-    Optional<ModelOutputChartOrder> get(long id);
+    Optional<IModelOutputChartOrder> get(long id);
 
-    List<ModelOutputChartOrder> list();
+    List<IModelOutputChartOrder> list();
 
-    List<ModelOutputChartOrder> findByGiven(Long modelId, String label);
+    List<IModelOutputChartOrder> findByGiven(Long modelId, String label);
 
-    ModelOutputChartOrder create(ModelOutputChartOrder pojo);
+    IModelOutputChartOrder create(IModelOutputChartOrder pojo);
 
-    boolean update(ModelOutputChartOrder pojo);
+    boolean update(IModelOutputChartOrder pojo);
 
     boolean delete(long id);
 }

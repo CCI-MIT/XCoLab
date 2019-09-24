@@ -3,7 +3,7 @@
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:spring="http://www.springframework.org/tags">
     <!--@elvariable id="currentMessageBean" type="org.xcolab.view.pages.messaging.beans.MessageBean"-->
-    <!--@elvariable id="user" type="org.xcolab.client.members.pojo.Member"-->
+    <!--@elvariable id="user" type="org.xcolab.client.user.pojo.wrapper.UserWrapper"-->
 
 
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>

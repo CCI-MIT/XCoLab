@@ -4,10 +4,10 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 
-import org.xcolab.client.admin.EmailTemplateClientUtil;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.admin.pojo.EmailTemplate;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.admin.pojo.IEmailTemplate;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.entity.utils.notifications.basic.MemberNotification;
 
 public class MemberForgotPasswordNotification extends MemberNotification {
@@ -22,7 +22,7 @@ public class MemberForgotPasswordNotification extends MemberNotification {
     private final String passwordResetLink;
 
     public MemberForgotPasswordNotification(String memberIp, String passwordResetLink,
-            Member recipient) {
+            UserWrapper recipient) {
         super(recipient, TEMPLATE_NAME);
         this.memberIp = memberIp;
         this.passwordResetLink = passwordResetLink;
@@ -39,8 +39,8 @@ public class MemberForgotPasswordNotification extends MemberNotification {
             return templateWrapper;
         }
 
-        final EmailTemplate emailTemplate =
-                EmailTemplateClientUtil.getContestEmailTemplateByType(templateName);
+        final IEmailTemplate emailTemplate =
+                StaticAdminContext.getEmailTemplateClient().getEmailTemplate(templateName);
         templateWrapper = new MemberForgotPasswordTemplate(emailTemplate, "", "");
 
         return templateWrapper;
@@ -53,7 +53,7 @@ public class MemberForgotPasswordNotification extends MemberNotification {
 
     protected class MemberForgotPasswordTemplate extends EmailNotificationTemplate {
 
-        public MemberForgotPasswordTemplate(EmailTemplate template, String proposalName, String contestName) {
+        public MemberForgotPasswordTemplate(IEmailTemplate template, String proposalName, String contestName) {
             super(template, proposalName, contestName);
         }
 

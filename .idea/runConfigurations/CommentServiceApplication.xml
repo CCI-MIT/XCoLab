@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="CommentServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" folderName="Services">
     <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-    <option name="SPRING_BOOT_MAIN_CLASS" value="org.xcolab.service.comments.CommentServiceApplication" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="org.xcolab.service.comment.CommentServiceApplication" />
     <option name="VM_PARAMETERS" value="-Xms128M -Xmx256M" />
     <option name="ALTERNATIVE_JRE_PATH" />
     <additionalParameters>

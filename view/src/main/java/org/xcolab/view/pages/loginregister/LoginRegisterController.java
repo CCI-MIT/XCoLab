@@ -19,9 +19,9 @@ import org.springframework.web.client.HttpClientErrorException;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.tracking.TrackingClient;
-import org.xcolab.client.tracking.pojo.Location;
+import org.xcolab.client.tracking.ITrackingClient;
+import org.xcolab.client.tracking.pojo.ILocation;
+import org.xcolab.client.user.IUserLoginRegisterClient;
 import org.xcolab.commons.CountryUtil;
 import org.xcolab.commons.recaptcha.RecaptchaValidator;
 import org.xcolab.commons.servlet.RequestParamUtil;
@@ -47,6 +47,12 @@ public class LoginRegisterController {
 
     private final ResourceMessageResolver resourceMessageResolver;
     private final RecaptchaValidator recaptchaValidator;
+
+    @Autowired
+    private ITrackingClient trackingClient;
+
+    @Autowired
+    private IUserLoginRegisterClient userLoginRegister;
 
     @Autowired
     public LoginRegisterController(LoginRegisterService loginRegisterService,
@@ -113,7 +119,7 @@ public class LoginRegisterController {
 
     private String getCountryCodeFromRemoteAddress(String ipAddr) throws UserLocationNotResolvableException {
         try {
-            Location location = TrackingClient.getLocationForIp(ipAddr);
+            ILocation location = trackingClient.getLocationForIp(ipAddr);
             if (location != null) {
                 return location.getCountry();
             }
@@ -171,7 +177,7 @@ public class LoginRegisterController {
 
         try {
             try {
-                json.put("screenName", MembersClient.generateScreenName(lastName, firstName));
+                json.put("screenName", userLoginRegister.generateScreenName(lastName, firstName));
                 json.put("success", true);
             } catch (HttpClientErrorException e) {
                 _log.warn("Failed to generate user name ", e);

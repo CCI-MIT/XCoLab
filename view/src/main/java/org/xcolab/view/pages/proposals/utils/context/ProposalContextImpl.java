@@ -6,14 +6,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.util.Assert;
 import org.springframework.web.servlet.LocaleResolver;
 
-import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.IProposal2Phase;
 import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.pages.proposals.exceptions.InvalidAccessException;
@@ -32,11 +32,11 @@ public class ProposalContextImpl implements ProposalContext {
     private final LocaleResolver localeResolver;
     private final HttpServletRequest request;
 
-    private Contest contest;
+    private ContestWrapper contest;
     private ContestType contestType;
-    private ContestPhase contestPhase;
-    private Proposal2Phase proposal2Phase;
-    private Proposal proposal;
+    private ContestPhaseWrapper contestPhase;
+    private IProposal2Phase proposal2Phase;
+    private ProposalWrapper proposal;
     private ProposalsPermissions permissions;
     private ProposalsDisplayPermissions displayPermissions;
     private ProposalsPreferencesWrapper preferences;
@@ -53,7 +53,7 @@ public class ProposalContextImpl implements ProposalContext {
         ProposalContextHelper contextHelper = new ProposalContextHelper(request);
         final String language = localeResolver.resolveLocale(request).getLanguage();
 
-        final Member member = contextHelper.getMember();
+        final UserWrapper member = contextHelper.getMember();
 
         final String currentUrl = request.getRequestURL().toString();
         final String referrerUrl = request.getHeader(HttpHeaders.REFERER);
@@ -65,7 +65,7 @@ public class ProposalContextImpl implements ProposalContext {
             clientHelper = contextHelper.getClientHelper();
 
             if (contest != null) {
-                contestType = ContestTypeClient.getContestType(contest.getContestTypeId(), language);
+                contestType = StaticAdminContext.getContestTypeClient().getContestType(contest.getContestTypeId(), language);
                 contestPhase = contextHelper.getContestPhase(contest, proposal);
                 if (proposal != null) {
                     proposal2Phase = contextHelper.getProposal2Phase(contestPhase);
@@ -103,7 +103,7 @@ public class ProposalContextImpl implements ProposalContext {
 
     //TODO COLAB-2624: report to table rather than email (or external service)
     @SuppressWarnings("UnusedParameters")
-    private void reportAccessOfInvalidUrl(Member member, String currentUrl,
+    private void reportAccessOfInvalidUrl(UserWrapper member, String currentUrl,
             String referralUrl, String userAgent, InvalidAccessException exception) {
 
         log.warn("Invalid URL {} accessed from {} by {}: {}", currentUrl, referralUrl,
@@ -133,7 +133,7 @@ public class ProposalContextImpl implements ProposalContext {
     //    }
 
     @Override
-    public Contest getContest() {
+    public ContestWrapper getContest() {
         return contest;
     }
 
@@ -143,17 +143,17 @@ public class ProposalContextImpl implements ProposalContext {
     }
 
     @Override
-    public ContestPhase getContestPhase() {
+    public ContestPhaseWrapper getContestPhase() {
         return contestPhase;
     }
 
     @Override
-    public Proposal2Phase getProposal2Phase() {
+    public IProposal2Phase getProposal2Phase() {
         return proposal2Phase;
     }
 
     @Override
-    public Proposal getProposal() {
+    public ProposalWrapper getProposal() {
         return proposal;
     }
 

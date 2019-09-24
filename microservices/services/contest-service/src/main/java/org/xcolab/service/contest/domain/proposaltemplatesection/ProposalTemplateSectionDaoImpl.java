@@ -6,7 +6,8 @@ import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.model.tables.pojos.ProposalTemplateSection;
+import org.xcolab.client.contest.pojo.IProposalTemplateSection;
+import org.xcolab.client.contest.pojo.tables.pojos.ProposalTemplateSection;
 
 import java.util.List;
 
@@ -23,10 +24,9 @@ public class ProposalTemplateSectionDaoImpl implements ProposalTemplateSectionDa
     }
 
     @Override
-    public List<ProposalTemplateSection> findByGiven(Long proposalTemplateId, Long sectionDefinition) {
+    public List<IProposalTemplateSection> findByGiven(Long proposalTemplateId, Long sectionDefinition) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(PROPOSAL_TEMPLATE_SECTION).getQuery();
-
         if (proposalTemplateId != null) {
             query.addConditions(PROPOSAL_TEMPLATE_SECTION.PROPOSAL_TEMPLATE_ID.eq(proposalTemplateId));
         }
@@ -39,7 +39,7 @@ public class ProposalTemplateSectionDaoImpl implements ProposalTemplateSectionDa
     }
 
     @Override
-    public ProposalTemplateSection create(ProposalTemplateSection proposalTemplateSection) {
+    public IProposalTemplateSection create(IProposalTemplateSection proposalTemplateSection) {
 
         this.dslContext.insertInto(PROPOSAL_TEMPLATE_SECTION)
                 .set(PROPOSAL_TEMPLATE_SECTION.PROPOSAL_TEMPLATE_ID, proposalTemplateSection.getProposalTemplateId())
@@ -47,7 +47,6 @@ public class ProposalTemplateSectionDaoImpl implements ProposalTemplateSectionDa
                 .set(PROPOSAL_TEMPLATE_SECTION.WEIGHT, proposalTemplateSection.getWeight())
                 .execute();
         return proposalTemplateSection;
-
     }
 
     @Override
@@ -59,14 +58,11 @@ public class ProposalTemplateSectionDaoImpl implements ProposalTemplateSectionDa
     }
 
     @Override
-    public boolean update(ProposalTemplateSection proposalTemplateSection) {
+    public boolean update(IProposalTemplateSection proposalTemplateSection) {
         return dslContext.update(PROPOSAL_TEMPLATE_SECTION)
                 .set(PROPOSAL_TEMPLATE_SECTION.WEIGHT, proposalTemplateSection.getWeight())
                 .where(PROPOSAL_TEMPLATE_SECTION.PROPOSAL_TEMPLATE_ID.eq(proposalTemplateSection.getProposalTemplateId()))
                 .and(PROPOSAL_TEMPLATE_SECTION.SECTION_DEFINITION_ID.eq(proposalTemplateSection.getSectionDefinitionId()))
                 .execute() > 0;
     }
-
-
-
 }

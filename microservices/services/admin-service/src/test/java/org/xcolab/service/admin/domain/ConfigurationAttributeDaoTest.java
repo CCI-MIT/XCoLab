@@ -10,7 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import org.xcolab.model.tables.pojos.ConfigurationAttribute;
+import org.xcolab.client.admin.pojo.IConfigurationAttribute;
 import org.xcolab.service.admin.AdminTestUtils;
 import org.xcolab.service.admin.domain.configurationattribute.ConfigurationAttributeDao;
 
@@ -33,7 +33,7 @@ public class ConfigurationAttributeDaoTest {
     @Test
     public void shouldSaveNewConfigurationAttribute(){
 
-        ConfigurationAttribute ca = configurationAttributeDao.create(AdminTestUtils.getConfigurationAttribute("a"));
+        IConfigurationAttribute ca = configurationAttributeDao.create(AdminTestUtils.getConfigurationAttribute("a"));
 
         assertNotNull(configurationAttributeDao.getConfigurationAttribute(ca.getName(), null).get());
 
@@ -48,7 +48,7 @@ public class ConfigurationAttributeDaoTest {
     public void shouldUpdateNewConfigurationAttribute(){
         String newStr = "DUPER2";
 
-        ConfigurationAttribute ca = configurationAttributeDao.create(AdminTestUtils.getConfigurationAttribute("b"));
+        IConfigurationAttribute ca = configurationAttributeDao.create(AdminTestUtils.getConfigurationAttribute("b"));
 
         ca.setStringValue(newStr);
         assertTrue(configurationAttributeDao.update(ca));

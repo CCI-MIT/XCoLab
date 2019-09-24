@@ -1,15 +1,15 @@
 package org.xcolab.view.pages.proposals.judging;
 
 
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalClient;
-import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.StaticContestContext;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.IProposalClient;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
+import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.pages.proposals.wrappers.ProposalJudgeWrapper;
 
 import javax.servlet.jsp.JspException;
@@ -60,10 +60,10 @@ public class JudgeReviewStatusTag extends BodyTagSupport {
     @Override
     public int doStartTag() throws JspException {
         try {
-            Member judge = MembersClient.getMember(userId);
-            Contest contest = ContestClientUtil.getContest(contestId);
-            ProposalClient proposalClient = ProposalClientUtil.getClient();
-            Proposal proposal = proposalClient.getProposal(proposalId);
+            UserWrapper judge = StaticUserContext.getUserClient().getMember(userId);
+            ContestWrapper contest = StaticContestContext.getContestClient().getContest(contestId);
+            IProposalClient proposalClient = StaticProposalContext.getProposalClient();
+            ProposalWrapper proposal = proposalClient.getProposal(proposalId);
             //ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
             ProposalJudgeWrapper judgeWrapper = new ProposalJudgeWrapper(proposal, judge);
 
@@ -78,5 +78,4 @@ public class JudgeReviewStatusTag extends BodyTagSupport {
         }
         return EVAL_BODY_INCLUDE;
     }
-
 }

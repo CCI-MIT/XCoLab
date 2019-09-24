@@ -1,12 +1,11 @@
 package org.xcolab.view.pages.contestmanagement.wrappers;
 
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.view.pages.contestmanagement.beans.ContestFlagTextToolTipBean;
 import org.xcolab.view.pages.contestmanagement.beans.ContestModelSettingsBean;
 import org.xcolab.view.pages.contestmanagement.beans.MassMessageBean;
-import org.xcolab.view.pages.contestmanagement.entities.ContestMassAction;
 import org.xcolab.view.pages.contestmanagement.entities.ContestMassActions;
 import org.xcolab.view.pages.contestmanagement.entities.massactions.MassActionDataWrapper;
 
@@ -15,7 +14,7 @@ import java.util.List;
 
 public class MassActionConfirmationWrapper implements MassActionDataWrapper {
 
-    private List<Contest> contestWrappers;
+    private List<ContestWrapper> contestWrappers;
     private List<Long> contestIds;
     private List<Boolean> selectedContest;
     private ContestMassActions selectedMassAction;
@@ -41,7 +40,8 @@ public class MassActionConfirmationWrapper implements MassActionDataWrapper {
     private void populateValidContestWrapper(List<Long> contestIds) {
         for (long contestId : contestIds) {
             try {
-                Contest contest = ContestClientUtil.getContest(contestId);
+                ContestWrapper contest = StaticContestContext.getContestClient()
+                        .getContest(contestId);
                 this.contestWrappers.add(contest);
                 this.selectedContest.add(false);
             } catch (ContestNotFoundException ignored) {
@@ -66,11 +66,11 @@ public class MassActionConfirmationWrapper implements MassActionDataWrapper {
         this.contestIds = contestIds;
     }
 
-    public List<Contest> getContestWrappers() {
+    public List<ContestWrapper> getContestWrappers() {
         return contestWrappers;
     }
 
-    public void setContestWrappers(List<Contest> contestWrappers) {
+    public void setContestWrappers(List<ContestWrapper> contestWrappers) {
         this.contestWrappers = contestWrappers;
     }
 

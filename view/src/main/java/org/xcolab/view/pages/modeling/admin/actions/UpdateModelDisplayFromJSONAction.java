@@ -3,12 +3,13 @@ package org.xcolab.view.pages.modeling.admin.actions;
 import edu.mit.cci.roma.client.Simulation;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.modeling.ModelingClient;
+import org.xcolab.client.modeling.IModelingClient;
 import org.xcolab.client.modeling.models.ui.IllegalUIConfigurationException;
 import org.xcolab.client.modeling.models.ui.ModelDisplay;
 import org.xcolab.client.modeling.models.ui.ModelInputDisplayItem;
@@ -18,9 +19,10 @@ import org.xcolab.client.modeling.models.ui.ModelOutputDisplayItem;
 import org.xcolab.client.modeling.models.ui.ModelOutputSeriesDisplayItem;
 import org.xcolab.client.modeling.models.ui.ModelOutputSeriesType;
 import org.xcolab.client.modeling.models.ui.ModelUIFactory;
-import org.xcolab.client.modeling.pojo.ModelInputGroup;
-import org.xcolab.client.modeling.pojo.ModelInputItem;
-import org.xcolab.client.modeling.pojo.ModelOutputChartOrder;
+import org.xcolab.client.modeling.pojo.IModelInputGroup;
+import org.xcolab.client.modeling.pojo.IModelInputItem;
+import org.xcolab.client.modeling.pojo.IModelOutputChartOrder;
+import org.xcolab.client.modeling.pojo.tables.pojos.ModelInputGroup;
 import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.view.pages.modeling.admin.ModelsAdminController;
 import org.xcolab.view.pages.modeling.admin.form.UpdateModelDisplayFromJSONBean;
@@ -35,6 +37,13 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/admin/modeling")
 public class UpdateModelDisplayFromJSONAction {
 
+    private final IModelingClient modelingClient;
+
+    @Autowired
+    public UpdateModelDisplayFromJSONAction(IModelingClient modelingClient) {
+        this.modelingClient = modelingClient;
+    }
+
     @PostMapping("model/{modelId}/updateModelDisplayFromJson")
     public void update(HttpServletRequest request, HttpServletResponse response,
             UpdateModelDisplayFromJSONBean bean, @PathVariable long modelId)
@@ -45,18 +54,18 @@ public class UpdateModelDisplayFromJSONAction {
 
         final JSONObject conf = new JSONObject(bean.getJson());
 
-        for (ModelInputGroup group : ModelingClient.instance().getInputGroups(simulation)) {
-            ModelingClient.instance().deleteModelInputGroup(group.getId());
+        for (IModelInputGroup group : modelingClient.getInputGroups(simulation)) {
+            modelingClient.deleteModelInputGroup(group.getId());
         }
-        for (ModelInputItem item : ModelingClient.instance().getItemsForModel(simulation)) {
+        for (IModelInputItem item : modelingClient.getItemsForModel(simulation)) {
             item.setModelGroupId(0L);
-            ModelingClient.instance().updateModelInputItem(item);
+            modelingClient.updateModelInputItem(item);
         }
 
         for (ModelOutputDisplayItem modi : modelDisplay.getOutputs()) {
-            ModelOutputChartOrder moco =
-                    ModelingClient.instance().getModelOutputChartOrder(simulation, modi.getName());
-            ModelingClient.instance().deleteModelOutputChartOrder(moco);
+            IModelOutputChartOrder moco =
+                    modelingClient.getModelOutputChartOrder(simulation.getId(), modi.getName());
+            modelingClient.deleteModelOutputChartOrder(moco.getId());
         }
 
         // iterate over inputs and create appropriate groups/inputs config
@@ -83,7 +92,7 @@ public class UpdateModelDisplayFromJSONAction {
         String type = (String) inputConf.get("type");
         int count = 1;
         if (type.equals("TAB") || type.equals("HORIZONTAL")) {
-            ModelInputGroup group = new ModelInputGroup();
+            IModelInputGroup group = new ModelInputGroup();
             group.setGroupType(type);
             group.setModelId(modelId);
             if (inputConf.has("name")) {
@@ -104,7 +113,7 @@ public class UpdateModelDisplayFromJSONAction {
             }
             group.setDisplayItemOrder(order);
             group.setParentGroupId(parentGroup);
-            group = ModelingClient.instance().createModelInputGroup(group);
+            group = modelingClient.createModelInputGroup(group);
 
             if (inputConf.has("children")) {
                 JSONArray children = (JSONArray) inputConf.get("children");
@@ -176,5 +185,4 @@ public class UpdateModelDisplayFromJSONAction {
 
         }
     }
-
 }

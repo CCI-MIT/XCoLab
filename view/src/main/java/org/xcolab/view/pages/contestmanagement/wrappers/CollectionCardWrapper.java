@@ -2,10 +2,10 @@ package org.xcolab.view.pages.contestmanagement.wrappers;
 
 import org.apache.commons.text.StringEscapeUtils;
 
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.OntologyClientUtil;
-import org.xcolab.client.contest.pojo.ContestCollectionCard;
-import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
+import org.xcolab.client.contest.StaticContestContext;
+import org.xcolab.client.contest.pojo.IContestCollectionCard;
+import org.xcolab.client.contest.pojo.tables.pojos.ContestCollectionCard;
+import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,19 +15,19 @@ import java.util.Map;
 public class CollectionCardWrapper {
 
     private static final String REFERENCE_NULL_IDENTIFIER = "none";
-    private ContestCollectionCard contestCollectionCard;
+    private IContestCollectionCard contestCollectionCard;
     private Boolean createNew = false;
 
     public CollectionCardWrapper(long collectionCardId, long bigOntologyTerm,
             long ontologyTermToLoad, long smallOntologyTerm, boolean onlyFeatured, boolean visible,
             long parentId) {
         contestCollectionCard = new ContestCollectionCard();
-        contestCollectionCard.setOntology_term_to_load(ontologyTermToLoad);
+        contestCollectionCard.setOntologyTermToLoad(ontologyTermToLoad);
         contestCollectionCard.setId(collectionCardId);
-        contestCollectionCard.setBig_ontology_term(bigOntologyTerm);
-        contestCollectionCard.setSmall_ontology_term(smallOntologyTerm);
+        contestCollectionCard.setBigOntologyTerm(bigOntologyTerm);
+        contestCollectionCard.setSmallOntologyTerm(smallOntologyTerm);
         contestCollectionCard.setParent(parentId);
-        contestCollectionCard.setOnly_featured(onlyFeatured);
+        contestCollectionCard.setOnlyFeatured(onlyFeatured);
         contestCollectionCard.setVisible(visible);
     }
 
@@ -36,10 +36,11 @@ public class CollectionCardWrapper {
     }
 
     public CollectionCardWrapper(long collectionCardId) {
-        this.contestCollectionCard = ContestClientUtil.getContestCollectionCard(collectionCardId);
+        this.contestCollectionCard = StaticContestContext.getContestClient()
+                .getContestCollectionCard(collectionCardId);
     }
 
-    public CollectionCardWrapper(ContestCollectionCard contestCollectionCard) {
+    public CollectionCardWrapper(IContestCollectionCard contestCollectionCard) {
         this.contestCollectionCard = contestCollectionCard;
     }
 
@@ -59,7 +60,7 @@ public class CollectionCardWrapper {
 
     public List<CollectionCardWrapper> getAllCollectionCards() {
         List<CollectionCardWrapper> cardList = new ArrayList<>();
-        for (ContestCollectionCard contestCollectionCard : ContestClientUtil
+        for (IContestCollectionCard contestCollectionCard : StaticContestContext.getContestClient()
                 .getAllContestCollectionCards()) {
             cardList.add(new CollectionCardWrapper(contestCollectionCard));
         }
@@ -69,9 +70,11 @@ public class CollectionCardWrapper {
     public void persist() {
         if (createNew) {
             contestCollectionCard =
-                    ContestClientUtil.createContestCollectionCard(contestCollectionCard);
+                    StaticContestContext.getContestClient()
+                            .createContestCollectionCard(contestCollectionCard);
         } else {
-            ContestClientUtil.updateContestCollectionCard(this.contestCollectionCard);
+            StaticContestContext.getContestClient()
+                    .updateContestCollectionCard(this.contestCollectionCard);
         }
     }
 
@@ -79,7 +82,7 @@ public class CollectionCardWrapper {
         Map<Long, String> ontologyTerms = new HashMap<>();
 
         ontologyTerms.put(1L - 1, REFERENCE_NULL_IDENTIFIER);
-        for (OntologyTerm term : OntologyClientUtil.getAllOntologyTerms()) {
+        for (OntologyTermWrapper term : StaticContestContext.getOntologyClient().getAllOntologyTerms()) {
             ontologyTerms.put(term.getId(), StringEscapeUtils.escapeEcmaScript(term.getName()));
         }
         return ontologyTerms;
@@ -88,15 +91,16 @@ public class CollectionCardWrapper {
     public Map<Long, String> getCollectionCards() {
         Map<Long, String> cards = new HashMap<>();
         cards.put(1L - 1, REFERENCE_NULL_IDENTIFIER);
-        for (ContestCollectionCard card : ContestClientUtil.getAllContestCollectionCards()) {
-            cards.put(card.getId(), StringEscapeUtils.escapeEcmaScript(card.getShort_name()));
+        for (IContestCollectionCard card : StaticContestContext.getContestClient()
+                .getAllContestCollectionCards()) {
+            cards.put(card.getId(), StringEscapeUtils.escapeEcmaScript(card.getShortName()));
         }
         return cards;
     }
 
     public List<CollectionCardWrapper> getChildren() {
         List<CollectionCardWrapper> childList = new ArrayList<>();
-        for (ContestCollectionCard contestCollectionCard : ContestClientUtil
+        for (IContestCollectionCard contestCollectionCard : StaticContestContext.getContestClient()
                 .getSubContestCollectionCards(this.contestCollectionCard.getId())) {
             childList.add(new CollectionCardWrapper(contestCollectionCard));
         }
@@ -112,62 +116,62 @@ public class CollectionCardWrapper {
     }
 
     public String getShortName() {
-        return StringEscapeUtils.escapeEcmaScript(contestCollectionCard.getShort_name());
+        return StringEscapeUtils.escapeEcmaScript(contestCollectionCard.getShortName());
     }
 
     public void setShortName(String shortName) {
-        contestCollectionCard.setShort_name(shortName);
+        contestCollectionCard.setShortName(shortName);
     }
 
     public String getOntologyTermToLoad() {
-        if (contestCollectionCard.getOntology_term_to_load() != null) {
-            return StringEscapeUtils.escapeEcmaScript(OntologyClientUtil
-                    .getOntologyTerm(contestCollectionCard.getOntology_term_to_load()).getName());
+        if (contestCollectionCard.getOntologyTermToLoad() != null) {
+            return StringEscapeUtils.escapeEcmaScript(StaticContestContext.getOntologyClient()
+                    .getOntologyTerm(contestCollectionCard.getOntologyTermToLoad()).getName());
         }
         return "";
     }
 
     public void setOntologyTermToLoad(long ontologyTermToLoadId) {
-        contestCollectionCard.setOntology_term_to_load(ontologyTermToLoadId);
+        contestCollectionCard.setOntologyTermToLoad(ontologyTermToLoadId);
     }
 
     public long getOntologyTermToLoadId() {
-        Long term = contestCollectionCard.getOntology_term_to_load();
+        Long term = contestCollectionCard.getOntologyTermToLoad();
         return term != null ? term : -1;
     }
 
     public String getBigOntologyTerm() {
-        if (contestCollectionCard.getBig_ontology_term() != null) {
+        if (contestCollectionCard.getBigOntologyTerm() != null) {
             return StringEscapeUtils.escapeEcmaScript(
-                    OntologyClientUtil.getOntologyTerm(contestCollectionCard.getBig_ontology_term())
-                            .getName());
+                    StaticContestContext.getOntologyClient()
+                            .getOntologyTerm(contestCollectionCard.getBigOntologyTerm()).getName());
         }
         return "";
     }
 
     public void setBigOntologyTerm(long bigOntologyTermId) {
-        contestCollectionCard.setBig_ontology_term(bigOntologyTermId);
+        contestCollectionCard.setBigOntologyTerm(bigOntologyTermId);
     }
 
     public long getBigOntologyTermId() {
-        Long term = contestCollectionCard.getBig_ontology_term();
+        Long term = contestCollectionCard.getBigOntologyTerm();
         return term != null ? term : -1;
     }
 
     public String getSmallOntologyTerm() {
-        if (contestCollectionCard.getSmall_ontology_term() != null) {
-            return StringEscapeUtils.escapeEcmaScript(OntologyClientUtil
-                    .getOntologyTerm(contestCollectionCard.getSmall_ontology_term()).getName());
+        if (contestCollectionCard.getSmallOntologyTerm() != null) {
+            return StringEscapeUtils.escapeEcmaScript(StaticContestContext.getOntologyClient()
+                    .getOntologyTerm(contestCollectionCard.getSmallOntologyTerm()).getName());
         }
         return "";
     }
 
     public void setSmallOntologyTerm(long smallOntologyTermId) {
-        contestCollectionCard.setSmall_ontology_term(smallOntologyTermId);
+        contestCollectionCard.setSmallOntologyTerm(smallOntologyTermId);
     }
 
     public long getSmallOntologyTermId() {
-        Long term = contestCollectionCard.getSmall_ontology_term();
+        Long term = contestCollectionCard.getSmallOntologyTerm();
         return term != null ? term : -1;
     }
 
@@ -181,7 +185,7 @@ public class CollectionCardWrapper {
     }
 
     public boolean isVisible() {
-        return contestCollectionCard.getVisible();
+        return contestCollectionCard.isVisible();
     }
 
     public void setVisible(boolean visible) {
@@ -189,20 +193,19 @@ public class CollectionCardWrapper {
     }
 
     public boolean isOnlyFeatured() {
-        return contestCollectionCard.getOnly_featured();
+        return contestCollectionCard.isOnlyFeatured();
     }
 
     public void setOnlyFeatured(boolean onlyFeatured) {
-        contestCollectionCard.setOnly_featured(onlyFeatured);
+        contestCollectionCard.setOnlyFeatured(onlyFeatured);
     }
 
     public int getOrder() {
-        Integer order = contestCollectionCard.getOrder();
+        Integer order = contestCollectionCard.getSortOrder();
         return order != null ? order : 0;
     }
 
     public void setOrder(int order) {
-        contestCollectionCard.setOrder(order);
+        contestCollectionCard.setSortOrder(order);
     }
-
 }

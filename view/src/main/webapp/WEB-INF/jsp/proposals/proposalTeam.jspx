@@ -7,8 +7,8 @@
           xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
           xmlns:spring="http://www.springframework.org/tags">
 
-    <!--@elvariable id="listOfSubProposals" type="java.util.List<org.xcolab.client.proposals.pojo.Proposal>"-->
-    <!--@elvariable id="mapOfSubProposalContributors" type="java.util.Map<org.xcolab.client.proposals.pojo.Proposal, java.util.List<org.xcolab.client.members.pojo.Member>>"-->
+    <!--@elvariable id="listOfSubProposals" type="java.util.List<org.xcolab.client.contest.pojo.wrapper.ProposalWrapper>"-->
+    <!--@elvariable id="mapOfSubProposalContributors" type="java.util.Map<org.xcolab.client.contest.pojo.wrapper.ProposalWrapper, java.util.List<org.xcolab.client.user.pojo.wrapper.UserWrapper>>"-->
 
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
     <xcolab:layout title="${proposal.name} - Team"

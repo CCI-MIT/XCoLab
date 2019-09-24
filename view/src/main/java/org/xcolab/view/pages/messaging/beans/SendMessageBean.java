@@ -1,8 +1,8 @@
 package org.xcolab.view.pages.messaging.beans;
 
-import org.xcolab.client.members.MessagingClient;
-import org.xcolab.client.members.messaging.MessageLimitExceededException;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.messaging.MessageLimitExceededException;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.IdListUtil;
 import org.xcolab.commons.html.HtmlUtil;
 
@@ -15,7 +15,7 @@ public class SendMessageBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final List<Member> recipientList;
+    private final List<UserWrapper> recipientList;
     private String userIdsRecipients;
     private String subject;
     private String messageContent;
@@ -36,17 +36,17 @@ public class SendMessageBean implements Serializable {
 
     public SendMessageBean(long userId) {
         this();
-        numberOfMessagesLeft = MessagingClient.getNumberOfMessagesLeft(userId);
+        numberOfMessagesLeft = StaticUserContext.getMessagingClient().getNumberOfMessagesLeft(userId);
     }
 
     public SendMessageBean() {
         this.recipientList = new ArrayList<>();
     }
 
-    public void send(Member sender, String baseUri) throws MessageLimitExceededException {
+    public void send(UserWrapper sender, String baseUri) throws MessageLimitExceededException {
         List<Long> recipientIds = IdListUtil.getIdsFromString(userIdsRecipients);
 
-        MessagingClient.checkLimitAndSendMessage(HtmlUtil.cleanAll(subject),
+        StaticUserContext.getMessagingClient().checkLimitAndSendMessage(HtmlUtil.cleanAll(subject),
                 HtmlUtil.cleanSome(messageContent, baseUri), sender.getId(), recipientIds);
     }
 
@@ -91,13 +91,13 @@ public class SendMessageBean implements Serializable {
         return new Random().nextInt();
     }
 
-    public List<Member> getRecipientList() {
+    public List<UserWrapper> getRecipientList() {
         return recipientList;
     }
 
     public List<Long> getRecipientIdList() {
         List<Long> recipientIds = new ArrayList<>();
-        for (Member recipient : recipientList) {
+        for (UserWrapper recipient : recipientList) {
             recipientIds.add(recipient.getId());
         }
         return recipientIds;

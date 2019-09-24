@@ -14,16 +14,14 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>activities-client</module>
+        <module>activity-client</module>
         <module>admin-client</module>
-        <module>ballons-client</module>
-        <module>contents-client</module>
-        <module>contestproposal-client</module>
+        <module>content-client</module>
+        <module>contest-client</module>
         <module>comment-client</module>
-        <module>emails-client</module>
-        <module>files-client</module>
-        <module>flagging-client</module>
-        <module>members-client</module>
+        <module>moderation-client</module>
+        <module>email-client</module>
+        <module>user-client</module>
         <module>modeling-client</module>
         <module>search-client</module>
         <module>tracking-client</module>
@@ -41,8 +39,34 @@
                     <encoding>UTF-8</encoding>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                    <compilerArgs>
+                        <arg>-parameters</arg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
         </plugins>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>properties-maven-plugin</artifactId>
+                    <version>1.0.0</version>
+                    <executions>
+                        <execution>
+                            <phase>initialize</phase>
+                            <goals>
+                                <goal>read-project-properties</goal>
+                            </goals>
+                            <configuration>
+                                <files>
+                                    <file>${user.home}/.xcolab.application.properties</file>
+                                </files>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 </project>

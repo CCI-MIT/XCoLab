@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.pages.contestmanagement.entities.ContestMassAction;
 import org.xcolab.view.pages.contestmanagement.entities.ContestMassActions;
 import org.xcolab.view.pages.contestmanagement.entities.MassActionRequiresConfirmationException;
@@ -27,14 +27,14 @@ import javax.servlet.http.HttpServletResponse;
 public class ConfirmMassActionController {
 
     @PostMapping("confirmMassAction")
-    public String confirmMassActionExecution(HttpServletRequest request, Model model, Member member,
+    public String confirmMassActionExecution(HttpServletRequest request, Model model, UserWrapper member,
             @ModelAttribute MassActionConfirmationWrapper massActionConfirmationWrapper,
             HttpServletResponse response)
             throws IOException, InvocationTargetException, IllegalAccessException {
         massActionConfirmationWrapper.setuserId(member.getId());
 
         List<Long> contestIds = massActionConfirmationWrapper.getSelectedContestIds();
-        List<Contest> contests = EntityIdListUtil.CONTESTS.fromIdList(contestIds);
+        List<ContestWrapper> contests = EntityIdListUtil.CONTESTS.fromIdList(contestIds);
 
         ContestMassActions actionWrapper = massActionConfirmationWrapper.getSelectedMassAction();
         ContestMassAction action = actionWrapper.getAction();

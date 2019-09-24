@@ -8,8 +8,9 @@ import edu.mit.cci.roma.client.Variable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.modeling.ModelingClient;
-import org.xcolab.client.modeling.pojo.ModelOutputChartOrder;
+import org.xcolab.client.modeling.StaticModelingContext;
+import org.xcolab.client.modeling.pojo.IModelOutputChartOrder;
+import org.xcolab.client.modeling.pojo.tables.pojos.ModelOutputChartOrder;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 import org.xcolab.util.json.JsonUtil;
 
@@ -41,7 +42,7 @@ public class ModelOutputIndexedDisplayItem extends ModelOutputDisplayItem {
     private Simulation sim;
     private MetaData index;
     private ModelOutputChartType type = ModelOutputChartType.TIME_SERIES;
-    private ModelOutputChartOrder chartModel;
+    private IModelOutputChartOrder chartModel;
 
     /**
      * A model output group is uniquely identified by a name in a simulation.  Currently this may be
@@ -58,7 +59,7 @@ public class ModelOutputIndexedDisplayItem extends ModelOutputDisplayItem {
         this.name = name;
 
         try {
-            chartModel = ModelingClient.instance().getModelOutputChartOrder(s, name);
+            chartModel = StaticModelingContext.getModelingClient().getModelOutputChartOrder(s.getId(), name);
         } catch (UncheckedEntityNotFoundException e) {
             createPersistence();
         }
@@ -69,7 +70,7 @@ public class ModelOutputIndexedDisplayItem extends ModelOutputDisplayItem {
         chartModel.setModelId(getSimulation().getId());
         chartModel.setModelOutputLabel(name);
         chartModel.setModelChartIsVisible(true);
-        chartModel = ModelingClient.instance().createModelOutputChartOrder(chartModel);
+        chartModel = StaticModelingContext.getModelingClient().createModelOutputChartOrder(chartModel);
     }
 
     /**
@@ -130,7 +131,7 @@ public class ModelOutputIndexedDisplayItem extends ModelOutputDisplayItem {
     public void setOrder(int o) {
         if (null != chartModel) {
             chartModel.setModelOutputChartOrder(o);
-            ModelingClient.instance().updateModelOutputChartOrder(chartModel);
+            StaticModelingContext.getModelingClient().updateModelOutputChartOrder(chartModel);
         }
     }
 
@@ -200,10 +201,10 @@ public class ModelOutputIndexedDisplayItem extends ModelOutputDisplayItem {
     public boolean isVisible() {
         _log.debug("Checking if {}:{} is visible", chartModel.getModelId(),
                 chartModel.getModelOutputLabel());
-        if (chartModel.getModelChartIsVisible()) {
+        if (chartModel.isModelChartIsVisible()) {
             setVisible(true);
         }
-        return chartModel.getModelChartIsVisible();
+        return chartModel.isModelChartIsVisible();
     }
 
     @Override
@@ -244,7 +245,7 @@ public class ModelOutputIndexedDisplayItem extends ModelOutputDisplayItem {
 
     public void setVisible(boolean b) {
         chartModel.setModelChartIsVisible(b);
-        ModelingClient.instance().updateModelOutputChartOrder(chartModel);
+        StaticModelingContext.getModelingClient().updateModelOutputChartOrder(chartModel);
     }
 
     public void setErrorBehavior(TupleStatus status, ErrorPolicy policy, String msg) {
@@ -257,7 +258,6 @@ public class ModelOutputIndexedDisplayItem extends ModelOutputDisplayItem {
 
         }
         errorBehaviors.remove(status);
-        ModelingClient.instance().updateModelOutputChartOrder(chartModel);
+        StaticModelingContext.getModelingClient().updateModelOutputChartOrder(chartModel);
     }
-
 }

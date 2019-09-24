@@ -4,7 +4,7 @@
           xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
-	<jsp:directive.attribute name="section" type="org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition"
+	<jsp:directive.attribute name="section" type="org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper"
 		required="true" rtexprvalue="true" description="Section which content should be displayed" />
 		
 	<jsp:directive.attribute name="showCopySectionContentButton" type="java.lang.Boolean" 

@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import org.xcolab.client.activities.pojo.ActivityEntry;
+import org.xcolab.client.activity.pojo.IActivityEntry;
 import org.xcolab.view.activityentry.provider.ActivityEntryContentProvider;
 
 import java.util.List;
@@ -24,17 +24,17 @@ public class ActivityEntryHelper {
         this.providerList = providerList;
     }
 
-    public String getActivityBody(ActivityEntry entry) {
+    public String getActivityBody(IActivityEntry entry) {
         final ActivityEntryContentProvider provider = getProvider(entry);
         return provider != null ? provider.getBody() : "";
     }
 
-    public String getActivityTitle(ActivityEntry entry) {
+    public String getActivityTitle(IActivityEntry entry) {
         final ActivityEntryContentProvider provider = getProvider(entry);
         return provider != null ? provider.getTitle() : "";
     }
 
-    private ActivityEntryContentProvider getProvider(ActivityEntry entry) {
+    private ActivityEntryContentProvider getProvider(IActivityEntry entry) {
         try {
             final Optional<ActivityEntryContentProvider> providerOpt = providerList.stream()
                     .filter(provider ->

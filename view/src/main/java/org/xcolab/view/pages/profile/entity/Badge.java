@@ -1,10 +1,10 @@
 package org.xcolab.view.pages.profile.entity;
 
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.contest.pojo.phases.ContestPhaseRibbonType;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.StaticContestContext;
+import org.xcolab.client.contest.pojo.IContestPhaseRibbonType;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.commons.time.DateUtil;
 
 import java.io.Serializable;
@@ -14,27 +14,27 @@ public class Badge implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final ContestPhaseRibbonType ribbonType;
-    private final Contest contest;
-    private final Proposal proposal;
+    private final IContestPhaseRibbonType ribbonType;
+    private final ContestWrapper contest;
+    private final ProposalWrapper proposal;
     private final String planTitle;
     private final boolean hideRibbon;
     private int year = 2013;
 
 
-    public Badge(ContestPhaseRibbonType ribbonType, Proposal proposal, String planTitle,
-            Contest contest) {
+    public Badge(IContestPhaseRibbonType ribbonType, ProposalWrapper proposal, String planTitle,
+            ContestWrapper contest) {
         this.ribbonType = ribbonType;
         this.planTitle = planTitle;
         this.proposal = proposal;
         this.contest = contest;
 
         // Associate the year and get hideRibbon property from contest
-        hideRibbon = contest.getHideRibbons();
+        hideRibbon = contest.isHideRibbons();
 
-        ContestPhase lastPhase = ContestClientUtil.getActivePhase(contest.getId());
-        Date referenceDate =
-                lastPhase.getPhaseEndDate() == null ? lastPhase.getPhaseStartDate()
+        ContestPhaseWrapper lastPhase = StaticContestContext.getContestClient()
+                .getActivePhase(contest.getId());
+        Date referenceDate = lastPhase.getPhaseEndDate() == null ? lastPhase.getPhaseStartDate()
                         : lastPhase.getPhaseEndDate();
         year = DateUtil.getYearFromDate(referenceDate) ;
     }

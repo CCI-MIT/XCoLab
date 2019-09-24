@@ -1,19 +1,20 @@
 package org.xcolab.service.search.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.xcolab.client.search.ISearchClient;
+import org.xcolab.client.search.pojo.ISearchPojo;
 import org.xcolab.service.search.domain.SearchDao;
 import org.xcolab.service.search.enums.SearchType;
-import org.xcolab.service.search.pojo.SearchPojo;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.util.List;
 
 @RestController
-public class SearchController {
+public class SearchController implements ISearchClient {
 
     private final SearchDao searchDao;
 
@@ -22,8 +23,9 @@ public class SearchController {
         this.searchDao = searchDao;
     }
 
-    @RequestMapping("/search")
-    public List<SearchPojo> doSearch(@RequestParam(required = false) Integer startRecord,
+    @Override
+    @GetMapping("/search")
+    public List<ISearchPojo> search(@RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
             @RequestParam(required = false) String filter, @RequestParam String query) {
 
@@ -42,15 +44,14 @@ public class SearchController {
             if (filter.equals(SearchType.DISCUSSION.getStringType())) {
                 return searchDao.findComment(paginationHelper, query);
             }
-
         }
 
         return searchDao.findAllSite(paginationHelper, query);
-
     }
 
-    @RequestMapping("/search/count")
-    public Integer doSearch(@RequestParam(required = false) String sort,
+    @Override
+    @GetMapping("/search/count")
+    public Integer searchCount(@RequestParam(required = false) String sort,
             @RequestParam String query) {
         if (sort != null) {
             if (sort.equals(SearchType.USER.getStringType())) {
@@ -65,7 +66,6 @@ public class SearchController {
             if (sort.equals(SearchType.DISCUSSION.getStringType())) {
                 return searchDao.findCommentCount(query);
             }
-
         }
 
         return searchDao.findAllSiteCount(query);

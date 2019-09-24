@@ -2,7 +2,7 @@
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
-    <!--@elvariable id="contentArticleVersion" type="org.xcolab.client.contents.pojo.ContentArticleVersion"-->
+<!--@elvariable id="contentArticleVersion" type="org.xcolab.client.content.pojo.IContentArticleVersion"-->
 <xcolab:layout title="${contentArticleVersion.title}">
 
     <c:if test="${not empty contentArticleVersion}">

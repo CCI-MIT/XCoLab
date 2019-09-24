@@ -1,9 +1,10 @@
 package org.xcolab.view.pages.contestmanagement.utils;
 
-import org.xcolab.client.contest.ProposalTemplateClientUtil;
-import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
-import org.xcolab.client.contest.pojo.templates.ProposalTemplate;
-import org.xcolab.client.contest.pojo.templates.ProposalTemplateSection;
+import org.xcolab.client.contest.StaticContestContext;
+import org.xcolab.client.contest.pojo.IProposalTemplate;
+import org.xcolab.client.contest.pojo.IProposalTemplateSection;
+import org.xcolab.client.contest.pojo.tables.pojos.ProposalTemplate;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
 
 import java.util.List;
 
@@ -13,44 +14,49 @@ public final class ProposalTemplateLifecycleUtil {
 
     private ProposalTemplateLifecycleUtil() { }
 
-    public static ProposalTemplate create() {
+    public static IProposalTemplate create() {
         return create(DEFAULT_TEMPLATE_NAME);
     }
 
-    public static ProposalTemplate create(String name) {
-        ProposalTemplate newProposalTemplate = new ProposalTemplate();
+    public static IProposalTemplate create(String name) {
+        IProposalTemplate newProposalTemplate = new ProposalTemplate();
         newProposalTemplate.setName(name);
         newProposalTemplate.setImpactSeriesTemplateId(1L);
         newProposalTemplate.setBaseTemplateId(0L);
-        newProposalTemplate = ProposalTemplateClientUtil.createProposalTemplate(newProposalTemplate);
+        newProposalTemplate = StaticContestContext.getProposalTemplateClient()
+                .createProposalTemplate(newProposalTemplate);
         return newProposalTemplate;
     }
 
     public static void delete(Long templateId) {
-        ProposalTemplate proposalTemplate = ProposalTemplateClientUtil.getProposalTemplate(templateId);
+        IProposalTemplate proposalTemplate = StaticContestContext.getProposalTemplateClient()
+                .getProposalTemplate(templateId);
         deleteProposalTemplateSections(templateId);
         deleteUnusedProposalTemplateSectionDefinitions(proposalTemplate);
-        ProposalTemplateClientUtil.deleteProposalTemplate(templateId);
+        StaticContestContext.getProposalTemplateClient().deleteProposalTemplate(templateId);
 
     }
 
     private static void deleteProposalTemplateSections(Long proposalTemplateId) {
-        List<ProposalTemplateSection> proposalTemplateSections =
-                ProposalTemplateClientUtil.getProposalTemplateSectionByProposalTemplateId(proposalTemplateId);
-        for (ProposalTemplateSection proposalTemplateSection : proposalTemplateSections) {
-            ProposalTemplateClientUtil
+        List<IProposalTemplateSection> proposalTemplateSections =
+                StaticContestContext.getProposalTemplateClient()
+                        .getProposalTemplateSectionsByProposalTemplateId(proposalTemplateId);
+        for (IProposalTemplateSection proposalTemplateSection : proposalTemplateSections) {
+            StaticContestContext.getProposalTemplateClient()
                     .deleteProposalTemplateSection(proposalTemplateSection.getProposalTemplateId(),
                             proposalTemplateSection.getSectionDefinitionId());
         }
     }
 
-    private static void deleteUnusedProposalTemplateSectionDefinitions(ProposalTemplate proposalTemplate) {
-        List<ProposalTemplateSectionDefinition> proposalTemplateSectionDefinitions = ProposalTemplateClientUtil
+    private static void deleteUnusedProposalTemplateSectionDefinitions(
+            IProposalTemplate proposalTemplate) {
+        List<ProposalTemplateSectionDefinitionWrapper> proposalTemplateSectionDefinitions =
+                StaticContestContext.getProposalTemplateClient()
                 .getProposalTemplateSectionDefinitionByProposalTemplateId(proposalTemplate.getId(), true);
-        for (ProposalTemplateSectionDefinition proposalTemplateSectionDefinition : proposalTemplateSectionDefinitions) {
+        for (ProposalTemplateSectionDefinitionWrapper proposalTemplateSectionDefinition : proposalTemplateSectionDefinitions) {
             if (!isProposalTemplateSectionDefinitionUsedInOtherTemplate(proposalTemplateSectionDefinition.getId(),
                     proposalTemplate.getId())) {
-                ProposalTemplateClientUtil
+                StaticContestContext.getProposalTemplateClient()
                         .deleteProposalTemplateSectionDefinition(proposalTemplateSectionDefinition.getId());
             }
         }
@@ -59,8 +65,8 @@ public final class ProposalTemplateLifecycleUtil {
 
     public static boolean isProposalTemplateSectionDefinitionUsedInOtherTemplate(Long proposalTemplateSectionDefinitionId,
             Long proposalTemplateId) {
-        List<ProposalTemplateSection> proposalTemplateSections =
-                ProposalTemplateClientUtil
+        List<IProposalTemplateSection> proposalTemplateSections =
+                StaticContestContext.getProposalTemplateClient()
                         .getProposalTemplateSectionsBySectionDefinitionId(proposalTemplateSectionDefinitionId);
         return !(proposalTemplateSections.size() == 1
                 && proposalTemplateSections.get(0).getProposalTemplateId() == proposalTemplateId.longValue())

@@ -23,3 +23,10 @@ spring:
     baselineOnMigrate: true
     baselineVersion: 0
     outOfOrder: true
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 160000000
+        readTimeout: 160000000

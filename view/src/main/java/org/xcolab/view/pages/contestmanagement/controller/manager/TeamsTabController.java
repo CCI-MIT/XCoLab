@@ -1,5 +1,6 @@
 package org.xcolab.view.pages.contestmanagement.controller.manager;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,11 +10,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.PlatformTeamsClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.PlatformTeam;
+import org.xcolab.client.user.IPlatformTeamClient;
+import org.xcolab.client.user.IUserClient;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.pojo.wrapper.PlatformTeamWrapper;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.html.LabelValue;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 import org.xcolab.view.errors.AccessDeniedPage;
@@ -39,6 +40,12 @@ public class TeamsTabController extends AbstractTabController {
 
     private static final String NEW_TEAM_NAME = "New team";
 
+    @Autowired
+    private IUserClient userClient;
+
+    @Autowired
+    private IPlatformTeamClient platformTeamClient;
+
     @ModelAttribute("currentTabWrapped")
     @Override
     public TabWrapper populateCurrentTabWrapped(HttpServletRequest request) {
@@ -46,31 +53,31 @@ public class TeamsTabController extends AbstractTabController {
         return tabWrapper;
     }
 
-    private List<org.xcolab.client.members.pojo.PlatformTeam> getTeams() {
-        return PlatformTeamsClient.listAllPlatformTeams();
+    private List<PlatformTeamWrapper> getTeams() {
+        return platformTeamClient.listAllPlatformTeams();
     }
 
     @GetMapping("tab/TEAMS")
     public String showTeamTabController(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member,
+            Model model, UserWrapper member,
             @RequestParam(value = "elementId", required = false) Long elementId)
             throws EntityNotFoundException {
         if (!tabWrapper.getCanView()) {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
-        List<PlatformTeam> teams = getTeams();
+        List<PlatformTeamWrapper> teams = getTeams();
 
-        PlatformTeam team = null;
+        PlatformTeamWrapper team = null;
         if (elementId != null) {
-            team = PlatformTeamsClient.getPlatformTeam(elementId);
+            team = platformTeamClient.getPlatformTeam(elementId);
         } else if (!teams.isEmpty()) {
             team = teams.get(0);
         }
 
         Long teamId = -1L;
         if (team != null && !model.containsAttribute(CONTEST_TEAM_BEAN_ATTRIBUTE_KEY)) {
-            List<Member> members = PlatformTeamsClient.getTeamMembers(team);
+            List<UserWrapper> members = platformTeamClient.listTeamUsers(team.getId());
             model.addAttribute(CONTEST_TEAM_BEAN_ATTRIBUTE_KEY,
                     new PlatformTeamBean(team, members));
             teamId = team.getId();
@@ -84,14 +91,14 @@ public class TeamsTabController extends AbstractTabController {
 
     @PostMapping("tab/TEAMS")
     public String updateTeam(HttpServletRequest request, HttpServletResponse response,
-            Member member, @ModelAttribute PlatformTeamBean teamBean)
+            UserWrapper member, @ModelAttribute PlatformTeamBean teamBean)
             throws EntityNotFoundException {
 
         if (!tabWrapper.getCanEdit()) {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
-        PlatformTeam team;
+        PlatformTeamWrapper team;
         if (teamBean != null && teamBean.getTeamId() != null) {
             team = updateTeamName(teamBean.getTeamId(), teamBean.getName());
         } else {
@@ -103,7 +110,7 @@ public class TeamsTabController extends AbstractTabController {
 
     @PostMapping("tab/TEAMS/{teamId}/delete")
     public String deleteTeam(HttpServletRequest request, HttpServletResponse response,
-            Member member, @PathVariable long teamId) {
+            UserWrapper member, @PathVariable long teamId) {
 
         if (!tabWrapper.getCanEdit()) {
             return new AccessDeniedPage(member).toViewName(response);
@@ -116,7 +123,7 @@ public class TeamsTabController extends AbstractTabController {
 
     @PostMapping("tab/TEAMS/{teamId}/removeMember/{userId}")
     public String removeMember(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member, @PathVariable long teamId, @PathVariable long userId) {
+            Model model, UserWrapper member, @PathVariable long teamId, @PathVariable long userId) {
 
         if (!tabWrapper.getCanEdit()) {
             return new AccessDeniedPage(member).toViewName(response);
@@ -129,7 +136,7 @@ public class TeamsTabController extends AbstractTabController {
 
     @PostMapping("tab/TEAMS/{teamId}/addMember")
     public void addMember(HttpServletRequest request, HttpServletResponse response, Model model,
-            Member member, @PathVariable long teamId, @RequestParam long userId,
+            UserWrapper member, @PathVariable long teamId, @RequestParam long userId,
             @RequestParam(required = false) String teamName) throws EntityNotFoundException {
 
         if (!tabWrapper.getCanEdit()) {
@@ -143,18 +150,18 @@ public class TeamsTabController extends AbstractTabController {
         }
     }
 
-    private PlatformTeam updateTeamName(Long teamId, String teamName)
+    private PlatformTeamWrapper updateTeamName(Long teamId, String teamName)
             throws EntityNotFoundException {
-        PlatformTeam team = PlatformTeamsClient.getPlatformTeam(teamId);
+        PlatformTeamWrapper team = platformTeamClient.getPlatformTeam(teamId);
         team.setName(teamName);
-        PlatformTeamsClient.updatePlatformTeam(team);
+        platformTeamClient.updatePlatformTeam(team,team.getId());
         return team;
 
     }
 
-    private List<LabelValue> getTeamItems(List<PlatformTeam> teams) {
+    private List<LabelValue> getTeamItems(List<PlatformTeamWrapper> teams) {
         List<LabelValue> teamItems = new ArrayList<>();
-        for (PlatformTeam team : teams) {
+        for (PlatformTeamWrapper team : teams) {
             teamItems.add(new LabelValue(team.getId(), team.getName()));
         }
         return teamItems;
@@ -162,35 +169,35 @@ public class TeamsTabController extends AbstractTabController {
 
     private void addMember(Long teamId, Long userId) {
         try {
-            PlatformTeam team = PlatformTeamsClient.getPlatformTeam(teamId);
-            Member member = MembersClient.getMember(userId);
-            PlatformTeamsClient.addMember(team, member);
-        } catch (EntityNotFoundException | MemberNotFoundException e) {
+            PlatformTeamWrapper team = platformTeamClient.getPlatformTeam(teamId);
+            UserWrapper member = StaticUserContext.getUserClient().getMember(userId);
+            platformTeamClient.addUser(team.getId(), member.getId());
+        } catch (EntityNotFoundException  e) {
             throw new IllegalArgumentException("Invalid teamId or userId.");
         }
     }
 
     private void removeMember(Long teamId, Long userId) {
         try {
-            PlatformTeam team = PlatformTeamsClient.getPlatformTeam(teamId);
-            Member member = MembersClient.getMember(userId);
-            PlatformTeamsClient.removeMember(team, member);
-        } catch (EntityNotFoundException | MemberNotFoundException e) {
+            PlatformTeamWrapper team = platformTeamClient.getPlatformTeam(teamId);
+            UserWrapper member = StaticUserContext.getUserClient().getMember(userId);
+            platformTeamClient.removeUser(team.getId(), member.getId());
+        } catch (EntityNotFoundException  e) {
             throw new IllegalArgumentException("Invalid teamId or userId.");
         }
     }
 
     private void deleteTeam(Long teamId) {
         try {
-            PlatformTeam team = PlatformTeamsClient.getPlatformTeam(teamId);
+            PlatformTeamWrapper team = platformTeamClient.getPlatformTeam(teamId);
             team.setId(teamId);
-            PlatformTeamsClient.deletePlatformTeam(team);
+            platformTeamClient.deletePlatformTeam(team.getId());
         } catch (EntityNotFoundException e) {
             throw new IllegalArgumentException("Invalid teamId.");
         }
     }
 
-    private PlatformTeam addNewTeam() {
-        return PlatformTeamsClient.createPlatformTeam(NEW_TEAM_NAME);
+    private PlatformTeamWrapper addNewTeam() {
+        return platformTeamClient.createPlatformTeam(NEW_TEAM_NAME);
     }
 }

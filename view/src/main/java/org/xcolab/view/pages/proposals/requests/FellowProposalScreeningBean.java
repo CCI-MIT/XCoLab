@@ -1,7 +1,7 @@
 package org.xcolab.view.pages.proposals.requests;
 
 
-import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
 import org.xcolab.view.pages.proposals.wrappers.ProposalFellowWrapper;
 
@@ -23,7 +23,8 @@ public class FellowProposalScreeningBean extends RatingBean implements Serializa
     private ContestEmailTemplateBean emailTemplateBean;
 
     public FellowProposalScreeningBean(ProposalFellowWrapper proposalWrapper) {
-        super(proposalWrapper, ProposalJudgeRatingClientUtil.getRatingTypesForFellows());
+        super(proposalWrapper, StaticProposalContext.getProposalJudgeRatingClient()
+                .getRatingTypesForFellows());
 
         fellowScreeningAction = proposalWrapper.getFellowAction();
         selectedJudges = proposalWrapper.getSelectedJudges();

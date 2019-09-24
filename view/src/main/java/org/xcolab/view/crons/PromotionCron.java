@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheName;
 
@@ -34,7 +34,7 @@ public class PromotionCron {
     @Scheduled(fixedRate = RATE, initialDelay = DELAY)
     public int doPromotion() {
         _log.debug("Executing promotions...");
-        int promotedProposals = ContestClientUtil.autoPromoteProposals();
+        int promotedProposals = StaticContestContext.getContestClient().autoPromoteProposals();
         if (promotedProposals > 0) {
             _log.info("Promoted {} proposals.", promotedProposals);
             ServiceRequestUtils.clearCache(CacheName.PROPOSAL_LIST);

@@ -11,18 +11,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.admin.AdminClient;
-import org.xcolab.client.admin.pojo.Notification;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.permissions.SystemRole;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
+import org.xcolab.client.activity.IActivityClient;
+import org.xcolab.client.admin.IAdminClient;
+import org.xcolab.client.admin.pojo.INotification;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.proposals.IProposalMemberRatingClient;
+
+import org.xcolab.client.tracking.ITrackingClient;
+import org.xcolab.client.user.IPermissionClient;
+import org.xcolab.client.user.IUserClient;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.permissions.SystemRole;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.html.LabelStringValue;
 import org.xcolab.commons.html.LabelValue;
 import org.xcolab.commons.servlet.ManifestUtil;
@@ -77,13 +79,28 @@ public class AdminTabController extends AbstractTabController {
     private final ActivityEntryHelper activityEntryHelper;
     private final Validator validator;
 
+    private final IActivityClient activityClient;
+    private final IAdminClient adminClient;
+    private final IProposalMemberRatingClient proposalMemberRatingClient;
+    private final ITrackingClient trackingClient;
+    private final IUserClient userClient;
+    private final IPermissionClient permissionClient;
+
     @Autowired
     public AdminTabController(LoginRegisterService loginRegisterService,
-            ServletContext servletContext, ActivityEntryHelper activityEntryHelper, Validator validator) {
+            ServletContext servletContext, ActivityEntryHelper activityEntryHelper,
+            Validator validator, ITrackingClient trackingClient, IActivityClient activityClient,
+            IAdminClient adminClient, IProposalMemberRatingClient proposalMemberRatingClient,IUserClient userClient, IPermissionClient permissionClient ) {
         this.loginRegisterService = loginRegisterService;
         this.servletContext = servletContext;
         this.activityEntryHelper = activityEntryHelper;
         this.validator = validator;
+        this.activityClient = activityClient;
+        this.adminClient = adminClient;
+        this.proposalMemberRatingClient = proposalMemberRatingClient;
+        this.permissionClient = permissionClient;
+        this.userClient = userClient;
+        this.trackingClient = trackingClient;
     }
 
     @ModelAttribute("currentTabWrapped")
@@ -95,17 +112,17 @@ public class AdminTabController extends AbstractTabController {
 
     @ModelAttribute("votingPhaseSelectionItems")
     public List<LabelValue> votingPhaseSelectionItems() {
-        final List<ContestPhase> contestPhasesByType = new ArrayList<>(ContestClientUtil
+        final List<ContestPhaseWrapper> contestPhasesByType = new ArrayList<>(contestClient
                 .getContestPhasesByType(ContestPhaseTypeValue.VOTING_PHASE_SOLVE.getTypeId()));
         //TODO COLAB-2613: don't hard code phase types
-        contestPhasesByType.addAll(ContestClientUtil.getContestPhasesByType(20L));
+        contestPhasesByType.addAll(contestClient.getContestPhasesByType(20L));
 
         final Date now = new Date();
         return contestPhasesByType
                 .stream()
                 .filter(p -> p.getContestId() != 0L)
                 .filter(p -> p.getPhaseStartDateDt().before(now))
-                .sorted(Comparator.comparing(ContestPhase::getPhaseStartDate).reversed())
+                .sorted(Comparator.comparing(ContestPhaseWrapper::getPhaseStartDate).reversed())
                 .map(contestPhase -> {
                     final String contestName = contestPhase.getContest().getTitle();
                     final Long phaseId = contestPhase.getId();
@@ -116,9 +133,9 @@ public class AdminTabController extends AbstractTabController {
 
     @ModelAttribute("contestSelectionItems")
     public List<LabelValue> contestSelectionItems() {
-        return ContestClientUtil.getAllContests()
+        return contestClient.getAllContests()
                 .stream()
-                .sorted(Comparator.comparing(Contest::getId).reversed())
+                .sorted(Comparator.comparing(ContestWrapper::getId).reversed())
                 .map(contest -> {
                     final String contestName = contest.getTitle();
                     final Long contestId = contest.getId();
@@ -137,12 +154,12 @@ public class AdminTabController extends AbstractTabController {
 
     @GetMapping("tab/ADMIN")
     public String showAdminTabController(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member) {
+            Model model, UserWrapper member) {
         if (!tabWrapper.getCanView()) {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
-        List<Notification> list = AdminClient.getNotifications();
+        List<INotification> list = adminClient.getNotifications();
         model.addAttribute("listOfNotifications", list);
 
         model.addAttribute("buildCommit", ManifestUtil.getBuildCommit(servletContext)
@@ -163,7 +180,7 @@ public class AdminTabController extends AbstractTabController {
 
         try (VoteCsvWriter csvWriter = new VoteCsvWriter(response)) {
             votingReportBean.getVotingPhaseIds().stream()
-                    .map(ProposalMemberRatingClientUtil::getProposalVotesInPhase)
+                    .map(proposalMemberRatingClient::getProposalVotesInPhase)
                     .forEach(csvWriter::writeVotes);
         }
     }
@@ -176,7 +193,7 @@ public class AdminTabController extends AbstractTabController {
             return;
         }
 
-        final List<Contest> contests =
+        final List<ContestWrapper> contests =
                 EntityIdListUtil.CONTESTS.fromIdList(proposalReportBean.getContestIds());
 
         switch (proposalReportBean.getProposalExportType()) {
@@ -214,7 +231,7 @@ public class AdminTabController extends AbstractTabController {
         }
 
         try (ContestCsvWriter csvWriter = new ContestCsvWriter(response)) {
-            csvWriter.writeContests(ContestClientUtil.getAllContests());
+            csvWriter.writeContests(contestClient.getAllContests());
         }
     }
 
@@ -227,7 +244,7 @@ public class AdminTabController extends AbstractTabController {
         }
 
         try (ActivityCsvWriter csvWriter = new ActivityCsvWriter(response, activityEntryHelper)) {
-            ActivitiesClientUtil.getActivityEntries(0, Integer.MAX_VALUE, null, null)
+            activityClient.getActivityEntries(0, Integer.MAX_VALUE, null, null)
                     .forEach(csvWriter::writeActivity);
         }
     }
@@ -263,7 +280,7 @@ public class AdminTabController extends AbstractTabController {
             }
 
             try {
-                MembersClient.findMemberByEmailAddress(registerLineBean.getEmail());
+                StaticUserContext.getUserClient().findMemberByEmailAddress(registerLineBean.getEmail());
                 // If member is found there is no exception and we continue.
                 AlertMessage.danger("Batch registration: Email address already used.").flash(request);
                 return TAB_VIEW;
@@ -273,11 +290,11 @@ public class AdminTabController extends AbstractTabController {
         }
 
         for (BatchRegisterLineBean registerLineBean : registerLineBeans) {
-            Member member = loginRegisterService.autoRegister(registerLineBean.getEmail(),
+            UserWrapper member = loginRegisterService.autoRegister(registerLineBean.getEmail(),
                     registerLineBean.getFirstName(), registerLineBean.getLastName());
             if (batchRegisterBean.getAsGuests()) {
-                MembersClient.assignMemberRole(member.getId(), SystemRole.GUEST.getRoleId());
-                MembersClient.removeMemberRole(member.getId(), SystemRole.MEMBER.getRoleId());
+                userClient.assignMemberRole(member.getId(), SystemRole.GUEST.getRoleId());
+                userClient.removeMemberRole(member.getId(), SystemRole.MEMBER.getRoleId());
             }
         }
 
@@ -287,14 +304,14 @@ public class AdminTabController extends AbstractTabController {
 
     @PostMapping("tab/ADMIN/notificationMessageDelete")
     public String saveNotification(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam String notificationId, Member loggedInMember)
+            @RequestParam String notificationId, UserWrapper loggedInMember)
             throws IOException {
 
-        if (!PermissionsClient.canAdminAll(loggedInMember)) {
+        if (!permissionClient.canAdminAll(loggedInMember)) {
             return new AccessDeniedPage(loggedInMember).toViewName(response);
         }
 
-        AdminClient.deleteNotifications(notificationId);
+        adminClient.deleteNotifications(Long.parseLong(notificationId));
 
         AlertMessage.DELETED.flash(request);
         return "redirect:" + tab.getTabUrl();
@@ -302,11 +319,11 @@ public class AdminTabController extends AbstractTabController {
 
     @PostMapping("tab/ADMIN/notificationMessageCreate")
     public String saveNotification(HttpServletRequest request,
-            HttpServletResponse response, Member member, @RequestParam String notificationText,
+            HttpServletResponse response, UserWrapper member, @RequestParam String notificationText,
             @RequestParam String expiretime)
             throws IOException, ParseException {
 
-        if (!PermissionsClient.canAdminAll(member)) {
+        if (!permissionClient.canAdminAll(member)) {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
@@ -328,11 +345,11 @@ public class AdminTabController extends AbstractTabController {
             return "redirect:" + tab.getTabUrl();
         }
 
-        Notification newNotification = new Notification();
+        INotification newNotification = new org.xcolab.client.admin.pojo.tables.pojos.Notification();
         newNotification.setNotificationText(notificationText);
         newNotification.setEndTime(endDate);
 
-        AdminClient.setNotifications(newNotification);
+        adminClient.createNotification(newNotification);
 
         AlertMessage.CREATED.flash(request);
         return "redirect:" + tab.getTabUrl();

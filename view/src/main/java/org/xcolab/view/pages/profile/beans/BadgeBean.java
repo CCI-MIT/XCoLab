@@ -1,12 +1,11 @@
 package org.xcolab.view.pages.profile.beans;
 
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.contest.pojo.phases.ContestPhaseRibbonType;
-import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.client.proposals.ProposalPhaseClientUtil;
-import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
+import org.xcolab.client.contest.StaticContestContext;
+import org.xcolab.client.contest.pojo.IContestPhaseRibbonType;
+import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.view.pages.profile.entity.Badge;
 
@@ -29,17 +28,18 @@ public class BadgeBean implements Serializable {
 
     private List<Badge> getBadges(long userId) {
         final List<Badge> badges = new ArrayList<>();
-        for (Proposal proposal : ProposalClientUtil.getMemberProposals(userId)) {
-            final Optional<ProposalContestPhaseAttribute> ribbonAttributeOpt =
+        for (ProposalWrapper proposal : StaticProposalContext.getProposalClient()
+                .getMemberProposals(userId)) {
+            final Optional<IProposalContestPhaseAttribute> ribbonAttributeOpt =
                     getLatestRibbonAttribute(proposal);
             if (ribbonAttributeOpt.isPresent()) {
-                final ProposalContestPhaseAttribute ribbonAttribute = ribbonAttributeOpt.get();
-                final ContestPhaseRibbonType ribbonType = ContestClientUtil
+                final IProposalContestPhaseAttribute ribbonAttribute = ribbonAttributeOpt.get();
+                final IContestPhaseRibbonType ribbonType = StaticContestContext.getContestClient()
                         .getContestPhaseRibbonType(ribbonAttribute.getNumericValue());
 
                 if (ribbonType.getRibbon() > 0) {
-                    final ContestPhase phase = ContestClientUtil.getContestPhase(
-                            ribbonAttribute.getContestPhaseId());
+                    final ContestPhaseWrapper phase = StaticContestContext.getContestClient()
+                            .getContestPhase(ribbonAttribute.getContestPhaseId());
                     badges.add(new Badge(ribbonType, proposal, proposal.getName(),
                             phase.getContest()));
                 }
@@ -48,17 +48,19 @@ public class BadgeBean implements Serializable {
         return badges;
     }
 
-    private Optional<ProposalContestPhaseAttribute> getLatestRibbonAttribute(Proposal proposal) {
-        List<Long> phasesForProposal = ProposalPhaseClientUtil.getContestPhasesForProposal(
-                proposal.getId());
+    private Optional<IProposalContestPhaseAttribute> getLatestRibbonAttribute(
+            ProposalWrapper proposal) {
+        List<Long> phasesForProposal = StaticProposalContext.getProposalPhaseClient()
+                .getContestPhasesForProposal(proposal.getId());
         return phasesForProposal.stream()
                 .map(phaseId -> getRibbonAttribute(proposal.getId(), phaseId))
                 .filter(Objects::nonNull)
-                .max(Comparator.comparing(ProposalContestPhaseAttribute::getStartDate));
+                .max(Comparator.comparing(phase -> phase.getStartDate()));
     }
 
-    private ProposalContestPhaseAttribute getRibbonAttribute(long proposalId, long phaseId) {
-        return ProposalPhaseClientUtil.getProposalContestPhaseAttribute(proposalId, phaseId,
+    private IProposalContestPhaseAttribute getRibbonAttribute(long proposalId, long phaseId) {
+        return StaticProposalContext.getProposalPhaseClient()
+                .getProposalContestPhaseAttribute(proposalId, phaseId,
                         ProposalContestPhaseAttributeKeys.RIBBON);
     }
 

@@ -4,34 +4,37 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.StaticCommentContext;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
-import org.xcolab.client.comment.pojo.Comment;
-import org.xcolab.client.comment.pojo.CommentThread;
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
+import org.xcolab.client.comment.pojo.IComment;
+import org.xcolab.client.comment.pojo.IThread;
+import org.xcolab.client.comment.pojo.tables.pojos.Comment;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.search.pojo.SearchPojo;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
+import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.search.pojo.ISearchPojo;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
 
 public class DiscussionSearchItem extends AbstractSearchItem {
 
     private static final Logger _log = LoggerFactory.getLogger(DiscussionSearchItem.class);
 
-    private CommentThread thread;
-    private Comment comment;
+    private IThread thread;
+    private IComment comment;
 
     private String searchQuery;
 
     @Override
-    public void init(SearchPojo pojo, String searchQuery) {
+    public void init(ISearchPojo pojo, String searchQuery) {
         this.searchQuery = searchQuery;
         try {
-            comment = CommentClient.instance().getComment(pojo.getClassPrimaryKey());
-            thread = comment.getThread();
-        } catch (CommentNotFoundException e) {
+            comment = StaticCommentContext.getCommentClient().getComment(pojo.getClassPrimaryKey());
+            thread = StaticCommentContext.getThreadClient().getThread(comment.getThreadId());
+        } catch (CommentNotFoundException | ThreadNotFoundException e) {
             throw ReferenceResolutionException.toObject(Comment.class, pojo.getClassPrimaryKey())
                     .build();
         }
@@ -69,7 +72,8 @@ public class DiscussionSearchItem extends AbstractSearchItem {
 
     private String getProposalDiscussionUrl() {
         try {
-            return ProposalClientUtil.getProposalByThreadId(thread.getId())
+            return new ProposalWrapper(
+                    StaticProposalContext.getProposalClient().getProposalByThreadId(thread.getId()))
                     .getProposalDiscussionUrl();
         } catch (ProposalNotFoundException e) {
             return null;
@@ -78,7 +82,8 @@ public class DiscussionSearchItem extends AbstractSearchItem {
 
     private String getContestDiscussionUrl() {
         try {
-            Contest contest = ContestClientUtil.getContestByThreadId(thread.getId());
+            ContestWrapper contest = new ContestWrapper(StaticContestContext.getContestClient()
+                    .getContestByThreadId(thread.getId()));
             return contest.getContestDiscussionLinkUrl();
         } catch (ContestNotFoundException e1) {
             return null;
@@ -92,6 +97,6 @@ public class DiscussionSearchItem extends AbstractSearchItem {
 
     @Override
     public boolean isVisible() {
-        return StringUtils.isNotEmpty(getLinkUrl()) && !thread.getIsQuiet();
+        return StringUtils.isNotEmpty(getLinkUrl()) && !thread.isIsQuiet();
     }
 }

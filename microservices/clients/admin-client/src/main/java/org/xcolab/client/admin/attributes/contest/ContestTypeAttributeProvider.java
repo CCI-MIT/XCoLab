@@ -2,12 +2,13 @@ package org.xcolab.client.admin.attributes.contest;
 
 import org.springframework.util.Assert;
 
-import org.xcolab.client.admin.ContestTypeClient;
-import org.xcolab.client.admin.pojo.ContestTypeAttribute;
+import org.xcolab.client.admin.StaticAdminContext;
+import org.xcolab.client.admin.pojo.IContestTypeAttribute;
+import org.xcolab.commons.attributes.exceptions.AttributeNotFoundException;
 import org.xcolab.commons.attributes.i18n.LocalizableAttributeProvider;
 
 class ContestTypeAttributeProvider
-        implements LocalizableAttributeProvider<ContestTypeAttribute> {
+        implements LocalizableAttributeProvider<IContestTypeAttribute> {
 
     private final String name;
 
@@ -22,23 +23,34 @@ class ContestTypeAttributeProvider
     }
 
     @Override
-    public ContestTypeAttribute get() {
+    public IContestTypeAttribute get() {
         throw new UnsupportedOperationException("ContestTypeAttributes require an id");
     }
 
     @Override
-    public ContestTypeAttribute get(long additionalId) {
-        return ContestTypeClient.getContestTypeAttribute(name, additionalId, null);
+    public IContestTypeAttribute get(long additionalId) {
+        return StaticAdminContext.getContestTypeClient()
+                .getContestTypeAttribute(name, additionalId, null)
+                .<AttributeNotFoundException>orElseThrow(() -> {
+                    throw new AttributeNotFoundException(
+                            "ContestTypeAttribute not found with additionalId " + additionalId);
+                });
     }
 
     @Override
-    public ContestTypeAttribute get(String locale) {
+    public IContestTypeAttribute get(String locale) {
         throw new UnsupportedOperationException("ContestTypeAttributes require an id");
     }
 
     @Override
-    public ContestTypeAttribute get(String locale, long additionalId) {
-        return ContestTypeClient.getContestTypeAttribute(name, additionalId, locale);
+    public IContestTypeAttribute get(String locale, long additionalId) {
+        return StaticAdminContext.getContestTypeClient()
+                .getContestTypeAttribute(name, additionalId, locale)
+                .<AttributeNotFoundException>orElseThrow(() -> {
+                    throw new AttributeNotFoundException(
+                            "ContestTypeAttribute not found with locale  " + locale
+                                    + " and additionalId " + additionalId);
+                });
     }
 
     @Override

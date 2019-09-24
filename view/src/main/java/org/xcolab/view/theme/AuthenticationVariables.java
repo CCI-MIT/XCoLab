@@ -1,8 +1,8 @@
 package org.xcolab.view.theme;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.auth.AuthenticationService;
 import org.xcolab.view.auth.login.AuthenticationError;
 import org.xcolab.view.config.spring.beans.SsoClientConfig.SsoServices;
@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 public class AuthenticationVariables {
     private final boolean isLoggedIn;
     private final boolean isImpersonating;
-    private final Member realMember;
-    private final Member member;
+    private final UserWrapper realMember;
+    private final UserWrapper member;
     private final boolean isAdmin;
 
     private final boolean isGoogleSsoActive;
@@ -33,7 +33,7 @@ public class AuthenticationVariables {
         this.realMember = authenticationService.getRealMemberOrNull();
 
         this.member = authenticationService.getMemberOrNull(request);
-        this.isAdmin = PermissionsClient.canAdminAll(getMember());
+        this.isAdmin = StaticUserContext.getPermissionClient().canAdminAll(getMember());
 
         boolean isSigningIn = readBooleanParameter(request, "isSigningIn");
         boolean isPasswordReminder = readBooleanParameter(request, "isPasswordReminder");
@@ -62,11 +62,11 @@ public class AuthenticationVariables {
         return isImpersonating;
     }
 
-    public Member getRealMember() {
+    public UserWrapper getRealMember() {
         return realMember;
     }
 
-    public Member getMember() {
+    public UserWrapper getMember() {
         return member;
     }
 

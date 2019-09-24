@@ -7,7 +7,7 @@
                              description="Link text"/>
     <jsp:directive.attribute name="list" type="java.util.List" required="false" rtexprvalue="true"
                              description="List of members"/>
-    <!--@elvariable id="list" type="java.util.List<org.xcolab.client.members.pojo.Member>"-->
+    <!--@elvariable id="list" type="java.util.List<org.xcolab.client.user.pojo.wrapper.UserWrapper>"-->
 
     <c:set var="inputBox" value="userSelectorInput${title}"/>
     <c:set var="pleaseChooseFromList" value="pleaseChooseFromList${title}"/>

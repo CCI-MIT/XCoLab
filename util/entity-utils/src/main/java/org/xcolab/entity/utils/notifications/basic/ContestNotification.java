@@ -8,14 +8,12 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 
-import org.xcolab.client.admin.EmailTemplateClient;
-import org.xcolab.client.admin.EmailTemplateClientUtil;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.admin.pojo.EmailTemplate;
-import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.admin.pojo.IEmailTemplate;
+import org.xcolab.client.contest.StaticContestContext;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -30,24 +28,24 @@ public class ContestNotification extends EmailNotification {
     private static final String OTHER_CONTESTS_PLACEHOLDER = "other-contests-link";
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormat.forPattern("MMMM dd, HH:mm:ss a z");
-    protected final Contest contest;
+    protected final ContestWrapper contest;
     protected final String templateName;
-    private final Member recipient;
+    private final UserWrapper recipient;
     private ContestNotificationTemplate templateWrapper;
 
-    public ContestNotification(Contest contest, Member recipient, String templateName) {
+    public ContestNotification(ContestWrapper contest, UserWrapper recipient, String templateName) {
         this.contest = contest;
         this.recipient = recipient;
         this.templateName = templateName;
     }
 
     @Override
-    protected Member getRecipient() {
+    protected UserWrapper getRecipient() {
         return recipient;
     }
 
     @Override
-    protected Contest getContest() {
+    protected ContestWrapper getContest() {
         return contest;
     }
 
@@ -57,9 +55,8 @@ public class ContestNotification extends EmailNotification {
             return templateWrapper;
         }
 
-        final EmailTemplateClient emailTemplateClient = EmailTemplateClientUtil.getClient();
-        final EmailTemplate emailTemplate =
-                emailTemplateClient.getContestEmailTemplateByType(templateName);
+        final IEmailTemplate emailTemplate =
+                StaticAdminContext.getEmailTemplateClient().getEmailTemplate(templateName);
 
         templateWrapper = new ContestNotificationTemplate(emailTemplate, "", contest.getTitle());
 
@@ -71,8 +68,8 @@ public class ContestNotification extends EmailNotification {
         return this.contest.getId();
     }
     private Date getActivePhaseDeadline() {
-        ContestClient contestClient = ContestClientUtil.getClient();
-        return contestClient.getActivePhase(contest.getId()).getPhaseEndDate();
+        return StaticContestContext.getContestClient().getActivePhase(contest.getId())
+                .getPhaseEndDate();
     }
 
     private String getOtherContestLink(String linkText) {
@@ -82,7 +79,7 @@ public class ContestNotification extends EmailNotification {
 
     protected class ContestNotificationTemplate extends EmailNotificationTemplate {
 
-        public ContestNotificationTemplate(EmailTemplate template, String proposalName, String contestName) {
+        public ContestNotificationTemplate(IEmailTemplate template, String proposalName, String contestName) {
             super(template, proposalName, contestName);
         }
 

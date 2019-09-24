@@ -8,7 +8,7 @@
     <!--@elvariable id="proposalsPermissions" type="org.xcolab.view.pages.proposals.permissions.ProposalsPermissions"-->
 
     <jsp:directive.attribute name="proposalRatingsWrappers" type="java.util.Collection" required="true" rtexprvalue="true" description="ProposalRatings" />
-    <!--@elvariable id="proposalRatingsWrappers" type="java.util.List<org.xcolab.client.proposals.pojo.proposals.ProposalRatings>"-->
+    <!--@elvariable id="proposalRatingsWrappers" type="java.util.List<org.xcolab.client.contest.pojo.wrapper.ProposalRatings>"-->
     <jsp:directive.attribute name="proposalId" type="java.lang.Long" required="true" rtexprvalue="true" description="Proposal ID" />
     <jsp:directive.attribute name="showRating" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Whether the Rating should be displayed or not" />
     <jsp:directive.attribute name="showPhase" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Whether the Phase for this Rating should be displayed or not" />
@@ -16,7 +16,7 @@
     <div class="c-Comment__list">
         <c:forEach var="wrapper" items="${proposalRatingsWrappers}" varStatus="status">
             <discussions:getRoleCategory userId="${wrapper.author.id}" proposalId="${proposalId}">
-                <!--@elvariable id="roleCategory" type="org.xcolab.client.members.pojo.MemberCategory"-->
+                <!--@elvariable id="roleCategory" type="org.xcolab.client.user.pojo.wrapper.MemberCategoryWrapper"-->
                 <div class="comment">
                     <div class="c-Comment__commentor">
                         <xcolab:userPortrait portraitId="${wrapper.author.portraitId}"

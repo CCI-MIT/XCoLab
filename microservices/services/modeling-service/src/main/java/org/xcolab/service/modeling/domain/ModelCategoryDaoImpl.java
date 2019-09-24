@@ -5,7 +5,8 @@ import org.jooq.Record;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.model.tables.pojos.ModelCategory;
+import org.xcolab.client.modeling.pojo.IModelCategory;
+import org.xcolab.model.tables.pojos.ModelCategoryImpl;
 import org.xcolab.model.tables.records.ModelCategoryRecord;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class ModelCategoryDaoImpl implements ModelCategoryDao {
     }
 
     @Override
-    public Optional<ModelCategory> get(long id) {
+    public Optional<IModelCategory> get(long id) {
         final Record record = dslContext.select()
                 .from(MODEL_CATEGORY)
                 .where(MODEL_CATEGORY.ID.eq(id))
@@ -32,18 +33,18 @@ public class ModelCategoryDaoImpl implements ModelCategoryDao {
         if (record == null) {
             return Optional.empty();
         }
-        return Optional.of(record.into(ModelCategory.class));
+        return Optional.of(record.into(ModelCategoryImpl.class));
     }
 
     @Override
-    public List<ModelCategory> list() {
+    public List<IModelCategory> list() {
         return dslContext.select()
                 .from(MODEL_CATEGORY)
-                .fetch().into(ModelCategory.class);
+                .fetch().into(ModelCategoryImpl.class);
     }
 
     @Override
-    public ModelCategory create(ModelCategory pojo) {
+    public IModelCategory create(IModelCategory pojo) {
         final ModelCategoryRecord record = dslContext.insertInto(MODEL_CATEGORY)
                 .set(MODEL_CATEGORY.DESCRIPTION, pojo.getDescription())
                 .set(MODEL_CATEGORY.DISPLAY_WEIGHT, pojo.getDisplayWeight())
@@ -58,7 +59,7 @@ public class ModelCategoryDaoImpl implements ModelCategoryDao {
     }
 
     @Override
-    public boolean update(ModelCategory pojo) {
+    public boolean update(IModelCategory pojo) {
         return dslContext.update(MODEL_CATEGORY)
                 .set(MODEL_CATEGORY.DESCRIPTION, pojo.getDescription())
                 .set(MODEL_CATEGORY.DISPLAY_WEIGHT, pojo.getDisplayWeight())

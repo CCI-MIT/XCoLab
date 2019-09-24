@@ -1,7 +1,7 @@
 package org.xcolab.view.pages.contestmanagement.utils;
 
-import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.client.members.permissions.SystemRole;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.permissions.SystemRole;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.taglibs.xcolab.interfaces.TabPermissions;
 
@@ -19,12 +19,12 @@ public class ContestManagementPermissions implements TabPermissions, Serializabl
 
     @Override
     public boolean getCanAdmin() {
-        return PermissionsClient.canAdminAll(userId);
+        return StaticUserContext.getPermissionClient().canAdminAll(userId);
     }
 
     @Override
     public boolean getCanRole(SystemRole role) {
-        return isLoggedIn && PermissionsClient.memberHasRole(userId, role.getRoleId());
+        return isLoggedIn && StaticUserContext.getPermissionClient().memberHasRole(userId, role.getRoleId());
     }
 
     @Override

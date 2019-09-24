@@ -1,0 +1,30 @@
+server:
+  port: 0
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://127.0.0.1:8761/eureka/
+
+logging:
+  level:
+    ROOT: WARN
+    com.zaxxer.hikari: INFO
+    org.springframework: INFO
+    org.springframework.jmx: WARN
+    org.springframework.web: WARN
+    org.springframework.boot.web: WARN
+    org.springframework.boot.actuate: WARN
+
+spring:
+  flyway:
+    table: flyway_member_schema_version
+    baselineOnMigrate: true
+    baselineVersion: 0
+    outOfOrder: true
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 160000000
+        readTimeout: 160000000

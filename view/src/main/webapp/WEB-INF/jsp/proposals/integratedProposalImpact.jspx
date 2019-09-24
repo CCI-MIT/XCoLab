@@ -24,7 +24,7 @@
         <!--@elvariable id="showSubProposalListing" type="java.lang.Boolean"-->
         <!--@elvariable id="consolidateOptions" type="java.util.Map<java.lang.String, java.lang.String[]>"-->
         <!--@elvariable id="proposalToModelMap" type="java.util.Map<java.lang.String, org.xcolab.view.pages.proposals.impact.ProposalSimulationScenarioRegionWrapper>"-->
-        <!--@elvariable id="impactIterations" type="java.util.List<org.xcolab.client.contest.pojo.impact.ImpactIteration>"-->
+        <!--@elvariable id="impactIterations" type="java.util.List<org.xcolab.client.contest.pojo.IImpactIteration>"-->
         <!--@elvariable id="impactSerieses" type="java.util.List<org.xcolab.view.pages.proposals.impact.ProposalImpactSeries>"-->
 
         <jsp:directive.include file="./proposalDetails/header.jspx"/>

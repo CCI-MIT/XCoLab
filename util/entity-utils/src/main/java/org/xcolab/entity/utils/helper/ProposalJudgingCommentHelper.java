@@ -1,15 +1,14 @@
 package org.xcolab.entity.utils.helper;
 
-import org.xcolab.client.admin.EmailTemplateClientUtil;
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.admin.StaticAdminContext;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.proposals.ProposalAttributeClientUtil;
-import org.xcolab.client.proposals.ProposalPhaseClient;
-import org.xcolab.client.proposals.ProposalPhaseClientUtil;
-import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
-import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
+import org.xcolab.client.contest.pojo.IProposalContestPhaseAttribute;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.IProposalPhaseClient;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
+import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.entity.utils.notifications.EmailTemplateWrapper;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.promotion.JudgingSystemActions.AdvanceDecision;
@@ -22,20 +21,20 @@ import org.xcolab.util.enums.promotion.JudgingSystemActions.FellowAction;
  */
 public class ProposalJudgingCommentHelper {
 
-    private final Proposal proposal;
-    private final ContestPhase contestPhase;
-    private final ProposalPhaseClient proposalPhaseClient;
+    private final ProposalWrapper proposal;
+    private final ContestPhaseWrapper contestPhase;
+    private final IProposalPhaseClient proposalPhaseClient;
     private String subject;
 
-    public ProposalJudgingCommentHelper(Proposal proposal, ContestPhase contestPhase) {
+    public ProposalJudgingCommentHelper(ProposalWrapper proposal, ContestPhaseWrapper contestPhase) {
         this.proposal = proposal;
-        proposalPhaseClient = ProposalPhaseClientUtil.getClient();
+        proposalPhaseClient = StaticProposalContext.getProposalPhaseClient();
         this.contestPhase = contestPhase;
     }
 
     public String getScreeningComment() {
         //get fellow decision
-        ProposalContestPhaseAttribute fellowActionAttribute = proposalPhaseClient.
+        IProposalContestPhaseAttribute fellowActionAttribute = proposalPhaseClient.
                 getProposalContestPhaseAttribute(proposal.getId(),
                         contestPhase.getId(),
                         ProposalContestPhaseAttributeKeys.FELLOW_ACTION);
@@ -58,7 +57,7 @@ public class ProposalJudgingCommentHelper {
 
     public String getSubject(){
         if(this.subject == null) {
-            String proposalName = ProposalAttributeClientUtil
+            String proposalName = StaticProposalContext.getProposalAttributeClient()
                     .getProposalAttribute(proposal.getId(), ProposalAttributeKeys.NAME, 0L)
                     .getStringValue();
 
@@ -68,7 +67,7 @@ public class ProposalJudgingCommentHelper {
         }
     }
     public void setScreeningComment(String comment) {
-        ProposalContestPhaseAttribute fellowActionAttribute = proposalPhaseClient.
+        IProposalContestPhaseAttribute fellowActionAttribute = proposalPhaseClient.
                 getProposalContestPhaseAttribute(proposal.getId(), contestPhase.getId(), ProposalContestPhaseAttributeKeys.FELLOW_ACTION);
         FellowAction fellowAction = FellowAction.fromInt(fellowActionAttribute.getNumericValue().intValue());
 
@@ -80,7 +79,7 @@ public class ProposalJudgingCommentHelper {
     }
 
     public String getAdvancingComment() {
-        ProposalContestPhaseAttribute advanceDecisionAttribute = proposalPhaseClient.
+        IProposalContestPhaseAttribute advanceDecisionAttribute = proposalPhaseClient.
                 getProposalContestPhaseAttribute(proposal.getId(), contestPhase.getId(),
                         ProposalContestPhaseAttributeKeys.JUDGE_DECISION);
 
@@ -111,15 +110,15 @@ public class ProposalJudgingCommentHelper {
      */
     public String getPromotionComment(boolean isWrapWithTemplate) {
         try {
-            String proposalName = ProposalAttributeClientUtil
+            String proposalName = StaticProposalContext.getProposalAttributeClient()
                     .getProposalAttribute(proposal.getId(), ProposalAttributeKeys.NAME, 0L)
                     .getStringValue();
-            String contestName = ContestClientUtil.getContest(contestPhase.getContestId())
-                    .getTitle();
+            String contestName = StaticContestContext.getContestClient()
+                    .getContest(contestPhase.getContestId()).getTitle();
 
             //get fellow decision
 
-            ProposalContestPhaseAttribute fellowActionAttribute = proposalPhaseClient
+            IProposalContestPhaseAttribute fellowActionAttribute = proposalPhaseClient
                     .getProposalContestPhaseAttribute(proposal.getId(),
                                     contestPhase.getId(),
                                     ProposalContestPhaseAttributeKeys.FELLOW_ACTION);
@@ -130,7 +129,7 @@ public class ProposalJudgingCommentHelper {
 
             //JUDGE DECISION
             if (fellowAction == FellowAction.PASS_TO_JUDGES) {
-                final ProposalContestPhaseAttribute reviewTextAttribute =
+                final IProposalContestPhaseAttribute reviewTextAttribute =
                         proposalPhaseClient.
                                 getProposalContestPhaseAttribute(proposal.getId(),
                                         contestPhase.getId(),
@@ -138,7 +137,7 @@ public class ProposalJudgingCommentHelper {
                 String reviewText = reviewTextAttribute != null
                         ? reviewTextAttribute.getStringValue() : "";
 
-                    ProposalContestPhaseAttribute advanceDecisionAttribute = proposalPhaseClient
+                    IProposalContestPhaseAttribute advanceDecisionAttribute = proposalPhaseClient
                             .getProposalContestPhaseAttribute(proposal.getId(),
                                             contestPhase.getId(),
                                             ProposalContestPhaseAttributeKeys.JUDGE_DECISION);
@@ -161,18 +160,15 @@ public class ProposalJudgingCommentHelper {
                     }
 
                     EmailTemplateWrapper wrapper = new EmailTemplateWrapper(
-                                EmailTemplateClientUtil.getContestEmailTemplateByType(templateToLoad),
-                                proposalName,
-                                contestName
-                        );
-                        subject = wrapper.getSubject();
-                        return isWrapWithTemplate ? wrapper.getCompleteMessage(reviewText)
-                                : reviewText;
-                    }
+                            StaticAdminContext.getEmailTemplateClient().
+                                    getEmailTemplate(templateToLoad), proposalName, contestName);
+                    subject = wrapper.getSubject();
+                    return isWrapWithTemplate ? wrapper.getCompleteMessage(reviewText) : reviewText;
+                }
 
                 //FELLOW DECISION: Incomplete/Off-Topic
             } else if (fellowAction != FellowAction.NO_DECISION) {
-                final ProposalContestPhaseAttribute fellowReviewTextAttribute =
+                final IProposalContestPhaseAttribute fellowReviewTextAttribute =
                         proposalPhaseClient.getProposalContestPhaseAttribute(
                                         proposal.getId(),
                                         contestPhase.getId(),
@@ -189,10 +185,8 @@ public class ProposalJudgingCommentHelper {
                 }
 
                 EmailTemplateWrapper wrapper = new EmailTemplateWrapper(
-                        EmailTemplateClientUtil.getContestEmailTemplateByType(templateToLoad),
-                        proposalName,
-                        contestName
-                );
+                        StaticAdminContext.getEmailTemplateClient()
+                                .getEmailTemplate(templateToLoad), proposalName, contestName);
                 subject = wrapper.getSubject();
                 return isWrapWithTemplate ? wrapper.getCompleteMessage(fellowReviewText)
                         : fellowReviewText;
@@ -207,14 +201,14 @@ public class ProposalJudgingCommentHelper {
     }
 
     private boolean persistAttribute(String attributeName, String stringValue) {
-        ProposalContestPhaseAttribute attribute = getProposalContestPhaseAttributeCreateIfNotExists(attributeName);
+        IProposalContestPhaseAttribute attribute = getProposalContestPhaseAttributeCreateIfNotExists(attributeName);
         attribute.setStringValue(stringValue);
         proposalPhaseClient.updateProposalContestPhaseAttribute(attribute);
 
         return true;
     }
 
-    private ProposalContestPhaseAttribute getProposalContestPhaseAttributeCreateIfNotExists(String attributeName) {
+    private IProposalContestPhaseAttribute getProposalContestPhaseAttributeCreateIfNotExists(String attributeName) {
         return proposalPhaseClient.getOrCreateProposalContestPhaseAttribute(proposal.getId(),
                 contestPhase.getId(), attributeName, 0L, 0L, "");
     }

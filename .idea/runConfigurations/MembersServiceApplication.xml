@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="MembersServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" folderName="Services">
-    <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+    <module name="user-service" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="org.xcolab.service.members.MembersServiceApplication" />
     <option name="VM_PARAMETERS" value="-Xms128M -Xmx256M" />
     <option name="ALTERNATIVE_JRE_PATH" />
@@ -16,8 +16,8 @@
         <option name="value" value="18091" />
       </param>
     </additionalParameters>
-    <module name="members-service" />
-    <envs />
-    <method />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
   </configuration>
 </component>

@@ -1,7 +1,7 @@
 package org.xcolab.view.util.entity.analytics;
 
-import org.xcolab.client.members.AnalyticsClient;
-import org.xcolab.client.members.pojo.AnalyticsUserEvent;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.pojo.IAnalyticsUserEvent;
 import org.xcolab.view.util.entity.flash.AnalyticsAttribute;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,13 +18,13 @@ public final class AnalyticsUtil {
     public static void publishEvent(HttpServletRequest request, long userId, String idString,
             String category, String action, String label, int value) {
 
-        if (AnalyticsClient.exists(userId, idString)) {
+        if (StaticUserContext.getAnalyticsClient().exists(userId, idString)) {
             // if event exists do nothing
             return;
         }
 
-        final AnalyticsUserEvent analyticsUserEvent =
-                AnalyticsClient.create(userId, idString, category, action, label, value);
+        final IAnalyticsUserEvent analyticsUserEvent =
+                StaticUserContext.getAnalyticsClient().create(userId, idString, category, action, label, value);
         AnalyticsAttribute.add((request), analyticsUserEvent);
     }
 

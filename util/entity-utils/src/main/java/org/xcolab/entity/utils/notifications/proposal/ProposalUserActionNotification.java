@@ -4,23 +4,23 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 
-import org.xcolab.client.admin.EmailTemplateClientUtil;
-import org.xcolab.client.admin.pojo.EmailTemplate;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.admin.StaticAdminContext;
+import org.xcolab.client.admin.pojo.IEmailTemplate;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
+import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.entity.utils.notifications.basic.ProposalNotification;
 
 public class ProposalUserActionNotification extends ProposalNotification {
 
     private static final String SENDER_NAME_PLACEHOLDER = "sender-name";
-    private final Member sender;
+    private final UserWrapper sender;
     private final String templateName;
     private ProposalUserActionNotificationTemplate templateWrapper;
 
-    public ProposalUserActionNotification(Proposal proposal, Contest contest, Member sender,
-            Member recipient, String templateName, String baseUrl) {
+    public ProposalUserActionNotification(ProposalWrapper proposal, ContestWrapper contest, UserWrapper sender,
+            UserWrapper recipient, String templateName, String baseUrl) {
         super(proposal, contest, recipient, null);
         this.sender = sender;
         this.templateName = templateName;
@@ -40,8 +40,8 @@ public class ProposalUserActionNotification extends ProposalNotification {
         final String proposalName =
                 getProposalAttributeHelper().getAttributeValueString(ProposalAttributeKeys.NAME, "");
 
-        final EmailTemplate emailTemplate =
-                EmailTemplateClientUtil.getContestEmailTemplateByType(templateName);
+        final IEmailTemplate emailTemplate =
+                StaticAdminContext.getEmailTemplateClient().getEmailTemplate(templateName);
         templateWrapper = new ProposalUserActionNotificationTemplate(emailTemplate,
                 proposalName, contest.getTitle());
 
@@ -50,7 +50,7 @@ public class ProposalUserActionNotification extends ProposalNotification {
 
     protected class ProposalUserActionNotificationTemplate extends ProposalNotificationTemplate {
 
-        public ProposalUserActionNotificationTemplate(EmailTemplate template, String proposalName,
+        public ProposalUserActionNotificationTemplate(IEmailTemplate template, String proposalName,
                 String contestName) {
             super(template, proposalName, contestName);
         }

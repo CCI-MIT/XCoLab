@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.proposals.wrappers;
 
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,24 +11,24 @@ import java.util.stream.Collectors;
 
 public class ContestList {
 
-    private final List<Contest> list;
+    private final List<ContestWrapper> list;
 
-    private ContestList(Collection<Contest> collection) {
+    private ContestList(Collection<ContestWrapper> collection) {
         list = new ArrayList<>(collection);
     }
 
-    public ContestList(Collection<Contest> collection, Comparator<Contest> comparator) {
+    public ContestList(Collection<ContestWrapper> collection, Comparator<ContestWrapper> comparator) {
         this(collection);
         list.sort(comparator);
     }
 
-    public ContestList getFiltered(Predicate<Contest> contestPredicate) {
+    public ContestList getFiltered(Predicate<ContestWrapper> contestPredicate) {
         return new ContestList(list.stream().filter(contestPredicate)
                 .collect(Collectors.toList()));
     }
 
     public ContestList getFeatured() {
-        return new ContestList(list.stream().filter(Contest::isFeatured)
+        return new ContestList(list.stream().filter(ContestWrapper::isFeatured)
                 .collect(Collectors.toList()));
     }
 
@@ -38,18 +38,18 @@ public class ContestList {
     }
 
     public ContestList getInTileView() {
-        return new ContestList(list.stream().filter(Contest::getShowInTileView)
+        return new ContestList(list.stream().filter(ContestWrapper::isShowInTileView)
                 .collect(Collectors.toList()));
     }
 
     public ContestList getInOutlineView() {
         return new ContestList(list.stream()
-                .filter(Contest::getShowInOutlineView)
+                .filter(ContestWrapper::isShowInOutlineView)
                 .collect(Collectors.toList()));
     }
 
     public ContestList getInListView() {
-        return new ContestList(list.stream().filter(Contest::getShowInListView)
+        return new ContestList(list.stream().filter(ContestWrapper::isShowInListView)
                 .collect(Collectors.toList()));
     }
 
@@ -65,7 +65,7 @@ public class ContestList {
         return list.size();
     }
 
-    public List<Contest> getList() {
+    public List<ContestWrapper> getList() {
         return new ArrayList<>(list);
     }
 }

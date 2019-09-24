@@ -6,7 +6,8 @@ import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.model.tables.pojos.FocusAreaOntologyTerm;
+import org.xcolab.client.contest.pojo.IFocusAreaOntologyTerm;
+import org.xcolab.client.contest.pojo.tables.pojos.FocusAreaOntologyTerm;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class FocusAreaOntologyTermDaoImpl implements FocusAreaOntologyTermDao {
     private DSLContext dslContext;
 
     @Override
-    public List<FocusAreaOntologyTerm> findByGiven(Long focusAreaId, Long ontologyTermId) {
+    public List<IFocusAreaOntologyTerm> findByGiven(Long focusAreaId, Long ontologyTermId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(FOCUS_AREA_ONTOLOGY_TERM).getQuery();
 
@@ -33,7 +34,7 @@ public class FocusAreaOntologyTermDaoImpl implements FocusAreaOntologyTermDao {
     }
 
     @Override
-    public FocusAreaOntologyTerm create(FocusAreaOntologyTerm focusAreaOntologyTerm) {
+    public IFocusAreaOntologyTerm create(IFocusAreaOntologyTerm focusAreaOntologyTerm) {
 
         this.dslContext.insertInto(FOCUS_AREA_ONTOLOGY_TERM)
                 .set(FOCUS_AREA_ONTOLOGY_TERM.FOCUS_AREA_ID, focusAreaOntologyTerm.getFocusAreaId())
@@ -45,7 +46,7 @@ public class FocusAreaOntologyTermDaoImpl implements FocusAreaOntologyTermDao {
     }
 
     @Override
-    public List<FocusAreaOntologyTerm> findByOntologyTermIds(List<Long> ontologyTermId) {
+    public List<IFocusAreaOntologyTerm> findByOntologyTermIds(List<Long> ontologyTermId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(FOCUS_AREA_ONTOLOGY_TERM).getQuery();
 

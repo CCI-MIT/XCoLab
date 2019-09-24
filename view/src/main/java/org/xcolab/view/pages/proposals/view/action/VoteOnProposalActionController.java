@@ -12,15 +12,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.activity.IActivityClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalMemberRatingClient;
-import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.user.IUserClient;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
+import org.xcolab.client.contest.proposals.IProposalMemberRatingClient;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.IProposalVote;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.entity.utils.notifications.proposal.ProposalVoteNotification;
 import org.xcolab.util.activities.enums.ProposalActivityType;
@@ -48,20 +49,27 @@ public class VoteOnProposalActionController {
     private static final String VOTE_ANALYTICS_LABEL = "";
 
     private final ProposalDescriptionTabController proposalDescriptionTabController;
+    private final IActivityClient activityClient;
+
+    private final IUserClient userClient;
 
     @Autowired
     public VoteOnProposalActionController(
-            ProposalDescriptionTabController proposalDescriptionTabController) {
+            ProposalDescriptionTabController proposalDescriptionTabController,
+            IActivityClient activityClient, IUserClient userClient) {
         this.proposalDescriptionTabController = proposalDescriptionTabController;
+        this.activityClient = activityClient;
+        this.userClient = userClient;
     }
 
     @PostMapping("voteInContestPage")
     public String voteInContestPage(
             HttpServletRequest request, HttpServletResponse response,
             ProposalContext proposalContext,
-            Member member,@RequestParam(defaultValue = "1") int voteValue) throws ProposalsAuthorizationException {
+            Model model,
+            UserWrapper member,@RequestParam(defaultValue = "1") int voteValue) throws ProposalsAuthorizationException {
 
-            this.handleAction(request, proposalContext, member,voteValue);
+            this.handleAction(request,response, model, proposalContext, member,voteValue);
 
         return "redirect:" + proposalContext.getContest().getContestUrl();
 
@@ -70,7 +78,8 @@ public class VoteOnProposalActionController {
 
 
     @PostMapping("vote")
-    public String handleAction(HttpServletRequest request, ProposalContext proposalContext, Member member,
+    public String handleAction(HttpServletRequest request, HttpServletResponse response,
+            Model model, ProposalContext proposalContext, UserWrapper member,
             @RequestParam(defaultValue = "1") int voteValue)
             throws ProposalsAuthorizationException {
 
@@ -79,11 +88,11 @@ public class VoteOnProposalActionController {
                 .get();
 
         final ClientHelper clients = proposalContext.getClients();
-        final ProposalMemberRatingClient proposalMemberRatingClient =
+        final IProposalMemberRatingClient proposalMemberRatingClient =
                 clients.getProposalMemberRatingClient();
 
-        final Proposal proposal = proposalContext.getProposal();
-        final Contest contest = proposalContext.getContest();
+        final ProposalWrapper proposal = proposalContext.getProposal();
+        final ContestWrapper contest = proposalContext.getContest();
         final ContestType contestType = proposalContext.getContestType();
         final String proposalLinkUrl = proposal.getProposalLinkUrl(contest);
 
@@ -102,7 +111,7 @@ public class VoteOnProposalActionController {
         long userId = member.getId();
 
         ProposalActivityType activitySubType;
-        if (proposalMemberRatingClient.hasUserVoted(proposalId, contestPhaseId, userId)) {
+        if (proposalMemberRatingClient.hasUserVoted(contestPhaseId,proposalId, userId)) {
             // User has voted for this proposal and would like to retract the vote
             proposalMemberRatingClient.deleteProposalVote(proposalId, contestPhaseId, userId);
             activitySubType = ProposalActivityType.VOTE_RETRACTED;
@@ -118,9 +127,9 @@ public class VoteOnProposalActionController {
                 }
                 final boolean isSwitchingVote = votesInContest > 0;
                 if (isSwitchingVote) {
-                    final List<ProposalVote> userVotesInPhase = proposalMemberRatingClient
+                    final List<IProposalVote> userVotesInPhase = proposalMemberRatingClient
                             .getProposalVotesByUserInPhase(userId, contestPhaseId);
-                    final ProposalVote oldVote = userVotesInPhase.get(0);
+                    final IProposalVote oldVote = userVotesInPhase.get(0);
                     proposalMemberRatingClient.deleteProposalVote(oldVote.getProposalId(),
                             contestPhaseId, userId);
                     activitySubType = ProposalActivityType.VOTE_SWITCHED;
@@ -143,7 +152,7 @@ public class VoteOnProposalActionController {
                 }
             }
 
-            ProposalVote vote = proposalMemberRatingClient.addProposalVote(proposalId,
+            IProposalVote vote = proposalMemberRatingClient.addProposalVote(proposalId,
                     contestPhaseId, userId, voteValue);
 
             //populate tracking fields
@@ -167,7 +176,6 @@ public class VoteOnProposalActionController {
             GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.CONTEST_ENTRY_VOTE);
         }
 
-        final ActivitiesClient activityClient = clients.getActivitiesClient();
         activityClient.createActivityEntry(activitySubType, userId, proposalId);
 
         // Redirect to prevent page-refreshing from influencing the vote
@@ -182,19 +190,19 @@ public class VoteOnProposalActionController {
     @GetMapping("vote")
     public String handleInvalidGetRequestToVotePage(HttpServletRequest request,
             HttpServletResponse response, Model model, ProposalContext proposalContext,
-            Member member) {
+            UserWrapper member) {
 
         AlertMessage.warning(
                 "Your vote hasn't been recorded, please make sure to click the button only once.")
                 .flash(request);
-        final Contest contest = proposalContext.getContest();
-        final Proposal proposal = proposalContext.getProposal();
+        final ContestWrapper contest = proposalContext.getContest();
+        final ProposalWrapper proposal = proposalContext.getProposal();
         return "redirect:" + proposal.getProposalLinkUrl(contest);
     }
 
     @GetMapping("voted")
     public String showVoteSuccess(HttpServletRequest request, HttpServletResponse response,
-            Model model, ProposalContext proposalContext, Member currentMember,
+            Model model, ProposalContext proposalContext, UserWrapper currentMember,
             @PathVariable Long contestYear,
             @PathVariable String contestUrlName, @PathVariable Long proposalId) {
         return proposalDescriptionTabController.showProposalDetails(request, response, model,
@@ -208,17 +216,21 @@ public class VoteOnProposalActionController {
         
         boolean success = false;
         final ClientHelper clients = proposalContext.getClients();
-        Proposal proposal = proposalContext.getProposal();
-        final ProposalMemberRatingClient proposalMemberRatingClient =
+        ProposalWrapper proposal = proposalContext.getProposal();
+        final IProposalMemberRatingClient proposalMemberRatingClient =
                 clients.getProposalMemberRatingClient();
 
-        ProposalVote vote = proposalMemberRatingClient.getProposalVoteByProposalIdUserId(
+        IProposalVote vote = proposalMemberRatingClient.getProposalVoteByProposalIdUserId(
                         proposal.getId(), userId);
 
         if (vote != null && isValidToken(confirmationToken, vote)) {
-            final Member member = MembersClient.getMemberUnchecked(vote.getUserId());
+            final UserWrapper member = userClient.getMemberUnchecked(vote.getUserId());
             member.setIsEmailConfirmed(true);
-            MembersClient.updateMember(member);
+            try {
+                userClient.updateUser(member);
+            }catch (MemberNotFoundException e){
+
+            }
 
             vote.setIsValid(true);
             vote.setLastValidationResult("USER_CONFIRMED_VOTE");
@@ -234,7 +246,7 @@ public class VoteOnProposalActionController {
         return "proposals/confirmVote";
     }
 
-    private boolean isValidToken(@PathVariable String confirmationToken, ProposalVote vote) {
+    private boolean isValidToken(@PathVariable String confirmationToken, IProposalVote vote) {
         return StringUtils.isNotEmpty(vote.getConfirmationToken()) && vote.getConfirmationToken()
                 .equalsIgnoreCase(confirmationToken);
     }

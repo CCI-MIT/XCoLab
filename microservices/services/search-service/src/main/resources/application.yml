@@ -20,3 +20,10 @@ logging:
 spring:
   flyway:
     enabled: false
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000

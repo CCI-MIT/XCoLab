@@ -14,6 +14,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.service.contest.utils.promotion.PromotionService;
 import org.xcolab.util.http.ServiceRequestUtils;
 
@@ -25,10 +27,8 @@ import java.util.Date;
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @PrepareForTest({
         ServiceRequestUtils.class,
-        org.xcolab.client.proposals.ProposalClientUtil.class,
-        org.xcolab.client.proposals.ProposalPhaseClientUtil.class,
-        org.xcolab.client.proposals.pojo.Proposal.class,
-        org.xcolab.client.contest.pojo.Contest.class
+        ProposalWrapper.class,
+        ContestWrapper.class
 })
 @ComponentScan("org.xcolab.service.contest")
 @ComponentScan("org.xcolab.client")
@@ -47,7 +47,6 @@ public class PromotionServiceTest {
     @Test
     @Ignore
     public void shouldForcePromotionOfProposalInPhase() throws Exception {
-
         promotionService.doPromotion(new Date());
     }
 }

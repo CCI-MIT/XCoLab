@@ -7,22 +7,22 @@ import org.jsoup.nodes.TextNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.admin.pojo.EmailTemplate;
-import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.emails.EmailClient;
-import org.xcolab.client.members.MessagingClient;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalAttributeClientUtil;
-import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
-import org.xcolab.client.proposals.helpers.ProposalAttributeHelper;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.admin.pojo.IEmailTemplate;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
+import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
+import org.xcolab.client.contest.proposals.helpers.ProposalAttributeHelper;
+import org.xcolab.client.email.StaticEmailContext;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
+import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.entity.utils.notifications.EmailTemplateWrapper;
-import org.xcolab.commons.exceptions.InternalException;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -71,13 +71,14 @@ public abstract class EmailNotification {
 
     protected Logger _log;
 
+
     public EmailNotification() {
         this.baseUrl = PlatformAttributeKey.COLAB_URL.get();
         _log = LoggerFactory.getLogger(this.getClass());
     }
 
-    private String getProposalLinkWithLinkText(Contest contest,
-                                               Proposal proposal, String linkText, String tab) {
+    private String getProposalLinkWithLinkText(ContestWrapper contest,
+                                               ProposalWrapper proposal, String linkText, String tab) {
 
             String proposalLinkUrl = baseUrl + proposal.getProposalLinkUrl((contest));
             if (tab != null) {
@@ -95,9 +96,9 @@ public abstract class EmailNotification {
      * @return Proposal URL as String
      */
     //TODO COLAB-2505: remove if we just use a normal proposal link
-    protected String getProposalLinkForDirectVoting(Contest contest, Proposal proposal) {
+    protected String getProposalLinkForDirectVoting(ContestWrapper contest, ProposalWrapper proposal) {
         final String proposalName = new ProposalAttributeHelper(proposal,
-                ProposalAttributeClientUtil.getClient())
+                StaticProposalContext.getProposalAttributeClient())
                 .getAttributeValueString(ProposalAttributeKeys.NAME, "");
 
             final String proposalLinkUrl = baseUrl + proposal.getProposalLinkUrl(contest);
@@ -110,24 +111,24 @@ public abstract class EmailNotification {
      * @param contest The contest object
      * @return Contest URL as String
      */
-    private String getContestLink(Contest contest) {
+    private String getContestLink(ContestWrapper contest) {
         final String contestLinkUrl = baseUrl + contest.getContestLinkUrl();
         return String.format(LINK_FORMAT_STRING, contestLinkUrl, contest.getTitle());
     }
 
-    protected Contest getContest() {
+    protected ContestWrapper getContest() {
         return null;
     }
 
     protected ProposalAttributeHelper getProposalAttributeHelper() {
         if (proposalAttributeHelper == null) {
             proposalAttributeHelper = new ProposalAttributeHelper(getProposal(),
-                    ProposalAttributeClientUtil.getClient());
+                    StaticProposalContext.getProposalAttributeClient());
         }
         return proposalAttributeHelper;
     }
 
-    protected Proposal getProposal() {
+    protected ProposalWrapper getProposal() {
         return null;
     }
 
@@ -137,7 +138,7 @@ public abstract class EmailNotification {
      * @param contest         Contest in which the proposal is in
      * @param proposalToShare The Proposal that should be shared
      */
-    protected String getProposalLinkUrl(Contest contest, Proposal proposalToShare) {
+    protected String getProposalLinkUrl(ContestWrapper contest, ProposalWrapper proposalToShare) {
         return baseUrl + proposalToShare.getProposalLinkUrl(contest);
     }
 
@@ -146,7 +147,7 @@ public abstract class EmailNotification {
      *
      * @param contest Contest to be shared
      */
-    protected String getContestLinkUrl(Contest contest) {
+    protected String getContestLinkUrl(ContestWrapper contest) {
         return baseUrl + contest.getContestLinkUrl();
     }
 
@@ -203,7 +204,7 @@ public abstract class EmailNotification {
 
     protected abstract Long getReferenceId();
 
-    protected abstract Member getRecipient();
+    protected abstract UserWrapper getRecipient();
 
     protected abstract EmailTemplateWrapper getTemplateWrapper();
 
@@ -233,14 +234,17 @@ public abstract class EmailNotification {
         }
     }
 
-    private void sendEmail(String subject, String body, Member recipient) {
+    private void sendEmail(String subject, String body, UserWrapper recipient) {
         try {
             InternetAddress fromEmail = TemplateReplacementUtil.getAdminFromEmailAddress();
             InternetAddress toEmail = new InternetAddress(recipient.getEmailAddress(), recipient.getFullName());
 
-            EmailClient.sendEmail(fromEmail.getAddress(),ConfigurationAttributeKey.COLAB_NAME.get(),
+
+              StaticEmailContext
+                      .getEmailClient().sendEmail(fromEmail.getAddress(),ConfigurationAttributeKey.COLAB_NAME.get(),
                     toEmail.getAddress(), subject,body, true, fromEmail.getAddress(),
                     ConfigurationAttributeKey.COLAB_NAME.get(),getReferenceId());
+
 
         } catch (UnsupportedEncodingException e) {
             throw new InternalException(e);
@@ -255,14 +259,14 @@ public abstract class EmailNotification {
             EmailTemplateWrapper template = getTemplateWrapper();
             String content = template.getHeader() + template.getFooter();
             content = content.replace("\n", " ").replace("\r", " ");
-            MessagingClient
+            StaticUserContext.getMessagingClient()
                     .sendMessage(template.getSubject(), content, ADMINISTRATOR_USER_ID, null,
                                 recipients);
         }
     }
 
     protected class EmailNotificationTemplate extends EmailTemplateWrapper {
-        public EmailNotificationTemplate(EmailTemplate template, String proposalName, String contestName) {
+        public EmailNotificationTemplate(IEmailTemplate template, String proposalName, String contestName) {
             super(template, proposalName, contestName);
         }
 
@@ -272,13 +276,13 @@ public abstract class EmailNotification {
             if (node != null) {
                 return node;
             }
-            Contest contest = getContest();
-            Proposal proposal = getProposal();
+            ContestWrapper contest = getContest();
+            ProposalWrapper proposal = getProposal();
             final boolean hasProposal = contest != null && proposal != null;
 
             final ContestType contestType =
-                    contest != null ? ContestTypeClient.getContestType(contest.getContestTypeId())
-                            : null;
+                    contest != null ? StaticAdminContext.getContestTypeClient()
+                            .getContestType(contest.getContestTypeId()) : null;
 
 
             switch (tag.nodeName()) {

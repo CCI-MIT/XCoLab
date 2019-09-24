@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.modeling.roma.RomaClientUtil;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -61,14 +61,14 @@ public class ProposalImpactScenarioCombinationWrapper {
     private ClientRepository romaClient;
 
 
-    public ProposalImpactScenarioCombinationWrapper(List<Proposal> proposals) throws IOException {
+    public ProposalImpactScenarioCombinationWrapper(List<ProposalWrapper> proposals) throws IOException {
         presentRegion = new HashSet<>();
         scenarios = new HashSet<>();
         modelIdToScenarioMap = new HashMap<>();
         regionToProposalSimulationScenarioMap = new LinkedHashMap<>();
         fillProposalNameToModelScenarioRegionMap();
 
-        for (Proposal proposal : proposals) {
+        for (ProposalWrapper proposal : proposals) {
 
             ProposalSimulationScenarioRegionWrapper simulationScenarioRegion = new ProposalSimulationScenarioRegionWrapper(proposal);
             presentRegion.add(simulationScenarioRegion.getRegion());

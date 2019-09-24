@@ -3,7 +3,7 @@
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout>
-    <!--@elvariable id="contentArticleVersions" type="java.util.List<org.xcolab.client.contents.pojo.ContentArticleVersion>"-->
+    <!--@elvariable id="contentArticleVersions" type="java.util.List<org.xcolab.client.content.pojo.IContentArticleVersion>"-->
     <c:forEach var="contentArticleVersion" items="${contentArticleVersions}">
         <div>
             <a href="${contentArticleVersion.linkUrl}">${contentArticleVersion.title}</a> by ${contentArticleVersion.authorUserId} on ${contentArticleVersion.createdAt} - <a target="_blank" href="/resources/-/wiki/Main/${contentArticleVersion.title.replace(' ', '+')}">Resources link</a>

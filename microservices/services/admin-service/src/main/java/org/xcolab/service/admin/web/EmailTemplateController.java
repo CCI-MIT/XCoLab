@@ -1,60 +1,52 @@
 package org.xcolab.service.admin.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.model.tables.pojos.EmailTemplate;
+import org.xcolab.client.admin.IEmailTemplateClient;
+import org.xcolab.client.admin.exceptions.EmailTemplateNotFoundException;
+import org.xcolab.client.admin.pojo.IEmailTemplate;
 import org.xcolab.service.admin.domain.emailtemplate.EmailTemplateDao;
-import org.xcolab.service.admin.exceptions.NotFoundException;
-import org.xcolab.service.admin.service.EmailTemplateService;
 
 import java.util.List;
 
 @RestController
-public class EmailTemplateController {
-
-    @Autowired
-    private EmailTemplateService emailTemplateService;
+public class EmailTemplateController implements IEmailTemplateClient {
 
     @Autowired
     private EmailTemplateDao emailTemplateDao;
 
-    @RequestMapping(value = "/emailTemplates", method = RequestMethod.GET)
-    public List<EmailTemplate> listEmailTemplates() {
-
+    @Override
+    @GetMapping("/emailTemplates")
+    public List<IEmailTemplate> listEmailTemplates() {
         return this.emailTemplateDao.listAllEmailTemplates();
     }
 
-    @RequestMapping(value = "/emailTemplates/{emailTemplateType}", method = RequestMethod.GET)
-    public EmailTemplate getEmailTemplates(@PathVariable String emailTemplateType)
-            throws NotFoundException {
-        final EmailTemplate emailTemplate = emailTemplateDao
-                .getEmailTemplate(emailTemplateType);
+    @GetMapping("/emailTemplates/{emailTemplateType}")
+    public IEmailTemplate getEmailTemplate(@PathVariable String emailTemplateType) {
+        IEmailTemplate emailTemplate = emailTemplateDao.getEmailTemplate(emailTemplateType);
         if (emailTemplate == null) {
-            throw new NotFoundException();
+            throw new EmailTemplateNotFoundException(emailTemplateType);
         }
         return emailTemplate;
     }
 
-    @RequestMapping(value = "/emailTemplates/{emailTemplateType}", method = RequestMethod.PUT)
-    public boolean updateEmailTemplates(@RequestBody EmailTemplate contestEmailTemplate,
-                                       @PathVariable String emailTemplateType) {
-        return this.emailTemplateDao.getEmailTemplate(emailTemplateType) != null
-                && emailTemplateDao.updateEmailTemplate(contestEmailTemplate);
+    @Override
+    @PutMapping("/emailTemplates")
+    public boolean updateEmailTemplate(@RequestBody IEmailTemplate emailTemplate) {
+        return this.emailTemplateDao.getEmailTemplate(emailTemplate.getName()) != null
+                && emailTemplateDao.updateEmailTemplate(emailTemplate);
     }
 
-    @RequestMapping(value = "/emailTemplates", method = RequestMethod.POST)
-    public EmailTemplate createEmailTemplates(@RequestBody EmailTemplate contestEmailTemplate) {
-        emailTemplateDao.createEmailTemplate(contestEmailTemplate);
-        return emailTemplateDao.getEmailTemplate(contestEmailTemplate.getName());
-    }
-
-    @RequestMapping(value = "/emailTemplates/{emailTemplateType}", method = RequestMethod.DELETE)
-    public Object deleteEmailTemplates(@PathVariable("emailTemplateType") String emailTemplateType) {
-        return null;
+    @Override
+    @PostMapping("/emailTemplates")
+    public IEmailTemplate createEmailTemplate(@RequestBody IEmailTemplate emailTemplate) {
+        emailTemplateDao.createEmailTemplate(emailTemplate);
+        return emailTemplateDao.getEmailTemplate(emailTemplate.getName());
     }
 }

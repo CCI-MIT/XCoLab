@@ -1,7 +1,7 @@
 package org.xcolab.view.util.entity.subscriptions;
 
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +13,9 @@ public class ActivitySubscriptionWhitelistProposalContributorHandler
     public List<Long> getWhitelistedUsers(long categoryId) {
         List<Long> contributorIds = new ArrayList<>();
 
-        List<Member> contributors = ProposalClientUtil.getProposalMembers(categoryId);
-        for (Member contributor : contributors) {
+        List<UserWrapper> contributors = StaticProposalContext.getProposalClient()
+                .getProposalMembers(categoryId);
+        for (UserWrapper contributor : contributors) {
             contributorIds.add(contributor.getId());
         }
 

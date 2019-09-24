@@ -1,17 +1,16 @@
 package org.xcolab.service.tracking.domain.trackedvisitor;
 
-
-import org.xcolab.model.tables.pojos.TrackedVisitor;
+import org.xcolab.client.tracking.pojo.ITrackedVisitor;
 
 import java.util.Optional;
 
 public interface TrackedVisitorDao {
 
-    Optional<TrackedVisitor> getByUuid(String uuid);
+    Optional<ITrackedVisitor> getByUuid(String uuid);
 
-    Optional<TrackedVisitor> getByUserId(long userId);
+    Optional<ITrackedVisitor> getByUserId(long userId);
 
-    TrackedVisitor create(TrackedVisitor trackedVisitor);
+    ITrackedVisitor create(ITrackedVisitor trackedVisitor);
 
-    boolean update(TrackedVisitor pojo);
+    boolean update(ITrackedVisitor pojo);
 }

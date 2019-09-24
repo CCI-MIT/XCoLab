@@ -1,11 +1,10 @@
 package org.xcolab.view.util.clienthelpers;
 
 import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
 
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.IUserClient;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.util.TestUtil;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -14,8 +13,8 @@ import static org.mockito.Matchers.anyString;
 
 public class MembersClientMockerHelper {
 
-    public static Member getDefaultMember(){
-        Member member = new Member();
+    public static UserWrapper getDefaultMember(){
+        UserWrapper member = new UserWrapper();
         member.setScreenName(TestUtil.createStringWithLength(10));
         member.setFirstName(TestUtil.createStringWithLength(10));
         member.setLastName(TestUtil.createStringWithLength(10));
@@ -25,17 +24,18 @@ public class MembersClientMockerHelper {
     }
 
     public static void mockMembersClient() throws Exception {
-        PowerMockito.mockStatic(MembersClient.class);
-        Mockito.when(MembersClient.findMemberByScreenNameNoRole(anyString()))
+
+        IUserClient userClient = Mockito.mock(IUserClient.class);
+        Mockito.when(userClient.getUserByScreenNameNoRole(anyString()))
                 .thenAnswer(invocation -> getDefaultMember());
 
-        Mockito.when(MembersClient.findMemberByEmailAddress(anyString()))
+        Mockito.when(userClient.findMemberByEmailAddress(anyString()))
                 .thenAnswer(invocation -> getDefaultMember());
 
-        Mockito.when(MembersClient.register(any(Member.class)))
+        Mockito.when(userClient.register(any(UserWrapper.class)))
                 .thenAnswer(invocation -> getDefaultMember());
 
-        Mockito.when(MembersClient.findMemberByScreenName(anyString()))
+        Mockito.when(userClient.findMemberByScreenName(anyString()))
                 .thenAnswer(invocation -> {
 
                     if (invocation.getArguments()[0] == null || invocation.getArguments()[0].equals("")){
@@ -45,11 +45,11 @@ public class MembersClientMockerHelper {
                     }
                 });
 
-        Mockito.when(MembersClient.getMemberUnchecked(anyLong()))
+        Mockito.when(userClient.getMemberUnchecked(anyLong()))
                 .thenAnswer(invocationOnMock-> getDefaultMember());
-        Mockito.when(MembersClient.getMember(anyLong()))
+        Mockito.when(userClient.getMember(anyLong()))
                 .thenAnswer(invocationOnMock-> getDefaultMember());
-        Mockito.when(MembersClient.getMemberOrNull(anyLong()))
+        Mockito.when(userClient.getMemberOrNull(anyLong()))
                 .thenAnswer(invocationOnMock-> getDefaultMember());
     }
 }

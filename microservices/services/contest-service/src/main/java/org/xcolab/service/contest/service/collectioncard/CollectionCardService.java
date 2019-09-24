@@ -3,8 +3,8 @@ package org.xcolab.service.contest.service.collectioncard;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import org.xcolab.model.tables.pojos.Contest;
-import org.xcolab.model.tables.pojos.ContestCollectionCard;
+import org.xcolab.client.contest.pojo.IContestCollectionCard;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.service.contest.domain.contestcollectioncard.ContestCollectionCardDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.service.contest.ContestService;
@@ -16,7 +16,6 @@ import java.util.List;
 public class CollectionCardService {
 
     private final ContestService contestService;
-
     private final ContestCollectionCardDao contestCollectionCardDao;
 
     private static final String VIEW_TYPE_GRID = "GRID";
@@ -36,19 +35,19 @@ public class CollectionCardService {
             collectionCards.add(contestCollectionCardDao.get(collectionCardId).getId());
             List<Long> contestList = new ArrayList<>();
             while(!collectionCards.isEmpty()) {
-                for(Contest contest: contestService.getContestsByOntologyTerm(contestCollectionCardDao.get(collectionCards.get(0)).getOntologyTermToLoad(), getActive, false)) {
+                for(ContestWrapper contest: contestService.getContestsByOntologyTerm(contestCollectionCardDao.get(collectionCards.get(0)).getOntologyTermToLoad(), getActive, false)) {
                     if(!contestList.contains(contest.getId())) {
-                        if(     (!onlyFeatured || contest.getFeatured())                                   &&
-                                (   (viewType.equals(VIEW_TYPE_GRID) && contest.getShowInTileView())     ||
-                                    (viewType.equals(VIEW_TYPE_LIST) && contest.getShowInListView())     ||
-                                    (viewType.equals(VIEW_TYPE_OUTLINE) && contest.getShowInOutlineView())
+                        if(     (!onlyFeatured || contest.isFeatured())                                   &&
+                                (   (viewType.equals(VIEW_TYPE_GRID) && contest.isShowInTileView())     ||
+                                    (viewType.equals(VIEW_TYPE_LIST) && contest.isShowInListView())     ||
+                                    (viewType.equals(VIEW_TYPE_OUTLINE) && contest.isShowInOutlineView())
                                 )){
                             contestList.add(contest.getId());
                         }
                     }
                 }
-                for(ContestCollectionCard childCollectionCard : contestCollectionCardDao.findByGiven(collectionCards.get(0))) {
-                    if(childCollectionCard.getVisible()) {
+                for(IContestCollectionCard childCollectionCard : contestCollectionCardDao.findByGiven(collectionCards.get(0))) {
+                    if(childCollectionCard.isVisible()) {
                         collectionCards.add(childCollectionCard.getId());
                     }
                 }
@@ -67,7 +66,7 @@ public class CollectionCardService {
                 return false;
             }
             long parentId = contestCollectionCardDao.get(collectionCardId).getParent();
-            for(ContestCollectionCard card : contestCollectionCardDao.findByGiven(collectionCardId)) {
+            for(IContestCollectionCard card : contestCollectionCardDao.findByGiven(collectionCardId)) {
                 card.setParent(parentId);
                 contestCollectionCardDao.update(card);
             }

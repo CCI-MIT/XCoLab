@@ -2,36 +2,34 @@ package org.xcolab.view.pages.profile.beans;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.MessagingClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.Message;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.pojo.wrapper.MessageWrapper;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 public class MessageBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private List<Member> recipients = new ArrayList<>();
+    private List<UserWrapper> recipients = new ArrayList<>();
     @NotBlank
     private String messageSubject;
     @NotBlank
     private String messageText;
-    private Message message;
+    private MessageWrapper message;
     private boolean selected;
 
 
     public MessageBean() {
     }
 
-    public MessageBean(Message message) {
+    public MessageBean(MessageWrapper message) {
         this.message = message;
-        this.recipients = MessagingClient.getMessageRecipients(message.getId());
+        this.recipients = StaticUserContext.getMessagingClient().getMessageRecipients(message.getId());
     }
 
     public String getMessageSubject() {
@@ -69,8 +67,8 @@ public class MessageBean implements Serializable {
         return daysNow - createDay;
     }
 
-    public Member getFrom() throws MemberNotFoundException {
-        return MembersClient.getMember(message.getFromId());
+    public UserWrapper getFrom() throws MemberNotFoundException {
+        return StaticUserContext.getUserClient().getMember(message.getFromId());
     }
 
     public boolean isSelected() {
@@ -81,15 +79,15 @@ public class MessageBean implements Serializable {
         this.selected = selected;
     }
 
-    public Message getMessage() {
+    public MessageWrapper getMessage() {
         return message;
     }
 
-    public List<Member> getTo() {
+    public List<UserWrapper> getTo() {
         return recipients;
     }
 
-    public void addRecipientUser(Member recipientUser) {
+    public void addRecipientUser(UserWrapper recipientUser) {
         recipients.add(recipientUser);
     }
 
@@ -102,7 +100,7 @@ public class MessageBean implements Serializable {
     }
 
     public String getThreadId() {
-        return getMessage().getThreadId();
+        return null;//getMessage().getThreadId(); //TODO FIGURE OUT HOW TO GET THIS
     }
 
 }

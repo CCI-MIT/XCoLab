@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.util.pagination.SortFilterPage;
 import org.xcolab.view.widgets.AbstractWidgetController;
 
@@ -35,7 +35,7 @@ public class FeedsController extends AbstractWidgetController<FeedsPreferences> 
     }
 
     @GetMapping(BASE_URL + AbstractWidgetController.PREFERENCES_URL_PATH)
-    public String showPreferences(HttpServletResponse response, Model model, Member member,
+    public String showPreferences(HttpServletResponse response, Model model, UserWrapper member,
             @RequestParam(required = false) String preferenceId,
             @RequestParam(required = false) String language) {
 
@@ -58,7 +58,7 @@ public class FeedsController extends AbstractWidgetController<FeedsPreferences> 
 
     @PostMapping(BASE_URL + AbstractWidgetController.PREFERENCES_URL_PATH)
     public String savePreferences(HttpServletRequest request, HttpServletResponse response,
-            Member member, FeedsPreferences preferences) {
+            UserWrapper member, FeedsPreferences preferences) {
         return savePreferencesInternal(request, response, member, preferences);
     }
 

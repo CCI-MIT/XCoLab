@@ -11,9 +11,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.IUserClient;
+import org.xcolab.client.user.IUserLoginRegisterClient;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.entity.utils.LinkUtils;
@@ -36,9 +37,16 @@ public class ForgotPasswordController {
 
     private final LoginRegisterService loginRegisterService;
 
+    private final IUserLoginRegisterClient userLoginRegister;
+
+    private final IUserClient userClient;
+
     @Autowired
-    public ForgotPasswordController(LoginRegisterService loginRegisterService) {
+    public ForgotPasswordController(LoginRegisterService loginRegisterService, IUserLoginRegisterClient userLoginRegister,
+            IUserClient userClient) {
         this.loginRegisterService = loginRegisterService;
+        this.userLoginRegister = userLoginRegister;
+        this.userClient = userClient;
     }
 
     @PostMapping("/login/resetPassword")
@@ -54,14 +62,14 @@ public class ForgotPasswordController {
                         .replaceQueryParam("isSigningIn");
 
         try {
-            Member member;
+            UserWrapper member;
             if (screenNameOrEmail != null && screenNameOrEmail.contains("@")) {
-                member = MembersClient.findMemberByEmailAddress(screenNameOrEmail);
+                member = userClient.findMemberByEmailAddress(screenNameOrEmail);
             } else {
-                member = MembersClient.findMemberByScreenName(screenNameOrEmail);
+                member = userClient.findMemberByScreenName(screenNameOrEmail);
             }
 
-            String token = MembersClient.createForgotPasswordToken(member.getId());
+            String token = userLoginRegister.createForgotPasswordToken(member.getId());
             String colabUrl = PlatformAttributeKey.COLAB_URL.get();
             String passwordLink = colabUrl + String.format(FORGOT_PASSWORD_URL, token,
                     member.getScreenName());
@@ -90,7 +98,7 @@ public class ForgotPasswordController {
     }
 
     private static void sendEmailNotificationToForPasswordReset(String memberIp, String link,
-             Member recipient) {
+             UserWrapper recipient) {
         new MemberForgotPasswordNotification(memberIp, link, recipient)
                 .sendEmailNotification();
     }
@@ -107,7 +115,7 @@ public class ForgotPasswordController {
             return "redirect:/";
         }
 
-        if (!MembersClient.isForgotPasswordTokenValid(resetToken)) {
+        if (!userLoginRegister.isForgotPasswordTokenValid(resetToken)) {
             AlertMessage.danger(INVALID_TOKEN_ERROR_MESSAGE)
                     .flash(request);
             return "redirect:/";
@@ -132,7 +140,7 @@ public class ForgotPasswordController {
 
         String newPassword = forgotPasswordBean.getPassword();
 
-        if (MembersClient.isForgotPasswordTokenValid(resetToken)) {
+        if (userLoginRegister.isForgotPasswordTokenValid(resetToken)) {
             try {
                 loginRegisterService.updatePassword(resetToken, newPassword);
                 AlertMessage.success("Your password was successfully updated!").flash(request);

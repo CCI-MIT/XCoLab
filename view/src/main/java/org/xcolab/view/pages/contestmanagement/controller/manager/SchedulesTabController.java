@@ -9,9 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.ContestSchedule;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.contest.pojo.IContestSchedule;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.html.LabelStringValue;
 import org.xcolab.commons.html.LabelValue;
 import org.xcolab.commons.servlet.flash.AlertMessage;
@@ -53,16 +52,16 @@ public class SchedulesTabController extends AbstractTabController {
 
     @ModelAttribute("contestPhaseTypesSelectionItems")
     public List<LabelValue> populateContestPhaseTypesSelectionItems() {
-        return ContestClientUtil.getAllContestPhaseTypes().stream()
-                .filter(phaseType -> !phaseType.getIsDeprecated())
+        return contestClient.getAllContestPhaseTypes().stream()
+                .filter(phaseType -> !phaseType.isIsDeprecated())
                 .map(phaseType -> new LabelValue(phaseType.getId(), phaseType.getName()))
                 .collect(Collectors.toList());
     }
 
     @ModelAttribute("contestPhaseTypesSelectionItemsDeprecated")
     public List<LabelValue> populateContestPhaseTypesSelectionItemsDeprecated() {
-        return ContestClientUtil.getAllContestPhaseTypes().stream()
-                .filter(phaseType -> phaseType.getIsDeprecated())
+        return contestClient.getAllContestPhaseTypes().stream()
+                .filter(phaseType -> phaseType.isIsDeprecated())
                 .map(phaseType -> new LabelValue(phaseType.getId(), phaseType.getName() + " (Deprecated)"))
                 .collect(Collectors.toList());
     }
@@ -84,7 +83,7 @@ public class SchedulesTabController extends AbstractTabController {
 
     @GetMapping("tab/SCHEDULES")
     public String showScheduleTabController(HttpServletRequest request,
-            HttpServletResponse response, Model model, Member member,
+            HttpServletResponse response, Model model, UserWrapper member,
             @RequestParam(value = "elementId", required = false) Long elementId) {
         if (!tabWrapper.getCanView()) {
             return new AccessDeniedPage(member).toViewName(response);
@@ -100,8 +99,8 @@ public class SchedulesTabController extends AbstractTabController {
     }
 
     private Long getFirstScheduleId() {
-        final List<ContestSchedule> contestSchedules =
-                ContestClientUtil.getAllContestSchedules();
+        final List<IContestSchedule> contestSchedules =
+                contestClient.getAllContestSchedules();
         if (!contestSchedules.isEmpty()) {
             return contestSchedules.get(0).getId();
         }
@@ -110,7 +109,7 @@ public class SchedulesTabController extends AbstractTabController {
 
     @PostMapping("tab/SCHEDULES")
     public String performAction(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member, Action action,
+            Model model, UserWrapper member, Action action,
             @RequestParam(required = false) Long elementId,
             @ModelAttribute ContestScheduleBean contestScheduleBean, BindingResult result) {
 
@@ -135,8 +134,8 @@ public class SchedulesTabController extends AbstractTabController {
     }
 
     private String createSchedule(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member) {
-        ContestSchedule newContestSchedule = ContestScheduleLifecycleUtil.createNewSchedule();
+            Model model, UserWrapper member) {
+        IContestSchedule newContestSchedule = ContestScheduleLifecycleUtil.createNewSchedule();
 
         AlertMessage.CREATED.flash(request);
         model.asMap().remove(CONTEST_SCHEDULE_BEAN_ATTRIBUTE_KEY);
@@ -144,7 +143,7 @@ public class SchedulesTabController extends AbstractTabController {
     }
 
     private String updateSchedule(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member, ContestScheduleBean contestScheduleBean, BindingResult result) {
+            Model model, UserWrapper member, ContestScheduleBean contestScheduleBean, BindingResult result) {
 
         contestScheduleBean.setPhaseEndDates();
 
@@ -171,7 +170,7 @@ public class SchedulesTabController extends AbstractTabController {
     }
 
     private String deleteSchedule(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member, Long scheduleId) {
+            Model model, UserWrapper member, Long scheduleId) {
 
         ContestScheduleLifecycleUtil.deleteContestSchedule(scheduleId);
 

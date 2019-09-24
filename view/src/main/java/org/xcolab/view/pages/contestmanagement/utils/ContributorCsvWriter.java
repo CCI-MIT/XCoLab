@@ -1,12 +1,12 @@
 package org.xcolab.view.pages.contestmanagement.utils;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.ProposalTeamMember;
-import org.xcolab.client.proposals.pojo.proposals.ProposalRibbon;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalRibbon;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMemberWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.CsvResponseWriter;
 
 import java.io.IOException;
@@ -34,27 +34,28 @@ public class ContributorCsvWriter extends CsvResponseWriter {
             "Member email",
             "Member role"
     );
-    private Predicate<Proposal> filterPredicate = proposal -> true;
+    private Predicate<ProposalWrapper> filterPredicate = proposal -> true;
 
     public ContributorCsvWriter(HttpServletResponse response) throws IOException {
         super("contributorReport", COLUMN_NAMES, response);
     }
 
-    public void addFilter(Predicate<Proposal> filterPredicate) {
+    public void addFilter(Predicate<ProposalWrapper> filterPredicate) {
         this.filterPredicate = this.filterPredicate.and(filterPredicate);
     }
 
-    public void writeProposalsInContest(Contest contest) {
+    public void writeProposalsInContest(ContestWrapper contest) {
         final String colabUrl = PlatformAttributeKey.COLAB_URL.get();
 
-        List<Proposal> proposals = ProposalClientUtil.listProposals(contest.getId());
+        List<ProposalWrapper> proposals = StaticProposalContext.getProposalClient()
+                .listProposals(contest.getId());
 
-        for (Proposal proposal : proposals) {
+        for (ProposalWrapper proposal : proposals) {
             if (!filterPredicate.test(proposal)) {
                 continue;
             }
             final ProposalRibbon ribbonWrapper = proposal.getRibbonWrapper();
-            for (ProposalTeamMember teamMember : proposal.getMembers()) {
+            for (ProposalTeamMemberWrapper teamMember : proposal.getMembers()) {
                 List<String> row = new ArrayList<>();
                 addValue(row, contest.getId());
                 addValue(row, contest.getTitle());
@@ -65,7 +66,7 @@ public class ContributorCsvWriter extends CsvResponseWriter {
                 addValue(row, ribbonWrapper.getRibbon());
                 addValue(row, ribbonWrapper.getRibbonTitle());
 
-                final Member member = teamMember.getMember();
+                final UserWrapper member = teamMember.getMember();
                 addValue(row, member.getId());
                 addValue(row, member.getScreenName());
                 addValue(row, member.getFirstName());

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.widgets.AbstractWidgetController;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class CarouselController extends AbstractWidgetController<CarouselPrefere
     }
 
     @GetMapping(AbstractWidgetController.PREFERENCES_URL_PATH)
-    public String showPreferences(HttpServletResponse response, Model model, Member member,
+    public String showPreferences(HttpServletResponse response, Model model, UserWrapper member,
             @RequestParam(required = false) String preferenceId,
             @RequestParam(defaultValue = "en") String language) {
         return showPreferencesInternal(response, model, member, preferenceId, language,
@@ -39,7 +39,7 @@ public class CarouselController extends AbstractWidgetController<CarouselPrefere
 
     @PostMapping(AbstractWidgetController.PREFERENCES_URL_PATH)
     public String savePreferences(HttpServletRequest request, HttpServletResponse response,
-            Member member, CarouselPreferences preferences) {
+            UserWrapper member, CarouselPreferences preferences) {
         List<LogoElement> logos = new ArrayList<>();
         for (LogoElement logoElement : preferences.getLogos()) {
             if (!logoElement.getImageUrl().isEmpty() && !logoElement.getRemove()) {

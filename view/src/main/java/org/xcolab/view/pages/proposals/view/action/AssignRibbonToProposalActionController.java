@@ -1,16 +1,17 @@
 package org.xcolab.view.pages.proposals.view.action;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.proposals.ProposalPhaseClientUtil;
+import org.xcolab.client.contest.proposals.IProposalPhaseClient;
+import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
-import org.xcolab.commons.servlet.flash.AlertMessage;
 
 import java.io.IOException;
 
@@ -21,6 +22,9 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/contests/{contestYear}/{contestUrlName}")
 public class AssignRibbonToProposalActionController {
 
+    @Autowired
+    private IProposalPhaseClient proposalPhaseClient;
+
     @PostMapping("c/{proposalUrlString}/{proposalId}/tab/ADMIN/assignRibbon")
     public void handleAction(HttpServletRequest request, HttpServletResponse response, Model model,
             ProposalContext proposalContext, @RequestParam int ribbon)
@@ -30,7 +34,7 @@ public class AssignRibbonToProposalActionController {
             long proposalId = proposalContext.getProposal().getId();
             long contestPhaseId = proposalContext.getContestPhase().getId();
 
-            ProposalPhaseClientUtil.setProposalContestPhaseAttribute(proposalId, contestPhaseId,
+            proposalPhaseClient.setProposalContestPhaseAttribute(proposalId, contestPhaseId,
                     ProposalContestPhaseAttributeKeys.RIBBON, null, (long) ribbon, null);
 
             AlertMessage.success(

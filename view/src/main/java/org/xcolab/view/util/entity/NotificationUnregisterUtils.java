@@ -2,9 +2,9 @@ package org.xcolab.view.util.entity;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
-import org.xcolab.client.activities.pojo.ActivitySubscription;
+import org.xcolab.client.activity.pojo.IActivitySubscription;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,23 +26,23 @@ public class NotificationUnregisterUtils {
     private NotificationUnregisterUtils() {
     }
 
-    public static String getUnregisterLink(ActivitySubscription subscription) {
+    public static String getUnregisterLink(IActivitySubscription subscription) {
         return getUnregisterLink(subscription, null, ACTIVITY_TYPE);
     }
 
-    public static String getActivityUnregisterLink(Member user) {
+    public static String getActivityUnregisterLink(UserWrapper user) {
         return getUnregisterLink(null, user, ACTIVITY_TYPE);
     }
 
-    public static boolean isTokenValid(String token, ActivitySubscription subscription) {
+    public static boolean isTokenValid(String token, IActivitySubscription subscription) {
         return getToken(subscription).equals(token);
     }
 
-    public static boolean isTokenValid(String token, Member user) {
+    public static boolean isTokenValid(String token, UserWrapper user) {
         return getToken(user).equals(token);
     }
 
-    private static String getUnregisterLink(ActivitySubscription subscription, Member user,
+    private static String getUnregisterLink(IActivitySubscription subscription, UserWrapper user,
             int type) {
         Map<String, String> params = new HashMap<>();
         params.put(USER_ID, "0");
@@ -68,12 +68,12 @@ public class NotificationUnregisterUtils {
         return unregisterLink;
     }
 
-    public static String getToken(ActivitySubscription subscription) {
+    public static String getToken(IActivitySubscription subscription) {
         return getToken(Math.floor(1.0 * subscription.getCreatedAt().getTime() / 1000.f) + ""
                 + subscription.getId());
     }
 
-    public static String getToken(Member user) {
+    public static String getToken(UserWrapper user) {
         return getToken(
                 Math.floor(1.0 * user.getCreatedAt().getTime() / 1000.f) + "" + user.getId());
     }

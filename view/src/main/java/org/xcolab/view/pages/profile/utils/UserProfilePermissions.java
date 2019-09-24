@@ -1,14 +1,14 @@
 package org.xcolab.view.pages.profile.utils;
 
-import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 
 public class UserProfilePermissions {
 
-    private final Member loggedInMember;
+    private final UserWrapper loggedInMember;
     private final boolean isLoggedIn;
 
-    public UserProfilePermissions(Member loggedInMember) {
+    public UserProfilePermissions(UserWrapper loggedInMember) {
         this.loggedInMember = loggedInMember;
         isLoggedIn = loggedInMember != null;
     }
@@ -18,10 +18,10 @@ public class UserProfilePermissions {
     }
 
     public boolean getCanAdmin() {
-        return PermissionsClient.canAdminAll(loggedInMember);
+        return StaticUserContext.getPermissionClient().canAdminAll(loggedInMember);
     }
 
-    public Member getLoggedInMember() {
+    public UserWrapper getLoggedInMember() {
         return loggedInMember;
     }
 

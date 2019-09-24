@@ -1,7 +1,11 @@
 package org.xcolab.view.pages.contestmanagement.beans;
 
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.xcolab.client.content.IContentClient;
+import org.xcolab.client.content.StaticContentContext;
+import org.xcolab.client.contest.StaticContestContext;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.view.pages.contestmanagement.wrappers.WikiPageWrapper;
 
 import java.io.Serializable;
@@ -11,6 +15,8 @@ import javax.validation.constraints.NotNull;
 public class ContestAdminBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+
 
     private String emailTemplateUrl;
     private ContestModelSettingsBean contestModelSettings;
@@ -30,29 +36,28 @@ public class ContestAdminBean implements Serializable {
     @NotNull(message = "A contest type must be selected.")
     private Long contestType;
 
-
     public ContestAdminBean() { }
 
-    public ContestAdminBean(Contest contest) {
+    public ContestAdminBean(ContestWrapper contest) {
         if (contest != null) {
             contestUrlName = contest.getContestUrlName();
             contestYear = contest.getContestYear();
             contestTier = contest.getContestTier();
             contestType = contest.getContestTypeId();
-            readOnlyComments = contest.getReadOnlyComments();
-            hideRibbons = contest.getHideRibbons();
+            readOnlyComments = contest.isReadOnlyComments();
+            hideRibbons = contest.isHideRibbons();
             emailTemplateUrl = contest.getEmailTemplateUrl();
             contestModelSettings = new ContestModelSettingsBean(contest);
         }
     }
 
-    public void persist(Contest contest) {
+    public void persist(ContestWrapper contest) {
 
         updateContest(contest);
-        WikiPageWrapper.updateContestWiki(contest);
+        WikiPageWrapper.updateContestWiki(StaticContentContext.getContentClient(), contest);
     }
 
-    private void updateContest(Contest contest) {
+    private void updateContest(ContestWrapper contest) {
         contest.setContestUrlName(contestUrlName);
         contest.setContestYear(contestYear);
         contest.setEmailTemplateUrl(emailTemplateUrl);
@@ -61,7 +66,7 @@ public class ContestAdminBean implements Serializable {
         contest.setHideRibbons(hideRibbons);
         contest.setReadOnlyComments(readOnlyComments);
 
-        ContestClientUtil.updateContest(contest);
+        StaticContestContext.getContestClient().updateContest(contest);
 
         contestModelSettings.persist(contest);
     }

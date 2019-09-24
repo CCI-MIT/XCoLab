@@ -9,19 +9,20 @@ import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.modeling.ModelingClient;
+import org.xcolab.client.modeling.IModelingClient;
 import org.xcolab.client.modeling.models.ui.IllegalUIConfigurationException;
 import org.xcolab.client.modeling.models.ui.ModelDisplay;
 import org.xcolab.client.modeling.models.ui.ModelInputDisplayItem;
 import org.xcolab.client.modeling.models.ui.ModelOutputDisplayItem;
 import org.xcolab.client.modeling.models.ui.ModelUIFactory;
-import org.xcolab.client.modeling.pojo.ModelGlobalPreference;
+import org.xcolab.client.modeling.pojo.IModelGlobalPreference;
 import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.commons.exceptions.InternalException;
 
@@ -45,6 +46,13 @@ import javax.servlet.http.HttpServletResponse;
 public class ModelingJsonController {
 
     private static final Logger _log = LoggerFactory.getLogger(ModelingJsonController.class);
+
+    private final IModelingClient modelingClient;
+
+    @Autowired
+    public ModelingJsonController(IModelingClient modelingClient) {
+        this.modelingClient = modelingClient;
+    }
 
     @GetMapping("scenarios/{scenarioId}")
     public void getScenario(HttpServletRequest request, HttpServletResponse response,
@@ -109,8 +117,8 @@ public class ModelingJsonController {
 
         JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
 
-        ModelGlobalPreference modelPreference = ModelingClient.instance()
-                .getModelPreference(scenario.getSimulation().getId());
+        IModelGlobalPreference modelPreference =
+                modelingClient.getModelPreference(scenario.getSimulation().getId());
         ModelDisplay display = ModelUIFactory.getInstance().getDisplay(scenario);
 
         jsonBuilder.add("scenarioId", scenario.getId())
@@ -135,7 +143,7 @@ public class ModelingJsonController {
             inputValuesArray.add(ModelUIFactory.convertToJson(item));
         }
         jsonBuilder.add("inputValues", inputValuesArray)
-                .add("usesCustomInputs", modelPreference.getUsesCustomInputs())
+                .add("usesCustomInputs", modelPreference.isUsesCustomInputs())
                 .add("customInputsDefinition", modelPreference.getCustomInputsDefinition());
         return jsonBuilder.build();
 
@@ -143,7 +151,7 @@ public class ModelingJsonController {
 
     private JsonObject convertModel(Simulation simulation)
             throws IllegalUIConfigurationException, IOException {
-        ModelGlobalPreference modelPreference = ModelingClient.instance().getModelPreference(simulation.getId());
+        IModelGlobalPreference modelPreference = modelingClient.getModelPreference(simulation.getId());
         ModelDisplay display = ModelUIFactory.getInstance().getDisplay(simulation);
         JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
 
@@ -162,7 +170,7 @@ public class ModelingJsonController {
             inputsArray.add(item.toJson());
         }
         jsonBuilder.add("inputs", inputsArray)
-                .add("usesCustomInputs", modelPreference.getUsesCustomInputs())
+                .add("usesCustomInputs", modelPreference.isUsesCustomInputs())
                 .add("customInputsDefinition", modelPreference.getCustomInputsDefinition());
 
         return jsonBuilder.build();

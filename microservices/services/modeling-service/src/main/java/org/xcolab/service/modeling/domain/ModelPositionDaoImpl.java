@@ -6,7 +6,8 @@ import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.model.tables.pojos.ModelPosition;
+import org.xcolab.client.modeling.pojo.IModelPosition;
+import org.xcolab.model.tables.pojos.ModelPositionImpl;
 import org.xcolab.model.tables.records.ModelPositionRecord;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class ModelPositionDaoImpl implements ModelPositionDao {
     }
 
     @Override
-    public Optional<ModelPosition> get(long id) {
+    public Optional<IModelPosition> get(long id) {
         final Record record = dslContext.select()
                 .from(MODEL_POSITION)
                 .where(MODEL_POSITION.ID.eq(id))
@@ -33,18 +34,18 @@ public class ModelPositionDaoImpl implements ModelPositionDao {
         if (record == null) {
             return Optional.empty();
         }
-        return Optional.of(record.into(ModelPosition.class));
+        return Optional.of(record.into(ModelPositionImpl.class));
     }
 
     @Override
-    public List<ModelPosition> list() {
+    public List<IModelPosition> list() {
         return dslContext.select()
                 .from(MODEL_POSITION)
-                .fetch().into(ModelPosition.class);
+                .fetch().into(ModelPositionImpl.class);
     }
 
     @Override
-    public List<ModelPosition> findByGiven(Long modelId) {
+    public List<IModelPosition> findByGiven(Long modelId) {
         final SelectQuery<Record> query = dslContext.select().from(MODEL_POSITION)
                 .getQuery();
 
@@ -52,11 +53,11 @@ public class ModelPositionDaoImpl implements ModelPositionDao {
             query.addConditions(MODEL_POSITION.MODEL_ID.eq(modelId));
         }
 
-        return query.fetch().into(ModelPosition.class);
+        return query.fetch().into(ModelPositionImpl.class);
     }
 
     @Override
-    public ModelPosition create(ModelPosition pojo) {
+    public IModelPosition create(IModelPosition pojo) {
         final ModelPositionRecord record = dslContext.insertInto(MODEL_POSITION)
                 .set(MODEL_POSITION.MODEL_ID, pojo.getModelId())
                 .set(MODEL_POSITION.POSITION_ID, pojo.getPositionId())
@@ -70,7 +71,7 @@ public class ModelPositionDaoImpl implements ModelPositionDao {
     }
 
     @Override
-    public boolean update(ModelPosition pojo) {
+    public boolean update(IModelPosition pojo) {
         return dslContext.update(MODEL_POSITION)
                 .set(MODEL_POSITION.MODEL_ID, pojo.getModelId())
                 .set(MODEL_POSITION.POSITION_ID, pojo.getPositionId())

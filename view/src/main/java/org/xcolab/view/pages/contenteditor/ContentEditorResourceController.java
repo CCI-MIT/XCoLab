@@ -2,17 +2,19 @@ package org.xcolab.view.pages.contenteditor;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.contents.ContentsClient;
-import org.xcolab.client.contents.pojo.ContentArticleVersion;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.content.IContentClient;
+import org.xcolab.client.content.exceptions.ContentNotFoundException;
+import org.xcolab.client.content.pojo.IContentArticleVersion;
+import org.xcolab.client.contest.IContestClient;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.user.IPermissionClient;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.errors.AccessDeniedPage;
 
 import java.io.IOException;
@@ -28,10 +30,19 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class ContentEditorResourceController extends BaseContentEditor {
 
+    @Autowired
+    private IContentClient contentClient;
+
+    @Autowired
+    private IContestClient contestClient;
+    
+    @Autowired
+    private IPermissionClient permissionClient;
+
     @GetMapping("/content-editor/resourcePagesEditor")
     public String handleRenderRequest(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member) {
-        if (!PermissionsClient.canAdminAll(member)) {
+            Model model, UserWrapper member) {
+        if (!permissionClient.canAdminAll(member)) {
             return new AccessDeniedPage(member).toViewName(response);
         }
         return "contenteditor/resourcePagesEditor";
@@ -42,10 +53,14 @@ public class ContentEditorResourceController extends BaseContentEditor {
             HttpServletResponse response, @RequestParam(required = false) Long articleId)
             throws IOException {
 
-        ContentArticleVersion contentArticleVersion =
-                ContentsClient.getLatestContentArticleVersion(articleId);
+        IContentArticleVersion contentArticleVersion;
+        try {
+            contentArticleVersion = contentClient.getLatestContentArticleVersion(articleId);
+        } catch (ContentNotFoundException e) {
+            contentArticleVersion = null;
+        }
 
-        Contest contest = ContestClientUtil.getContestByResourceArticleId(articleId);
+        ContestWrapper contest = contestClient.getContestByResourceArticleId(articleId);
 
 
         JSONObject articleVersion =
@@ -56,15 +71,15 @@ public class ContentEditorResourceController extends BaseContentEditor {
     }
 
     private JSONObject getContentArticleVersion(Long articleId,
-            ContentArticleVersion contentArticleVersion, String contestURL,
+            IContentArticleVersion contentArticleVersion, String contestURL,
             String contestArticleUrl) {
 
         JSONArray versions = new JSONArray();
-        List<ContentArticleVersion> cavs = ContentsClient
+        List<IContentArticleVersion> cavs = contentClient
                 .getContentArticleVersions(0, Integer.MAX_VALUE, null, articleId, null, null, null);
 
         JSONObject articleVersion;
-        for (ContentArticleVersion cav : cavs) {
+        for (IContentArticleVersion cav : cavs) {
             articleVersion = new JSONObject();
             articleVersion.put("createdAt", cav.getCreatedAt());
             articleVersion.put("contentArticleVersionId", cav.getId());
@@ -91,24 +106,23 @@ public class ContentEditorResourceController extends BaseContentEditor {
         JSONArray responseArray = new JSONArray();
 
         if (node == null || node.isEmpty()) {//root
-            List<Contest> allContests = ContestClientUtil.getAllContests();
+            List<ContestWrapper> allContests = contestClient.getAllContests();
             Map<String, String> yearFolders = new LinkedHashMap<>();
-            for (Contest c : allContests) {
+            for (ContestWrapper c : allContests) {
                 yearFolders.put(c.getContestYear().toString(), "");
 
             }
             List<String> yearsList = new ArrayList<>(yearFolders.keySet());
             Collections.sort(yearsList);
 
-
             for (int i = yearsList.size() - 1; i >= 0; i--) {
                 String year = yearsList.get(i);
                 responseArray.put(folderNode(year, year));
             }
         } else {//year
-            Integer year = Integer.parseInt(node);//should be the year
-            List<Contest> contestsInYear = ContestClientUtil.getAllContestsInYear(year);
-            for (Contest c : contestsInYear) {
+            Long year = Long.parseLong(node); //should be the year
+            List<ContestWrapper> contestsInYear = contestClient.getAllContestsInYear(year);
+            for (ContestWrapper c : contestsInYear) {
                 if (c.getResourceArticleId() != null && c.getResourceArticleId() != 0L) {
                     responseArray
                             .put(articleNode(c.getTitle(), c.getResourceArticleId()));

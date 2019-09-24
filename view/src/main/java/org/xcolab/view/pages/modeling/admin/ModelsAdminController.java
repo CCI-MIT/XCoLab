@@ -1,6 +1,7 @@
 package org.xcolab.view.pages.modeling.admin;
 
 import edu.mit.cci.roma.client.Simulation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.modeling.ModelingClient;
+import org.xcolab.client.modeling.IModelingClient;
 import org.xcolab.client.modeling.models.ui.IllegalUIConfigurationException;
 import org.xcolab.client.modeling.models.ui.ModelDisplay;
 import org.xcolab.client.modeling.models.ui.ModelInputDisplayItem;
@@ -42,6 +43,13 @@ public class ModelsAdminController {
     private static final String BASE_MODEL_PATH = "modeling/admin/";
     private static final String MODELING_BASE_URL = "/admin/modeling/";
 
+    private final IModelingClient modelingClient;
+
+    @Autowired
+    public ModelsAdminController(IModelingClient modelingClient) {
+        this.modelingClient = modelingClient;
+    }
+
     @GetMapping
     public String showAvailableModels(Model model,
             @RequestParam(value = "refresh", required = false) boolean refresh) {
@@ -64,7 +72,7 @@ public class ModelsAdminController {
                 new ModelWrapper(RomaClientUtil.client().getSimulation(modelId)));
 
         model.addAttribute("tab", "details");
-        model.addAttribute("modelPreferences", ModelingClient.instance().getModelPreference(modelId));
+        model.addAttribute("modelPreferences", modelingClient.getModelPreference(modelId));
         return BASE_MODEL_PATH + "modelDetails";
     }
 
@@ -94,7 +102,7 @@ public class ModelsAdminController {
         model.addAttribute("availableInputWidgets", ModelInputWidgetType.values());
         model.addAttribute("updateWidgetsBean",
                 new UpdateModelInputWidgetsBean(modelDisplay, modelId));
-        model.addAttribute("modelPreferences", ModelingClient.instance().getModelPreference(modelId));
+        model.addAttribute("modelPreferences", modelingClient.getModelPreference(modelId));
         model.addAttribute("groupsAndTabs", groupsAndTabs);
         model.addAttribute("groupInputsById", groupInputsById);
 
@@ -117,7 +125,7 @@ public class ModelsAdminController {
         model.addAttribute("allOutputs", getAllOutputsFromDisplay(modelDisplay));
         model.addAttribute("updateWidgetsBean",
                 new UpdateModelOutputWidgetsBean(modelDisplay, modelId));
-        model.addAttribute("modelPreferences", ModelingClient.instance().getModelPreference(modelId));
+        model.addAttribute("modelPreferences", modelingClient.getModelPreference(modelId));
 
         return BASE_MODEL_PATH + "modelOutputWidgets";
     }
@@ -164,7 +172,7 @@ public class ModelsAdminController {
         model.addAttribute("model", new ModelWrapper(simulation));
         model.addAttribute("modelDisplay", modelDisplay);
         model.addAttribute("tab", "inputTabs");
-        model.addAttribute("modelPreferences", ModelingClient.instance().getModelPreference(modelId));
+        model.addAttribute("modelPreferences", modelingClient.getModelPreference(modelId));
         model.addAttribute("updateModelInputGroupBean", new UpdateModelInputGroupBean());
         model.addAttribute("udateIndividualInputGroupBean", new UpdateIndividualInputGroupBean());
         model.addAttribute("individualInputsById", individualInputsById);
@@ -204,5 +212,4 @@ public class ModelsAdminController {
         }
         return MODELING_BASE_URL + "model/" + modelId + "/tab/" + tabName;
     }
-
 }

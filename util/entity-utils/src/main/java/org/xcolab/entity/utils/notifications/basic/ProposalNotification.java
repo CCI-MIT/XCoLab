@@ -1,27 +1,26 @@
 package org.xcolab.entity.utils.notifications.basic;
 
-import org.xcolab.client.admin.EmailTemplateClient;
-import org.xcolab.client.admin.EmailTemplateClientUtil;
-import org.xcolab.client.admin.pojo.EmailTemplate;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.admin.StaticAdminContext;
+import org.xcolab.client.admin.pojo.IEmailTemplate;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
+import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 
 public class ProposalNotification extends ContestNotification {
 
-    protected final Proposal proposal;
+    protected final ProposalWrapper proposal;
 
     private ProposalNotificationTemplate templateWrapper;
 
-    public ProposalNotification(Proposal proposal, Contest contest, Member recipient,
+    public ProposalNotification(ProposalWrapper proposal, ContestWrapper contest, UserWrapper recipient,
             String templateName) {
         super(contest, recipient, templateName);
         this.proposal = proposal;
     }
 
     @Override
-    protected Proposal getProposal() {
+    protected ProposalWrapper getProposal() {
         return proposal;
     }
 
@@ -34,10 +33,8 @@ public class ProposalNotification extends ContestNotification {
         final String proposalName =
                 getProposalAttributeHelper().getAttributeValueString(ProposalAttributeKeys.NAME, "");
 
-        final EmailTemplateClient emailTemplateClient = EmailTemplateClientUtil.getClient();
-
-        final EmailTemplate emailTemplate =
-                emailTemplateClient.getContestEmailTemplateByType(templateName);
+        final IEmailTemplate emailTemplate =
+                StaticAdminContext.getEmailTemplateClient().getEmailTemplate(templateName);
 
         templateWrapper = new ProposalNotificationTemplate(emailTemplate, proposalName, contest.getTitle());
 
@@ -46,12 +43,12 @@ public class ProposalNotification extends ContestNotification {
 
     @Override
     protected Long getReferenceId(){
-        return this.proposal.getcontestId();
+        return this.proposal.getContestId();
     }
 
     protected class ProposalNotificationTemplate extends ContestNotificationTemplate {
 
-        public ProposalNotificationTemplate(EmailTemplate template, String proposalName, String contestName) {
+        public ProposalNotificationTemplate(IEmailTemplate template, String proposalName, String contestName) {
             super(template, proposalName, contestName);
         }
     }

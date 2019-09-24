@@ -1,11 +1,11 @@
 package org.xcolab.service.contest.domain.impacttemplatemaxfocusarea;
 
-import org.xcolab.model.tables.pojos.ImpactTemplateMaxFocusArea;
+import org.xcolab.client.contest.pojo.IImpactTemplateMaxFocusArea;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.util.List;
 
 public interface ImpactTemplateMaxFocusAreaDao {
-    ImpactTemplateMaxFocusArea getByFocusAreaListId(Long id) throws NotFoundException;
-    List<ImpactTemplateMaxFocusArea> findByGiven(Long focusAreaListId);
+    IImpactTemplateMaxFocusArea getByFocusAreaListId(Long id) throws NotFoundException;
+    List<IImpactTemplateMaxFocusArea> findByGiven(Long focusAreaListId);
 }

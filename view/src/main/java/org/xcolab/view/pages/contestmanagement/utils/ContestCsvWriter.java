@@ -1,8 +1,8 @@
 package org.xcolab.view.pages.contestmanagement.utils;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
 import org.xcolab.commons.CsvResponseWriter;
 
 import java.io.IOException;
@@ -35,10 +35,10 @@ public class ContestCsvWriter extends CsvResponseWriter {
         super("contestReport", COLUMN_NAMES, response);
     }
 
-    public void writeContests(Collection<Contest> contests) {
+    public void writeContests(Collection<ContestWrapper> contests) {
         final String colabUrl = PlatformAttributeKey.COLAB_URL.get();
 
-        for (Contest contest : contests) {
+        for (ContestWrapper contest : contests) {
 
             List<String> row = new ArrayList<>();
 
@@ -63,21 +63,21 @@ public class ContestCsvWriter extends CsvResponseWriter {
         }
     }
 
-    private String getNames(Collection<OntologyTerm> terms) {
+    private String getNames(Collection<OntologyTermWrapper> terms) {
         if (terms == null) {
             return "";
         }
         return terms.stream()
-                .map(OntologyTerm::getName)
+                .map(OntologyTermWrapper::getName)
                 .collect(Collectors.joining("; "));
     }
 
-    private String getIdString(Collection<OntologyTerm> terms) {
+    private String getIdString(Collection<OntologyTermWrapper> terms) {
         if (terms == null) {
             return "";
         }
         return terms.stream()
-                .map(OntologyTerm::getId)
+                .map(OntologyTermWrapper::getId)
                 .map(String::valueOf)
                 .collect(Collectors.joining("; "));
     }

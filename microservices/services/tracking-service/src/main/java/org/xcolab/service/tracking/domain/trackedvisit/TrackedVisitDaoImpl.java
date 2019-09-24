@@ -5,7 +5,7 @@ import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.model.tables.pojos.TrackedVisit;
+import org.xcolab.client.tracking.pojo.ITrackedVisit;
 import org.xcolab.model.tables.records.TrackedVisitRecord;
 
 import static org.xcolab.model.tables.TrackedVisitTable.TRACKED_VISIT;
@@ -21,7 +21,7 @@ public class TrackedVisitDaoImpl implements TrackedVisitDao {
     }
 
     @Override
-    public TrackedVisit create(TrackedVisit trackedVisit) {
+    public ITrackedVisit create(ITrackedVisit trackedVisit) {
         final TrackedVisitRecord record = dslContext.insertInto(TRACKED_VISIT)
                 .set(TRACKED_VISIT.VISITOR_UUID, trackedVisit.getVisitorUuid())
                 .set(TRACKED_VISIT.URL, trackedVisit.getUrl())

@@ -12,7 +12,7 @@
     <!--@elvariable id="userBean" type="org.xcolab.view.pages.profile.beans.UserBean"-->
     <!--@elvariable id="permissions" type="org.xcolab.view.pages.profile.utils.UserProfilePermissions"-->
     <!--@elvariable id="currentUserProfile" type="org.xcolab.view.pages.profile.wrappers.UserProfileWrapper"-->
-    <!--@elvariable id="memberCategories" type="java.util.List<org.xcolab.client.members.pojo.MemberCategory>"-->
+    <!--@elvariable id="memberCategories" type="java.util.List<org.xcolab.client.user.pojo.wrapper.MemberCategoryWrapper>"-->
 
     <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
 

@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.contestmanagement.entities.massactions;
 
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public class LaunchContestMassAction extends AbstractContestMassAction {
     }
 
     @Override
-    public void execute(List<Contest> contests, boolean actionConfirmed,
+    public void execute(List<ContestWrapper> contests, boolean actionConfirmed,
             MassActionDataWrapper dataWrapper, HttpServletResponse response) {
         activeMassAction.execute(contests, actionConfirmed, dataWrapper, response);
         privateMassAction.execute(contests, actionConfirmed, dataWrapper, response);

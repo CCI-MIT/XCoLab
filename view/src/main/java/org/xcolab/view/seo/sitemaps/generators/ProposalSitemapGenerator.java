@@ -3,8 +3,8 @@ package org.xcolab.view.seo.sitemaps.generators;
 import org.springframework.stereotype.Service;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.view.seo.sitemaps.xml.XmlUrl;
 import org.xcolab.view.seo.sitemaps.xml.XmlUrl.ChangeFrequency;
 import org.xcolab.view.seo.sitemaps.xml.XmlUrl.Priority;
@@ -23,31 +23,33 @@ public class ProposalSitemapGenerator {
 
     public XmlUrlSet generateForActiveProposals() {
         XmlUrlSet xmlUrlSet = new XmlUrlSet();
-        final List<Proposal> proposals = ProposalClientUtil.listProposalsInActiveContests();
+        final List<ProposalWrapper> proposals = StaticProposalContext.getProposalClient()
+                .listProposalsInActiveContests();
         addProposals(xmlUrlSet, proposals, ChangeFrequency.DAILY, Priority.MEDIUM);
         return xmlUrlSet;
     }
 
     public XmlUrlSet generateForAwardedProposals() {
         XmlUrlSet xmlUrlSet = new XmlUrlSet();
-        final List<Proposal> proposals =
-                ProposalClientUtil.listProposalsInCompletedContests(Arrays.asList(1, 2, 3));
+        final List<ProposalWrapper> proposals =
+                StaticProposalContext.getProposalClient()
+                        .listProposalsInCompletedContests(Arrays.asList(1, 2, 3));
         addProposals(xmlUrlSet, proposals, ChangeFrequency.NEVER, Priority.HIGH);
         return xmlUrlSet;
     }
 
     public XmlUrlSet generateForOtherProposals() {
         XmlUrlSet xmlUrlSet = new XmlUrlSet();
-        final List<Proposal> proposals =
-                ProposalClientUtil.listProposalsInCompletedContests(Collections.singletonList(0));
+        final List<ProposalWrapper> proposals = StaticProposalContext.getProposalClient()
+                .listProposalsInCompletedContests(Collections.singletonList(0));
         addProposals(xmlUrlSet, proposals, ChangeFrequency.NEVER, Priority.LOW);
 
         return xmlUrlSet;
     }
 
-    private void addProposals(XmlUrlSet xmlUrlSet, List<Proposal> proposals,
+    private void addProposals(XmlUrlSet xmlUrlSet, List<ProposalWrapper> proposals,
             ChangeFrequency changeFrequency, Priority priority) {
-        for (Proposal proposal : proposals) {
+        for (ProposalWrapper proposal : proposals) {
             xmlUrlSet.addUrl(XmlUrl.Builder
                     .forLocation(siteUrl + proposal.getProposalUrl())
                     .lastModified(toLocalDateTime(proposal.getLastupdatedAt()))

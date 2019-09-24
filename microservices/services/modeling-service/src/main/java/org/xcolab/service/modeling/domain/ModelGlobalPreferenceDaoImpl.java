@@ -5,7 +5,8 @@ import org.jooq.Record;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.model.tables.pojos.ModelGlobalPreference;
+import org.xcolab.client.modeling.pojo.IModelGlobalPreference;
+import org.xcolab.model.tables.pojos.ModelGlobalPreferenceImpl;
 import org.xcolab.model.tables.records.ModelGlobalPreferenceRecord;
 
 import java.util.Optional;
@@ -23,17 +24,17 @@ public class ModelGlobalPreferenceDaoImpl implements ModelGlobalPreferenceDao {
     }
 
     @Override
-    public ModelGlobalPreference create(ModelGlobalPreference modelGlobalPreference) {
+    public IModelGlobalPreference create(IModelGlobalPreference modelGlobalPreference) {
         final ModelGlobalPreferenceRecord record =
                 dslContext.insertInto(MODEL_GLOBAL_PREFERENCE)
                         .set(MODEL_GLOBAL_PREFERENCE.MODEL_ID, modelGlobalPreference.getModelId())
                         .set(MODEL_GLOBAL_PREFERENCE.MODEL_CATEGORY_ID,
                                 modelGlobalPreference.getModelCategoryId())
                         .set(MODEL_GLOBAL_PREFERENCE.USES_CUSTOM_INPUTS,
-                                modelGlobalPreference.getUsesCustomInputs())
+                                modelGlobalPreference.isUsesCustomInputs())
                         .set(MODEL_GLOBAL_PREFERENCE.CUSTOM_INPUTS_DEFINITION,
                                 modelGlobalPreference.getCustomInputsDefinition())
-                        .set(MODEL_GLOBAL_PREFERENCE.VISIBLE, modelGlobalPreference.getVisible())
+                        .set(MODEL_GLOBAL_PREFERENCE.VISIBLE, modelGlobalPreference.isVisible())
                         .set(MODEL_GLOBAL_PREFERENCE.WEIGHT, modelGlobalPreference.getWeight())
                         .set(MODEL_GLOBAL_PREFERENCE.EXPERT_EVALUATION_PAGE_ID,
                                 modelGlobalPreference.getExpertEvaluationPageId())
@@ -47,7 +48,7 @@ public class ModelGlobalPreferenceDaoImpl implements ModelGlobalPreferenceDao {
     }
 
     @Override
-    public Optional<ModelGlobalPreference> get(long id) {
+    public Optional<IModelGlobalPreference> get(long id) {
         final Record record = dslContext.select()
                 .from(MODEL_GLOBAL_PREFERENCE)
                 .where(MODEL_GLOBAL_PREFERENCE.ID.eq(id))
@@ -55,11 +56,11 @@ public class ModelGlobalPreferenceDaoImpl implements ModelGlobalPreferenceDao {
         if (record == null) {
             return Optional.empty();
         }
-        return Optional.of(record.into(ModelGlobalPreference.class));
+        return Optional.of(record.into(ModelGlobalPreferenceImpl.class));
     }
 
     @Override
-    public Optional<ModelGlobalPreference> getByModelId(long modelId) {
+    public Optional<IModelGlobalPreference> getByModelId(long modelId) {
         final Record record = dslContext.select()
                 .from(MODEL_GLOBAL_PREFERENCE)
                 .where(MODEL_GLOBAL_PREFERENCE.MODEL_ID.eq(modelId))
@@ -67,20 +68,20 @@ public class ModelGlobalPreferenceDaoImpl implements ModelGlobalPreferenceDao {
         if (record == null) {
             return Optional.empty();
         }
-        return Optional.of(record.into(ModelGlobalPreference.class));
+        return Optional.of(record.into(ModelGlobalPreferenceImpl.class));
     }
 
     @Override
-    public boolean update(ModelGlobalPreference pojo) {
+    public boolean update(IModelGlobalPreference pojo) {
         return dslContext.update(MODEL_GLOBAL_PREFERENCE)
                 .set(MODEL_GLOBAL_PREFERENCE.MODEL_ID, pojo.getModelId())
                 .set(MODEL_GLOBAL_PREFERENCE.MODEL_CATEGORY_ID,
                         pojo.getModelCategoryId())
                 .set(MODEL_GLOBAL_PREFERENCE.USES_CUSTOM_INPUTS,
-                        pojo.getUsesCustomInputs())
+                        pojo.isUsesCustomInputs())
                 .set(MODEL_GLOBAL_PREFERENCE.CUSTOM_INPUTS_DEFINITION,
                         pojo.getCustomInputsDefinition())
-                .set(MODEL_GLOBAL_PREFERENCE.VISIBLE, pojo.getVisible())
+                .set(MODEL_GLOBAL_PREFERENCE.VISIBLE, pojo.isVisible())
                 .set(MODEL_GLOBAL_PREFERENCE.WEIGHT, pojo.getWeight())
                 .set(MODEL_GLOBAL_PREFERENCE.EXPERT_EVALUATION_PAGE_ID,
                         pojo.getExpertEvaluationPageId())

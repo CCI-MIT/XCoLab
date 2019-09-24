@@ -15,17 +15,10 @@
     <packaging>jar</packaging>
 
     <dependencies>
-
         <!-- TODO: this should really not be a (circular) dependency! -->
         <dependency>
             <groupId>org.xcolab</groupId>
-            <artifactId>contestproposal-client</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.xcolab</groupId>
-            <artifactId>emails-client</artifactId>
+            <artifactId>contest-client</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -37,13 +30,19 @@
 
         <dependency>
             <groupId>org.xcolab</groupId>
-            <artifactId>members-client</artifactId>
+            <artifactId>user-client</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.xcolab</groupId>
             <artifactId>comment-client</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.xcolab</groupId>
+            <artifactId>email-client</artifactId>
             <version>${project.version}</version>
         </dependency>
 

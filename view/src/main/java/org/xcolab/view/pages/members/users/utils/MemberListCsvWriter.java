@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.members.users.utils;
 
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.CsvResponseWriter;
 
 import java.io.IOException;
@@ -14,7 +14,7 @@ public class MemberListCsvWriter extends CsvResponseWriter {
 
     private static final List<String> COLUMN_NAMES = Arrays.asList("Screen name", "First name",
             "Last name", "Email address", "User ID", "Country", "Bio", "Login date", "Image link");
-    private static final Function<Member, List<String>> COLUMN_EXTRACTION_FUNCTION
+    private static final Function<UserWrapper, List<String>> COLUMN_EXTRACTION_FUNCTION
             = (member -> Arrays.asList(
                     member.getScreenName(),
                     member.getFirstName(),
@@ -31,7 +31,7 @@ public class MemberListCsvWriter extends CsvResponseWriter {
         super("membersList", COLUMN_NAMES, response);
     }
 
-    public void writeMembers(List<Member> members) {
+    public void writeMembers(List<UserWrapper> members) {
         members.stream()
                 .map(COLUMN_EXTRACTION_FUNCTION)
                 .forEach(this::writeRow);

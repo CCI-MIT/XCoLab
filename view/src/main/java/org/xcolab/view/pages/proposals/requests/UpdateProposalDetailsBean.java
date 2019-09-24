@@ -3,8 +3,8 @@ package org.xcolab.view.pages.proposals.requests;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
-import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.util.enums.proposal.MoveType;
 import org.xcolab.view.util.validation.ConfigurableProposalPitchMaxLength;
 
@@ -19,7 +19,7 @@ public class UpdateProposalDetailsBean {
     private String pitch;
 
     @NotBlank(message = "Please enter a title.")
-    @Length(max = 80, message = "The title is limited to 80 characters.")
+    //@Length(max = 80, message = "The title is limited to 80 characters.")
     private String name;
 
     @Length(max = 35, message = "The team name is limited to 35 characters.")
@@ -41,8 +41,8 @@ public class UpdateProposalDetailsBean {
 
 
 
-    public UpdateProposalDetailsBean(Proposal proposal) {
-        for (ProposalTemplateSectionDefinition section : proposal.getSections()) {
+    public UpdateProposalDetailsBean(ProposalWrapper proposal) {
+        for (ProposalTemplateSectionDefinitionWrapper section : proposal.getSections()) {
             sectionsContent.put(section.getSectionDefinitionId(), section.getContent());
         }
         pitch = proposal.getPitch();
@@ -52,8 +52,8 @@ public class UpdateProposalDetailsBean {
         description = proposal.getDescription();
     }
     
-    public UpdateProposalDetailsBean(Proposal proposal, Proposal baseProposal) {
-        for (ProposalTemplateSectionDefinition section : baseProposal.getSections()) {
+    public UpdateProposalDetailsBean(ProposalWrapper proposal, ProposalWrapper baseProposal) {
+        for (ProposalTemplateSectionDefinitionWrapper section : baseProposal.getSections()) {
             sectionsContent.put(section.getSectionDefinitionId(), section.getContent());
         }
         pitch = baseProposal.getPitch();
@@ -62,10 +62,10 @@ public class UpdateProposalDetailsBean {
         imageId = baseProposal.getImageId();
         description = baseProposal.getDescription();
         baseProposalId = baseProposal.getId();
-        baseProposalContestId = baseProposal.getcontestId();
+        baseProposalContestId = baseProposal.getContestId();
     }
     
-    public UpdateProposalDetailsBean(Proposal proposal, Proposal baseProposal,
+    public UpdateProposalDetailsBean(ProposalWrapper proposal, ProposalWrapper baseProposal,
             boolean isMove, MoveType moveType) {
     	this(proposal, baseProposal);
     	this.isMove = isMove;

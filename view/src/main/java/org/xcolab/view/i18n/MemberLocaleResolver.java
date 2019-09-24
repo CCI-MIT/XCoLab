@@ -6,8 +6,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.LocaleContextResolver;
 import org.springframework.web.servlet.i18n.AbstractLocaleContextResolver;
 
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.auth.AuthenticationService;
 
 import java.util.Locale;
@@ -28,7 +29,7 @@ public class MemberLocaleResolver extends AbstractLocaleContextResolver {
 
     @Override
     public LocaleContext resolveLocaleContext(HttpServletRequest request) {
-        final Member realMember = authenticationService.getRealMemberOrNull();
+        final UserWrapper realMember = authenticationService.getRealMemberOrNull();
         if (realMember != null) {
             final String defaultLocale = realMember.getDefaultLocale();
             if (defaultLocale != null) {
@@ -43,13 +44,17 @@ public class MemberLocaleResolver extends AbstractLocaleContextResolver {
     public void setLocaleContext(HttpServletRequest request, HttpServletResponse response,
             LocaleContext localeContext) {
         if (localeContext != null) {
-            final Member realMember = authenticationService.getRealMemberOrNull();
+            final UserWrapper realMember = authenticationService.getRealMemberOrNull();
 
             final String localeString = localeContext.getLocale().toString();
             if (realMember != null && !localeString
                     .equalsIgnoreCase(realMember.getDefaultLocale())) {
                 realMember.setDefaultLocale(localeString);
-                MembersClient.updateMember(realMember);
+                try{
+                    StaticUserContext.getUserClient().updateUser(realMember);
+                }catch (MemberNotFoundException e){
+
+                }
             }
         }
         fallbackResolver.setLocaleContext(request, response, localeContext);

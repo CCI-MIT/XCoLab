@@ -5,8 +5,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.proposals.permissions.ContestPermissions;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
@@ -21,9 +21,9 @@ public class ContestDiscussionController extends BaseProposalsController {
 
     @GetMapping("/contests/{contestYear}/{contestUrlName}/discussion")
     public String showContestProposals(HttpServletRequest request, HttpServletResponse response,
-            Model model, ProposalContext proposalContext, Member loggedInMember) {
+            Model model, ProposalContext proposalContext, UserWrapper loggedInMember) {
 
-        final Contest contest = proposalContext.getContest();
+        final ContestWrapper contest = proposalContext.getContest();
         final ContestType contestType = contest.getContestType();
         if (contestType.isRestrictedAccess() && !new ContestPermissions(loggedInMember)
                 .getCanAccessContest(contest)) {

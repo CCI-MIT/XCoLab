@@ -2,7 +2,7 @@
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:spring="http://www.springframework.org/tags">
 
-    <jsp:directive.attribute name="member" type="org.xcolab.client.members.pojo.Member" required="true" rtexprvalue="true" description="The logged in member" />
+    <jsp:directive.attribute name="member" type="org.xcolab.client.user.pojo.wrapper.UserWrapper" required="true" rtexprvalue="true" description="The logged in member" />
     <jsp:directive.attribute name="blogAdminUrl" type="java.lang.String" required="true" rtexprvalue="true" description="The blog admin url" />
 
     <ul class="dropdown-menu dropdown-menu-right text-nowrap">

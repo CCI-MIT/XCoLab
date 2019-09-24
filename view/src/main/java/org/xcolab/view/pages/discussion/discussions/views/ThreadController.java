@@ -1,5 +1,6 @@
 package org.xcolab.view.pages.discussion.discussions.views;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,17 +8,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.client.activities.ActivitiesClientUtil;
+import org.xcolab.client.activity.IActivityClient;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.comment.CommentClient;
-import org.xcolab.client.comment.ThreadClient;
+import org.xcolab.client.comment.ICategoryClient;
+import org.xcolab.client.comment.ICommentClient;
+import org.xcolab.client.comment.IThreadClient;
+import org.xcolab.client.comment.exceptions.CategoryGroupNotFoundException;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
-import org.xcolab.client.comment.pojo.Category;
-import org.xcolab.client.comment.pojo.CategoryGroup;
-import org.xcolab.client.comment.pojo.Comment;
-import org.xcolab.client.comment.pojo.CommentThread;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.comment.pojo.ICategory;
+import org.xcolab.client.comment.pojo.ICategoryGroup;
+import org.xcolab.client.comment.pojo.IComment;
+import org.xcolab.client.comment.pojo.IThread;
+import org.xcolab.client.comment.pojo.tables.pojos.Comment;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.util.activities.enums.DiscussionThreadActivityType;
 import org.xcolab.view.auth.MemberAuthUtil;
@@ -33,13 +36,25 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class ThreadController extends BaseDiscussionController {
 
+    @Autowired
+    private IActivityClient activityClient;
+
+    @Autowired
+    private IThreadClient threadClient;
+
+    @Autowired
+    private ICommentClient commentClient;
+
+    @Autowired
+    private ICategoryClient categoryClient;
+
     @GetMapping("/discussion/thread/{threadId}")
     public String showThread(HttpServletRequest request, HttpServletResponse response, Model model,
-            Member member, @PathVariable Long threadId)
+            UserWrapper member, @PathVariable Long threadId)
             throws DiscussionAuthorizationException, ThreadNotFoundException {
 
-        CategoryGroup categoryGroup = getCategoryGroup(request);
-        CommentThread thread = ThreadClient.instance().getThread(threadId);
+        ICategoryGroup categoryGroup = getCategoryGroup(request);
+        IThread thread = threadClient.getThread(threadId);
 
         DiscussionPermissions permissions = new DiscussionPermissions();
         if (!getCanView(permissions, categoryGroup, threadId)) {
@@ -55,18 +70,18 @@ public class ThreadController extends BaseDiscussionController {
 
     @GetMapping("/discussion/threads/create")
     public String createThread(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member)
+            Model model, UserWrapper member)
             throws DiscussionAuthorizationException {
 
 
-        CategoryGroup categoryGroup = getCategoryGroup(request);
+        ICategoryGroup categoryGroup = getCategoryGroup(request);
 
         DiscussionPermissions permissions = new DiscussionPermissions();
         if (!getCanEdit(permissions, categoryGroup, 0L)) {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
-        List<Category> categories = categoryGroup.getCategories();
+        List<ICategory> categories = categoryGroup.getCategories();
 
         model.addAttribute("categories", categories);
 
@@ -77,11 +92,11 @@ public class ThreadController extends BaseDiscussionController {
 
     @PostMapping("/discussion/thread/create")
     public String createThreadAction(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member, @RequestParam long categoryId, @RequestParam String title,
+            Model model, UserWrapper member, @RequestParam long categoryId, @RequestParam String title,
             @RequestParam String body)
             throws DiscussionAuthorizationException {
 
-        CategoryGroup categoryGroup = getCategoryGroup(request);
+        ICategoryGroup categoryGroup = getCategoryGroup(request);
 
         DiscussionPermissions permissions = new DiscussionPermissions();
         if (!getCanEdit(permissions, categoryGroup, 0L)) {
@@ -91,22 +106,21 @@ public class ThreadController extends BaseDiscussionController {
         long userId = MemberAuthUtil.getUserId();
 
         if (!title.isEmpty() && !body.isEmpty()) {
-            CommentThread thread = new CommentThread();
+            IThread thread = new org.xcolab.client.comment.pojo.tables.pojos.Thread();
             thread.setCategoryId(categoryId);
             thread.setTitle(HtmlUtil.cleanAll(title));
             thread.setAuthorUserId(userId);
             thread.setIsQuiet(false);
-            thread = ThreadClient.instance().createThread(thread);
+            thread = threadClient.createThread(thread);
 
-            Comment comment = new Comment();
+            IComment comment = new Comment();
             comment.setThreadId(thread.getId());
             final String baseUri = PlatformAttributeKey.COLAB_URL.get();
             comment.setContent(HtmlUtil.cleanSome(body, baseUri));
             comment.setAuthorUserId(userId);
-            comment = CommentClient.instance().createComment(comment);
+            comment = commentClient.createComment(comment);
 
-            if (!thread.getIsQuiet()) {
-                final ActivitiesClient activityClient = ActivitiesClientUtil.getClient();
+            if (!thread.isIsQuiet()) {
                 activityClient.createActivityEntry(DiscussionThreadActivityType.CREATED, userId,
                         thread.getId());
             }
@@ -118,18 +132,20 @@ public class ThreadController extends BaseDiscussionController {
     }
 
     @Override
-    public boolean getCanView(DiscussionPermissions permissions, CategoryGroup categoryGroup, long additionalId) {
+    public boolean getCanView(DiscussionPermissions permissions, ICategoryGroup categoryGroup,
+            long additionalId) {
         try {
-            CommentThread thread = ThreadClient.instance().getThread(additionalId);
-            return thread.getCategory().getCategoryGroup().getId()
-                    .equals(categoryGroup.getId());
-        } catch (ThreadNotFoundException e) {
+            IThread thread = threadClient.getThread(additionalId);
+            Long categoryGroupId =
+                    categoryClient.getCategoryGroup(thread.getCategory().getGroupId()).getId();
+            return categoryGroupId.equals(categoryGroup.getId());
+        } catch (ThreadNotFoundException | CategoryGroupNotFoundException e) {
             return false;
         }
     }
 
     @Override
-    public boolean getCanEdit(DiscussionPermissions permissions, CategoryGroup categoryGroup, long additionalId) {
+    public boolean getCanEdit(DiscussionPermissions permissions, ICategoryGroup categoryGroup, long additionalId) {
         return permissions.getCanAddComment();
     }
 }

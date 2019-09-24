@@ -4,17 +4,17 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.admin.AdminClient;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.admin.pojo.ConfigurationAttribute;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.ProposalTemplateClientUtil;
+import org.xcolab.client.admin.pojo.IConfigurationAttribute;
+import org.xcolab.client.admin.pojo.tables.pojos.ConfigurationAttribute;
+import org.xcolab.client.contest.StaticContestContext;
 import org.xcolab.client.contest.exceptions.ContestScheduleNotFoundException;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestSchedule;
-import org.xcolab.client.contest.pojo.templates.ProposalTemplate;
+import org.xcolab.client.contest.pojo.IContestSchedule;
+import org.xcolab.client.contest.pojo.IProposalTemplate;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.proposals.exceptions.ProposalTemplateNotFoundException;
 import org.xcolab.client.contest.util.ContestScheduleChangeHelper;
-import org.xcolab.client.proposals.exceptions.ProposalTemplateNotFoundException;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
 import org.xcolab.view.pages.contestmanagement.utils.schedule.ContestScheduleLifecycleUtil;
 
@@ -28,19 +28,21 @@ public final class ContestCreatorUtil {
 
     private ContestCreatorUtil() { }
 
-    public static Contest createNewContest(String title, long authorUserId) {
-        Contest contest = ContestClientUtil.createContest(authorUserId, title);
+    public static ContestWrapper createNewContest(String title, long authorUserId) {
+        ContestWrapper contest = StaticContestContext.getContestClient()
+                .createContest(authorUserId, title);
         contest.setContestYear((long) DateTime.now().getYear());
         contest.setContestPrivate(true);
         contest.setShowInTileView(true);
         contest.setShowInListView(true);
         contest.setShowInOutlineView(true);
+
         final Long templateId = getOrCreateDefaultTemplate().getId();
         contest.setProposalTemplateId(templateId);
         final Long contestScheduleId = getOrCreateDefaultContestSchedule().getId();
         contest.setContestScheduleId(contestScheduleId);
         contest.setContestTypeId(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
-        ContestClientUtil.updateContest(contest);
+        StaticContestContext.getContestClient().updateContest(contest);
         ContestScheduleChangeHelper
                 changeHelper = new ContestScheduleChangeHelper(contest.getId(), contestScheduleId);
         changeHelper.changeScheduleForBlankContest();
@@ -48,20 +50,21 @@ public final class ContestCreatorUtil {
         return contest;
     }
 
-    private static ProposalTemplate getOrCreateDefaultTemplate() {
+    private static IProposalTemplate getOrCreateDefaultTemplate() {
         final long defaultTemplateId = ConfigurationAttributeKey.DEFAULT_CONTEST_TEMPLATE_ID.get();
         try {
             if (defaultTemplateId > 0) {
-                return ProposalTemplateClientUtil.getProposalTemplate(defaultTemplateId);
+                return StaticContestContext.getProposalTemplateClient()
+                        .getProposalTemplate(defaultTemplateId);
             }
-            final ProposalTemplate newDefaultTemplate = ProposalTemplateLifecycleUtil
+            final IProposalTemplate newDefaultTemplate = ProposalTemplateLifecycleUtil
                     .create(DEFAULT_TEMPLATE_NAME);
 
-            ConfigurationAttribute defaultTemplateAttribute = new ConfigurationAttribute();
+            IConfigurationAttribute defaultTemplateAttribute = new ConfigurationAttribute();
             defaultTemplateAttribute
                     .setName(ConfigurationAttributeKey.DEFAULT_CONTEST_TEMPLATE_ID.name());
             defaultTemplateAttribute.setNumericValue(newDefaultTemplate.getId());
-            AdminClient.createConfigurationAttribute(defaultTemplateAttribute);
+            StaticAdminContext.getAdminClient().createConfigurationAttribute(defaultTemplateAttribute);
 
             log.warn("No DEFAULT_TEMPLATE_SCHEDULE_ID found; created new Schedule with id {} "
                     + "and corresponding ConfigurationAttribute.", newDefaultTemplate.getId());
@@ -70,26 +73,27 @@ public final class ContestCreatorUtil {
         } catch (ProposalTemplateNotFoundException e) {
             //fail early if it doesn't exist
             throw ReferenceResolutionException
-                    .toObject(ProposalTemplate.class, defaultTemplateId)
+                    .toObject(IProposalTemplate.class, defaultTemplateId)
                     .fromObject(ConfigurationAttribute.class, "DEFAULT_CONTEST_TEMPLATE_ID");
         }
     }
 
-    private static ContestSchedule getOrCreateDefaultContestSchedule() {
+    private static IContestSchedule getOrCreateDefaultContestSchedule() {
         final long defaultContestScheduleId = ConfigurationAttributeKey
                 .DEFAULT_CONTEST_SCHEDULE_ID.get();
         try {
             if (defaultContestScheduleId > 0) {
-                return ContestClientUtil.getContestSchedule(defaultContestScheduleId);
+                return StaticContestContext.getContestClient().getContestSchedule(
+                        defaultContestScheduleId);
             }
-            final ContestSchedule newDefaultSchedule = ContestScheduleLifecycleUtil
+            final IContestSchedule newDefaultSchedule = ContestScheduleLifecycleUtil
                     .createProposalCreationOnlySchedule(DEFAULT_SCHEDULE_NAME);
 
-            ConfigurationAttribute defaultScheduleAttribute = new ConfigurationAttribute();
+            IConfigurationAttribute defaultScheduleAttribute = new ConfigurationAttribute();
             defaultScheduleAttribute
                     .setName(ConfigurationAttributeKey.DEFAULT_CONTEST_SCHEDULE_ID.name());
             defaultScheduleAttribute.setNumericValue(newDefaultSchedule.getId());
-            AdminClient.createConfigurationAttribute(defaultScheduleAttribute);
+            StaticAdminContext.getAdminClient().createConfigurationAttribute(defaultScheduleAttribute);
 
             log.warn("No DEFAULT_CONTEST_SCHEDULE_ID found; created new Schedule with id {} "
                     + "and corresponding ConfigurationAttribute.", newDefaultSchedule.getId());
@@ -98,13 +102,13 @@ public final class ContestCreatorUtil {
         } catch (ContestScheduleNotFoundException e) {
             //fail early if it doesn't exist
             throw ReferenceResolutionException
-                    .toObject(ContestSchedule.class, defaultContestScheduleId)
+                    .toObject(IContestSchedule.class, defaultContestScheduleId)
                     .fromObject(ConfigurationAttribute.class, "DEFAULT_CONTEST_SCHEDULE_ID");
         }
     }
 
     public static void insertSeedDataToContestScheduleTableIfNotAvailable() {
-        if (ContestClientUtil.getAllContestSchedules().isEmpty()) {
+        if (StaticContestContext.getContestClient().getAllContestSchedules().isEmpty()) {
             ContestScheduleLifecycleUtil
                     .createProposalCreationOnlySchedule(SEED_CONTEST_SCHEDULE_NAME);
         }

@@ -4,16 +4,16 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.OntologyTermToFocusAreaMapper;
-import org.xcolab.client.contest.ProposalTemplateClientUtil;
-import org.xcolab.client.contest.pojo.ontology.FocusArea;
-import org.xcolab.client.contest.pojo.ontology.OntologySpace;
-import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
-import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
-import org.xcolab.client.contest.pojo.templates.ProposalTemplateSection;
-import org.xcolab.client.proposals.PointsClientUtil;
-import org.xcolab.client.proposals.pojo.points.PointsDistributionConfiguration;
+import org.xcolab.client.contest.StaticContestContext;
+import org.xcolab.client.contest.pojo.IPointsDistributionConfiguration;
+import org.xcolab.client.contest.pojo.IProposalTemplateSection;
+import org.xcolab.client.contest.pojo.tables.pojos.PointsDistributionConfiguration;
+import org.xcolab.client.contest.pojo.wrapper.FocusAreaWrapper;
+import org.xcolab.client.contest.pojo.wrapper.OntologySpaceWrapper;
+import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.commons.IdListUtil;
 import org.xcolab.view.util.entity.enums.OntologySpaceEnum;
 
@@ -55,11 +55,13 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
     public SectionDefinitionWrapper() {
     }
 
-    public SectionDefinitionWrapper(ProposalTemplateSectionDefinition proposalTemplateSectionDefinition) {
+    public SectionDefinitionWrapper(
+            ProposalTemplateSectionDefinitionWrapper proposalTemplateSectionDefinition) {
         initProposalTemplateSectionDefinition(proposalTemplateSectionDefinition);
     }
 
-    private void initProposalTemplateSectionDefinition(ProposalTemplateSectionDefinition proposalTemplateSectionDefinition) {
+    private void initProposalTemplateSectionDefinition(
+            ProposalTemplateSectionDefinitionWrapper proposalTemplateSectionDefinition) {
         this.id = proposalTemplateSectionDefinition.getId();
         this.type = proposalTemplateSectionDefinition.getType();
         this.title = proposalTemplateSectionDefinition.getTitle();
@@ -69,16 +71,15 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
         this.focusAreaId = proposalTemplateSectionDefinition.getFocusAreaId();
         this.additionalIds = proposalTemplateSectionDefinition.getAdditionalIds();
         this.allowedValues = proposalTemplateSectionDefinition.getAllowedValues();
-        this.locked = proposalTemplateSectionDefinition.getLocked();
+        this.locked = proposalTemplateSectionDefinition.isLocked();
         this.level = proposalTemplateSectionDefinition.getTier();
-        this.contestIntegrationRelevance = proposalTemplateSectionDefinition.getContestIntegrationRelevance();
+        this.contestIntegrationRelevance = proposalTemplateSectionDefinition.isContestIntegrationRelevance();
         this.allowedContestTypeIds =
                 IdListUtil.getIdsFromString(proposalTemplateSectionDefinition.getAllowedContestTypeIds());
 
 
-        PointsDistributionConfiguration pdc =
-                PointsClientUtil
-                        .getPointsDistributionConfigurationByTargetProposalTemplateSectionDefinitionId(id);
+        IPointsDistributionConfiguration pdc = StaticProposalContext.getPointsClient()
+                .getPointsDistributionConfigurationByTargetProposalTemplateSectionDefinitionIdOrNull(id);
         if (pdc != null) {
             this.pointPercentage = Double.toString(pdc.getPercentage());
             this.pointType = pdc.getPointTypeId();
@@ -103,55 +104,55 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
 
     private void initOntologyTermIdsWithFocusAreaId() {
         if (focusAreaId != null) {
-            FocusArea focusArea = OntologyClientUtil.getFocusArea(this.focusAreaId);
+            FocusAreaWrapper focusArea = StaticContestContext.getOntologyClient()
+                    .getFocusArea(this.focusAreaId);
 
-            OntologySpace space = OntologyClientUtil
+            OntologySpaceWrapper space = StaticContestContext.getOntologyClient()
                     .getOntologySpace(OntologySpaceEnum.WHAT.getSpaceId());
-            List<OntologyTerm> terms =
-                    OntologyClientUtil
-                            .getAllOntologyTermsFromFocusAreaWithOntologySpace(focusArea,
-                                    space);
+            List<OntologyTermWrapper> terms = StaticContestContext.getOntologyClient()
+                            .getAllOntologyTermsFromFocusAreaWithOntologySpace(focusArea, space);
             this.whatTermIds = getIdsFromOntologyTerms(terms);
 
-            space = OntologyClientUtil
+            space = StaticContestContext.getOntologyClient()
                     .getOntologySpace(OntologySpaceEnum.WHERE.getSpaceId());
-            terms = OntologyClientUtil
+            terms = StaticContestContext.getOntologyClient()
                     .getAllOntologyTermsFromFocusAreaWithOntologySpace(focusArea, space);
             this.whereTermIds = getIdsFromOntologyTerms(terms);
 
-            space = OntologyClientUtil
+            space = StaticContestContext.getOntologyClient()
                     .getOntologySpace(OntologySpaceEnum.WHO.getSpaceId());
-            terms = OntologyClientUtil
+            terms = StaticContestContext.getOntologyClient()
                     .getAllOntologyTermsFromFocusAreaWithOntologySpace(focusArea, space);
             this.whoTermIds = getIdsFromOntologyTerms(terms);
 
-            space = OntologyClientUtil
+            space = StaticContestContext.getOntologyClient()
                     .getOntologySpace(OntologySpaceEnum.HOW.getSpaceId());
-            terms = OntologyClientUtil
+            terms = StaticContestContext.getOntologyClient()
                     .getAllOntologyTermsFromFocusAreaWithOntologySpace(focusArea, space);
             this.howTermIds = getIdsFromOntologyTerms(terms);
         }
-
     }
 
-    private List<Long> getIdsFromOntologyTerms(List<OntologyTerm> ontologyTerms) {
+    private List<Long> getIdsFromOntologyTerms(List<OntologyTermWrapper> ontologyTerms) {
         List<Long> ids = new ArrayList<>(ontologyTerms.size());
-        for (OntologyTerm term : ontologyTerms) {
+        for (OntologyTermWrapper term : ontologyTerms) {
             ids.add(term.getId());
         }
 
         return ids;
     }
 
-    public SectionDefinitionWrapper(ProposalTemplateSectionDefinition proposalTemplateSectionDefinition,
+    public SectionDefinitionWrapper(
+            ProposalTemplateSectionDefinitionWrapper proposalTemplateSectionDefinition,
             Long proposalTemplateId) {
 
         initProposalTemplateSectionDefinition(proposalTemplateSectionDefinition);
 
-        List<ProposalTemplateSection> proposalTemplateSections =
-                ProposalTemplateClientUtil.getProposalTemplateSectionByProposalTemplateId(proposalTemplateId);
+        List<IProposalTemplateSection> proposalTemplateSections =
+                StaticContestContext.getProposalTemplateClient()
+                        .getProposalTemplateSectionsByProposalTemplateId(proposalTemplateId);
 
-        for (ProposalTemplateSection proposalTemplateSection : proposalTemplateSections) {
+        for (IProposalTemplateSection proposalTemplateSection : proposalTemplateSections) {
             if (Objects.equals(
                     proposalTemplateSection.getSectionDefinitionId(), proposalTemplateSectionDefinition.getId())) {
                 initProposalTemplateSection(proposalTemplateSection);
@@ -160,10 +161,9 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
         }
 
         initProposalTemplateSectionDefinition(proposalTemplateSectionDefinition);
-
     }
 
-    private void initProposalTemplateSection(ProposalTemplateSection proposalTemplateSection) {
+    private void initProposalTemplateSection(IProposalTemplateSection proposalTemplateSection) {
         this.weight = proposalTemplateSection.getWeight();
     }
 
@@ -251,32 +251,34 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
     }
 
     public void persist(boolean createNew) {
-        ProposalTemplateSectionDefinition psd;
-        PointsDistributionConfiguration pdc = null;
+        ProposalTemplateSectionDefinitionWrapper psd;
+        IPointsDistributionConfiguration pdc = null;
         if (id == null || createNew) {
-            psd = new ProposalTemplateSectionDefinition();
+            psd = new ProposalTemplateSectionDefinitionWrapper();
 
             populateProposalTemplateSectionDefinition(psd);
 
-            psd = ProposalTemplateClientUtil.createProposalTemplateSectionDefinition(psd);
+            psd = StaticContestContext.getProposalTemplateClient()
+                    .createProposalTemplateSectionDefinition(psd);
             id = psd.getId();
         } else {
-
-            psd = ProposalTemplateClientUtil.getProposalTemplateSectionDefinition(id);
-            pdc = PointsClientUtil
-                    .getPointsDistributionConfigurationByTargetProposalTemplateSectionDefinitionId(id);
+            psd = StaticContestContext.getProposalTemplateClient()
+                    .getProposalTemplateSectionDefinition(id);
+            pdc = StaticProposalContext.getPointsClient()
+                    .getPointsDistributionConfigurationByTargetProposalTemplateSectionDefinitionIdOrNull(id);
 
             populateProposalTemplateSectionDefinition(psd);
 
             if (pdc != null) {
                 if (pointType == 0L) {
-                    PointsClientUtil
+                    StaticProposalContext.getPointsClient()
                             .deletePointsDistributionConfiguration(pdc.getId());
                 } else {
                     pdc.setPercentage(Double.valueOf(pointPercentage));
                     pdc.setPointTypeId(pointType);
                     pdc.setTargetProposalTemplateSectionDefinitionId(id);
-                    PointsClientUtil.updatePointsDistributionConfiguration(pdc);
+                    StaticProposalContext.getPointsClient()
+                            .updatePointsDistributionConfiguration(pdc);
             /*
                 if (pdc != null) {
                     PointsDistributionConfigurationClient
@@ -302,15 +304,17 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
                 pdc.setPercentage(Double.valueOf(pointPercentage));
                 pdc.setPointTypeId(pointType);
                 pdc.setTargetProposalTemplateSectionDefinitionId(id);
-                pdc = PointsClientUtil.createPointsDistributionConfiguration(pdc);
+                pdc = StaticProposalContext.getPointsClient()
+                        .createPointsDistributionConfiguration(pdc);
             }
         }
 
-        ProposalTemplateClientUtil.updateProposalTemplateSectionDefinition(psd);
-
+        StaticContestContext.getProposalTemplateClient()
+                .updateProposalTemplateSectionDefinition(psd);
     }
 
-    private void populateProposalTemplateSectionDefinition(ProposalTemplateSectionDefinition psd) {
+    private void populateProposalTemplateSectionDefinition(
+            ProposalTemplateSectionDefinitionWrapper psd) {
         psd.setType(this.getType());
         psd.setTitle(this.getTitle());
         psd.setDefaultText(this.getDefaultText());
@@ -441,12 +445,12 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
         this.howTermIds = howTermIds;
     }
 
-    private FocusArea getFocusAreaViaOntologyTerms() {
-        List<OntologyTerm> termsToBeMatched = getAllSelectedOntologyTerms();
+    private FocusAreaWrapper getFocusAreaViaOntologyTerms() {
+        List<OntologyTermWrapper> termsToBeMatched = getAllSelectedOntologyTerms();
 
         OntologyTermToFocusAreaMapper focusAreaMapper =
                 new OntologyTermToFocusAreaMapper(termsToBeMatched);
-        FocusArea focusArea = focusAreaMapper.getFocusAreaMatchingTermsExactly();
+        FocusAreaWrapper focusArea = focusAreaMapper.getFocusAreaMatchingTermsExactly();
 
         if (focusArea != null) {
             focusArea = createNewFocusAreaWithTerms(termsToBeMatched);
@@ -455,15 +459,15 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
         return focusArea;
     }
 
-    private FocusArea createNewFocusAreaWithTerms(List<OntologyTerm> focusAreaOntologyTerms) {
-        FocusArea newFocusArea = new FocusArea();
+    private FocusAreaWrapper createNewFocusAreaWithTerms(List<OntologyTermWrapper> focusAreaOntologyTerms) {
+        FocusAreaWrapper newFocusArea = new FocusAreaWrapper();
 
         newFocusArea.setName("created for proposalTemplateSectionDefinition '" + this.title + "'");
 
-        newFocusArea = OntologyClientUtil.createFocusArea(newFocusArea);
+        newFocusArea = StaticContestContext.getOntologyClient().createFocusArea(newFocusArea);
 
-        for (OntologyTerm ontologyTerm : focusAreaOntologyTerms) {
-            OntologyClientUtil
+        for (OntologyTermWrapper ontologyTerm : focusAreaOntologyTerms) {
+            StaticContestContext.getOntologyClient()
                     .addOntologyTermsToFocusAreaByOntologyTermId(newFocusArea.getId(),
                             ontologyTerm.getId());
         }
@@ -474,21 +478,19 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
         return pointType;
     }
 
-    private List<OntologyTerm> getAllSelectedOntologyTerms() {
-
+    private List<OntologyTermWrapper> getAllSelectedOntologyTerms() {
         List[] ontologyTermIdLists = {
                 getWhatTermIds(), getWhereTermIds(), getWhoTermIds(), getHowTermIds()
         };
 
-        List<OntologyTerm> selectedOntologyTerms = new ArrayList<>();
+        List<OntologyTermWrapper> selectedOntologyTerms = new ArrayList<>();
         for (List<Long> ontologyTermIds : ontologyTermIdLists) {
             for (Long ontologyTermId : ontologyTermIds) {
-                selectedOntologyTerms
-                        .add(OntologyClientUtil.getOntologyTerm(ontologyTermId));
+                selectedOntologyTerms.add(StaticContestContext.getOntologyClient()
+                        .getOntologyTerm(ontologyTermId));
             }
         }
         return selectedOntologyTerms;
-
     }
 
     public String getAdditionalIds() {
@@ -524,8 +526,8 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
     }
 
     public boolean hasUpdates() {
-        ProposalTemplateSectionDefinition psd = ProposalTemplateClientUtil
-                .getProposalTemplateSectionDefinition(id);
+        ProposalTemplateSectionDefinitionWrapper psd = StaticContestContext
+                .getProposalTemplateClient().getProposalTemplateSectionDefinition(id);
         return !this.equals(new SectionDefinitionWrapper(psd));
     }
 

@@ -3,9 +3,9 @@ package org.xcolab.view.activityentry.proposal;
 import org.springframework.context.i18n.LocaleContextHolder;
 
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
+import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.view.activityentry.ActivityInitializationException;
 import org.xcolab.view.activityentry.provider.AbstractActivityEntryContentProvider;
 import org.xcolab.view.i18n.ResourceMessageResolver;
@@ -17,7 +17,7 @@ public abstract class ProposalBaseActivityEntry extends AbstractActivityEntryCon
 
     private final ResourceMessageResolver resourceMessageResolver;
 
-    private Proposal proposal;
+    private ProposalWrapper proposal;
     private ContestType contestType;
 
     public ProposalBaseActivityEntry(ResourceMessageResolver resourceMessageResolver) {
@@ -27,7 +27,8 @@ public abstract class ProposalBaseActivityEntry extends AbstractActivityEntryCon
     @Override
     public void initializeInternal() throws ActivityInitializationException {
         try {
-            proposal = ProposalClientUtil.getProposal(getActivityEntry().getCategoryId());
+            proposal = new ProposalWrapper(StaticProposalContext.getProposalClient()
+                    .getProposal(getActivityEntry().getCategoryId()));
         } catch (ProposalNotFoundException e) {
             throw new ActivityInitializationException(getActivityEntry().getId(), e);
         }
@@ -36,7 +37,7 @@ public abstract class ProposalBaseActivityEntry extends AbstractActivityEntryCon
                 .withLocale(LocaleContextHolder.getLocale().getLanguage());
     }
 
-    protected Proposal getProposal() {
+    protected ProposalWrapper getProposal() {
         return proposal;
     }
 

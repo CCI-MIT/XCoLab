@@ -4,6 +4,8 @@ import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.xcolab.client.tracking.pojo.ILocation;
+
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -13,7 +15,7 @@ import java.util.Optional;
 @Service
 public class IpTranslationService {
 
-    private final Map<Integer, Location> locations;
+    private final Map<Integer, ILocation> locations;
     private final List<IpBlock> blocks;
 
     @Autowired
@@ -23,7 +25,7 @@ public class IpTranslationService {
         blocks = geoLiteCityConfiguration.getBlocks();
     }
 
-    public Optional<Location> getLocationForIp(String ip) throws IpFormatException {
+    public Optional<ILocation> getLocationForIp(String ip) throws IpFormatException {
         Validate.notBlank(ip, "ip is required");
         long ipToLookFor = convertStringIpToLong(ip);
         int val = Collections.binarySearch(blocks, new IpBlock(ipToLookFor, ipToLookFor, 0));
@@ -56,7 +58,7 @@ public class IpTranslationService {
             }
         }
 
-        Location location = null;
+        ILocation location = null;
         if (matchingBlock != null) {
             location = locations.get(matchingBlock.locId);
         }

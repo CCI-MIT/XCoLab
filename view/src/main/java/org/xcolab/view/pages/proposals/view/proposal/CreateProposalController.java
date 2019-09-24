@@ -9,16 +9,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.IContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
-import org.xcolab.client.members.PlatformTeamsClient;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalClient;
-import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
+import org.xcolab.client.contest.proposals.IProposalClient;
+import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.util.enums.proposal.ProposalTemplateSectionType;
 import org.xcolab.view.auth.MemberAuthUtil;
@@ -42,7 +42,7 @@ public class CreateProposalController extends BaseProposalsController {
 
     @GetMapping("createProposal/basedOn/{baseProposalId}/{baseProposalVersion}/{baseContestId}")
     public String createProposalsBasedOn(HttpServletRequest request, HttpServletResponse response,
-            Model model, ProposalContext proposalContext, Member loggedInMember,
+            Model model, ProposalContext proposalContext, UserWrapper loggedInMember,
             @PathVariable Long baseProposalId,
             @PathVariable Integer baseProposalVersion, @PathVariable Long baseContestId) {
 
@@ -52,15 +52,15 @@ public class CreateProposalController extends BaseProposalsController {
 
     @GetMapping("createProposal")
     public String showCreateProposal(HttpServletRequest request, HttpServletResponse response,
-            Model model, ProposalContext proposalContext, Member loggedInMember) {
+            Model model, ProposalContext proposalContext, UserWrapper loggedInMember) {
 
 
         Long proposalCreationMaxPerAuthor = ConfigurationAttributeKey.PROPOSALS_MAX_PER_AUTHOR_IN_CONTEST.get();
         if(proposalCreationMaxPerAuthor != 0 ) {
             int totalProposalsByAuthor = 0;
-            List<Proposal> proposals = proposalContext.getClients().getProposalClient().getActiveProposalsInContestPhase(
+            List<ProposalWrapper> proposals = proposalContext.getClients().getProposalClient().getActiveProposalsInContestPhase(
                     proposalContext.getContestPhase().getId());
-            for(Proposal p: proposals){
+            for(ProposalWrapper p: proposals){
                 if(p.getAuthor().getId() == loggedInMember.getId()) {
                     totalProposalsByAuthor = totalProposalsByAuthor + 1;
                 }
@@ -74,7 +74,7 @@ public class CreateProposalController extends BaseProposalsController {
     }
 
     private String showCreateProposal(HttpServletRequest request, HttpServletResponse response,
-            Model model, ProposalContext proposalContext, Member loggedInMember, Long baseProposalId,
+            Model model, ProposalContext proposalContext, UserWrapper loggedInMember, Long baseProposalId,
             int baseProposalVersion, Long baseContestId) {
 
         if (!proposalContext.getPermissions().getCanCreate()) {
@@ -84,23 +84,23 @@ public class CreateProposalController extends BaseProposalsController {
         long userId = loggedInMember.getId();
 
         final ClientHelper clients = proposalContext.getClients();
-        final ContestClient contestClient = clients.getContestClient();
-        final ProposalClient proposalClient = clients.getProposalClient();
+        final IContestClient contestClient = clients.getContestClient();
+        final IProposalClient proposalClient = clients.getProposalClient();
 
-        final Contest contest = proposalContext.getContest();
-        Proposal proposal = new Proposal();
+        final ContestWrapper contest = proposalContext.getContest();
+        ProposalWrapper proposal = new ProposalWrapper();
 
         proposal.setId(0L);
         proposal.setVisible(true);
         proposal.setAuthorUserId(userId);
 
-        final ContestPhase contestPhase = proposalContext.getContestPhase();
+        final ContestPhaseWrapper contestPhase = proposalContext.getContestPhase();
 
-        proposal = new Proposal(proposal, 0, contest, contestPhase, null);
+        proposal = new ProposalWrapper(proposal, 0, contest, contestPhase, null);
         if (baseProposalId != null && baseProposalId > 0) {
             try {
-                Contest baseContest = contestClient.getContest(baseContestId);
-                Proposal baseProposal = new Proposal(proposalClient.getProposal(baseProposalId),
+                ContestWrapper baseContest = contestClient.getContest(baseContestId);
+                ProposalWrapper baseProposal = new ProposalWrapper(proposalClient.getProposal(baseProposalId),
                         baseProposalVersion, baseContest, contestClient.getActivePhase(baseContest.getId()), null);
 
                 model.addAttribute("baseProposal", baseProposal);
@@ -137,7 +137,7 @@ public class CreateProposalController extends BaseProposalsController {
         model.addAttribute("proposalPickerDefaultTabIsContests",
                 ConfigurationAttributeKey.PROPOSALS_PICKER_DEFAULT_TAB_CONTESTS.get());
         model.addAttribute("saveUrl", contest.getNewProposalLinkUrl());
-        model.addAttribute("userTeams", PlatformTeamsClient.getTeams(loggedInMember));
+        model.addAttribute("userTeams", StaticUserContext.getPlatformTeamClient().listPlatformTeams(loggedInMember.getId()));
         model.addAttribute("contestTosAccepted", contest.getMemberAgreedToTos(loggedInMember));
 
         AnalyticsUtil.publishEvent(request, userId, ProposalUpdateHelper.PROPOSAL_ANALYTICS_KEY + 1,
@@ -155,9 +155,9 @@ public class CreateProposalController extends BaseProposalsController {
         return "proposals/proposalDetails_edit";
     }
 
-    private boolean hasProposalPicker(Proposal proposal) {
+    private boolean hasProposalPicker(ProposalWrapper proposal) {
         return proposal.getSections().stream()
-                .map(ProposalTemplateSectionDefinition::getTypeEnum)
+                .map(ProposalTemplateSectionDefinitionWrapper::getTypeEnum)
                 .anyMatch(ProposalTemplateSectionType.PROPOSAL_PICKER_SECTION_TYPES::contains);
     }
 
@@ -167,7 +167,7 @@ public class CreateProposalController extends BaseProposalsController {
             @PathVariable String contestYear, @PathVariable String contestUrlName,
             @Valid UpdateProposalDetailsBean updateProposalDetailsBean, BindingResult result) {
 
-        Proposal proposal = proposalContext.getProposal();
+        ProposalWrapper proposal = proposalContext.getProposal();
         final ProposalsPermissions permissions = proposalContext.getPermissions();
         if (!permissions.getCanCreate()) {
             return new AccessDeniedPage(permissions.getMember()).toViewName(response);
@@ -177,12 +177,12 @@ public class CreateProposalController extends BaseProposalsController {
             AlertMessage.danger(
                     "Proposal NOT created. Please fix the errors before saving.")
                     .flash(request);
-            final Member memberOrNull = MemberAuthUtil.getMemberOrNull();
+            final UserWrapper memberOrNull = MemberAuthUtil.getMemberOrNull();
             return showCreateProposal(request, response, model, proposalContext, memberOrNull);
         }
 
         // if no error occurred it can be assumed that the user agreed to the ToS
-        final Member member = MemberAuthUtil.getMemberOrNull();
+        final UserWrapper member = MemberAuthUtil.getMemberOrNull();
         if (member != null && !proposalContext.getContest().getMemberAgreedToTos(member)) {
             proposalContext.getContest().setMemberAgreedToTos(member, true);
         }

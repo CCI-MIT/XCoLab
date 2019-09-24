@@ -5,7 +5,8 @@ import org.jooq.Record;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.model.tables.pojos.ModelOutputItem;
+import org.xcolab.client.modeling.pojo.IModelOutputItem;
+import org.xcolab.model.tables.pojos.ModelOutputItemImpl;
 import org.xcolab.model.tables.records.ModelOutputItemRecord;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class ModelOutputItemDaoImpl implements ModelOutputItemDao {
     }
 
     @Override
-    public Optional<ModelOutputItem> get(long id) {
+    public Optional<IModelOutputItem> get(long id) {
         final Record record = dslContext.select()
                 .from(MODEL_OUTPUT_ITEM)
                 .where(MODEL_OUTPUT_ITEM.MODEL_OUTPUT_ITEM_ID.eq(id))
@@ -32,25 +33,25 @@ public class ModelOutputItemDaoImpl implements ModelOutputItemDao {
         if (record == null) {
             return Optional.empty();
         }
-        return Optional.of(record.into(ModelOutputItem.class));
+        return Optional.of(record.into(ModelOutputItemImpl.class));
     }
 
     @Override
-    public List<ModelOutputItem> list() {
+    public List<IModelOutputItem> list() {
         return dslContext.select()
                 .from(MODEL_OUTPUT_ITEM)
-                .fetch().into(ModelOutputItem.class);
+                .fetch().into(ModelOutputItemImpl.class);
     }
 
     @Override
-    public ModelOutputItem create(ModelOutputItem pojo) {
+    public IModelOutputItem create(IModelOutputItem pojo) {
         final ModelOutputItemRecord record = dslContext.insertInto(MODEL_OUTPUT_ITEM)
                 .set(MODEL_OUTPUT_ITEM.MODEL_ID, pojo.getModelId())
                 .set(MODEL_OUTPUT_ITEM.MODEL_OUTPUT_ITEM_ID, pojo.getModelOutputItemId())
                 .set(MODEL_OUTPUT_ITEM.RELATED_OUTPUT_ITEM, pojo.getRelatedOutputItem())
                 .set(MODEL_OUTPUT_ITEM.ITEM_TYPE, pojo.getItemType())
                 .set(MODEL_OUTPUT_ITEM.MODEL_ITEM_ERROR_MESSAGE, pojo.getModelItemErrorMessage())
-                .set(MODEL_OUTPUT_ITEM.MODEL_ITEM_IS_VISIBLE, pojo.getModelItemIsVisible())
+                .set(MODEL_OUTPUT_ITEM.MODEL_ITEM_IS_VISIBLE, pojo.isModelItemIsVisible())
                 .set(MODEL_OUTPUT_ITEM.MODEL_ITEM_ERROR_POLICY, pojo.getModelItemErrorPolicy())
                 .set(MODEL_OUTPUT_ITEM.MODEL_ITEM_LABEL_FORMAT, pojo.getModelItemLabelFormat())
                 .set(MODEL_OUTPUT_ITEM.MODEL_ITEM_RANGE_MESSAGE, pojo.getModelItemRangeMessage())
@@ -66,14 +67,14 @@ public class ModelOutputItemDaoImpl implements ModelOutputItemDao {
     }
 
     @Override
-    public boolean update(ModelOutputItem pojo) {
+    public boolean update(IModelOutputItem pojo) {
         return dslContext.update(MODEL_OUTPUT_ITEM)
                 .set(MODEL_OUTPUT_ITEM.MODEL_ID, pojo.getModelId())
                 .set(MODEL_OUTPUT_ITEM.MODEL_OUTPUT_ITEM_ID, pojo.getModelOutputItemId())
                 .set(MODEL_OUTPUT_ITEM.RELATED_OUTPUT_ITEM, pojo.getRelatedOutputItem())
                 .set(MODEL_OUTPUT_ITEM.ITEM_TYPE, pojo.getItemType())
                 .set(MODEL_OUTPUT_ITEM.MODEL_ITEM_ERROR_MESSAGE, pojo.getModelItemErrorMessage())
-                .set(MODEL_OUTPUT_ITEM.MODEL_ITEM_IS_VISIBLE, pojo.getModelItemIsVisible())
+                .set(MODEL_OUTPUT_ITEM.MODEL_ITEM_IS_VISIBLE, pojo.isModelItemIsVisible())
                 .set(MODEL_OUTPUT_ITEM.MODEL_ITEM_ERROR_POLICY, pojo.getModelItemErrorPolicy())
                 .set(MODEL_OUTPUT_ITEM.MODEL_ITEM_LABEL_FORMAT, pojo.getModelItemLabelFormat())
                 .set(MODEL_OUTPUT_ITEM.MODEL_ITEM_RANGE_MESSAGE, pojo.getModelItemRangeMessage())

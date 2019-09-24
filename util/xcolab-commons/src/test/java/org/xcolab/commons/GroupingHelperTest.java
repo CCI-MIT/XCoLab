@@ -26,7 +26,7 @@ public class GroupingHelperTest {
         final Map<Integer, Set<Integer>> result =
                 GROUPING_HELPER.groupWithDuplicateKeysAndValues(
                         number -> Arrays.asList(number, number -1));
-        Assert.assertEquals("Unexpected map contents", expected, result);
+        Assert.assertEquals("Unexpected map content", expected, result);
     }
 
     @Test
@@ -37,7 +37,7 @@ public class GroupingHelperTest {
 
         final Map<Integer, Set<Integer>> result =
                 GROUPING_HELPER.groupWithDuplicateValues(number -> number / 2);
-        Assert.assertEquals("Unexpected map contents", expected, result);
+        Assert.assertEquals("Unexpected map content", expected, result);
     }
 
     @Test
@@ -49,6 +49,6 @@ public class GroupingHelperTest {
 
         final Map<Integer, Integer> result =
                 GROUPING_HELPER.groupUnique(number -> number * 2);
-        Assert.assertEquals("Unexpected map contents", expected, result);
+        Assert.assertEquals("Unexpected map content", expected, result);
     }
 }

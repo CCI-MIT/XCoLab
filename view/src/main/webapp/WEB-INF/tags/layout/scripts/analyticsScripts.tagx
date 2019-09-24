@@ -11,7 +11,7 @@
                              required="false" rtexprvalue="true" description="Analytics attributes to send to GA" />
     <jsp:directive.attribute name="httpSession" type="javax.servlet.http.HttpSession" required="true"
                              rtexprvalue="true" description="The HttpSession for this request" />
-    <jsp:directive.attribute name="member" type="org.xcolab.client.members.pojo.Member" required="true"
+    <jsp:directive.attribute name="member" type="org.xcolab.client.user.pojo.wrapper.UserWrapper" required="true"
                              rtexprvalue="true" description="Logged in member" />
 
     <!-- Pingdom Visitor Insights -->

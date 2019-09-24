@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.proposals.view.contest;
 
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.commons.CsvResponseWriter;
 
 import java.io.IOException;
@@ -31,7 +31,7 @@ public class ContestProposalsCsvWriter extends CsvResponseWriter {
             "Absolute Proposal URL"
     );
 
-    private static final Function<Proposal, List<String>> COLUMN_EXTRACTION_FUNCTION
+    private static final Function<ProposalWrapper, List<String>> COLUMN_EXTRACTION_FUNCTION
             = (proposal -> Arrays.asList(
             proposal.getName(),
             proposal.getAuthorName(),
@@ -55,7 +55,7 @@ public class ContestProposalsCsvWriter extends CsvResponseWriter {
         super("contestProposalsList", COLUMN_NAMES, response);
     }
 
-    public void writeProposals(List<Proposal> proposals) {
+    public void writeProposals(List<ProposalWrapper> proposals) {
         proposals.stream()
                 .map(COLUMN_EXTRACTION_FUNCTION)
                 .forEach(this::writeRow);

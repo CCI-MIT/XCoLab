@@ -3,19 +3,21 @@ package org.xcolab.view.pages.proposals.utils.edit;
 import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
-import org.xcolab.client.members.PlatformTeamsClient;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.PlatformTeam;
-import org.xcolab.client.proposals.MembershipClient;
-import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
-import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
-import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
+import org.xcolab.client.contest.proposals.IMembershipClient;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
+import org.xcolab.client.contest.proposals.exceptions.ConflictException;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.pojo.wrapper.PlatformTeamWrapper;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
+import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
+import org.xcolab.client.contest.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalAttribute;
+import org.xcolab.client.contest.pojo.IProposal2Phase;
 import org.xcolab.commons.IdListUtil;
-import org.xcolab.util.enums.proposal.ProposalTemplateSectionType;
 import org.xcolab.commons.html.HtmlUtil;
+import org.xcolab.util.enums.proposal.ProposalTemplateSectionType;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 import org.xcolab.view.pages.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
@@ -33,8 +35,8 @@ public class ProposalUpdateHelper {
     public final static String PROPOSAL_ANALYTICS_LABEL = "";
 
     private final UpdateProposalDetailsBean updateProposalSectionsBean;
-    private final Proposal proposal;
-    private final Proposal2Phase p2p;
+    private final ProposalWrapper proposal;
+    private final IProposal2Phase p2p;
     private final long userId;
     private Integer version;
 
@@ -42,8 +44,8 @@ public class ProposalUpdateHelper {
     private final ProposalContext proposalContext;
 
     public ProposalUpdateHelper(HttpServletRequest request, ProposalContext proposalContext,
-            UpdateProposalDetailsBean updateProposalSectionsBean, Proposal proposal,
-            Proposal2Phase p2p, long userId) {
+            UpdateProposalDetailsBean updateProposalSectionsBean, ProposalWrapper proposal,
+            IProposal2Phase p2p, long userId) {
         this.request = request;
         this.proposalContext = proposalContext;
         this.updateProposalSectionsBean = updateProposalSectionsBean;
@@ -52,7 +54,7 @@ public class ProposalUpdateHelper {
         this.userId = userId;
     }
 
-    private ProposalAttribute updateAttribute(String stringValue, ProposalTemplateSectionDefinition section,
+    private ProposalAttribute updateAttribute(String stringValue, ProposalTemplateSectionDefinitionWrapper section,
             Integer version) {
         return proposalContext.getClients().getProposalAttributeClient()
                 .setProposalAttribute(userId, proposal.getId(),
@@ -60,7 +62,7 @@ public class ProposalUpdateHelper {
                         stringValue, version);
     }
 
-    private ProposalAttribute updateAttribute(Long newNumericVal, ProposalTemplateSectionDefinition section,
+    private ProposalAttribute updateAttribute(Long newNumericVal, ProposalTemplateSectionDefinitionWrapper section,
             Integer version) {
         return proposalContext.getClients().getProposalAttributeClient().setProposalAttribute(
                 userId,
@@ -73,7 +75,7 @@ public class ProposalUpdateHelper {
 
         boolean updateProposalReferences = false;
         boolean evictCache = false;
-        for (ProposalTemplateSectionDefinition section : proposal.getSections()) {
+        for (ProposalTemplateSectionDefinitionWrapper section : proposal.getSections()) {
             String newSectionValue =
                     updateProposalSectionsBean.getSectionsContent().get(section.getSectionDefinitionId());
             final ProposalTemplateSectionType sectionType = section.getTypeEnum();
@@ -142,7 +144,8 @@ public class ProposalUpdateHelper {
         if (p2p != null && p2p.getVersionTo() != -1) {
             // we are in a completed phase - need to adjust the end version
             try {
-                final Proposal updatedProposal = proposalContext.getClients().getProposalClient().getProposal(
+                final ProposalWrapper
+                        updatedProposal = proposalContext.getClients().getProposalClient().getProposal(
                         proposal.getId());
                 p2p.setVersionTo(updatedProposal.getCurrentVersion());
                 proposalContext.getClients().getProposalPhaseClient().updateProposal2Phase(p2p);
@@ -159,11 +162,6 @@ public class ProposalUpdateHelper {
             proposalContext.getClients().getProposalAttributeClient().invalidateProposalAttibuteCache(
                     proposal);
             proposalContext.getClients().getProposalClient().invalidateProposalCache(proposal.getId());
-            if(p2p!=null) {
-                proposalContext.getClients().getProposalPhaseClient()
-                        .invalidateProposal2PhaseCache(proposal.getId(), p2p
-                                .getContestPhaseId());
-            }
         }
         doAnalytics(request, filledAll);
     }
@@ -206,12 +204,16 @@ public class ProposalUpdateHelper {
         if (updateProposalSectionsBean.getSelectedTeam() != null) {
             try {
                 // Setup team stuff
-                PlatformTeam team = PlatformTeamsClient.getPlatformTeam(updateProposalSectionsBean.getSelectedTeam());
-                List<Member> members = PlatformTeamsClient.getTeamMembers(team);
-                for (Member member : members) {
+                PlatformTeamWrapper team = StaticUserContext.getPlatformTeamClient().getPlatformTeam(updateProposalSectionsBean.getSelectedTeam());
+                List<UserWrapper> members = StaticUserContext.getPlatformTeamClient().listTeamUsers(team.getId());
+                for (UserWrapper member : members) {
                     Long userId = member.getId();
-                    MembershipClient client = proposalContext.getClients().getMembershipClient();
-                    client.addUserToProposalTeam(userId, proposal);
+                    IMembershipClient client = StaticProposalContext.getMembershipClient();
+                    try {
+                        client.addUserToProposalTeam(userId, proposal);
+                    } catch (ConflictException e) {
+                        // User already exists in proposal team
+                    }
                 }
 
                 // Set team name

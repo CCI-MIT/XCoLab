@@ -8,8 +8,9 @@ import org.springframework.boot.autoconfigure.security.oauth2.resource.Principal
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.commons.http.servlet.RequestUtil;
 import org.xcolab.commons.servlet.flash.AlertMessage;
@@ -50,7 +51,7 @@ public abstract class CustomPrincipalExtractor<IdT> implements PrincipalExtracto
      * @param member The member object, which will have the SSO service's ID field modified.
      * @param ssoId The sso ID to be set.
      */
-    protected abstract void setSsoId(Member member, IdT ssoId);
+    protected abstract void setSsoId(UserWrapper member, IdT ssoId);
 
     /**
      * This method allows subclasses to update additional fields of the member object.
@@ -60,7 +61,7 @@ public abstract class CustomPrincipalExtractor<IdT> implements PrincipalExtracto
      *
      * @param member The member object to be modified.
      */
-    protected void updateAdditionalInformation(Member member, Map<String, Object> userInfoMap) {
+    protected void updateAdditionalInformation(UserWrapper member, Map<String, Object> userInfoMap) {
         //Do nothing by default
     };
 
@@ -127,9 +128,13 @@ public abstract class CustomPrincipalExtractor<IdT> implements PrincipalExtracto
             try {
                 memberDetails = memberDetailsService.loadByEmail(emailAddress);
                 if (isExtractedEmailVerified(userInfoMap)) {
-                    final Member member = memberDetails.getMember();
+                    final UserWrapper member = memberDetails.getMember();
                     setSsoId(member, ssoId);
-                    MembersClient.updateMember(member);
+                    try{
+                        StaticUserContext.getUserClient().updateUser(member);
+                    }catch (MemberNotFoundException ignored){
+
+                    }
                 } else {
                     AlertMessage.danger("An account with the email address " + emailAddress
                             + " already exists, but cannot be linked because it is not verified.")
@@ -142,7 +147,7 @@ public abstract class CustomPrincipalExtractor<IdT> implements PrincipalExtracto
                 log.debug("No user found for sssId={} or email={}. Generating profile...",
                         ssoId, emailAddress);
 
-                if (MembersClient.isEmailUsed(emailAddress)) {
+                if (StaticUserContext.getUserLoginRegister().isEmailUsed(emailAddress)) {
                     // Email is already used (e.g. by a deleted member)
 
                     // Invalidate session, otherwise the exception messes up the OAuthClientContext
@@ -178,13 +183,17 @@ public abstract class CustomPrincipalExtractor<IdT> implements PrincipalExtracto
                     imageId = ImageUploadUtils.linkProfilePicture(pictureUrlOpt.get());
                 }
 
-                Member member = loginRegisterService
+                UserWrapper member = loginRegisterService
                         .register(null, null, emailAddress, firstName, lastName,
                                 null, country, imageId, false, language);
 
                 setSsoId(member, ssoId);
                 updateAdditionalInformation(member, userInfoMap);
-                MembersClient.updateMember(member);
+                try{
+                    StaticUserContext.getUserClient().updateUser(member);
+                }catch (MemberNotFoundException ignored){
+
+                }
 
                 //TODO: how do we get the cookies/request here?
                 //                    loginRegisterService.updateBalloonTracking(member,

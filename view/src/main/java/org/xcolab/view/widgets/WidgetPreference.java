@@ -2,8 +2,9 @@ package org.xcolab.view.widgets;
 
 import org.json.JSONObject;
 
-import org.xcolab.client.admin.AdminClient;
-import org.xcolab.client.admin.pojo.ConfigurationAttribute;
+import org.xcolab.client.admin.StaticAdminContext;
+import org.xcolab.client.admin.pojo.IConfigurationAttribute;
+import org.xcolab.client.admin.pojo.tables.pojos.ConfigurationAttribute;
 import org.xcolab.commons.attributes.AttributeGetter;
 import org.xcolab.util.i18n.I18nUtils;
 
@@ -86,10 +87,10 @@ public abstract class WidgetPreference {
             preferences.put(preferenceId, prefsToSave);
             currentPreferences.put(PREFERENCES_JSON_OBJECT, preferences);
         }
-        ConfigurationAttribute configurationAttribute = new ConfigurationAttribute();
+        IConfigurationAttribute configurationAttribute = new ConfigurationAttribute();
         configurationAttribute.setName(getConfigurationAttribute().name());
         configurationAttribute.setStringValue(currentPreferences.toString());
-        AdminClient.updateConfigurationAttribute(configurationAttribute);
+        StaticAdminContext.getAdminClient().updateConfigurationAttribute(configurationAttribute);
     }
 
     public String getPreferenceId() {
@@ -125,5 +126,4 @@ public abstract class WidgetPreference {
 
         T get(String id, String language);
     }
-
 }

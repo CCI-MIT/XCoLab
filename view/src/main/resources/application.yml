@@ -138,7 +138,12 @@ http-client:
   connection-pool:
     max-total: 40
     default-max-per-route: 3
-
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 160000000
+        readTimeout: 160000000
 ---
 
 spring:

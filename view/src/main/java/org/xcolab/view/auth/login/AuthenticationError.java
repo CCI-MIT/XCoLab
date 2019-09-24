@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
 
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
 
 public enum AuthenticationError {
     CREDENTIALS("Authentication failed, please check your screen name and password.",

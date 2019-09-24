@@ -4,8 +4,8 @@ import edu.mit.cci.roma.client.Simulation;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.StaticContestContext;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.modeling.roma.RomaClient;
 import org.xcolab.client.modeling.roma.RomaClient.RomaClientNotConnectedException;
 import org.xcolab.client.modeling.roma.RomaClientUtil;
@@ -28,7 +28,7 @@ public class ContestModelSettingsBean implements Serializable {
 
     public ContestModelSettingsBean() { }
 
-    public ContestModelSettingsBean(Contest contest) {
+    public ContestModelSettingsBean(ContestWrapper contest) {
         this.defaultModelId = contest.getDefaultModelId();
         this.otherModels = contest.getOtherModels();
         this.defaultModelSettings = contest.getDefaultModelSettings();
@@ -137,7 +137,7 @@ public class ContestModelSettingsBean implements Serializable {
         }
     }
 
-    public void persist(Contest contest) {
+    public void persist(ContestWrapper contest) {
         if (otherModels != null) {
             contest.setOtherModels(otherModels);
         }
@@ -147,7 +147,6 @@ public class ContestModelSettingsBean implements Serializable {
         if (defaultModelSettings != null) {
             contest.setDefaultModelSettings(defaultModelSettings);
         }
-        ContestClientUtil.updateContest(contest);
-
+        StaticContestContext.getContestClient().updateContest(contest);
     }
 }

@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public class AlertMessage implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1234324324L;
 
     public static final AlertMessage CHANGES_SAVED = AlertMessage.success("Changes saved");
     public static final AlertMessage NOT_SAVED = AlertMessage.danger("Changes NOT saved");

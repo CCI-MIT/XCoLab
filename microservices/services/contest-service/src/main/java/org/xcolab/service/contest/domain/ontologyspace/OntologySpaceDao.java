@@ -1,20 +1,20 @@
 package org.xcolab.service.contest.domain.ontologyspace;
 
 
-import org.xcolab.model.tables.pojos.OntologySpace;
+import org.xcolab.client.contest.pojo.wrapper.OntologySpaceWrapper;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.util.List;
 
 public interface OntologySpaceDao {
 
-    List<OntologySpace> findByGiven();
+    List<OntologySpaceWrapper> findByGiven();
 
     int delete(Long id);
 
-    boolean update(OntologySpace ontologySpace);
+    boolean update(OntologySpaceWrapper ontologySpace);
 
-    OntologySpace get(Long id) throws NotFoundException;
+    OntologySpaceWrapper get(Long id) throws NotFoundException;
 
-    OntologySpace create(OntologySpace ontologySpace);
+    OntologySpaceWrapper create(OntologySpaceWrapper ontologySpace);
 }

@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.auth.login.spring.MemberDetails;
 
 import java.time.Instant;
@@ -63,7 +63,7 @@ public class OpenIdHelper {
         return map;
     }
 
-    public Member getMember() {
+    public UserWrapper getMember() {
         final Object principal = authentication.getPrincipal();
         if (!(principal instanceof MemberDetails)) {
             throw new IllegalStateException("Invalid principal: " + principal);
@@ -79,7 +79,7 @@ public class OpenIdHelper {
         final Instant now = Instant.now();
         map.put(ISSUE_DATE, now.toEpochMilli());
         map.put(EXPIRATION_DATE, now.plus(1, ChronoUnit.DAYS).toEpochMilli());
-        final Member member = getMember();
+        final UserWrapper member = getMember();
         addSubjectField(map, member);
         if (hasEmailScope()) {
             addEmailScopedFields(map, member);
@@ -102,16 +102,16 @@ public class OpenIdHelper {
         return authentication.getOAuth2Request().getScope().contains(SCOPE_PROFILE);
     }
 
-    public void addSubjectField(Map<String, Object> map, Member member) {
+    public void addSubjectField(Map<String, Object> map, UserWrapper member) {
         map.put(SUBJECT, member.getId());
     }
 
-    public void addEmailScopedFields(Map<String, Object> map, Member member) {
+    public void addEmailScopedFields(Map<String, Object> map, UserWrapper member) {
         map.put(EMAIL, member.getEmailAddress());
-        map.put(EMAIL_VERIFIED, member.getIsEmailConfirmed());
+        map.put(EMAIL_VERIFIED, member.isIsEmailConfirmed());
     }
 
-    public void addProfileScopedFields(Map<String, Object> map, Member member) {
+    public void addProfileScopedFields(Map<String, Object> map, UserWrapper member) {
         map.put(NAME, member.getFullName());
         map.put(GIVEN_NAME, member.getFirstName());
         map.put(FAMILY_NAME, member.getLastName());

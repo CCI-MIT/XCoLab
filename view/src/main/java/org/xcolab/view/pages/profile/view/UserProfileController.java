@@ -20,22 +20,26 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.balloons.pojo.BalloonUserTracking;
-import org.xcolab.client.emails.EmailClient;
-import org.xcolab.client.files.FilesClient;
-import org.xcolab.client.files.pojo.FileEntry;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.MessagingClient;
-import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.permissions.SystemRole;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.MessagingUserPreference;
+import org.xcolab.client.content.IFileClient;
+import org.xcolab.client.content.pojo.IFileEntry;
+import org.xcolab.client.email.IEmailClient;
+
+import org.xcolab.client.tracking.IBalloonClient;
+import org.xcolab.client.tracking.pojo.IBalloonUserTracking;
+import org.xcolab.client.user.IPermissionClient;
+import org.xcolab.client.user.IUserClient;
+import org.xcolab.client.user.IUserLoginRegisterClient;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.permissions.SystemRole;
+import org.xcolab.client.user.pojo.wrapper.MessagingUserPreferenceWrapper;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.CountryUtil;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.commons.servlet.flash.ErrorPage;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
+import org.xcolab.util.http.exceptions.ExceptionUtils;
 import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
 import org.xcolab.view.auth.AuthenticationService;
@@ -72,17 +76,30 @@ public class UserProfileController {
     private final ActivityEntryHelper activityEntryHelper;
     private final AuthenticationService authenticationService;
     private final BalloonService balloonService;
-
     private final SmartValidator validator;
+    private final IFileClient fileClient;
+    private final IBalloonClient balloonClient;
+    private final IEmailClient emailClient;
+    private final IUserClient userClient;
+    private final IPermissionClient permissionClient;
+    private final IUserLoginRegisterClient userLoginRegisterClient;
 
     @Autowired
     public UserProfileController(ActivityEntryHelper activityEntryHelper,
             AuthenticationService authenticationService, BalloonService balloonService,
-            SmartValidator validator) {
+            SmartValidator validator, IFileClient fileClient, IBalloonClient balloonClient,
+            IEmailClient emailClient, IUserClient userClient, IPermissionClient permissionClient,
+            IUserLoginRegisterClient userLoginRegisterClient) {
         this.activityEntryHelper = activityEntryHelper;
         this.authenticationService = authenticationService;
         this.balloonService = balloonService;
         this.validator = validator;
+        this.fileClient = fileClient;
+        this.balloonClient = balloonClient;
+        this.emailClient = emailClient;
+        this.userClient = userClient;
+        this.permissionClient = permissionClient;
+        this.userLoginRegisterClient = userLoginRegisterClient;
     }
 
     @InitBinder("userBean")
@@ -92,7 +109,7 @@ public class UserProfileController {
 
     @GetMapping
     public String showProfile(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member) throws IOException {
+            Model model, UserWrapper member) throws IOException {
         if (member != null) {
             return "redirect:/members/profile/" + member.getId();
         }
@@ -101,10 +118,10 @@ public class UserProfileController {
 
     @GetMapping("{userId}")
     public String showUserProfileView(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member loggedInMember, @PathVariable long userId,
+            Model model, UserWrapper loggedInMember, @PathVariable long userId,
             @RequestParam(defaultValue = "false") boolean generateReferralLink) {
         try {
-            Member member = MembersClient.getMember(userId);
+            UserWrapper member = userClient.getMember(userId);
             model.addAttribute("isUserProfileActive", member.isActive());
             if (member.isActive()) {
                 UserProfilePermissions permissions = new UserProfilePermissions(loggedInMember);
@@ -122,24 +139,27 @@ public class UserProfileController {
                 if (isSnpActive && currentUserProfile.isViewingOwnProfile()) {
                     String consentFormText = ConfigurationAttributeKey.SNP_CONSENT_FORM_TEXT.get();
                     model.addAttribute("consentFormText", consentFormText);
-                    final Optional<BalloonUserTracking> butOpt = balloonService
+                    final Optional<IBalloonUserTracking> butOpt = balloonService
                             .getBalloonUserTracking(request, response);
                     if (butOpt.isPresent()) {
-                        model.addAttribute("balloonLink", butOpt.get().getBalloonLink());
-                        model.addAttribute("balloonText", butOpt.get().getBalloonText());
+                        model.addAttribute("balloonLink", ExceptionUtils.getOrNull(
+                                () -> balloonClient.getBalloonLink(butOpt.get().getUuid())));
+                        model.addAttribute("balloonText", ExceptionUtils.getOrNull(
+                                () -> balloonClient
+                                        .getBalloonText(butOpt.get().getBalloonTextId())));
                     }
                 }
                 model.addAttribute("pointsActive",
                         ConfigurationAttributeKey.POINTS_IS_ACTIVE.get());
             }
-        } catch (MemberNotFoundException e) {
+        } catch (org.xcolab.client.user.exceptions.MemberNotFoundException e) {
             return ErrorPage.error("User profile not found").flashAndReturnView(request);
         }
         return SHOW_PROFILE_VIEW;
     }
 
     private boolean shouldAllowIndexingForUser(UserProfileWrapper userProfileWrapper) {
-        return PermissionsClient.memberHasAnySystemRole(userProfileWrapper.getUserId(),
+        return permissionClient.memberHasAnySystemRole(userProfileWrapper.getUserId(),
                 SEO_INDEXABLE_MEMBER_ROLES) || !userProfileWrapper.getBadges().isEmpty();
     }
 
@@ -151,7 +171,7 @@ public class UserProfileController {
 
     @GetMapping("{userId}/edit")
     public String showUserProfileEdit(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member loggedInMember, @PathVariable long userId) {
+            Model model, UserWrapper loggedInMember, @PathVariable long userId) {
 
         UserProfilePermissions permissions = new UserProfilePermissions(loggedInMember);
         if (!permissions.getCanEditMemberProfile(userId)) {
@@ -169,21 +189,21 @@ public class UserProfileController {
                     new NewsletterBean(currentUserProfile.getUserId()));
             model.addAttribute("newsletterActive",
                     ConfigurationAttributeKey.IS_MY_EMMA_ACTIVE.get());
-            model.addAttribute("memberCategories", MembersClient.listMemberCategories());
+            model.addAttribute("memberCategories", StaticUserContext.getUserCategoryClient().listMemberCategories());
             model.addAttribute("countrySelectItems", CountryUtil.getSelectOptions());
 
-            model.addAttribute("isI18NActive",ConfigurationAttributeKey.IS_I18N_ACTIVE.get());
+            model.addAttribute("isI18NActive", ConfigurationAttributeKey.IS_I18N_ACTIVE.get());
 
             model.addAttribute("languageSelectItems", I18nUtils.getSelectList());
             return EDIT_PROFILE_VIEW;
-        } catch (MemberNotFoundException e) {
+        } catch (org.xcolab.client.user.exceptions.MemberNotFoundException e) {
             return ErrorText.NOT_FOUND.flashAndReturnView(request);
         }
     }
 
     @RequestMapping(params = "updateError=true")
     public String updateProfileError(HttpServletRequest request,
-            Model model, Member loggedInMember,
+            Model model, UserWrapper loggedInMember,
             @RequestParam(required = false) boolean emailError,
             @RequestParam(required = false) boolean passwordError,
             @RequestParam Long userId) {
@@ -203,7 +223,7 @@ public class UserProfileController {
                 model.addAttribute("newsletterBean",
                         new NewsletterBean(currentUserProfile.getUserBean().getUserId()));
                 model.addAttribute("countrySelectItems", CountryUtil.getSelectOptions());
-                model.addAttribute("isI18NActive",ConfigurationAttributeKey.IS_I18N_ACTIVE.get());
+                model.addAttribute("isI18NActive", ConfigurationAttributeKey.IS_I18N_ACTIVE.get());
                 model.addAttribute("languageSelectItems", I18nUtils.getSelectList());
                 return EDIT_PROFILE_VIEW;
             }
@@ -218,13 +238,13 @@ public class UserProfileController {
     @PostMapping("{userId}/edit")
     public String updateUserProfile(HttpServletRequest request, HttpServletResponse response,
             Model model, @PathVariable long userId, @ModelAttribute UserBean updatedUserBean,
-            BindingResult result, Member loggedInMember)
+            BindingResult result, UserWrapper loggedInMember)
             throws IOException, MemberNotFoundException {
         UserProfilePermissions permissions = new UserProfilePermissions(loggedInMember);
         model.addAttribute("permissions", permissions);
         model.addAttribute("_activePageLink", "community");
         model.addAttribute("countrySelectItems", CountryUtil.getSelectOptions());
-        model.addAttribute("isI18NActive",ConfigurationAttributeKey.IS_I18N_ACTIVE.get());
+        model.addAttribute("isI18NActive", ConfigurationAttributeKey.IS_I18N_ACTIVE.get());
         model.addAttribute("languageSelectItems", I18nUtils.getSelectList());
 
         if (!permissions.getCanEditMemberProfile(updatedUserBean.getUserId())
@@ -242,14 +262,15 @@ public class UserProfileController {
         boolean validationError = false;
         if (StringUtils.isNotBlank(updatedUserBean.getPassword())) {
             final String currentPassword = updatedUserBean.getCurrentPassword();
-            if (MembersClient.validatePassword(currentPassword.trim(), currentUserProfile.getUser().getId())
-                    || (permissions.getCanAdmin() && MembersClient.validatePassword(
-                            currentPassword.trim(), permissions.getLoggedInMember().getId()))) {
+            if (userLoginRegisterClient
+                    .validatePassword(currentPassword.trim(), currentUserProfile.getUser().getId())
+                    || (permissions.getCanAdmin() && StaticUserContext.getUserLoginRegister().validatePassword(
+                    currentPassword.trim(), permissions.getLoggedInMember().getId()))) {
                 validator.validate(updatedUserBean, result, UserBean.PasswordChanged.class);
 
                 if (!result.hasErrors()) {
                     final String newPassword = updatedUserBean.getPassword().trim();
-                    MembersClient.updatePassword(userId, newPassword);
+                    StaticUserContext.getUserLoginRegister().updatePassword(userId, newPassword);
                     changedUserPart = true;
                 } else {
                     validationError = true;
@@ -257,7 +278,8 @@ public class UserProfileController {
                 }
             } else {
                 result.addError(
-                        new ObjectError("currentPassword", "Password change failed: Current password is incorrect."));
+                        new ObjectError("currentPassword",
+                                "Password change failed: Current password is incorrect."));
                 validationError = true;
                 return EDIT_PROFILE_VIEW;
             }
@@ -265,7 +287,8 @@ public class UserProfileController {
 
         boolean eMailChanged = false;
         if (updatedUserBean.getEmail() != null && !updatedUserBean.getEmail().trim().isEmpty() &&
-                !updatedUserBean.getEmail().equals(currentUserProfile.getUserBean().getEmailStored())) {
+                !updatedUserBean.getEmail()
+                        .equals(currentUserProfile.getUserBean().getEmailStored())) {
             validator.validate(updatedUserBean, result, UserBean.EmailChanged.class);
 
             if (!result.hasErrors()) {
@@ -279,47 +302,57 @@ public class UserProfileController {
         }
 
         if (updatedUserBean.getFirstName() != null
-                && !updatedUserBean.getFirstName().equals(currentUserProfile.getUserBean().getFirstName())) {
+                && !updatedUserBean.getFirstName()
+                .equals(currentUserProfile.getUserBean().getFirstName())) {
             validator.validate(updatedUserBean, result);
             if (!result.hasErrors()) {
-                currentUserProfile.getUser().setFirstName(HtmlUtil.cleanAll(updatedUserBean.getFirstName()));
+                currentUserProfile.getUser()
+                        .setFirstName(HtmlUtil.cleanAll(updatedUserBean.getFirstName()));
                 changedUserPart = true;
             } else {
                 validationError = true;
-                _log.warn("First name change failed for userId: {}", currentUserProfile.getUser().getId());
+                _log.warn("First name change failed for userId: {}",
+                        currentUserProfile.getUser().getId());
             }
         }
         if (updatedUserBean.getLastName() != null
-                && !updatedUserBean.getLastName().equals(currentUserProfile.getUserBean().getLastName())) {
+                && !updatedUserBean.getLastName()
+                .equals(currentUserProfile.getUserBean().getLastName())) {
             validator.validate(updatedUserBean, result);
             if (!result.hasErrors()) {
-                currentUserProfile.getUser().setLastName(HtmlUtil.cleanAll(updatedUserBean.getLastName()));
+                currentUserProfile.getUser()
+                        .setLastName(HtmlUtil.cleanAll(updatedUserBean.getLastName()));
                 changedUserPart = true;
             } else {
                 validationError = true;
-                _log.warn("Last name change failed for userId: {}", currentUserProfile.getUser().getId());
+                _log.warn("Last name change failed for userId: {}",
+                        currentUserProfile.getUser().getId());
             }
         }
 
         if (updatedUserBean.getCountryName() != null) {
             validator.validate(updatedUserBean, result);
             if (!result.hasErrors() && !updatedUserBean.getCountryName().isEmpty()) {
-                currentUserProfile.getUser().setCountry(HtmlUtil.cleanAll(updatedUserBean.getCountryCode()));
+                currentUserProfile.getUser()
+                        .setCountry(HtmlUtil.cleanAll(updatedUserBean.getCountryCode()));
                 changedUserPart = true;
             } else {
                 validationError = true;
-                _log.warn("Country name change failed for userId: {}", currentUserProfile.getUser().getId());
+                _log.warn("Country name change failed for userId: {}",
+                        currentUserProfile.getUser().getId());
             }
         }
 
         if (updatedUserBean.getDefaultLocale() != null) {
 
             if (!result.hasErrors() && !updatedUserBean.getDefaultLocale().isEmpty()) {
-                currentUserProfile.getUser().setDefaultLocale(HtmlUtil.cleanAll(updatedUserBean.getDefaultLocale()));
+                currentUserProfile.getUser()
+                        .setDefaultLocale(HtmlUtil.cleanAll(updatedUserBean.getDefaultLocale()));
                 changedUserPart = true;
             } else {
                 validationError = true;
-                _log.warn("Default language locale change failed for userId: {}", currentUserProfile.getUser().getId());
+                _log.warn("Default language locale change failed for userId: {}",
+                        currentUserProfile.getUser().getId());
             }
         }
 
@@ -331,7 +364,7 @@ public class UserProfileController {
         } else if (changedUserPart) {
             updatedUserBean.setImageId(currentUserProfile.getUser().getPortraitFileEntryId());
 
-            MembersClient.updateMember(currentUserProfile.getUser());
+            userClient.updateUser(currentUserProfile.getUser());
 
             if (eMailChanged) {
                 updatedUserBean.setEmailStored(updatedUserBean.getEmail());
@@ -342,9 +375,10 @@ public class UserProfileController {
         return "redirect:" + currentUserProfile.getUser().getProfileLinkUrl();
     }
 
-    private boolean updateUserProfile(UserProfileWrapper currentUserProfile, UserBean updatedUserBean) {
+    private boolean updateUserProfile(UserProfileWrapper currentUserProfile,
+            UserBean updatedUserBean) {
 
-        Member member = currentUserProfile.getUser();
+        UserWrapper member = currentUserProfile.getUser();
 
         String existingBio = member.getShortBio();
         if (existingBio == null) {
@@ -368,7 +402,8 @@ public class UserProfileController {
                 existingCountry = CountryUtil.getCodeForCounty(existingCountry);
             }
         }
-        if (updatedUserBean.getCountryCode() != null && !updatedUserBean.getCountryCode().equals(existingCountry)
+        if (updatedUserBean.getCountryCode() != null && !updatedUserBean.getCountryCode()
+                .equals(existingCountry)
                 && !StringUtils.isEmpty(updatedUserBean.getCountryCode())) {
             member.setCountry(updatedUserBean.getCountryCode());
             changedMember = true;
@@ -378,9 +413,10 @@ public class UserProfileController {
         if (newImageId != currentUserProfile.getUserBean().getImageId()) {
 
             if (newImageId > 0) {
-                FileEntry fe = FilesClient.getFileEntry(newImageId).orElseThrow(
+                IFileEntry fe = fileClient.getFileEntry(newImageId).orElseThrow(
                         () -> new IllegalStateException(
-                                "No file entry found for imageId " + newImageId + " for member " +
+                                "No file entry found for imageId " + newImageId
+                                        + " for UserWrapper " +
                                         updatedUserBean.getUserId()));
                 currentUserProfile.getUser().setPortraitFileEntryId(fe.getId());
                 changedMember = true;
@@ -390,8 +426,8 @@ public class UserProfileController {
             }
         }
 
-        final MessagingUserPreference messagingPreferences = MessagingClient
-                .getMessagingPreferencesForMember(currentUserProfile.getUser().getId());
+        final MessagingUserPreferenceWrapper messagingPreferences = StaticUserContext.getMessagingClient()
+                .getMessagingPreferences(currentUserProfile.getUser().getId());
         boolean changedMessagingPreferences = false;
         if (updatedUserBean.getSendEmailOnMessage() != messagingPreferences.getEmailOnReceipt()) {
             messagingPreferences.setEmailOnReceipt(updatedUserBean.getSendEmailOnMessage());
@@ -403,59 +439,73 @@ public class UserProfileController {
             changedMessagingPreferences = true;
         }
 
-        if (updatedUserBean.getSendDailyEmailOnActivity() != messagingPreferences.getEmailActivityDailyDigest()) {
-            messagingPreferences.setEmailActivityDailyDigest(updatedUserBean.getSendDailyEmailOnActivity());
+        if (updatedUserBean.getSendDailyEmailOnActivity() != messagingPreferences
+                .getEmailActivityDailyDigest()) {
+            messagingPreferences
+                    .setEmailActivityDailyDigest(updatedUserBean.getSendDailyEmailOnActivity());
             changedMessagingPreferences = true;
         }
 
         if (changedMessagingPreferences) {
-            MessagingClient.updateMessagingPreferences(messagingPreferences);
+            StaticUserContext.getMessagingClient().updateMessagingPreferences(
+                    currentUserProfile.getUser().getId(),messagingPreferences.getId(),
+                    messagingPreferences);
         }
         if (changedMember) {
-            MembersClient.updateMember(currentUserProfile.getUser());
+            try {
+                userClient.updateUser(currentUserProfile.getUser());
+            } catch (MemberNotFoundException ignore) {
+
+            }
         }
 
         return changedMember || changedMessagingPreferences;
     }
 
-    private void sendUpdatedEmail(Member user) {
+    private void sendUpdatedEmail(UserWrapper user) {
         String messageSubject = TemplateReplacementUtil
-                .replacePlatformConstants("Your email address on the <colab-name/> has been updated");
-        String messageBody = TemplateReplacementUtil.replacePlatformConstants("Dear " + user.getFirstName() + ",\n" +
-                "\n" +
-                "This is an automated message to confirm that you recently updated your email address on the <colab-name/> website.\n"
-                +
-                "\n" +
-                "Your username:  " + user.getScreenName() + "\n" +
-                "Your updated email address: " + user.getEmailAddress() + "\n" +
-                "\n" +
-                "You can login with your username at <colab-url/>.  If you have any questions or need additional help, simply reply to this message.\n"
-                +
-                "\n" +
-                "Thank you for engaging on the <colab-name/>!\n");
+                .replacePlatformConstants(
+                        "Your email address on the <colab-name/> has been updated");
+        String messageBody = TemplateReplacementUtil
+                .replacePlatformConstants("Dear " + user.getFirstName() + ",\n" +
+                        "\n" +
+                        "This is an automated message to confirm that you recently updated your "
+                        + "email address on the <colab-name/> website.\n"
+                        +
+                        "\n" +
+                        "Your username:  " + user.getScreenName() + "\n" +
+                        "Your updated email address: " + user.getEmailAddress() + "\n" +
+                        "\n" +
+                        "You can login with your username at <colab-url/>.  If you have any "
+                        + "questions or need additional help, simply reply to this message.\n"
+                        +
+                        "\n" +
+                        "Thank you for engaging on the <colab-name/>!\n");
 
         InternetAddress addressFrom = TemplateReplacementUtil.getAdminFromEmailAddress();
 
-        EmailClient.sendEmail(addressFrom.getAddress(),ConfigurationAttributeKey.COLAB_NAME.get(), user.getEmailAddress(), messageSubject,
-                messageBody, false, addressFrom.getAddress(),ConfigurationAttributeKey.COLAB_NAME.get(),user.getId());
+        emailClient.sendEmail(addressFrom.getAddress(), ConfigurationAttributeKey.COLAB_NAME.get(),
+                user.getEmailAddress(), messageSubject,
+                messageBody, false, addressFrom.getAddress(),
+                ConfigurationAttributeKey.COLAB_NAME.get(), user.getId());
     }
 
     @PostMapping("{userId}/delete")
     public void deleteUserProfile(HttpServletRequest request, HttpServletResponse response,
-            Model model, @PathVariable long userId, Member loggedInMember,
-            @RequestParam(required=false, defaultValue = "false") boolean anonymize)
+            Model model, @PathVariable long userId, UserWrapper loggedInMember,
+            @RequestParam(required = false, defaultValue = "false") boolean anonymize)
             throws IOException, MemberNotFoundException {
         UserProfilePermissions permission = new UserProfilePermissions(loggedInMember);
 
         if (anonymize && permission.getCanAdmin()) {
-            Member memberToAnonymize = new Member(MembersClient.getMember(userId));
+            UserWrapper memberToAnonymize = new UserWrapper(userClient.getMember(userId));
             memberToAnonymize.anonymize();
-            MembersClient.updateMember(memberToAnonymize);
-            MembersClient.unsubscribeFromNewsletter(userId);
+            userClient.updateUser(memberToAnonymize);
+            userClient.unsubscribeToNewsletter(userId);
         }
 
         if (permission.getCanEditMemberProfile(userId)) {
-            MembersClient.deleteMember(userId);
+            userClient.deleteUser(userId);
         }
 
         if (userId == loggedInMember.getId()) {

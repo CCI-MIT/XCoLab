@@ -1,25 +1,25 @@
 package org.xcolab.view.pages.proposals.utils.context;
 
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.pojo.IProposal2Phase;
 import org.xcolab.view.pages.proposals.permissions.ProposalsDisplayPermissions;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.wrappers.ProposalsPreferencesWrapper;
 
 public interface ProposalContext {
 
-    Contest getContest();
+    ContestWrapper getContest();
 
     ContestType getContestType();
 
-    ContestPhase getContestPhase();
+    ContestPhaseWrapper getContestPhase();
 
-    Proposal2Phase getProposal2Phase();
+    IProposal2Phase getProposal2Phase();
 
-    Proposal getProposal();
+    ProposalWrapper getProposal();
 
     ProposalsPreferencesWrapper getPreferences();
 

@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.profile.wrappers;
 
-import org.xcolab.client.activities.pojo.ActivityEntry;
+import org.xcolab.client.activity.pojo.IActivityEntry;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
 
 import java.io.Serializable;
@@ -11,10 +11,10 @@ public class UserActivityWrapper implements Serializable {
     private static final int MILLISECONDS_IN_DAY = 1000 * 60 * 60 * 24;
     private static final long serialVersionUID = 1L;
 
-    private final ActivityEntry activity;
+    private final IActivityEntry activity;
     private String body;
 
-    public UserActivityWrapper(ActivityEntry activity, ActivityEntryHelper activityEntryHelper) {
+    public UserActivityWrapper(IActivityEntry activity, ActivityEntryHelper activityEntryHelper) {
         this.activity = activity;
 
         if (this.activity != null) {

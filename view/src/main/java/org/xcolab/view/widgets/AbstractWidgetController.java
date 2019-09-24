@@ -1,12 +1,17 @@
 package org.xcolab.view.widgets;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.ui.Model;
 
-import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.contest.IContestClient;
+import org.xcolab.client.contest.IContestTeamMemberClient;
+import org.xcolab.client.contest.proposals.IProposalPhaseClient;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.commons.servlet.flash.AlertMessage;
+import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.widgets.WidgetPreference.Supplier;
 
 import java.util.Locale;
@@ -20,6 +25,15 @@ public abstract class AbstractWidgetController<WidgetPreferenceT extends WidgetP
 
     private final String baseUrl;
     private final Supplier<WidgetPreferenceT> preferenceSupplier;
+
+    @Autowired
+    protected IContestClient contestClient;
+
+    @Autowired
+    protected IContestTeamMemberClient contestTeamMemberClient;
+
+    @Autowired
+    protected IProposalPhaseClient proposalPhaseClient;
 
     protected AbstractWidgetController(String baseUrl,
             WidgetPreference.Supplier<WidgetPreferenceT> preferenceSupplier) {
@@ -37,9 +51,9 @@ public abstract class AbstractWidgetController<WidgetPreferenceT extends WidgetP
     }
 
     protected String showPreferencesInternal(HttpServletResponse response, Model model,
-            Member member, String preferenceId, String language, String viewName) {
+            UserWrapper member, String preferenceId, String language, String viewName) {
 
-        if (!PermissionsClient.canAdminAll(member)) {
+        if (!StaticUserContext.getPermissionClient().canAdminAll(member)) {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
@@ -49,9 +63,9 @@ public abstract class AbstractWidgetController<WidgetPreferenceT extends WidgetP
 
 
     protected String savePreferencesInternal(HttpServletRequest request,
-            HttpServletResponse response, Member member, WidgetPreferenceT preferences) {
+            HttpServletResponse response, UserWrapper member, WidgetPreferenceT preferences) {
 
-        if (!PermissionsClient.canAdminAll(member)) {
+        if (!StaticUserContext.getPermissionClient().canAdminAll(member)) {
             return new AccessDeniedPage(member).toViewName(response);
         }
 

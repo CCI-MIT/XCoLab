@@ -2,14 +2,14 @@ package org.xcolab.view.pages.proposals.view.proposal.helpers;
 
 import org.ocpsoft.common.util.Assert;
 
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 
 public class JudgeFilterHelper {
 
-    private final Proposal proposal;
+    private final ProposalWrapper proposal;
     private final long judgeId;
 
-    public JudgeFilterHelper(Proposal proposal, long judgeId) {
+    public JudgeFilterHelper(ProposalWrapper proposal, long judgeId) {
         Assert.notNull(proposal, "Proposal is required");
         this.proposal = proposal;
         this.judgeId = judgeId;

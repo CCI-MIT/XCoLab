@@ -1,12 +1,12 @@
 package org.xcolab.view.pages.contestmanagement.entities.massactions;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.emails.EmailClient;
-import org.xcolab.client.members.MessagingClient;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
+import org.xcolab.client.email.StaticEmailContext;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.view.pages.contestmanagement.beans.MassMessageBean;
 
@@ -25,10 +25,11 @@ public abstract class MessageMassAction extends AbstractContestMassAction {
         super(displayName);
     }
 
-    protected abstract List<Proposal> getProposalsToBeMessaged(Contest contest);
+    protected abstract List<ProposalWrapper> getProposalsToBeMessaged(ContestWrapper contest);
+
 
     @Override
-    public void execute(List<Contest> contests, boolean actionConfirmed,
+    public void execute(List<ContestWrapper> contests, boolean actionConfirmed,
             MassActionDataWrapper dataWrapper, HttpServletResponse response)
             throws IllegalArgumentException {
         MassMessageBean massMessageBean = dataWrapper.getMassMessageBean();
@@ -39,14 +40,15 @@ public abstract class MessageMassAction extends AbstractContestMassAction {
         Set<Long> recipientIds = new HashSet<>();
         final StringBuilder contestNames = new StringBuilder();
 
-        for (Contest contest : contests) {
+        for (ContestWrapper contest : contests) {
             contestNames.append(contest.getTitle()).append("; ");
-            List<Proposal> proposals = getProposalsToBeMessaged(contest);
+            List<ProposalWrapper> proposals = getProposalsToBeMessaged(contest);
 
-            for (Proposal proposal : proposals) {
-                List<Member> proposalMember =
-                        ProposalClientUtil.getProposalMembers(proposal.getId());
-                for (Member member : proposalMember) {
+            for (ProposalWrapper proposal : proposals) {
+                List<UserWrapper> proposalMember =
+                        StaticProposalContext.getProposalClient()
+                                .getProposalMembers(proposal.getId());
+                for (UserWrapper member : proposalMember) {
                     recipientIds.add(member.getId());
                 }
             }
@@ -56,10 +58,10 @@ public abstract class MessageMassAction extends AbstractContestMassAction {
     }
 
     private static void sendEmail(MassMessageBean massMessageBean, Set<Long> recipientIds,
-            List<Contest> contestList, StringBuilder contestNames) {
+            List<ContestWrapper> contestList, StringBuilder contestNames) {
         final String messageSubject = massMessageBean.getSubject();
         final String messageBody = massMessageBean.getBody();
-        MessagingClient.sendMessage(messageSubject, messageBody, ADMINISTRATOR_USER_ID,
+        StaticUserContext.getMessagingClient().sendMessage(messageSubject, messageBody, ADMINISTRATOR_USER_ID,
                 null, new ArrayList<>(recipientIds));
         final String emailSubject = "Mass message: " + messageSubject;
         final String emailBody = String.format(
@@ -69,7 +71,7 @@ public abstract class MessageMassAction extends AbstractContestMassAction {
 
         final String adminEmail = ConfigurationAttributeKey.ADMIN_EMAIL.get();
 
-        EmailClient.sendEmail(adminEmail,ConfigurationAttributeKey.COLAB_NAME.get(), adminEmail, emailSubject,
+        StaticEmailContext.getEmailClient().sendEmail(adminEmail,ConfigurationAttributeKey.COLAB_NAME.get(), adminEmail, emailSubject,
                 emailBody, true, null,null,null);
     }
 }

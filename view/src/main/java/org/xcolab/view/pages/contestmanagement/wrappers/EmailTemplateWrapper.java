@@ -1,13 +1,14 @@
 package org.xcolab.view.pages.contestmanagement.wrappers;
 
-import org.xcolab.client.admin.EmailTemplateClientUtil;
-import org.xcolab.client.admin.pojo.EmailTemplate;
+import org.xcolab.client.admin.StaticAdminContext;
+import org.xcolab.client.admin.pojo.IEmailTemplate;
+import org.xcolab.client.admin.pojo.tables.pojos.EmailTemplate;
 
 import java.util.List;
 
 public class EmailTemplateWrapper {
 
-    private EmailTemplate emailTemplate;
+    private IEmailTemplate emailTemplate;
     private Boolean createNew = false;
 
     public EmailTemplateWrapper() {
@@ -20,10 +21,11 @@ public class EmailTemplateWrapper {
 
     private void initEmailTemplate(String templateType) {
         if (templateType != null) {
-            emailTemplate = EmailTemplateClientUtil.getContestEmailTemplateByType(templateType);
+            emailTemplate =
+                    StaticAdminContext.getEmailTemplateClient().getEmailTemplate(templateType);
         } else {
-            List<EmailTemplate> contestScheduleList =
-                    EmailTemplateClientUtil.listAllContestEmailTemplates();
+            List<IEmailTemplate> contestScheduleList =
+                    StaticAdminContext.getEmailTemplateClient().listEmailTemplates();
             emailTemplate = contestScheduleList.get(0);
         }
     }
@@ -45,11 +47,12 @@ public class EmailTemplateWrapper {
     }
 
     private void createTemplateFromExisting() {
-        emailTemplate = EmailTemplateClientUtil.createEmailTemplate(emailTemplate);
+        emailTemplate =
+                StaticAdminContext.getEmailTemplateClient().createEmailTemplate(emailTemplate);
     }
 
     private void persistUpdatedSchedule() {
-        EmailTemplateClientUtil.updateContestEmailTemplate(emailTemplate);
+        StaticAdminContext.getEmailTemplateClient().updateEmailTemplate(emailTemplate);
     }
 
     public String getType() {

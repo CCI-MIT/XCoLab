@@ -2,6 +2,7 @@ package org.xcolab.view.widgets.contests;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,12 +11,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.widgets.AbstractWidgetController;
 
 import java.util.ArrayList;
@@ -36,12 +36,15 @@ public class ContestsController extends AbstractWidgetController<ContestPreferen
 
     public static final String BASE_URL = "/widgets/contests";
 
+    @Autowired
+    private IContestTypeClient contestTypeClient;
+
     protected ContestsController() {
         super(BASE_URL, ContestPreferences::new);
     }
 
     @GetMapping(AbstractWidgetController.PREFERENCES_URL_PATH)
-    public String showPreferences(HttpServletResponse response, Model model, Member member,
+    public String showPreferences(HttpServletResponse response, Model model, UserWrapper member,
             @RequestParam(required = false) String preferenceId,
             @RequestParam(required = false) String language) {
         return showPreferencesInternal(response, model, member, preferenceId, language,
@@ -51,7 +54,7 @@ public class ContestsController extends AbstractWidgetController<ContestPreferen
 
     @PostMapping(AbstractWidgetController.PREFERENCES_URL_PATH)
     public String savePreferences(HttpServletRequest request, HttpServletResponse response,
-            Member member, ContestPreferences preferences) {
+            UserWrapper member, ContestPreferences preferences) {
         return savePreferencesInternal(request, response, member, preferences);
     }
 
@@ -64,17 +67,17 @@ public class ContestsController extends AbstractWidgetController<ContestPreferen
         ContestPreferences contestPreferences =
                 new ContestPreferences(preferenceId, locale.getLanguage());
 
-        List<Contest> contestWrappers = new ArrayList<>();
+        List<ContestWrapper> contestWrappers = new ArrayList<>();
         final List<Long> selectedContests = contestPreferences.getSelectedContests();
         if (selectedContests.isEmpty()) {
 
-            List<Contest> contests = ContestClientUtil.findContestsByActiveFeatured(true, true);
+            List<ContestWrapper> contests = contestClient.findContestsByActiveFeatured(true, true);
             Collections.shuffle(contests);
-            for (Contest contest : contests) {
+            for (ContestWrapper contest : contests) {
                 if (contestWrappers.size() >= contestPreferences.getFeedSize()) {
                     break;
                 }
-                if (!contest.getContestPrivate()) {
+                if (!contest.isContestPrivate()) {
                     contestWrappers.add(contest);
                 }
             }
@@ -85,7 +88,7 @@ public class ContestsController extends AbstractWidgetController<ContestPreferen
                     break;
                 }
                 try {
-                    Contest c = ContestClientUtil.getContest(contestId);
+                    ContestWrapper c = contestClient.getContest(contestId);
                     contestWrappers.add(c);
                 } catch (ContestNotFoundException e) {
                     _log.error("Could not find contest {}", contestId);
@@ -95,7 +98,7 @@ public class ContestsController extends AbstractWidgetController<ContestPreferen
 
         model.addAttribute("contests", contestWrappers);
         model.addAttribute("contestPreferences", contestPreferences);
-        model.addAttribute("contestType", ContestTypeClient
+        model.addAttribute("contestType", contestTypeClient
                 .getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get()));
         return VIEW_BASE_PATH + "/showContests";
     }

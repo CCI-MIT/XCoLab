@@ -3,6 +3,7 @@ package org.xcolab.view.pages.members.users;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,10 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.MemberCategory;
+import org.xcolab.client.user.IUserCategoryClient;
+import org.xcolab.client.user.IUserClient;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.pojo.wrapper.MemberCategoryWrapper;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.pages.members.users.utils.MemberItem;
@@ -41,8 +43,14 @@ public class MembersController {
 
     private static final int AUTOCOMPLETE_MAX_USERS = 15;
 
-    @RequestMapping("/members")
-    public String showUsers(HttpServletRequest request, HttpServletResponse response, Model model,
+    @Autowired
+    private IUserClient userClient;
+
+    @Autowired
+    private IUserCategoryClient userCategoryClient;
+
+    @GetMapping("/members")
+    public String showUsers(HttpServletRequest request, Model model,
             SortFilterPage sortFilterPage,
             @RequestParam(value = "page", required = false) Long pageParam,
             @RequestParam(value = "memberCategory", required = false) String memberCategoryParam) {
@@ -79,12 +87,12 @@ public class MembersController {
 
         MembersPermissions membersPermissions = new MembersPermissions();
         final String emailFilterParam = membersPermissions.getCanAdminAll() ? filterParam : null;
-        List<Member> members = MembersClient.listMembers(memberCategoryParam, filterParam,
+        List<UserWrapper> members = userClient.listMembers(memberCategoryParam, filterParam,
                 emailFilterParam, sortFilterPage.getSortColumn(), sortFilterPage.isSortAscending(),
                 firstUser, endUser);
 
         List<MemberItem> users = new ArrayList<>();
-        for (Member member : members) {
+        for (UserWrapper member : members) {
             MemberItem memberItem = new MemberItem(member, memberCategoryParam);
             users.add(memberItem);
         }
@@ -92,7 +100,7 @@ public class MembersController {
         Locale locale = LocaleContextHolder.getLocale();
 
 
-        int usersCount = MembersClient.countMembers(memberCategoryParam, filterParam);
+        int usersCount = userClient.countMembers(memberCategoryParam, filterParam);
         int pagesCount = (int) Math.ceil(usersCount / (double) USERS_PER_PAGE);
 
         final MembersNavigation membersNavigation =
@@ -106,7 +114,7 @@ public class MembersController {
         model.addAttribute("users", users);
         model.addAttribute("usersCount", I18nUtils.formatNumberDefaultLocale(locale,usersCount));
 
-        model.addAttribute("memberCategories", MembersClient.getVisibleMemberCategories());
+        model.addAttribute("memberCategories", userCategoryClient.getVisibleMemberCategories());
         if (StringUtils.isNotEmpty(memberCategoryParam)) {
             model.addAttribute("memberCategory", getMemberCategoryInLocale(memberCategoryParam));
         }
@@ -116,9 +124,9 @@ public class MembersController {
         return "members/users";
     }
 
-    private MemberCategory getMemberCategoryInLocale(
+    private MemberCategoryWrapper getMemberCategoryInLocale(
             @RequestParam(value = "memberCategory", required = false) String memberCategoryParam) {
-        final MemberCategory memberCategory = MembersClient.getMemberCategory(memberCategoryParam);
+        final MemberCategoryWrapper memberCategory = userCategoryClient.getMemberCategory(memberCategoryParam);
         memberCategory.setDescription(TemplateReplacementUtil
                 .replacePlatformConstants(memberCategory.getDescription()));
         return memberCategory;
@@ -131,9 +139,9 @@ public class MembersController {
             throws IOException {
         //final JSONArray jsonMembers = JSONFactoryUtil.createJSONArray();
         final JSONArray jsonMembers = new JSONArray();
-        final List<Member> members = MembersClient
+        final List<UserWrapper> members = userClient
                 .findMembersMatching(partialName, AUTOCOMPLETE_MAX_USERS);
-        for (Member member : members) {
+        for (UserWrapper member : members) {
             final JSONObject jsonMember = new JSONObject();
             jsonMember.put("userId", member.getId());
             jsonMember.put("screenName", member.getScreenName());
@@ -149,9 +157,9 @@ public class MembersController {
     public void getUserByScreenName(HttpServletRequest request, HttpServletResponse response,
             @RequestParam String term)
             throws IOException, MemberNotFoundException {
-        final List<Member> members = MembersClient.findByScreenNameOrName(term);
+        final List<UserWrapper> members = userClient.getUserByScreenNameName(term);
         final JSONArray jsonArray = new JSONArray();
-        for(Member member: members) {
+        for(UserWrapper member: members) {
             final JSONObject jsonMember = new JSONObject();
             if (member != null) {
                 /*jsonMember.put("userId", member.getId());
@@ -175,14 +183,14 @@ public class MembersController {
 
         if (membersPermissions.getCanDownloadMemberList()) {
             try (MemberListCsvWriter csvWriter = new MemberListCsvWriter(response)) {
-                List<Member> memberList = MembersClient.listAllMembers();
+                List<UserWrapper> memberList = userClient.listAllMembers();
                 csvWriter.writeMembers(removeDuplicates(memberList));
             }
         }
     }
-    private List<Member>  removeDuplicates(List<Member> members) {
-        HashMap<String,Member> finalMembers = new HashMap<>();
-        for (Member temp : members) {
+    private List<UserWrapper>  removeDuplicates(List<UserWrapper> members) {
+        HashMap<String, UserWrapper> finalMembers = new HashMap<>();
+        for (UserWrapper temp : members) {
             if (!finalMembers.containsKey(temp.getScreenName())) {
                 finalMembers.put(temp.getScreenName(),temp);
             }

@@ -1,10 +1,10 @@
 package org.xcolab.view.widgets.feeds.wrappers;
 
+import org.xcolab.client.activity.pojo.IActivityEntry;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
+import org.xcolab.commons.time.DurationFormatter;
 import org.xcolab.util.activities.enums.ContestActivityType;
 import org.xcolab.util.activities.enums.ProposalActivityType;
-import org.xcolab.client.activities.pojo.ActivityEntry;
-import org.xcolab.commons.time.DurationFormatter;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -15,10 +15,10 @@ public class SocialActivityWrapper implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final ActivityEntry activity;
+    private final IActivityEntry activity;
     private final String body;
 
-    public SocialActivityWrapper(ActivityEntry activity, String body) {
+    public SocialActivityWrapper(IActivityEntry activity, String body) {
         this.activity = activity;
         this.body = body;
     }
@@ -116,7 +116,7 @@ public class SocialActivityWrapper implements Serializable {
     }
 
     public static class UnknownActivityTypeException extends RuntimeException {
-        public UnknownActivityTypeException(ActivityEntry activity) {
+        public UnknownActivityTypeException(IActivityEntry activity) {
             super("Unknown activity type: " + activity.getActivityCategory() + "."
                     + activity.getActivityType());
         }

@@ -5,7 +5,7 @@
 
     <!--@elvariable id="contestsSorted" type="org.xcolab.view.pages.proposals.wrappers.ContestList"-->
     <!--@elvariable id="totalContestCount" type="java.lang.Integer"-->
-    <!--@elvariable id="contests" type="java.lang.List<org.xcolab.client.contest.pojo.Contest>"-->
+    <!--@elvariable id="contests" type="java.lang.List<org.xcolab.client.contest.pojo.wrapper.ContestWrapper>"-->
 
     <div class="card-deck">
         <c:forEach var="contest" items="${contestsSorted.featured.inTileView.list}" varStatus="status">

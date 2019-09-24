@@ -4,13 +4,13 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 
-import org.xcolab.client.admin.EmailTemplateClientUtil;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.admin.pojo.EmailTemplate;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.admin.pojo.IEmailTemplate;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
+import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 
 public class ProposalMembershipInviteNotification extends ProposalUserActionNotification {
 
@@ -20,8 +20,8 @@ public class ProposalMembershipInviteNotification extends ProposalUserActionNoti
     private final String message;
     private ProposalMembershipRequestTemplate templateWrapper;
 
-    public ProposalMembershipInviteNotification(Proposal proposal, Contest contest, Member sender,
-            Member invitee, String message) {
+    public ProposalMembershipInviteNotification(ProposalWrapper proposal, ContestWrapper contest, UserWrapper sender,
+            UserWrapper invitee, String message) {
         super(proposal, contest, sender, invitee, null,
                 PlatformAttributeKey.COLAB_URL.get());
         this.message = message;
@@ -36,8 +36,8 @@ public class ProposalMembershipInviteNotification extends ProposalUserActionNoti
         final String proposalName = getProposalAttributeHelper()
                 .getAttributeValueString(ProposalAttributeKeys.NAME, "");
 
-        final EmailTemplate emailTemplate =
-                EmailTemplateClientUtil.getContestEmailTemplateByType(DEFAULT_TEMPLATE_NAME);
+        final IEmailTemplate emailTemplate =
+                StaticAdminContext.getEmailTemplateClient().getEmailTemplate(DEFAULT_TEMPLATE_NAME);
 
         templateWrapper = new ProposalMembershipRequestTemplate(emailTemplate,
                 proposalName, contest.getTitle());
@@ -47,7 +47,7 @@ public class ProposalMembershipInviteNotification extends ProposalUserActionNoti
 
     private class ProposalMembershipRequestTemplate extends ProposalUserActionNotificationTemplate {
 
-        public ProposalMembershipRequestTemplate(EmailTemplate template,
+        public ProposalMembershipRequestTemplate(IEmailTemplate template,
                 String proposalName, String contestName) {
             super(template, proposalName, contestName);
         }

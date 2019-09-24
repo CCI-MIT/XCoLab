@@ -1,16 +1,16 @@
 package org.xcolab.view.pages.proposals.permissions;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.IContestClient;
 import org.xcolab.client.contest.enums.ContestStatus;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
-import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalClient;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.IContestPhaseType;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
+import org.xcolab.client.contest.proposals.IProposalClient;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.view.pages.proposals.tabs.access.AdaptationImpactAccessAlgorithm;
 import org.xcolab.view.pages.proposals.tabs.access.ImpactAccessAlgorithm;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
@@ -22,23 +22,23 @@ public class ProposalsPermissions {
     private final boolean planIsEditable;
 
     private final long userId;
-    private final Member member;
+    private final UserWrapper member;
     private final boolean isLoggedIn;
     private final boolean isGuest;
 
-    private final Proposal proposal;
-    private final Contest contest;
-    private final ContestPhase contestPhase;
+    private final ProposalWrapper proposal;
+    private final ContestWrapper contest;
+    private final ContestPhaseWrapper contestPhase;
     private final ContestStatus contestStatus;
 
     private final ContestPermissions contestPermissions;
 
-    private final ProposalClient proposalClient;
-    private final ContestClient contestClient;
+    private final IProposalClient proposalClient;
+    private final IContestClient contestClient;
 
 
-    public ProposalsPermissions(ClientHelper clientHelper, Member member, Proposal proposal,
-            Contest contest, ContestPhase contestPhase) {
+    public ProposalsPermissions(ClientHelper clientHelper, UserWrapper member, ProposalWrapper proposal,
+            ContestWrapper contest, ContestPhaseWrapper contestPhase) {
         this.member = member;
 
         this.proposalClient = clientHelper.getProposalClient();
@@ -47,7 +47,7 @@ public class ProposalsPermissions {
         if (contestPhase != null) {
             final long contestPhaseTypeId = contestPhase.getContestPhaseTypeId();
 
-            final ContestPhaseType contestPhaseType = clientHelper.getContestClient()
+            final IContestPhaseType contestPhaseType = clientHelper.getContestClient()
                     .getContestPhaseType(contestPhaseTypeId);
             String statusStr = contestPhaseType.getStatus();
             contestStatus = ContestStatus.valueOf(statusStr);
@@ -66,14 +66,14 @@ public class ProposalsPermissions {
         }
         this.userId = member != null ? member.getId() : 0;
         this.isLoggedIn = this.userId > 0;
-        this.isGuest = PermissionsClient.isGuest(userId);
+        this.isGuest = StaticUserContext.getPermissionClient().isGuest(userId);
         this.proposal = proposal;
         this.contest = contest;
         this.contestPhase = contestPhase;
         this.contestPermissions = new ContestPermissions(member);
     }
 
-    public Member getMember() {
+    public UserWrapper getMember() {
         return member;
     }
 
@@ -202,7 +202,7 @@ public class ProposalsPermissions {
      * Returns true if user is admin (not only proposal contributor)
      */
     public boolean getCanAdminAll() {
-        return PermissionsClient.canAdminAll(userId);
+        return StaticUserContext.getPermissionClient().canAdminAll(userId);
     }
 
     private boolean isProposalMember() {
@@ -215,14 +215,14 @@ public class ProposalsPermissions {
             return getCanAdminAll();
         }
 
-        return PermissionsClient.canFellow(userId, contestPhase.getContestId()) || getCanAdminAll();
+        return StaticUserContext.getPermissionClient().canFellow(userId, contestPhase.getContestId()) || getCanAdminAll();
     }
 
     public boolean getCanJudgeActions() {
         if (contestPhase == null) {
             return getCanAdminAll();
         }
-        return PermissionsClient.canJudge(userId, contestPhase.getContestId())
+        return StaticUserContext.getPermissionClient().canJudge(userId, contestPhase.getContestId())
                 || getCanAdminAll();
     }
 
@@ -230,14 +230,15 @@ public class ProposalsPermissions {
         if (!isLoggedIn) {
             return false;
         }
-        return PermissionsClient.canContestManager(member) || PermissionsClient.canAdminAll(member);
+        return StaticUserContext.getPermissionClient().canContestManager(member) ||
+                StaticUserContext.getPermissionClient().canAdminAll(member);
     }
 
     public boolean getCanIAFActions() {
         if (!isLoggedIn) {
             return false;
         }
-        return PermissionsClient.canIAF(member);
+        return StaticUserContext.getPermissionClient().canIAF(member);
     }
 
     public boolean getCanViewMitigationImpactTab() {
@@ -256,7 +257,7 @@ public class ProposalsPermissions {
         return contestPhase != null && getCanPromoteProposalToNextPhase(contestPhase);
     }
 
-    public boolean getCanPromoteProposalToNextPhase(ContestPhase contestPhase) {
+    public boolean getCanPromoteProposalToNextPhase(ContestPhaseWrapper contestPhase) {
         if (wasProposalMovedElsewhere()) {
             return false;
         }
@@ -267,8 +268,8 @@ public class ProposalsPermissions {
         }
 
         try {
-            Contest latestProposalContest = proposalClient.getCurrentContestForProposal(proposal.getId());
-            ContestPhase activePhaseForContest = contestClient.getActivePhase(latestProposalContest.getId());
+            ContestWrapper latestProposalContest = proposalClient.getCurrentContestForProposal(proposal.getId());
+            ContestPhaseWrapper activePhaseForContest = contestClient.getActivePhase(latestProposalContest.getId());
             boolean onlyPromoteIfThisIsNotTheLatestContestPhaseInContest = contestPhase.equals(activePhaseForContest);
             return !onlyPromoteIfThisIsNotTheLatestContestPhaseInContest && getCanAdminAll();
         }catch (ContestNotFoundException ignored){

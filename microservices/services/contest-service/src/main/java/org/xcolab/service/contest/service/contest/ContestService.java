@@ -6,10 +6,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import org.xcolab.model.tables.pojos.Contest;
-import org.xcolab.model.tables.pojos.ContestPhase;
-import org.xcolab.model.tables.pojos.ContestPhaseType;
-import org.xcolab.model.tables.pojos.ContestTranslation;
+import org.xcolab.client.contest.pojo.IContestPhaseType;
+
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.service.contest.domain.contest.ContestDao;
 import org.xcolab.service.contest.domain.contest.ContestDaoQuery;
 import org.xcolab.service.contest.domain.contestphase.ContestPhaseDao;
@@ -18,6 +18,7 @@ import org.xcolab.service.contest.domain.contesttranslation.ContestTranslationDa
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.service.ontology.OntologyService;
 import org.xcolab.service.utils.PaginationHelper;
+import org.xcolab.client.contest.pojo.tables.pojos.ContestTranslation;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -52,13 +53,13 @@ public class ContestService {
         this.ontologyService = ontologyService;
     }
 
-    public List<ContestPhase> getAllContestPhases(Long contestId) {
+    public List<ContestPhaseWrapper> getAllContestPhases(Long contestId) {
         return this.contestPhaseDao.findByGiven(contestId, null, null);
     }
 
-    public ContestPhase getActiveOrLastPhase(Long contestId) {
-        ContestPhase lastPhase = null;
-        for (ContestPhase phase : getAllContestPhases(contestId)) {
+    public ContestPhaseWrapper getActiveOrLastPhase(Long contestId) {
+        ContestPhaseWrapper lastPhase = null;
+        for (ContestPhaseWrapper phase : getAllContestPhases(contestId)) {
             if (lastPhase == null || lastPhase.getPhaseStartDate().before(phase.getPhaseStartDate())) {
                 lastPhase = phase;
             }
@@ -69,19 +70,19 @@ public class ContestService {
         return lastPhase;
     }
 
-    public List<ContestPhase> getVisiblePhases(Long contestId) {
+    public List<ContestPhaseWrapper> getVisiblePhases(Long contestId) {
         return getAllContestPhases(contestId).stream()
                 .filter(contestPhase -> {
-                    final Optional<ContestPhaseType> contestPhaseType = contestPhaseTypeDao
+                    final Optional<IContestPhaseType> contestPhaseType = contestPhaseTypeDao
                             .get(contestPhase.getContestPhaseTypeId());
-                    return contestPhaseType.isPresent() && !contestPhaseType.get().getInvisible();
+                    return contestPhaseType.isPresent() && !contestPhaseType.get().isInvisible();
                 })
                 .collect(Collectors.toList());
     }
 
-    public List<Contest> getSubContestsByOntologySpaceId(Long contestId, Long ontologySpaceId) {
+    public List<ContestWrapper> getSubContestsByOntologySpaceId(Long contestId, Long ontologySpaceId) {
         try {
-            Contest contest = contestDao.get(contestId);
+            ContestWrapper contest = contestDao.get(contestId);
             long focusAreaId = contest.getFocusAreaId();
             long contestTier = contest.getContestTier();
             long lowerContestTier = contestTier - 1;
@@ -105,7 +106,7 @@ public class ContestService {
         return contestDao.isContestTitleYearUnique(contestShortName, year,currentContestId);
     }
 
-    public List<Contest> getContestsByOntologyTerm(Long ontologyTerm, Boolean active, Boolean onlyPrivate) {
+    public List<ContestWrapper> getContestsByOntologyTerm(Long ontologyTerm, Boolean active, Boolean onlyPrivate) {
 
         if (ontologyTerm == null) {
             return ContestDaoQuery.find(contestDao)
@@ -129,7 +130,7 @@ public class ContestService {
     }
 
 
-    public List<Contest> getContestsMatchingOntologyTerms(List<Long> ontologyTerms) {
+    public List<ContestWrapper> getContestsMatchingOntologyTerms(List<Long> ontologyTerms) {
 
         if (ontologyTerms == null || ontologyTerms.isEmpty()) {
             PaginationHelper ph = new PaginationHelper(0,Integer.MAX_VALUE,null);
@@ -170,18 +171,18 @@ public class ContestService {
         return calendar.get(Calendar.YEAR);
     }
 
-    public List<Contest> resolveTranslations(List<Contest> contests, String lang) {
+    public List<ContestWrapper> resolveTranslations(List<ContestWrapper> contests, String lang) {
         return contests.stream()
                 .map(contest -> resolveTranslation(contest, lang))
                 .collect(Collectors.toList());
     }
 
-    public Contest resolveTranslation(Contest contest, String lang) {
+    public ContestWrapper resolveTranslation(ContestWrapper contest, String lang) {
         final Optional<ContestTranslation> contestTranslation =
                 contestTranslationDao.get(contest.getId(), lang);
         return contestTranslation
                 .map(translation -> {
-                    Contest ret = new Contest(contest);
+                    ContestWrapper ret = new ContestWrapper(contest);
                     if (StringUtils.isNotBlank(translation.getTitle())) {
                         ret.setTitle(translation.getTitle());
                     }

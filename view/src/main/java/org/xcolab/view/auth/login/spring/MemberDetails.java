@@ -7,10 +7,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.Assert;
 
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -27,14 +26,14 @@ public class MemberDetails implements UserDetails {
     private final long userId;
     transient private Set<GrantedAuthority> authorities;
 
-    public MemberDetails(Member member) {
+    public MemberDetails(UserWrapper member) {
         Assert.notNull(member, "Member cannot be null");
         userId = member.getId();
     }
 
-    public Member getMember() {
+    public UserWrapper getMember() {
         try {
-            return MembersClient.getMember(userId);
+            return StaticUserContext.getUserClient().getMember(userId);
         } catch (MemberNotFoundException e) {
             throw new IllegalStateException("Member with id " + userId + " does not exist");
         }
@@ -83,13 +82,13 @@ public class MemberDetails implements UserDetails {
         // UserDetails.getAuthorities() contract and SEC-717)
         SortedSet<GrantedAuthority> sortedAuthorities = new TreeSet<>(new AuthorityComparator());
 
-        if (PermissionsClient.isMember(userId)) {
+        if (StaticUserContext.getPermissionClient().isMember(userId)) {
             sortedAuthorities.add(new SimpleGrantedAuthority("ROLE_MEMBER"));
-        } else if (PermissionsClient.isGuest(userId)) {
+        } else if (StaticUserContext.getPermissionClient().isGuest(userId)) {
             sortedAuthorities.add(new SimpleGrantedAuthority("ROLE_GUEST"));
         }
 
-        if (PermissionsClient.canAdminAll(userId)) {
+        if (StaticUserContext.getPermissionClient().canAdminAll(userId)) {
             sortedAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         }
 

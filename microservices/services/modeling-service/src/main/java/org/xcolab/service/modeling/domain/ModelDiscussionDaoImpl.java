@@ -5,7 +5,8 @@ import org.jooq.Record;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.model.tables.pojos.ModelDiscussion;
+import org.xcolab.client.modeling.pojo.IModelDiscussion;
+import org.xcolab.model.tables.pojos.ModelDiscussionImpl;
 import org.xcolab.model.tables.records.ModelDiscussionRecord;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class ModelDiscussionDaoImpl implements ModelDiscussionDao {
     }
 
     @Override
-    public Optional<ModelDiscussion> get(long id) {
+    public Optional<IModelDiscussion> get(long id) {
         final Record record = dslContext.select()
                 .from(MODEL_DISCUSSION)
                 .where(MODEL_DISCUSSION.ID.eq(id))
@@ -32,18 +33,18 @@ public class ModelDiscussionDaoImpl implements ModelDiscussionDao {
         if (record == null) {
             return Optional.empty();
         }
-        return Optional.of(record.into(ModelDiscussion.class));
+        return Optional.of(record.into(ModelDiscussionImpl.class));
     }
 
     @Override
-    public List<ModelDiscussion> list() {
+    public List<IModelDiscussion> list() {
         return dslContext.select()
                 .from(MODEL_DISCUSSION)
-                .fetch().into(ModelDiscussion.class);
+                .fetch().into(ModelDiscussionImpl.class);
     }
 
     @Override
-    public ModelDiscussion create(ModelDiscussion pojo) {
+    public IModelDiscussion create(IModelDiscussion pojo) {
         final ModelDiscussionRecord record = dslContext.insertInto(MODEL_DISCUSSION)
                 .set(MODEL_DISCUSSION.MODEL_ID, pojo.getModelId())
                 .set(MODEL_DISCUSSION.CATEGORY_ID, pojo.getCategoryId())
@@ -57,7 +58,7 @@ public class ModelDiscussionDaoImpl implements ModelDiscussionDao {
     }
 
     @Override
-    public boolean update(ModelDiscussion pojo) {
+    public boolean update(IModelDiscussion pojo) {
         return dslContext.update(MODEL_DISCUSSION)
                 .set(MODEL_DISCUSSION.MODEL_ID, pojo.getModelId())
                 .set(MODEL_DISCUSSION.CATEGORY_ID, pojo.getCategoryId())

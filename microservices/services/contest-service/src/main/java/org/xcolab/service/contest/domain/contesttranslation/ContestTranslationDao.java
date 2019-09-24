@@ -1,6 +1,6 @@
 package org.xcolab.service.contest.domain.contesttranslation;
 
-import org.xcolab.model.tables.pojos.ContestTranslation;
+import org.xcolab.client.contest.pojo.tables.pojos.ContestTranslation;
 
 import java.util.List;
 import java.util.Optional;

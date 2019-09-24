@@ -7,7 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
-import org.xcolab.model.tables.pojos.ContestSchedule;
+import org.xcolab.client.contest.pojo.IContestSchedule;
+import org.xcolab.client.contest.pojo.tables.pojos.ContestSchedule;
 import org.xcolab.model.tables.records.ContestScheduleRecord;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class ContestScheduleDaoImpl implements ContestScheduleDao{
     }
 
     @Override
-    public ContestSchedule create(ContestSchedule contestSchedule) {
+    public IContestSchedule create(IContestSchedule contestSchedule) {
 
         ContestScheduleRecord ret = dslContext.insertInto(CONTEST_SCHEDULE)
                 .set(CONTEST_SCHEDULE.NAME, contestSchedule.getName())
@@ -45,7 +46,7 @@ public class ContestScheduleDaoImpl implements ContestScheduleDao{
     }
 
     @Override
-    public Optional<ContestSchedule> get(Long id){
+    public Optional<IContestSchedule> get(Long id){
         final Record record =  dslContext.selectFrom(CONTEST_SCHEDULE)
                 .where(CONTEST_SCHEDULE.ID.eq(id))
                 .fetchOne();
@@ -65,7 +66,7 @@ public class ContestScheduleDaoImpl implements ContestScheduleDao{
     }
 
     @Override
-    public boolean update(ContestSchedule contestSchedule) {
+    public boolean update(IContestSchedule contestSchedule) {
         return dslContext.update(CONTEST_SCHEDULE)
                 .set(CONTEST_SCHEDULE.NAME, contestSchedule.getName())
                 .set(CONTEST_SCHEDULE.DESCRIPTION, contestSchedule.getDescription())
@@ -76,7 +77,7 @@ public class ContestScheduleDaoImpl implements ContestScheduleDao{
     }
 
     @Override
-    public List<ContestSchedule> findByGiven() {
+    public List<IContestSchedule> findByGiven() {
         final SelectQuery<Record> query = dslContext.select()
                 .from(CONTEST_SCHEDULE).getQuery();
 

@@ -7,15 +7,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import org.xcolab.client.activities.ActivitiesClientUtil;
+import org.xcolab.client.activity.IActivityClient;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.balloons.BalloonsClient;
-import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFoundException;
-import org.xcolab.client.balloons.pojo.BalloonUserTracking;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.pojo.LoginToken;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.tracking.IBalloonClient;
+import org.xcolab.client.tracking.exceptions.BalloonUserTrackingNotFoundException;
+import org.xcolab.client.tracking.pojo.IBalloonUserTracking;
+import org.xcolab.client.user.ILoginTokenClient;
+import org.xcolab.client.user.IUserClient;
+import org.xcolab.client.user.IUserLoginRegisterClient;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.pojo.wrapper.LoginTokenWrapper;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.entity.utils.LinkUtils;
 import org.xcolab.entity.utils.notifications.member.MemberBatchRegistrationNotification;
@@ -31,6 +33,7 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,10 +44,24 @@ public class LoginRegisterService {
     private static final Logger _log = LoggerFactory.getLogger(LoginRegisterService.class);
 
     private final AuthenticationService authenticationService;
+    private final IBalloonClient balloonClient;
+    private final IActivityClient activityClient;
+    private final IUserClient userClient;
+    private final IUserLoginRegisterClient userLoginRegister;
+    private final ILoginTokenClient loginTokenClient;
 
     @Autowired
-    public LoginRegisterService(AuthenticationService authenticationService) {
+    public LoginRegisterService(AuthenticationService authenticationService,
+                                IBalloonClient balloonClient, IActivityClient activityClient,
+                                IUserClient userClient,
+                                IUserLoginRegisterClient userLoginRegister,
+                                ILoginTokenClient loginTokenClient) {
         this.authenticationService = authenticationService;
+        this.balloonClient = balloonClient;
+        this.activityClient = activityClient;
+        this.userClient = userClient;
+        this.userLoginRegister = userLoginRegister;
+        this.loginTokenClient = loginTokenClient;
     }
 
     /**
@@ -59,7 +76,7 @@ public class LoginRegisterService {
             CreateUserBean newAccountBean, String redirect, boolean postRegistration)
             throws IOException {
 
-        final Member member = register(newAccountBean.getScreenName(), newAccountBean.getPassword(),
+        final UserWrapper member = register(newAccountBean.getScreenName(), newAccountBean.getPassword(),
                 newAccountBean.getEmail(), newAccountBean.getFirstName(),
                 newAccountBean.getLastName(), newAccountBean.getShortBio(),
                 newAccountBean.getCountry(), newAccountBean.getImageId(),
@@ -90,17 +107,17 @@ public class LoginRegisterService {
         }
     }
 
-    private void updateBalloonTracking(Member member, HttpServletRequest request) {
+    private void updateBalloonTracking(UserWrapper member, HttpServletRequest request) {
         Optional<BalloonCookie> balloonCookieOpt = BalloonCookie.from(request.getCookies());
         if (balloonCookieOpt.isPresent()) {
             BalloonCookie balloonCookie = balloonCookieOpt.get();
             try {
-                BalloonUserTracking but =
-                        BalloonsClient.getBalloonUserTracking(balloonCookie.getUuid());
+                IBalloonUserTracking but =
+                        balloonClient.getBalloonUserTracking(balloonCookie.getUuid());
                 if (but.getUserId() == null) {
                     but.setRegistrationDate(new Timestamp(new Date().getTime()));
                     but.setUserId(member.getId());
-                    BalloonsClient.updateBalloonUserTracking(but);
+                    balloonClient.updateBalloonUserTracking(but, member.getUuid());
                 }
             } catch (BalloonUserTrackingNotFoundException e) {
                 _log.error("Can't find balloon user tracking for uuid: {}",
@@ -108,12 +125,15 @@ public class LoginRegisterService {
             }
         }
         //update user association for all BUTs under this email address
-        BalloonsClient.getBalloonUserTrackingByEmail(member.getEmailAddress()).forEach(
-                b -> b.updateUserIdAndEmailIfEmpty(member.getId(), member.getEmailAddress()));
+        balloonClient.listBalloonUserTrackings(member.getEmailAddress(), null).forEach(
+                but -> {
+                    balloonClient.updateUserIdAndEmailIfEmpty(but, member.getId(),
+                            member.getEmailAddress());
+                });
     }
 
-    public void recordRegistrationEvent(Member member) {
-        ActivitiesClientUtil.createActivityEntry(MemberActivityType.REGISTERED, member.getId(),
+    public void recordRegistrationEvent(UserWrapper member) {
+        activityClient.createActivityEntry(MemberActivityType.REGISTERED, member.getId(),
                 member.getId());
 
         if (member.getFacebookId() != null) {
@@ -128,19 +148,19 @@ public class LoginRegisterService {
 
     public void updatePassword(String forgotPasswordToken, String newPassword)
             throws MemberNotFoundException {
-        Long userId = MembersClient.updateUserPassword(forgotPasswordToken, newPassword);
+        Long userId = userLoginRegister.updateForgottenPasswordByToken(forgotPasswordToken, newPassword);
         if (userId == null) {
             throw new MemberNotFoundException(
                     "Member with forgotPasswordToken: " + forgotPasswordToken + " was not found");
         }
     }
 
-    public Member autoRegister(String emailAddress, String firstName, String lastName) {
-        return register(null, null, emailAddress, firstName, lastName,
+    public UserWrapper autoRegister(String emailAddress, String firstName, String lastName) {
+        return register(null,UUID.randomUUID().toString(), emailAddress, firstName, lastName,
                 "", null, null, true, null);
     }
 
-    public Member register(String screenName, String password, String email, String firstName,
+    public UserWrapper register(String screenName, String password, String email, String firstName,
             String lastName, String shortBio, String country, Long imageId,
             boolean generateLoginUrl, String language) {
 
@@ -148,9 +168,9 @@ public class LoginRegisterService {
         Assert.notNull(email, "First name is required");
         Assert.notNull(email, "Last name is required");
 
-        Member member = new Member();
+        UserWrapper member = new UserWrapper();
         if (screenName == null) {
-            member.setScreenName(MembersClient.generateScreenName(lastName, firstName));
+            member.setScreenName(userLoginRegister.generateScreenName(lastName, firstName));
         } else {
             member.setScreenName(screenName);
         }
@@ -160,6 +180,8 @@ public class LoginRegisterService {
         member.setLastName(lastName);
         member.setDefaultLocale(language != null ? language : I18nUtils.DEFAULT_LANGUAGE);
         member.setStatus(0);
+        member.setIsEmailConfirmed(false);
+        member.setIsEmailBounced(false);
 
         final String baseUri = PlatformAttributeKey.COLAB_URL.get();
         member.setShortBio(HtmlUtil.cleanSome(shortBio, baseUri));
@@ -169,10 +191,10 @@ public class LoginRegisterService {
         } else {
             member.setPortraitFileEntryId(0L);
         }
-        member = MembersClient.register(member);
+        member = userClient.register(member);
 
         if (generateLoginUrl) {
-            final LoginToken loginToken = MembersClient.createLoginToken(member.getId());
+            final LoginTokenWrapper loginToken = loginTokenClient.createLoginToken(member.getId());
             new MemberBatchRegistrationNotification(member, loginToken).sendEmailNotification();
         } else {
             new MemberRegistrationNotification(member).sendEmailNotification();

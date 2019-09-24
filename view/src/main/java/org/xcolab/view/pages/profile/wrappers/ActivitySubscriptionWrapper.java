@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.profile.wrappers;
 
-import org.xcolab.client.activities.pojo.ActivitySubscription;
+import org.xcolab.client.activity.pojo.IActivitySubscription;
 import org.xcolab.view.pages.profile.SubscriptionType;
 import org.xcolab.view.pages.profile.utils.ActivitySubscriptionNameGenerator;
 
@@ -10,14 +10,14 @@ import java.util.Date;
 public class ActivitySubscriptionWrapper implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private ActivitySubscription subscription;
+    private IActivitySubscription subscription;
     private boolean selected;
     private long subscriptionPk;
 
     public ActivitySubscriptionWrapper() {
     }
 
-    public ActivitySubscriptionWrapper(ActivitySubscription subscription) {
+    public ActivitySubscriptionWrapper(IActivitySubscription subscription) {
         this.subscription = subscription;
         this.subscriptionPk = subscription.getId();
     }
@@ -42,11 +42,11 @@ public class ActivitySubscriptionWrapper implements Serializable {
         this.selected = selected;
     }
 
-    public ActivitySubscription getSubscription() {
+    public IActivitySubscription getSubscription() {
         return subscription;
     }
 
-    public void setSubscription(ActivitySubscription subscription) {
+    public void setSubscription(IActivitySubscription subscription) {
         this.subscription = subscription;
     }
 

@@ -1,8 +1,8 @@
 package org.xcolab.view.pages.messaging.beans;
 
-import org.xcolab.client.members.MessagingClient;
-import org.xcolab.client.members.legacy.enums.MessageType;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.legacy.enums.MessageType;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.pages.messaging.paging.MessageDataPage;
 import org.xcolab.view.util.pagination.PageNavigation;
 
@@ -14,7 +14,7 @@ public class MessagingBean implements Serializable {
 
     private static final int PAGE_SIZE = 10;
 
-    private Member member;
+    private UserWrapper member;
     private MessageType messageType = MessageType.INBOX;
     private int messagesCount;
 
@@ -27,16 +27,16 @@ public class MessagingBean implements Serializable {
     @SuppressWarnings("unused")
     public MessagingBean() { }
 
-    public MessagingBean(Member member, int pageNumber, MessageType messageType) {
+    public MessagingBean(UserWrapper member, int pageNumber, MessageType messageType) {
         this.member = member;
         this.pageNumber = pageNumber;
         this.messageType = messageType;
 
         dataPage = new MessageDataPage(member, messageType, PAGE_SIZE, pageNumber);
 
-        messagesCount = MessagingClient.countMessages(member.getId(), messageType);
+        messagesCount = StaticUserContext.getMessagingClient().countMessages(member.getId(), messageType);
 
-        numberOfMessagesLeft = MessagingClient.getNumberOfMessagesLeft(member.getId());
+        numberOfMessagesLeft = StaticUserContext.getMessagingClient().getNumberOfMessagesLeft(member.getId());
     }
 
     public MessageType getType() {
@@ -51,11 +51,11 @@ public class MessagingBean implements Serializable {
         this.messageType = messageType;
     }
 
-    public Member getUser() {
+    public UserWrapper getUser() {
         return member;
     }
 
-    public void setUser(Member user) {
+    public void setUser(UserWrapper user) {
         this.member = user;
     }
 

@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.pages.proposals.utils.picker.ProposalPickerFilterUtil;
@@ -28,7 +28,7 @@ public class ProposalPickerJSONController {
 
     @GetMapping("proposals/proposalPicker")
     public ProposalsResult proposalPicker(HttpServletRequest request, HttpServletResponse response,
-            Member user, ProposalContext proposalContext, @PathVariable String contestYear,
+            UserWrapper user, ProposalContext proposalContext, @PathVariable String contestYear,
             @PathVariable String contestUrlName, @RequestParam(required = false) Tab tab,
             @RequestParam(value = "filterKey", required = false) String filterType,
             @RequestParam(required = false) String filterText,
@@ -38,7 +38,7 @@ public class ProposalPickerJSONController {
             @RequestParam(required = false) Long sectionId,
             @RequestParam(required = false) long contestId) throws IOException {
 
-        List<Proposal> proposals;
+        List<ProposalWrapper> proposals;
         final long userId = user.getId();
 
         switch (tab) {
@@ -91,7 +91,7 @@ public class ProposalPickerJSONController {
             @RequestParam(required = false, value = "contestSortColumn") String sortColumn,
             @RequestParam(required = false) Long sectionId) throws IOException {
 
-        List<Contest> contests =
+        List<ContestWrapper> contests =
                 ProposalPickerFilterUtil.getTextFilteredContests(sectionId, filterText);
 
         int totalCount = contests.size();
@@ -112,7 +112,7 @@ public class ProposalPickerJSONController {
      */
     @GetMapping("proposals/proposalPickerCounter")
     public int proposalPickerCounter(HttpServletRequest request, HttpServletResponse response,
-            Member user, ProposalContext proposalContext, @PathVariable String contestYear,
+            UserWrapper user, ProposalContext proposalContext, @PathVariable String contestYear,
             @PathVariable String contestUrlName, @RequestParam String filterKey,
             @RequestParam long sectionId, @RequestParam Tab tab) throws IOException {
         long userId = user.getId();

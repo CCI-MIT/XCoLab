@@ -5,89 +5,87 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.xcolab.model.tables.pojos.ContestTeamMember;
-import org.xcolab.model.tables.pojos.ContestTeamMemberRole;
+
+import org.xcolab.client.contest.IContestTeamMemberClient;
+import org.xcolab.client.contest.pojo.IContestTeamMember;
+import org.xcolab.client.contest.pojo.IContestTeamMemberRole;
 import org.xcolab.service.contest.domain.contestteammember.ContestTeamMemberDao;
 import org.xcolab.service.contest.domain.contestteammemberrole.ContestTeamMemberRoleDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
+import org.xcolab.util.http.exceptions.RuntimeEntityNotFoundException;
 
 import java.util.List;
 
 @RestController
-public class ContestTeamMembersController {
-    @Autowired
-    private ContestTeamMemberDao contestTeamMemberDao;
+public class ContestTeamMembersController implements IContestTeamMemberClient {
+
+    private final ContestTeamMemberDao contestTeamMemberDao;
+    private final ContestTeamMemberRoleDao contestTeamMemberRoleDao;
 
     @Autowired
-    private ContestTeamMemberRoleDao contestTeamMemberRoleDao;
+    public ContestTeamMembersController(
+            ContestTeamMemberDao contestTeamMemberDao,
+            ContestTeamMemberRoleDao contestTeamMemberRoleDao) {
+        this.contestTeamMemberDao = contestTeamMemberDao;
+        this.contestTeamMemberRoleDao = contestTeamMemberRoleDao;
+    }
 
-    @PostMapping(value = "/contestTeamMembers")
-    public ContestTeamMember createContestTeamMember(@RequestBody ContestTeamMember contestTeamMember) {
-        ContestTeamMember alreadyExists = contestTeamMemberDao.findOneBy(contestTeamMember.getUserId(),
-                contestTeamMember.getContestId(),
-                contestTeamMember.getRoleId());
+    @Override
+    @PostMapping("/contestTeamMembers")
+    public IContestTeamMember createContestTeamMember(
+            @RequestBody IContestTeamMember contestTeamMember) {
+        IContestTeamMember alreadyExists = contestTeamMemberDao
+                .findOneBy(contestTeamMember.getUserId(), contestTeamMember.getContestId(),
+                        contestTeamMember.getRoleId());
         if (alreadyExists != null) {
             return alreadyExists;
         } else {
             return this.contestTeamMemberDao.create(contestTeamMember);
         }
-
     }
 
-    @GetMapping(value = "/contestTeamMembers/{contestTeamuserId}")
-    public ContestTeamMember getContestTeamMember(@PathVariable("contestTeamuserId") Long contestTeamuserId) throws NotFoundException {
-        return contestTeamMemberDao.get(contestTeamuserId)
-                .orElseThrow(NotFoundException::new);
-    }
-
-    @PutMapping(value = "/contestTeamMembers/{id}")
-    public boolean updateContestTeamMember(@RequestBody ContestTeamMember contestTeamMember,
-                                           @PathVariable("id") Long id) throws NotFoundException {
-
-        if (id == null || id == 0 || contestTeamMemberDao.get(id) == null) {
-            throw new NotFoundException("No ContestTeamMember with id " + id);
-        } else {
-            return contestTeamMemberDao.update(contestTeamMember);
-        }
-    }
-
-    @RequestMapping(value = "/contestTeamMembers", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<ContestTeamMember> getContestTeamMembers(
+    @Override
+    @GetMapping("/contestTeamMembers")
+    public List<IContestTeamMember> getTeamMembers(
             @RequestParam(required = false) Long userId,
             @RequestParam(required = false) Long contestId,
-            @RequestParam(required = false) Long roleId
-    ) {
+            @RequestParam(required = false) Long roleId) {
         return contestTeamMemberDao.findByGiven(userId, contestId, roleId);
     }
 
-    @RequestMapping(value = "/contestTeamMembers/getByContestYear", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<ContestTeamMember> getByContestYear(
+    @Override
+    @GetMapping("/contestTeamMembers/getByContestYear")
+    public List<IContestTeamMember> getTeamMembers(
             @RequestParam(required = false) Long categoryId,
-            @RequestParam(required = false) Long contestYear
-    ) {
-        return contestTeamMemberDao.findByContestYear(categoryId,contestYear);
+            @RequestParam(required = false) Long contestYear) {
+        return contestTeamMemberDao.findByContestYear(categoryId, contestYear);
     }
 
-    @DeleteMapping(value = "/contestTeamMembers/{id}")
-    public boolean deleteContestTeamMember(@PathVariable long id)
-            throws NotFoundException {
-        if (contestTeamMemberDao.exists(id)) {
-            return contestTeamMemberDao.delete(id);
+    @Override
+    @DeleteMapping("/contestTeamMembers/{contestTeamUserId}")
+    public boolean deleteContestTeamMember(@PathVariable Long contestTeamUserId) {
+        if (contestTeamMemberDao.exists(contestTeamUserId)) {
+            return contestTeamMemberDao.delete(contestTeamUserId);
         } else {
-            throw new NotFoundException("No ContestTeamMember with id given");
+            throw new RuntimeEntityNotFoundException(
+                    "ContestTeamMember not found with id " + contestTeamUserId);
         }
     }
 
-    @GetMapping(value = "/contestTeamMemberRoles/{contestTeamMemberRoleId}")
-    public ContestTeamMemberRole getContestTeamMemberRole(@PathVariable long contestTeamMemberRoleId)
-            throws NotFoundException {
-        return contestTeamMemberRoleDao.get(contestTeamMemberRoleId)
-                .orElseThrow(NotFoundException::new);
+    @Override
+    @GetMapping("/contestTeamMemberRoles/{contestTeamMemberRoleId}")
+    public IContestTeamMemberRole getContestTeamMemberRole(
+            @PathVariable Long contestTeamMemberRoleId) {
+        try {
+            return contestTeamMemberRoleDao.get(contestTeamMemberRoleId)
+                    .orElseThrow(() -> new RuntimeEntityNotFoundException(
+                            "ContestTeamMemberRole not found with id " + contestTeamMemberRoleId));
+        } catch (NotFoundException e) {
+            throw new RuntimeEntityNotFoundException(
+                    "ContestTeamMemberRole not found with id " + contestTeamMemberRoleId);
+        }
     }
 }

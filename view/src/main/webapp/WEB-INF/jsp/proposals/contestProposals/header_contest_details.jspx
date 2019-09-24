@@ -127,8 +127,8 @@
                     <c:forEach var="teamRoleEntry" items="${contest.contestTeamMembersByRole.entrySet() }">
                         <c:set var="teamRole" value="${teamRoleEntry.key}" />
                         <c:set var="teamRoleMembers" value="${teamRoleEntry.value}" />
-                        <!--@elvariable id="teamRole" type="org.xcolab.client.contest.pojo.team.ContestTeamMemberRole"-->
-                        <!--@elvariable id="teamRoleMembers" type="java.util.List<org.xcolab.client.members.pojo.Member>"-->
+                        <!--@elvariable id="teamRole" type="org.xcolab.client.contest.pojo.IContestTeamMemberRole"-->
+                        <!--@elvariable id="teamRoleMembers" type="java.util.List<org.xcolab.client.user.pojo.wrapper.UserWrapper>>"-->
                         <div class="my-2">
                             <c:choose>
                                 <c:when test="${fn:length(teamRoleMembers) eq 1}">

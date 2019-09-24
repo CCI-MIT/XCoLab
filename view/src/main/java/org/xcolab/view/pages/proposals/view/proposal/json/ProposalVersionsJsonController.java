@@ -1,21 +1,19 @@
 package org.xcolab.view.pages.proposals.view.proposal.json;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalClient;
-import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.client.proposals.ProposalPhaseClient;
-import org.xcolab.client.proposals.ProposalPhaseClientUtil;
-import org.xcolab.client.proposals.pojo.ProposalVersion;
-import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
+import org.xcolab.client.contest.IContestClient;
+import org.xcolab.client.contest.pojo.IProposal2Phase;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalVersionWrapper;
+import org.xcolab.client.contest.proposals.IProposalClient;
+import org.xcolab.client.contest.proposals.IProposalPhaseClient;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 
 import java.io.IOException;
@@ -32,19 +30,28 @@ public class ProposalVersionsJsonController {
 
     private static final long MILLISECONDS_TO_GROUP_VERSIONS = 1000 * 60;
 
+    @Autowired
+    private IContestClient contestClient;
+
+    @Autowired
+    private IProposalPhaseClient proposalPhaseClient;
+
+    @Autowired
+    private IProposalClient proposalClient;
+
     @GetMapping("/api/phases/{phaseId}/proposals/{proposalId}/versionsFirstIndex")
     public void getProposalVersionFirstIndex(HttpServletRequest request, HttpServletResponse response,
             @PathVariable("phaseId") long contestPhaseId, @PathVariable("proposalId") long proposalId)
             throws IOException {
-        Proposal2Phase p2p = null;
+        IProposal2Phase p2p = null;
         if (contestPhaseId > 0) {
-            p2p = ProposalPhaseClientUtil
+            p2p = proposalPhaseClient
                     .getProposal2PhaseByProposalIdContestPhaseId(proposalId, contestPhaseId);
         }
 
         int index = 0;
         Date oldDate = new Date();
-        for (ProposalVersion proposalVersion : ProposalClientUtil.getAllProposalVersions(proposalId)) {
+        for (ProposalVersionWrapper proposalVersion : proposalClient.getAllProposalVersions(proposalId)) {
             if (p2p == null || p2p.getVersionTo() == -1
                     || (proposalVersion.getVersion() >= p2p.getVersionFrom() && (proposalVersion.getVersion() < p2p.getVersionTo() ))
                     ) {
@@ -69,7 +76,7 @@ public class ProposalVersionsJsonController {
             @PathVariable("version") Integer version, @PathVariable("proposalId") Long proposalId) throws IOException {
 
 
-        Contest c = ProposalClientUtil.getCurrentContestForProposal(proposalId);
+        ContestWrapper c = proposalClient.getCurrentContestForProposal(proposalId);
 
         ClientHelper clientHelper = new ClientHelper();
         int index = clientHelper.getProposalClient()
@@ -87,22 +94,20 @@ public class ProposalVersionsJsonController {
             @PathVariable("proposalId") long proposalId, @RequestParam int start, @RequestParam int end)
             throws IOException {
 
-        Proposal2Phase p2p = null;
-        Contest contest = ContestClientUtil.getContest(contestId);
+        IProposal2Phase p2p = null;
+        ContestWrapper contest = contestClient.getContest(contestId);
         ClientHelper clientHelper = new ClientHelper();
-        ProposalPhaseClient proposalPhaseClient = clientHelper.getProposalPhaseClient();
-        ProposalClient proposalClient = clientHelper.getProposalClient();
-        ContestClient contestClient = clientHelper.getContestClient();
-
-
+        IProposalPhaseClient proposalPhaseClient = clientHelper.getProposalPhaseClient();
+        IProposalClient proposalClient = clientHelper.getProposalClient();
+        IContestClient contestClient = clientHelper.getContestClient();
 
         final JsonArrayBuilder proposalVersionsArray = Json.createArrayBuilder();
         int counter = 0;
-        for(ProposalVersion proposalVersion: clientHelper.getProposalClient().getProposalVersionsGroupedVersionsByContest(proposalId,contest.getId(),start, end)){
+        for(ProposalVersionWrapper proposalVersion: clientHelper.getProposalClient().getProposalVersionsGroupedVersionsByContest(proposalId,contest.getId(),start, end)){
 
                 long cphId = proposalVersion.getContestPhaseId();
-                final ContestPhase contestPhase = contestClient.getContestPhase(cphId);
-                Member author = Member.fromId(proposalVersion.getAuthorUserId());
+                final ContestPhaseWrapper contestPhase = contestClient.getContestPhase(cphId);
+                UserWrapper author = UserWrapper.fromId(proposalVersion.getAuthorUserId());
                 proposalVersionsArray.add(Json.createObjectBuilder()
                         .add("version", proposalVersion.getVersion())
                         .add("date", proposalVersion.getCreatedAt().getTime())

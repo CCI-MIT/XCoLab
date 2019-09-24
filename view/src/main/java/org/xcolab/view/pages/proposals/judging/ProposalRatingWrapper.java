@@ -1,17 +1,17 @@
 package org.xcolab.view.pages.proposals.judging;
 
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
-import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
-import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingType;
-import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingValue;
+import org.xcolab.client.contest.pojo.IProposalRatingType;
+import org.xcolab.client.contest.pojo.IProposalRatingValue;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 
 public class ProposalRatingWrapper {
-    private ProposalRating proposalRating;
+    private org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper proposalRating;
 
-    public ProposalRatingWrapper(ProposalRating proposalRating) {
+    public ProposalRatingWrapper(
+            org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper proposalRating) {
         this.proposalRating = proposalRating;
     }
 
@@ -19,7 +19,7 @@ public class ProposalRatingWrapper {
     }
 
     public String getRatingValueName() {
-        ProposalRatingValue ratingValue = this.getRatingValue();
+        IProposalRatingValue ratingValue = this.getRatingValue();
         if (ratingValue != null) {
             return ratingValue.getName();
         } else {
@@ -28,7 +28,7 @@ public class ProposalRatingWrapper {
     }
 
     public String getRatingTypeLabel() {
-        ProposalRatingType ratingType = this.getRatingType();
+        IProposalRatingType ratingType = this.getRatingType();
         if (ratingType != null) {
             return ratingType.getLabel();
         } else {
@@ -36,7 +36,7 @@ public class ProposalRatingWrapper {
         }
     }
     public Long getRatingTypeId() {
-        ProposalRatingType ratingType = this.getRatingType();
+        IProposalRatingType ratingType = this.getRatingType();
         if (ratingType != null) {
             return ratingType.getId();
         } else {
@@ -44,28 +44,30 @@ public class ProposalRatingWrapper {
         }
     }
 
-    public ProposalRatingType getRatingType()  {
-        ProposalRatingValue ratingValue = this.getRatingValue();
+    public IProposalRatingType getRatingType()  {
+        IProposalRatingValue ratingValue = this.getRatingValue();
             if (ratingValue != null) {
-                return ProposalJudgeRatingClientUtil.getProposalRatingType(ratingValue.getRatingTypeId());
+                return StaticProposalContext.getProposalJudgeRatingClient()
+                        .getProposalRatingType(ratingValue.getRatingTypeId());
             }
 
         return null;
     }
 
-    public ProposalRatingValue getRatingValue()  {
-        return ProposalJudgeRatingClientUtil.getProposalRatingValue(this.proposalRating.getRatingValueId());
+    public IProposalRatingValue getRatingValue()  {
+        return StaticProposalContext.getProposalJudgeRatingClient()
+                .getProposalRatingValue(this.proposalRating.getRatingValueId());
     }
 
-    public Member getUser()  {
+    public UserWrapper getUser()  {
         try {
-            return MembersClient.getMember(this.proposalRating.getUserId());
+            return StaticUserContext.getUserClient().getMember(this.proposalRating.getUserId());
         } catch (MemberNotFoundException e) {
             return null;
         }
     }
 
-    public ProposalRating unwrap() {
+    public org.xcolab.client.contest.pojo.wrapper.ProposalRatingWrapper unwrap() {
         return proposalRating;
     }
 

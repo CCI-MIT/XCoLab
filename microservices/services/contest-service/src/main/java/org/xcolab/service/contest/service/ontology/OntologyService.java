@@ -3,12 +3,12 @@ package org.xcolab.service.contest.service.ontology;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import org.xcolab.model.tables.pojos.FocusAreaOntologyTerm;
-import org.xcolab.model.tables.pojos.OntologyTerm;
+import org.xcolab.client.contest.pojo.IFocusAreaOntologyTerm;
+import org.xcolab.client.contest.pojo.wrapper.OntologyTermWrapper;
+import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.service.contest.domain.focusareaontologyterm.FocusAreaOntologyTermDao;
 import org.xcolab.service.contest.domain.ontologyterm.OntologyTermDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
-import org.xcolab.commons.exceptions.InternalException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 public class OntologyService {
 
     private final OntologyTermDao ontologyTermDao;
-
     private final FocusAreaOntologyTermDao focusAreaOntologyTermDao;
 
     @Autowired
@@ -29,11 +28,10 @@ public class OntologyService {
         this.focusAreaOntologyTermDao = focusAreaOntologyTermDao;
     }
 
-
     public List<Long> getFocusAreaOntologyTermIdsByFocusAreaAndSpaceId(Long focusAreaId, Long ontologySpaceId) {
         long ontologyTermId = getOntologyTermIdByFocusAreaAndSpaceId(focusAreaId, ontologySpaceId);
         List<Long> focusAreasIdsByOntologyTermId = new ArrayList<>();
-        for (FocusAreaOntologyTerm faot : focusAreaOntologyTermDao.findByGiven(null, ontologyTermId)) {
+        for (IFocusAreaOntologyTerm faot : focusAreaOntologyTermDao.findByGiven(null, ontologyTermId)) {
             focusAreasIdsByOntologyTermId.add(faot.getFocusAreaId());
         }
 
@@ -41,12 +39,12 @@ public class OntologyService {
     }
 
     private long getOntologyTermIdByFocusAreaAndSpaceId(Long focusAreaId, long ontologySpaceId) {
-        List<FocusAreaOntologyTerm> ontologyTermsForFocusArea =
+        List<IFocusAreaOntologyTerm> ontologyTermsForFocusArea =
             focusAreaOntologyTermDao.findByGiven(focusAreaId, null);
-        for (FocusAreaOntologyTerm focusAreaOntologyTerm : ontologyTermsForFocusArea) {
+        for (IFocusAreaOntologyTerm focusAreaOntologyTerm : ontologyTermsForFocusArea) {
             long focusAreaOntologyTermOntologyTermId = focusAreaOntologyTerm.getOntologyTermId();
             try {
-                OntologyTerm ontologyTerm = ontologyTermDao.get(focusAreaOntologyTermOntologyTermId);
+                OntologyTermWrapper ontologyTerm = ontologyTermDao.get(focusAreaOntologyTermOntologyTermId);
                 if (ontologyTerm.getOntologySpaceId() == ontologySpaceId) {
                     return ontologyTerm.getId();
                 }
@@ -69,12 +67,11 @@ public class OntologyService {
     }
 
     public List<Long> getAllOntologyTermDescendantTermsIds(Long ontologyTermId) {
-
         List<Long> terms = new ArrayList<>();
         try {
-            OntologyTerm ontologyTerm = ontologyTermDao.get(ontologyTermId);
+            OntologyTermWrapper ontologyTerm = ontologyTermDao.get(ontologyTermId);
 
-            for (OntologyTerm ot : getAllOntologyTermDescendantTerms(ontologyTerm)) {
+            for (OntologyTermWrapper ot : getAllOntologyTermDescendantTerms(ontologyTerm)) {
                 terms.add(ot.getId());
             }
         } catch (NotFoundException ignored) {
@@ -82,10 +79,10 @@ public class OntologyService {
         return terms;
     }
 
-    public List<OntologyTerm> getAllOntologyTermDescendantTerms(OntologyTerm ontologyTerm) {
-        List<OntologyTerm> terms = new ArrayList<>();
+    public List<OntologyTermWrapper> getAllOntologyTermDescendantTerms(OntologyTermWrapper ontologyTerm) {
+        List<OntologyTermWrapper> terms = new ArrayList<>();
         if (ontologyTerm.getId() != 0) {
-            for (OntologyTerm ot : ontologyTermDao.findByGiven(null, ontologyTerm.getId(),null)) {
+            for (OntologyTermWrapper ot : ontologyTermDao.findByGiven(null, ontologyTerm.getId(),null)) {
                 terms.add(ot);
                 terms.addAll(getAllOntologyTermDescendantTerms(ot));
             }
@@ -96,18 +93,14 @@ public class OntologyService {
         }
     }
 
-
     public List<Long> getFocusAreasIdForOntologyTermIds(List<Long> ontTermId) {
-
-        List<FocusAreaOntologyTerm> list = focusAreaOntologyTermDao.findByOntologyTermIds(ontTermId);
+        List<IFocusAreaOntologyTerm> list = focusAreaOntologyTermDao.findByOntologyTermIds(ontTermId);
         List<Long> focusAreaIds = new ArrayList<>();
         if (list != null && !list.isEmpty()) {
-            for (FocusAreaOntologyTerm faot : list) {
+            for (IFocusAreaOntologyTerm faot : list) {
                 focusAreaIds.add(faot.getFocusAreaId());
             }
         }
         return focusAreaIds;
     }
-
-
 }

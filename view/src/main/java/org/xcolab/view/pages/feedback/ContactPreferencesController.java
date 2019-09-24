@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.widgets.AbstractWidgetController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,14 +25,14 @@ public class ContactPreferencesController extends AbstractWidgetController<Conta
 
     @GetMapping(PREFERENCES_URL_PATH)
     public String showFeed(HttpServletRequest request, HttpServletResponse response, Model model,
-            Member member, @RequestParam(required = false) String language) {
+            UserWrapper member, @RequestParam(required = false) String language) {
         return showPreferencesInternal(response, model, member, "default", language,
                 "/feedback/editPreferences");
     }
 
     @PostMapping(PREFERENCES_URL_PATH)
     public String savePreferences(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member, @RequestParam(required = false) String language,
+            Model model, UserWrapper member, @RequestParam(required = false) String language,
             ContactPreferences preferences) {
         return savePreferencesInternal(request, response, member, preferences);
     }

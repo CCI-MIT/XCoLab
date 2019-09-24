@@ -3,11 +3,12 @@ package org.xcolab.view.pages.contestmanagement.wrappers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.contest.ContestTeamMemberClientUtil;
-import org.xcolab.client.contest.pojo.team.ContestTeamMember;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.permissions.SystemRole;
+import org.xcolab.client.contest.StaticContestContext;
+import org.xcolab.client.contest.pojo.IContestTeamMember;
+import org.xcolab.client.contest.pojo.tables.pojos.ContestTeamMember;
+import org.xcolab.client.activity.StaticActivityContext;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.permissions.SystemRole;
 import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 import org.xcolab.view.pages.contestmanagement.beans.ContestTeamBean;
@@ -46,44 +47,49 @@ public class ContestTeamWrapper {
     private void assignMemberRoleToUser(SystemRole systemRole, List<Long> userIds) {
         long roleId = systemRole.getRoleId();
         for (Long userId : userIds) {
-            MembersClient.assignMemberRole(userId, roleId);
+            StaticUserContext.getUserClient().assignMemberRole(userId, roleId);
         }
     }
 
     private void assignMembersToContestWithRole(List<Long> userIds, SystemRole systemRole) {
         for (Long userId : userIds) {
-            ContestTeamMember contestTeamMember = new ContestTeamMember();
+            IContestTeamMember contestTeamMember = new ContestTeamMember();
             contestTeamMember.setContestId(contestId);
             contestTeamMember.setUserId(userId);
             contestTeamMember.setRoleId(systemRole.getRoleId());
-            ContestTeamMemberClientUtil.createContestTeamMember(contestTeamMember);
+            StaticContestContext.getContestTeamMemberClient()
+                    .createContestTeamMember(contestTeamMember);
         }
     }
 
     private void subscribeUsersToContest(List<Long> userIds) {
         for (Long userId : userIds) {
-            ActivitiesClientUtil.addSubscription(userId, ActivityCategory.CONTEST, contestId, "");
+            StaticActivityContext.getActivityClient()
+                    .addSubscription(userId, ActivityCategory.CONTEST, contestId);
         }
     }
 
-    private void removeTeamMember(ContestTeamMember contestTeamMember) {
+    private void removeTeamMember(IContestTeamMember contestTeamMember) {
         try {
-            ContestTeamMemberClientUtil.deleteContestTeamMember(contestTeamMember.getId());
+            StaticContestContext.getContestTeamMemberClient()
+                    .deleteContestTeamMember(contestTeamMember.getId());
         } catch (UncheckedEntityNotFoundException e) {
             log.warn("ContestTeamMember {} already deleted", contestTeamMember.getId());
         }
         Long userId = contestTeamMember.getUserId();
         Long roleId = contestTeamMember.getRoleId();
-        if (ContestTeamMemberClientUtil.getTeamMembers(userId, null, roleId).isEmpty()) {
-            MembersClient.removeMemberRole(userId, roleId);
+        if (StaticContestContext.getContestTeamMemberClient()
+                .getTeamMembers(userId, null, roleId).isEmpty()) {
+            StaticUserContext.getUserClient().removeMemberRole(userId, roleId);
         }
 
     }
 
     private void removeAllContestTeamMembersForContest() {
-        List<ContestTeamMember> contestTeamMembers =
-                ContestTeamMemberClientUtil.getTeamMembers(null, contestId, null);
-        for (ContestTeamMember contestTeamMember : contestTeamMembers) {
+        List<IContestTeamMember> contestTeamMembers =
+                StaticContestContext.getContestTeamMemberClient()
+                        .getTeamMembers(null, contestId, null);
+        for (IContestTeamMember contestTeamMember : contestTeamMembers) {
             removeTeamMember(contestTeamMember);
         }
     }

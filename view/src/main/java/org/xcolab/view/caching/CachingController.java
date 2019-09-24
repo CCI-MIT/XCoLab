@@ -5,13 +5,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
+import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
-import org.xcolab.commons.servlet.flash.AlertMessage;
 
 import java.io.IOException;
 
@@ -24,9 +24,9 @@ public class CachingController {
 
     @PostMapping("clear")
     public void evict(HttpServletRequest request, HttpServletResponse response,
-            Member loggedInMember, @RequestParam(required = false) CacheName cacheName)
+            UserWrapper loggedInMember, @RequestParam(required = false) CacheName cacheName)
             throws IOException {
-        if (!PermissionsClient.canAdminAll(loggedInMember)) {
+        if (!StaticUserContext.getPermissionClient().canAdminAll(loggedInMember)) {
             ErrorText.ACCESS_DENIED.flashAndRedirect(request, response);
             return;
         }

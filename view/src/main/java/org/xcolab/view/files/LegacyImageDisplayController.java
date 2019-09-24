@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.IUserClient;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 
 import java.io.IOException;
 
@@ -20,8 +20,11 @@ public class LegacyImageDisplayController {
 
     private final ImageDisplayService imageDisplayService;
 
-    public LegacyImageDisplayController(ImageDisplayService imageDisplayService) {
+    private final IUserClient userClient;
+
+    public LegacyImageDisplayController(ImageDisplayService imageDisplayService, IUserClient userClient) {
         this.imageDisplayService = imageDisplayService;
+        this.userClient = userClient;
     }
 
     @GetMapping("/image/contest/{imageId}")
@@ -52,7 +55,7 @@ public class LegacyImageDisplayController {
 
         if (userId != null) {
             try {
-                Member member = MembersClient.getMember(userId);
+                UserWrapper member = userClient.getMember(userId);
                 imageDisplayService.serveImage(request, response,
                         member.getPortraitId(), ImageType.PROPOSAL);
             } catch (MemberNotFoundException e) {

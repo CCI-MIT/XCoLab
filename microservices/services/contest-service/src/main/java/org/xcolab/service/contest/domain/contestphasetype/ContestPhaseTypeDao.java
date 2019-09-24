@@ -1,19 +1,19 @@
 package org.xcolab.service.contest.domain.contestphasetype;
 
-import org.xcolab.model.tables.pojos.ContestPhaseType;
+import org.xcolab.client.contest.pojo.IContestPhaseType;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface ContestPhaseTypeDao {
 
-    ContestPhaseType create(ContestPhaseType contestPhaseType);
+    IContestPhaseType create(IContestPhaseType contestPhaseType);
 
-    Optional<ContestPhaseType> get(Long id);
+    Optional<IContestPhaseType> get(Long id);
 
-    boolean update(ContestPhaseType contestPhaseType);
+    boolean update(IContestPhaseType contestPhaseType);
 
     int delete(Long id);
 
-    List<ContestPhaseType> findByGiven();
+    List<IContestPhaseType> findByGiven();
 }

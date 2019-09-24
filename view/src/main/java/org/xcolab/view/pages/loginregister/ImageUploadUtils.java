@@ -4,10 +4,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.files.FilesClient;
-import org.xcolab.client.files.pojo.FileEntry;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.content.StaticContentContext;
+import org.xcolab.client.content.pojo.FileEntryWrapper;
+import org.xcolab.client.content.pojo.IFileEntry;
+import org.xcolab.client.content.pojo.tables.pojos.FileEntry;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.util.entity.upload.FileUploadUtil;
 
 import java.awt.image.BufferedImage;
@@ -34,13 +37,14 @@ public class ImageUploadUtils {
             byte[] imgBArr = FileUploadUtil.resizeAndCropImage(image, IMAGE_RESIZE_WIDTH, IMAGE_RESIZE_HEIGHT);
 
 
-            FileEntry file = new FileEntry();
+            IFileEntry file = new FileEntry();
             file.setCreatedAt(new Timestamp(new Date().getTime()));
             file.setFileExtension("png");
             file.setFileSize(imgBArr.length);
             file.setFileName(url.toString());
 
-            file = FilesClient.createFileEntry(file, imgBArr, UPLOAD_PATH);
+            file = StaticContentContext.getFileClient()
+                    .createFileEntry(new FileEntryWrapper(file, imgBArr, UPLOAD_PATH));
 
             return file.getId();
         } catch (IOException  e) {
@@ -50,11 +54,15 @@ public class ImageUploadUtils {
         return 0L;
     }
 
-    public static void updateProfilePicture(Member member, String picURL) {
+    public static void updateProfilePicture(UserWrapper member, String picURL) {
         // Link picture if it is not yet set
         if (member.getPortraitId() == 0) {
             member.setPortraitFileEntryId(linkProfilePicture(picURL));
-            MembersClient.updateMember(member);
+            try{
+                StaticUserContext.getUserClient().updateUser(member);
+            }catch (MemberNotFoundException e){
+
+            }
         }
     }
 

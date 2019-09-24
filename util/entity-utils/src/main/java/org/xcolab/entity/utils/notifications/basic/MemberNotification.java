@@ -4,27 +4,27 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 
-import org.xcolab.client.admin.EmailTemplateClientUtil;
-import org.xcolab.client.admin.pojo.EmailTemplate;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.admin.StaticAdminContext;
+import org.xcolab.client.admin.pojo.IEmailTemplate;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 
 public class MemberNotification extends EmailNotification {
 
     protected final String templateName;
-    protected final Member recipient;
+    protected final UserWrapper recipient;
     protected EmailNotificationTemplate templateWrapper;
 
     private static final String SENDER_NAME_PLACEHOLDER = "sender-name";
     private static final String SENDER_LASTNAME_PLACEHOLDER = "sender-lastname";
     private static final String SENDER_SCREENNAME_PLACEHOLDER = "sender-screenname";
 
-    public MemberNotification(Member recipient, String templateName) {
+    public MemberNotification(UserWrapper recipient, String templateName) {
         this.recipient = recipient;
         this.templateName = templateName;
     }
 
     @Override
-    protected Member getRecipient() {
+    protected UserWrapper getRecipient() {
         return recipient;
     }
 
@@ -34,8 +34,8 @@ public class MemberNotification extends EmailNotification {
             return templateWrapper;
         }
 
-        final EmailTemplate emailTemplate =
-                EmailTemplateClientUtil.getContestEmailTemplateByType(templateName);
+        final IEmailTemplate emailTemplate =
+                StaticAdminContext.getEmailTemplateClient().getEmailTemplate(templateName);
         templateWrapper = new MemberNotificationTemplate(emailTemplate, "", "");
 
         return templateWrapper;
@@ -48,7 +48,7 @@ public class MemberNotification extends EmailNotification {
 
     protected class MemberNotificationTemplate extends EmailNotificationTemplate {
 
-        public MemberNotificationTemplate(EmailTemplate template, String proposalName, String contestName) {
+        public MemberNotificationTemplate(IEmailTemplate template, String proposalName, String contestName) {
             super(template, proposalName, contestName);
         }
 

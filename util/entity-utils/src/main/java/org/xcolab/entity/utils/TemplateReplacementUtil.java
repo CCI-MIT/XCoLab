@@ -1,9 +1,9 @@
 package org.xcolab.entity.utils;
 
-import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.admin.util.TemplateReplacementUtilPlaceholder;
 import org.xcolab.client.admin.pojo.ContestType;
+import org.xcolab.client.admin.util.TemplateReplacementUtilPlaceholder;
 import org.xcolab.commons.exceptions.InternalException;
 
 import java.io.UnsupportedEncodingException;
@@ -20,10 +20,11 @@ public final class TemplateReplacementUtil {
     }
 
     public static String replaceContestTypeStrings(String text, ContestType contestType) {
-            if (contestType == null) {
-                contestType = ContestTypeClient.getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
-            }
-            return contestType.format(text);
+        if (contestType == null) {
+            contestType = StaticAdminContext.getContestTypeClient()
+                    .getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
+        }
+        return contestType.format(text);
     }
 
     public static InternetAddress getAdminFromEmailAddress() {

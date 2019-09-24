@@ -9,7 +9,7 @@ import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
 
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.view.auth.handlers.AuthenticationSuccessHandler;
 import org.xcolab.view.auth.login.spring.MemberDetails;
@@ -46,16 +46,16 @@ public class AuthenticationService {
         return authenticationContext.isImpersonating();
     }
 
-    public Member getMemberOrNull(HttpServletRequest request) {
+    public UserWrapper getMemberOrNull(HttpServletRequest request) {
         return authenticationContext.getMemberOrNull();
     }
 
-    public Member getRealMemberOrNull() {
+    public UserWrapper getRealMemberOrNull() {
         return authenticationContext.getRealMemberOrNull();
     }
 
     public Authentication authenticate(HttpServletRequest request, HttpServletResponse response,
-            Member member) {
+            UserWrapper member) {
         //initialize session if it doesn't exist
         request.getSession(true);
 

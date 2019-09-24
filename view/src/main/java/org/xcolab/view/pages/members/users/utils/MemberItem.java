@@ -2,11 +2,11 @@ package org.xcolab.view.pages.members.users.utils;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.MemberCategory;
-import org.xcolab.client.members.pojo.Role;
+import org.xcolab.client.activity.StaticActivityContext;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.pojo.wrapper.MemberCategoryWrapper;
+import org.xcolab.client.user.pojo.wrapper.RoleWrapper;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -20,22 +20,21 @@ public class MemberItem implements Serializable {
     private final String displayName;
     private final String screenName;
     private final int points;
-    private final MemberCategory memberCategory;
+    private final MemberCategoryWrapper memberCategory;
 
-    public MemberItem(Member member, String memberCategoryParam) {
-
+    public MemberItem(UserWrapper member, String memberCategoryParam) {
         userId = member.getId();
-        activityCount = ActivitiesClientUtil.countActivities(member.getId(), null);
+        activityCount = StaticActivityContext.getActivityClient().countActivities(member.getId(), null);
         displayName = member.getDisplayName();
         screenName = member.getScreenName();
         joinDate = member.getCreatedAt();
-        points = MembersClient.getMemberMaterializedPoints(userId);
+        points = StaticUserContext.getUserClient().getMemberMaterializedPoints(userId);
 
         if (StringUtils.isNotEmpty(memberCategoryParam)) {
-            memberCategory = MembersClient.getMemberCategory(memberCategoryParam);
+            memberCategory = StaticUserContext.getUserCategoryClient().getMemberCategory(memberCategoryParam);
         } else {
-            List<Role> roles = MembersClient.getMemberRoles(userId);
-            memberCategory = MembersClient.getHighestCategory(roles);
+            List<RoleWrapper> roles = StaticUserContext.getUserClient().getUserRoles(userId,null);
+            memberCategory = StaticUserContext.getUserClient().getHighestCategory(roles);
         }
     }
 
@@ -55,7 +54,7 @@ public class MemberItem implements Serializable {
         return String.format("%,d", points);
     }
 
-    public MemberCategory getMemberCategory() {
+    public MemberCategoryWrapper getMemberCategory() {
         return memberCategory;
     }
     

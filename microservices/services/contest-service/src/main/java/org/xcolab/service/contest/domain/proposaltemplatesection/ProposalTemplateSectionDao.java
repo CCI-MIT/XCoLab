@@ -1,16 +1,16 @@
 package org.xcolab.service.contest.domain.proposaltemplatesection;
 
-import org.xcolab.model.tables.pojos.ProposalTemplateSection;
+import org.xcolab.client.contest.pojo.IProposalTemplateSection;
 
 import java.util.List;
 
 public interface ProposalTemplateSectionDao {
 
-    List<ProposalTemplateSection> findByGiven(Long proposalTemplateId, Long planSectionId);
+    List<IProposalTemplateSection> findByGiven(Long proposalTemplateId, Long planSectionId);
 
     int delete(Long proposalTemplateId, Long proposalTemplateSectionDefinitionId);
 
-    boolean update(ProposalTemplateSection proposalTemplateSection);
+    boolean update(IProposalTemplateSection proposalTemplateSection);
 
-    ProposalTemplateSection create(ProposalTemplateSection proposalTemplateSection);
+    IProposalTemplateSection create(IProposalTemplateSection proposalTemplateSection);
 }

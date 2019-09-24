@@ -7,7 +7,9 @@ import org.jooq.Record;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.model.tables.pojos.ConfigurationAttribute;
+import org.xcolab.client.admin.pojo.IConfigurationAttribute;
+import org.xcolab.client.admin.pojo.tables.pojos.ConfigurationAttribute;
+
 import org.xcolab.util.i18n.I18nUtils;
 
 import java.util.Optional;
@@ -27,7 +29,7 @@ public class ConfigurationAttributeDaoImpl implements ConfigurationAttributeDao 
     }
 
     @Override
-    public ConfigurationAttribute create(ConfigurationAttribute pojo) {
+    public IConfigurationAttribute create(IConfigurationAttribute pojo) {
         dslContext.insertInto(CONFIGURATION_ATTRIBUTE)
                 .set(CONFIGURATION_ATTRIBUTE.NAME, pojo.getName())
                 .set(CONFIGURATION_ATTRIBUTE.ADDITIONAL_ID, pojo.getAdditionalId())
@@ -40,7 +42,7 @@ public class ConfigurationAttributeDaoImpl implements ConfigurationAttributeDao 
     }
 
     @Override
-    public Optional<ConfigurationAttribute> getConfigurationAttribute(String attributeName,
+    public Optional<IConfigurationAttribute> getConfigurationAttribute(String attributeName,
             String locale) {
 
         final Condition localeCondition;
@@ -54,7 +56,7 @@ public class ConfigurationAttributeDaoImpl implements ConfigurationAttributeDao 
         final Record attributeRecord = dslContext.select()
                 .from(CONFIGURATION_ATTRIBUTE)
                 .where(CONFIGURATION_ATTRIBUTE.NAME.eq(attributeName)
-                    .and(localeCondition))
+                        .and(localeCondition))
                 .fetchOne();
         if (attributeRecord == null) {
             return Optional.empty();
@@ -63,7 +65,7 @@ public class ConfigurationAttributeDaoImpl implements ConfigurationAttributeDao 
     }
 
     @Override
-    public boolean update(ConfigurationAttribute pojo) {
+    public boolean update(IConfigurationAttribute pojo) {
 
         return dslContext.update(CONFIGURATION_ATTRIBUTE)
                 .set(CONFIGURATION_ATTRIBUTE.ADDITIONAL_ID, pojo.getAdditionalId())

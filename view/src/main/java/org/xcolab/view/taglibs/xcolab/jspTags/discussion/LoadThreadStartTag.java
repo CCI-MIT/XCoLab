@@ -3,18 +3,18 @@ package org.xcolab.view.taglibs.xcolab.jspTags.discussion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.comment.CategoryClient;
-import org.xcolab.client.comment.ThreadClient;
+import org.xcolab.client.comment.StaticCommentContext;
 import org.xcolab.client.comment.exceptions.CategoryGroupNotFoundException;
 import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
-import org.xcolab.client.comment.pojo.Category;
-import org.xcolab.client.comment.pojo.CategoryGroup;
-import org.xcolab.client.comment.pojo.CommentThread;
-import org.xcolab.client.flagging.FlaggingClient;
-import org.xcolab.client.flagging.pojo.ReportTarget;
+import org.xcolab.client.comment.pojo.ICategory;
+import org.xcolab.client.comment.pojo.ICategoryGroup;
+import org.xcolab.client.comment.pojo.IThread;
+import org.xcolab.client.comment.pojo.tables.pojos.CategoryGroup;
+import org.xcolab.client.moderation.StaticModerationContext;
+import org.xcolab.client.moderation.pojo.IReportTarget;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
-import org.xcolab.util.enums.flagging.TargetType;
+import org.xcolab.util.enums.moderation.TargetType;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.wrappers.NewMessageWrapper;
 
 import java.util.List;
@@ -33,24 +33,25 @@ public class LoadThreadStartTag extends BodyTagSupport {
     @Override
     public int doStartTag() {
         try {
-
             HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
 
             String shareTitle = null;
 
             if (categoryId > 0) {
                 try {
-                    Category category = CategoryClient.instance().getCategory(categoryId);
+                    ICategory category = StaticCommentContext.getCategoryClient()
+                            .getCategory(categoryId);
                     shareTitle = category.getName();
                 } catch (CategoryNotFoundException e) {
-                    throw ReferenceResolutionException.toObject(Category.class, categoryId)
+                    throw ReferenceResolutionException.toObject(ICategory.class, categoryId)
                             .fromObject(LoadThreadStartTag.class, "for thread " + threadId);
                 }
             }
 
             if (categoryGroupId > 0) {
                 try {
-                    CategoryGroup categoryGroup = CategoryClient.instance().getCategoryGroup(categoryGroupId);
+                    ICategoryGroup categoryGroup = StaticCommentContext.getCategoryClient()
+                            .getCategoryGroup(categoryGroupId);
                     if (shareTitle == null) {
                         shareTitle = categoryGroup.getDescription();
                     }
@@ -61,7 +62,7 @@ public class LoadThreadStartTag extends BodyTagSupport {
                 }
             }
 
-            CommentThread thread = ThreadClient.instance().getThread(threadId);
+            IThread thread = StaticCommentContext.getThreadClient().getThread(threadId);
 
             DiscussionPermissions discussionPermissions = (DiscussionPermissions) request
                     .getAttribute(DiscussionPermissions.REQUEST_ATTRIBUTE_NAME);
@@ -76,8 +77,8 @@ public class LoadThreadStartTag extends BodyTagSupport {
             pageContext.setAttribute("shareTitle", shareTitle);
             pageContext.setAttribute("newMessage", new NewMessageWrapper());
             pageContext.setAttribute("discussionPermissions", discussionPermissions);
-            final List<ReportTarget> reportTargets =
-                    FlaggingClient.listReportTargets(TargetType.COMMENT);
+            final List<IReportTarget> reportTargets = StaticModerationContext.getModerationClient()
+                    .listReportTargets(TargetType.COMMENT);
             pageContext.setAttribute("reportTargets", reportTargets);
 
         } catch (ThreadNotFoundException e) {

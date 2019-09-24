@@ -7,7 +7,7 @@
     <!--@elvariable id="showAllContests" type="java.lang.Boolean"-->
     <!--@elvariable id="showContestManagementLink" type="java.lang.Boolean"-->
     <!--@elvariable id="sortFilterPage" type="org.xcolab.commons.beans.SortFilterPage"-->
-    <!--@elvariable id="contest" type="org.xcolab.client.contest.pojo.Contest"-->
+    <!--@elvariable id="contest" type="org.xcolab.client.contest.pojo.wrapper.ContestWrapper"-->
     <!--@elvariable id="proposalsPermissions" type="org.xcolab.view.pages.proposals.permissions.ProposalsPermissions"-->
     <!--@elvariable id="contestsSorted" type="org.xcolab.view.pages.proposals.wrappers.ContestList"-->
 

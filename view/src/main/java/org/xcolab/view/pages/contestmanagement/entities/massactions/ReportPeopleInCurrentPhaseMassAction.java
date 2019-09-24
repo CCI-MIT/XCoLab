@@ -1,10 +1,10 @@
 package org.xcolab.view.pages.contestmanagement.entities.massactions;
 
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.StaticContestContext;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.view.pages.contestmanagement.utils.CsvExportHelper;
 
 import java.io.IOException;
@@ -24,15 +24,17 @@ public class ReportPeopleInCurrentPhaseMassAction extends AbstractContestMassAct
     }
 
     @Override
-    public void execute(List<Contest> contests, boolean actionConfirmed,
+    public void execute(List<ContestWrapper> contests, boolean actionConfirmed,
             MassActionDataWrapper dataWrapper, HttpServletResponse response) throws IOException {
         CsvExportHelper csvExportHelper = new CsvExportHelper();
         csvExportHelper.addRowToExportData(CSV_EXPORT_HEADER);
 
-        for (Contest contest : contests) {
+        for (ContestWrapper contest : contests) {
             Long contestId = contest.getId();
-            ContestPhase activeContestPhase = ContestClientUtil.getActivePhase(contestId);
-            List<Proposal> proposalsInActiveContestPhase = ProposalClientUtil
+            ContestPhaseWrapper activeContestPhase = StaticContestContext.getContestClient()
+                    .getActivePhase(contestId);
+            List<ProposalWrapper> proposalsInActiveContestPhase = StaticProposalContext
+                    .getProposalClient()
                     .getActiveProposalsInContestPhase(activeContestPhase.getId());
             csvExportHelper
                     .addProposalAndAuthorDetailsToExportData(proposalsInActiveContestPhase,

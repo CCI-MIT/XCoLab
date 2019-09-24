@@ -1,7 +1,7 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
-	<jsp:directive.attribute name="member" type="org.xcolab.client.proposals.pojo.ProposalTeamMember" required="true" rtexprvalue="true" description="Member to be shown" />
+	<jsp:directive.attribute name="member" type="org.xcolab.client.contest.pojo.wrapper.ProposalTeamMemberWrapper" required="true" rtexprvalue="true" description="Member to be shown" />
 
 	<xcolab:userPortrait portraitId="${member.portraitId}" userId="${member.userId}"
                          width="42" height="42"/>

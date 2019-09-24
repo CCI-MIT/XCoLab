@@ -13,7 +13,7 @@
     <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
     <!--@elvariable id="isMove" type="java.lang.Boolean"-->
     <!--@elvariable id="hasUnmappedSections" type="java.lang.Boolean"-->
-    <!--@elvariable id="userTeams" type="java.util.List<org.xcolab.client.members.pojo.PlatformTeam>"-->
+    <!--@elvariable id="userTeams" type="java.util.List<org.xcolab.client.user.pojo.wrapper.PlatformTeamWrapper>"-->
     <!--@elvariable id="contestTosAccepted" type="java.lang.Boolean"-->
 
     <jsp:directive.include file="./init_proposal.jspx"/>
@@ -47,8 +47,8 @@
 
     <!--ProposalSectionsTabController-->
     <c:if test="${isMove}">
-        <jsp:useBean id="baseProposal" scope="request" type="org.xcolab.client.proposals.pojo.Proposal"/>
-        <jsp:useBean id="baseContest" scope="request" type="org.xcolab.client.contest.pojo.Contest"/>
+        <jsp:useBean id="baseProposal" scope="request" type="org.xcolab.client.contest.pojo.wrapper.ProposalWrapper"/>
+        <jsp:useBean id="baseContest" scope="request" type="org.xcolab.client.contest.pojo.wrapper.ContestWrapper"/>
     </c:if>
 
     <div class="mb-3">

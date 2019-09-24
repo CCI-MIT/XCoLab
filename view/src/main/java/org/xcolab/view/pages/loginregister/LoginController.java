@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.pojo.LoginToken;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.TokenValidity;
+import org.xcolab.client.user.ILoginTokenClient;
+import org.xcolab.client.user.pojo.wrapper.LoginTokenWrapper;
+import org.xcolab.client.user.pojo.wrapper.TokenValidityWrapper;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.commons.servlet.flash.ErrorPage;
 import org.xcolab.entity.utils.notifications.member.MemberBatchRegistrationNotification;
@@ -35,9 +35,12 @@ public class LoginController {
     private final AuthenticationService authenticationService;
     private final RequestCache requestCache = new HttpSessionRequestCache();
 
+    private final ILoginTokenClient loginTokenClient;
+
     @Autowired
-    public LoginController(AuthenticationService authenticationService) {
+    public LoginController(AuthenticationService authenticationService, ILoginTokenClient loginTokenClient) {
         this.authenticationService = authenticationService;
+        this.loginTokenClient = loginTokenClient;
     }
 
     @GetMapping("/login")
@@ -72,7 +75,7 @@ public class LoginController {
 
     @GetMapping("/login/token/{tokenId}")
     public String loginWithToken(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member loggedInMember, @PathVariable String tokenId,
+            Model model, UserWrapper loggedInMember, @PathVariable String tokenId,
             @RequestParam(defaultValue = "false") String tokenKey) {
         if (loggedInMember != null) {
             AlertMessage.warning("You are already logged in.");
@@ -83,9 +86,10 @@ public class LoginController {
         final boolean isIncomplete = tokenKey == null;
         model.addAttribute("isIncomplete", isIncomplete);
         if (!isIncomplete) {
-            final TokenValidity tokenValidity = MembersClient.validateLoginToken(tokenId, tokenKey);
-            model.addAttribute("isValid", tokenValidity == TokenValidity.VALID);
-            model.addAttribute("isExpired", tokenValidity == TokenValidity.EXPIRED);
+            final TokenValidityWrapper
+                    tokenValidity = loginTokenClient.validateLoginToken(tokenId, tokenKey);
+            model.addAttribute("isValid", tokenValidity == TokenValidityWrapper.VALID);
+            model.addAttribute("isExpired", tokenValidity == TokenValidityWrapper.EXPIRED);
         }
         return LOGIN_TOKEN_VIEW_NAME;
     }
@@ -99,20 +103,21 @@ public class LoginController {
             AlertMessage.warning("Login link incomplete, make sure you used the full link.");
             return "redirect:/";
         }
-        final TokenValidity tokenValidity = MembersClient.validateLoginToken(tokenId, tokenKey);
+        final TokenValidityWrapper
+                tokenValidity = loginTokenClient.validateLoginToken(tokenId, tokenKey);
         switch (tokenValidity) {
             case VALID: {
-                final Member member = MembersClient.getMemberForLoginToken(tokenId);
+                final UserWrapper member = loginTokenClient.getMemberForLoginToken(tokenId);
                 authenticationService.authenticate(request, response, member);
                 if (invalidateLink) {
-                    MembersClient.invalidateLoginToken(tokenId);
+                    loginTokenClient.invalidateLoginToken(tokenId);
                 }
                 AlertMessage.success("Login successful!").flash(request);
                 return "redirect:/";
             }
             case EXPIRED: {
-                final Member member = MembersClient.getMemberForLoginToken(tokenId);
-                final LoginToken loginToken = MembersClient.createLoginToken(member.getId());
+                final UserWrapper member = loginTokenClient.getMemberForLoginToken(tokenId);
+                final LoginTokenWrapper loginToken = loginTokenClient.createLoginToken(member.getId());
                 new MemberBatchRegistrationNotification(member, loginToken).sendEmailNotification();
                 AlertMessage.success("Your token is expired. A new login link has been sent.")
                         .flash(request);

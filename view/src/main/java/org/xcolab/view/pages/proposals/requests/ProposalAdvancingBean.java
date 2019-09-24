@@ -2,9 +2,9 @@ package org.xcolab.view.pages.proposals.requests;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
-import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingType;
+import org.xcolab.client.contest.pojo.IProposalRatingType;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
 import org.xcolab.view.pages.proposals.wrappers.ProposalRatingTypeWrapper;
 
@@ -32,7 +32,7 @@ public class ProposalAdvancingBean {
         this.ratingTypes = fetchRatingTypes();
     }
 
-    public ProposalAdvancingBean(Proposal wrapper) {
+    public ProposalAdvancingBean(ProposalWrapper wrapper) {
 
         this.ratingTypes = fetchRatingTypes();
 
@@ -47,7 +47,8 @@ public class ProposalAdvancingBean {
         List<ProposalRatingTypeWrapper> ratingTypes = new ArrayList<>();
 
         //initialize ratingValues and types
-        for (ProposalRatingType type : ProposalJudgeRatingClientUtil.getRatingTypesForJudges()) {
+        for (IProposalRatingType type : StaticProposalContext.getProposalJudgeRatingClient()
+                .getRatingTypesForJudges()) {
             ratingTypes.add(new ProposalRatingTypeWrapper(type));
         }
         return ratingTypes;

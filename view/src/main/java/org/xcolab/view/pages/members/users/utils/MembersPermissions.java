@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.members.users.utils;
 
-import org.xcolab.client.members.PermissionsClient;
+import org.xcolab.client.user.StaticUserContext;
 import org.xcolab.view.auth.MemberAuthUtil;
 
 public class MembersPermissions {
@@ -16,6 +16,6 @@ public class MembersPermissions {
     }
 
     public boolean getCanAdminAll() {
-        return PermissionsClient.canAdminAll(userId);
+        return StaticUserContext.getPermissionClient().canAdminAll(userId);
     }
 }

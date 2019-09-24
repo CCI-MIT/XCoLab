@@ -3,13 +3,12 @@ package org.xcolab.entity.utils.notifications.proposal;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 
-import org.xcolab.client.admin.EmailTemplateClient;
-import org.xcolab.client.admin.EmailTemplateClientUtil;
-import org.xcolab.client.admin.pojo.EmailTemplate;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.admin.StaticAdminContext;
+import org.xcolab.client.admin.pojo.IEmailTemplate;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
+import org.xcolab.client.contest.proposals.enums.ProposalAttributeKeys;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.entity.utils.notifications.basic.ProposalNotification;
 
 public class ProposalVoteValidityConfirmation extends ProposalNotification {
@@ -17,13 +16,13 @@ public class ProposalVoteValidityConfirmation extends ProposalNotification {
     private static final String DEFAULT_TEMPLATE_STRING = "PROPOSAL_VOTE_CONFIRMATION_DEFAULT";
     private static final String CONFIRMATION_LINK_PLACEHOLDER = "confirmation-link";
 
-    private final Proposal votedProposal;
+    private final ProposalWrapper votedProposal;
     private final String confirmationToken;
-    private final Member recipient;
+    private final UserWrapper recipient;
     private ProposalVoteConfirmationTemplate templateWrapper;
 
-    public ProposalVoteValidityConfirmation(Proposal votedProposal, Contest contest,
-            Member recipient, String confirmationToken) {
+    public ProposalVoteValidityConfirmation(ProposalWrapper votedProposal, ContestWrapper contest,
+            UserWrapper recipient, String confirmationToken) {
         super(votedProposal, contest, recipient, null);
         this.confirmationToken = confirmationToken;
         this.votedProposal = votedProposal;
@@ -48,10 +47,9 @@ public class ProposalVoteValidityConfirmation extends ProposalNotification {
         if (proposalVoteConfirmationTemplateString.isEmpty()) {
             proposalVoteConfirmationTemplateString = DEFAULT_TEMPLATE_STRING;
         }
-        final EmailTemplateClient emailTemplateClient = EmailTemplateClientUtil.getClient();
 
-        final EmailTemplate emailTemplate =
-                emailTemplateClient.getContestEmailTemplateByType(proposalVoteConfirmationTemplateString);
+        final IEmailTemplate emailTemplate =
+                StaticAdminContext.getEmailTemplateClient().getEmailTemplate(proposalVoteConfirmationTemplateString);
         templateWrapper =
                 new ProposalVoteConfirmationTemplate(emailTemplate, proposalName, contest.getTitle());
 
@@ -66,7 +64,7 @@ public class ProposalVoteValidityConfirmation extends ProposalNotification {
 
     private class ProposalVoteConfirmationTemplate extends ProposalNotificationTemplate {
 
-        public ProposalVoteConfirmationTemplate(EmailTemplate template, String proposalName,
+        public ProposalVoteConfirmationTemplate(IEmailTemplate template, String proposalName,
                 String contestName) {
             super(template, proposalName, contestName);
         }

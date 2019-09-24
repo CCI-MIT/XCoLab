@@ -8,7 +8,7 @@
 <xcolab:layout title="Contact">
     <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
 
-    <!--@elvariable id="feedbackPage" type="org.xcolab.client.contents.pojo.ContentPage"-->
+    <!--@elvariable id="feedbackPage" type="org.xcolab.client.content.pojo.IContentPage"-->
     <!--@elvariable id="hasError" type="java.lang.Boolean"-->
 
     <div class="l-Content">

@@ -1,7 +1,7 @@
 package org.xcolab.service.contest.utils.email;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.emails.EmailClient;
+import org.xcolab.client.email.IEmailClient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,21 +19,21 @@ public class EmailToAdminDispatcher {
     private final String subject;
     private final String body;
     private final int messageVerbosity;
+    private final IEmailClient emailClient;
 
-    public EmailToAdminDispatcher(String subject, String body) {
-        this(subject, body, VERBOSITY_ERROR);
-    }
 
-    public EmailToAdminDispatcher(String subject, String body, int verbosity) {
+
+    public EmailToAdminDispatcher(String subject, String body, int verbosity,IEmailClient emailClient) {
         this.subject = subject;
         this.body = body;
         this.messageVerbosity = verbosity;
+        this.emailClient = emailClient;
     }
 
     public void sendMessage() {
         String fromEmail = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.get();
         String fromName = ConfigurationAttributeKey.COLAB_NAME.get();
-        EmailClient.sendEmail(fromEmail,fromName, getRecipientAddresses(), subject, body, true,
+        emailClient.sendEmail(fromEmail,fromName, getRecipientAddresses(), subject, body, true,
                 fromEmail,fromName,null);
     }
 

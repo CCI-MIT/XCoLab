@@ -8,20 +8,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.enums.ContestStatus;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalClient;
-import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.client.proposals.ProposalPhaseClient;
-import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
-import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
+import org.xcolab.client.contest.pojo.IProposal2Phase;
+import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
+import org.xcolab.client.contest.proposals.IProposalClient;
+import org.xcolab.client.contest.proposals.IProposalPhaseClient;
+import org.xcolab.client.contest.proposals.exceptions.Proposal2PhaseNotFoundException;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.servlet.flash.AlertMessage;
-import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.view.pages.proposals.permissions.ContestPermissions;
@@ -45,7 +42,7 @@ public class ContestProposalsController extends BaseProposalsController {
 
     @GetMapping("/contests/{contestYear}/{contestUrlName}/phase/{phaseId}")
     public String showContestProposalsWithContestPhaseId(HttpServletRequest request,
-            HttpServletResponse response, Model model, Member loggedInMember,
+            HttpServletResponse response, Model model, UserWrapper loggedInMember,
             ProposalContext proposalContext, @PathVariable String contestYear,
             @PathVariable String contestUrlName, @PathVariable String phaseId,
             final SortFilterPage sortFilterPage) {
@@ -56,7 +53,7 @@ public class ContestProposalsController extends BaseProposalsController {
 
     @GetMapping("/contests/{contestYear}/{contestUrlName}/judgeFilter/{judgeId}")
     public String showContestProposalsWithJudgeFilter(HttpServletRequest request,
-            HttpServletResponse response, Model model, Member loggedInMember,
+            HttpServletResponse response, Model model, UserWrapper loggedInMember,
             ProposalContext proposalContext, @PathVariable String contestYear,
             @PathVariable String contestUrlName, @PathVariable Long judgeId,
             final SortFilterPage sortFilterPage) {
@@ -68,7 +65,7 @@ public class ContestProposalsController extends BaseProposalsController {
 
     @GetMapping("/contests/{contestYear}/{contestUrlName}")
     public String showContestProposals(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member loggedInMember, ProposalContext proposalContext,
+            Model model, UserWrapper loggedInMember, ProposalContext proposalContext,
             @PathVariable String contestYear, @PathVariable String contestUrlName,
             final SortFilterPage sortFilterPage) {
         setBasePageAttributes(proposalContext, model);
@@ -76,14 +73,14 @@ public class ContestProposalsController extends BaseProposalsController {
                 loggedInMember);
     }
 
-    private List<Proposal> getProposals(ProposalContext proposalContext, Member loggedInMember) {
+    private List<ProposalWrapper> getProposals(ProposalContext proposalContext, UserWrapper loggedInMember) {
         final ClientHelper clients = proposalContext.getClients();
-        final ProposalClient proposalClient = clients.getProposalClient();
+        final IProposalClient proposalClient = clients.getProposalClient();
 
-        ContestPhase contestPhase = proposalContext.getContestPhase();
-        Contest contest = proposalContext.getContest();
+        ContestPhaseWrapper contestPhase = proposalContext.getContestPhase();
+        ContestWrapper contest = proposalContext.getContest();
 
-        final List<Proposal> activeProposals;
+        final List<ProposalWrapper> activeProposals;
         final ContestStatus phaseStatus = contestPhase.getStatus();
         switch (phaseStatus) {
             case OPEN_FOR_SUBMISSION:
@@ -92,22 +89,22 @@ public class ContestProposalsController extends BaseProposalsController {
                         contestPhase.getId());
                 break;
             default:
-                activeProposals = proposalClient.getActiveProposalsInContestPhase(
-                        contestPhase.getId(), CacheName.PROPOSAL_LIST_CLOSED);
+                activeProposals = proposalClient.getActiveProposalsInContestPhase(contestPhase.getId());
         }
 
-        List<Proposal> proposals = new ArrayList<>();
-        for (Proposal proposal : activeProposals) {
+        List<ProposalWrapper> proposals = new ArrayList<>();
+        for (ProposalWrapper proposal : activeProposals) {
 
             try {
-                final ProposalPhaseClient proposalPhaseClient = clients.getProposalPhaseClient();
-                Proposal2Phase p2p = proposalPhaseClient.getProposal2PhaseByProposalIdContestPhaseId(proposal.getId(), contestPhase.getId());
-                Proposal proposalWrapper;
+                final IProposalPhaseClient proposalPhaseClient = clients.getProposalPhaseClient();
+                IProposal2Phase p2p = proposalPhaseClient.getProposal2PhaseByProposalIdContestPhaseId(proposal.getId(), contestPhase.getId());
+                ProposalWrapper proposalWrapper;
 
-                if (loggedInMember != null && PermissionsClient.canJudge(loggedInMember.getId(), contest.getId())) {
+                if (loggedInMember != null && StaticUserContext.getPermissionClient()
+                        .canJudge(loggedInMember.getId(), contest.getId())) {
                     proposalWrapper = new ProposalJudgeWrapper(proposal, p2p.getVersionTo() == -1 ? proposal.getCurrentVersion() : p2p.getVersionTo(), contest, contestPhase, p2p, loggedInMember);
                 } else {
-                    proposalWrapper = new Proposal(proposal, p2p.getVersionTo() == -1 ? proposal.getCurrentVersion() : p2p.getVersionTo(), contest, contestPhase, p2p);
+                    proposalWrapper = new ProposalWrapper(proposal, p2p.getVersionTo() == -1 ? proposal.getCurrentVersion() : p2p.getVersionTo(), contest, contestPhase, p2p);
                 }
 
                 proposals.add(proposalWrapper);
@@ -120,10 +117,10 @@ public class ContestProposalsController extends BaseProposalsController {
     }
 
     private String showContestProposalsPage(HttpServletResponse response, Model model, ProposalContext proposalContext,
-            final SortFilterPage sortFilterPage, Member loggedInMember) {
+            final SortFilterPage sortFilterPage, UserWrapper loggedInMember) {
 
-        Contest contest = proposalContext.getContest();
-        ContestPhase contestPhase = proposalContext.getContestPhase();
+        ContestWrapper contest = proposalContext.getContest();
+        ContestPhaseWrapper contestPhase = proposalContext.getContestPhase();
 
         final ContestType contestType = contest.getContestType();
         if (contestType.isRestrictedAccess() && !new ContestPermissions(loggedInMember)
@@ -131,7 +128,7 @@ public class ContestProposalsController extends BaseProposalsController {
             return new AccessDeniedPage(loggedInMember).toViewName(response);
         }
 
-        List<Proposal> proposals = getProposals(proposalContext, loggedInMember);
+        List<ProposalWrapper> proposals = getProposals(proposalContext, loggedInMember);
 
         model.addAttribute("sortFilterPage", sortFilterPage);
         model.addAttribute("proposals", new SortedProposalList(proposals, sortFilterPage,
@@ -154,7 +151,7 @@ public class ContestProposalsController extends BaseProposalsController {
         model.addAttribute("proposalCreationMaxPerAuthor",proposalCreationMaxPerAuthor);
         if(proposalCreationMaxPerAuthor != 0 ) {
             int totalProposalsByAuthor = 0;
-            for(Proposal p: proposals){
+            for(ProposalWrapper p: proposals){
                 if(p.getAuthor().getId() == loggedInMember.getId()) {
                     totalProposalsByAuthor = totalProposalsByAuthor + 1;
                 }
@@ -172,18 +169,17 @@ public class ContestProposalsController extends BaseProposalsController {
 
     @PostMapping("/contests/subscribeContest")
     public void handleAction(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member currentMember, ProposalContext proposalContext)
+            Model model, UserWrapper currentMember, ProposalContext proposalContext)
             throws ProposalsAuthorizationException, IOException {
 
         if (proposalContext.getPermissions().getCanSubscribeContest()) {
             long contestId = proposalContext.getContest().getId();
             long userId = currentMember.getId();
-            if (ContestClientUtil.isMemberSubscribedToContest(contestId, userId)) {
-                ContestClientUtil.unsubscribeMemberFromContest(contestId, userId);
+            if (contestClient.isMemberSubscribedToContest(contestId, userId)) {
+                contestClient.unsubscribeMemberFromContest(contestId, userId);
             }
             else {
-                ContestClientUtil.subscribeMemberToContest(contestId, userId);
-
+                contestClient.subscribeMemberToContest(contestId, userId);
             }
             response.sendRedirect(proposalContext.getContest().getContestLinkUrl());
         } else {
@@ -193,21 +189,21 @@ public class ContestProposalsController extends BaseProposalsController {
 
     @PostMapping("/contests/{contestYear}/{contestUrlName}/assignAllJudges")
     public String assignAllJudges(HttpServletRequest request, HttpServletResponse response,
-            Member currentMember, ProposalContext proposalContext)
+            UserWrapper currentMember, ProposalContext proposalContext)
             throws ProposalsAuthorizationException, IOException {
 
         if (proposalContext.getPermissions().getCanFellowActions()) {
 
-            final Contest contest = proposalContext.getContest();
-            final ProposalClient proposalClient = proposalContext.getClients().getProposalClient();
+            final ContestWrapper contest = proposalContext.getContest();
+            final IProposalClient proposalClient = proposalContext.getClients().getProposalClient();
             long contestPhaseId = proposalContext.getContestPhase().getId();
 
             List<Long> selectedJudges = new ArrayList<>();
-            for (Member judge : contest.getContestJudges()) {
+            for (UserWrapper judge : contest.getContestJudges()) {
                 selectedJudges.add(judge.getId());
             }
 
-            for (Proposal proposal : proposalClient.getProposalsInContest(contest.getId())) {
+            for (ProposalWrapper proposal : proposalClient.getProposalsInContest(contest.getId())) {
                 proposalContext.getClients().getProposalPhaseClient().persistSelectedJudgesAttribute(
                         proposal.getId(),
                         contestPhaseId,
@@ -223,16 +219,16 @@ public class ContestProposalsController extends BaseProposalsController {
 
     @PostMapping("/contests/{contestYear}/{contestUrlName}/removeUnfinishedJudges")
     public String removeUnfinishedJudges(HttpServletRequest request, HttpServletResponse response,
-            Member currentMember, ProposalContext proposalContext)
+            UserWrapper currentMember, ProposalContext proposalContext)
             throws ProposalsAuthorizationException, IOException {
 
         if (proposalContext.getPermissions().getCanFellowActions()) {
 
-            final Contest contest = proposalContext.getContest();
-            final ProposalClient proposalClient = proposalContext.getClients().getProposalClient();
+            final ContestWrapper contest = proposalContext.getContest();
+            final IProposalClient proposalClient = proposalContext.getClients().getProposalClient();
             long contestPhaseId = proposalContext.getContestPhase().getId();
 
-            for (Proposal proposal : proposalClient.getProposalsInContest(contest.getId())) {
+            for (ProposalWrapper proposal : proposalClient.getProposalsInContest(contest.getId())) {
                 List<Long> newSelectedJudges = proposal.getSelectedJudges().stream()
                         .filter(proposal::getIsReviewFinishedForJudge)
                         .collect(Collectors.toList());
@@ -252,11 +248,11 @@ public class ContestProposalsController extends BaseProposalsController {
 
     @GetMapping("/contests/{contestYear}/{contestUrlName}/downloadContestProposalsList")
     public void downloadContestProposalsList(HttpServletRequest request, HttpServletResponse response,
-            Member loggedInMember, ProposalContext proposalContext)
+            UserWrapper loggedInMember, ProposalContext proposalContext)
             throws IOException {
 
         try (ContestProposalsCsvWriter csvWriter = new ContestProposalsCsvWriter(response)) {
-            List<Proposal> contestProposalsList = getProposals(proposalContext, loggedInMember);
+            List<ProposalWrapper> contestProposalsList = getProposals(proposalContext, loggedInMember);
             csvWriter.writeProposals(contestProposalsList);
         }
     }

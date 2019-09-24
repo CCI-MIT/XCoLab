@@ -7,14 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
-import org.xcolab.model.tables.pojos.ProposalTemplateSectionDefinition;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
 import org.xcolab.model.tables.records.ProposalTemplateSectionDefinitionRecord;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.util.List;
 
-import static org.xcolab.model.Tables.PROPOSAL_TEMPLATE_SECTION_DEFINITION;
 import static org.xcolab.model.Tables.PROPOSAL_TEMPLATE_SECTION;
+import static org.xcolab.model.Tables.PROPOSAL_TEMPLATE_SECTION_DEFINITION;
 
 @Repository
 public class ProposalTemplateSectionDefinitionDaoImpl implements ProposalTemplateSectionDefinitionDao {
@@ -28,7 +28,7 @@ public class ProposalTemplateSectionDefinitionDaoImpl implements ProposalTemplat
     }
 
     @Override
-    public List<ProposalTemplateSectionDefinition> findByGiven(Long proposalTemplateId, Boolean weight) {
+    public List<ProposalTemplateSectionDefinitionWrapper> findByGiven(Long proposalTemplateId, Boolean weight) {
         final SelectQuery<Record> query = dslContext.select(PROPOSAL_TEMPLATE_SECTION_DEFINITION.fields())
                 .from(PROPOSAL_TEMPLATE_SECTION_DEFINITION)
                 .join(PROPOSAL_TEMPLATE_SECTION).on(PROPOSAL_TEMPLATE_SECTION.SECTION_DEFINITION_ID.eq(PROPOSAL_TEMPLATE_SECTION_DEFINITION.ID))
@@ -40,25 +40,26 @@ public class ProposalTemplateSectionDefinitionDaoImpl implements ProposalTemplat
         if (weight != null && weight) {
             query.addOrderBy(PROPOSAL_TEMPLATE_SECTION.WEIGHT);
         }
-        return query.fetchInto(ProposalTemplateSectionDefinition.class);
+        return query.fetchInto(ProposalTemplateSectionDefinitionWrapper.class);
     }
 
     @Override
-    public ProposalTemplateSectionDefinition get(Long id) throws NotFoundException {
+    public ProposalTemplateSectionDefinitionWrapper get(Long id) throws NotFoundException {
 
         final Record record = this.dslContext.selectFrom(PROPOSAL_TEMPLATE_SECTION_DEFINITION)
                 .where(PROPOSAL_TEMPLATE_SECTION_DEFINITION.ID.eq(id))
                 .fetchOne();
 
         if (record == null) {
-            throw new NotFoundException("ProposalTemplateSectionDefinition with id " + id + " does not exist");
+            throw new NotFoundException("ProposalTemplateSectionDefinitionWrapper with id " + id + " does not exist");
         }
-        return record.into(ProposalTemplateSectionDefinition.class);
+        return record.into(ProposalTemplateSectionDefinitionWrapper.class);
 
     }
 
     @Override
-    public ProposalTemplateSectionDefinition create(ProposalTemplateSectionDefinition proposalTemplateSectionDefinition) {
+    public ProposalTemplateSectionDefinitionWrapper create(
+            ProposalTemplateSectionDefinitionWrapper proposalTemplateSectionDefinition) {
 
         ProposalTemplateSectionDefinitionRecord ret = this.dslContext.insertInto(PROPOSAL_TEMPLATE_SECTION_DEFINITION)
                 .set(PROPOSAL_TEMPLATE_SECTION_DEFINITION.TYPE, proposalTemplateSectionDefinition.getType())
@@ -72,9 +73,9 @@ public class ProposalTemplateSectionDefinitionDaoImpl implements ProposalTemplat
                 .set(PROPOSAL_TEMPLATE_SECTION_DEFINITION.ALLOWED_CONTEST_TYPE_IDS, proposalTemplateSectionDefinition.getAllowedContestTypeIds())
                 .set(PROPOSAL_TEMPLATE_SECTION_DEFINITION.ALLOWED_VALUES, proposalTemplateSectionDefinition.getAllowedValues())
                 .set(PROPOSAL_TEMPLATE_SECTION_DEFINITION.ADDITIONAL_IDS, proposalTemplateSectionDefinition.getAdditionalIds())
-                .set(PROPOSAL_TEMPLATE_SECTION_DEFINITION.LOCKED, proposalTemplateSectionDefinition.getLocked())
-                .set(PROPOSAL_TEMPLATE_SECTION_DEFINITION.CONTEST_INTEGRATION_RELEVANCE, proposalTemplateSectionDefinition.getContestIntegrationRelevance())
-                .set(PROPOSAL_TEMPLATE_SECTION_DEFINITION.INCLUDE_IN_JUDGING_REPORT, proposalTemplateSectionDefinition.getIncludeInJudgingReport())
+                .set(PROPOSAL_TEMPLATE_SECTION_DEFINITION.LOCKED, proposalTemplateSectionDefinition.isLocked())
+                .set(PROPOSAL_TEMPLATE_SECTION_DEFINITION.CONTEST_INTEGRATION_RELEVANCE, proposalTemplateSectionDefinition.isContestIntegrationRelevance())
+                .set(PROPOSAL_TEMPLATE_SECTION_DEFINITION.INCLUDE_IN_JUDGING_REPORT, proposalTemplateSectionDefinition.isIncludeInJudgingReport())
                 .returning(PROPOSAL_TEMPLATE_SECTION_DEFINITION.ID)
                 .fetchOne();
         if (ret != null) {
@@ -94,7 +95,7 @@ public class ProposalTemplateSectionDefinitionDaoImpl implements ProposalTemplat
     }
 
     @Override
-    public boolean update(ProposalTemplateSectionDefinition proposalTemplateSectionDefinition) {
+    public boolean update(ProposalTemplateSectionDefinitionWrapper proposalTemplateSectionDefinition) {
         return dslContext.update(PROPOSAL_TEMPLATE_SECTION_DEFINITION)
                 .set(PROPOSAL_TEMPLATE_SECTION_DEFINITION.TYPE, proposalTemplateSectionDefinition.getType())
                 .set(PROPOSAL_TEMPLATE_SECTION_DEFINITION.ADMIN_TITLE, proposalTemplateSectionDefinition.getAdminTitle())
@@ -107,9 +108,9 @@ public class ProposalTemplateSectionDefinitionDaoImpl implements ProposalTemplat
                 .set(PROPOSAL_TEMPLATE_SECTION_DEFINITION.ALLOWED_CONTEST_TYPE_IDS, proposalTemplateSectionDefinition.getAllowedContestTypeIds())
                 .set(PROPOSAL_TEMPLATE_SECTION_DEFINITION.ALLOWED_VALUES, proposalTemplateSectionDefinition.getAllowedValues())
                 .set(PROPOSAL_TEMPLATE_SECTION_DEFINITION.ADDITIONAL_IDS, proposalTemplateSectionDefinition.getAdditionalIds())
-                .set(PROPOSAL_TEMPLATE_SECTION_DEFINITION.LOCKED, proposalTemplateSectionDefinition.getLocked())
-                .set(PROPOSAL_TEMPLATE_SECTION_DEFINITION.CONTEST_INTEGRATION_RELEVANCE, proposalTemplateSectionDefinition.getContestIntegrationRelevance())
-                .set(PROPOSAL_TEMPLATE_SECTION_DEFINITION.INCLUDE_IN_JUDGING_REPORT, proposalTemplateSectionDefinition.getIncludeInJudgingReport())
+                .set(PROPOSAL_TEMPLATE_SECTION_DEFINITION.LOCKED, proposalTemplateSectionDefinition.isLocked())
+                .set(PROPOSAL_TEMPLATE_SECTION_DEFINITION.CONTEST_INTEGRATION_RELEVANCE, proposalTemplateSectionDefinition.isContestIntegrationRelevance())
+                .set(PROPOSAL_TEMPLATE_SECTION_DEFINITION.INCLUDE_IN_JUDGING_REPORT, proposalTemplateSectionDefinition.isIncludeInJudgingReport())
                 .where(PROPOSAL_TEMPLATE_SECTION_DEFINITION.ID.eq(proposalTemplateSectionDefinition.getId()))
                 .execute() > 0;
     }

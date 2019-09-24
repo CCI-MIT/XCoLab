@@ -7,7 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
-import org.xcolab.model.tables.pojos.ContestPhaseRibbonType;
+import org.xcolab.client.contest.pojo.IContestPhaseRibbonType;
+import org.xcolab.client.contest.pojo.tables.pojos.ContestPhaseRibbonType;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class ContestPhaseRibbonTypeDaoImpl implements ContestPhaseRibbonTypeDao{
     }
 
     @Override
-    public Optional<ContestPhaseRibbonType> get(Long id) throws NotFoundException {
+    public Optional<IContestPhaseRibbonType> get(Long id) throws NotFoundException {
 
         final Record record =  dslContext.selectFrom(CONTEST_PHASE_RIBBON_TYPE)
                 .where(CONTEST_PHASE_RIBBON_TYPE.ID.eq(id))
@@ -40,7 +41,7 @@ public class ContestPhaseRibbonTypeDaoImpl implements ContestPhaseRibbonTypeDao{
     }
 
     @Override
-    public List<ContestPhaseRibbonType> findByGiven() {
+    public List<IContestPhaseRibbonType> findByGiven() {
         final SelectQuery<Record> query = dslContext.select()
                 .from(CONTEST_PHASE_RIBBON_TYPE).getQuery();
 

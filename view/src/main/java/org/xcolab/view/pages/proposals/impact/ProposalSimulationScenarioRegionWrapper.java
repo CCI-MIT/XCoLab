@@ -1,20 +1,20 @@
 package org.xcolab.view.pages.proposals.impact;
 
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 
 public class ProposalSimulationScenarioRegionWrapper {
 
-    private Proposal proposal;
+    private ProposalWrapper proposal;
     private String simulation = "No model selected";
     private String scenario = "-";
     private String region = "";
     private String proposalName = "No proposal selected for this region";
 
-    public ProposalSimulationScenarioRegionWrapper(Proposal proposal) {
+    public ProposalSimulationScenarioRegionWrapper(ProposalWrapper proposal) {
         this.proposal = proposal;
         proposalName = proposal.getName();
-        Contest contestForProposal = proposal.getContest();
+        ContestWrapper contestForProposal = proposal.getContest();
         this.region = contestForProposal.getWhereName();
     }
 
@@ -45,7 +45,7 @@ public class ProposalSimulationScenarioRegionWrapper {
         this.region = region;
     }
 
-    public void setRegion(Contest contest) {
+    public void setRegion(ContestWrapper contest) {
             this.region = contest.getWhereName();
     }
 

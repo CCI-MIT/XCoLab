@@ -3,7 +3,7 @@ package org.xcolab.view.pages.search.items;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 
-import org.xcolab.client.search.pojo.SearchPojo;
+import org.xcolab.client.search.pojo.ISearchPojo;
 
 import java.util.Objects;
 
@@ -33,7 +33,7 @@ public abstract class AbstractSearchItem {
 
     public abstract String getPrintName();
 
-    public abstract void init(SearchPojo pojo, String searchQuery);
+    public abstract void init(ISearchPojo pojo, String searchQuery);
 
     public abstract String getTitle();
 

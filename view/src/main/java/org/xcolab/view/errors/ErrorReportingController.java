@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.WebUtils;
 
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.util.entity.email.EmailToAdminDispatcher;
 
@@ -76,7 +76,7 @@ public class ErrorReportingController {
 
         if (!stackTrace.equals("${exception.stackTrace}")) {
             String userScreenName = "no user was logged in";
-            final Member member = MemberAuthUtil.getMemberOrNull();
+            final UserWrapper member = MemberAuthUtil.getMemberOrNull();
             if (member != null) {
                 userScreenName = member.getScreenName();
 

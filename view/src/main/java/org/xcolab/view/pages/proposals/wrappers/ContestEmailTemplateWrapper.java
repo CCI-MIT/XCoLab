@@ -1,17 +1,17 @@
 package org.xcolab.view.pages.proposals.wrappers;
 
 
-import org.xcolab.client.admin.pojo.EmailTemplate;
+import org.xcolab.client.admin.pojo.IEmailTemplate;
 
 import java.util.regex.Matcher;
 
 public class ContestEmailTemplateWrapper {
-    private final EmailTemplate template;
+    private final IEmailTemplate template;
     private final String proposalName;
     private final String contestName;
 
 
-    public ContestEmailTemplateWrapper(EmailTemplate template, String proposalName, String contestName) {
+    public ContestEmailTemplateWrapper(IEmailTemplate template, String proposalName, String contestName) {
         this.template = template;
         this.proposalName = proposalName;
         this.contestName = contestName;

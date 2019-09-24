@@ -1,14 +1,12 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="XCoLab Services" type="CompoundRunConfigurationType" factoryName="Compound Run Configuration">
-    <toRun type="SpringBootApplicationConfigurationType" name="ActivitiesServiceApplication" />
     <toRun type="SpringBootApplicationConfigurationType" name="AdminServiceApplication" />
     <toRun type="SpringBootApplicationConfigurationType" name="CommentServiceApplication" />
-    <toRun type="SpringBootApplicationConfigurationType" name="ContentsServiceApplication" />
     <toRun type="SpringBootApplicationConfigurationType" name="ContestServiceApplication" />
     <toRun type="SpringBootApplicationConfigurationType" name="EmailServiceApplication" />
-    <toRun type="SpringBootApplicationConfigurationType" name="FlaggingServiceApplication" />
     <toRun type="SpringBootApplicationConfigurationType" name="MembersServiceApplication" />
     <toRun type="SpringBootApplicationConfigurationType" name="ModelingServiceApplication" />
+    <toRun type="SpringBootApplicationConfigurationType" name="ModerationServiceApplication" />
     <toRun type="SpringBootApplicationConfigurationType" name="SearchServiceApplication" />
     <toRun type="SpringBootApplicationConfigurationType" name="TrackingServiceApplication" />
     <method v="2" />

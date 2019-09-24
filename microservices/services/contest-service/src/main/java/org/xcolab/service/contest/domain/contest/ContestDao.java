@@ -1,6 +1,6 @@
 package org.xcolab.service.contest.domain.contest;
 
-import org.xcolab.model.tables.pojos.Contest;
+import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
 
@@ -8,15 +8,15 @@ import java.util.List;
 
 public interface ContestDao {
 
-    Contest create(Contest contest);
+    ContestWrapper create(ContestWrapper contest);
 
-    boolean update(Contest contest);
+    boolean update(ContestWrapper contest);
 
-    Contest get(Long contestId) throws NotFoundException;
+    ContestWrapper get(Long contestId) throws NotFoundException;
 
-    Contest getByThreadId(Long threadId) throws NotFoundException;
+    ContestWrapper getByThreadId(Long threadId) throws NotFoundException;
 
-    List<Contest> findByGiven(PaginationHelper paginationHelper, String contestUrlName,
+    List<ContestWrapper> findByGiven(PaginationHelper paginationHelper, String contestUrlName,
         Long contestYear, Boolean active, Boolean featured, List<Long> contestTiers,
         List<Long> focusAreaIds, Long contestScheduleId, Long proposalTemplateId,
         List<Long> contestTypeIds, Boolean contestPrivate, String searchTerm);
@@ -30,7 +30,7 @@ public interface ContestDao {
 
     boolean existsWithScheduleId(long contestScheduleId);
 
-    Contest getByResourceId(Long resourceId) throws NotFoundException;
+    ContestWrapper getByResourceId(Long resourceId) throws NotFoundException;
 
     boolean delete(long contestId);
 

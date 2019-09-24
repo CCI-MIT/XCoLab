@@ -14,14 +14,14 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>activities-service</module>
+        <module>activity-service</module>
         <module>admin-service</module>
         <module>comment-service</module>
         <module>content-service</module>
         <module>contest-service</module>
-        <module>emails-service</module>
+        <module>email-service</module>
         <module>moderation-service</module>
-        <module>members-service</module>
+        <module>user-service</module>
         <module>modeling-service</module>
         <module>search-service</module>
         <module>tracking-service</module>
@@ -246,7 +246,7 @@
                                 <directory>target/generated-sources/jooq</directory>
                             </target>
                             <strategy>
-                                <name>org.xcolab.service.utils.db.jooq.generator.XColabGeneratorStrategy</name>
+                                <name>org.xcolab.service.utils.db.jooq.generator.XColabServiceGeneratorStrategy</name>
                             </strategy>
                         </generator>
                     </configuration>

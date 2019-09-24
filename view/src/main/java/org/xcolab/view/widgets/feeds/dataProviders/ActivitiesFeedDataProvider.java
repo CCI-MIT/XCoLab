@@ -4,12 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 
-import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.activities.pojo.ActivityEntry;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.permissions.SystemRole;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.MemberCategory;
+import org.xcolab.client.activity.IActivityClient;
+import org.xcolab.client.activity.pojo.IActivityEntry;
+import org.xcolab.client.user.IUserCategoryClient;
+import org.xcolab.client.user.IUserClient;
+import org.xcolab.client.user.permissions.SystemRole;
+import org.xcolab.client.user.pojo.wrapper.MemberCategoryWrapper;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
 import org.xcolab.view.util.entity.ActivityUtil;
 import org.xcolab.view.util.pagination.SortFilterPage;
@@ -30,10 +31,20 @@ import javax.servlet.http.HttpServletResponse;
 public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
 
     private final ActivityEntryHelper activityEntryHelper;
+    private final IActivityClient activityClient;
+
+    private final IUserClient userClient;
+
+    private final IUserCategoryClient userCategoryClient;
 
     @Autowired
-    public ActivitiesFeedDataProvider(ActivityEntryHelper activityEntryHelper) {
+    public ActivitiesFeedDataProvider(ActivityEntryHelper activityEntryHelper,
+            IUserClient userClient, IActivityClient activityClient,
+            IUserCategoryClient userCategoryClient) {
         this.activityEntryHelper = activityEntryHelper;
+        this.userClient = userClient;
+        this.activityClient = activityClient;
+        this.userCategoryClient = userCategoryClient;
     }
 
     @Override
@@ -52,7 +63,7 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
         if (userIdStr != null) {
             try {
                 filterUserId = Long.parseLong(userIdStr);
-                Member filterUser = MembersClient.getMember(filterUserId);
+                UserWrapper filterUser = userClient.getMember(filterUserId);
                 model.addAttribute("filterUserId", filterUserId);
                 model.addAttribute("filterUser", filterUser);
             } catch (Throwable ignored) {
@@ -60,37 +71,37 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
         }
         HashMap<Long, Long> idsToExclude = new HashMap<>();
         if (feedsPreferences.getRemoveAdmin()) {//STAFF
-            final MemberCategory memberCategory =
-                    MembersClient.getMemberCategory(SystemRole.ADMINISTRATOR.getRoleId());
+            final MemberCategoryWrapper memberCategory =
+                    userCategoryClient.getMemberCategory(SystemRole.ADMINISTRATOR.getRoleId());
 
-            List<Member> adminList = MembersClient.listMembers(memberCategory.getCategoryName(),
+            List<UserWrapper> adminList = userClient.listMembers(memberCategory.getCategoryName(),
                     null, null, null, true,
                     0, Integer.MAX_VALUE);
-            for (Member m : adminList) {
+            for (UserWrapper m : adminList) {
                 idsToExclude.put(m.getId(), m.getId());
             }
         }
 
-        final MemberCategory memberCategory =
-                MembersClient.getMemberCategory(SystemRole.STAFF.getRoleId());
+        final MemberCategoryWrapper memberCategory =
+                userCategoryClient.getMemberCategory(SystemRole.STAFF.getRoleId());
 
-        List<Member> staffList = MembersClient
+        List<UserWrapper> staffList = userClient
                 .listMembers(memberCategory.getCategoryName(), null, null, null, true,
                         0, Integer.MAX_VALUE);
         if (staffList != null && !staffList.isEmpty()) {
-            for (Member m : staffList) {
+            for (UserWrapper m : staffList) {
                 idsToExclude.put(m.getId(), m.getId());
             }
         }
 
         int startRetrievalAt = sortFilterPage.getPage() * pageSize;
         int endRetrievalAt = (sortFilterPage.getPage() + 1) * pageSize;
-        List<ActivityEntry> windowedActivities = ActivitiesClientUtil.getActivityEntries(
+        List<IActivityEntry> windowedActivities = activityClient.getActivityEntries(
                 startRetrievalAt, endRetrievalAt, filterUserId > 0 ? filterUserId : null,
                 new ArrayList<>(idsToExclude.keySet()));
 
         List<SocialActivityWrapper> activities = new ArrayList<>();
-        for (ActivityEntry activity : windowedActivities) {
+        for (IActivityEntry activity : windowedActivities) {
             if (activities.size() >= feedsPreferences.getFeedSize()) {
                 break;
             }

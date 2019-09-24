@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.modeling.admin.form;
 
-import org.xcolab.client.modeling.ModelingClient;
+import org.xcolab.client.modeling.StaticModelingContext;
 import org.xcolab.client.modeling.models.ui.ModelDisplay;
 import org.xcolab.client.modeling.models.ui.ModelInputDisplayItem;
 import org.xcolab.client.modeling.models.ui.ModelInputIndividualDisplayItem;
@@ -26,8 +26,8 @@ public class UpdateModelInputWidgetsBean {
             groups.put(item.getMetaData().getId(),
                     ((ModelInputIndividualDisplayItem) item).getGroupId());
         }
-        customInputWidgets =
-                ModelingClient.instance().getModelPreference(modelId).getCustomInputsDefinition();
+        customInputWidgets = StaticModelingContext.getModelingClient()
+                .getModelPreference(modelId).getCustomInputsDefinition();
     }
 
     public Map<Long, ModelInputWidgetType> getWidgets() {
@@ -61,5 +61,4 @@ public class UpdateModelInputWidgetsBean {
     public void setCustomInputWidgets(String customInputWidgets) {
         this.customInputWidgets = customInputWidgets;
     }
-
 }

@@ -8,9 +8,9 @@ import edu.mit.cci.roma.client.Variable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.modeling.ModelingClient;
-import org.xcolab.client.modeling.pojo.ModelInputGroup;
-import org.xcolab.client.modeling.pojo.ModelInputItem;
+import org.xcolab.client.modeling.StaticModelingContext;
+import org.xcolab.client.modeling.pojo.IModelInputGroup;
+import org.xcolab.client.modeling.pojo.IModelInputItem;
 import org.xcolab.util.json.JsonUtil;
 import org.xcolab.util.json.NullsafeJsonArrayBuilder;
 import org.xcolab.util.json.NullsafeJsonObjectBuilder;
@@ -157,11 +157,12 @@ public class ModelUIFactory {
     /**
      * Recursive call to process groups
      */
-    private ModelInputGroupDisplayItem processGroup(ModelInputGroup group,
+    private ModelInputGroupDisplayItem processGroup(IModelInputGroup group,
             Set<MetaData> bareMetaData, Simulation simulation)
             throws IllegalUIConfigurationException, IOException {
-        for (ModelInputItem item : ModelingClient.instance().getInputItems(group)) {
-            final MetaData metaData = ModelingClient.instance().getMetaData(item);
+        for (IModelInputItem item : StaticModelingContext.getModelingClient()
+                .getInputItems(group)) {
+            final MetaData metaData = StaticModelingContext.getModelingClient().getMetaData(item);
             bareMetaData.remove(metaData);
         }
         ModelInputGroupDisplayItem result;
@@ -171,7 +172,7 @@ public class ModelUIFactory {
             _log.error("", e);
             return null;
         }
-        for (ModelInputGroup g : ModelingClient.instance().getChildGroups(group)) {
+        for (IModelInputGroup g : StaticModelingContext.getModelingClient().getChildGroups(group)) {
             result.addChildGroup(processGroup(g, bareMetaData, simulation));
         }
         return result;
@@ -185,7 +186,7 @@ public class ModelUIFactory {
         List<ModelInputDisplayItem> result = new ArrayList<>();
         Set<MetaData> inputs = new HashSet<>(s.getInputs());
 
-        for (ModelInputGroup group : ModelingClient.instance().getInputGroups(s)) {
+        for (IModelInputGroup group : StaticModelingContext.getModelingClient().getInputGroups(s)) {
             if (group.getParentGroupId() <= 0) {
                 result.add(processGroup(group, inputs, s));
             }
@@ -194,11 +195,11 @@ public class ModelUIFactory {
         //any left overs
         for (MetaData md : inputs) {
             try {
-                ModelInputItem item =
-                        ModelingClient.instance().getItemForMetaData(s.getId(), md);
-                ModelInputDisplayItem toadd = item == null ? ModelInputIndividualDisplayItem
+                IModelInputItem item = StaticModelingContext.getModelingClient()
+                        .getItemForMetaData(s.getId(), md);
+                ModelInputDisplayItem toAdd = item == null ? ModelInputIndividualDisplayItem
                         .create(s, md, ModelInputWidgetType.TEXT_FIELD) : getInputItem(item);
-                result.add(toadd);
+                result.add(toAdd);
 
             } catch (IOException e) {
                 _log.error("", e);
@@ -208,7 +209,7 @@ public class ModelUIFactory {
         return result;
     }
 
-    public ModelInputDisplayItem getInputItem(ModelInputItem item) {
+    public ModelInputDisplayItem getInputItem(IModelInputItem item) {
         try {
             return new ModelInputIndividualDisplayItem(item);
         } catch (IOException e) {
@@ -218,7 +219,7 @@ public class ModelUIFactory {
 
     }
 
-    public ModelInputGroupDisplayItem getGroupItem(Simulation simulation, ModelInputGroup item) {
+    public ModelInputGroupDisplayItem getGroupItem(Simulation simulation, IModelInputGroup item) {
         try {
             return new ModelInputGroupDisplayItem(simulation, item);
         } catch (IOException e) {
@@ -226,5 +227,4 @@ public class ModelUIFactory {
         }
         return null;
     }
-
 }

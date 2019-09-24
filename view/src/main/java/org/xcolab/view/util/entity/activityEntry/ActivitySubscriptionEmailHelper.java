@@ -7,20 +7,21 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.activities.pojo.ActivityEntry;
-import org.xcolab.client.activities.pojo.ActivitySubscription;
+import org.xcolab.client.activity.IActivityClient;
+import org.xcolab.client.activity.StaticActivityContext;
+import org.xcolab.client.activity.pojo.IActivityEntry;
+import org.xcolab.client.activity.pojo.IActivitySubscription;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.ICommentClient;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
-import org.xcolab.client.comment.pojo.Comment;
-import org.xcolab.client.emails.EmailClient;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.MessagingClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.MessagingUserPreference;
+import org.xcolab.client.comment.pojo.IComment;
+import org.xcolab.client.email.StaticEmailContext;
+import org.xcolab.client.user.IMessagingClient;
+import org.xcolab.client.user.StaticUserContext;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.pojo.wrapper.MessagingUserPreferenceWrapper;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.util.activities.enums.ActivityCategory;
@@ -100,10 +101,17 @@ public class ActivitySubscriptionEmailHelper {
                     + "<a href='UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER'>here</a>.";
 
     private final ActivityEntryHelper activityEntryHelper;
+    private final IActivityClient activityClient;
+    private final ICommentClient commentClient;
+    private final IMessagingClient messagingClient;
 
     @Autowired
-    public ActivitySubscriptionEmailHelper(ActivityEntryHelper activityEntryHelper) {
+    public ActivitySubscriptionEmailHelper(ActivityEntryHelper activityEntryHelper,
+            IActivityClient activityClient, ICommentClient commentClient, IMessagingClient messagingClient) {
         this.activityEntryHelper = activityEntryHelper;
+        this.activityClient = activityClient;
+        this.commentClient = commentClient;
+        this.messagingClient = messagingClient;
     }
 
     public void sendEmailNotifications() {
@@ -129,11 +137,11 @@ public class ActivitySubscriptionEmailHelper {
     }
 
     private void sendInstantNotifications() {
-        List<ActivityEntry> res = getActivitiesAfter(lastEmailNotification);
+        List<IActivityEntry> res = getActivitiesAfter(lastEmailNotification);
         if (!res.isEmpty()) {
             _log.info("Sending instant notifications for {} activities", res.size());
         }
-        for (ActivityEntry activity : res) {
+        for (IActivityEntry activity : res) {
             try {
                 sendInstantNotifications(activity);
             } catch (Throwable e) {
@@ -152,24 +160,24 @@ public class ActivitySubscriptionEmailHelper {
         // Send the daily digest at the predefined hour only
         if (now.minus(1, ChronoUnit.HOURS).isAfter(lastDailyEmailNotification)
                 && Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == dailyDigestTriggerHour) {
-            List<ActivityEntry> res = getActivitiesAfter(lastDailyEmailNotification);
+            List<IActivityEntry> res = getActivitiesAfter(lastDailyEmailNotification);
             sendDailyDigestNotifications(res);
             lastDailyEmailNotification = now;
         }
     }
 
-    private void sendDailyDigestNotifications(List<ActivityEntry> activities) {
-        Map<Long, List<ActivityEntry>> userActivitiesDigestMap =
+    private void sendDailyDigestNotifications(List<IActivityEntry> activities) {
+        Map<Long, List<IActivityEntry>> userActivitiesDigestMap =
                 getUserToActivityDigestMap(activities);
 
         String subject = StringUtils.replace(DAILY_DIGEST_NOTIFICATION_SUBJECT_TEMPLATE,
                 DAILY_DIGEST_NOTIFICATION_SUBJECT_DATE_PLACEHOLDER,
                 instantToFormattedString(lastDailyEmailNotification));
         // Send the digest to each user which is included in the set of subscriptions
-        for (Map.Entry<Long, List<ActivityEntry>> entry : userActivitiesDigestMap.entrySet()) {
+        for (Map.Entry<Long, List<IActivityEntry>> entry : userActivitiesDigestMap.entrySet()) {
             try {
-                final Member recipient = MembersClient.getMember(entry.getKey());
-                final List<ActivityEntry> userDigestActivities = entry.getValue();
+                final UserWrapper recipient = StaticUserContext.getUserClient().getMember(entry.getKey());
+                final List<IActivityEntry> userDigestActivities = entry.getValue();
                 String body = getDigestMessageBody(userDigestActivities);
                 String unsubscribeFooter = getUnsubscribeDailyDigestFooter(
                         NotificationUnregisterUtils.getActivityUnregisterLink(recipient));
@@ -178,7 +186,7 @@ public class ActivitySubscriptionEmailHelper {
                         PlatformAttributeKey.COLAB_URL
 
                                 .get(), recipient.getId());
-            } catch (MemberNotFoundException ignored) {
+            } catch (org.xcolab.client.user.exceptions.MemberNotFoundException ignored) {
                 _log.error("sendDailyDigestNotifications: MemberNotFound : {}",
                         ignored.getMessage());
             }
@@ -190,10 +198,10 @@ public class ActivitySubscriptionEmailHelper {
                 UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER, unsubscribeUrl);
     }
 
-    private String getDigestMessageBody(List<ActivityEntry> userDigestActivities) {
-        Comparator<ActivityEntry> activityCategoryComparator =
-                Comparator.comparing(ActivityEntry::getActivityCategory);
-        Comparator<ActivityEntry> socialActivityCreatedAtComparator =
+    private String getDigestMessageBody(List<IActivityEntry> userDigestActivities) {
+        Comparator<IActivityEntry> activityCategoryComparator =
+                Comparator.comparing(IActivityEntry::getActivityCategory);
+        Comparator<IActivityEntry> socialActivityCreatedAtComparator =
                 (o1, o2) -> (int) (o1.getCreatedAt().getTime() - o2.getCreatedAt().getTime());
 
         ComparatorChain comparatorChain = new ComparatorChain();
@@ -208,7 +216,7 @@ public class ActivitySubscriptionEmailHelper {
                     instantToFormattedString(lastDailyEmailNotification)));
             body.append("<br/><br/>");
 
-            for (ActivityEntry activityEntry : userDigestActivities) {
+            for (IActivityEntry activityEntry : userDigestActivities) {
                 //prevent null pointer exceptions which might happen at this point
                 if (activityEntry == null) {
                     continue;
@@ -220,7 +228,7 @@ public class ActivitySubscriptionEmailHelper {
                         bodyWithComment.append("<br><br><div style='margin-left:20px;>");
                         bodyWithComment.append("<div style='margin-top:14pt;margin-bottom:14pt;'>");
                         Long commentId = activityEntry.getAdditionalId();
-                        Comment comment = CommentClient.instance().getComment(commentId, true);
+                        IComment comment = commentClient.getComment(commentId, true);
                         if (comment.getDeletedAt() != null) {
                             bodyWithComment.append("<b>COMMENT ALREADY DELETED</b>");
                         }
@@ -246,14 +254,14 @@ public class ActivitySubscriptionEmailHelper {
         return body.toString();
     }
 
-    private Map<Long, List<ActivityEntry>> getUserToActivityDigestMap(
-            List<ActivityEntry> activities) {
-        Map<Long, List<ActivityEntry>> userDigestActivitiesMap = new HashMap<>();
+    private Map<Long, List<IActivityEntry>> getUserToActivityDigestMap(
+            List<IActivityEntry> activities) {
+        Map<Long, List<IActivityEntry>> userDigestActivitiesMap = new HashMap<>();
 
 
-        for (ActivityEntry activity : activities) {
+        for (IActivityEntry activity : activities) {
             // Aggregate all activities for all users
-            for (ActivitySubscription subscriptionObj : getActivitySubscribers(activity)) {
+            for (IActivitySubscription subscriptionObj : getActivitySubscribers(activity)) {
 
                 Long recipientId = subscriptionObj.getReceiverUserId();
 
@@ -261,12 +269,12 @@ public class ActivitySubscriptionEmailHelper {
                     continue;
                 }
 
-                final MessagingUserPreference messagingPreferences =
-                        MessagingClient.getMessagingPreferencesForMember(recipientId);
+                final MessagingUserPreferenceWrapper messagingPreferences =
+                        messagingClient.getMessagingPreferences(recipientId);
                 if (messagingPreferences.getEmailOnActivity() && messagingPreferences
                         .getEmailActivityDailyDigest()) {
 
-                    List<ActivityEntry> userDigestActivities = userDigestActivitiesMap
+                    List<IActivityEntry> userDigestActivities = userDigestActivitiesMap
                             .computeIfAbsent(recipientId, k -> new ArrayList<>());
                     userDigestActivities.add(activity);
                 }
@@ -276,10 +284,10 @@ public class ActivitySubscriptionEmailHelper {
         return userDigestActivitiesMap;
     }
 
-    private List<ActivityEntry> getActivitiesAfter(Instant minDate) {
+    private List<IActivityEntry> getActivitiesAfter(Instant minDate) {
 
-        List<ActivityEntry> activityObjects =
-                ActivitiesClientUtil.getActivityEntriesAfter(Date.from(minDate));
+        List<IActivityEntry> activityObjects =
+                activityClient.getActivityEntriesAfter(Date.from(minDate));
 
         // clean list of activities first in order not to send out activities concerning the same
         // proposal multiple times
@@ -289,22 +297,22 @@ public class ActivitySubscriptionEmailHelper {
         return h.process(activityObjects);
     }
 
-    private void sendInstantNotifications(ActivityEntry activity) {
+    private void sendInstantNotifications(IActivityEntry activity) {
 
         String subject = clearLinksInSubject(activityEntryHelper.getActivityTitle(activity)) + " ";
         String messageTemplate = activityEntryHelper.getActivityBody(activity);
 
-        Set<Member> recipients = new HashSet<>();
-        Map<Long, ActivitySubscription> subscriptionsPerUser = new HashMap<>();
+        Set<UserWrapper> recipients = new HashSet<>();
+        Map<Long, IActivitySubscription> subscriptionsPerUser = new HashMap<>();
 
         for (Object subscriptionObj : getActivitySubscribers(activity)) {
-            ActivitySubscription subscription = (ActivitySubscription) subscriptionObj;
+            IActivitySubscription subscription = (IActivitySubscription) subscriptionObj;
 
             if (subscription.getReceiverUserId() == activity.getUserId().longValue()) {
                 continue;
             }
             try {
-                Member member = MembersClient.getMember(subscription.getReceiverUserId());
+                UserWrapper member = StaticUserContext.getUserClient().getMember(subscription.getReceiverUserId());
                 recipients.add(member);
                 subscriptionsPerUser.put(member.getId(), subscription);
             } catch (MemberNotFoundException ignored) {
@@ -314,9 +322,9 @@ public class ActivitySubscriptionEmailHelper {
             // map users to subscriptions for unregistration links
 
         }
-        for (Member recipient : recipients) {
-            final MessagingUserPreference messagingPreferences =
-                    MessagingClient.getMessagingPreferencesForMember(recipient.getId());
+        for (UserWrapper recipient : recipients) {
+            final MessagingUserPreferenceWrapper messagingPreferences =
+                    messagingClient.getMessagingPreferences(recipient.getId());
             if (messagingPreferences.getEmailOnActivity() && !messagingPreferences
                     .getEmailActivityDailyDigest()) {
                 _log.info("Sending activity notification to member {}.", recipient.getId());
@@ -338,7 +346,7 @@ public class ActivitySubscriptionEmailHelper {
         return "";
     }
 
-    private void sendEmailMessage(Member recipient, String subject, String body,
+    private void sendEmailMessage(UserWrapper recipient, String subject, String body,
             String unregisterFooter, String portalBaseUrl, Long referenceId) {
         try {
             InternetAddress fromEmail = TemplateReplacementUtil.getAdminFromEmailAddress();
@@ -358,7 +366,7 @@ public class ActivitySubscriptionEmailHelper {
             message += "<br /><br />" + unregisterFooter;
 
 
-            EmailClient
+            StaticEmailContext.getEmailClient()
                     .sendEmail(fromEmail.getAddress(), ConfigurationAttributeKey.COLAB_NAME.get(),
                             toEmail.getAddress(),
                             TemplateReplacementUtil.replacePlatformConstants(subject),
@@ -373,11 +381,11 @@ public class ActivitySubscriptionEmailHelper {
     }
 
 
-    private List<ActivitySubscription> getActivitySubscribers(ActivityEntry activity) {
+    private List<IActivitySubscription> getActivitySubscribers(IActivityEntry activity) {
 
-        List<ActivitySubscription> filteredResults = new ArrayList<>();
+        List<IActivitySubscription> filteredResults = new ArrayList<>();
 
-        List<ActivitySubscription> ret = ActivitiesClientUtil
+        List<IActivitySubscription> ret = StaticActivityContext.getActivityClient()
                 .getActivitySubscriptions(activity.getActivityCategoryEnum(),
                         activity.getCategoryId(),null);
 
@@ -386,7 +394,7 @@ public class ActivitySubscriptionEmailHelper {
                 new ActivitySubscriptionConstraint(activity.getActivityTypeEnum());
         if (subscriptionConstraint.areSubscribersConstrained()) {
             for (Long userId : subscriptionConstraint.getWhitelist(activity.getCategoryId())) {
-                for (ActivitySubscription as : ret) {
+                for (IActivitySubscription as : ret) {
                     if (as.getReceiverUserId() == userId.longValue()) {
                         filteredResults.add(as);
                     }
@@ -416,7 +424,7 @@ public class ActivitySubscriptionEmailHelper {
         return footer;
     }
 
-    private String getUserLink(Member user, String portalBaseUrl) {
+    private String getUserLink(UserWrapper user, String portalBaseUrl) {
         return USER_PROFILE_LINK_TEMPLATE
                 .replaceAll(USER_ID_PLACEHOLDER, String.valueOf(user.getId()))
                 .replaceAll(DOMAIN_PLACEHOLDER, portalBaseUrl);

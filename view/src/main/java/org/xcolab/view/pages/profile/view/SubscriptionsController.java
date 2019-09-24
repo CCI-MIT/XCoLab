@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.activity.IActivityClient;
+import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.user.exceptions.MemberNotFoundException;
+import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.errors.ErrorText;
@@ -36,15 +36,21 @@ import javax.servlet.http.HttpServletResponse;
 public class SubscriptionsController {
 
     private final ActivityEntryHelper activityEntryHelper;
+    private final IActivityClient activityClient;
+    private final IContestTypeClient contestTypeClient;
 
     @Autowired
-    public SubscriptionsController(ActivityEntryHelper activityEntryHelper) {
+    public SubscriptionsController(ActivityEntryHelper activityEntryHelper,
+            IContestTypeClient contestTypeClient,
+            IActivityClient activityClient) {
         this.activityEntryHelper = activityEntryHelper;
+        this.contestTypeClient = contestTypeClient;
+        this.activityClient = activityClient;
     }
 
     @GetMapping
     public String showUserProfileSubscriptions(HttpServletRequest request,
-            HttpServletResponse response, Model model, Member loggedInMember,
+            HttpServletResponse response, Model model, UserWrapper loggedInMember,
             @PathVariable long userId, @RequestParam(defaultValue = "1") int page) {
         UserProfilePermissions permissions = new UserProfilePermissions(loggedInMember);
         if (!permissions.getCanEditMemberProfile(userId)) {
@@ -67,7 +73,7 @@ public class SubscriptionsController {
 
     @GetMapping("manage")
     public String showUserSubscriptionsManage(HttpServletRequest request,
-            HttpServletResponse response, Model model, Member loggedInMember,
+            HttpServletResponse response, Model model, UserWrapper loggedInMember,
             @PathVariable long userId, @RequestParam(required = false) String typeFilter) {
         try {
             UserProfileWrapper currentUserProfile = new UserProfileWrapper(userId,
@@ -80,8 +86,7 @@ public class SubscriptionsController {
 
             final long contestTypeId = ConfigurationAttributeKey
                     .DEFAULT_CONTEST_TYPE_ID.get();
-            final ContestType contestType = ContestTypeClient
-                    .getContestType(contestTypeId);
+            final ContestType contestType = contestTypeClient.getContestType(contestTypeId);
             model.addAttribute("contestType", contestType);
 
             if (!currentUserProfile.isViewingOwnProfile()) {
@@ -100,7 +105,7 @@ public class SubscriptionsController {
 
         for (ActivitySubscriptionWrapper subscription : userSubscriptions.getSubscriptions()) {
             if (subscription.getSelected()) {
-                ActivitiesClientUtil.deleteSubscription(subscription.getSubscriptionPk());
+                activityClient.deleteActivitySubscription(subscription.getSubscriptionPk());
             }
         }
         response.sendRedirect("/members/profile/" + userId + "/subscriptions/manage");
