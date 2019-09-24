@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.contest.pojo.IProposalMoveHistory;
 import org.xcolab.client.contest.pojo.tables.pojos.ProposalMoveHistory;
 import org.xcolab.util.enums.proposal.MoveType;
+import org.xcolab.client.contest.StaticContestContext;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -56,6 +57,10 @@ public interface IProposalMoveClient {
         IProposalMoveHistory proposalMoveHistory = new ProposalMoveHistory();
         proposalMoveHistory.setSourceProposalId(srcProposalId);
         proposalMoveHistory.setTargetProposalId(targetProposalId);
+
+        org.xcolab.client.contest.pojo.tables.pojos.ContestPhase
+                sourcePhase = StaticContestContext.getContestClient().getActivePhase(srcContestId);
+        proposalMoveHistory.setSourcePhaseId(sourcePhase.getId());
 
         proposalMoveHistory.setSourceContestId(srcContestId);
         proposalMoveHistory.setTargetContestId(targetContestId);
