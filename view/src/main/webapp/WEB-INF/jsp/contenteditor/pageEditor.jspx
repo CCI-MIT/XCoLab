@@ -270,9 +270,9 @@
 
                     $('#mainContent').val(mainContentArticleId);
 
-                    if (menuArticleId != 0) {
+                    //if (menuArticleId != 0) {
                         $('#leftMenu').val(menuArticleId);
-                    }
+                    //}
 
                     $("#createdAtDate").html("Created at: " + formatDate(data.createdAt));
 
@@ -322,8 +322,8 @@
                         noty({text: 'Page saved successfully', type: 'success'});
                         $("#article-view").unmask();
                         $('#tree-view').tree('reload');
-                        var id = articleId + THRESHOLD_TO_AVOID_NODE_COLISION;
-                        loadPageContent(id, folderName);
+                        //var id = response.articleVersionId + THRESHOLD_TO_AVOID_NODE_COLISION;
+                        //loadPageContent(id, "");
                     });
                 }
 

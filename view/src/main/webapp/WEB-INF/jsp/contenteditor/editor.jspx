@@ -102,24 +102,7 @@
 
         <c:set var="createArticleFolderURL" value="/content-editor/createArticleFolder"/>
 
-        <c:if test="${not empty param.articleId}">
-            <script>
 
-                <![CDATA[
-                jQuery(function () {
-
-                    loadArticleVersionContent(THRESHOLD_TO_AVOID_NODE_COLISION + ${param.articleId},
-                            "");
-
-                    window.setTimeout(function () {
-                        $("#article-view").unmask()
-                    }, 2000);
-
-                });
-
-                ]]>
-            </script>
-        </c:if>
         <script>
             <![CDATA[
 
@@ -189,7 +172,7 @@
                         }//<small>
                     },
                     onCanMoveTo: function (moved_node, target_node, position) {
-                        console.log("target_node " + target_node.id + " - " + target_node.kind);
+                        //console.log("target_node " + target_node.id + " - " + target_node.kind);
                         return target_node.kind == "folder";
                     },
                     onCanMove: function (node) {
@@ -257,6 +240,12 @@
                                 return false;*/
                             }
                         }
+                );
+                $treeView.on(
+                    'tree.loading_data',
+                    function(e) {
+                        console.log(e.isLoading, e.node, e.$el);
+                    }
                 );
                 $treeView.bind(
                         'tree.move',
@@ -375,7 +364,7 @@
                 if (lang) {
                     parameters = {articleId: id, encoding: lang};
                 }
-
+                //console.log("Retrieving the data from server ajax call at " + new Date());
                 $.get(url, parameters, loadContentArticleResponse);
 
             }
@@ -449,9 +438,12 @@
                 } else {
                     $("#articleURL").html('');
                 }
-
-                ckEditor.setReadOnly(false);
+                if(ckEditor === undefined) {
+                    ckEditor.setReadOnly(false);
+                }
                 $("#article-view").unmask()
+                console.log("Should have unmasked this")
+
 
             }
 
@@ -531,6 +523,25 @@
 
             ]]>
         </script>
+        <c:if test="${not empty param.articleId}">
+            <script>
+
+                <![CDATA[
+                jQuery(function () {
+
+                    loadArticleVersionContent(THRESHOLD_TO_AVOID_NODE_COLISION + ${param.articleId},
+                        "");
+
+                    /*window.setTimeout(function () {
+                        console.log("Timed out ")
+                        $("#article-view").unmask()
+                    }, 2000);*/
+
+                });
+
+                ]]>
+            </script>
+        </c:if>
         <div class="contentEditor">
             <div class="contentBody">
                 <ul class="nav nav-tabs">
