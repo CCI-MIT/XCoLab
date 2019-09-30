@@ -28,6 +28,7 @@ public class ContentFileUploadController extends BaseContentEditor{
     @GetMapping("/content-editor/fileUpload")
     public String handleRenderRequest(HttpServletRequest request, HttpServletResponse response,
             Model model, UserWrapper member) {
+        System.out.println("In the method");
         if (!permissionClient.canAdminAll(member)) {
             return new AccessDeniedPage(member).toViewName(response);
         }

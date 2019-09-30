@@ -1,3 +1,10 @@
+<!--
+  Created by IntelliJ IDEA.
+  User: maximiliandeichmann
+  Date: 26.09.19
+  Time: 21:35
+  To change this template use File | Settings | File Templates.
+-->
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
@@ -85,6 +92,7 @@
         </style>
         <collab:stylesheet href="/css/lib/jquery.loadmask.spin.css"/>
 
+
         <c:set var="contentEditorListFolderURL" value="/content-editor/pageEditorListFolder"/>
 
 
@@ -171,19 +179,19 @@
                 });
 
                 $treeView.bind(
-                        'tree.click',
-                        function (event) {
-                            var node = event.node;
-                            if (node.kind == "article") {
-                                $("#article-view").unmask();
-                                $("#article-view").mask();
-                                loadPageContentFromTree(node.id);
-                            } else {
-                                /*
-                                 event.preventDefault();
-                                 return false;*/
-                            }
+                    'tree.click',
+                    function (event) {
+                        var node = event.node;
+                        if (node.kind == "article") {
+                            $("#article-view").unmask();
+                            $("#article-view").mask();
+                            loadPageContentFromTree(node.id);
+                        } else {
+                            /*
+                             event.preventDefault();
+                             return false;*/
                         }
+                    }
                 );
 
                 $("#infoBox").hide();
@@ -251,8 +259,8 @@
                     var dateObject = new Date(ctd); //read in as Date object
                     var timeZoneIdentifier = String(String(dateObject).split("(")[1]).split(")")[0];  //get the timezone abbreviation
                     return (dateObject.getMonth() + 1) + "/" + dateObject.getDate() + "/"
-                            + dateObject.getFullYear() + " " + pad(dateObject.getHours(), 2) + ":"
-                            + pad(dateObject.getMinutes(), 2) + " " + timeZoneIdentifier;
+                        + dateObject.getFullYear() + " " + pad(dateObject.getHours(), 2) + ":"
+                        + pad(dateObject.getMinutes(), 2) + " " + timeZoneIdentifier;
 
                 }
 
@@ -366,10 +374,9 @@
                             </div>
                             <div class="cb-d-flex-between-center mt-2">
                                 <div class="p-Proposal__formBox__main">
-                                    <form:hidden path="imageId" id="proposalImageId" />
                                     <xcolab:imageUpload uniqueName="proposalImageUpload" imageIdInput="proposalImageId"
-                                                        compactView="true" defaultImageId="${contest.defaultProposalLogoId}"
-                                                        clearImageId="${contest.defaultProposalLogoId}" defaultImage="PROPOSAL" buttonText="Upload an image" />
+                                                        compactView="true" defaultImageId="defaultImageId"
+                                                        clearImageId="$clearImageId" defaultImage="PROPOSAL" buttonText="Upload an image" />
                                 </div>
                             </div>
                         </div>
