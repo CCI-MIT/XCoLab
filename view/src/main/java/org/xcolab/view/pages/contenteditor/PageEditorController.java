@@ -98,6 +98,8 @@ public class PageEditorController extends BaseContentEditor {
 
         if (menuArticleId != 0) {
             contentPage.setMenuArticleId(menuArticleId);
+        } else {
+            contentPage.setMenuArticleId(null);
         }
 
         if (metaDescription != null) {
@@ -105,12 +107,13 @@ public class PageEditorController extends BaseContentEditor {
         }
 
         if (pageId == 0) {
-            contentClient.createContentPage(contentPage);
+            contentPage = contentClient.createContentPage(contentPage);
         } else {
             contentClient.updateContentPage(contentPage);
         }
 
-        defaultOperationReturnMessage(true, "Content page created successfully", "", response);
+        defaultOperationReturnMessage(true, "Content page created successfully",
+                contentPage.getId() + "", response);
     }
 
     private Map<String, String> getArticles(Long folderId, String path, Map<String, String> map) {
@@ -127,7 +130,7 @@ public class PageEditorController extends BaseContentEditor {
                 contentClient.getContentFolderArticleVersions(folderId);
         if (contentArticles != null) {
             for (IContentArticleVersion ca : contentArticles) {
-                map.put(path + "/" + ca.getTitle(), ca.getArticleId().toString());
+                map.put("#"+ca.getArticleId() + " - " + path + "/" + ca.getTitle(), ca.getArticleId().toString());
             }
         }
         return map;
@@ -137,7 +140,11 @@ public class PageEditorController extends BaseContentEditor {
     @ResponseBody
     public IContentPage contentEditorListFolder(HttpServletRequest request,
             @RequestParam Long pageId) throws ContentNotFoundException {
-        return contentClient.getContentPage(pageId);
+        IContentPage page = contentClient.getContentPage(pageId);
+        if(page.getMenuArticleId()==null){
+            page.setMenuArticleId(0l);
+        }
+        return page;
     }
 
     @GetMapping("/content-editor/pageEditorListFolder")

@@ -2,6 +2,7 @@ package org.xcolab.view.config.spring.beans;
 
 import org.apache.catalina.Context;
 import org.apache.catalina.webresources.StandardRoot;
+import org.apache.tomcat.util.scan.StandardJarScanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,6 +125,9 @@ public class WebConfig implements WebMvcConfigurer {
         TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory() {
             @Override
             protected void postProcessContext(Context context) {
+
+                ((StandardJarScanner) context.getJarScanner()).setScanManifest(false);
+                log.info("Disabling jar scan manifest");
 
                 final File webappDir = new File(LOCAL_WEBAPP_DIR_LOCATION);
                 if (webappDir.exists()) {
