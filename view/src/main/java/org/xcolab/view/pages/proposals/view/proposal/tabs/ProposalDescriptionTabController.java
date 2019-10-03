@@ -208,7 +208,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
     }
 
     private void populateMoveHistory(Model model, ProposalContext proposalContext,
-            ProposalWrapper proposal, ContestWrapper contest) {
+                ProposalWrapper proposal, ContestWrapper contest) {
 
         final ClientHelper clients = proposalContext.getClients();
         final IProposalMoveClient proposalMoveClient = clients.getProposalMoveClient();
@@ -241,7 +241,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
             if (proposalsInContestType != null) {
                 for (ProposalWrapper p : proposalsInContestType) {
                     contestTypeProposalWrappersByContestTypeId.get(contestType.getId())
-                            .getProposals().add((p));
+                            .getProposals().add((new ProposalWrapper(p)));
                 }
             }
         }
