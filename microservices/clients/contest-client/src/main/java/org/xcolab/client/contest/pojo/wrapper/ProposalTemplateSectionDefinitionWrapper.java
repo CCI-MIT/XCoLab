@@ -230,7 +230,7 @@ public class ProposalTemplateSectionDefinitionWrapper extends ProposalTemplateSe
         if (attr == null || attr.getNumericValue() <= 0) {
             return null;
         }
-        return (StaticProposalContext.getProposalClient().getProposal(attr.getNumericValue()));
+        return (new ProposalWrapper(StaticProposalContext.getProposalClient().getProposal(attr.getNumericValue())));
     }
 
     @JsonIgnore

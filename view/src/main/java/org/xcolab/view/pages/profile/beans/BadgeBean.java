@@ -31,7 +31,7 @@ public class BadgeBean implements Serializable {
         for (ProposalWrapper proposal : StaticProposalContext.getProposalClient()
                 .getMemberProposals(userId)) {
             final Optional<IProposalContestPhaseAttribute> ribbonAttributeOpt =
-                    getLatestRibbonAttribute(proposal);
+                    getLatestRibbonAttribute(new ProposalWrapper(proposal));
             if (ribbonAttributeOpt.isPresent()) {
                 final IProposalContestPhaseAttribute ribbonAttribute = ribbonAttributeOpt.get();
                 final IContestPhaseRibbonType ribbonType = StaticContestContext.getContestClient()
