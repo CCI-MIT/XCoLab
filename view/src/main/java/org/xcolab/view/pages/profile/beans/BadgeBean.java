@@ -40,7 +40,7 @@ public class BadgeBean implements Serializable {
                 if (ribbonType.getRibbon() > 0) {
                     final ContestPhaseWrapper phase = StaticContestContext.getContestClient()
                             .getContestPhase(ribbonAttribute.getContestPhaseId());
-                    badges.add(new Badge(ribbonType, proposal, proposal.getName(),
+                    badges.add(new Badge(ribbonType, new ProposalWrapper(proposal), proposal.getName(),
                             phase.getContest()));
                 }
             }
