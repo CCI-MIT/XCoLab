@@ -330,7 +330,15 @@ public class UserProfileWrapper implements Serializable {
             List<ProposalWrapper> proposals = StaticProposalContext.getProposalClient()
                     .getLinkingProposalsForUser(getUserId());
 
-            linkingProposals.addAll(proposals);
+            List<ProposalWrapper> wrappedList = new ArrayList<>();
+
+            if(proposals!=null ||! proposals.isEmpty()){
+
+                for(ProposalWrapper pw: proposals){
+                    wrappedList.add(new ProposalWrapper(pw));
+                }
+            }
+            linkingProposals.addAll(wrappedList);
         }
         return linkingProposals;
     }
