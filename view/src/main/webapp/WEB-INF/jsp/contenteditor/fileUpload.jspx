@@ -146,10 +146,10 @@
 
             jQuery(function () {
 
-                $("#article-view").mask({
+            /*    $("#article-view").mask({
                     'label': "Please click on an Page or create a new one clicking in the create page button!",
                     spinner: false
-                });
+                });*/
 
                 var $treeView = $('#tree-view');
                 $treeView.tree({
@@ -354,6 +354,9 @@
                     <li class="nav-item"><a class="nav-link"
                                             href="/content-editor/resourcePagesEditor">Resource pages</a>
                     </li>
+                    <li class="nav-item"><a class="nav-link"
+                                            href="/content-editor/fileUpload">File Upload</a>
+                    </li>
                 </ul>
 
                 <div id="infoBox"><!-- --></div>
@@ -378,11 +381,10 @@
                             <div class="cb-d-flex-between-center mt-2">
                                 <div class="p-Proposal__formBox__main">
                                     <xcolab:imageUpload uniqueName="userPortraitUpload"
-                                                        imageIdInput="userPortraitInput"
                                                         buttonText="UPLOAD file"/>
 
                                     <xcolab:imageUpload uniqueName="fileupload2" shouldDisplayUrl="true"
-                                                        preserveAspectRatio="true" defaultImage="CONTEST"/>
+                                                        preserveAspectRatio="true" defaultImage="CONTEST" showFilePreview="false"/>
                                 </div>
                             </div>
                         </div>

@@ -23,6 +23,8 @@
                              rtexprvalue="true" description="Text for the upload button"/>
     <jsp:directive.attribute name="clearImageId" type="java.lang.Long"
                              required="false" rtexprvalue="true"  description="Image id to revert to if current image is cleared" />
+    <jsp:directive.attribute name="showFilePreview" type="java.lang.Boolean"
+                             required="false" rtexprvalue="true"  description="Control to display the image preview" />
 
     <spring:message code="colab.default.image.button.upload" var="defaultImageText"/>
     <c:set var="shouldDisplayUrl" value="${(empty shouldDisplayUrl) ? false : shouldDisplayUrl}" />
@@ -35,11 +37,14 @@
     <c:set var="uploadImageInputId" value="${uniqueName}Input"/>
     <c:set var="urlDisplayDiv" value="${uniqueName}ImageUrl"/>
     <c:set var="previewImgId" value="${uniqueName}Preview" />
+    <c:set var="showFilePreview" value="${(empty showFilePreview) ? false : showFilePreview}" />
+
 
     <c:set var="FILE_UPLOAD_MAX_WIDTH" value="300" />
     <c:set var="FILE_UPLOAD_MAX_HEIGHT" value="300" />
     <c:set var="FILE_UPLOAD_MAX_FILE_SIZE" value="2097152" /> <!-- Max image size 2MB -->
     <c:set var="FILE_UPLOAD_URL" value="/image/upload" />
+
 
     <c:if test="${empty _imageUploadScriptsLoaded}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.14.2/css/jquery.fileupload.min.css"/>
@@ -60,6 +65,7 @@
     </c:if>
 
     <div class="c-Upload ${compactView ? 'c-Upload--compact' : ''}">
+        <c:if test="${showFilePreview}">
         <div class="${!compactView ? 'c-Upload__wrapper' : 'c-Upload__wrapper--compact'}">
             <c:if test="${!compactView}">
                 <collab:image id='${uniqueName}_clear' cssClass="c-Upload__icon__clear" src="/images/clear.png" />
@@ -67,6 +73,7 @@
             <collab:image id="${previewImgId}"
                           src="/image?img_id=${defaultImageId}&amp;defaultImage=${defaultImage}" />
         </div>
+        </c:if>
         <div class="c-Upload__button">
             <span class="btn btn-primary fileinput-button">
                 ${buttonText}
@@ -185,7 +192,7 @@
         }
 
         $( document ).ready(hideClearButtonIfDefault);
-        
+
     </script>
 
 </jsp:root>
