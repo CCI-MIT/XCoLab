@@ -60,7 +60,7 @@ public class BadgeBean implements Serializable {
 
     private IProposalContestPhaseAttribute getRibbonAttribute(long proposalId, long phaseId) {
         return StaticProposalContext.getProposalPhaseClient()
-                .getProposalContestPhaseAttribute(proposalId, phaseId,
+                .getProposalContestPhaseAttribute( phaseId,proposalId,
                         ProposalContestPhaseAttributeKeys.RIBBON);
     }
 

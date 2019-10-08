@@ -341,7 +341,7 @@ public interface IContestClient {
     default List<ContestWrapper> getContests(Boolean contestActive, Boolean contestPrivate,
             Long contestTypeId) {
         String lang = LocaleContextHolder.getLocale().getLanguage();
-        return getContests(null, null, null, lang, null, null, contestActive, null, null, null,
+        return getContests(null, Integer.MAX_VALUE, null, lang, null, null, contestActive, null, null, null,
                 null, null, null,
                 Collections.singletonList(contestTypeId), contestPrivate, null);
     }

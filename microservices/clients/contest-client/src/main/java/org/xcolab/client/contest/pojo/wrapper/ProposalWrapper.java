@@ -336,7 +336,7 @@ public class ProposalWrapper extends Proposal implements Serializable {
 
     @JsonIgnore
     public long getResultsDiscussionIdOrCreate() {
-        Long discussionId = getDiscussionId();
+        Long discussionId = getResultsDiscussionId();
         if (discussionId == null) {
             discussionId = createDiscussionThread(" results discussion", true);
             setResultsDiscussionId(discussionId);
