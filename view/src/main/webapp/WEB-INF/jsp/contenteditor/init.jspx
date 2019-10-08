@@ -1,0 +1,6 @@
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0">
+
+	<collab:script src="/js/pages/profile/profile.js" />
+</jsp:root>

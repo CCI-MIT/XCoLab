@@ -377,9 +377,12 @@
                             </div>
                             <div class="cb-d-flex-between-center mt-2">
                                 <div class="p-Proposal__formBox__main">
-                                    <form:hidden id="userPortraitInput" path="imageId" />
-                                    <xcolab:imageUpload uniqueName="userPortraitUpload" imageIdInput="userPortraitInput"
-                                                        defaultImage="MEMBER" />
+                                    <xcolab:imageUpload uniqueName="userPortraitUpload"
+                                                        imageIdInput="userPortraitInput"
+                                                        buttonText="UPLOAD file"/>
+
+                                    <xcolab:imageUpload uniqueName="fileupload2" shouldDisplayUrl="true"
+                                                        preserveAspectRatio="true" defaultImage="CONTEST"/>
                                 </div>
                             </div>
                         </div>
