@@ -47,6 +47,7 @@ public interface IThread {
 
     void setIsQuiet(Boolean isQuiet);
 
+    @JsonIgnore
     default int getCommentsCount() {
         return StaticCommentContext.getCommentClient().countComments(getId());
     }

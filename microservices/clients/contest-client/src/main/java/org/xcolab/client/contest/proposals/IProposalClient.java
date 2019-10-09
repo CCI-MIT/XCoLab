@@ -169,7 +169,7 @@ public interface IProposalClient {
             try {
                 final ProposalWrapper proposal = getProposal(proposalReference.getProposalId());
                 if (!linkingProposals.contains(proposal)) {
-                    linkingProposals.add(proposal);
+                    linkingProposals.add(new ProposalWrapper(proposal));
                 }
             } catch (ProposalNotFoundException ignored) {
 
