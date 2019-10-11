@@ -218,8 +218,7 @@ public class ProposalWrapper extends Proposal implements Serializable {
         long visibleAttributeValue = 1;
         if (contestPhase != null) {
             IProposalContestPhaseAttribute pcpa = clients.proposalPhase
-                    .getProposalContestPhaseAttribute(this.getId(),
-                            contestPhase.getId(),
+                    .getProposalContestPhaseAttribute(contestPhase.getId(),this.getId(),
                             ProposalContestPhaseAttributeKeys.VISIBLE);
             if (pcpa != null) {
                 visibleAttributeValue = pcpa.getNumericValue();
@@ -951,7 +950,7 @@ public class ProposalWrapper extends Proposal implements Serializable {
             long baseProposalContestId = proposalAttributeHelper
                     .getAttributeValueLong(ProposalAttributeKeys.BASE_PROPOSAL_CONTEST_ID, 0);
             if (baseProposalContestId > 0) {
-                return clients.proposal.getProposal(baseProposalId);
+                return new ProposalWrapper(clients.proposal.getProposal(baseProposalId));
             }
         }
         return null;
