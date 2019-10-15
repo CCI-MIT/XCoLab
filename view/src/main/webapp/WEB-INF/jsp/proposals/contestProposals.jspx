@@ -86,7 +86,7 @@
             <spring:message var="tooltipProposalName"
                             code="contests.details.tooltip.proposalname" />
             <span class="js-Tooltip" title="${tooltipProposalName}">
-                <c:set var="sortURL" value="/contests/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=NAME&amp;phaseId=${contestPhase.id }&amp;sortAscending=${sortFilterPage.sortColumn == 'NAME' ? not sortFilterPage.sortAscending : false }" />
+                <c:set var="sortURL" value="${contestType.contestBaseUrl}/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=NAME&amp;phaseId=${contestPhase.id }&amp;sortAscending=${sortFilterPage.sortColumn == 'NAME' ? not sortFilterPage.sortAscending : false }" />
                 <a href="${sortURL }">
                     <collab:message code="contests.details.proposalname" contestType="${contestType}" />
                     <xcolab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="NAME" />
@@ -96,7 +96,7 @@
             <spring:message var="tooltipAuthors"
                             code="contests.details.tooltip.authors" />
             <span class="js-Tooltip" title="${tooltipAuthors}">
-                <c:set var="sortURL" value="/contests/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=AUTHOR&amp;phaseId=${contestPhase.id }&amp;sortAscending=${sortFilterPage.sortColumn == 'AUTHOR' ? not sortFilterPage.sortAscending : false }" />
+                <c:set var="sortURL" value="${contestType.contestBaseUrl}/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=AUTHOR&amp;phaseId=${contestPhase.id }&amp;sortAscending=${sortFilterPage.sortColumn == 'AUTHOR' ? not sortFilterPage.sortAscending : false }" />
                 <a href="${sortURL }">
                     <spring:message code="contests.details.authors" />
                     <xcolab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="AUTHOR" />
@@ -107,7 +107,7 @@
             <spring:message var="tooltipVotes"
                             code="contests.details.tooltip.votes" />
             <div class="col c-TableGrid__cell text-center votes js-Tooltip" title="${tooltipVotes}">
-                <c:set var="sortURL" value="/contests/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=VOTES&amp;phaseId=${contestPhase.id }&amp;sortAscending=${sortFilterPage.sortColumn == 'VOTES' ? not sortFilterPage.sortAscending : false }" />
+                <c:set var="sortURL" value="${contestType.contestBaseUrl}/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=VOTES&amp;phaseId=${contestPhase.id }&amp;sortAscending=${sortFilterPage.sortColumn == 'VOTES' ? not sortFilterPage.sortAscending : false }" />
                 <a href="${sortURL }">
                     <collab:image src="/images/icon-proposal-vote.png" />
                     <xcolab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="VOTES" />
@@ -118,7 +118,7 @@
             <spring:message var="tooltipSupporters"
                             code="contests.details.tooltip.supporters" />
             <div class="col c-TableGrid__cell text-center supporters js-Tooltip" title="${tooltipSupporters}">
-                <c:set var="sortURL" value="/contests/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=SUPPORTERS&amp;phaseId=${contestPhase.id }&amp;sortAscending=${sortFilterPage.sortColumn == 'SUPPORTERS' ? not sortFilterPage.sortAscending : false }" />
+                <c:set var="sortURL" value="${contestType.contestBaseUrl}/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=SUPPORTERS&amp;phaseId=${contestPhase.id }&amp;sortAscending=${sortFilterPage.sortColumn == 'SUPPORTERS' ? not sortFilterPage.sortAscending : false }" />
                 <a href="${sortURL }">
                     <collab:image src="/images/icon-proposal-thumb.png" />
                     <xcolab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="SUPPORTERS" />
@@ -128,7 +128,7 @@
         <spring:message var="tooltipComments"
                         code="contests.details.tooltip.comments" />
         <div class="col c-TableGrid__cell text-center comments js-Tooltip" title="${tooltipComments}">
-            <c:set var="sortURL" value="/contests/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=COMMENTS&amp;phaseId=${contestPhase.id }&amp;sortAscending=${sortFilterPage.sortColumn == 'COMMENTS' ? not sortFilterPage.sortAscending : false }" />
+            <c:set var="sortURL" value="${contestType.contestBaseUrl}/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=COMMENTS&amp;phaseId=${contestPhase.id }&amp;sortAscending=${sortFilterPage.sortColumn == 'COMMENTS' ? not sortFilterPage.sortAscending : false }" />
             <a href="${sortURL }">
                 <collab:image src="/images/icon-list-comment.png" />
                 <xcolab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="COMMENTS" />
@@ -138,7 +138,7 @@
             <spring:message var="tooltipModified"
                             code="contests.details.tooltip.modified" />
             <div class="col c-TableGrid__cell text-center modified">
-                <c:set var="sortURL" value="/contests/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=MODIFIED&amp;phaseId=${contestPhase.id }&amp;sortAscending=${sortFilterPage.sortColumn == 'MODIFIED' ? not sortFilterPage.sortAscending : false }" />
+                <c:set var="sortURL" value="${contestType.contestBaseUrl}/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=MODIFIED&amp;phaseId=${contestPhase.id }&amp;sortAscending=${sortFilterPage.sortColumn == 'MODIFIED' ? not sortFilterPage.sortAscending : false }" />
                 <a href="${sortURL }" class="js-Tooltip" title="${tooltipModified}">
                     <spring:message code="contests.details.modified" />
                     <xcolab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="MODIFIED" />
@@ -148,7 +148,7 @@
                 <spring:message var="tooltipContributors"
                                 code="contests.details.tooltip.contributors" />
                 <div class="col c-TableGrid__cell text-center contributors">
-                    <c:set var="sortURL" value="/contests/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=CONTRIBUTORS&amp;phaseId=${contestPhase.id }&amp;sortAscending=${sortFilterPage.sortColumn == 'CONTRIBUTORS' ? not sortFilterPage.sortAscending : false }" />
+                    <c:set var="sortURL" value="${contestType.contestBaseUrl}/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=CONTRIBUTORS&amp;phaseId=${contestPhase.id }&amp;sortAscending=${sortFilterPage.sortColumn == 'CONTRIBUTORS' ? not sortFilterPage.sortAscending : false }" />
                     <a href="${sortURL }" class="js-Tooltip" title="${tooltipContributors}">
                         <spring:message code="contests.details.contributors" />
                         <xcolab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="CONTRIBUTORS" />
@@ -162,7 +162,7 @@
 
                 <!-- Sorting by Fellows -->
                 <c:if test="${proposalsPermissions.canFellowActions or proposalsPermissions.canIAFActions}">
-                    <c:set var="sortURL" value="/contests/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=SCREENINGSTATUS&amp;phaseId=${contestPhase.id }&amp;sortAscending=${sortFilterPage.sortColumn == 'SCREENINGSTATUS' ? not sortFilterPage.sortAscending : false }" />
+                    <c:set var="sortURL" value="${contestType.contestBaseUrl}/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=SCREENINGSTATUS&amp;phaseId=${contestPhase.id }&amp;sortAscending=${sortFilterPage.sortColumn == 'SCREENINGSTATUS' ? not sortFilterPage.sortAscending : false }" />
 
                     <a href="${sortURL }" class="js-Tooltip" title="status of the fellows' screening decision" style="padding-left: 5px;">
                         Fellows
@@ -170,7 +170,7 @@
                     </a>
 
                     <!-- IAF status-->
-                    <c:set var="sortURL" value="/contests/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=IAFSTATUS&amp;phaseId=${contestPhase.id }&amp;sortAscending=${sortFilterPage.sortColumn == 'IAFSTATUS' ? not sortFilterPage.sortAscending : false }" />
+                    <c:set var="sortURL" value="${contestType.contestBaseUrl}/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=IAFSTATUS&amp;phaseId=${contestPhase.id }&amp;sortAscending=${sortFilterPage.sortColumn == 'IAFSTATUS' ? not sortFilterPage.sortAscending : false }" />
 
                     <a href="${sortURL }" class="js-Tooltip" title="status of the impact assessment" style="padding-left: 5px;">
                         IAF
@@ -180,7 +180,7 @@
 
                 <div class="d-none d-lg-block"><!-- --></div>
 
-                <c:set var="sortURL" value="/contests/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=JUDGESTATUS&amp;phaseId=${contestPhase.id }&amp;sortAscending=${sortFilterPage.sortColumn == 'JUDGESTATUS' ? not sortFilterPage.sortAscending : false }" />
+                <c:set var="sortURL" value="${contestType.contestBaseUrl}/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=JUDGESTATUS&amp;phaseId=${contestPhase.id }&amp;sortAscending=${sortFilterPage.sortColumn == 'JUDGESTATUS' ? not sortFilterPage.sortAscending : false }" />
                 <!-- Sorting by judges -->
 
                 <a href="${sortURL }" class="js-Tooltip" title="status of the judges' ratings">
@@ -189,7 +189,7 @@
                 </a>
 
                 <!-- Sorting by Overall -->
-                <c:set var="sortURL" value="/contests/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=OVERALLSTATUS&amp;phaseId=${contestPhase.id }&amp;sortAscending=${sortFilterPage.sortColumn == 'OVERALLSTATUS' ? not sortFilterPage.sortAscending : false }" />
+                <c:set var="sortURL" value="${contestType.contestBaseUrl}/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=OVERALLSTATUS&amp;phaseId=${contestPhase.id }&amp;sortAscending=${sortFilterPage.sortColumn == 'OVERALLSTATUS' ? not sortFilterPage.sortAscending : false }" />
                 <a href="${sortURL }" class="js-Tooltip" title="state of the final advancing decision">
                     Overall
                     <xcolab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="OVERALLSTATUS" />
