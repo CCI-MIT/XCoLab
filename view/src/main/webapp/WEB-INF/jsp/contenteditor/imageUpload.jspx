@@ -9,14 +9,14 @@
     <div class="clearfix" style="margin-bottom: 25px;">
         <h3>Standard upload (resized to square)</h3>
 
-        <xcolab:imageUpload uniqueName="fileupload1" shouldDisplayUrl="true" defaultImage="MEMBER"/>
+        <xcolab:fileUpload uniqueName="fileupload1" shouldDisplayUrl="true" defaultImage="MEMBER"/>
     </div>
 
     <div class="clearfix">
         <h3>Direct upload</h3>
 
-        <xcolab:imageUpload uniqueName="fileupload2" shouldDisplayUrl="true"
-                            preserveAspectRatio="true" defaultImage="CONTEST"/>
+        <xcolab:fileUpload uniqueName="fileupload2" shouldDisplayUrl="true"
+                           preserveAspectRatio="true" defaultImage="CONTEST"/>
     </div>
 
 </xcolab:layout>

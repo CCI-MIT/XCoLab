@@ -96,7 +96,7 @@
         <collab:stylesheet href="/css/lib/jquery.loadmask.spin.css"/>
 
 
-        <c:set var="contentEditorListFolderURL" value="/content-editor/pageEditorListFolder"/>
+        <c:set var="contentEditorListFolderURL" value="content-editor/fileUploaderListFiles"/>
 
 
         <c:set var="getContentPageURL" value="/content-editor/pageEditorGetPage"/>
@@ -380,11 +380,11 @@
                             </div>
                             <div class="cb-d-flex-between-center mt-2">
                                 <div class="p-Proposal__formBox__main">
-                                    <xcolab:imageUpload uniqueName="userPortraitUpload"
-                                                        buttonText="UPLOAD file"/>
+                                    <xcolab:fileUpload uniqueName="userPortraitUpload"
+                                                       buttonText="UPLOAD file"/>
 
-                                    <xcolab:imageUpload uniqueName="fileupload2" shouldDisplayUrl="true"
-                                                        preserveAspectRatio="true" defaultImage="CONTEST" showFilePreview="false"/>
+                                    <xcolab:fileUpload uniqueName="fileupload2" shouldDisplayUrl="true"
+                                                       preserveAspectRatio="true" defaultImage="CONTEST" showFilePreview="false"/>
                                 </div>
                             </div>
                         </div>

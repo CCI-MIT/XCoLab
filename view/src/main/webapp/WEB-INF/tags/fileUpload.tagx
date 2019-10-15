@@ -26,6 +26,7 @@
     <jsp:directive.attribute name="showFilePreview" type="java.lang.Boolean"
                              required="false" rtexprvalue="true"  description="Control to display the image preview" />
 
+
     <spring:message code="colab.default.image.button.upload" var="defaultImageText"/>
     <c:set var="shouldDisplayUrl" value="${(empty shouldDisplayUrl) ? false : shouldDisplayUrl}" />
     <c:set var="compactView" value="${(empty compactView) ? false : compactView}" />
@@ -139,7 +140,7 @@
                 url: FILE_UPLOAD_URL + (vars.shouldBeCropped ? '?crop=true' : ''),
                 dataType: 'json',
                 autoUpload: true,
-                acceptFileTypes: /(\.|\/)(gif|jpe?g|png)\$/i,
+                acceptFileTypes: /(\.|\/)(gif|jpe?g|png|xlsx)\$/i,
                 maxFileSize: FILE_UPLOAD_MAX_FILE_SIZE,
                 // Enable image resizing, except for Android and Opera,
                 // which actually support image resizing, but fail to

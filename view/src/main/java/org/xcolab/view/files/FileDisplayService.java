@@ -7,6 +7,7 @@ import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import java.util.ArrayList;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
@@ -27,9 +28,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Service
-public class ImageDisplayService {
+public class FileDisplayService {
 
-    private static final Logger log = LoggerFactory.getLogger(ImageDisplayService.class);
+    private static final Logger log = LoggerFactory.getLogger(FileDisplayService.class);
 
     private static final int IMAGE_CACHE_MAX_AGE_DAYS = 7;
     private static final int IMAGE_CACHE_STALE_DAYS = 90;
@@ -40,7 +41,7 @@ public class ImageDisplayService {
     private final IFileClient fileClient;
 
     @Autowired
-    public ImageDisplayService(IFileClient fileClient) {
+    public FileDisplayService(IFileClient fileClient) {
         final ServerEnvironment serverEnvironment = PlatformAttributeKey.SERVER_ENVIRONMENT.get();
         isProduction = serverEnvironment == ServerEnvironment.PRODUCTION;
         this.fileClient = fileClient;
@@ -64,6 +65,24 @@ public class ImageDisplayService {
             handleFileEntryNotFoundError(request, response, imageId, imageType);
         }
     }
+
+//    public void serveFile(HttpServletRequest request, HttpServletResponse response, String fileName) throws IOException {
+//
+//        final Optional<IFileEntry> fileEntryOpt = fileClient.getFileEntry(fileName);
+//        if (fileEntryOpt.isPresent()) {
+//            IFileEntry fileEntry = fileEntryOpt.get();
+//            File imageFile = fileClient
+//                    .getImageFile(fileEntry.getId(), BASE_PATH, fileEntry.getFileExtension());
+//            final boolean success = sendImageToResponse(request, response, imageFile);
+//            if (success) {
+//                setCacheControlHeader(response);
+//            } else {
+//                handleImageNotFoundError(request, response, fileName);
+//            }
+//        } else {
+//            handleFileEntryNotFoundError(request, response, fileName, imageType);
+//        }
+//    }
 
     private void setCacheControlHeader(HttpServletResponse response) {
         response.setHeader(HttpHeaders.CACHE_CONTROL,
@@ -132,10 +151,12 @@ public class ImageDisplayService {
             final String mimeType = ServletFileUtil.resolveMimeType(request, imageFile);
             ServletFileUtil.sendFileToResponse(response, imageFile, mimeType);
             return true;
+
         } catch (IOException e) {
             log.error("Error while sending image {} to response: {}", imageFile.getAbsolutePath(),
                     e.getMessage());
             return false;
         }
+
     }
 }

@@ -71,8 +71,8 @@
 
                     <div>
                         <form:hidden path="contestLogoId" id="contestImageId"/>
-                        <xcolab:imageUpload uniqueName="contestImage" imageIdInput="contestImageId" compactView="true"
-                                            defaultImage="CONTEST" defaultImageId="${contestWrapper.contestLogoId}" />
+                        <xcolab:fileUpload uniqueName="contestImage" imageIdInput="contestImageId" compactView="true"
+                                           defaultImage="CONTEST" defaultImageId="${contestWrapper.contestLogoId}" />
                     </div>
                 </div>
             </div>
@@ -92,8 +92,8 @@
 
                     <div>
                         <form:hidden path="sponsorLogoId" id="logoImageId"/>
-                        <xcolab:imageUpload uniqueName="logoImage" imageIdInput="logoImageId" compactView="true"
-                                            defaultImage="CONTEST" defaultImageId="${contestWrapper.sponsorLogoId}" />
+                        <xcolab:fileUpload uniqueName="logoImage" imageIdInput="logoImageId" compactView="true"
+                                           defaultImage="CONTEST" defaultImageId="${contestWrapper.sponsorLogoId}" />
                     </div>
                 </div>
             </div>

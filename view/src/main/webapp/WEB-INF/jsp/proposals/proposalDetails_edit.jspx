@@ -185,9 +185,9 @@
                         </label>
                         <div class="p-Proposal__formBox__main">
                             <form:hidden path="imageId" id="proposalImageId" />
-                            <xcolab:imageUpload uniqueName="proposalImageUpload" imageIdInput="proposalImageId"
-                                                compactView="true" defaultImageId="${contest.defaultProposalLogoId}"
-                                                clearImageId="${contest.defaultProposalLogoId}" defaultImage="PROPOSAL" buttonText="Upload an image" />
+                            <xcolab:fileUpload uniqueName="proposalImageUpload" imageIdInput="proposalImageId"
+                                               compactView="true" defaultImageId="${contest.defaultProposalLogoId}"
+                                               clearImageId="${contest.defaultProposalLogoId}" defaultImage="PROPOSAL" buttonText="Upload an image" />
                         </div>
                     </div>
                 </div>

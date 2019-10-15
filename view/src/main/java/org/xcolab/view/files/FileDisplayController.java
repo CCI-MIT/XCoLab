@@ -10,25 +10,32 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-public class ImageDisplayController {
+public class FileDisplayController {
 
-    private final ImageDisplayService imageDisplayService;
+    private final FileDisplayService fileDisplayService;
 
-    public ImageDisplayController(ImageDisplayService imageDisplayService) {
-        this.imageDisplayService = imageDisplayService;
+    public FileDisplayController(FileDisplayService fileDisplayService) {
+        this.fileDisplayService = fileDisplayService;
     }
 
     @GetMapping("/image/upload/images/{imageId}")
     public void serveImage(HttpServletRequest request, HttpServletResponse response,
             @PathVariable long imageId)
             throws IOException {
-        imageDisplayService.serveImage(request, response, imageId, ImageType.UNKNOWN);
+        fileDisplayService.serveImage(request, response, imageId, ImageType.UNKNOWN);
     }
 
     @GetMapping("/image/upload/{imageType}/images/{imageId}")
     public void serveImage(HttpServletRequest request, HttpServletResponse response,
             @PathVariable long imageId, @PathVariable ImageType imageType)
             throws IOException {
-        imageDisplayService.serveImage(request, response, imageId, imageType);
+        fileDisplayService.serveImage(request, response, imageId, imageType);
     }
+
+    //@GetMapping("/image/upload/images/{fileName}")
+/*    public void serveFile(HttpServletRequest request, HttpServletResponse response,
+            @PathVariable long fileName)
+            throws IOException {
+        fileDisplayService.serveImage(request, response, imageId, ImageType.UNKNOWN);
+    }*/
 }
