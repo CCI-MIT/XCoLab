@@ -25,6 +25,8 @@
                              required="false" rtexprvalue="true"  description="Image id to revert to if current image is cleared" />
     <jsp:directive.attribute name="showFilePreview" type="java.lang.Boolean"
                              required="false" rtexprvalue="true"  description="Control to display the image preview" />
+    <jsp:directive.attribute name="isFileUpload" type="java.lang.Boolean"
+                             required="false" rtexprvalue="false"  description="Control the text below the button before the link" />
 
 
     <spring:message code="colab.default.image.button.upload" var="defaultImageText"/>
@@ -39,6 +41,7 @@
     <c:set var="urlDisplayDiv" value="${uniqueName}ImageUrl"/>
     <c:set var="previewImgId" value="${uniqueName}Preview" />
     <c:set var="showFilePreview" value="${(empty showFilePreview) ? false : showFilePreview}" />
+    <c:set var="isFileUpload" value="${(empty isFileUpload) ? false : isFileUpload}" />
 
 
     <c:set var="FILE_UPLOAD_MAX_WIDTH" value="300" />
@@ -88,7 +91,12 @@
         </div>
 
         <div style="${shouldDisplayUrl ? '' : 'display: none'}">
-            Link to your image: <a id="${urlDisplayDiv}" href=""><!-- --></a>
+            <c:if test="${!isFileUpload}">
+                Link to your image: <a id="${urlDisplayDiv}" href=""><!-- --></a>
+            </c:if>
+            <c:if test="${isFileUpload}">
+                Link to your file: <a id="${urlDisplayDiv}" href=""><!-- --></a>
+            </c:if>
         </div>
     </div>
 

@@ -380,11 +380,8 @@
                             </div>
                             <div class="cb-d-flex-between-center mt-2">
                                 <div class="p-Proposal__formBox__main">
-                                    <xcolab:fileUpload uniqueName="userPortraitUpload"
-                                                       buttonText="UPLOAD file"/>
-
                                     <xcolab:fileUpload uniqueName="fileupload2" shouldDisplayUrl="true"
-                                                       preserveAspectRatio="true" defaultImage="CONTEST" showFilePreview="false"/>
+                                                       preserveAspectRatio="true" defaultImage="CONTEST" showFilePreview="false" buttonText="Upload a file" isFileUpload="true"/>
                                 </div>
                             </div>
                         </div>
