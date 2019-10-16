@@ -37,7 +37,7 @@ public class ProposalRibbon implements Serializable {
 
         IProposalContestPhaseAttribute ribbonAttribute =
                 StaticProposalContext.getProposalPhaseClient().getProposalContestPhaseAttribute(
-                        proposalId, contestPhase.getId(),
+                         contestPhase.getId(),proposalId,
                         ProposalContestPhaseAttributeKeys.RIBBON);
         if (ribbonAttribute != null) {
             long typeId = ribbonAttribute.getNumericValue();
