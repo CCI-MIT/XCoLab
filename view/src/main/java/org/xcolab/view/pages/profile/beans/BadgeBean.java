@@ -31,7 +31,7 @@ public class BadgeBean implements Serializable {
         for (ProposalWrapper proposal : StaticProposalContext.getProposalClient()
                 .getMemberProposals(userId)) {
             final Optional<IProposalContestPhaseAttribute> ribbonAttributeOpt =
-                    getLatestRibbonAttribute(proposal);
+                    getLatestRibbonAttribute(new ProposalWrapper(proposal));
             if (ribbonAttributeOpt.isPresent()) {
                 final IProposalContestPhaseAttribute ribbonAttribute = ribbonAttributeOpt.get();
                 final IContestPhaseRibbonType ribbonType = StaticContestContext.getContestClient()
@@ -40,7 +40,7 @@ public class BadgeBean implements Serializable {
                 if (ribbonType.getRibbon() > 0) {
                     final ContestPhaseWrapper phase = StaticContestContext.getContestClient()
                             .getContestPhase(ribbonAttribute.getContestPhaseId());
-                    badges.add(new Badge(ribbonType, proposal, proposal.getName(),
+                    badges.add(new Badge(ribbonType, new ProposalWrapper(proposal), proposal.getName(),
                             phase.getContest()));
                 }
             }
@@ -60,7 +60,7 @@ public class BadgeBean implements Serializable {
 
     private IProposalContestPhaseAttribute getRibbonAttribute(long proposalId, long phaseId) {
         return StaticProposalContext.getProposalPhaseClient()
-                .getProposalContestPhaseAttribute(proposalId, phaseId,
+                .getProposalContestPhaseAttribute( phaseId,proposalId,
                         ProposalContestPhaseAttributeKeys.RIBBON);
     }
 

@@ -35,8 +35,9 @@ public class ProposalJudgingCommentHelper {
     public String getScreeningComment() {
         //get fellow decision
         IProposalContestPhaseAttribute fellowActionAttribute = proposalPhaseClient.
-                getProposalContestPhaseAttribute(proposal.getId(),
+                getProposalContestPhaseAttribute(
                         contestPhase.getId(),
+                        proposal.getId(),
                         ProposalContestPhaseAttributeKeys.FELLOW_ACTION);
         FellowAction fellowAction = FellowAction.fromInt(
                 fellowActionAttribute.getNumericValue().intValue());
@@ -44,8 +45,9 @@ public class ProposalJudgingCommentHelper {
         if (fellowAction != FellowAction.NO_DECISION &&
                 fellowAction != FellowAction.PASS_TO_JUDGES) {
             String fellowRejectionText = proposalPhaseClient.
-                    getProposalContestPhaseAttribute(proposal.getId(),
+                    getProposalContestPhaseAttribute(
                             contestPhase.getId(),
+                            proposal.getId(),
                             ProposalContestPhaseAttributeKeys.FELLOW_ACTION_COMMENT)
                     .getStringValue();
 
@@ -68,7 +70,7 @@ public class ProposalJudgingCommentHelper {
     }
     public void setScreeningComment(String comment) {
         IProposalContestPhaseAttribute fellowActionAttribute = proposalPhaseClient.
-                getProposalContestPhaseAttribute(proposal.getId(), contestPhase.getId(), ProposalContestPhaseAttributeKeys.FELLOW_ACTION);
+                getProposalContestPhaseAttribute(contestPhase.getId(), proposal.getId(), ProposalContestPhaseAttributeKeys.FELLOW_ACTION);
         FellowAction fellowAction = FellowAction.fromInt(fellowActionAttribute.getNumericValue().intValue());
 
         //save comment if the action is "incomplete" or "off-topic"
@@ -80,7 +82,7 @@ public class ProposalJudgingCommentHelper {
 
     public String getAdvancingComment() {
         IProposalContestPhaseAttribute advanceDecisionAttribute = proposalPhaseClient.
-                getProposalContestPhaseAttribute(proposal.getId(), contestPhase.getId(),
+                getProposalContestPhaseAttribute(contestPhase.getId(),proposal.getId(),
                         ProposalContestPhaseAttributeKeys.JUDGE_DECISION);
 
         if (advanceDecisionAttribute != null) {
@@ -88,8 +90,8 @@ public class ProposalJudgingCommentHelper {
                     advanceDecisionAttribute.getNumericValue().intValue());
 
             if (advanceDecision != AdvanceDecision.NO_DECISION) {
-                return proposalPhaseClient.getProposalContestPhaseAttribute(proposal.getId(),
-                        contestPhase.getId(), ProposalContestPhaseAttributeKeys.PROPOSAL_REVIEW)
+                return proposalPhaseClient.getProposalContestPhaseAttribute(
+                        contestPhase.getId(), proposal.getId(), ProposalContestPhaseAttributeKeys.PROPOSAL_REVIEW)
                         .getStringValue();
             }
         }
@@ -119,8 +121,9 @@ public class ProposalJudgingCommentHelper {
             //get fellow decision
 
             IProposalContestPhaseAttribute fellowActionAttribute = proposalPhaseClient
-                    .getProposalContestPhaseAttribute(proposal.getId(),
+                    .getProposalContestPhaseAttribute(
                                     contestPhase.getId(),
+                                    proposal.getId(),
                                     ProposalContestPhaseAttributeKeys.FELLOW_ACTION);
             FellowAction fellowAction = fellowActionAttribute != null
                     ? FellowAction
@@ -131,15 +134,17 @@ public class ProposalJudgingCommentHelper {
             if (fellowAction == FellowAction.PASS_TO_JUDGES) {
                 final IProposalContestPhaseAttribute reviewTextAttribute =
                         proposalPhaseClient.
-                                getProposalContestPhaseAttribute(proposal.getId(),
+                                getProposalContestPhaseAttribute(
                                         contestPhase.getId(),
+                                        proposal.getId(),
                                         ProposalContestPhaseAttributeKeys.PROPOSAL_REVIEW);
                 String reviewText = reviewTextAttribute != null
                         ? reviewTextAttribute.getStringValue() : "";
 
                     IProposalContestPhaseAttribute advanceDecisionAttribute = proposalPhaseClient
-                            .getProposalContestPhaseAttribute(proposal.getId(),
+                            .getProposalContestPhaseAttribute(
                                             contestPhase.getId(),
+                                    proposal.getId(),
                                             ProposalContestPhaseAttributeKeys.JUDGE_DECISION);
                 AdvanceDecision advanceDecision =
                         advanceDecisionAttribute != null
@@ -170,8 +175,8 @@ public class ProposalJudgingCommentHelper {
             } else if (fellowAction != FellowAction.NO_DECISION) {
                 final IProposalContestPhaseAttribute fellowReviewTextAttribute =
                         proposalPhaseClient.getProposalContestPhaseAttribute(
-                                        proposal.getId(),
                                         contestPhase.getId(),
+                                        proposal.getId(),
                                         ProposalContestPhaseAttributeKeys.FELLOW_ACTION_COMMENT
                                 );
                 String fellowReviewText = fellowReviewTextAttribute != null

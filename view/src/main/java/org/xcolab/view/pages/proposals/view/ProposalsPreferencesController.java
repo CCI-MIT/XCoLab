@@ -354,8 +354,9 @@ public class ProposalsPreferencesController extends AbstractWidgetController<Pro
                             //first, see if a ribbon already exists
 
                             IProposalContestPhaseAttribute attribute = proposalPhaseClient
-                                    .getProposalContestPhaseAttribute(proposal.getId(),
+                                    .getProposalContestPhaseAttribute(
                                             moveToContestPhase.getId(),
+                                            proposal.getId(),
                                             ProposalContestPhaseAttributeKeys.RIBBON);
 
 

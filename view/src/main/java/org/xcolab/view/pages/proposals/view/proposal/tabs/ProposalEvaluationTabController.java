@@ -173,7 +173,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
                 proposalContext.getClients().getProposalPhaseClient();
         IProposalContestPhaseAttribute judgingDecisionAttr =
                 proposalPhaseClient.getProposalContestPhaseAttribute(
-                        proposal.getId(), contestPhase.getId(),
+                        contestPhase.getId(),proposal.getId(),
                         ProposalContestPhaseAttributeKeys.JUDGE_DECISION);
         if (judgingDecisionAttr != null) {
             Long judgingDecision = judgingDecisionAttr.getNumericValue();

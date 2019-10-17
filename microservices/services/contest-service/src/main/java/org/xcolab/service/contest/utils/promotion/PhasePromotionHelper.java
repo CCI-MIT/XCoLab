@@ -31,15 +31,15 @@ public class PhasePromotionHelper {
         }
 
         IProposalContestPhaseAttribute attr = StaticProposalContext.getProposalPhaseClient()
-                .getProposalContestPhaseAttribute(p.getId(),
-                        phase.getId(), ProposalContestPhaseAttributeKeys.VISIBLE);
+                .getProposalContestPhaseAttribute(
+                        phase.getId(), p.getId(),ProposalContestPhaseAttributeKeys.VISIBLE);
 
         return attr == null || attr.getNumericValue() != 0;
     }
 
     private IProposalContestPhaseAttribute getAttribute(long proposalId, String key) {
         return StaticProposalContext.getProposalPhaseClient()
-                .getProposalContestPhaseAttribute(proposalId, phase.getId(), key);
+                .getProposalContestPhaseAttribute(phase.getId(),proposalId, key);
     }
 
     public boolean isAllProposalsReviewed() {

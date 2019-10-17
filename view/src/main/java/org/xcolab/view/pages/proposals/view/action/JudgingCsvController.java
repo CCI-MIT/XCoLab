@@ -109,7 +109,7 @@ public class JudgingCsvController {
             for (ProposalWrapper proposal : stillActiveProposals) {
                 IProposalContestPhaseAttribute fellowActionAttribute =
                         StaticProposalContext.getProposalPhaseClient()
-                        .getProposalContestPhaseAttribute(proposal.getId(), judgingPhase.getId(),
+                        .getProposalContestPhaseAttribute(judgingPhase.getId(),proposal.getId(),
                                 ProposalContestPhaseAttributeKeys.FELLOW_ACTION);
 
                 if (fellowActionAttribute != null) {
@@ -190,8 +190,9 @@ public class JudgingCsvController {
 
         if (judgingPhase.getFellowScreeningActive()) {
             final IProposalContestPhaseAttribute selectedJudgesAttribute = proposalPhaseClient
-                    .getProposalContestPhaseAttribute(proposal.getId(),
+                    .getProposalContestPhaseAttribute(
                             judgingPhase.getId(),
+                            proposal.getId(),
                             ProposalContestPhaseAttributeKeys.SELECTED_JUDGES);
             if (selectedJudgesAttribute == null) {
                 throw new IllegalStateException("Fellow screening active,"

@@ -81,7 +81,7 @@ public interface IProposalPhaseClient {
     default Boolean isProposalContestPhaseAttributeSetAndTrue(Long proposalId, long contestPhaseId,
             String name) {
         IProposalContestPhaseAttribute proposalAttribute =
-                getProposalContestPhaseAttribute(proposalId, contestPhaseId, name);
+                getProposalContestPhaseAttribute(contestPhaseId,proposalId, name);
         return proposalAttribute != null && proposalAttribute.getStringValue().equals("true");
     }
 
@@ -128,7 +128,7 @@ public interface IProposalPhaseClient {
     default boolean hasProposalContestPhaseAttribute(Long proposalId, long contestPhaseId,
             String name) {
         IProposalContestPhaseAttribute proposalContestPhaseAttribute =
-                getProposalContestPhaseAttribute(proposalId, contestPhaseId, name);
+                getProposalContestPhaseAttribute(contestPhaseId,proposalId, name);
         return proposalContestPhaseAttribute != null;
     }
 
@@ -136,7 +136,7 @@ public interface IProposalPhaseClient {
             Long contestPhaseId, String name, Long aditionalId, Long numericValue,
             String stringValue) {
         IProposalContestPhaseAttribute proposalContestPhaseAttribute =
-                getProposalContestPhaseAttribute(proposalId, contestPhaseId, name);
+                getProposalContestPhaseAttribute( contestPhaseId,proposalId, name);
         if (proposalContestPhaseAttribute != null) {
             return proposalContestPhaseAttribute;
         } else {
@@ -162,7 +162,7 @@ public interface IProposalPhaseClient {
             Long contestPhaseId, String name, Long aditionalId, Long numericValue,
             String stringValue) {
         IProposalContestPhaseAttribute proposalContestPhaseAttribute =
-                getProposalContestPhaseAttribute(proposalId, contestPhaseId, name);
+                getProposalContestPhaseAttribute(contestPhaseId,proposalId, name);
         if (proposalContestPhaseAttribute != null) {
             proposalContestPhaseAttribute.setAdditionalId(aditionalId);
             proposalContestPhaseAttribute.setNumericValue(numericValue);
@@ -193,7 +193,7 @@ public interface IProposalPhaseClient {
     default boolean deleteProposalContestPhaseAttribute(Long proposalId, Long contestPhaseId,
             String name) {
         IProposalContestPhaseAttribute pcpa =
-                getProposalContestPhaseAttribute(proposalId, contestPhaseId, name);
+                getProposalContestPhaseAttribute(contestPhaseId,proposalId, name);
         return deleteProposalContestPhaseAttribute(pcpa.getId());
     }
 
