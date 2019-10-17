@@ -144,6 +144,7 @@
     <script>
         jQuery(function() {
             var vars = fileUploadVars['${uniqueName}'];
+            var isFileUpload = '${isFileUpload}';
             jQuery(vars.fileUploadInputId).fileupload({
                 url: FILE_UPLOAD_URL + (vars.shouldBeCropped ? '?crop=true' : ''),
                 dataType: 'json',
@@ -168,10 +169,19 @@
                     jQuery(vars.urlDisplayDiv).attr('href', data.result.imageUrl);
                     jQuery(vars.urlDisplayDiv).text(data.result.imageUrl);
                     jQuery(vars.clearButtonId).show();
-                    noty({text: 'Image upload succeeded.', type: 'success'});
+                    if(!isFileUpload) {
+                        noty({text: 'Image upload succeeded.', type: 'success'});
+                    }else{
+                        noty({text: 'File upload succeeded.', type: 'success'});
+                    }
                 } else {
-                    noty({text: 'Image upload failed.', type: 'error'});
-                    console.error('Image upload failed: ' + data.result.message);
+                    if(!isFileUpload) {
+                        noty({text: 'Image upload failed.', type: 'error'});
+                        console.error('Image upload failed: ' + data.result.message);
+                    }else{
+                        noty({text: 'File upload failed.', type: 'error'});
+                        console.error('File upload failed: ' + data.result.message);
+                    }
                 }
             }).on('fileuploadfail', function (e, data) {
                 noty({text: 'Image upload failed.', type: 'error'});
