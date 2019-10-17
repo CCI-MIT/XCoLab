@@ -218,20 +218,6 @@
                     win.focus();
                 });
 
-                $("#newContentPage").click(function () {
-
-                    $('#pageId').val(0);
-                    $('#pageTitle').val("");
-                    $('#mainContent').val(0);
-                    $('#leftMenu').val(0);
-                    $('#metaDescription').val("");
-
-                    $("#createdAtDate").html("Created at: - ");
-                    $("#article-view").unmask();
-                    $('#pageTitle').focus();
-
-                });
-
                 function pad(n, width, z) {
                     z = z || '0';
                     n = n + '';
@@ -348,13 +334,13 @@
                     <li class="nav-item"><a class="nav-link"
                                             href="/content-editor/">Content Editor</a>
                     </li>
-                    <li class="nav-item"><a class="nav-link active"
+                    <li class="nav-item"><a class="nav-link"
                                             href="/content-editor/pageEditor">Page Editor</a>
                     </li>
                     <li class="nav-item"><a class="nav-link"
                                             href="/content-editor/resourcePagesEditor">Resource pages</a>
                     </li>
-                    <li class="nav-item"><a class="nav-link"
+                    <li class="nav-item"><a class="nav-link active"
                                             href="/content-editor/fileUpload">File Upload</a>
                     </li>
                 </ul>
@@ -363,10 +349,6 @@
                 <div class="c-Box c-Box--colorTan">
                     <div class="c-Box__bodyRow">
                         <div class="col-4">
-                            <div>
-                                <div class="" id="newContentPage"><a class="btn btn-primary"
-                                                                     href="#">New</a></div>
-                            </div>
                             <br/>
                             <h3>Files Uploaded</h3>
                             <div class="treeContainer">
