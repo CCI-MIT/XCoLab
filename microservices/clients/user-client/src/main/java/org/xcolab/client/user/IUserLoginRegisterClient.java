@@ -79,7 +79,7 @@ public interface IUserLoginRegisterClient {
     }
 
     default String generateScreenName(String lastName, String firstName) {
-        String values[] = {lastName, firstName};
+        String values[] = { firstName,lastName};
         return generateScreenName(values);
     }
 
