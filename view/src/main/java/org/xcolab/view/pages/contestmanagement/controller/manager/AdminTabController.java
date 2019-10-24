@@ -16,8 +16,11 @@ import org.xcolab.client.admin.IAdminClient;
 import org.xcolab.client.admin.pojo.INotification;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
+import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.IProposalMemberRatingClient;
 
+import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.client.tracking.ITrackingClient;
 import org.xcolab.client.user.IPermissionClient;
 import org.xcolab.client.user.IUserClient;
@@ -41,8 +44,11 @@ import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.view.pages.contestmanagement.utils.ActivityCsvWriter;
 import org.xcolab.view.pages.contestmanagement.utils.ContestCsvWriter;
 import org.xcolab.view.pages.contestmanagement.utils.ContributorCsvWriter;
+import org.xcolab.view.pages.contestmanagement.utils.FullProposalCsvWriter;
+import org.xcolab.view.pages.contestmanagement.utils.ProposalCommentsCsvWriter;
 import org.xcolab.view.pages.contestmanagement.utils.ProposalCsvWriter;
 import org.xcolab.view.pages.contestmanagement.utils.ProposalExportType;
+import org.xcolab.view.pages.contestmanagement.utils.ProposalSupportersCsvWriter;
 import org.xcolab.view.pages.contestmanagement.utils.VoteCsvWriter;
 import org.xcolab.view.pages.loginregister.LoginRegisterService;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
@@ -185,6 +191,7 @@ public class AdminTabController extends AbstractTabController {
         }
     }
 
+
     @GetMapping("tab/ADMIN/proposalReport")
     public void generateProposalReport(HttpServletRequest request, HttpServletResponse response,
             ProposalReportBean proposalReportBean) throws IOException {
@@ -197,9 +204,43 @@ public class AdminTabController extends AbstractTabController {
                 EntityIdListUtil.CONTESTS.fromIdList(proposalReportBean.getContestIds());
 
         switch (proposalReportBean.getProposalExportType()) {
-            case ALL: {
+            case ALL_UNESCAPED: {
                 try (ProposalCsvWriter csvWriter = new ProposalCsvWriter(response)) {
                     contests.forEach(csvWriter::writeProposalsInContest);
+                }
+                break;
+            }
+            case ALL_COMMENTS: {
+                try (ProposalCommentsCsvWriter csvWriter = new ProposalCommentsCsvWriter(response)) {
+                    contests.forEach(csvWriter::writeProposalCommentsInContest);
+                }
+                break;
+            }
+            case ALL_SUPPORTERS : {
+
+                try (ProposalSupportersCsvWriter csvWriter = new ProposalSupportersCsvWriter(response)) {
+                    contests.forEach(csvWriter::writeProposalSupportersInContest);
+                }
+                break;
+            }
+            case ALL_ESCAPED: {
+                if(contests.size()>=1) {
+                    List<ProposalWrapper> proposals = StaticProposalContext.getProposalClient()
+                            .listProposals(contests.get(0).getId());
+                    if(proposals.size()>=1) {
+                        ProposalWrapper proposal = new ProposalWrapper(proposals.get(0));
+
+                        List<String> headers = new ArrayList<>();
+                        headers.addAll(FullProposalCsvWriter.COLUMN_NAMES);
+
+                        for (ProposalTemplateSectionDefinitionWrapper section : proposal.getSections()) {
+                            headers.add(section.getTitle());
+                        }
+
+                        try (FullProposalCsvWriter csvWriter = new FullProposalCsvWriter(response, headers)) {
+                            contests.forEach(csvWriter::writeProposalsInContest);
+                        }
+                    }
                 }
                 break;
             }

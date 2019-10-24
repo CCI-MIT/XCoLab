@@ -49,6 +49,7 @@ public class ProposalCsvWriter extends CsvResponseWriter {
                 .listProposals(contest.getId());
 
         for (ProposalWrapper proposal : proposals) {
+            proposal = new ProposalWrapper(proposal);
             List<String> row = new ArrayList<>();
             addValue(row, contest.getId());
             addValue(row, contest.getTitle());
