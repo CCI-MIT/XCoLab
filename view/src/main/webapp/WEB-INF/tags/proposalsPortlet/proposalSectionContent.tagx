@@ -55,6 +55,35 @@
                 </c:otherwise>
             </c:choose>
         </c:when>
+        <c:when test="${section.typeEnum == 'RADIO_TABLE' }">
+            <table class="table table-striped" >
+                <thead>
+                <tr>
+                    <th></th>
+                    <c:forEach var="value" items="${section.columnOptionsForRadioTable}">
+                        <th style="font-weight: 100;line-height: normal;text-align: center;">${value}</th>
+                    </c:forEach>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach var="line" items="${section.rowOptionsForRadioTable}">
+                    <tr>
+                        <th class="row-header" style="width:500px;min-height:60px;text-align: left;font-weight: 100;line-height: normal;">${line}</th>
+                        <c:forEach var="value" items="${section.columnOptionsForRadioTable}">
+                            <td style="width:200px;text-align: center;vertical-align: middle;">
+                                <c:choose>
+                                    <c:when test="${section.isOptionForRadioTableSelected(line,value)}">
+                                        ${'&#x25C9;'}
+                                    </c:when>
+                                </c:choose>
+
+                            </td>
+                        </c:forEach>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+        </c:when>
         <c:when test="${section.typeEnum == 'CHECKBOX_OPTION' }">
             <ul>
             <c:forEach var="value" items="${section.optionsForCheckbox}">

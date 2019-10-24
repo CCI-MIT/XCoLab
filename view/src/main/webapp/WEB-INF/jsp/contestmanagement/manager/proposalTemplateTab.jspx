@@ -222,11 +222,14 @@
                             <form:textarea path="sections[${x.index}].defaultText"  data-form-name="defaultText" cssClass="form-control" />   <!-- cssClass="rte-editorPlaceholder" -->
                             <form:errors cssClass="invalid-feedback" path="sections[${x.index}].defaultText" />
 
-                            <div class="js-sectionTypeDependent" data-section-type="DROPDOWN_MENU"
+                            <div class="js-sectionTypeDependent" data-section-type="DROPDOWN_MENU|RADIO_TABLE"
                                     style="display: none">
-                                <strong >Options :</strong><small>(use ';' to separate the options)</small><br/>
-                                <form:input  path="sections[${x.index}].allowedValues" data-form-name="allowedValues" cssClass="form-control"/>
+                                <strong >Options :</strong>
+                                <div data-section-type="DROPDOWN_MENU" style="display: none"><small>(use ';' to separate the options)</small></div>
+                                <div data-section-type="RADIO_TABLE" style="display: none"><small>(use ';' to separate the cells and | to separate columns from rows. Ex: col1;col2;col3|row1;row2;row3)</small></div>
+                                <form:textarea  path="sections[${x.index}].allowedValues" data-form-name="allowedValues" cssClass="form-control"/>
                             </div>
+
                         </div>
                     </div>
                     <script>
@@ -511,13 +514,35 @@
                 .each(function(i, element) {
                     var $element = jQuery(element);
                     var conditionalSectionTypeFragment = $element.data('section-type');
-                    if (newSectionType.indexOf(conditionalSectionTypeFragment) >= 0) {
-                        $element.show();
-                        //console.log(" - newSectionType - "+newSectionType);
-                        //setupInputFieldForAllowedValues(sectionIndex,newSectionType);
+                    
+                    if(conditionalSectionTypeFragment.indexOf("|") >=0 ) {
+                        var subtypes = conditionalSectionTypeFragment.split('|');
+                        let found = false;
+                        for(var i = 0; i < subtypes.length; i ++) {
+                            //console.log("Checking if: " + subtypes[i] +" == >"+ newSectionType + "<");
+                            if (newSectionType.indexOf(subtypes[i]) >= 0) {
+                                //find the right sub strong item to display
+                                $element.find(("[data-section-type='" + subtypes[i] + "']")).show();
+                                found = true;
+                            } else {
+                                $element.find(("[data-section-type='" + subtypes[i] + "']")).hide();
+                            }
+                        }
+                        if(found){
+                            $element.show();
+                        } else {
+                            $element.hide();
+                        }
 
                     } else {
-                        $element.hide();
+                        if (newSectionType.indexOf(conditionalSectionTypeFragment) >= 0) {
+                            $element.show();
+                            //console.log(" - newSectionType - "+newSectionType);
+                            //setupInputFieldForAllowedValues(sectionIndex,newSectionType);
+
+                        } else {
+                            $element.hide();
+                        }
                     }
                 });
         }

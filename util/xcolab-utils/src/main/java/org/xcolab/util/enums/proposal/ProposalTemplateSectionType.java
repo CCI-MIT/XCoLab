@@ -6,6 +6,7 @@ public enum ProposalTemplateSectionType {
     TEXT,
     DROPDOWN_MENU,
     CHECKBOX_OPTION,
+    RADIO_TABLE,
     SECTION_HEADER,
     ONTOLOGY_REFERENCE,
     PROPOSAL_REFERENCE,
