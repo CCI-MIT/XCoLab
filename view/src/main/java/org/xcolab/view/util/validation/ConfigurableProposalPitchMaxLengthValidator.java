@@ -45,7 +45,9 @@ public class ConfigurableProposalPitchMaxLengthValidator implements ConstraintVa
              */
 
             context.disableDefaultConstraintViolation();
-            String proposalPitchName = ContestTypeAttributeKey.PROPOSALS_PITCH_NAME.get();
+            Long contestTypeId = ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get();
+            String proposalPitchName = ContestTypeAttributeKey.PROPOSALS_PITCH_NAME.get(contestTypeId);
+            
             String message = resourceMessageResolver.getLocalizedMessage("contests.proposal.sections.pitch.validation",
                     proposalPitchName, maxPitchLength);
             ConstraintValidatorContext.ConstraintViolationBuilder violationBuilder =
