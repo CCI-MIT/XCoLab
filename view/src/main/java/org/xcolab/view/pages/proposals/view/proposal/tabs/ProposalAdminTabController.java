@@ -64,9 +64,8 @@ public class ProposalAdminTabController extends BaseProposalTabController {
             proposalContext.getClients().getProposalClient().updateProposal(proposal);
 
             AlertMessage.success("Proposal was deleted successfully!").flash(request);
-            response.sendRedirect(
-                    proposal.getProposalLinkUrl(contest, contestPhase.getId())
-                            + "/tab/ADMIN");
+
+            response.sendRedirect(contest.getContestLinkUrl());
         } else {
             throw new ProposalsAuthorizationException("User isn't allowed to delete proposal ");
         }
