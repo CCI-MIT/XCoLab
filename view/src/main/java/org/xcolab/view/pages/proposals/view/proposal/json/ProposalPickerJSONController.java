@@ -17,6 +17,7 @@ import org.xcolab.view.pages.proposals.view.proposal.json.picker.ContestsResult;
 import org.xcolab.view.pages.proposals.view.proposal.json.picker.ProposalsResult;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -66,6 +67,11 @@ public class ProposalPickerJSONController {
             default:
                 throw new InternalException("Unknown tab " + tab);
         }
+        List<ProposalWrapper> reWrappedProposals = new ArrayList<>();
+        for(ProposalWrapper pw: proposals){
+            reWrappedProposals.add(new ProposalWrapper(pw));
+        }
+        proposals = reWrappedProposals;
 
         int totalCount = proposals.size();
 
