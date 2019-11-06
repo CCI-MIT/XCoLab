@@ -8,4 +8,6 @@ public interface FileEntryDao {
     IFileEntry create(IFileEntry fileEntry);
 
     IFileEntry get(Long fileEntryId) throws NotFoundException;
+
+    Boolean getNonImageFiles() throws NotFoundException;
 }

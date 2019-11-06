@@ -53,4 +53,19 @@ public class FileEntryDaoImpl implements FileEntryDao {
         }
         return record.into(FileEntry.class);
     }
+
+    @Override
+    public Boolean getNonImageFiles() throws NotFoundException {
+        final Object record = this.dslContext.select()
+                .from(FILE_ENTRY)
+                .where(FILE_ENTRY.FILE_EXTENSION.eq("pdf"))
+                .fetch();
+        System.out.print("hre is the record: ");
+        System.out.print(record);
+        if (record == null) {
+            throw new NotFoundException();
+        }
+        //return record;
+        return true;
+    }
 }

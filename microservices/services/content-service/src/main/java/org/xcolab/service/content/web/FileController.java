@@ -66,4 +66,17 @@ public class FileController implements IFileClient {
         }
         return Optional.empty();
     }
+
+    @Override
+    @GetMapping("/nonImageFileEntries")
+    public Boolean getNonImageFilesEntry() {
+        try {
+            return this.fileEntryDao.getNonImageFiles();
+        }
+        catch(NotFoundException e){
+            System.out.println("exception!!!!");
+        }
+        //return Optional.empty();
+        return false;
+    }
 }

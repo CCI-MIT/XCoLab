@@ -109,6 +109,8 @@
 
         <c:set var="createArticleFolderURL" value="/content-editor/createArticleFolder"/>
 
+        <c:set var="nonImageFiles" value="/content-editor/fileUploaderListFiles"/>
+
         <c:if test="${not empty param.articleId}">
             <script>
 
@@ -145,11 +147,6 @@
             }
 
             jQuery(function () {
-
-            /*    $("#article-view").mask({
-                    'label': "Please click on an Page or create a new one clicking in the create page button!",
-                    spinner: false
-                });*/
 
                 var $treeView = $('#tree-view');
                 $treeView.tree({
@@ -353,7 +350,7 @@
                             <h3>Files Uploaded</h3>
                             <div class="treeContainer">
                                 <div id="tree-view"
-                                     data-url="${contentEditorListFolderURL}"><!-- --></div>
+                                     data-url="${nonImageFiles}"><!-- --></div>
                             </div>
                         </div>
                         <div class="col-8">

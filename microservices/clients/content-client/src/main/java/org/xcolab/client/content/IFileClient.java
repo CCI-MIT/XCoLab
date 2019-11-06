@@ -24,6 +24,12 @@ public interface IFileClient {
             @RequestParam("filePath") String filePath,
             @RequestParam("fileExtension") String fileExtension);
 
+
+    @GetMapping("/nonImageFileEntries")
+    Boolean getNonImageFilesEntry();
+
+
     @GetMapping("/fileEntries/{fileEntryId}")
     Optional<IFileEntry> getFileEntry(@PathVariable("fileEntryId") Long fileEntryId);
+
 }

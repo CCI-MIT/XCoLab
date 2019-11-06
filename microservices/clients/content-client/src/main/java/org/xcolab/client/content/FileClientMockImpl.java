@@ -27,4 +27,8 @@ public class FileClientMockImpl implements IFileClient {
     public Optional<IFileEntry> getFileEntry(Long fileEntryId) {
         return Optional.empty();
     }
+
+    @Override
+    public Boolean getNonImageFilesEntry(){ return false;}
+
 }
