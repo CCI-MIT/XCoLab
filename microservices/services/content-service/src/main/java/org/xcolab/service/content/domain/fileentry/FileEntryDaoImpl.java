@@ -2,6 +2,7 @@ package org.xcolab.service.content.domain.fileentry;
 
 import org.jooq.DSLContext;
 import org.jooq.Record;
+import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
@@ -11,7 +12,14 @@ import org.xcolab.client.content.pojo.tables.pojos.FileEntry;
 import org.xcolab.model.tables.records.FileEntryRecord;
 import org.xcolab.service.content.exceptions.NotFoundException;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Arrays.*;
+
 import static org.xcolab.model.Tables.FILE_ENTRY;
+
+
 
 @Repository
 public class FileEntryDaoImpl implements FileEntryDao {
@@ -55,17 +63,18 @@ public class FileEntryDaoImpl implements FileEntryDao {
     }
 
     @Override
-    public Boolean getNonImageFiles() throws NotFoundException {
-        final Object record = this.dslContext.select()
+    public List<IFileEntry> getNonImageFiles() throws NotFoundException {
+
+        List<String> extensions = new ArrayList<>();
+        extensions.add("pdf");
+        extensions.add("docx");
+        extensions.add("pptx");
+
+        final SelectQuery<Record> query = dslContext.select()
                 .from(FILE_ENTRY)
-                .where(FILE_ENTRY.FILE_EXTENSION.eq("pdf"))
-                .fetch();
-        System.out.print("hre is the record: ");
-        System.out.print(record);
-        if (record == null) {
-            throw new NotFoundException();
-        }
-        //return record;
-        return true;
+                .getQuery();
+
+        query.addConditions(FILE_ENTRY.FILE_EXTENSION.in(extensions));
+        return query.fetchInto(IFileEntry.class);
     }
 }

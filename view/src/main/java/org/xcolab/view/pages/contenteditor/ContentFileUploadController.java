@@ -14,11 +14,13 @@ import org.xcolab.client.content.pojo.IContentArticle;
 import org.xcolab.client.content.pojo.IContentArticleVersion;
 import org.xcolab.client.content.pojo.IContentFolder;
 import org.xcolab.client.content.pojo.IContentPage;
+import org.xcolab.client.content.pojo.IFileEntry;
 import org.xcolab.client.user.IPermissionClient;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.errors.AccessDeniedPage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -46,24 +48,15 @@ public class ContentFileUploadController extends BaseContentEditor{
     }
 
     @GetMapping("/content-editor/fileUploaderListFiles")
-    public void contentEditorListFolder(HttpServletRequest request, HttpServletResponse response,
+    public List<IFileEntry> contentEditorListFolder(HttpServletRequest request, HttpServletResponse response,
             @RequestParam(required = false) String node) throws IOException {
         try {
-            Boolean o = fileClient.getNonImageFilesEntry();
-            System.out.println(o);
+            return fileClient.getNonImageFilesEntry();
         }
         catch(Exception e){
             System.out.println("our exception!!!!!!!!");
             System.out.println(e);
         }
-  /*      List<IContentPage> pages = contentClient.getContentPages(null);
-        // get files
-        //List<IContentPage> pages =
-        JSONArray responseArray = new JSONArray();
-        for (IContentPage cp : files) {
-            responseArray.put(articleNode(cp.getTitle(), cp.getId()));
-        }
-        response.getOutputStream().write(responseArray.toString().getBytes());
-    }*/
+        return new ArrayList<IFileEntry>();
     }
 }

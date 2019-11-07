@@ -113,10 +113,13 @@
 
         <c:if test="${not empty param.articleId}">
             <script>
-
+                console.log("test");
                 <![CDATA[
                 jQuery(function () {
 
+                    console.log(11111);
+
+                    console.log(THRESHOLD_TO_AVOID_NODE_COLISION + ${param.pageId});
                     loadPageContent(THRESHOLD_TO_AVOID_NODE_COLISION + ${param.pageId});
 
                     window.setTimeout(function () {
@@ -233,11 +236,14 @@
 
                 function loadPageContent(id) {
 
-                    var url = getContentPageURL;
+                    console.log("load page content!!");
+                    var url = nonImageFiles;
 
-                    var parameters = {pageId: id};
+                    var parameters = {};
 
                     $.get(url, parameters, loadPageContentResponse);
+
+                    console.log($.get(url));
 
                 }
 
@@ -251,6 +257,8 @@
                 }
 
                 function loadPageContentResponse(data) {
+                    console.log(data);
+                    console.log("load page content responsee!!!");
                     var id = data.id;
                     var mainContentArticleId = data.contentArticleId;
                     var menuArticleId = data.menuArticleId;

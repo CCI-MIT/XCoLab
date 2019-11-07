@@ -11,6 +11,7 @@ import org.xcolab.client.content.pojo.FileEntryWrapper;
 import org.xcolab.client.content.pojo.IFileEntry;
 
 import java.io.File;
+import java.util.List;
 import java.util.Optional;
 
 @FeignClient("xcolab-content-service")
@@ -26,7 +27,7 @@ public interface IFileClient {
 
 
     @GetMapping("/nonImageFileEntries")
-    Boolean getNonImageFilesEntry();
+    List<IFileEntry> getNonImageFilesEntry();
 
 
     @GetMapping("/fileEntries/{fileEntryId}")

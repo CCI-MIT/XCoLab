@@ -17,7 +17,10 @@ import org.xcolab.service.content.exceptions.NotFoundException;
 import org.xcolab.service.content.providers.PersistenceProvider;
 
 import java.io.File;
+import java.util.List;
 import java.util.Optional;
+
+import java.util.ArrayList;
 
 @RestController
 public class FileController implements IFileClient {
@@ -69,14 +72,14 @@ public class FileController implements IFileClient {
 
     @Override
     @GetMapping("/nonImageFileEntries")
-    public Boolean getNonImageFilesEntry() {
+    public List<IFileEntry> getNonImageFilesEntry() {
         try {
             return this.fileEntryDao.getNonImageFiles();
         }
         catch(NotFoundException e){
             System.out.println("exception!!!!");
         }
-        //return Optional.empty();
-        return false;
+        return new ArrayList<IFileEntry>();
+
     }
 }

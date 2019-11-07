@@ -7,6 +7,8 @@ import org.xcolab.client.content.pojo.FileEntryWrapper;
 import org.xcolab.client.content.pojo.IFileEntry;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -29,6 +31,6 @@ public class FileClientMockImpl implements IFileClient {
     }
 
     @Override
-    public Boolean getNonImageFilesEntry(){ return false;}
+    public List<IFileEntry> getNonImageFilesEntry(){ return new ArrayList<IFileEntry>();}
 
 }
