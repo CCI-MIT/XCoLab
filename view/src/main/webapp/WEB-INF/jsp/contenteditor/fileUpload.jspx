@@ -111,7 +111,7 @@
 
         <c:set var="nonImageFiles" value="/content-editor/fileUploaderListFiles"/>
 
-        <c:if test="${not empty param.articleId}">
+        <c:if test="${true}">
             <script>
                 console.log("test");
                 <![CDATA[
@@ -119,8 +119,8 @@
 
                     console.log(11111);
 
-                    console.log(THRESHOLD_TO_AVOID_NODE_COLISION + ${param.pageId});
-                    loadPageContent(THRESHOLD_TO_AVOID_NODE_COLISION + ${param.pageId});
+                    console.log("zz", THRESHOLD_TO_AVOID_NODE_COLISION);
+                    loadPageContent(THRESHOLD_TO_AVOID_NODE_COLISION);
 
                     window.setTimeout(function () {
                         $("#article-view").unmask()
@@ -139,8 +139,11 @@
             var moveArticleVersionURL = '${moveArticleVersionURL}';
             var createArticleFolderURL = '${createArticleFolderURL}';
             var previewContentPageURL = '${previewContentPageURL}';
+            var nonImageFiles = '${nonImageFiles}';
             var ckEditor = null;
             var THRESHOLD_TO_AVOID_NODE_COLISION = 1000;
+
+
 
             function validateTitleStr(title) {
 
@@ -150,9 +153,9 @@
             }
 
             jQuery(function () {
-
                 var $treeView = $('#tree-view');
                 $treeView.tree({
+
                     //data:data,
                     saveState: true,
                     onCanSelectNode: function (node) {
@@ -239,7 +242,7 @@
                     console.log("load page content!!");
                     var url = nonImageFiles;
 
-                    var parameters = {};
+                    var parameters = {pageId: id};
 
                     $.get(url, parameters, loadPageContentResponse);
 
