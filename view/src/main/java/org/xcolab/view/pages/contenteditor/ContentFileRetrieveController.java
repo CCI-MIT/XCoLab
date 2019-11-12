@@ -27,8 +27,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@Controller
-public class ContentFileUploadController extends BaseContentEditor{
+@RestController
+public class ContentFileRetrieveController extends BaseContentEditor{
 
     @Autowired
     private IContentClient contentClient;
@@ -39,16 +39,7 @@ public class ContentFileUploadController extends BaseContentEditor{
     @Autowired
     private IFileClient fileClient;
 
-    @GetMapping("/content-editor/fileUpload")
-    public String handleRenderRequest(HttpServletRequest request, HttpServletResponse response,
-            Model model, UserWrapper member) {
-        if (!permissionClient.canAdminAll(member)) {
-            return new AccessDeniedPage(member).toViewName(response);
-        }
-        return "contenteditor/fileUpload";
-    }
-
-/*    @GetMapping("/content-editor/fileUploaderListFiles")
+    @GetMapping("/content-editor/fileUploaderListFiles")
     public List<IFileEntry> contentEditorListFolder(HttpServletRequest request, HttpServletResponse response,
             @RequestParam(required = false) String node) throws IOException {
         try {
@@ -62,5 +53,5 @@ public class ContentFileUploadController extends BaseContentEditor{
             System.out.println(e);
         }
         return new ArrayList<IFileEntry>();
-    }*/
+    }
 }

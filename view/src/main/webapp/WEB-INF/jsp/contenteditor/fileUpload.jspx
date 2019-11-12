@@ -95,12 +95,7 @@
         </style>
         <collab:stylesheet href="/css/lib/jquery.loadmask.spin.css"/>
 
-
-        <c:set var="contentEditorListFolderURL" value="content-editor/fileUploaderListFiles"/>
-
-
         <c:set var="getContentPageURL" value="/content-editor/pageEditorGetPage"/>
-
 
         <c:set var="saveContentPageURL" value="/content-editor/saveContentPage"/>
 
@@ -111,227 +106,57 @@
 
         <c:set var="nonImageFiles" value="/content-editor/fileUploaderListFiles"/>
 
-        <c:if test="${true}">
-            <script>
-                console.log("test");
-                <![CDATA[
-                jQuery(function () {
-
-                    console.log(11111);
-
-                    console.log("zz", THRESHOLD_TO_AVOID_NODE_COLISION);
-                    loadPageContent(THRESHOLD_TO_AVOID_NODE_COLISION);
-
-                    window.setTimeout(function () {
-                        $("#article-view").unmask()
-                    }, 2000);
-
-                });
-
-                ]]>
-            </script>
-        </c:if>
         <script>
             <![CDATA[
 
-            var getContentPageURL = '${getContentPageURL}';
-            var saveContentPageURL = '${saveContentPageURL}';
-            var moveArticleVersionURL = '${moveArticleVersionURL}';
-            var createArticleFolderURL = '${createArticleFolderURL}';
-            var previewContentPageURL = '${previewContentPageURL}';
             var nonImageFiles = '${nonImageFiles}';
-            var ckEditor = null;
-            var THRESHOLD_TO_AVOID_NODE_COLISION = 1000;
 
-
-
-            function validateTitleStr(title) {
-
-                var re = new RegExp("^([a-zA-Z0-9_-]+)$");
-                return re.test(title);
-
-            }
 
             jQuery(function () {
-                var $treeView = $('#tree-view');
-                $treeView.tree({
 
-                    //data:data,
-                    saveState: true,
-                    onCanSelectNode: function (node) {
-                        //if(node.kind == "folder") return false;
-                        return true;
+                console.log("here")
+                loadPageContent()
 
-                    },
-                    onCreateLi: function (node, $li) {
-                        // Append a link to the jqtree-element div.
-                        // The link has an url '#node-[id]' and a data property 'node-id'.
-
-                    },
-                    onCanMoveTo: function (moved_node, target_node, position) {
-                        return target_node.kind == "folder";
-                    },
-                    onCanMove: function (node) {
-                        if (!node.parent.parent) {
-                            // Example: Cannot move root node
-
-                            return false;
-                        }
-                        else {
-                            return node.kind != "folder";
-                        }
-                    },
-                    dragAndDrop: true
-                });
-
-                $treeView.bind(
-                    'tree.click',
-                    function (event) {
-                        var node = event.node;
-                        if (node.kind == "article") {
-                            $("#article-view").unmask();
-                            $("#article-view").mask();
-                            loadPageContentFromTree(node.id);
-                        } else {
-                            /*
-                             event.preventDefault();
-                             return false;*/
-                        }
-                    }
-                );
-
-                $("#infoBox").hide();
-
-                $("#saveContentPage").click(function () {
-
-                    saveContentPage();
-                });
-                $("#previewContentPage").click(function () {
-                    var mainContentArticleId = $('#mainContent').val();
-                    var params = "";
-                    if (mainContentArticleId == 0) {
-                        noty({text: 'Please select the main content article!', type: 'error'});
-                        return;
-                    }
-                    params += "?mainContentArticleId=" + mainContentArticleId;
-                    var menuArticleId = $('#leftMenu').val();
-                    params += "&menuArticleId=" + menuArticleId;
-
-                    var win = window.open(previewContentPageURL + params, '_blank');
-                    win.focus();
-                });
-
-                function pad(n, width, z) {
-                    z = z || '0';
-                    n = n + '';
-                    return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
-                }
-
-                $(".oldArticleVersion").on('click', function (ref) {
-
-                    loadPageContent($(ref).attr("data-attribute"))
-                });
-
-                function loadPageContentFromTree(id) {
-                    id = id - THRESHOLD_TO_AVOID_NODE_COLISION;
-                    loadPageContent(id)
-                }
-
-                function loadPageContent(id) {
+                function loadPageContent() {
 
                     console.log("load page content!!");
                     var url = nonImageFiles;
 
-                    var parameters = {pageId: id};
+                    var parameters = {};
 
                     $.get(url, parameters, loadPageContentResponse);
-
-                    console.log($.get(url));
-
-                }
-
-                function formatDate(ctd) {
-                    var dateObject = new Date(ctd); //read in as Date object
-                    var timeZoneIdentifier = String(String(dateObject).split("(")[1]).split(")")[0];  //get the timezone abbreviation
-                    return (dateObject.getMonth() + 1) + "/" + dateObject.getDate() + "/"
-                        + dateObject.getFullYear() + " " + pad(dateObject.getHours(), 2) + ":"
-                        + pad(dateObject.getMinutes(), 2) + " " + timeZoneIdentifier;
+                    console.log($.get(url, parameters, loadPageContentResponse))
 
                 }
+
 
                 function loadPageContentResponse(data) {
+                    console.log("here is the data");
                     console.log(data);
-                    console.log("load page content responsee!!!");
-                    var id = data.id;
-                    var mainContentArticleId = data.contentArticleId;
-                    var menuArticleId = data.menuArticleId;
-                    var pageTitle = data.title;
-                    var metaDescription = data.metaDescription;
+                    console.log("load page responsee!!!");
+                    var fi = data[0];
+                    /*                    var id = data.id;
+                                        var mainContentArticleId = data.contentArticleId;
+                                        var menuArticleId = data.menuArticleId;
+                                        var pageTitle = data.title;
+                                        var metaDescription = data.metaDescription;
 
-                    var input = $('#pageId').val(id);
+                                        var input = $('#pageId').val(id);
 
-                    $('#pageTitle').val(pageTitle);
-                    $('#metaDescription').val(metaDescription);
+                                        $('#pageTitle').val(pageTitle);
+                                        $('#metaDescription').val(metaDescription);
 
-                    $('#mainContent').val(mainContentArticleId);
+                                        $('#mainContent').val(mainContentArticleId);
 
-                    if (menuArticleId != 0) {
-                        $('#leftMenu').val(menuArticleId);
-                    }
+                                        if (menuArticleId != 0) {
+                                            $('#leftMenu').val(menuArticleId);
+                                        }
 
-                    $("#createdAtDate").html("Created at: " + formatDate(data.createdAt));
+                                        $("#createdAtDate").html("Created at: " + formatDate(data.createdAt));
 
-                    $("#article-view").unmask()
+                                        $("#article-view").unmask()*/
 
                 }
-
-                function saveContentPage() {
-
-                    var pageTitle = $('#pageTitle').val();
-
-                    if (pageTitle == "") {
-                        noty({text: 'Title field is mandatory!', type: 'error'});
-                        return false;
-                    }
-                    if (!validateTitleStr(pageTitle)) {
-                        noty({
-                            text: 'The title is invalid, it must contain only alphanumeric characters - or _. This title will be used to compose a url at /page/title!',
-                            type: 'error'
-                        });
-                        return false;
-                    }
-                    $("#article-view").mask();
-
-                    var pageId = $('#pageId').val();
-
-                    var mainContentArticleId = $('#mainContent').val();
-                    if (mainContentArticleId == 0) {
-                        noty({text: 'Please select the main content article!', type: 'error'});
-                        return;
-                    }
-
-                    var menuArticleId = $('#leftMenu').val();
-                    var metaDescription = $('#metaDescription').val();
-
-                    var url = saveContentPageURL;
-
-                    var parameters = {
-                        pageId: pageId,
-                        pageTitle: pageTitle,
-                        metaDescription: metaDescription,
-                        mainContentArticleId: mainContentArticleId,
-                        menuArticleId: menuArticleId
-                    };
-
-                    $.post(url, parameters, function (response) {
-                        noty({text: 'Page saved successfully', type: 'success'});
-                        $("#article-view").unmask();
-                        $('#tree-view').tree('reload');
-                        var id = articleId + THRESHOLD_TO_AVOID_NODE_COLISION;
-                        loadPageContent(id, folderName);
-                    });
-                }
-
             });
 
             ]]>
@@ -359,9 +184,13 @@
                         <div class="col-4">
                             <br/>
                             <h3>Files Uploaded</h3>
-                            <div class="treeContainer">
-                                <div id="tree-view"
-                                     data-url="${nonImageFiles}"><!-- --></div>
+
+                            <div class="container">
+                                <ul>
+                                    <li>g</li>
+                                    <li>Tea</li>
+                                    <li>Milk</li>
+                                </ul>
                             </div>
                         </div>
                         <div class="col-8">

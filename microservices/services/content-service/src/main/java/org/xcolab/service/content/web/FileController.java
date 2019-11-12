@@ -22,7 +22,7 @@ import java.util.Optional;
 
 import java.util.ArrayList;
 
-@RestController
+@Controller
 public class FileController implements IFileClient {
 
     private final PersistenceProvider persistenceProvider;
