@@ -133,7 +133,6 @@
                 function loadPageContentResponse(data) {
                     console.log("here is the data");
                     console.log(data);
-                    console.log("load page responsee!!!");
                     var fi = data[0];
                     /*                    var id = data.id;
                                         var mainContentArticleId = data.contentArticleId;

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.content.pojo.FileEntryWrapper;
 import org.xcolab.client.content.pojo.IFileEntry;
+import org.xcolab.client.content.pojo.tables.pojos.FileEntry;
 
 import java.io.File;
 import java.util.List;
@@ -27,7 +28,7 @@ public interface IFileClient {
 
 
     @GetMapping("/nonImageFileEntries")
-    List<IFileEntry> getNonImageFilesEntry();
+    List<FileEntry> getNonImageFilesEntry();
 
 
     @GetMapping("/fileEntries/{fileEntryId}")

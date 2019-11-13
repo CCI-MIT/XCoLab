@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import org.xcolab.client.content.pojo.FileEntryWrapper;
 import org.xcolab.client.content.pojo.IFileEntry;
+import org.xcolab.client.content.pojo.tables.pojos.FileEntry;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -31,6 +32,6 @@ public class FileClientMockImpl implements IFileClient {
     }
 
     @Override
-    public List<IFileEntry> getNonImageFilesEntry(){ return new ArrayList<IFileEntry>();}
+    public List<FileEntry> getNonImageFilesEntry(){ return new ArrayList<FileEntry>();}
 
 }

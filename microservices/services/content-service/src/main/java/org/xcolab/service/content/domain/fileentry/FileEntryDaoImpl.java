@@ -63,7 +63,7 @@ public class FileEntryDaoImpl implements FileEntryDao {
     }
 
     @Override
-    public List<IFileEntry> getNonImageFiles() throws NotFoundException {
+    public List<FileEntry> getNonImageFiles() throws NotFoundException {
 
         List<String> extensions = new ArrayList<>();
         extensions.add("pdf");
@@ -75,6 +75,6 @@ public class FileEntryDaoImpl implements FileEntryDao {
                 .getQuery();
 
         query.addConditions(FILE_ENTRY.FILE_EXTENSION.in(extensions));
-        return query.fetchInto(IFileEntry.class);
+        return query.fetchInto(FileEntry.class);
     }
 }

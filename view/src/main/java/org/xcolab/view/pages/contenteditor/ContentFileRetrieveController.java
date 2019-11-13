@@ -1,5 +1,6 @@
 package org.xcolab.view.pages.contenteditor;
 
+import org.xcolab.client.content.pojo.tables.pojos.FileEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,16 +20,14 @@ public class ContentFileRetrieveController extends BaseContentEditor{
     private IFileClient fileClient;
 
     @GetMapping("/content-editor/fileUploaderListFiles")
-    public List<IFileEntry> contentEditorListFolder(HttpServletRequest request, HttpServletResponse response,
+    public List<FileEntry> contentEditorListFolder(HttpServletRequest request, HttpServletResponse response,
             @RequestParam(required = false) String node) throws IOException {
         try {
-            List<IFileEntry> a = fileClient.getNonImageFilesEntry();
-            return a;
+            return fileClient.getNonImageFilesEntry();
         }
         catch(Exception e){
-            System.out.println("our exception!!!!!!!!");
             System.out.println(e);
         }
-        return new ArrayList<IFileEntry>();
+        return new ArrayList<FileEntry>();
     }
 }
