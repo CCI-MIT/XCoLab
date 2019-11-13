@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
 
 import org.xcolab.client.content.IFileClient;
 import org.xcolab.client.content.pojo.FileEntryWrapper;
@@ -74,7 +74,8 @@ public class FileController implements IFileClient {
     @GetMapping("/nonImageFileEntries")
     public List<IFileEntry> getNonImageFilesEntry() {
         try {
-            return this.fileEntryDao.getNonImageFiles();
+            List<IFileEntry> a = this.fileEntryDao.getNonImageFiles();
+            return a;
         }
         catch(NotFoundException e){
             System.out.println("exception!!!!");
