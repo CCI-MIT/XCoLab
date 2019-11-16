@@ -19,6 +19,6 @@ public interface IStaffUserClient {
             @RequestParam(required = false) Long categoryId);
 
     default List<StaffUserWrapper> getStaffUsersByCategoryId(long categoryId) {
-        return listStaffMembers(1,Integer.MAX_VALUE, null, categoryId);
+        return listStaffMembers(0,Integer.MAX_VALUE, null, categoryId);
     }
 }
