@@ -131,13 +131,9 @@
 
 
                 function loadPageContentResponse(data) {
-                    console.log("here is the data");
-                    console.log(data);
-                    var fi = data[0];
 
                     for (entry in data) {
                         const node = document.createElement("LI");
-                        console.log(">>>>>", data)
 
                         var a = document.createElement('a');
                         const textnode = document.createTextNode(data[0].fileEntry.fileName);
