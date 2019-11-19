@@ -1,6 +1,7 @@
 package org.xcolab.service.members.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.xcolab.client.user.IUserCategoryClient;
 import org.xcolab.client.user.exceptions.MemberCategoryNotFoundException;
 import org.xcolab.client.user.pojo.wrapper.MemberCategoryWrapper;
+import org.xcolab.service.members.cache.CacheConfig;
 import org.xcolab.service.members.domain.membercategory.MemberCategoryDao;
 import org.xcolab.service.utils.PaginationHelper;
 
@@ -33,6 +35,7 @@ public class MemberCategoriesController implements IUserCategoryClient {
                 MemberCategoryNotFoundException::new);
     }
 
+    @Cacheable(CacheConfig.MEMBER_CATEGORIES_CACHE)
     @RequestMapping(value = "/membercategories", method = RequestMethod.GET)
     public List<MemberCategoryWrapper> getMemberCategories(
             @RequestParam(required = false) Integer startRecord,
