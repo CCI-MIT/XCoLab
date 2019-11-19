@@ -50,7 +50,9 @@ public abstract class ProposalRatings {
             return "";
         }
     }
-
+    public Boolean getShouldAdvance() {
+        return isShouldAdvance();
+    }
     public Boolean isShouldAdvance() {
         if (shouldAdvance != null) {
             return shouldAdvance;

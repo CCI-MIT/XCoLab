@@ -29,7 +29,7 @@ public class TrackingController implements ITrackingClient {
     @Override
     @PostMapping("/trackedVisits")
     public ITrackedVisit addTrackedVisit(@RequestBody ITrackedVisit trackedVisit,
-            @RequestParam Long userId) {
+            @RequestParam(value = "userId", required = false) Long userId) {
         return trackedVisitService.createTrackedVisit(trackedVisit, userId);
     }
 
