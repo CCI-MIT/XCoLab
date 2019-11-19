@@ -7,6 +7,7 @@ import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionW
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.client.contest.proposals.StaticProposalContext;
 import org.xcolab.commons.CsvResponseWriter;
+import org.xcolab.commons.html.HtmlUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,9 +17,9 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 
-public class ProposalCsvWriter extends CsvResponseWriter {
+public class FullProposalCsvWriter  extends CsvResponseWriter {
 
-    private static final List<String> COLUMN_NAMES = Arrays.asList(
+    public static List<String> COLUMN_NAMES = Arrays.asList(
             "Contest id",
             "Contest name",
             "Proposal id",
@@ -38,8 +39,8 @@ public class ProposalCsvWriter extends CsvResponseWriter {
             "Proposal pitch"
     );
 
-    public ProposalCsvWriter(HttpServletResponse response) throws IOException {
-        super("proposalReport", COLUMN_NAMES, response);
+    public FullProposalCsvWriter(HttpServletResponse response, List<String> sectionColumns) throws IOException {
+        super("fullProposalReport", sectionColumns, response);
     }
 
     public void writeProposalsInContest(ContestWrapper contest) {
@@ -77,16 +78,15 @@ public class ProposalCsvWriter extends CsvResponseWriter {
             addValue(row, proposal.getUpdatedAt());
             addValue(row, proposal.getPitch());
 
-            List<String> sectionContent = new ArrayList<>();
-            for (ProposalTemplateSectionDefinitionWrapper section:  proposal.getSections()) {
-                addValue(sectionContent, "<h1>" + section.getTitle() + "</h1>" + section.getContent());
+            for (ProposalTemplateSectionDefinitionWrapper section : proposal.getSections()) {
+                addValue(row,  section.getContent());
             }
 
-            writeRow(row, sectionContent);
+            writeRow(row);
         }
     }
 
     private void addValue(List<String> list, Object value) {
-        list.add(String.valueOf(value));
+        list.add(HtmlUtil.cleanAll(String.valueOf(value)));
     }
 }

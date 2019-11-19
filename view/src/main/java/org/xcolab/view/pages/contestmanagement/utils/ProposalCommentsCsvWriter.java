@@ -1,6 +1,8 @@
 package org.xcolab.view.pages.contestmanagement.utils;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
+import org.xcolab.client.comment.StaticCommentContext;
+import org.xcolab.client.comment.pojo.IComment;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalTeamMemberWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalTemplateSectionDefinitionWrapper;
@@ -16,7 +18,7 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 
-public class ProposalCsvWriter extends CsvResponseWriter {
+public class ProposalCommentsCsvWriter extends CsvResponseWriter {
 
     private static final List<String> COLUMN_NAMES = Arrays.asList(
             "Contest id",
@@ -24,25 +26,17 @@ public class ProposalCsvWriter extends CsvResponseWriter {
             "Proposal id",
             "Proposal link",
             "Proposal name",
-            "Proposal team name",
-            "Proposal team size",
-            "Proposal team members (IDs)",
-            "Proposal team members (names)",
             "Proposal author (ID)",
             "Proposal author (name)",
-            "Proposal comments",
-            "Proposal supports",
-            "Proposal votes",
-            "Proposal create date",
-            "Proposal update date",
-            "Proposal pitch"
+            "Comment author (ID)",
+            "Comment author (name)",
+            "Comment",
+            "Comment create date"
     );
-
-    public ProposalCsvWriter(HttpServletResponse response) throws IOException {
-        super("proposalReport", COLUMN_NAMES, response);
+    public ProposalCommentsCsvWriter(HttpServletResponse response) throws IOException {
+        super("proposalCommentReport", COLUMN_NAMES, response);
     }
-
-    public void writeProposalsInContest(ContestWrapper contest) {
+    public void writeProposalCommentsInContest(ContestWrapper contest) {
         final String colabUrl = PlatformAttributeKey.COLAB_URL.get();
 
         List<ProposalWrapper> proposals = StaticProposalContext.getProposalClient()
@@ -51,6 +45,7 @@ public class ProposalCsvWriter extends CsvResponseWriter {
         for (ProposalWrapper proposal : proposals) {
             proposal = new ProposalWrapper(proposal);
             List<String> row = new ArrayList<>();
+
             addValue(row, contest.getId());
             addValue(row, contest.getTitle());
 
@@ -58,31 +53,24 @@ public class ProposalCsvWriter extends CsvResponseWriter {
             final String proposalUrl = colabUrl + proposal.getProposalLinkUrl(contest);
             addValue(row, proposalUrl);
             addValue(row, proposal.getName());
-            addValue(row, proposal.getTeam());
-            addValue(row, proposal.getMembers().size());
-            addValue(row, proposal.getMembers().stream()
-                    .map(ProposalTeamMemberWrapper::getUserId)
-                    .map(String::valueOf)
-                    .collect(Collectors.joining(",")));
-            addValue(row, proposal.getMembers().stream()
-                    .map(ProposalTeamMemberWrapper::getFullName)
-                    .map(String::valueOf)
-                    .collect(Collectors.joining(",")));
             addValue(row, proposal.getAuthorUserId());
             addValue(row, proposal.getAuthorName());
-            addValue(row, proposal.getCommentsCount());
-            addValue(row, proposal.getSupportersCount());
-            addValue(row, proposal.getVotesCount());
-            addValue(row, proposal.getCreatedAt());
-            addValue(row, proposal.getUpdatedAt());
-            addValue(row, proposal.getPitch());
+            List<IComment> comments = StaticCommentContext.getCommentClient().listComments(
+                     0, Integer.MAX_VALUE, proposal.getDiscussionId());
 
-            List<String> sectionContent = new ArrayList<>();
-            for (ProposalTemplateSectionDefinitionWrapper section:  proposal.getSections()) {
-                addValue(sectionContent, "<h1>" + section.getTitle() + "</h1>" + section.getContent());
+            List<String> commentRow;
+            for(IComment comm: comments){
+
+                commentRow = new ArrayList<>();
+                commentRow.addAll(row);
+                addValue(commentRow,comm.getAuthorUserId());
+                addValue(commentRow, comm.getAuthor().getDisplayName());
+                addValue(commentRow, comm.getContentPlain());
+                addValue(commentRow, comm.getCreatedAt());
+                writeRow(commentRow);
             }
 
-            writeRow(row, sectionContent);
+
         }
     }
 

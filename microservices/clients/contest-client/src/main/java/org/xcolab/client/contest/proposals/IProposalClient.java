@@ -81,9 +81,9 @@ public interface IProposalClient {
             List<Long> contestTypeIds, List<Long> contestTierIds, Boolean visible,
             Long contestPhaseId,
             Integer ribbon) {
-        return listProposals(start, limit, filterText, Collections.singletonList(contestId),
+        return listProposals(start, limit, filterText, (contestId==null)?(null):(Collections.singletonList(contestId)),
                 contestTierIds, contestTypeIds, null, null, visible, contestPhaseId,
-                Collections.singletonList(ribbon), null, null);
+                (ribbon==null)?(null):(Collections.singletonList(ribbon)), null, null);
     }
 
     default List<ProposalWrapper> getProposalsInPublicContests(List<Long> contestTypeIds,

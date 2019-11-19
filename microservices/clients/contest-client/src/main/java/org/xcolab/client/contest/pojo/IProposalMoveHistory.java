@@ -62,8 +62,8 @@ public interface IProposalMoveHistory {
 
     default ProposalWrapper getSourceProposal() {
         try {
-            return StaticProposalContext.getProposalClient()
-                    .getProposal(this.getSourceProposalId());
+            return new ProposalWrapper(StaticProposalContext.getProposalClient()
+                    .getProposal(this.getSourceProposalId()));
         } catch (ProposalNotFoundException ignored) {
             return null;
         }
