@@ -41,10 +41,12 @@ public interface IFileEntry {
         }
     }
 
+    @JsonIgnore
     default String getImageUrl() {
         return "/image?img_id=" + getId();
     }
 
+    @JsonIgnore
     default String getFileUrl() {
         return "/file?file_id=" + getId();
     }
