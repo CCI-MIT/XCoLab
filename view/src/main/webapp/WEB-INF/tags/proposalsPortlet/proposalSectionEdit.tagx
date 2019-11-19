@@ -63,6 +63,61 @@
                         </c:forEach>
                     </select>
                 </c:when>
+
+                <c:when test="${section.typeEnum == 'RADIO_TABLE'}">
+                    <table class="table table-striped" >
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <c:forEach var="value" items="${section.columnOptionsForRadioTable}">
+                                <th style="font-weight: 100;line-height: normal;text-align: center;">${value}</th>
+                            </c:forEach>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="line" items="${section.rowOptionsForRadioTable}">
+                                <tr>
+                                    <th class="row-header" style="width:500px;min-height:60px;text-align: left;font-weight: 100;line-height: normal;">${line}</th>
+                                    <c:forEach var="value" items="${section.columnOptionsForRadioTable}">
+                                        <td style="width:200px;text-align: center;vertical-align: middle;">
+                                            <c:choose>
+                                                <c:when test="${section.isOptionForRadioTableSelected(line,value)}">
+                                                    <input type="radio" class="radioTable_${section.sectionDefinitionId }" data-section-id="${section.sectionDefinitionId}" name="${line}" onclick="handleRadioButtonClick(this);" value="${line}_${value}" checked="checked"/>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <input type="radio" class="radioTable_${section.sectionDefinitionId }" data-section-id="${section.sectionDefinitionId}" name="${line}" onclick="handleRadioButtonClick(this);" value="${line}_${value}" />
+                                                </c:otherwise>
+                                            </c:choose>
+
+                                        </td>
+                                    </c:forEach>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+                    </table>
+                    <input type="hidden" id="hiddenRadioTable_${section.sectionDefinitionId }" name='sectionsContent[${section.sectionDefinitionId }]' value="${section.stringValue}"/>
+                    <script>
+                        function handleRadioButtonClick(objct){
+
+                            var sectionId = $(objct).data("section-id");
+                            var finalAnswer = "";
+                            let allRadios = $(".radioTable_"+sectionId+":checked");
+                            let i = 0;
+                            for(let i = 0 ; i!= allRadios.length; i++ ){
+
+                                finalAnswer+= $(allRadios[i]).val();
+                                if(i +1 != allRadios.length){
+                                    finalAnswer+=";";
+                                }
+                            }
+                            console.log("THIS IS RADIO BUTTON: " + finalAnswer);
+                            $("#hiddenRadioTable_"+sectionId).val(finalAnswer);
+
+                        }
+                    </script>
+                </c:when>
+
+
                 <c:when test="${section.typeEnum == 'CHECKBOX_OPTION'}">
 
                     <c:forEach var="value" items="${section.optionsForCheckbox}">

@@ -293,6 +293,29 @@ public class ProposalTemplateSectionDefinitionWrapper extends ProposalTemplateSe
     }
 
     @JsonIgnore
+    public List<String> getColumnOptionsForRadioTable() {
+        String[] a = this.getAllowedValues().split("\\|");
+        if(a!= null && a.length > 1) {
+            return Stream.of(a[0].split(";"))
+                    .map(String::trim)
+                    .collect(Collectors.toList());
+        } else {
+            return new ArrayList<>();
+        }
+    }
+    @JsonIgnore
+    public List<String> getRowOptionsForRadioTable() {
+        String[] a = this.getAllowedValues().split("\\|");
+        if(a!= null && a.length > 1) {
+            return Stream.of(a[1].split(";"))
+                    .map(String::trim)
+                    .collect(Collectors.toList());
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+    @JsonIgnore
     public List<String> getOptionsForCheckbox() {
         return Stream.of(this.getAllowedValues().split(";"))
                 .map(String::trim)
@@ -300,10 +323,23 @@ public class ProposalTemplateSectionDefinitionWrapper extends ProposalTemplateSe
     }
 
     @JsonIgnore
+    private List<String> getSelectedValuesForRadioTable(){
+        return Arrays.asList(this.getStringValue().split(";"));
+    }
+    @JsonIgnore
     private List<String> getSelectedValuesForCheckbox() {
         return Arrays.asList(this.getStringValue().split(";"));
     }
 
+    @JsonIgnore
+    public boolean isOptionForRadioTableSelected(String line, String column){
+        for (String selectedValue : getSelectedValuesForRadioTable()) {
+            if (selectedValue.equals(line + "_" + column)) {
+                return true;
+            }
+        }
+        return false;
+    }
     @JsonIgnore
     public boolean isOptionForCheckboxSelected(String value) {
         for (String selectedValue : getSelectedValuesForCheckbox()) {

@@ -82,6 +82,7 @@ public class ProposalUpdateHelper {
             switch (sectionType) {
                 case TEXT:
                 case PROPOSAL_LIST_TEXT_REFERENCE:
+                case RADIO_TABLE:
                 case DROPDOWN_MENU:
                     if (newSectionValue != null && !newSectionValue.trim().equals(section.getContent())) {
                         final String baseUri = PlatformAttributeKey.COLAB_URL.get();
