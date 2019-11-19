@@ -134,27 +134,18 @@
                     console.log("here is the data");
                     console.log(data);
                     var fi = data[0];
-                    /*                    var id = data.id;
-                                        var mainContentArticleId = data.contentArticleId;
-                                        var menuArticleId = data.menuArticleId;
-                                        var pageTitle = data.title;
-                                        var metaDescription = data.metaDescription;
 
-                                        var input = $('#pageId').val(id);
+                    for (entry in data) {
+                        const node = document.createElement("LI");
+                        console.log(">>>>>", data)
 
-                                        $('#pageTitle').val(pageTitle);
-                                        $('#metaDescription').val(metaDescription);
-
-                                        $('#mainContent').val(mainContentArticleId);
-
-                                        if (menuArticleId != 0) {
-                                            $('#leftMenu').val(menuArticleId);
-                                        }
-
-                                        $("#createdAtDate").html("Created at: " + formatDate(data.createdAt));
-
-                                        $("#article-view").unmask()*/
-
+                        var a = document.createElement('a');
+                        const textnode = document.createTextNode(data[0].fileEntry.fileName);
+                        a.appendChild(textnode);
+                        a.href = data[0].url;
+                        node.appendChild(a);
+                        document.getElementById("fileList").appendChild(node);
+                    }
                 }
             });
 
@@ -185,10 +176,7 @@
                             <h3>Files Uploaded</h3>
 
                             <div class="container">
-                                <ul>
-                                    <li>g</li>
-                                    <li>Tea</li>
-                                    <li>Milk</li>
+                                <ul id="fileList">
                                 </ul>
                             </div>
                         </div>

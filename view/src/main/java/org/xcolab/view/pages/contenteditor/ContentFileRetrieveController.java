@@ -19,15 +19,30 @@ public class ContentFileRetrieveController extends BaseContentEditor{
     @Autowired
     private IFileClient fileClient;
 
+    private class Combination {
+        public Combination(FileEntry fileEntry, String url) {
+            this.fileEntry = fileEntry;
+            this.url = url;
+        }
+        public FileEntry fileEntry;
+        public String url;
+    }
+
     @GetMapping("/content-editor/fileUploaderListFiles")
-    public List<FileEntry> contentEditorListFolder(HttpServletRequest request, HttpServletResponse response,
+    public List<Combination> contentEditorListFolder(HttpServletRequest request, HttpServletResponse response,
             @RequestParam(required = false) String node) throws IOException {
+
         try {
-            return fileClient.getNonImageFilesEntry();
+            List<FileEntry> nonImageFileEntries = fileClient.getNonImageFilesEntry();
+            List<Combination> fileEntriesAndUrls = new ArrayList<Combination>();
+            for (FileEntry entry : nonImageFileEntries) {
+                fileEntriesAndUrls.add(new Combination(entry, entry.getFileUrl()));
+            }
+            return fileEntriesAndUrls;
         }
         catch(Exception e){
             System.out.println(e);
         }
-        return new ArrayList<FileEntry>();
+        return new ArrayList<Combination>();
     }
 }
