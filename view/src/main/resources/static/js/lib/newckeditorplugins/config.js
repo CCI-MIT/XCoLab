@@ -4,7 +4,7 @@ CKEDITOR.editorConfig = function( config ) {
 
     config.extraPlugins = 'justify,colorbutton,uploadimage,copyformatting,font,indentblock';
     config.uploadUrl = '/image/uploadCkEditor';
-    config.filebrowserImageUploadUrl = '/image/uploadCkEditor';
+    config.filebrowserImageUploadUrl = '/image/uploadCkEditor?' + window._csrf.parameterName + "=" +window._csrf.token ;
     config.toolbar = 'custom';
     config.toolbar_custom = [
         { name: 'clipboard', groups: [ 'clipboard', 'undo' ], items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ,'-','CopyFormatting'] },
