@@ -41,7 +41,7 @@
                 height: 742px;
             }
 
-            .treeContainer {
+            #fileList {
                 height: 542px;
                 overflow-y: scroll;
             }
@@ -125,13 +125,14 @@
 
 
                 function loadPageContentResponse(data) {
-                    for (entry in data) {
+                    for (i = 0; i < data.length; i++) {
+
                         const node = document.createElement("LI");
 
                         var a = document.createElement('a');
-                        const textnode = document.createTextNode(data[0].fileEntry.fileName);
+                        const textnode = document.createTextNode(data[i].fileEntry.fileName);
                         a.appendChild(textnode);
-                        a.href = data[0].url;
+                        a.href = data[i].url;
                         node.appendChild(a);
                         document.getElementById("fileList").appendChild(node);
                     }
@@ -165,8 +166,7 @@
                             <h3>Files Uploaded</h3>
 
                             <div class="container">
-                                <ul id="fileList">
-                                </ul>
+                                <ul id="fileList"></ul>
                             </div>
                         </div>
                         <div class="col-8">

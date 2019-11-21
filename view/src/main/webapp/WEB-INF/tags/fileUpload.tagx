@@ -169,6 +169,7 @@
                     jQuery(vars.urlDisplayDiv).attr('href', data.result.imageUrl);
                     jQuery(vars.urlDisplayDiv).text(data.result.imageUrl);
                     jQuery(vars.clearButtonId).show();
+                    location.reload()
                     if(!isFileUpload) {
                         noty({text: 'Image upload succeeded.', type: 'success'});
                     }else{

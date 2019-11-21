@@ -36,7 +36,7 @@ public class ContentFileRetrieveController extends BaseContentEditor{
             List<FileEntry> nonImageFileEntries = fileClient.getNonImageFilesEntry();
             List<Combination> fileEntriesAndUrls = new ArrayList<Combination>();
             for (FileEntry entry : nonImageFileEntries) {
-                fileEntriesAndUrls.add(new Combination(entry, entry.getFileUrl()));
+                fileEntriesAndUrls.add(new Combination(entry, entry.getLinkUrl()));
             }
             return fileEntriesAndUrls;
         }
