@@ -111,13 +111,11 @@
 
             var nonImageFiles = '${nonImageFiles}';
 
-
             jQuery(function () {
 
                 loadPageContent()
 
                 function loadPageContent() {
-                    console.log("callllllll for angie")
                     var url = nonImageFiles;
 
                     var parameters = {};
