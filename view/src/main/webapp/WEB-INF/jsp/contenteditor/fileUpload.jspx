@@ -114,24 +114,19 @@
 
             jQuery(function () {
 
-                console.log("here")
                 loadPageContent()
 
                 function loadPageContent() {
-
-                    console.log("load page content!!");
+                    console.log("callllllll for angie")
                     var url = nonImageFiles;
 
                     var parameters = {};
 
                     $.get(url, parameters, loadPageContentResponse);
-                    console.log($.get(url, parameters, loadPageContentResponse))
-
                 }
 
 
                 function loadPageContentResponse(data) {
-
                     for (entry in data) {
                         const node = document.createElement("LI");
 
