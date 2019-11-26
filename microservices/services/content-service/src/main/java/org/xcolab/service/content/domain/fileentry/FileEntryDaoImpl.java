@@ -13,9 +13,7 @@ import org.xcolab.model.tables.records.FileEntryRecord;
 import org.xcolab.service.content.exceptions.NotFoundException;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Arrays.*;
 
 import static org.xcolab.model.Tables.FILE_ENTRY;
 

@@ -7,7 +7,6 @@ import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
@@ -55,7 +54,7 @@ public class FileDisplayService {
             IFileEntry fileEntry = fileEntryOpt.get();
             File imageFile = fileClient
                     .getImageFile(fileEntry.getId(), BASE_PATH, fileEntry.getFileExtension());
-            final boolean success = sendImageToResponse(request, response, imageFile);
+            final boolean success = sendFileToResponse(request, response, imageFile);
             if (success) {
                 setCacheControlHeader(response);
             } else {
@@ -66,23 +65,19 @@ public class FileDisplayService {
         }
     }
 
-//    public void serveFile(HttpServletRequest request, HttpServletResponse response, String fileName) throws IOException {
-//
-//        final Optional<IFileEntry> fileEntryOpt = fileClient.getFileEntry(fileName);
-//        if (fileEntryOpt.isPresent()) {
-//            IFileEntry fileEntry = fileEntryOpt.get();
-//            File imageFile = fileClient
-//                    .getImageFile(fileEntry.getId(), BASE_PATH, fileEntry.getFileExtension());
-//            final boolean success = sendImageToResponse(request, response, imageFile);
-//            if (success) {
-//                setCacheControlHeader(response);
-//            } else {
-//                handleImageNotFoundError(request, response, fileName);
-//            }
-//        } else {
-//            handleFileEntryNotFoundError(request, response, fileName, imageType);
-//        }
-//    }
+    public void serveFile(HttpServletRequest request, HttpServletResponse response, Long fileId) throws IOException {
+
+        final Optional<IFileEntry> fileEntryOpt = fileClient.getFileEntry(fileId);
+        if (fileEntryOpt.isPresent()) {
+            IFileEntry fileEntry = fileEntryOpt.get();
+            File imageFile = fileClient
+                    .getImageFile(fileEntry.getId(), BASE_PATH, fileEntry.getFileExtension());
+            final boolean success = sendFileToResponse(request, response, imageFile);
+            if (success) {
+                setCacheControlHeader(response);
+            }
+        }
+    }
 
     private void setCacheControlHeader(HttpServletResponse response) {
         response.setHeader(HttpHeaders.CACHE_CONTROL,
@@ -140,7 +135,7 @@ public class FileDisplayService {
         response.sendRedirect(newURL);
     }
 
-    private boolean sendImageToResponse(HttpServletRequest request, HttpServletResponse response,
+    private boolean sendFileToResponse(HttpServletRequest request, HttpServletResponse response,
             File imageFile) {
 
         if (imageFile == null) {
@@ -159,4 +154,6 @@ public class FileDisplayService {
         }
 
     }
+
+
 }
