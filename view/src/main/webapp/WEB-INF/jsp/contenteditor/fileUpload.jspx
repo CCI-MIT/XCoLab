@@ -128,12 +128,12 @@
                 function loadPageContentResponse(data) {
                     for (i = 0; i < data.length; i++) {
                         const node = document.createElement("LI");
-                        var a = document.createElement('a');
+                        var aElement = document.createElement('a');
                         const textCreatedAt = data[i].fileEntry.createdAt.split('T')[0]
                         const textnode = document.createTextNode(data[i].fileEntry.fileName+' - '+textCreatedAt);
-                        a.appendChild(textnode);
-                        a.href = data[i].url;
-                        node.appendChild(a);
+                        aElement.appendChild(textnode);
+                        aElement.href = data[i].url;
+                        node.appendChild(aElement);
                         document.getElementById("fileList").appendChild(node);
                     }
                 }

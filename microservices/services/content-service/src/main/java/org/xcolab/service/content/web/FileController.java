@@ -78,7 +78,6 @@ public class FileController implements IFileClient {
             return this.fileEntryDao.getNonImageFiles();
         }
         catch(NotFoundException e){
-            System.out.println(e);
             return new ArrayList<FileEntry>();
         }
     }
