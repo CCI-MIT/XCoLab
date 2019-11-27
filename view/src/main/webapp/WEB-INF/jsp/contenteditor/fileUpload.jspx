@@ -130,7 +130,8 @@
                         const node = document.createElement("LI");
 
                         var a = document.createElement('a');
-                        const textnode = document.createTextNode(data[i].fileEntry.fileName);
+                        const textCreatedAt = data[i].fileEntry.createdAt.split('T')[0]
+                        const textnode = document.createTextNode(data[i].fileEntry.fileName+' - '+textCreatedAt);
                         a.appendChild(textnode);
                         a.href = data[i].url;
                         node.appendChild(a);
@@ -164,7 +165,6 @@
                         <div class="col-4">
                             <br/>
                             <h3>Files Uploaded</h3>
-
                             <div class="container">
                                 <ul id="fileList"></ul>
                             </div>

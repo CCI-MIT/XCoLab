@@ -78,7 +78,8 @@
                           src="/image?img_id=${defaultImageId}&amp;defaultImage=${defaultImage}" />
         </div>
         </c:if>
-        <div class="c-Upload__button">
+
+        <div class="c-Upload__button" id="uploadButton">
             <span class="btn btn-primary fileinput-button">
                 ${buttonText}
                 <input id="${uploadImageInputId}" type="file" name="file" tabindex="-1" />
@@ -88,8 +89,8 @@
                     Clear
                 </span>
             </c:if>
+            <div id="loader"></div>
         </div>
-
         <div style="${shouldDisplayUrl ? '' : 'display: none'}">
             <c:if test="${!isFileUpload}">
                 Link to your image: <a id="${urlDisplayDiv}" href=""><!-- --></a>
@@ -149,7 +150,7 @@
                 url: FILE_UPLOAD_URL + (vars.shouldBeCropped ? '?crop=true' : ''),
                 dataType: 'json',
                 autoUpload: true,
-                acceptFileTypes: /(\.|\/)(gif|jpe?g|png|xlsx)\$/i,
+                acceptFileTypes: /(\.|\/)(gif|jpe?g|png)\$/i,
                 maxFileSize: FILE_UPLOAD_MAX_FILE_SIZE,
                 // Enable image resizing, except for Android and Opera,
                 // which actually support image resizing, but fail to
@@ -161,8 +162,17 @@
                 imageCrop: vars.shouldBeCropped,
                 previewMaxWidth: FILE_UPLOAD_MAX_WIDTH,
                 previewMaxHeight: FILE_UPLOAD_MAX_HEIGHT,
-                previewCrop: vars.shouldBeCropped
+                previewCrop: vars.shouldBeCropped,
+
+            }).on("fileuploadsubmit", function(e, data) {
+                document.getElementById('uploadButton').style.visibility = 'hidden';
+                document.getElementById("loader").style.display = 'block';
             }).on('fileuploaddone', function (e, data) {
+                console.log("DONE")
+                document.getElementById("loader").style.display = 'None';
+                document.getElementById('uploadButton').style.visibility = 'visible';
+
+
                 if (!data.result.error) {
                     jQuery(vars.previewImgId).attr('src', data.result.imageUrl);
                     jQuery(vars.imageIdInputId).val(data.result.imageId);
@@ -211,8 +221,53 @@
             }
         }
 
+
         $( document ).ready(hideClearButtonIfDefault);
 
     </script>
+
+    <style>
+        #uploadButton {
+            visibility : visible
+        }
+        #loader {
+            display: None;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            z-index: 1;
+            width: 50px;
+            height: 50px;
+            border: 16px solid #F3F3F3;
+            border-radius: 50%;
+            border-top: 16px solid #3498DB;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
+        }
+        @-webkit-keyframes spin {
+            0% { -webkit-transform: rotate(0deg); }
+            100% { -webkit-transform: rotate(360deg); }
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        /* Add animation to "page content" */
+        .animate-bottom {
+            position: relative;
+            -webkit-animation-name: animatebottom;
+            -webkit-animation-duration: 1s;
+            animation-name: animatebottom;
+            animation-duration: 1s
+        }
+        @-webkit-keyframes animatebottom {
+            from { bottom:-100px; opacity:0 }
+            to { bottom:0px; opacity:1 }
+        }
+        @keyframes animatebottom {
+            from{ bottom:-100px; opacity:0 }
+            to{ bottom:0; opacity:1 }
+        }
+    </style>
 
 </jsp:root>
