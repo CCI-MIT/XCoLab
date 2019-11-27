@@ -27,6 +27,8 @@
                              required="false" rtexprvalue="true"  description="Control to display the image preview" />
     <jsp:directive.attribute name="isFileUpload" type="java.lang.Boolean"
                              required="false" rtexprvalue="false"  description="Control the text below the button before the link" />
+    <jsp:directive.attribute name="showProgress" type="java.lang.Boolean"
+                             required="false" rtexprvalue="false"  description="Control the text below the button before the link" />
 
 
     <spring:message code="colab.default.image.button.upload" var="defaultImageText"/>
@@ -42,6 +44,7 @@
     <c:set var="previewImgId" value="${uniqueName}Preview" />
     <c:set var="showFilePreview" value="${(empty showFilePreview) ? false : showFilePreview}" />
     <c:set var="isFileUpload" value="${(empty isFileUpload) ? false : isFileUpload}" />
+    <c:set var="showProgress" value="${(empty showProgress) ? false : showProgress}" />
 
 
     <c:set var="FILE_UPLOAD_MAX_WIDTH" value="300" />
@@ -80,18 +83,22 @@
         </c:if>
 
         <div class="c-Upload__button" id="uploadButton">
-            <span class="btn btn-primary fileinput-button">
-                ${buttonText}
-                <input id="${uploadImageInputId}" type="file" name="file" tabindex="-1" />
-            </span>
-            <c:if test="${compactView}">
-                <span id='${uniqueName}_clear' class="btn btn-danger c-Upload__button__clear" >
-                    Clear
+            <div id="buttonSpan">
+                <span class="btn btn-primary fileinput-button">
+                    ${buttonText}
+                    <input id="${uploadImageInputId}" type="file" name="file" tabindex="-1" />
                 </span>
+                <c:if test="${compactView}">
+                    <span id='${uniqueName}_clear' class="btn btn-danger c-Upload__button__clear" >
+                        Clear
+                    </span>
+                </c:if>
+            </div>
+            <c:if test="${showProgress}">
+                <div id="loader"></div>
             </c:if>
-            <div id="loader"></div>
         </div>
-        <div style="${shouldDisplayUrl ? '' : 'display: none'}">
+        <div style="${shouldDisplayUrl ? '' : 'display: none'}" id="urlDiv">
             <c:if test="${!isFileUpload}">
                 Link to your image: <a id="${urlDisplayDiv}" href=""><!-- --></a>
             </c:if>
@@ -146,6 +153,7 @@
         jQuery(function() {
             var vars = fileUploadVars['${uniqueName}'];
             var isFileUpload = '${isFileUpload}';
+            var showProgress = '${showProgress}';
             jQuery(vars.fileUploadInputId).fileupload({
                 url: FILE_UPLOAD_URL + (vars.shouldBeCropped ? '?crop=true' : ''),
                 dataType: 'json',
@@ -165,13 +173,22 @@
                 previewCrop: vars.shouldBeCropped,
 
             }).on("fileuploadsubmit", function(e, data) {
-                document.getElementById('uploadButton').style.visibility = 'hidden';
-                document.getElementById("loader").style.display = 'block';
+                console.log(showProgress)
+                console.log('hereee')
+                if (showProgress === true) {
+                    console.log('theree')
+                    document.getElementById("loader").style.display = 'block';
+                    document.getElementById("buttonSpan").style.display = 'None';
+                    document.getElementById("urlDiv").style.display = 'None';
+                }
             }).on('fileuploaddone', function (e, data) {
-                console.log("DONE")
-                document.getElementById("loader").style.display = 'None';
-                document.getElementById('uploadButton').style.visibility = 'visible';
-
+                console.log('hereee222222')
+                if (showProgress === true) {
+                    console.log('theree222222')
+                    document.getElementById("loader").style.display = 'None';
+                    document.getElementById("buttonSpan").style.display = 'block';
+                    document.getElementById("urlDiv").style.display = 'block';
+                }
 
                 if (!data.result.error) {
                     jQuery(vars.previewImgId).attr('src', data.result.imageUrl);
@@ -179,7 +196,7 @@
                     jQuery(vars.urlDisplayDiv).attr('href', data.result.imageUrl);
                     jQuery(vars.urlDisplayDiv).text(data.result.imageUrl);
                     jQuery(vars.clearButtonId).show();
-                    location.reload()
+
                     if(!isFileUpload) {
                         noty({text: 'Image upload succeeded.', type: 'success'});
                     }else{
@@ -227,20 +244,16 @@
     </script>
 
     <style>
-        #uploadButton {
-            visibility : visible
-        }
         #loader {
-            display: None;
+            display : None;
             position: absolute;
-            left: 50%;
-            top: 50%;
+
             z-index: 1;
+            border: 16px solid #30a3fb;
+            border-radius: 50%;
+            border-top: 16px solid #5ba72f;
             width: 50px;
             height: 50px;
-            border: 16px solid #F3F3F3;
-            border-radius: 50%;
-            border-top: 16px solid #3498DB;
             -webkit-animation: spin 2s linear infinite;
             animation: spin 2s linear infinite;
         }

@@ -92,6 +92,7 @@
             }
 
 
+
         </style>
         <collab:stylesheet href="/css/lib/jquery.loadmask.spin.css"/>
 
@@ -125,6 +126,7 @@
 
 
                 function loadPageContentResponse(data) {
+                    console.log(data)
                     for (i = 0; i < data.length; i++) {
 
                         const node = document.createElement("LI");
@@ -173,10 +175,10 @@
                             <div id="article-view">
                                 <h3>File Upload</h3>
                             </div>
-                            <div class="cb-d-flex-between-center mt-2">
+                            <div class="cb-d-flex-between-center mt-2" id="mainUpload">
                                 <div class="p-Proposal__formBox__main">
                                     <xcolab:fileUpload uniqueName="fileupload2" shouldDisplayUrl="true"
-                                                       preserveAspectRatio="true" defaultImage="CONTEST" showFilePreview="false" buttonText="Upload a file" isFileUpload="true"/>
+                                                       preserveAspectRatio="true" defaultImage="CONTEST" showFilePreview="false" buttonText="Upload a file" isFileUpload="true" showProgress="true"/>
                                 </div>
                             </div>
                         </div>
