@@ -74,6 +74,7 @@ public class FileEntryDaoImpl implements FileEntryDao {
                 .getQuery();
 
         query.addConditions(FILE_ENTRY.FILE_EXTENSION.in(extensions));
+        query.addOrderBy(FILE_ENTRY.CREATED_AT.desc());
         return query.fetchInto(FileEntry.class);
     }
 }

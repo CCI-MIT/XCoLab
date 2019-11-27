@@ -42,7 +42,7 @@
     <c:set var="uploadImageInputId" value="${uniqueName}Input"/>
     <c:set var="urlDisplayDiv" value="${uniqueName}ImageUrl"/>
     <c:set var="previewImgId" value="${uniqueName}Preview" />
-    <c:set var="showFilePreview" value="${(empty showFilePreview) ? false : showFilePreview}" />
+    <c:set var="showFilePreview" value="${(empty showFilePreview) ? true : showFilePreview}" />
     <c:set var="isFileUpload" value="${(empty isFileUpload) ? false : isFileUpload}" />
     <c:set var="showProgress" value="${(empty showProgress) ? false : showProgress}" />
 
@@ -82,7 +82,7 @@
         </div>
         </c:if>
 
-        <div class="c-Upload__button" id="uploadButton">
+        <div class="c-Upload__button">
             <div id="buttonSpan">
                 <span class="btn btn-primary fileinput-button">
                     ${buttonText}
@@ -173,18 +173,13 @@
                 previewCrop: vars.shouldBeCropped,
 
             }).on("fileuploadsubmit", function(e, data) {
-                console.log(showProgress)
-                console.log('hereee')
-                if (showProgress === true) {
-                    console.log('theree')
+                if (showProgress === 'true') {
                     document.getElementById("loader").style.display = 'block';
                     document.getElementById("buttonSpan").style.display = 'None';
                     document.getElementById("urlDiv").style.display = 'None';
                 }
             }).on('fileuploaddone', function (e, data) {
-                console.log('hereee222222')
-                if (showProgress === true) {
-                    console.log('theree222222')
+                if (showProgress === 'true') {
                     document.getElementById("loader").style.display = 'None';
                     document.getElementById("buttonSpan").style.display = 'block';
                     document.getElementById("urlDiv").style.display = 'block';
@@ -196,7 +191,6 @@
                     jQuery(vars.urlDisplayDiv).attr('href', data.result.imageUrl);
                     jQuery(vars.urlDisplayDiv).text(data.result.imageUrl);
                     jQuery(vars.clearButtonId).show();
-
                     if(!isFileUpload) {
                         noty({text: 'Image upload succeeded.', type: 'success'});
                     }else{
