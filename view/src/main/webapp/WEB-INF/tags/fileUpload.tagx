@@ -158,7 +158,7 @@
                 url: FILE_UPLOAD_URL + (vars.shouldBeCropped ? '?crop=true' : ''),
                 dataType: 'json',
                 autoUpload: true,
-                acceptFileTypes: /(\.|\/)(gif|jpe?g|png)\$/i,
+                acceptFileTypes: /(\.|\/)(gif|jpe?g|png|pdf|zip|docx|pptx|xlsx)\$/i,
                 maxFileSize: FILE_UPLOAD_MAX_FILE_SIZE,
                 // Enable image resizing, except for Android and Opera,
                 // which actually support image resizing, but fail to

@@ -34,10 +34,14 @@ public interface IFileEntry {
     @JsonIgnore
     default String getLinkUrl() {
         String[] array = {"png", "jpg", "jpeg", "gif", "raw"};
+        String[] extension = {"pdf", "zip", "docx", "pptx", "xlsx"};
         if (Arrays.asList(array).contains(this.getFileExtension())) {
             return getImageUrl();
-        } else {
+        } else if (Arrays.asList(extension).contains(this.getFileExtension())){
             return getFileUrl();
+        }
+        else {
+            return "";
         }
     }
 
