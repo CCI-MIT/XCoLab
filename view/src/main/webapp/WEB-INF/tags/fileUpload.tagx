@@ -23,6 +23,13 @@
                              rtexprvalue="true" description="Text for the upload button"/>
     <jsp:directive.attribute name="clearImageId" type="java.lang.Long"
                              required="false" rtexprvalue="true"  description="Image id to revert to if current image is cleared" />
+    <jsp:directive.attribute name="showFilePreview" type="java.lang.Boolean"
+                             required="false" rtexprvalue="true"  description="Control to display the image preview" />
+    <jsp:directive.attribute name="isFileUpload" type="java.lang.Boolean"
+                             required="false" rtexprvalue="false"  description="Control the text below the button before the link" />
+    <jsp:directive.attribute name="showProgress" type="java.lang.Boolean"
+                             required="false" rtexprvalue="false"  description="Control the text below the button before the link" />
+
 
     <spring:message code="colab.default.image.button.upload" var="defaultImageText"/>
     <c:set var="shouldDisplayUrl" value="${(empty shouldDisplayUrl) ? false : shouldDisplayUrl}" />
@@ -35,11 +42,16 @@
     <c:set var="uploadImageInputId" value="${uniqueName}Input"/>
     <c:set var="urlDisplayDiv" value="${uniqueName}ImageUrl"/>
     <c:set var="previewImgId" value="${uniqueName}Preview" />
+    <c:set var="showFilePreview" value="${(empty showFilePreview) ? true : showFilePreview}" />
+    <c:set var="isFileUpload" value="${(empty isFileUpload) ? false : isFileUpload}" />
+    <c:set var="showProgress" value="${(empty showProgress) ? false : showProgress}" />
+
 
     <c:set var="FILE_UPLOAD_MAX_WIDTH" value="300" />
     <c:set var="FILE_UPLOAD_MAX_HEIGHT" value="300" />
     <c:set var="FILE_UPLOAD_MAX_FILE_SIZE" value="2097152" /> <!-- Max image size 2MB -->
     <c:set var="FILE_UPLOAD_URL" value="/image/upload" />
+
 
     <c:if test="${empty _imageUploadScriptsLoaded}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.14.2/css/jquery.fileupload.min.css"/>
@@ -60,6 +72,7 @@
     </c:if>
 
     <div class="c-Upload ${compactView ? 'c-Upload--compact' : ''}">
+        <c:if test="${showFilePreview}">
         <div class="${!compactView ? 'c-Upload__wrapper' : 'c-Upload__wrapper--compact'}">
             <c:if test="${!compactView}">
                 <collab:image id='${uniqueName}_clear' cssClass="c-Upload__icon__clear" src="/images/clear.png" />
@@ -67,20 +80,31 @@
             <collab:image id="${previewImgId}"
                           src="/image?img_id=${defaultImageId}&amp;defaultImage=${defaultImage}" />
         </div>
+        </c:if>
+
         <div class="c-Upload__button">
-            <span class="btn btn-primary fileinput-button">
-                ${buttonText}
-                <input id="${uploadImageInputId}" type="file" name="file" tabindex="-1" />
-            </span>
-            <c:if test="${compactView}">
-                <span id='${uniqueName}_clear' class="btn btn-danger c-Upload__button__clear" >
-                    Clear
+            <div id="buttonSpan">
+                <span class="btn btn-primary fileinput-button">
+                    ${buttonText}
+                    <input id="${uploadImageInputId}" type="file" name="file" tabindex="-1" />
                 </span>
+                <c:if test="${compactView}">
+                    <span id='${uniqueName}_clear' class="btn btn-danger c-Upload__button__clear" >
+                        Clear
+                    </span>
+                </c:if>
+            </div>
+            <c:if test="${showProgress}">
+                <div id="loader"></div>
             </c:if>
         </div>
-
-        <div style="${shouldDisplayUrl ? '' : 'display: none'}">
-            Link to your image: <a id="${urlDisplayDiv}" href=""><!-- --></a>
+        <div style="${shouldDisplayUrl ? '' : 'display: none'}" id="urlDiv">
+            <c:if test="${!isFileUpload}">
+                Link to your image: <a id="${urlDisplayDiv}" href=""><!-- --></a>
+            </c:if>
+            <c:if test="${isFileUpload}">
+                Link to your file: <a id="${urlDisplayDiv}" href=""><!-- --></a>
+            </c:if>
         </div>
     </div>
 
@@ -128,11 +152,13 @@
     <script>
         jQuery(function() {
             var vars = fileUploadVars['${uniqueName}'];
+            var isFileUpload = '${isFileUpload}';
+            var showProgress = '${showProgress}';
             jQuery(vars.fileUploadInputId).fileupload({
                 url: FILE_UPLOAD_URL + (vars.shouldBeCropped ? '?crop=true' : ''),
                 dataType: 'json',
                 autoUpload: true,
-                acceptFileTypes: /(\.|\/)(gif|jpe?g|png)\$/i,
+                acceptFileTypes: /(\.|\/)(gif|jpe?g|png|pdf|zip|docx|pptx|xlsx)\$/i,
                 maxFileSize: FILE_UPLOAD_MAX_FILE_SIZE,
                 // Enable image resizing, except for Android and Opera,
                 // which actually support image resizing, but fail to
@@ -144,18 +170,40 @@
                 imageCrop: vars.shouldBeCropped,
                 previewMaxWidth: FILE_UPLOAD_MAX_WIDTH,
                 previewMaxHeight: FILE_UPLOAD_MAX_HEIGHT,
-                previewCrop: vars.shouldBeCropped
+                previewCrop: vars.shouldBeCropped,
+
+            }).on("fileuploadsubmit", function(e, data) {
+                if (showProgress === 'true') {
+                    document.getElementById("loader").style.display = 'block';
+                    document.getElementById("buttonSpan").style.display = 'None';
+                    document.getElementById("urlDiv").style.display = 'None';
+                }
             }).on('fileuploaddone', function (e, data) {
+                if (showProgress === 'true') {
+                    document.getElementById("loader").style.display = 'None';
+                    document.getElementById("buttonSpan").style.display = 'block';
+                    document.getElementById("urlDiv").style.display = 'block';
+                }
+
                 if (!data.result.error) {
                     jQuery(vars.previewImgId).attr('src', data.result.imageUrl);
                     jQuery(vars.imageIdInputId).val(data.result.imageId);
                     jQuery(vars.urlDisplayDiv).attr('href', data.result.imageUrl);
                     jQuery(vars.urlDisplayDiv).text(data.result.imageUrl);
                     jQuery(vars.clearButtonId).show();
-                    noty({text: 'Image upload succeeded.', type: 'success'});
+                    if(!isFileUpload) {
+                        noty({text: 'Image upload succeeded.', type: 'success'});
+                    }else{
+                        noty({text: 'File upload succeeded.', type: 'success'});
+                    }
                 } else {
-                    noty({text: 'Image upload failed.', type: 'error'});
-                    console.error('Image upload failed: ' + data.result.message);
+                    if(!isFileUpload) {
+                        noty({text: 'Image upload failed.', type: 'error'});
+                        console.error('Image upload failed: ' + data.result.message);
+                    }else{
+                        noty({text: 'File upload failed.', type: 'error'});
+                        console.error('File upload failed: ' + data.result.message);
+                    }
                 }
             }).on('fileuploadfail', function (e, data) {
                 noty({text: 'Image upload failed.', type: 'error'});
@@ -184,8 +232,49 @@
             }
         }
 
+
         $( document ).ready(hideClearButtonIfDefault);
-        
+
     </script>
+
+    <style>
+        #loader {
+            display : None;
+            position: absolute;
+
+            z-index: 1;
+            border: 16px solid #30a3fb;
+            border-radius: 50%;
+            border-top: 16px solid #5ba72f;
+            width: 50px;
+            height: 50px;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
+        }
+        @-webkit-keyframes spin {
+            0% { -webkit-transform: rotate(0deg); }
+            100% { -webkit-transform: rotate(360deg); }
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        /* Add animation to "page content" */
+        .animate-bottom {
+            position: relative;
+            -webkit-animation-name: animatebottom;
+            -webkit-animation-duration: 1s;
+            animation-name: animatebottom;
+            animation-duration: 1s
+        }
+        @-webkit-keyframes animatebottom {
+            from { bottom:-100px; opacity:0 }
+            to { bottom:0px; opacity:1 }
+        }
+        @keyframes animatebottom {
+            from{ bottom:-100px; opacity:0 }
+            to{ bottom:0; opacity:1 }
+        }
+    </style>
 
 </jsp:root>

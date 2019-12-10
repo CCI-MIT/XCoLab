@@ -2,6 +2,7 @@ package org.xcolab.client.content.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import java.util.Arrays;
 
 import org.xcolab.client.content.pojo.tables.pojos.FileEntry;
 
@@ -32,6 +33,25 @@ public interface IFileEntry {
 
     @JsonIgnore
     default String getLinkUrl() {
+        String[] array = {"png", "jpg", "jpeg", "gif", "raw"};
+        String[] extension = {"pdf", "zip", "docx", "pptx", "xlsx"};
+        if (Arrays.asList(array).contains(this.getFileExtension())) {
+            return getImageUrl();
+        } else if (Arrays.asList(extension).contains(this.getFileExtension())){
+            return getFileUrl();
+        }
+        else {
+            return "";
+        }
+    }
+
+    @JsonIgnore
+    default String getImageUrl() {
         return "/image?img_id=" + getId();
+    }
+
+    @JsonIgnore
+    default String getFileUrl() {
+        return "/file?file_id=" + getId();
     }
 }

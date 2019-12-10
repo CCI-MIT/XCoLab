@@ -181,8 +181,8 @@
                 </div>
                 <div class="col-auto mx-auto">
                     <form:hidden id="userRegistrationImageId" path="imageId" />
-                    <xcolab:imageUpload uniqueName="profileImage" imageIdInput="userRegistrationImageId"
-                                        defaultImage="MEMBER" defaultImageId="${createUserBean.imageId}" />
+                    <xcolab:fileUpload uniqueName="profileImage" imageIdInput="userRegistrationImageId"
+                                       defaultImage="MEMBER" defaultImageId="${createUserBean.imageId}" />
                 </div>
 
                 <div class="col-12 col-md">

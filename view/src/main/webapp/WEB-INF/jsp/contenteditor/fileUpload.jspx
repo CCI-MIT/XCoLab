@@ -1,0 +1,187 @@
+<!--
+  Created by IntelliJ IDEA.
+  User: maximiliandeichmann
+  Date: 26.09.19
+  Time: 21:35
+  To change this template use File | Settings | File Templates.
+-->
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
+          xmlns:form="http://www.springframework.org/tags/form">
+
+
+    <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+    <xcolab:layout>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqtree/1.3.6/tree.jquery.min.js"><!-- --></script>
+        <xcolab:requireLibrary name="jQuery UI"/>
+        <xcolab:requireLibrary name="spin.js"/>
+        <xcolab:requireLibrary name="CKEditor"/>
+        <collab:script src="/js/lib/jquery.loadmask.spin.js"/>
+
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/jqtree/1.3.6/jqtree.min.css"><!-- --></link>
+        <!-- link rel="stylesheet" href="${pageContext.request.contextPath}/js/ckeditor/contents.css"></link -->
+        <style>
+
+            .contentEditor input {
+                border: 1px solid #DDD;
+                color: #8d8d8d;
+                font-weight: 200;
+                margin-bottom: 7px;
+                height: 30px;
+                font-size: large;
+                width: 530px;
+            }
+
+            .contentBody {
+                margin: auto;
+                width: 1022px;
+                height: 742px;
+            }
+
+            #fileList {
+                height: 542px;
+                overflow-y: scroll;
+            }
+
+            #infoBox {
+                padding: 8px 35px 8px 14px;
+                margin-bottom: 20px;
+            }
+
+            #tree-view {
+                width: 350px
+            }
+
+            #saveArticle {
+                cursor: pointer
+            }
+
+            #articleURL {
+                overflow: hidden
+            }
+
+            #anchorArticleURL {
+                display: block;
+                width: 0;
+                white-space: nowrap;
+            }
+
+            #articleVersions span:hover {
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+            #articleVersions span {
+                cursor: pointer;
+                color: blue;
+                text-decoration: underline;
+            }
+
+            #tree-view small:hover {
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+            #tree-view small {
+                cursor: pointer;
+                color: blue;
+                text-decoration: underline;
+            }
+
+
+
+        </style>
+        <collab:stylesheet href="/css/lib/jquery.loadmask.spin.css"/>
+
+        <c:set var="getContentPageURL" value="/content-editor/pageEditorGetPage"/>
+
+        <c:set var="saveContentPageURL" value="/content-editor/saveContentPage"/>
+
+
+        <c:set var="previewContentPageURL" value="/content-editor/previewContentPage"/>
+
+        <c:set var="createArticleFolderURL" value="/content-editor/createArticleFolder"/>
+
+        <c:set var="nonImageFiles" value="/content-editor/fileUploaderListFiles"/>
+
+        <script>
+            <![CDATA[
+
+            var nonImageFiles = '${nonImageFiles}';
+
+            jQuery(function () {
+
+                loadPageContent()
+
+                function loadPageContent() {
+                    var url = nonImageFiles;
+
+                    var parameters = {};
+
+                    $.get(url, parameters, loadPageContentResponse);
+                }
+
+
+                function loadPageContentResponse(data) {
+                    for (i = 0; i < data.length; i++) {
+                        const node = document.createElement("LI");
+                        var aElement = document.createElement('a');
+                        const textCreatedAt = data[i].fileEntry.createdAt.split('T')[0]
+                        const textnode = document.createTextNode(data[i].fileEntry.fileName+' - '+textCreatedAt);
+                        aElement.appendChild(textnode);
+                        aElement.href = data[i].url;
+                        node.appendChild(aElement);
+                        document.getElementById("fileList").appendChild(node);
+                    }
+                }
+            });
+
+            ]]>
+        </script>
+        <div class="contentEditor">
+            <div class="contentBody">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item"><a class="nav-link"
+                                            href="/content-editor/">Content Editor</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link"
+                                            href="/content-editor/pageEditor">Page Editor</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link"
+                                            href="/content-editor/resourcePagesEditor">Resource pages</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link active"
+                                            href="/content-editor/fileUpload">File Upload</a>
+                    </li>
+                </ul>
+
+                <div id="infoBox"><!-- --></div>
+                <div class="c-Box c-Box--colorTan">
+                    <div class="c-Box__bodyRow">
+                        <div class="col-4">
+                            <br/>
+                            <h3>Files Uploaded</h3>
+                            <div class="container">
+                                <ul id="fileList"></ul>
+                            </div>
+                        </div>
+                        <div class="col-8">
+                            <div id="article-view">
+                                <h3>File Upload</h3>
+                            </div>
+                            <div class="cb-d-flex-between-center mt-2" id="mainUpload">
+                                <div class="p-Proposal__formBox__main">
+                                    <xcolab:fileUpload uniqueName="fileupload2" shouldDisplayUrl="true"
+                                                       preserveAspectRatio="true" defaultImage="CONTEST" showFilePreview="false" buttonText="Upload a file" isFileUpload="true" showProgress="true"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </xcolab:layout>
+</jsp:root>

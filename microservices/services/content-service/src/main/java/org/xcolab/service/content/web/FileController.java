@@ -1,5 +1,6 @@
 package org.xcolab.service.content.web;
 
+import org.xcolab.client.content.pojo.tables.pojos.FileEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +18,10 @@ import org.xcolab.service.content.exceptions.NotFoundException;
 import org.xcolab.service.content.providers.PersistenceProvider;
 
 import java.io.File;
+import java.util.List;
 import java.util.Optional;
+
+import java.util.ArrayList;
 
 @RestController
 public class FileController implements IFileClient {
@@ -65,5 +69,16 @@ public class FileController implements IFileClient {
             }
         }
         return Optional.empty();
+    }
+
+    @Override
+    @GetMapping("/nonImageFileEntries")
+    public List<FileEntry> getNonImageFilesEntry() {
+        try {
+            return this.fileEntryDao.getNonImageFiles();
+        }
+        catch(NotFoundException e){
+            return new ArrayList<FileEntry>();
+        }
     }
 }

@@ -381,6 +381,9 @@
                     <li class="nav-item"><a class="nav-link active"
                                             href="/content-editor/resourcePagesEditor">Resource pages</a>
                     </li>
+                    <li class="nav-item"><a class="nav-link"
+                                            href="/content-editor/fileUpload">File Upload</a>
+                    </li>
                 </ul>
 
                 <div id="infoBox"><!-- --></div>

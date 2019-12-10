@@ -18,31 +18,31 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class LegacyImageDisplayController {
 
-    private final ImageDisplayService imageDisplayService;
+    private final FileDisplayService fileDisplayService;
 
     private final IUserClient userClient;
 
-    public LegacyImageDisplayController(ImageDisplayService imageDisplayService, IUserClient userClient) {
-        this.imageDisplayService = imageDisplayService;
+    public LegacyImageDisplayController(FileDisplayService fileDisplayService, IUserClient userClient) {
+        this.fileDisplayService = fileDisplayService;
         this.userClient = userClient;
     }
 
     @GetMapping("/image/contest/{imageId}")
     public void serveContestImageLegacy(HttpServletRequest request, HttpServletResponse response,
             @PathVariable long imageId) throws IOException {
-        imageDisplayService.serveImage(request, response, imageId, ImageType.CONTEST);
+        fileDisplayService.serveImage(request, response, imageId, ImageType.CONTEST);
     }
 
     @GetMapping("/image/proposal/{imageId}")
     public void serveProposalImageLegacy(HttpServletRequest request, HttpServletResponse response,
             @PathVariable long imageId) throws IOException {
-        imageDisplayService.serveImage(request, response, imageId, ImageType.PROPOSAL);
+        fileDisplayService.serveImage(request, response, imageId, ImageType.PROPOSAL);
     }
 
     @GetMapping("/image/member/{imageId}")
     public void serveMemberImageLegacy(HttpServletRequest request, HttpServletResponse response,
             @PathVariable long imageId) throws IOException {
-        imageDisplayService.serveImage(request, response, imageId, ImageType.MEMBER);
+        fileDisplayService.serveImage(request, response, imageId, ImageType.MEMBER);
     }
 
     @GetMapping({"/image/{whatever}", "/image"})
@@ -56,7 +56,7 @@ public class LegacyImageDisplayController {
         if (userId != null) {
             try {
                 UserWrapper member = userClient.getMember(userId);
-                imageDisplayService.serveImage(request, response,
+                fileDisplayService.serveImage(request, response,
                         member.getPortraitId(), ImageType.PROPOSAL);
             } catch (MemberNotFoundException e) {
                 response.sendError(HttpStatus.NOT_FOUND.value(), "Member not found.");
@@ -77,6 +77,6 @@ public class LegacyImageDisplayController {
             defaultImage = ImageType.MEMBER;
         }
 
-        imageDisplayService.serveImage(request, response, imageId, defaultImage);
+        fileDisplayService.serveImage(request, response, imageId, defaultImage);
     }
 }
