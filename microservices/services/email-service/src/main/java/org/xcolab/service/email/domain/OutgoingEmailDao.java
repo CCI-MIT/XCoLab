@@ -15,4 +15,6 @@ public interface OutgoingEmailDao {
 
     List<OutgoingEmail> findByGiven(String emailSubject, String emailTo, Long referenceId,
             String emailBodyHash);
+
+    List<OutgoingEmail> getSentEmails(int numOfEmails);
 }

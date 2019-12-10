@@ -12,6 +12,7 @@ import java.util.List;
 
 import static org.xcolab.model.Tables.EMAIL_TEMPLATE;
 
+
 @Repository
 public class EmailTemplateDaoImpl implements EmailTemplateDao {
     @Autowired
@@ -54,5 +55,4 @@ public class EmailTemplateDaoImpl implements EmailTemplateDao {
                 .set(EMAIL_TEMPLATE.FOOTER, contestEmailTemplate.getFooter())
                 .execute();
     }
-
 }

@@ -11,6 +11,7 @@ import org.xcolab.client.email.pojo.IEmail;
 import org.xcolab.model.tables.pojos.OutgoingEmail;
 import org.xcolab.service.email.domain.OutgoingEmailDao;
 import org.xcolab.service.email.util.EmailService;
+import org.xcolab.model.tables.pojos.OutgoingEmail;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -58,6 +59,11 @@ public class EmailsController implements IEmailClient {
             ce.setWasSent(sentStatus);
             colabEmailDao.create(ce);
         }
+    }
+
+    @PostMapping("/emails/send")
+    public List<OutgoingEmail> getSentEmails(@RequestBody int numOfEmails) {
+        return colabEmailDao.getSentEmails(numOfEmails);
     }
 
     private String hashEmail(String emailBody) {

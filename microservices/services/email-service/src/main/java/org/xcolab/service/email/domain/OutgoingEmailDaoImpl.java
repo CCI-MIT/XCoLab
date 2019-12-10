@@ -49,14 +49,15 @@ public class OutgoingEmailDaoImpl implements OutgoingEmailDao {
     }
 
     @Override
-    public OutgoingEmail get(Long colabEmailId) throws NotFoundException{
+    public OutgoingEmail get(Long colabEmailId) throws NotFoundException {
 
-        final Record record =  this.dslContext.selectFrom(OUTGOING_EMAIL)
+        final Record record = this.dslContext.selectFrom(OUTGOING_EMAIL)
                 .where(OUTGOING_EMAIL.ID.eq(colabEmailId))
                 .fetchOne();
 
         if (record == null) {
-            throw new NotFoundException("OutgoingEmail with id " + colabEmailId + " does not exist");
+            throw new NotFoundException(
+                    "OutgoingEmail with id " + colabEmailId + " does not exist");
         }
         return record.into(OutgoingEmail.class);
 
@@ -79,7 +80,8 @@ public class OutgoingEmailDaoImpl implements OutgoingEmailDao {
     }
 
     @Override
-    public List<OutgoingEmail> findByGiven(String emailSubject, String emailTo, Long referenceId, String emailBodyHash) {
+    public List<OutgoingEmail> findByGiven(String emailSubject, String emailTo, Long referenceId,
+            String emailBodyHash) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(OUTGOING_EMAIL).getQuery();
 
@@ -95,6 +97,17 @@ public class OutgoingEmailDaoImpl implements OutgoingEmailDao {
         if (emailBodyHash != null) {
             query.addConditions(OUTGOING_EMAIL.EMAIL_BODY_HASH.eq(emailBodyHash));
         }
+        return query.fetchInto(OutgoingEmail.class);
+    }
+
+
+    @Override
+    public List<OutgoingEmail> getSentEmails(int numOfEmails) {
+        final SelectQuery<Record> query = dslContext.select()
+                .from(OUTGOING_EMAIL).getQuery();
+
+        query.addOrderBy(OUTGOING_EMAIL.SENT_AT.desc());
+        query.addLimit(numOfEmails);
         return query.fetchInto(OutgoingEmail.class);
     }
 }

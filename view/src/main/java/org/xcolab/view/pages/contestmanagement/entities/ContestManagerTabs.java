@@ -32,6 +32,9 @@ public enum ContestManagerTabs implements TabEnum {
             TabActivityCountAlgorithm.alwaysZero),
     ADMIN("Admin", "admin",
             TabPermissionAlgorithm.adminOnlyViewAndEdit,
+            TabActivityCountAlgorithm.alwaysZero),
+    SENT_EMAILS("Sent Emails", "emailTemplate",
+            TabPermissionAlgorithm.adminOnlyViewAndEdit,
             TabActivityCountAlgorithm.alwaysZero);
 
     private final String displayName;

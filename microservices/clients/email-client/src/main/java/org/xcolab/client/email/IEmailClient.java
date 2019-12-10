@@ -4,6 +4,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+
 import org.xcolab.client.email.pojo.IEmail;
 import org.xcolab.client.email.pojo.tables.pojos.Email;
 
@@ -17,7 +18,10 @@ public interface IEmailClient {
     void sendEmail(@RequestBody IEmail email);
 
 
-    default void sendEmail(String from, String fromName, String to, String subject,
+    //List<OutgoingEmail> getSentEmails(@RequestBody int numOfEmails)
+
+
+        default void sendEmail(String from, String fromName, String to, String subject,
             String emailBody, Boolean isHtml, String replyTo, String replyToName,
             Long referenceId) {
         List<String> toAdd = new ArrayList<>();
