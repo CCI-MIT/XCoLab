@@ -68,6 +68,7 @@ public class FileEntryDaoImpl implements FileEntryDao {
         extensions.add("docx");
         extensions.add("pptx");
         extensions.add("xlsx");
+        extensions.add("zip");
 
         final SelectQuery<Record> query = dslContext.select()
                 .from(FILE_ENTRY)
