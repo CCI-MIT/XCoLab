@@ -1,5 +1,6 @@
 package org.xcolab.service.email.domain;
 
+import org.xcolab.client.email.pojo.IOutgoingEmail;
 import org.xcolab.model.tables.pojos.OutgoingEmail;
 import org.xcolab.service.email.exceptions.NotFoundException;
 
@@ -16,5 +17,5 @@ public interface OutgoingEmailDao {
     List<OutgoingEmail> findByGiven(String emailSubject, String emailTo, Long referenceId,
             String emailBodyHash);
 
-    List<OutgoingEmail> getSentEmails(int numOfEmails);
+    List<IOutgoingEmail> getSentEmails(int numOfEmails);
 }

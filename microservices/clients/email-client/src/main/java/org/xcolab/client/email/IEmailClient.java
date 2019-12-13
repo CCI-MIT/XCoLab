@@ -1,11 +1,15 @@
 package org.xcolab.client.email;
 
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 import org.xcolab.client.email.pojo.IEmail;
+import org.xcolab.client.email.pojo.IOutgoingEmail;
 import org.xcolab.client.email.pojo.tables.pojos.Email;
 
 import java.util.ArrayList;
@@ -14,11 +18,11 @@ import java.util.List;
 @FeignClient("xcolab-email-service")
 public interface IEmailClient {
 
+    @GetMapping("/emails/getSentEmails/{numOfEmails}")
+    List<IOutgoingEmail> getSentEmails(@PathVariable int numOfEmails);
+
     @PostMapping("/emails/send")
     void sendEmail(@RequestBody IEmail email);
-
-
-    //List<OutgoingEmail> getSentEmails(@RequestBody int numOfEmails)
 
 
         default void sendEmail(String from, String fromName, String to, String subject,

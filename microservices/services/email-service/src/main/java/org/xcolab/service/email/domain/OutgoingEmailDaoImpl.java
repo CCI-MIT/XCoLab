@@ -6,6 +6,7 @@ import org.jooq.SelectQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
+import org.xcolab.client.email.pojo.IOutgoingEmail;
 import org.xcolab.model.tables.pojos.OutgoingEmail;
 import org.xcolab.model.tables.records.OutgoingEmailRecord;
 import org.xcolab.service.email.exceptions.NotFoundException;
@@ -102,12 +103,12 @@ public class OutgoingEmailDaoImpl implements OutgoingEmailDao {
 
 
     @Override
-    public List<OutgoingEmail> getSentEmails(int numOfEmails) {
+    public List<IOutgoingEmail> getSentEmails(int numOfEmails) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(OUTGOING_EMAIL).getQuery();
 
         query.addOrderBy(OUTGOING_EMAIL.SENT_AT.desc());
         query.addLimit(numOfEmails);
-        return query.fetchInto(OutgoingEmail.class);
+        return query.fetchInto(IOutgoingEmail.class);
     }
 }
