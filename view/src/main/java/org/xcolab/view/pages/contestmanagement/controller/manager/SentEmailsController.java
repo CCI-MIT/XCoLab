@@ -1,5 +1,7 @@
 package org.xcolab.view.pages.contestmanagement.controller.manager;
 
+import com.google.gson.JsonObject;
+import net.sf.json.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,25 +46,20 @@ public class SentEmailsController extends AbstractTabController {
 
     @GetMapping("tab/SENT_EMAILS")
     public String showEmailTabController(HttpServletRequest request, HttpServletResponse response,
-            Model model, UserWrapper member, @RequestParam(required = true, defaultValue = "10") int numOfEmails) {
+            Model model, UserWrapper member, @RequestParam(required = true, defaultValue = "15") int numOfEmails) {
 
         if (!tabWrapper.getCanView()) {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
-        //List<IOutgoingEmail> retrievedEmails = emailClient.getSentEmails(numOfEmails);
-        //model.addAttribute("retrievedEmails", retrievedEmails);
+        List<IOutgoingEmail> retrievedEmails = emailClient.getSentEmails(numOfEmails);
+        model.addAttribute("retrievedEmails", retrievedEmails);
+
+        JsonObject json = new JsonObject();
+        json.addProperty("number", numOfEmails);
+        model.addAttribute("numOfEmails", Integer.toString(numOfEmails));
 
         return TAB_VIEW;
     }
 
-
-    @GetMapping("tab/SENT_EMAILS/retreiveEmails/{numOfEmails}")
-    public void retrieveSentEmails(HttpServletRequest request, Model model,
-            UserWrapper member, @RequestParam(required = true) int numOfEmails,
-            BindingResult result, HttpServletResponse response) {
-
-        System.out.println(emailClient.getSentEmails(numOfEmails));
-
-    }
 }

@@ -1,7 +1,10 @@
 package org.xcolab.client.email.pojo;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import org.xcolab.client.email.pojo.tables.pojos.OutgoingEmail;
 import java.sql.Timestamp;
 
+@JsonDeserialize(as = OutgoingEmail.class)
 public interface IOutgoingEmail {
 
     Long getId();

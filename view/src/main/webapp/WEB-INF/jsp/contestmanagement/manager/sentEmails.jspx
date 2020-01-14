@@ -4,60 +4,27 @@
           xmlns:form="http://www.springframework.org/tags/form"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
+
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+
     <xcolab:layout>
-        <!--@elvariable id="massActionsItems" type="java.util.Map<String, String>"-->
-        <!--@elvariable id="contestOverviewWrapper" type="org.xcolab.view.pages.contestmanagement.wrappers.ContestOverviewWrapper"-->
-
         <style>
-            /* The Modal (background) */
-            .modal {
-                display: none; /* Hidden by default */
-                position: fixed; /* Stay in place */
-                z-index: 1; /* Sit on top */
-                left: 0;
-                top: 0;
-                width: 100%; /* Full width */
-                height: 100%; /* Full height */
-                overflow: auto; /* Enable scroll if needed */
-                background-color: rgb(0, 0, 0); /* Fallback color */
-                background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+            .modalEmailInfo {
+                padding-left: 5px;
             }
-
-            /* Modal Content/Box */
-            .modal-content {
-                background-color: #fefefe;
-                margin: 15% auto; /* 15% from the top and centered */
-                padding: 20px;
-                border: 1px solid #888;
-                width: 80%; /* Could be more or less, depending on screen size */
-            }
-
-            /* The Close Button */
-            .close {
-                color: #aaa;
-                float: right;
-                font-size: 28px;
-                font-weight: bold;
-            }
-
-            .close:hover,
-            .close:focus {
-                color: black;
-                text-decoration: none;
-                cursor: pointer;
+            .c-ContentBox__Table {
+                position: relative;
             }
         </style>
-
 
         <jsp:directive.include file="../init.jspx"/>
         <jsp:directive.include file="./header.jspx"/>
 
         <div class="c-ContentBox">
-            <form:form action="URL"
-                       id="editForm" method="post">
+            <div class="content">
+
                 <div>
-                    <div class="float-right">
+                    <div class="float-left">
                         <div class="form-inline">
                             <label for="contestsFilterSelect">Number of E-Mails:</label>
                             <select id="contestsFilterSelect"
@@ -74,7 +41,7 @@
                 </div>
 
 
-                <table class="c-ContentBox__Table">
+                <table class="c-ContentBox__Table table table-condensed table-hover">
                     <thead>
                     <tr>
                         <th>Subject</th>
@@ -82,334 +49,122 @@
                         <th>E-Mail From</th>
                         <th>Date Sent</th>
                         <th>Was Sent</th>
-                        <!--                        <th>&lt;!&ndash; &ndash;&gt;</th>-->
+                        <!--                                            <th>&lt;!&ndash; &ndash;&gt;</th>&ndash;&gt;-->
                     </tr>
                     </thead>
                     <tbody id="contestOverviewBody">
-                    <!--                    <c:forEach var="contestEntry" items="${contestOverviewWrapper.contests}" varStatus="x" >-->
+                    <c:forEach var="retrievedEmail" items="${retrievedEmails}" varStatus="x">
 
+                        <tr>
+                            <c:set var="subject" value="${retrievedEmail.emailSubject}"/>
+                            <c:set var="emailBody" value="${retrievedEmail.emailBody}"/>
+                            <c:set var="emailTo" value="${retrievedEmail.emailTo}"/>
+                            <c:set var="emailFrom" value="${retrievedEmail.emailFrom}"/>
+                            <c:set var="sentAt" value="${retrievedEmail.sentAt}"/>
+                            <c:set var="wasSent" value="${retrievedEmail.wasSent}"/>
+                            <c:set var="body" value="${retrievedEmail.emailBody}"/>
 
-                    <tr>
-                        <c:set var="subject" value="Max"/>
-                        <c:set var="emailBody"
-                               value="jvefknsdflkbghlsmcjnvbfdkslnvhfjndkslmfgjnlmdskfjngfdlmasfgjnreifowdklöasmnjwlmfejgrdlm"/>
+                            <td>${subject}</td>
+                            <td>${emailTo}</td>
+                            <td>${emailFrom}</td>
+                            <td>${sentAt}</td>
+                            <td>${wasSent}</td>
+                            <td style="display:none;">${body}</td>
+                        </tr>
 
-
-                        <!--                        <c:set var="emailTo" value="${email.emailTo}"/>
-                                                <c:set var="emailFrom" value="${email.emailFrom}"/>
-                                                <c:set var="sentAt" value="${email.sentAt}"/>
-                                                <c:set var="wasSent" value="${email.wasSent}"/>-->
-
-                        <!-- The Modal -->
-                        <div id="myModal" class="modal">
-
-                            <!-- Modal content -->
-                            <div class="modal-content">
-                                <span class="close"></span>
-                                <p>${emailBody}</p>
-                            </div>
-                        </div>
-
-
-                        <td>${subject}</td>
-                        <!--                            <td>${emailTo}</td>
-                                                    <td>${emailFrom}</td>
-                                                    <td>${sentAt}</td>
-                                                    <td>${wasSent}</td>-->
-
-
-                        <td>
-                            <a class="btn btn-primary" id="myBtn">View message</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <c:set var="subject" value="Luis"/>
-                        <c:set var="emailBody"
-                               value="hello i am luis"/>
-
-
-                        <!--                        <c:set var="emailTo" value="${email.emailTo}"/>
-                                                <c:set var="emailFrom" value="${email.emailFrom}"/>
-                                                <c:set var="sentAt" value="${email.sentAt}"/>
-                                                <c:set var="wasSent" value="${email.wasSent}"/>-->
-
-                        <!-- The Modal -->
-                        <div id="myModal" class="modal">
-
-                            <!-- Modal content -->
-                            <div class="modal-content">
-                                <span class="close"></span>
-                                <p>Hellwo i am luis</p>
-                            </div>
-                        </div>
-
-
-                        <td>${subject}</td>
-                        <!--                            <td>${emailTo}</td>
-                                                    <td>${emailFrom}</td>
-                                                    <td>${sentAt}</td>
-                                                    <td>${wasSent}</td>-->
-
-
-                        <td>
-                            <a class="btn btn-primary" id="myBtn">View message</a>
-                        </td>
-                    </tr>
-
-
-
-
-
-                    <!--                    </c:forEach>-->
+                    </c:forEach>
                     </tbody>
                 </table>
 
-            </form:form>
+                <div class="modal fade" id="myModal">
+                    <div class="modal-dialog" >
+                        <div class="modal-content" style="padding: 20px">
+                            <div class="modal-header">
+                                <div class="row">
+                                    <h1>E-Mail Content</h1>
+                                </div>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <h4>E-Mail From: </h4>
+                                    <h4 class="modalEmailInfo" id="modalEmailFrom"></h4>
+                                </div>
+                                <div class="row">
+                                    <h4>E-Mail To: </h4>
+                                    <h4 class="modalEmailInfo" id="modalEmailTo"></h4>
+                                </div>
+                                <div class="row">
+                                    <h4>Subject: </h4>
+                                    <h4 class="modalEmailInfo" id="modalEmailSubject"></h4>
+                                </div>
+                                <div class="row">
+                                    <h4>Date: </h4>
+                                    <h4 class="modalEmailInfo" id="modalEmailDate"></h4>
+                                </div>
+                                <div class="row">
+                                    <h4>Was sent: </h4>
+                                    <h4 class="modalEmailInfo" id="modalEmailWasSent"></h4>
+                                </div>
+                                <hr></hr>
+                                <div class="row">
+                                    <p id="modalEmailBody"></p>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary"
+                                        data-dismiss="modal">Close
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <script>
             <![CDATA[
 
-
-            // Get the modal
-            var modal = document.getElementById("myModal");
-
-            // Get the button that opens the modal
-            var btn = document.getElementById("myBtn");
-
-            // Get the <span> element that closes the modal
-            var span = document.getElementsByClassName("close")[0];
-
-            // When the user clicks on the button, open the modal
-            btn.onclick = function () {
-                modal.style.display = "block";
-            }
-
-            // When the user clicks on <span> (x), close the modal
-            span.onclick = function () {
-                modal.style.display = "none";
-            }
-
-            // When the user clicks anywhere outside of the modal, close it
-            window.onclick = function (event) {
-                if (event.target == modal) {
-                    modal.style.display = "none";
-                }
-            }
-
-            var MASS_MESSAGE_SELECT_ID = 'MESSAGE';
-            var MASS_MESSAGE_ALL_AUTHORS_SELECT_ID = 'MESSAGE_ALL_AUTHORS';
-            var REPORT_SELECT_ID = 'REPORT_PEOPLE_IN_CURRENT_PHASE';
-            var FLAG_SELECT_ID = 'FLAG';
-            var MODEL_SETTINGS_SELECT_ID = 'MODEL_SETTINGS';
-
-            var actionURL = "/admin/contest/manager/update";
-            var massActionUrl = "/admin/contest/api/massAction";
-
-            jQuery(function () {
-                bindMassActionChange();
-                bindSelectAllClick();
-                bindFormSubmits();
-                bindFilterSelectChange();
-                bindDragDropEvents();
+            $(function () {
+                $('table tbody tr  td').on('click', function () {
+                    $("#myModal").modal("show");
+                    $("#modalEmailFrom").html($(this).closest('tr').children()[2].innerHTML)
+                    $("#modalEmailTo").html($(this).closest('tr').children()[1].innerHTML)
+                    $("#modalEmailSubject").html($(this).closest('tr').children()[0].innerHTML)
+                    $("#modalEmailDate").html($(this).closest('tr').children()[3].innerHTML)
+                    $("#modalEmailWasSent").html($(this).closest('tr').children()[4].innerHTML)
+                    $("#modalEmailBody").html($(this).closest('tr').children()[5].innerHTML)
+                });
             });
 
-            function processCheckBox() {
-                document.getElementById("editForm").submit();
-            }
+            $(function () {
+                const numOfEmails = Number('${numOfEmails}')
+                if (numOfEmails === 15) {
+                    document.getElementById('contestsFilterSelect').getElementsByTagName('option')[0].selected = 'selected'
+                } else if (numOfEmails === 50) {
+                    document.getElementById('contestsFilterSelect').getElementsByTagName('option')[1].selected = 'selected'
+                } else if (numOfEmails === 100) {
+                    document.getElementById('contestsFilterSelect').getElementsByTagName('option')[2].selected = 'selected'
+                } else if (numOfEmails === 150) {
+                    document.getElementById('contestsFilterSelect').getElementsByTagName('option')[3].selected = 'selected'
+                } else if (numOfEmails === 200) {
+                    document.getElementById('contestsFilterSelect').getElementsByTagName('option')[4].selected = 'selected'
+                }
+            });
 
-            function bindMassActionChange() {
 
-                var dropDownElement = document.getElementById("selectedMassAction");
-                dropDownElement.addEventListener("change", function (ev) {
-                    var massMessageDiv = document.getElementById("massMessage");
-                    var flagFlagTextTooltipDiv = document.getElementById("flagFlagTextTooltip");
-                    var contestModelSettingsDiv = document.getElementById("contestModelSettings");
-
-                    var editFormElement = document.getElementById("editForm");
-                    var selectedDropDownId = ev.target.value;
-
-                    if (selectedDropDownId == REPORT_SELECT_ID) {
-                        editFormElement.action = massActionUrl;
-                    } else {
-                        editFormElement.action = actionURL;
-                    }
-
-                    if (selectedDropDownId == MASS_MESSAGE_SELECT_ID || selectedDropDownId
-                        == MASS_MESSAGE_ALL_AUTHORS_SELECT_ID) {
-                        massMessageDiv.style.display = '';
-                    } else {
-                        massMessageDiv.style.display = 'none';
-                    }
-
-                    if (selectedDropDownId == FLAG_SELECT_ID) {
-                        flagFlagTextTooltipDiv.style.display = '';
-                    } else {
-                        flagFlagTextTooltipDiv.style.display = 'none';
-                    }
-
-                    if (selectedDropDownId == MODEL_SETTINGS_SELECT_ID) {
-                        contestModelSettingsDiv.style.display = '';
-                    } else {
-                        contestModelSettingsDiv.style.display = 'none';
-                    }
-
+            jQuery(function () {
+                const nrEmailFilterSelectElement = document.getElementById("contestsFilterSelect");
+                nrEmailFilterSelectElement.addEventListener("change", function () {
+                    const nrOfEmails = nrEmailFilterSelectElement.options[nrEmailFilterSelectElement.selectedIndex].value;
+                    const location = '/admin/contest/manager/tab/SENT_EMAILS?numOfEmails=' + nrOfEmails;
+                    window.location = location
                 })
-            }
+            });
 
-            function bindSelectAllClick() {
-                var selectAllCheckboxElement = document.getElementById("selectAllCheckbox");
-                selectAllCheckboxElement.addEventListener("change", function (ev) {
-                    var selectAllChecked = selectAllCheckboxElement.checked;
-                    var contestsTableBody = document.getElementById('contestOverviewBody');
-                    [].forEach.call(
-                        contestsTableBody.getElementsByClassName('js-contestSelectionCheckbox'),
-                        function (element) {
-                            var parentRow = getClosest(element, "tr");
-                            if (parentRow.getAttribute("data-filter-visible") === 'true') {
-                                element.checked = !!selectAllChecked;
-                            }
-                        });
-                });
-            }
-
-            function bindFormSubmits() {
-                var editFormElement = document.getElementById('editForm');
-                var submitButtonElement = document.getElementById("submitButton");
-                submitButtonElement.addEventListener("click", function () {
-                    editFormElement.submit();
-                })
-            }
-
-            function bindFilterSelectChange() {
-                var contestsFilterSelectElement = document.getElementById("contestsFilterSelect");
-                contestsFilterSelectElement.addEventListener("change", function () {
-                    var selectedFilterAttribute = contestsFilterSelectElement.value;
-                    showContestsWithDataAttributeFilter(selectedFilterAttribute);
-                })
-            }
-
-            function bindDragDropEvents() {
-
-                [].forEach.call(document.getElementsByTagName("tr"), function (rowElement) {
-                    rowElement.addEventListener("dragend", dragEnd);
-                    rowElement.addEventListener("dragstart", dragStart);
-                    rowElement.addEventListener("drop", drop);
-                    rowElement.addEventListener("dragenter", dragEnter);
-                    rowElement.addEventListener("dragover", dragOver);
-                    rowElement.addEventListener("dragleave", dragLeave);
-                })
-
-            }
-
-            function sendGetReportRequestToServer() {
-                var editFormElement = document.getElementById('editForm');
-                jQuery.ajax({
-                    type: 'POST',
-                    url: massActionUrl,
-                    data: jQuery(editFormElement).serialize(),
-                    success: function (response) {
-                    },
-                    error: function (xhr, status, error) {
-                    }
-                });
-            }
-
-            function showContestsWithDataAttributeFilter(dataFilterAttribute) {
-                var contestsTableBody = document.getElementById('contestOverviewBody');
-                [].forEach.call(contestsTableBody.getElementsByTagName('tr'), function (element) {
-                    var elementDataFilterAttribute = element.getAttribute("data-filter-attribute");
-                    if (dataFilterAttribute === "all" || elementDataFilterAttribute
-                        === dataFilterAttribute) {
-                        element.style.display = "";
-                        element.setAttribute("data-filter-visible", "true");
-                    } else {
-                        element.style.display = "none";
-                        element.setAttribute("data-filter-visible", "false");
-                    }
-                });
-            }
-
-            function dragEnd(event) {
-                event.target.classList.remove("drag");
-                [].forEach.call(document.getElementsByTagName('tr'), function (element) {
-                    element.classList.remove("allowDrop");
-                });
-            }
-
-            function dragLeave(event) {
-                var targetRow = getClosest(event.target, "tr");
-                targetRow.classList.remove("allowDrop");
-            }
-
-            function dragOver(event) {
-                event.preventDefault();
-                return false;
-            }
-
-            function dragEnter(event) {
-                var targetRow = getClosest(event.target, "tr");
-                targetRow.classList.add("allowDrop");
-            }
-
-            function dragStart(event) {
-                console.log("start drag", event);
-                event.target.style.visibility = "none";
-                event.dataTransfer.setData("srcElementId", event.target.id);
-                var srcElementId = event.dataTransfer.getData("srcElementId");
-                event.target.classList.add("drag");
-            }
-
-            function drop(event) {
-
-                var srcElementId = event.dataTransfer.getData("srcElementId");
-                var srcElement = document.getElementById(srcElementId);
-                var targetRow = getClosest(event.target, "tr");
-                var targetParentElement = targetRow.parentNode;
-                targetParentElement.insertBefore(srcElement, targetRow);
-
-                reCalculateWeights();
-                event.stopPropagation(); // Stops some browsers from redirecting.
-                event.preventDefault();
-                updateOrder();
-                return false;
-            }
-
-            function reCalculateWeights() {
-                var firstElementInList = document.getElementById("contestOverviewBody");
-                var nextElementInList = firstElementInList.firstChild;
-                var index = 0;
-                do {
-                    if (filter("weightInput", nextElementInList)) {
-                        index++;
-                        var weightInput = nextElementInList.getElementsByClassName(
-                            "weightInput")[0];
-                        var weightInputLable = weightInput.nextSibling;
-                        weightInput.value = index;
-                        weightInputLable.innerHTML = index;
-                    }
-                } while (nextElementInList = nextElementInList.nextSibling)
-            }
-
-            function updateOrder() {
-                var editForm = $('#editForm');
-                $.ajax("/admin/contest/manager/updateOrder", {
-                    method: 'POST',
-                    data: editForm.serialize(),
-                    beforeSend: function (jqXHR, textStatus) {
-                        noty({text: "Updating order...", type: 'information', timeout: false});
-                    },
-                    success: function (data, textStatus, jqXHR) {
-                        noty({text: "Order updated.", type: 'success', killer: true});
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        noty({text: "Order update failed.", type: 'error', killer: true});
-                    }
-                });
-            }
-
-            //}());
             ]]>
         </script>
+
     </xcolab:layout>
 </jsp:root>
