@@ -54,9 +54,6 @@ public class SentEmailsController extends AbstractTabController {
 
         List<IOutgoingEmail> retrievedEmails = emailClient.getSentEmails(numOfEmails);
         model.addAttribute("retrievedEmails", retrievedEmails);
-
-        JsonObject json = new JsonObject();
-        json.addProperty("number", numOfEmails);
         model.addAttribute("numOfEmails", Integer.toString(numOfEmails));
 
         return TAB_VIEW;
