@@ -15,6 +15,13 @@
             .c-ContentBox__Table {
                 position: relative;
             }
+
+            td div {
+                width: 192px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
         </style>
 
         <jsp:directive.include file="../init.jspx"/>
@@ -49,7 +56,6 @@
                         <th>E-Mail From</th>
                         <th>Date Sent</th>
                         <th>Was Sent</th>
-                        <!--                                            <th>&lt;!&ndash; &ndash;&gt;</th>&ndash;&gt;-->
                     </tr>
                     </thead>
                     <tbody id="contestOverviewBody">
@@ -64,12 +70,12 @@
                             <c:set var="wasSent" value="${retrievedEmail.wasSent}"/>
                             <c:set var="body" value="${retrievedEmail.emailBody}"/>
 
-                            <td>${subject}</td>
-                            <td>${emailTo}</td>
-                            <td>${emailFrom}</td>
-                            <td>${sentAt}</td>
-                            <td>${wasSent}</td>
-                            <td style="display:none;">${body}</td>
+                            <td><div>${subject}</div></td>
+                            <td><div>${emailTo}</div></td>
+                            <td><div>${emailFrom}</div></td>
+                            <td><div>${sentAt}</div></td>
+                            <td><div>${wasSent}</div></td>
+                            <td style="display:none;"><div>${body}</div></td>
                         </tr>
 
                     </c:forEach>
@@ -141,15 +147,15 @@
             $(function () {
                 const numOfEmails = Number('${numOfEmails}')
                 if (numOfEmails === 15) {
-                    document.getElementById('contestsFilterSelect').getElementsByTagName('option')[0].selected = 'selected'
+                    document.getElementById('contestsFilterSelect').getElementsByTagName('option')[0].selected = true
                 } else if (numOfEmails === 50) {
-                    document.getElementById('contestsFilterSelect').getElementsByTagName('option')[1].selected = 'selected'
+                    document.getElementById('contestsFilterSelect').getElementsByTagName('option')[1].selected = true
                 } else if (numOfEmails === 100) {
-                    document.getElementById('contestsFilterSelect').getElementsByTagName('option')[2].selected = 'selected'
+                    document.getElementById('contestsFilterSelect').getElementsByTagName('option')[2].selected = true
                 } else if (numOfEmails === 150) {
-                    document.getElementById('contestsFilterSelect').getElementsByTagName('option')[3].selected = 'selected'
+                    document.getElementById('contestsFilterSelect').getElementsByTagName('option')[3].selected = true
                 } else if (numOfEmails === 200) {
-                    document.getElementById('contestsFilterSelect').getElementsByTagName('option')[4].selected = 'selected'
+                    document.getElementById('contestsFilterSelect').getElementsByTagName('option')[4].selected = true
                 }
             });
 
