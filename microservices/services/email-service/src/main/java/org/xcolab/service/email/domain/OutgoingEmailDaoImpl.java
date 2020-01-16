@@ -57,8 +57,7 @@ public class OutgoingEmailDaoImpl implements OutgoingEmailDao {
                 .fetchOne();
 
         if (record == null) {
-            throw new NotFoundException(
-                    "OutgoingEmail with id " + colabEmailId + " does not exist");
+            throw new NotFoundException("OutgoingEmail with id " + colabEmailId + " does not exist");
         }
         return record.into(OutgoingEmail.class);
 
@@ -81,8 +80,7 @@ public class OutgoingEmailDaoImpl implements OutgoingEmailDao {
     }
 
     @Override
-    public List<OutgoingEmail> findByGiven(String emailSubject, String emailTo, Long referenceId,
-            String emailBodyHash) {
+    public List<OutgoingEmail> findByGiven(String emailSubject, String emailTo, Long referenceId, String emailBodyHash) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(OUTGOING_EMAIL).getQuery();
 

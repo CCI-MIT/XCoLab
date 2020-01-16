@@ -25,7 +25,7 @@ public interface IEmailClient {
     void sendEmail(@RequestBody IEmail email);
 
 
-        default void sendEmail(String from, String fromName, String to, String subject,
+    default void sendEmail(String from, String fromName, String to, String subject,
             String emailBody, Boolean isHtml, String replyTo, String replyToName,
             Long referenceId) {
         List<String> toAdd = new ArrayList<>();
