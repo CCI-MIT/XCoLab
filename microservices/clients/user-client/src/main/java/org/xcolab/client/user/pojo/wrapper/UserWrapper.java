@@ -194,7 +194,11 @@ public class UserWrapper extends org.xcolab.client.user.pojo.tables.pojos.User i
 
     @Override
     public int hashCode() {
-        return (int) (this.getId() ^ this.getId() >>> 32);
+        if(this.getId()!=null) {
+            return (int) (this.getId() ^ this.getId() >>> 32);
+        } else {
+            return 21929038;
+        }
     }
 
     @Override
