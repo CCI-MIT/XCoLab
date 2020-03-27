@@ -162,7 +162,7 @@ public class ContestDaoImpl implements ContestDao {
                 .set(CONTEST.SPONSOR_LINK, contest.getSponsorLink())
                 .set(CONTEST.FLAG, contest.getFlag()).set(CONTEST.FLAG_TEXT, contest.getFlagText())
                 .set(CONTEST.FLAG_TOOLTIP, contest.getFlagTooltip())
-                .set(CONTEST.DISCUSSION_GROUP_ID, contest.getDiscussionGroupId())
+                .set(CONTEST.DISCUSSION_GROUP_ID, contest.getOrCreateDiscussionGroupId())
                 .set(CONTEST.WEIGHT, contest.getWeight())
                 .set(CONTEST.RESOURCES_URL, contest.getResourcesUrl())
                 .set(CONTEST.CONTEST_PRIVATE, contest.isContestPrivate())

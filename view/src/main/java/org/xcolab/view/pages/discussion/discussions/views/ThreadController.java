@@ -65,6 +65,10 @@ public class ThreadController extends BaseDiscussionController {
         model.addAttribute("isSubscribed", false); //threadWrapper.isSubscribed(themeDisplay.getUserId()));
 
         model.addAttribute("_activePageLink", "community");
+
+        model.addAttribute("recaptchaDataSiteKey",PlatformAttributeKey.GOOGLE_RECAPTCHA_SITE_KEY.get());
+        model.addAttribute("isCommentCaptchaOn",PlatformAttributeKey.GOOGLE_RECAPTCHA_IS_ACTIVE_FOR_COMMENTS.get());
+
         return "/discussion/thread";
     }
 

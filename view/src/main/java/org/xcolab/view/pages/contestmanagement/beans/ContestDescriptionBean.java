@@ -83,14 +83,14 @@ public class ContestDescriptionBean implements Serializable {
         updateContestDescription(contest);
 
         try {
-            final IThread thread = StaticCommentContext.getThreadClient().getThread(contest.getDiscussionGroupId());
+            final IThread thread = StaticCommentContext.getThreadClient().getThread(contest.getOrCreateDiscussionGroupId());
             ContestType contestType =
                     StaticAdminContext.getContestTypeClient().getContestType(contest.getContestTypeId());
             thread.setTitle(String.format("%s %s",
                     contestType.getContestName(), contest.getTitle()));
             StaticCommentContext.getThreadClient().updateThread(thread.getId(), thread);
         } catch (ThreadNotFoundException e) {
-            _log.warn("No thread (id = {}) exists for contest {}", contest.getDiscussionGroupId(),
+            _log.warn("No thread (id = {}) exists for contest {}", contest.getOrCreateDiscussionGroupId(),
                     contest.getId());
         }
 

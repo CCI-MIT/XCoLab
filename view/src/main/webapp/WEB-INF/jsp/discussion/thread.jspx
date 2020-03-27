@@ -31,7 +31,7 @@
                 enableDirtyCheck();
             });
         </script>
-        <xcolab:discussionComments threadId="${thread.id}"/>
+        <xcolab:discussionComments threadId="${thread.id}" isPublic="true" recaptchaDataSiteKey="${recaptchaDataSiteKey}" isCommentCaptchaOn="${isCommentCaptchaOn}"/>
     </div>
 </xcolab:layout>
 </jsp:root>

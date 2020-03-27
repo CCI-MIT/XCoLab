@@ -64,7 +64,7 @@
                                             contestType="${contestType}" />
                         </p>
                     </c:if>
-                    <xcolab:discussionComments threadId="${proposal.resultsDiscussionIdOrCreate}"  />
+                    <xcolab:discussionComments threadId="${proposal.resultsDiscussionIdOrCreate}"  isPublic="false" />
                 </c:when>
                 <c:otherwise>
                     <h2><spring:message code="contests.proposal.evaluation.resultswillbevisible" /></h2>

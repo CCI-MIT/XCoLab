@@ -102,6 +102,11 @@ public final class PlatformAttributeKey {
                             StringUtils::isNotEmpty))
                     .build();
 
+    public static final AttributeGetter<Boolean> GOOGLE_RECAPTCHA_IS_ACTIVE_FOR_COMMENTS =
+            PlatformAttributes.newBooleanAttribute("google.recaptcha.comments.enabled")
+                    .defaultValue(false)
+                    .build();
+
     public static final AttributeGetter<String> SENTRY_BACKEND_DSN =
             PlatformAttributes.newStringAttribute("sentry.backend.dsn")
                     .defaultValue("")

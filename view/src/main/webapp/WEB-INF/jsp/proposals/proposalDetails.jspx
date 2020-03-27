@@ -218,7 +218,7 @@
         <hr class="cb-hr-tan cb-hr-xl" id="Comments"/>
         <xcolab:discussionComments threadId="${proposal.discussionIdOrCreate}"
                                    proposalId="${proposal.id}"
-                                   shareTitle="Discussion for ${proposal.name} in ${contest.title}" />
+                                   shareTitle="Discussion for ${proposal.name} in ${contest.title}" isPublic="true" recaptchaDataSiteKey="${recaptchaDataSiteKey}" isCommentCaptchaOn="${isCommentCaptchaOn}"/>
 
         <script>
             jQuery(function() {

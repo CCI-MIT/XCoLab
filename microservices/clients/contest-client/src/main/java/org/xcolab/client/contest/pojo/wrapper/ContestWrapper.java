@@ -208,7 +208,7 @@ public class ContestWrapper extends Contest implements Serializable {
 
     @JsonIgnore
     public long getCommentsCount() {
-        return StaticCommentContext.getCommentClient().countComments(this.getDiscussionGroupId());
+        return StaticCommentContext.getCommentClient().countComments(this.getOrCreateDiscussionGroupId());
     }
 
     @JsonIgnore
@@ -391,7 +391,7 @@ public class ContestWrapper extends Contest implements Serializable {
     @JsonIgnore
     public long getTotalCommentsCount() {
         int contestComments = StaticCommentContext.getCommentClient()
-                .countComments(this.getDiscussionGroupId());
+                .countComments(this.getOrCreateDiscussionGroupId());
         ContestPhaseWrapper phase = contestClient.getActivePhase(this.getId());
         final List<Long> proposalDiscussionThreads =
                 contestClient.getProposalDiscussionThreads(phase.getId());
@@ -547,10 +547,9 @@ public class ContestWrapper extends Contest implements Serializable {
         return false;
     }
 
-    @Override
     @JsonIgnore
-    public Long getDiscussionGroupId() {
-        Long discussionGroupId = super.getDiscussionGroupId();
+    public Long getOrCreateDiscussionGroupId() {
+        Long discussionGroupId = getDiscussionGroupId();
         if (discussionGroupId == null) {
             ContestType contestType = getContestType();
             IThread thread = new org.xcolab.client.comment.pojo.tables.pojos.Thread();
