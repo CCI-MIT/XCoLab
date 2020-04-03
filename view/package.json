@@ -31,7 +31,7 @@
     "moment": "^2.20.1",
     "moment-timezone": "^0.5.14",
     "noty": "^2.4.1",
-    "papaparse": "^4.3.6",
+    "papaparse": "^5.2.0",
     "popper.js": "^1.12.9",
     "spin.js": "2.3.2",
     "tooltipster": "^4.2.5"
