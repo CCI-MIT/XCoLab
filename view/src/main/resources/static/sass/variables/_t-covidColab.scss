@@ -1,0 +1,212 @@
+//main colors:
+$t-Color__primary: #6DC183;
+$t-Color__secondary: #73808e;
+$t-Color__accent: #ED2F48;
+$t-Color__auxiliary: #66b035; // 4th color when needed (e.g. ontology)
+
+//lightness variations
+$t-Color__primary--light: lighten($t-Color__primary, 24); $__hex: #aad9fd;
+$t-Color__secondary--light: lighten($t-Color__secondary, 24); $__hex: #a7da85;
+
+$t-Color__primary--dark: darken($t-Color__primary, 8); $__hex: #0481e1;
+$t-Color__secondary--dark: darken($t-Color__secondary, 13); $__hex: #467a25;
+
+$t-Color__primary--darkest: darken($t-Color__primary, 15); $__hex: #03518c;
+$t-Color__secondary--darkest: darken($t-Color__secondary, 30); $__hex: #14230b;
+
+//grey variations of the primary color
+$t-Color__primary__gray--dark: desaturate($t-Color__primary, 61); $__hex: #719aba;
+$t-Color__primary__gray: lighten($t-Color__primary__gray--dark, 11); $__hex: #9cb6c9;
+$t-Color__primary__gray--light: lighten($t-Color__primary__gray--dark, 35); $__hex: #eaf0f5;
+
+//greys
+$t-Color__tan: #f6f6f6;
+$t-Color__gray--medium-500: #bababa;
+$t-Color__gray--dark-600: #888888;
+$t-Color__gray--dark-700: #575757;
+$t-Color__gray--dark-800: #404040;
+
+//alert and message colors:
+$t-Color__success: $t-Color__auxiliary;
+$t-Color__alert: #b94a48; //maybe $t-Color__primary?
+$t-Color__warning: $t-Color__accent;
+$t-Color__info: $t-Color__secondary; //maybe desaturate?
+
+//TODO COLAB-2352: We don't need these anymore once we remove c-Alert
+$t-Color__alert--light: #f2dede;
+$t-Color__info__background: $t-Color__primary__gray--light;
+$t-Color__success__background: $t-Color__secondary--light;
+
+//standard text colors
+$t-Color__text--light: white;
+$t-Color__text--dark: $t-Color__gray--dark-800;
+
+//outline view TODO: see if we can adapt this to use our colors
+$t-Color__outline__level1: #e0dacb; // background slevel1
+$t-Color__outline__level2: #d1cbbf; // background slevel2
+$t-Color__outline__level3: #c1bcb2; // background slevel3
+$t-Color__outline__level4: #aaa69f; // background slevel4-6
+
+$t-Border__rounded: false;
+
+$t-Link__color--hover: darken($t-Color__primary, 20%) !default;
+
+// ====
+// changes in component variables
+
+$b-Typography__fontFamily: Arial, Helvetica, sans-serif;
+
+$cb-navbar__background: white;
+$cb-navbar__hasBoxShadow: true;
+$cb-navbar__searchIconColor: $t-Color__secondary;
+$c-Header__menu__li__a__fontWeight: 400;
+$cb-navbar__activeBoxShadow: inset 0 -8px 0 $t-Color__primary;
+$c-Header__menu__right__li__help__border--left: none;
+$c-Header__menu__li__a__textColor: $t-Color__primary;
+$c-Header__navItemGray--hoverColor: $t-Color__primary;
+
+$c-Footer__background: $t-Color__tan;
+$c-Footer__menu__li__a--hover__color: $t-Color__primary;
+$c-Footer__menu__li__textColor: black;
+$c-Footer__menu__background: transparent;
+$c-Footer__menu__boxShadow: none;
+
+$c-TitleBar__backgroundColor: $t-Color__primary;
+$c-TitleBar__borderBottom: none;
+$c-TitleBar__separator__color: white;
+$c-TitleBar__textColor: white;
+$c-TitleBar__element--disabled__textColor: $t-Color__gray--medium-500;
+$c-TitleBar__element__fontWeight: 300;
+$c-TitleBar__a__textColor: white;
+$c-TitleBar__a__textColor--hover: white;
+$c-TitleBar__contestSummary__backgroundColor: $t-Color__primary;
+$c-TitleBar__contestSummary__backgroundColor--light: $t-Color__tan;
+$c-TitleBar__actionButton__backgroundColor--hover: $t-Color__secondary;
+
+$p-About__left__li__a__padding--left: 15px;
+$p-About__left__li__ul__li__a__padding--left: 33px;
+$p-About__left__li__a__current__borderWidth--left: 5px;
+$p-About__left__li__a__current__padding--left: 10px;
+$p-About__checkout__backgroundColor: $t-Color__gray--medium-500;
+$p-About__contribute__background: url(/images/about/getinvolved-top_illustration.png) no-repeat;
+$p-About__ge1__background: url(/images/about/getinvolved-row-01.png) no-repeat 50px 15px;
+$p-About__ge2__background: url(/images/about/getinvolved-row-02.png) no-repeat 45px 0px;
+$p-About__ge3__background: url(/images/about/getinvolved-row-03.png) no-repeat 40px 0px;
+$p-About__ge4__background: url(/images/about/getinvolved-row-04.png) no-repeat 45px 15px;
+$p-About__getinvolved__backgroundColor: white;
+
+$c-ContestBox__metaFlag__boxShadow: none;
+$c-ContestBox__metaFlag--color__border: none;
+$c-ContestBox__metaFlag__position: none;
+$c-ContestBox__metaFlag__padding: 0 8px;
+$c-ContestBox__metaFlag__fontSize: 12px;
+$c-ContestBox__metaFlag__height: 25px;
+$c-ContestBox__metaFlag__marginTop: 10px;
+$c-ContestBox__metaFlag__isGradient: false;
+$c-ContestBox__background: $t-Color__tan;
+$c-ContestBox__border: none;
+$c-ContestBox--hover__boxShadow: 0 0 15px $t-Color__gray--medium-500;
+
+$p-Contests__userslist__td--g__background: $t-Color__tan;
+$p-Contests__usersFilter__paddingRight: 0px;
+
+$p-community__colab__th__background: $t-Color__primary;
+$p-community__colab__th__textColor: white;
+$p-community__commList__marginTop: 7px;
+$p-community__commList__h2__paddingBottom: 6px;
+$p-community__commList__h2__borderBottom: 1px solid $t-Color__gray--medium-500;
+$p-community__discHead__width: 680px;
+$p-community__infoLeft__fontStyle: normal;
+$p-community__infoLeft__fontSize: 20px;
+$p-community__infoLeft__paddingTop: 10px;
+$p-community__infoLeft__span__fontSize: 20px;
+$p-community__infoLeft__span__textColor: $t-Color__primary;
+$p-community__infoLeft__span__paddingRight: 0px;
+
+$p-Contests__contestDetail__backgroundColor: $t-Color__tan;
+$p-Contests__contestDetail__heading__background: none;
+
+$p-proposal__header__h1__textColor: $t-Color__primary;
+$p-proposal__propbox__titleAuthor__width: 602px;
+$p-proposal__propbox__padding: 15px 0px 30px 14px;
+$p-Proposal__sidebar__sectionBackgroundColor: white;
+$p-proposal__votebox__top__left: 0px;
+$p-proposal__votebox__marginTop: 35px;
+$p-proposal__contest__padding--top--bottom: 20px;
+$p-proposal__left__h2__textColor: $t-Color__gray--dark-800;
+$p-proposal__propbox__judgementActions__featured__titleAuthor__width: 415px;
+$p-proposal__propbox__judgementActions__titleAuthor__width: 445px;
+
+$l-BoxLayout__striped__backgroundColor: $t-Color__gray--medium-500;
+$p-Proposal__propbox--green: #a7da85;
+
+$p-community__left__lineHeight: default;
+
+$t-Table__borderColor: $t-Color__gray--dark-600;
+$t-Table__thead__backgroundColor: $t-Color__tan;
+$t-Table__stripedColumn__background: $t-Color__tan;
+$c-TableGrid__cell__highlight_backgroundColor: white;
+$c-TableGrid__cell__hideIcon: true;
+
+$p-ContestProposals__list__element--proposalname__width: 605px;
+$p-ContestProposals__list__element__border: 1px solid;
+$p-ContestProposals__list__element--comments__background__top: 10px;
+$p-ContestProposals__list__element--judgeFellow__width: 158px;
+$p-ContestProposals__list__element--judgeFellow__border--left: 1px solid;
+$p-ContestProposals__list__element--contributor__width: 146px;
+$p-ContestProposals__list__element--proposalname__judgeActions__width: 449px;
+$p-ContestProposals__header__ontology__term__useIcons: false;
+$p-ContestProposals__header__paddingBottom: 5px;
+$p-ContestProposals__header__description__padding: 5px 20px;
+
+$cb-list-group__itemBackground--odd: $t-Color__tan;
+
+$c-Box__shadow: none;
+$c-Box__messaging__padding--top: 15px;
+$c-Box__background__color--dark: $t-Color__tan;
+$c-Box__border: none;
+
+$c-TabBar__background: white;
+$c-TabBar__borderTop: 1px solid $t-Color__gray--dark-600;
+$c-TabBar__paddingTop: 35px;
+
+$c-TabBar__tab__paddingTop: 17px;
+$c-TabBar__tab__paddingBottom: 16px;
+$c-TabBar__tab__paddingSides: 10px;
+$c-TabBar__tab__background: rgba(255, 255, 255, 0);
+$c-TabBar__tab__shadow--active: inset 0 -4px 0 $t-Color__secondary;
+$c-TabBar__tab__borderRadius: 0px;
+$c-TabBar__tab__borderTop: none;
+$c-TabBar__tab__borderRight: 1px solid $t-Color__gray--dark-600;
+$c-TabBar__tab__borderLeft: none;
+$c-TabBar__tab__borderLeft--first: 1px solid $t-Color__gray--dark-600;
+$c-TabBar__tab__borderRight--last: 1px solid $t-Color__gray--dark-600;
+$c-TabBar__tab__fontSize: 14px;
+$c-TabBar__tab__textColor: $t-Color__primary;
+$c-TabBar__tab__textColor--active: $t-Color__gray--dark-800;
+$b-TabBar__tab__marginRight: 0;
+$c-TabBar__tab--first__margin--left: 30px;
+$c-TabBar__tab__active__border--right: 1px solid $t-Color__gray--dark-600;
+$c-TabBar__tab__active__border--right--left: none;
+
+$c-TabBar__tab__count__background: $t-Color__gray--medium-500;
+
+
+$p-userprofile__comm_rightcol-title2__height: auto ;
+
+$c-Helpbox__borderRadius: 0px;
+$c-Helpbox__borderColor: $t-Color__gray--dark-700;
+$c-Helpbox__header__padding: 8px 10px 4px 19px;
+$c-Helpbox__header__background: t-Color__gray--dark-700;
+$c-Helpbox__header__title__textColor: white;
+$c-Helpbox__header__close__marginTop: 0px;
+
+$c-Count__fontSize: 1.125rem;
+$c-Count__number__color: $t-Color__primary;
+$c-Count__number__fontSize: 1.25rem;
+
+$c-Footer__link__textColor--hover: $t-Color__primary;
+
+$c_ControlsOverlay__backgroundColor: rgba($t-Color__tan, .9);
+
+$p-Homepage__homespot__background: transparent;

@@ -10,7 +10,9 @@ public enum ColabTheme {
     CLIMATE_RISKS_COLAB("aa2029", 145, true),
     FUTURES_COLAB("30a3fb", 145, true),
     TRUST_COLAB("30a3fb", 145, true),
-    COMPASS_COLAB("30a3fb", 145, true);
+    COMPASS_COLAB("30a3fb", 145, true),
+    COVID_COLAB("30a3fb", 145, true)
+    ;
 
     private final String themeName;
     private final int logoWidth;
