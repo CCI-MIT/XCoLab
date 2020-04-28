@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
@@ -30,7 +31,11 @@ public class ContestDiscussionController extends BaseProposalsController {
             return new AccessDeniedPage(loggedInMember).toViewName(response);
         }
 
-        model.addAttribute("discussionId",  proposalContext.getContest().getDiscussionGroupId());
+        model.addAttribute("discussionId",  proposalContext.getContest().getOrCreateDiscussionGroupId());
+
+        model.addAttribute("recaptchaDataSiteKey", PlatformAttributeKey.GOOGLE_RECAPTCHA_SITE_KEY.get());
+        model.addAttribute("isCommentCaptchaOn",PlatformAttributeKey.GOOGLE_RECAPTCHA_IS_ACTIVE_FOR_COMMENTS.get());
+
         setBasePageAttributes(proposalContext, model);
         return "proposals/contestDiscussion";
     }

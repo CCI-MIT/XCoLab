@@ -79,7 +79,7 @@ public class ActivitiesService {
 
         ContestWrapper contest = new ContestWrapper(contestClient.getContest(contestId));
 
-        subscribeDiscussion(userId, contest.getDiscussionGroupId(), true);
+        subscribeDiscussion(userId, contest.getOrCreateDiscussionGroupId(), true);
 
         final List<ProposalWrapper> proposals = proposalClient.listProposals(contestId);
         final Set<Long> processedProposals = new HashSet<>();
@@ -180,7 +180,7 @@ public class ActivitiesService {
         }
         ContestWrapper contest = contestClient.getContest(contestId);
         queries.addAll(getDiscussionDeleteQueries(userId,
-                contest.getDiscussionGroupId(), true));
+                contest.getOrCreateDiscussionGroupId(), true));
 
         activitySubscriptionDao.batch(queries);
         return true;

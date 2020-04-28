@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.proposals.discussion.ProposalDiscussionPermissions;
@@ -34,6 +35,9 @@ public class ProposalCommentsTabController extends BaseProposalTabController {
         request.setAttribute(DiscussionPermissions.REQUEST_ATTRIBUTE_NAME, pdp);
 
         setCommonModelAndPageAttributes(request, model, proposalContext, ProposalTab.COMMENTS);
+
+        model.addAttribute("recaptchaDataSiteKey", PlatformAttributeKey.GOOGLE_RECAPTCHA_SITE_KEY.get());
+        model.addAttribute("isCommentCaptchaOn",PlatformAttributeKey.GOOGLE_RECAPTCHA_IS_ACTIVE_FOR_COMMENTS.get());
 
         return "proposals/proposalComments";
     }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.pojo.IProposalMoveHistory;
 import org.xcolab.client.contest.pojo.wrapper.ContestPhaseWrapper;
@@ -187,6 +188,9 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
         setLinkedProposals(model, proposalContext, proposal);
         final ContestWrapper contest = proposalContext.getContest();
         populateMoveHistory(model, proposalContext, proposal, contest);
+
+        model.addAttribute("recaptchaDataSiteKey",PlatformAttributeKey.GOOGLE_RECAPTCHA_SITE_KEY.get());
+        model.addAttribute("isCommentCaptchaOn",PlatformAttributeKey.GOOGLE_RECAPTCHA_IS_ACTIVE_FOR_COMMENTS.get());
 
         return "proposals/proposalDetails";
     }

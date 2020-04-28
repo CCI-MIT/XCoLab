@@ -14,11 +14,16 @@
     <jsp:directive.attribute name="categoryId" type="java.lang.Long" required="false" rtexprvalue="true" description="Category id" />
     <jsp:directive.attribute name="proposalId" type="java.lang.Long" required="false" rtexprvalue="true" description="Proposal id" />
     <jsp:directive.attribute name="shareTitle" type="java.lang.String" required="false" rtexprvalue="true" description="The shareTitle for the discussion"  />
+    <jsp:directive.attribute name="isPublic" type="java.lang.Boolean" required="true" rtexprvalue="true" description="Is this discussion public"  />
+    <jsp:directive.attribute name="isCommentCaptchaOn" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Is the captcha turned on"  />
+    <jsp:directive.attribute name="recaptchaDataSiteKey" type="java.lang.String" required="false" rtexprvalue="true" description="The reacaptcha key"  />
+
 
     <c:set var="shareTitlePageScope" scope="page" value="${shareTitle}" />
     <c:set var="categoryGroupId" value="${empty categoryGroupId ? 0 : categoryGroupId}" />
     <c:set var="categoryId" value="${empty categoryId ? 0 : categoryId}" />
     <c:set var="proposalId" value="${empty proposalId ? 0 : proposalId}" />
+    <c:set var="isCaptchaOn" value="${empty isCommentCaptchaOn ? 0 : isCommentCaptchaOn}" />
 
 
 	<discussions:loadThread threadId="${threadId}" categoryGroupId="${categoryGroupId }" categoryId="${categoryId}">
@@ -192,9 +197,24 @@
 				<div class="col-12 col-md-9">
 					<c:set var="addCommentURL" value="/discussions/addDiscussionMessage?proposalId=${proposalId}" />
 					<form:form id="addCommentForm" action="${addCommentURL}" method="post">
-                        <input type="hidden" name="threadId" value="${thread.id}" />
+                            <input type="hidden" name="threadId" value="${thread.id}" />
 						<textarea id="js-Comment__content" name="description" required="required"
                                   class="rte-editorPlaceholder c-Comment__box"><!-- --></textarea>
+
+
+                        <c:if test="${isPublic and isCaptchaOn}">
+                            <script src='https://www.google.com/recaptcha/api.js'><!-- --></script>
+                            <div class="form-row">
+                                <div class="cb-form-col-label required-field">
+                                    <spring:message code="register.form.fields.captcha"/>
+                                </div>
+                                <div class="cb-form-col-input">
+                                    <div class="g-recaptcha" data-sitekey="${recaptchaDataSiteKey}"><!-- --></div>
+                                    <form:errors cssClass="invalid-feedback" path="captchaText" />
+                                </div>
+                            </div>
+                        </c:if>
+
                         <button type="submit" class="btn btn-primary mt-2 js-EnhancedLink"
                                 data-require-login="true" id="addCommentButton"
                                 onclick="saveCommentInCookie(); disableDirtyCheck();">

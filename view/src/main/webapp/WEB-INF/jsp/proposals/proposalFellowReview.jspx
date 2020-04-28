@@ -8,7 +8,7 @@
 	<jsp:directive.include file="./proposalDetails/header.jspx" />
 
 	<div id="content">
-        <xcolab:discussionComments threadId="${discussionId}" />
+        <xcolab:discussionComments threadId="${discussionId}" isPublic="false" />
 	</div>
 
 </jsp:root>

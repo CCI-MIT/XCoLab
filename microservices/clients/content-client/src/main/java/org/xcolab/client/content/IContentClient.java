@@ -27,7 +27,7 @@ public interface IContentClient {
     default IContentArticleVersion getLatestContentArticleVersion(long folderId, String title)
             throws ContentNotFoundException {
         List<IContentArticleVersion> contentArticleVersions =
-                getContentArticleVersions(null, null, folderId, null, null, title, null);
+                getContentArticleVersions(null, null, null, null, null, title, null);
 
         if (contentArticleVersions.isEmpty()) {
             throw new ContentNotFoundException("No ContentArticleVersion with title " + title

@@ -84,7 +84,7 @@ public class ProposalContextHelper {
         log.debug("Setting up contest {} from client {}", contestId, contestClient);
 
         try {
-            return contestClient.getContest(contestId);
+            return new ContestWrapper(contestClient.getContest(contestId));
         } catch (ContestNotFoundException ignored) {
             log.warn("Mirroring problem: Contest {} not found in client {}",
                     contestId, contestClient);

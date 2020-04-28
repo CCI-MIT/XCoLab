@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,6 +24,7 @@ import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.wrapper.ContestWrapper;
 import org.xcolab.client.contest.pojo.wrapper.ProposalWrapper;
 import org.xcolab.commons.html.HtmlUtil;
+import org.xcolab.commons.recaptcha.RecaptchaValidator;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.entity.utils.LinkUtils;
 import org.xcolab.util.activities.enums.ContestActivityType;
@@ -63,6 +65,8 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
     @Autowired
     private IContestClient contestClient;
 
+    private RecaptchaValidator recaptchaValidator;
+
     @PostMapping("/discussions/addDiscussionMessage")
     public String handleAction(HttpServletRequest request, HttpServletResponse response,
             @RequestParam(value = "contestId", required = false) String contestId,
@@ -74,6 +78,21 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
         if (StringUtils.isBlank(newMessage.getDescription())) {
             //TODO i18n: use message key discussion.commmentstag.valuerequired
             AlertMessage.danger("Please enter your comment").flash(request);
+            return "redirect:" + redirectUri + "#addCommentForm";
+        }
+
+        boolean captchaValid = true;
+
+        if (PlatformAttributeKey.GOOGLE_RECAPTCHA_IS_ACTIVE_FOR_COMMENTS.get()) {
+
+            final String recaptchaSecret = PlatformAttributeKey.GOOGLE_RECAPTCHA_SITE_SECRET_KEY.get();
+            recaptchaValidator = new RecaptchaValidator(recaptchaSecret);
+
+            String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
+            captchaValid = recaptchaValidator.verify(gRecaptchaResponse);
+        }
+        if (!captchaValid) {
+            AlertMessage.danger("Invalid captcha! Please click on the box").flash(request);
             return "redirect:" + redirectUri + "#addCommentForm";
         }
 

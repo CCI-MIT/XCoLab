@@ -18,7 +18,7 @@
 		</div>
 		<!-- /proposal-head -->
 		<div id="content">
-            <xcolab:discussionComments threadId="${discussionId }" shareTitle="${contest.title} Discussion"  />
+            <xcolab:discussionComments threadId="${discussionId }" shareTitle="${contest.title} Discussion" isPublic="true"  recaptchaDataSiteKey="${recaptchaDataSiteKey}" isCommentCaptchaOn="${isCommentCaptchaOn}"/>
 		</div>
 	</xcolab:layout>
 </jsp:root>
