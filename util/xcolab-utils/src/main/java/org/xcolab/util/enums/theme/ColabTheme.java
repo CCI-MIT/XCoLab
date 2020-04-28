@@ -11,7 +11,8 @@ public enum ColabTheme {
     FUTURES_COLAB("30a3fb", 145, true),
     TRUST_COLAB("30a3fb", 145, true),
     COMPASS_COLAB("30a3fb", 145, true),
-    COVID_COLAB("30a3fb", 145, true)
+    COVID_COLAB("30a3fb", 145, true),
+    PHARMA_COLAB("503291", 145, true),
     ;
 
     private final String themeName;
