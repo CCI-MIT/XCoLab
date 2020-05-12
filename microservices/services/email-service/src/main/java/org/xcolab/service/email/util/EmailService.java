@@ -45,6 +45,7 @@ public class EmailService {
 
             if (emailPojo.isHtml()) {
                 email.setTextHTML(emailPojo.getEmailBody());
+                email.setText(emailPojo.getEmailBody().replaceAll("\\<.*?\\>", ""));
             } else {
                 email.setText(emailPojo.getEmailBody());
             }
