@@ -48,7 +48,18 @@ public class EmailService {
             } else {
                 email.setText(emailPojo.getEmailBody());
             }
-
+            if(env.getProperty("mail.smtp.api.clicktrackingoff")!=null){
+                email.addHeader("X-SMTPAPI", "{\n"
+                        + "  \"filters\" : {\n"
+                        + "    \"clicktrack\" : {\n"
+                        + "      \"settings\" : {\n"
+                        + "        \"enable\" : 0,\n"
+                        + "        \"enable_text\" : true\n"
+                        + "      }\n"
+                        + "    }\n"
+                        + "  }\n"
+                        + "}\n");
+            }
             String smtpHost = env.getRequiredProperty("mail.smtp.host");
             String smtpPort = env.getRequiredProperty("mail.smtp.port");
             String userName = env.getRequiredProperty("mail.smtp.user");
@@ -56,7 +67,8 @@ public class EmailService {
             switch (env.getRequiredProperty("mail.smtp.transport.strategy")) {
                 case "TLS":
                     new Mailer(smtpHost, Integer.parseInt(smtpPort), userName, password,
-                            TransportStrategy.SMTP_TLS).sendMail(email);
+                            TransportStrategy.SMTP_TLS)
+                            .sendMail(email);
                     break;
                 case "SSL":
                     new Mailer(smtpHost, Integer.parseInt(smtpPort), userName, password,
