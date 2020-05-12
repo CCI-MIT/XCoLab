@@ -21,6 +21,7 @@ public class MemberBatchRegistrationNotification extends MemberNotification {
     private static final String TEMPLATE_NAME = "MEMBER_BATCH_REGISTERED_DEFAULT";
 
     private static final String LOGIN_LINK_PLACEHOLDER = "login-link";
+    private static final String LOGIN_TEXT_LINK_PLACEHOLDER = "login-text-link";
     private static final String LOGIN_LINK_EXPIRATION_PLACEHOLDER = "link-expiration";
 
     private final LoginTokenWrapper loginToken;
@@ -52,7 +53,14 @@ public class MemberBatchRegistrationNotification extends MemberNotification {
         String colabUrl = PlatformAttributeKey.COLAB_URL.get();
         String loginUrl = colabUrl + "/login/token/" + loginToken.getTokenId()
                 + "?tokenKey=" + loginToken.getTokenKey();
-        return String.format(LINK_FORMAT_STRING, loginUrl , " Use this to log into your account");
+        return String.format(LINK_FORMAT_STRING, loginUrl , "Use this to log into your account.");
+    }
+
+    private String getLoginTextLink() {
+        String colabUrl = PlatformAttributeKey.COLAB_URL.get();
+        String loginUrl = colabUrl + "/login/token/" + loginToken.getTokenId()
+                + "?tokenKey=" + loginToken.getTokenKey();
+        return loginUrl;
     }
 
     protected class MemberBatchRegistrationTemplate extends MemberNotificationTemplate {
@@ -71,6 +79,8 @@ public class MemberBatchRegistrationNotification extends MemberNotification {
             switch (tag.nodeName()) {
                 case LOGIN_LINK_PLACEHOLDER:
                     return parseXmlNode(getLoginLink());
+                case LOGIN_TEXT_LINK_PLACEHOLDER:
+                    return parseXmlNode(getLoginTextLink());
                 case LOGIN_LINK_EXPIRATION_PLACEHOLDER:
                     final String expirationDate = DATE_TIME_FORMATTER
                             .format(loginToken.getTokenExpirationDate());
