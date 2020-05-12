@@ -52,7 +52,7 @@ public class MemberBatchRegistrationNotification extends MemberNotification {
         String colabUrl = PlatformAttributeKey.COLAB_URL.get();
         String loginUrl = colabUrl + "/login/token/" + loginToken.getTokenId()
                 + "?tokenKey=" + loginToken.getTokenKey();
-        return String.format(LINK_FORMAT_STRING, loginUrl , "here");
+        return String.format(LINK_FORMAT_STRING, loginUrl , " Use this to log into your account");
     }
 
     protected class MemberBatchRegistrationTemplate extends MemberNotificationTemplate {
