@@ -57,7 +57,12 @@ public class EmailService {
                         + "        \"enable\" : 0,\n"
                         + "        \"enable_text\" : true\n"
                         + "      }\n"
-                        + "    }\n"
+                        + "    },\n"
+                        + "     \"opentrack\" : {\n"
+                                + "      \"settings\" : {\n"
+                                + "        \"enable\" : 0\n"
+                                + "      }\n"
+                                + "}"
                         + "  }\n"
                         + "}\n");
             }
