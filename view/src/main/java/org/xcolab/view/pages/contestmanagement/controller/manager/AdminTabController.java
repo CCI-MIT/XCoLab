@@ -304,7 +304,7 @@ public class AdminTabController extends AbstractTabController {
             registerLineBeans =
                     Arrays.stream(memberStrings)
                             .map(memberString -> memberString.split(";"))
-                            .map(values -> new BatchRegisterLineBean(values[1], values[2], values[0]))
+                            .map(values -> new BatchRegisterLineBean(values[1].trim(), values[2].trim(), values[0].trim()))
                             .collect(Collectors.toSet());
         } catch (ArrayIndexOutOfBoundsException ex) {
             AlertMessage.danger("Batch registration: Invalid format.").flash(request);

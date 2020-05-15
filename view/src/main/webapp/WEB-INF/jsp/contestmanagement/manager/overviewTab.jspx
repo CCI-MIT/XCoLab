@@ -180,6 +180,7 @@
 
 		var MASS_MESSAGE_SELECT_ID = 'MESSAGE';
 		var MASS_MESSAGE_ALL_AUTHORS_SELECT_ID = 'MESSAGE_ALL_AUTHORS';
+		var MESSAGE_ALL_USERS = 'MESSAGE_ALL_USERS';
 		var REPORT_SELECT_ID = 'REPORT_PEOPLE_IN_CURRENT_PHASE';
 		var FLAG_SELECT_ID = 'FLAG';
 		var MODEL_SETTINGS_SELECT_ID = 'MODEL_SETTINGS';
@@ -218,7 +219,7 @@
 					editFormElement.action = actionURL;
 				}
 
-				if(selectedDropDownId == MASS_MESSAGE_SELECT_ID || selectedDropDownId == MASS_MESSAGE_ALL_AUTHORS_SELECT_ID){
+				if(selectedDropDownId == MASS_MESSAGE_SELECT_ID || selectedDropDownId == MASS_MESSAGE_ALL_AUTHORS_SELECT_ID || selectedDropDownId == MESSAGE_ALL_USERS){
 					massMessageDiv.style.display = '';
 				} else{
 					massMessageDiv.style.display = 'none';
