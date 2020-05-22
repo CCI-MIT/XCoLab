@@ -15,6 +15,7 @@ import org.xcolab.view.pages.contestmanagement.beans.ProposalReportBean;
 import org.xcolab.view.pages.contestmanagement.utils.FullProposalCsvWriter;
 import org.xcolab.view.pages.contestmanagement.utils.ProposalCommentsCsvWriter;
 import org.xcolab.view.pages.contestmanagement.utils.ProposalExportType;
+import org.xcolab.view.pages.contestmanagement.utils.ProposalSupportersCsvWriter;
 import org.xcolab.view.util.entity.EntityIdListUtil;
 
 import java.io.IOException;
@@ -42,6 +43,21 @@ public class ProposalApiExporter {
     public void generateProposalCommentReport(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         getCommentsForContestIdList(null, response, ProposalExportType.ALL_COMMENTS);
+
+    }
+
+    @GetMapping("/api/contests/{contestId}/supports")
+    public void generateProposalSupportReport(HttpServletRequest request, HttpServletResponse response,
+            @PathVariable Long contestId) throws IOException {
+
+        getCommentsForContestIdList(contestId, response, ProposalExportType.ALL_SUPPORTERS);
+
+    }
+
+    @GetMapping("/api/contests/supports")
+    public void generateSupportCommentReport(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        getCommentsForContestIdList(null, response, ProposalExportType.ALL_SUPPORTERS);
 
     }
 
@@ -96,6 +112,13 @@ public class ProposalApiExporter {
                             contests.forEach(csvWriter::writeProposalsInContest);
                         }
                     }
+                }
+                break;
+            }
+            case ALL_SUPPORTERS : {
+
+                try (ProposalSupportersCsvWriter csvWriter = new ProposalSupportersCsvWriter(response)) {
+                    contests.forEach(csvWriter::writeProposalSupportersInContest);
                 }
                 break;
             }
