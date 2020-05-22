@@ -46,7 +46,7 @@ public class ProposalApiExporter {
 
     }
 
-    @GetMapping("/api/contests/{contestId}/supports")
+    @GetMapping("/api/contests/{contestId}/supporters")
     public void generateProposalSupportReport(HttpServletRequest request, HttpServletResponse response,
             @PathVariable Long contestId) throws IOException {
 
@@ -54,7 +54,7 @@ public class ProposalApiExporter {
 
     }
 
-    @GetMapping("/api/contests/supports")
+    @GetMapping("/api/contests/supporters")
     public void generateSupportCommentReport(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         getCommentsForContestIdList(null, response, ProposalExportType.ALL_SUPPORTERS);
