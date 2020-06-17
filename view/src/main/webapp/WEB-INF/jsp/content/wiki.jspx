@@ -9,10 +9,19 @@
         <h1>${contentArticleVersion.title}</h1>
         <br />
         <c:if test="${_themeContext.authenticationVariables.isAdmin}">
-            <a href="/content-editor/?articleId=${contentArticleVersion.articleId}"
-               class="btn cb-btn-admin btn-sm float-right">
-                Edit wiki article
-            </a>
+            <c:if test="${resource}">
+                <a href="/content-editor/resourcePagesEditor?articleId=${contentArticleVersion.articleId}"
+                   class="btn cb-btn-admin btn-sm float-right">
+                    Edit resource page
+                </a>
+            </c:if>
+            <c:if test="${not resource}">
+                <a href="/content-editor/?articleId=${contentArticleVersion.articleId}"
+                   class="btn cb-btn-admin btn-sm float-right">
+                    Edit wiki article
+                </a
+            </c:if>
+
             <br/>
         </c:if>
         <div>

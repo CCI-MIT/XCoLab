@@ -69,6 +69,7 @@ public class WikiController {
                     return new AccessDeniedPage(member).toViewName(response);
                 }
                 model.addAttribute("contentArticleVersion", contentArticleVersion);
+                model.addAttribute("resource", false);
             } catch (ContentNotFoundException e) {
                 response.setStatus(HttpStatus.NOT_FOUND.value());
                 return ErrorText.NOT_FOUND.flashAndReturnView(request);
@@ -95,6 +96,7 @@ public class WikiController {
                 IContentArticleVersion contentArticleVersion =
                         contentClient.getContentArticleVersion(contentArticle.getMaxVersionId());
                 model.addAttribute("contentArticleVersion", contentArticleVersion);
+                model.addAttribute("resource", true);
             }
         } catch (ContentNotFoundException e) {
             response.setStatus(HttpStatus.NOT_FOUND.value());
