@@ -19,7 +19,7 @@
                 <a href="/content-editor/?articleId=${contentArticleVersion.articleId}"
                    class="btn cb-btn-admin btn-sm float-right">
                     Edit wiki article
-                </a
+                </a>
             </c:if>
 
             <br/>
