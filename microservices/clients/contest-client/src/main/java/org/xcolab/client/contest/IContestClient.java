@@ -264,7 +264,7 @@ public interface IContestClient {
     default List<ContestWrapper> getAllContestsInYear(Long contestYear) {
         String lang = LocaleContextHolder.getLocale().getLanguage();
         return getContests(0, Integer.MAX_VALUE, null, lang, null, contestYear, null, null, null,
-                null, null, null, null, null, null, "ContestShortName");
+                null, null, null, null, null, null, null);
     }
 
     default Map<Long, String> getModelIdsAndNames(long contestId) {
