@@ -277,8 +277,6 @@ public class ProposalController implements IProposalClient {
         return true;
     }
 
-    //TODO: this service should not be returning a member!
-    //TODO: move to proposals/{proposalId}/teamMembers endpoint
     @Override
     @GetMapping("/proposals/{proposalId}/allMembers")
     public List<UserWrapper> getProposalMembers(@PathVariable Long proposalId) {
@@ -336,7 +334,6 @@ public class ProposalController implements IProposalClient {
         return proposalVersionDao.getByProposalIdVersion(proposalId, version);
     }
 
-    //TODO COLAB-2594: rethink these endpoints
     @Override
     @GetMapping("/proposalIds")
     public List<Long> listProposalIds(@RequestParam(required = false) Integer startRecord,
@@ -350,7 +347,6 @@ public class ProposalController implements IProposalClient {
                 .findIdsByGiven(paginationHelper, contestId, visible, contestPhaseId, ribbon);
     }
 
-    //TODO COLAB-2594: rethink these endpoints
     @Override
     @GetMapping("proposalThreadIds")
     public List<Long> listThreadIds(@RequestParam(required = false) List<Long> proposalIds,
