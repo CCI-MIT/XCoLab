@@ -47,6 +47,11 @@ public class CompareStringsValidator implements ConstraintValidator<CompareStrin
             case EQUAL_IGNORE_CASE:
                 isValid = StringUtils.equalsIgnoreCase(s1, s2);
                 break;
+            //missing default case
+            default:
+                // add default case
+                break;
+
         }
 
         if (!isValid) {
