@@ -101,6 +101,11 @@ public class ProposalReferenceService {
                             .addAll(getProposalIdsFromLinksInText(attribute.getStringValue()));
                     break;
                 }
+                    
+               //missing default case
+               default:
+                    // add default case
+                   break;
             }
 
             for (long subProposalId : subProposalIds) {
