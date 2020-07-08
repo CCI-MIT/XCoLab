@@ -55,6 +55,11 @@ public class CacheStatisticProvider {
                 getMissMeter(cacheName, cachedClass).mark();
                 getMissMeter(cacheName, null).mark();
                 break;
+             //missing default case
+            default:
+            // add default case
+                break;
+
         }
     }
 
