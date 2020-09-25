@@ -347,6 +347,10 @@ public final class ConfigurationAttributeKey {
             ConfigurationAttributes.newBooleanAttribute("PROPOSALS_COMMENTS_READ_ONLY")
                     .defaultValue(false)
                     .build();
+    public static final AttributeGetter<Boolean> DISCUSSION_COMMENTS_READ_ONLY =
+            ConfigurationAttributes.newBooleanAttribute("DISCUSSION_COMMENTS_READ_ONLY")
+                    .defaultValue(false)
+                    .build();
     public static final AttributeGetter<Long> PROPOSALS_PITCH_CHAR_LIMIT =
             ConfigurationAttributes.newLongAttribute("PROPOSALS_PITCH_CHAR_LIMIT")
                     .defaultValue(140l)
