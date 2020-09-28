@@ -47,6 +47,10 @@ public class DiscussionPermissions {
     }
 
     public boolean getCanSeeAddCommentButton() {
+        boolean isReadOnly = ConfigurationAttributeKey.DISCUSSION_COMMENTS_READ_ONLY.get();
+        if (isReadOnly) {
+            return getCanAdminAll();
+        }
         return !isGuest;
     }
 
