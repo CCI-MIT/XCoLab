@@ -83,7 +83,7 @@ public class MembershipInvitationResponseController {
             recipients.add(user.getId());
         }
 
-        ProposalWrapper proposal = proposalClient.getProposal(proposalId);
+        ProposalWrapper proposal = new ProposalWrapper(proposalClient.getProposal(proposalId));
         ContestType contestType = proposal.getContest().getContestType();
 
         String proposalName = proposalAttributeClient
