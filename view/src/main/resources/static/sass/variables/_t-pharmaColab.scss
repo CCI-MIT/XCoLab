@@ -4,6 +4,8 @@ $t-Color__secondary: #16becf;
 $t-Color__accent: #E61E50;
 $t-Color__auxiliary: #66b035; // 4th color when needed (e.g. ontology)
 
+
+
 //lightness variations
 $t-Color__primary--light: lighten($t-Color__primary, 24); $__hex: #aad9fd;
 $t-Color__secondary--light: lighten($t-Color__secondary, 24); $__hex: #a7da85;
