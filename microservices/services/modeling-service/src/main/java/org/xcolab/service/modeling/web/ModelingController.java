@@ -73,7 +73,6 @@ public class ModelingController implements IModelingClient {
                 });
     }
 
-    //TODO COLAB-2594: rethink url, modelPrefId doesn't exist
     @Override
     @PutMapping("/models/preferences")
     public boolean updatePreferences(@RequestBody IModelGlobalPreference modelGlobalPreference) {
@@ -81,7 +80,6 @@ public class ModelingController implements IModelingClient {
     }
 
     //---------------
-    //TODO: what to do with these methods?
     @GetMapping("/modelCategories")
     public List<IModelCategory> listModelCategories() {
         return modelCategoryDao.list();
@@ -107,11 +105,10 @@ public class ModelingController implements IModelingClient {
     public boolean deleteModelCategory(@PathVariable long id) {
         return modelCategoryDao.delete(id);
     }
-    //TODO: what to do with these methods?
+
     //---------------
 
     //---------------
-    //TODO: what to do with these methods?
     @GetMapping("/modelDiscussions")
     public List<IModelDiscussion> listModelDiscussions() {
         return modelDiscussionDao.list();
@@ -137,7 +134,6 @@ public class ModelingController implements IModelingClient {
     public boolean deleteModelDiscussion(@PathVariable long id) {
         return modelDiscussionDao.delete(id);
     }
-    //TODO: what to do with these methods?
     //---------------
 
     @Override
@@ -180,7 +176,6 @@ public class ModelingController implements IModelingClient {
         return modelInputItemDao.findByGiven(modelInputGroupPk, modelId, modelInputId);
     }
 
-    //TODO: what to do with this method?
     @GetMapping("/modelInputItems/{id}")
     public IModelInputItem getModelInputItem(@PathVariable long id) throws NotFoundException {
         return modelInputItemDao.get(id).orElseThrow(NotFoundException::new);
@@ -212,8 +207,7 @@ public class ModelingController implements IModelingClient {
         return modelOutputChartOrderDao.findByGiven(modelId, label).stream().findFirst()
                 .orElse(null);
     }
-
-    //TODO: what is with this method?
+    
     @GetMapping("/modelOutputChartOrders/{id}")
     public IModelOutputChartOrder getModelOutputChartOrder(@PathVariable long id)
             throws NotFoundException {
@@ -240,7 +234,6 @@ public class ModelingController implements IModelingClient {
         return modelOutputChartOrderDao.delete(id);
     }
 
-    //TODO: what about this method?
     @GetMapping("/modelOutputItems")
     public List<IModelOutputItem> listModelOutputItems() {
         return modelOutputItemDao.list();
@@ -276,8 +269,7 @@ public class ModelingController implements IModelingClient {
             @RequestParam(required = false) Long modelId) {
         return modelPositionDao.findByGiven(modelId);
     }
-
-    //TODO: what about this?
+    
     @GetMapping("/modelPositions/{id}")
     public IModelPosition getModelPosition(@PathVariable long id) throws NotFoundException {
         return modelPositionDao.get(id).orElseThrow(NotFoundException::new);
