@@ -62,6 +62,11 @@ public class ReportDaoImpl implements ReportDao {
                     query.addOrderBy(sortColumn.isAscending()
                             ? REPORT.CREATED_AT.asc() : REPORT.CREATED_AT.desc());
                     break;
+                //missing default case
+                default:
+                    // add default case
+                    break;
+
             }
         }
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
@@ -123,6 +128,11 @@ public class ReportDaoImpl implements ReportDao {
                     query.addOrderBy(sortColumn.isAscending()
                             ? count.asc() : count.desc());
                     break;
+                //missing default case
+                default:
+                    // add default case
+                    break;
+
             }
         }
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
