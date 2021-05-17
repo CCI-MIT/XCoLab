@@ -79,7 +79,6 @@ public class ContestPhaseService {
 
     public void transferSupportsToVote(ContestWrapper contest, ContestPhaseWrapper votingPhase) {
 
-//        TODO: this should not be calling the client!
         final List<ProposalWrapper> proposalsInPhase = StaticProposalContext.getProposalClient()
                 .getProposalsInContestPhase(votingPhase.getId());
         Set<Long> proposalIdsInPhase = proposalsInPhase.stream()
@@ -100,8 +99,7 @@ public class ContestPhaseService {
             if (hasVoted || supportedProposalsInPhase.isEmpty()) {
                 continue;
             }
-
-            //TODO COLAB-2501: we shouldn't use client pojos in the service
+            
             ContestWrapper contestPojo = StaticContestContext.getContestClient()
                     .getContest(contest.getId());
             if (supportedProposalsInPhase.size() == 1) {
@@ -148,7 +146,7 @@ public class ContestPhaseService {
             // Enable this line to post promotion comment to Evaluation tab comment section
             // proposalLocalService.contestPhasePromotionCommentNotifyProposalContributors(p, phase);
 
-            //TODO COLAB-2603: Migrate logic to send email , the method is blank so there may be no need for this
+        
         /*try {
             proposalLocalService.contestPhasePromotionEmailNotifyProposalContributors(p,  phase, null);
         } catch (MailEngineException | AddressException | UnsupportedEncodingException e) {
