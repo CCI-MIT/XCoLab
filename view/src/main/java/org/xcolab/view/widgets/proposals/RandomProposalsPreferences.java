@@ -45,7 +45,6 @@ public class RandomProposalsPreferences extends WidgetPreference {
                 jsonPreferences.optString(SELECTED_PHASES_PREFERENCE, "").split("-"));
         flagFiltersStr = jsonPreferences.optString(FLAG_FILTER_PREFERENCE, "");
         flagFilters = convertStringsToLongs(flagFiltersStr.split(","));
-        //TODO COLAB-2630: find better default values
         title = jsonPreferences.optString(TITLE_PREFERENCE, "Interesting Proposals");
         allProposalsTitle = jsonPreferences.optString(ALL_PROPOSALS_TITLE, "see all finalists");
         allProposalsUrl = jsonPreferences.optString(ALL_PROPOSALS_URL,
@@ -54,8 +53,7 @@ public class RandomProposalsPreferences extends WidgetPreference {
         isCompact = jsonPreferences.optBoolean(IS_COMPACT, false);
         feedSize = jsonPreferences.optInt(FEED_SIZE_PREFERENCE, 4);
     }
-
-    //TODO COLAB-2630: this can be replaced with IdListUtil's helper methods
+    
     private static Long[] convertStringsToLongs(String[] arrayStr) {
         if (arrayStr.length == 1 && StringUtils.isBlank(arrayStr[0])) {
             return new Long[]{};
@@ -163,7 +161,6 @@ public class RandomProposalsPreferences extends WidgetPreference {
     }
 
     public void setFlagFiltersStr(String flagFiltersStr) {
-        //TODO COLAB-2630: This validation is strange. This could be a custom validation annotation
         // check if flag filters are correct
         if (StringUtils.isNotBlank(flagFiltersStr)) {
             // parse all values to check if they are valid ints
