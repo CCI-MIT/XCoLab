@@ -43,6 +43,12 @@ public class CategoryDaoImpl implements CategoryDao {
                     query.addOrderBy(sortColumn.isAscending()
                             ? CATEGORY.CREATED_AT.asc() : CATEGORY.CREATED_AT.desc());
                     break;
+                    
+                //missing default case
+                default:
+                    // add default case
+                    break;
+
             }
         }
         query.addConditions(CATEGORY.DELETED_AT.isNull());
