@@ -100,6 +100,11 @@ public class ThreadDaoImpl implements ThreadDao {
                     query.addOrderBy(sortColumn.isAscending()
                             ? THREAD.CREATED_AT.asc() : THREAD.CREATED_AT.desc());
                     break;
+                //missing default case
+                default:
+                    // add default case
+                    break;
+
             }
         }
         query.addConditions(THREAD.DELETED_AT.isNull());
