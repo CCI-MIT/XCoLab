@@ -200,12 +200,12 @@
         <dependency>
             <groupId>com.google.apis</groupId>
             <artifactId>google-api-services-analytics</artifactId>
-            <version>v3-rev141-1.22.0</version>
+            <version>v3-rev20180730-1.28.0</version>
         </dependency>
         <dependency>
             <groupId>com.google.http-client</groupId>
             <artifactId>google-http-client-gson</artifactId>
-            <version>1.21.0</version>
+            <version>1.28.0</version>
         </dependency>
         <dependency>
             <groupId>edu.mit.cci.roma</groupId>
