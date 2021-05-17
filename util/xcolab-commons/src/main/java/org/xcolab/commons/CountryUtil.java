@@ -37,7 +37,7 @@ public final class CountryUtil {
         codeToCountryMap.put("BA", "Bosnia and Herzegovina");
         codeToCountryMap.put("BB", "Barbados");
         codeToCountryMap.put("BD", "Bangladesh");
-        codeToCountryMap.put("BE", "Belgium);
+        codeToCountryMap.put("BE", "Belgium");
         codeToCountryMap.put("BF", "Burkina Faso");
         codeToCountryMap.put("BG", "Bulgaria");
         codeToCountryMap.put("BH", "Bahrain");
