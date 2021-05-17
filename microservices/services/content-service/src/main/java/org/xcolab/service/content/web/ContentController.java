@@ -53,8 +53,6 @@ public class ContentController implements IContentClient {
         Date date = new Date();
         contentArticle.setCreatedAt(new Timestamp(date.getTime()));
 
-        //TODO: is this still relevant?
-        //TODO COLAB-2589: fine-grained cache control
         //ServiceRequestUtils.clearCache(CacheName.CONTENT);
 
         return this.contentArticleDao.create(contentArticle);
@@ -80,7 +78,6 @@ public class ContentController implements IContentClient {
             @RequestParam(required = false) Long contentArticleVersion,
             @RequestParam(required = false) String title,
             @RequestParam(required = false) String lang) {
-        //TODO: sort parameter:
         //                .optionalQueryParam("sort","-contentArticleVersion")
         PaginationHelper paginationHelper =
                 new PaginationHelper(startRecord, limitRecord, "-contentArticleVersion");
@@ -168,8 +165,6 @@ public class ContentController implements IContentClient {
 
         return contentArticleVersion;
 
-        // Caching?
-        //        //TODO COLAB-2589: fine-grained cache control
         //        ServiceRequestUtils.clearCache(CacheName.CONTENT);
     }
 
@@ -208,8 +203,6 @@ public class ContentController implements IContentClient {
         }
 
         return contentArticleVersionDao.update(contentArticleVersion);
-        // What about caches?
-        //        //TODO COLAB-2589: fine-grained cache control
         //        ServiceRequestUtils.clearCache(CacheName.CONTENT);
     }
 
@@ -218,7 +211,6 @@ public class ContentController implements IContentClient {
     public IContentFolder createContentFolder(@RequestBody IContentFolder contentFolder) {
         return this.contentFolderDao.create(contentFolder);
 
-        //TODO COLAB-2589: fine-grained cache control
         //        ServiceRequestUtils.clearCache(CacheName.CONTENT);
     }
 
@@ -254,7 +246,6 @@ public class ContentController implements IContentClient {
         } else {
             return contentFolderDao.update(contentFolder);
         }
-        //        //TODO COLAB-2589: fine-grained cache control
         //        ServiceRequestUtils.clearCache(CacheName.CONTENT);
     }
 
