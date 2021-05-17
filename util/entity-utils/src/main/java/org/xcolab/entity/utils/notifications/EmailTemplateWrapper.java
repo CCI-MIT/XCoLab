@@ -54,6 +54,10 @@ public class EmailTemplateWrapper {
                 return new TextNode(this.proposalName);
             case CONTEST_TITLE_PLACEHOLDER:
                 return new TextNode(this.contestName);
+            //missing default case
+            default:
+                // add default case
+                break;
         }
         return null;
     }
