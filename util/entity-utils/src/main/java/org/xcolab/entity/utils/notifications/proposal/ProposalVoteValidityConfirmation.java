@@ -79,6 +79,11 @@ public class ProposalVoteValidityConfirmation extends ProposalNotification {
             switch (tag.nodeName()) {
                 case CONFIRMATION_LINK_PLACEHOLDER:
                     return parseXmlNode(getConfirmationLink(tag.ownText()));
+                //missing default case
+                default:
+                    // add default case
+                    break;
+
             }
             return null;
         }
