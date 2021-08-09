@@ -136,6 +136,9 @@ public class LoginRegisterController {
             @Valid CreateUserBean newAccountBean, BindingResult result,
             @RequestParam(required = false) String redirect) throws IOException {
 
+        if(!ConfigurationAttributeKey.ALLOW_SELF_REGISTRATION.get()) {
+            return new AccessDeniedPage(null).toViewName(response);
+        }
         if (result.hasErrors()) {
             return showRegistrationError(model);
         }
