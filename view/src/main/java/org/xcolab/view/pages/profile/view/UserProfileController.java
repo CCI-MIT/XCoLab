@@ -152,6 +152,9 @@ public class UserProfileController {
                 model.addAttribute("pointsActive",
                         ConfigurationAttributeKey.POINTS_IS_ACTIVE.get());
             }
+            else {
+                return ErrorPage.error("User profile disabled").flashAndReturnView(request);
+            }
         } catch (org.xcolab.client.user.exceptions.MemberNotFoundException e) {
             return ErrorPage.error("User profile not found").flashAndReturnView(request);
         }

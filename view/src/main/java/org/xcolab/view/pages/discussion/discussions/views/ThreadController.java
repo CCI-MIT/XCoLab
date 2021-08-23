@@ -22,6 +22,7 @@ import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.comment.pojo.tables.pojos.Comment;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.html.HtmlUtil;
+import org.xcolab.commons.servlet.flash.ErrorPage;
 import org.xcolab.util.activities.enums.DiscussionThreadActivityType;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.AccessDeniedPage;
@@ -56,6 +57,9 @@ public class ThreadController extends BaseDiscussionController {
         ICategoryGroup categoryGroup = getCategoryGroup(request);
         IThread thread = threadClient.getThread(threadId);
 
+        if(thread.getDeletedAt()!=null){
+            return ErrorPage.error("Thread not found").flashAndReturnView(request);
+        }
         DiscussionPermissions permissions = new DiscussionPermissions();
         if (!getCanView(permissions, categoryGroup, threadId)) {
             return new AccessDeniedPage(member).toViewName(response);
