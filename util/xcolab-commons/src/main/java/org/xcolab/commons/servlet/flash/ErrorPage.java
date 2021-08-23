@@ -3,11 +3,12 @@ package org.xcolab.commons.servlet.flash;
 import org.xcolab.commons.servlet.flash.impl.FlashMessageStore;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class ErrorPage {
+public class ErrorPage implements Serializable {
 
     private static final FlashMessageStore MESSAGE_STORE = new FlashMessageStore();
     private static final String ERROR_URI = "/error";
