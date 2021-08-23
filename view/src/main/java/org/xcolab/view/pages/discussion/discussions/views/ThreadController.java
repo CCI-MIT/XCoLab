@@ -1,6 +1,7 @@
 package org.xcolab.view.pages.discussion.discussions.views;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -58,6 +59,7 @@ public class ThreadController extends BaseDiscussionController {
         IThread thread = threadClient.getThread(threadId);
 
         if(thread.getDeletedAt()!=null){
+            response.setStatus(HttpStatus.NOT_FOUND.value());
             return ErrorPage.error("Thread not found").flashAndReturnView(request);
         }
         DiscussionPermissions permissions = new DiscussionPermissions();
