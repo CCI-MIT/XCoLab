@@ -154,7 +154,10 @@ public class UserProfileController {
                         ConfigurationAttributeKey.POINTS_IS_ACTIVE.get());
             }
             else {
-                return ErrorPage.error("User profile disabled").flashAndReturnView(request);
+                response.setStatus(HttpStatus.NOT_FOUND.value());
+                return ErrorPage.error("User profile disabled or not found")
+                        .withTitle("Not found")
+                        .flashAndReturnView(request);
             }
         } catch (org.xcolab.client.user.exceptions.MemberNotFoundException e) {
             response.setStatus(HttpStatus.NOT_FOUND.value());

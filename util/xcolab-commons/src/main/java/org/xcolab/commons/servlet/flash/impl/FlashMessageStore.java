@@ -27,37 +27,38 @@ public class FlashMessageStore {
 
     private final TtlHashMap<String, Object> mutexes = new TtlHashMap<>(5, TimeUnit.MINUTES);
 
-    private Map<Class<?>, Object> getFlashMap(HttpSession session) {
+    private Map<Class<?>, Object> getFlashMap(HttpServletRequest request) {
         @SuppressWarnings("unchecked")
         Map<Class<?>, Object> flashMap =
-                (Map<Class<?>, Object>) session.getAttribute(FLASH_ATTRIBUTE_NAME);
+                (Map<Class<?>, Object>) request.getAttribute(FLASH_ATTRIBUTE_NAME);
         if (flashMap != null) {
             return flashMap;
         }
         flashMap = new HashMap<>();
-        saveFlashMap(session, flashMap);
+        saveFlashMap(request, flashMap);
         return flashMap;
     }
 
-    private void saveFlashMap(HttpSession session, Map<Class<?>, Object> flashMap) {
-        session.setAttribute(FLASH_ATTRIBUTE_NAME, flashMap);
+    private void saveFlashMap(HttpServletRequest request, Map<Class<?>, Object> flashMap) {
+        request.setAttribute(FLASH_ATTRIBUTE_NAME, flashMap);
     }
 
     private void put(HttpServletRequest request, Class<?> key, Object value) {
         final HttpSession session = request.getSession(true);
         synchronized (getMutex(session)) {
-            final Map<Class<?>, Object> flashMap = getFlashMap(session);
+            final Map<Class<?>, Object> flashMap = getFlashMap(request);
             flashMap.put(key, value);
-            saveFlashMap(session, flashMap);
+            saveFlashMap(request, flashMap);
         }
     }
 
     private Object get(HttpServletRequest request, Class<?> key) {
         final HttpSession session = request.getSession(false);
+
         if (session == null) {
             return null;
         }
-        final Map<Class<?>, Object> flashMap = getFlashMap(session);
+        final Map<Class<?>, Object> flashMap = getFlashMap(request);
         return flashMap.get(key);
     }
 
@@ -67,9 +68,9 @@ public class FlashMessageStore {
             return null;
         }
         synchronized (getMutex(session)) {
-            final Map<Class<?>, Object> flashMap = getFlashMap(session);
+            final Map<Class<?>, Object> flashMap = getFlashMap(request);
             final Object ret = flashMap.remove(key);
-            saveFlashMap(session, flashMap);
+            saveFlashMap(request, flashMap);
             return ret;
         }
     }

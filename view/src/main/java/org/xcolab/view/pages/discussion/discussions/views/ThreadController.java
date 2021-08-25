@@ -27,6 +27,7 @@ import org.xcolab.commons.servlet.flash.ErrorPage;
 import org.xcolab.util.activities.enums.DiscussionThreadActivityType;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.AccessDeniedPage;
+import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 
@@ -60,7 +61,10 @@ public class ThreadController extends BaseDiscussionController {
 
         if(thread.getDeletedAt()!=null){
             response.setStatus(HttpStatus.NOT_FOUND.value());
-            return ErrorPage.error("Thread not found").flashAndReturnView(request);
+            return ErrorPage.error("Discussion not found")
+                    .withTitle("Not found")
+                    .flashAndReturnView(request);
+
         }
         DiscussionPermissions permissions = new DiscussionPermissions();
         if (!getCanView(permissions, categoryGroup, threadId)) {

@@ -17,7 +17,7 @@ public class ThemeContext {
     private final CredentialVariables credentialVariables;
     private final ThemeVariables themeVariables;
     private final MetaVariables metaVariables;
-    private final MessageVariables messageVariables;
+    private MessageVariables messageVariables;
     private final SocialMediaVariables socialMediaVariables;
     private final ServerVariables serverVariables;
 
@@ -41,7 +41,9 @@ public class ThemeContext {
         this.credentialVariables = new CredentialVariables();
         this.themeVariables = new ThemeVariables(request, this.getI18NVariables());
         this.metaVariables = new MetaVariables(request, this.getI18NVariables());
+
         this.messageVariables = new MessageVariables(request);
+
         this.socialMediaVariables = new SocialMediaVariables(request);
         this.serverVariables = new ServerVariables(request.getServletContext());
 
@@ -61,6 +63,9 @@ public class ThemeContext {
                 .getContestType(defaultContestTypeId, this.getI18NVariables().getLanguage());
 
         this.requestUri = RequestUtil.getOriginalUri(request);
+    }
+    public void repopulateMessages(HttpServletRequest request){
+        this.messageVariables = new MessageVariables(request);
     }
 
     public I18nVariables getI18NVariables() {
