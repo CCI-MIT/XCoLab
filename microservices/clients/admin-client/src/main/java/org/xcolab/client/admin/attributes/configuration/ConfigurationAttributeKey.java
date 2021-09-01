@@ -66,7 +66,6 @@ public final class ConfigurationAttributeKey {
 
     public static final AttributeGetter<String> COLAB_READ_ONLY_MESSAGE =
             ConfigurationAttributes.newStringAttribute("COLAB_READ_ONLY_MESSAGE")
-                    .map(AttributeTransformers.addDefaultScheme())
                     .defaultValue("")
                     .build();
 
