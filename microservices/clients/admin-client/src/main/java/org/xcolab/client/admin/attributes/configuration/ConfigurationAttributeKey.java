@@ -63,6 +63,19 @@ public final class ConfigurationAttributeKey {
                     .map(AttributeTransformers.addDefaultScheme())
                     .defaultValue("")
                     .build();
+
+    public static final AttributeGetter<String> COLAB_READ_ONLY_MESSAGE =
+            ConfigurationAttributes.newStringAttribute("COLAB_READ_ONLY_MESSAGE")
+                    .map(AttributeTransformers.addDefaultScheme())
+                    .defaultValue("")
+                    .build();
+
+    public static final AttributeGetter<Boolean> COLAB_IS_READ_ONLY =
+            ConfigurationAttributes.newBooleanAttribute("COLAB_IS_READ_ONLY")
+                    .defaultValue(false)
+                    .build();
+
+
     public static final AttributeGetter<ColabTheme> ACTIVE_THEME =
             ConfigurationAttributes.newEnumAttribute("ACTIVE_THEME", ColabTheme.class)
                     .withCache()

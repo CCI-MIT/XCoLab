@@ -29,6 +29,8 @@ public class ThemeContext {
     private final String blogAdminUrl;
     private final String adminEmail;
     private final ContestType defaultContestType;
+    private final boolean isColabInReadOnly;
+    private final String readOnlyMessage;
 
     private final String requestUri;
 
@@ -54,6 +56,8 @@ public class ThemeContext {
         this.colabUrl = PlatformAttributeKey.COLAB_URL.get();
         this.colabUrlProduction = ConfigurationAttributeKey.COLAB_URL_PRODUCTION.get();
         this.blogAdminUrl = ConfigurationAttributeKey.BLOG_ADMIN_URL.get();
+        this.isColabInReadOnly = ConfigurationAttributeKey.COLAB_IS_READ_ONLY.get();
+        this.readOnlyMessage = ConfigurationAttributeKey.COLAB_READ_ONLY_MESSAGE.get();
 
         this.adminEmail = ConfigurationAttributeKey.ADMIN_EMAIL.get();
 
@@ -134,5 +138,13 @@ public class ThemeContext {
 
     public ServerVariables getServerVariables() {
         return serverVariables;
+    }
+
+    public boolean isColabInReadOnly() {
+        return isColabInReadOnly;
+    }
+
+    public String getReadOnlyMessage() {
+        return readOnlyMessage;
     }
 }
