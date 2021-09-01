@@ -57,7 +57,7 @@
         <roma-client.version>1.4</roma-client.version>
 
         <!-- Misc -->
-        <jsoup.version>1.11.2</jsoup.version>
+        <jsoup.version>1.14.2</jsoup.version>
         <json.version>20160212</json.version>
         <prettytime.version>4.0.1.Final</prettytime.version>
         <simple-java-mail.version>3.1.1</simple-java-mail.version>
