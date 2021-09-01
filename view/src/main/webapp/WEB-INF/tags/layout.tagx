@@ -226,6 +226,23 @@
         </div>
     </c:if>
 
+    <c:if test="${_themeContext.colabInReadOnly}">
+        <div class="c-TitleBar__container">
+            <div class="c-TitleBar c-TitleBar--warning c-TitleBar--fixed">
+                <div class="container c-TitleBar__content">
+                    <div class="c-TitleBar__element pl-0" style="overflow: hidden">
+                        ${_themeContext.readOnlyMessage}
+                    </div>
+
+                    <a class="c-TitleBar__actionButton" href="${_themeContext.colabUrlProduction}/page/readonly">Learn more at ${_themeContext.colabUrlProduction}/page/readonly.</a>
+                </div>
+                <button class="close js-Tooltip" data-dismiss="c-TitleBar" title="Remind me later" aria-label="Remind me later">
+                    <span aria-hidden="true">&#215;</span> <!-- &#215; == &times; -->
+                </button>
+            </div>
+        </div>
+    </c:if>
+
     <c:if test="${_themeContext.authenticationVariables.isImpersonating}">
         <div class="c-TitleBar">
             <div class="container c-TitleBar__content">

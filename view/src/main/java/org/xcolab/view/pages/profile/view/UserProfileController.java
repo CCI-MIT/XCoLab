@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -152,7 +153,14 @@ public class UserProfileController {
                 model.addAttribute("pointsActive",
                         ConfigurationAttributeKey.POINTS_IS_ACTIVE.get());
             }
+            else {
+                response.setStatus(HttpStatus.NOT_FOUND.value());
+                return ErrorPage.error("User profile disabled or not found")
+                        .withTitle("Not found")
+                        .flashAndReturnView(request);
+            }
         } catch (org.xcolab.client.user.exceptions.MemberNotFoundException e) {
+            response.setStatus(HttpStatus.NOT_FOUND.value());
             return ErrorPage.error("User profile not found").flashAndReturnView(request);
         }
         return SHOW_PROFILE_VIEW;

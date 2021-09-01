@@ -17,7 +17,7 @@ public class ThemeContext {
     private final CredentialVariables credentialVariables;
     private final ThemeVariables themeVariables;
     private final MetaVariables metaVariables;
-    private final MessageVariables messageVariables;
+    private MessageVariables messageVariables;
     private final SocialMediaVariables socialMediaVariables;
     private final ServerVariables serverVariables;
 
@@ -29,6 +29,8 @@ public class ThemeContext {
     private final String blogAdminUrl;
     private final String adminEmail;
     private final ContestType defaultContestType;
+    private final boolean isColabInReadOnly;
+    private final String readOnlyMessage;
 
     private final String requestUri;
 
@@ -41,7 +43,9 @@ public class ThemeContext {
         this.credentialVariables = new CredentialVariables();
         this.themeVariables = new ThemeVariables(request, this.getI18NVariables());
         this.metaVariables = new MetaVariables(request, this.getI18NVariables());
+
         this.messageVariables = new MessageVariables(request);
+
         this.socialMediaVariables = new SocialMediaVariables(request);
         this.serverVariables = new ServerVariables(request.getServletContext());
 
@@ -52,6 +56,8 @@ public class ThemeContext {
         this.colabUrl = PlatformAttributeKey.COLAB_URL.get();
         this.colabUrlProduction = ConfigurationAttributeKey.COLAB_URL_PRODUCTION.get();
         this.blogAdminUrl = ConfigurationAttributeKey.BLOG_ADMIN_URL.get();
+        this.isColabInReadOnly = ConfigurationAttributeKey.COLAB_IS_READ_ONLY.get();
+        this.readOnlyMessage = ConfigurationAttributeKey.COLAB_READ_ONLY_MESSAGE.get();
 
         this.adminEmail = ConfigurationAttributeKey.ADMIN_EMAIL.get();
 
@@ -61,6 +67,9 @@ public class ThemeContext {
                 .getContestType(defaultContestTypeId, this.getI18NVariables().getLanguage());
 
         this.requestUri = RequestUtil.getOriginalUri(request);
+    }
+    public void repopulateMessages(HttpServletRequest request){
+        this.messageVariables = new MessageVariables(request);
     }
 
     public I18nVariables getI18NVariables() {
@@ -129,5 +138,13 @@ public class ThemeContext {
 
     public ServerVariables getServerVariables() {
         return serverVariables;
+    }
+
+    public boolean isColabInReadOnly() {
+        return isColabInReadOnly;
+    }
+
+    public String getReadOnlyMessage() {
+        return readOnlyMessage;
     }
 }

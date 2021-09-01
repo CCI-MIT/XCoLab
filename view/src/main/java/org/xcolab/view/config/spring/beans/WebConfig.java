@@ -42,6 +42,8 @@ import org.xcolab.view.theme.PopulateLayoutVariablesFilter;
 import org.xcolab.view.theme.ThemeResourceResolver;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -90,7 +92,10 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(populateLayoutVariablesFilter);
+        String[] excludeFromLayoutInterceptor = {"/notificationMessage","/vendor/**","/css/**","/images/**","/image/**", "/js/**"};
+        registry.addInterceptor(populateLayoutVariablesFilter)
+                .excludePathPatterns(
+                        new ArrayList<>(Arrays.asList(excludeFromLayoutInterceptor)));
 
         registry.addInterceptor(populateContextInterceptor).addPathPatterns("/contests/**");
         registry.addInterceptor(validateTabPermissionsInterceptor).addPathPatterns("/contests/**");

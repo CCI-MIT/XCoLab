@@ -33,37 +33,37 @@ public class SitemapController {
         this.membersSitemapGenerator = membersSitemapGenerator;
     }
 
-    @GetMapping("main.xml")
+    @GetMapping(value="main.xml",produces = "application/xml; charset=utf-8")
     public XmlUrlSet showMainSitemap() {
         return mainSitemapGenerator.generate();
     }
 
-    @GetMapping("active-contests.xml")
+    @GetMapping(value="active-contests.xml",produces = "application/xml; charset=utf-8")
     public XmlUrlSet showActiveContestSitemap() {
         return contestSitemapGenerator.generateForActiveContests();
     }
 
-    @GetMapping("completed-contests.xml")
+    @GetMapping(value="completed-contests.xml",produces = "application/xml; charset=utf-8")
     public XmlUrlSet showCompletedContestSitemap() {
         return contestSitemapGenerator.generateForCompletedContests();
     }
 
-    @GetMapping("team-members.xml")
+    @GetMapping(value="team-members.xml",produces = "application/xml; charset=utf-8")
     public XmlUrlSet showMembersSitemap() {
         return membersSitemapGenerator.generateForTeamMembers();
     }
 
-    @GetMapping("active-proposals.xml")
+    @GetMapping(value="active-proposals.xml",produces = "application/xml; charset=utf-8")
     public XmlUrlSet showActiveProposalsSitemap() {
         return proposalSitemapGenerator.generateForActiveProposals();
     }
 
-    @GetMapping("awarded-proposals.xml")
+    @GetMapping(value="awarded-proposals.xml",produces = "application/xml; charset=utf-8")
     public XmlUrlSet showCompletedProposalsWithRibbonsSitemap() {
         return proposalSitemapGenerator.generateForAwardedProposals();
     }
 
-    @GetMapping("other-proposals.xml")
+    @GetMapping(value="other-proposals.xml",produces = "application/xml; charset=utf-8")
     public XmlUrlSet showCompletedProposalsWithoutRibbonsSitemap() {
         return proposalSitemapGenerator.generateForOtherProposals();
     }

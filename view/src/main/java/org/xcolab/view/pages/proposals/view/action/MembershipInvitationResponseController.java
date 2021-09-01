@@ -83,8 +83,16 @@ public class MembershipInvitationResponseController {
             recipients.add(user.getId());
         }
 
-        ProposalWrapper proposal = proposalClient.getProposal(proposalId);
-        ContestType contestType = proposal.getContest().getContestType();
+        ProposalWrapper proposal = new ProposalWrapper(proposalClient.getProposal(proposalId));
+
+        if(proposal == null) {
+            System.out.println(" PROPOSAL NULL IN MembershipInvitationResponseController ");
+        } else {
+            if(proposal.getContest() == null) {
+                System.out.println(" CONTEST NULL IN MembershipInvitationResponseController ");
+            }
+        }
+        ContestType contestType = new ContestWrapper(proposal.getContest()).getContestType();
 
         String proposalName = proposalAttributeClient
                 .getProposalAttribute(proposalId, ProposalAttributeKeys.NAME, 0L).getStringValue();

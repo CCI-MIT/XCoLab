@@ -55,7 +55,8 @@ public class DiscussionPermissions {
     }
 
     public boolean getCanAddComment() {
-        return isLoggedIn && !isGuest;
+        boolean isReadOnly = ConfigurationAttributeKey.DISCUSSION_COMMENTS_READ_ONLY.get();
+        return isLoggedIn && !isGuest && !isReadOnly;
     }
 
     public boolean getCanAdminMessages() {

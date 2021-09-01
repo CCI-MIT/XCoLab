@@ -189,6 +189,8 @@ public interface IProposalClient {
 
     default ProposalWrapper getProposal(long proposalId) throws ProposalNotFoundException {
         return getProposal(proposalId, false);
+
+
     }
 
     default void invalidateProposalCache(long proposalId) {

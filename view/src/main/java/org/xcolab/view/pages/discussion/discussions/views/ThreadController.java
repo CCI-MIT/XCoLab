@@ -1,6 +1,7 @@
 package org.xcolab.view.pages.discussion.discussions.views;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,9 +23,11 @@ import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.comment.pojo.tables.pojos.Comment;
 import org.xcolab.client.user.pojo.wrapper.UserWrapper;
 import org.xcolab.commons.html.HtmlUtil;
+import org.xcolab.commons.servlet.flash.ErrorPage;
 import org.xcolab.util.activities.enums.DiscussionThreadActivityType;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.AccessDeniedPage;
+import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 
@@ -56,6 +59,13 @@ public class ThreadController extends BaseDiscussionController {
         ICategoryGroup categoryGroup = getCategoryGroup(request);
         IThread thread = threadClient.getThread(threadId);
 
+        if(thread.getDeletedAt()!=null){
+            response.setStatus(HttpStatus.NOT_FOUND.value());
+            return ErrorPage.error("Discussion not found")
+                    .withTitle("Not found")
+                    .flashAndReturnView(request);
+
+        }
         DiscussionPermissions permissions = new DiscussionPermissions();
         if (!getCanView(permissions, categoryGroup, threadId)) {
             return new AccessDeniedPage(member).toViewName(response);

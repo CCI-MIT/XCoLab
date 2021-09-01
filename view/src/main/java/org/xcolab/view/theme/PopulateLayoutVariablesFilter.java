@@ -24,6 +24,7 @@ public class PopulateLayoutVariablesFilter extends HandlerInterceptorAdapter {
                                 + request.getRequestURI());
             }
             ThemeContext themeContext = (ThemeContext) attribute;
+            themeContext.repopulateMessages(request);
             modelAndView.addObject("_themeContext", themeContext);
         }
     }
