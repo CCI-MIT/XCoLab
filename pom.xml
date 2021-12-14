@@ -57,6 +57,7 @@
         <roma-client.version>1.4</roma-client.version>
 
         <!-- Misc -->
+        <log4j2.version>2.15.0</log4j2.version>
         <jsoup.version>1.11.2</jsoup.version>
         <json.version>20160212</json.version>
         <prettytime.version>4.0.1.Final</prettytime.version>
