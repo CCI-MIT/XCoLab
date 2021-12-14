@@ -78,6 +78,12 @@ public class ContestVoteQuestionNotification extends ContestNotification {
                     }
                     supportedProposalsLinks.append("</span>");
                     return parseXmlNode(supportedProposalsLinks.toString());
+                 
+                //missing default case
+                default:
+                    // add default case
+                    break;
+
             }
             return null;
         }
