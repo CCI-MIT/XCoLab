@@ -81,6 +81,11 @@ public class PointsDistributionUtil {
                 return distributeEquallyAmongProposals(proposalIds);
             case SECTION_DEFINED:
                 return distributeSectionDefinedAmongProposals(parentProposals, pointType, proposalIds);
+            //missing default case
+            default:
+            // add default case
+                break;
+
         }
         return Collections.emptyList();
     }
