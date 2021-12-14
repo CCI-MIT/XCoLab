@@ -65,6 +65,11 @@ public class CommentDaoImpl implements CommentDao {
                     query.addOrderBy(sortColumn.isAscending()
                             ? COMMENT.CREATED_AT.asc() : COMMENT.CREATED_AT.desc());
                     break;
+                //missing default case
+                default:
+                    // add default case
+                    break;
+
             }
         }
         if (!includeDeleted) {
