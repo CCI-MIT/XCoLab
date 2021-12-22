@@ -75,7 +75,7 @@
         <maven-surefire-plugin.version>2.20.1</maven-surefire-plugin.version>
 
         <!-- Error monitoring -->
-        <sentry.version>1.7.10</sentry.version>
+        <sentry.version>5.5.2</sentry.version>
 
         <!-- Code generation -->
         <roaster.version>2.20.4.Final</roaster.version>
