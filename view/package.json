@@ -28,7 +28,7 @@
     "jquery": "1.12.4",
     "jquery-datetimepicker": "^2.5.16",
     "js-cookie": "^2.2.0",
-    "moment": "^2.20.1",
+    "moment": "^2.29.2",
     "moment-timezone": "^0.5.14",
     "noty": "^2.4.1",
     "papaparse": "^4.3.6",
